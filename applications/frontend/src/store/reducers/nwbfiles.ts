@@ -1,32 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CallApiAction } from '../../middleware/backend'
+import { CallOSBApiAction } from '../../middleware/osbbackend'
 import { NWBFile } from '../../types/nwbfile'
 
 const initialState: NWBFile[] = [];
 
 const NWBFileSlice = createSlice({
-    name: 'nwbfiles',
-    initialState,
-    reducers: {
-        loadNWBFiles(state, action: PayloadAction<NWBFile[]>) {
-            return action.payload;
-        },
-    }
+  name: 'nwbfiles',
+  initialState,
+  reducers: {
+    loadNWBFiles(state, action: PayloadAction<NWBFile[]>) {
+      return action.payload;
+    },
+  }
 });
 
-export const fetchNWBFiles = (): CallApiAction => {
-    return ({
-      type: 'models/fetchModels',
-      payload: {
-        url: '/api/models',
-        successAction: NWBFileSlice.actions.loadNWBFiles.toString(),
-        errorAction: 'ERROR'
-      },
-      meta: {
-        callApi: true
-      }
-    })
-  }
+export const loadNWBFilesActionType = NWBFileSlice.actions.loadNWBFiles.toString();
+export const fetchNWBFilesActionType = 'nwbfiles/fetchNWBFiles';
+
+export const fetchNWBFiles = (): CallOSBApiAction => {
+  return ({
+    type: fetchNWBFilesActionType,
+    meta: {
+      callOSBApi: true
+    }
+  })
+}
 
 export default NWBFileSlice.reducer;

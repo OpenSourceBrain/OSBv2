@@ -9,12 +9,7 @@ export type CallApiPayload = {
 
 export type CallApiAction = {
   type: string;
-  payload: {
-    successAction: string;
-    errorAction: string;
-    url: RequestInfo;
-    params?: RequestInit;
-  };
+  payload: CallApiPayload,
   meta: {
     callApi: true;
   };
@@ -26,7 +21,7 @@ export type CallApiAction = {
 function createCallAPIMiddleware(
   fetchFn: (input: RequestInfo, init?: RequestInit) => Promise<Response>
 ) {
-  const callAPIMiddleware: Middleware<Dispatch> = ({
+  const callAPIMiddlewareFn: Middleware<Dispatch> = ({
     dispatch
   }: MiddlewareAPI) => next => (action: AnyAction | CallApiAction) => {
     if (!action.meta || !action.meta.callApi) {
@@ -51,7 +46,7 @@ function createCallAPIMiddleware(
       );
   };
 
-  return callAPIMiddleware;
+  return callAPIMiddlewareFn;
 }
 
 const callAPIMiddleware = createCallAPIMiddleware(fetch);

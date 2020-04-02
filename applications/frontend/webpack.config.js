@@ -1,11 +1,12 @@
+const CopyPlugin = require('copy-webpack-plugin');
 var path = require('path');
+var contentbase = path.join(__dirname, 'public')
 
+console.log(contentbase);
 module.exports = {
-    mode: "development",
-
     output: {
-        path: path.resolve(__dirname, 'public/js'),
-        filename: 'bundle.js'
+        path: path.resolve(__dirname, 'public'),
+        filename: path.join('js', 'bundle.js')
     },
 
     performance: {
@@ -15,15 +16,12 @@ module.exports = {
     // watch: true,
 
     devServer: {
-        contentBase: path.join(__dirname, 'public'),
-        publicPath: '/js/',
-        filename: 'bundle.js',
+        contentBase: path.resolve(__dirname, 'public'),
+        publicPath: '/',
+        filename: path.join('js', 'bundle.js'),
         compress: false,
         port: 8080
     },
-
-    // Enable sourcemaps for debugging webpack's output.
-    devtool: "inline-source-map",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
@@ -49,6 +47,12 @@ module.exports = {
             }
         ]
     },
+
+    plugins: [
+        new CopyPlugin([
+            { from: './src/assets', contentbase },
+        ]),
+    ],
 
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.

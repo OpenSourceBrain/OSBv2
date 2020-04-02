@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CallApiAction } from '../../middleware/backend'
+import { CallOSBApiAction } from '../../middleware/osbbackend'
 import { Model } from '../../types/model'
 
 const initialState: Model[] = [];
@@ -15,16 +15,14 @@ const modelSlice = createSlice({
   }
 });
 
-export const fetchModels = (): CallApiAction => {
+export const loadModelsActionType = modelSlice.actions.loadModels.toString();
+export const fetchModelsActionType = 'models/fetchModels';
+
+export const fetchModels = (): CallOSBApiAction => {
   return ({
-    type: 'models/fetchModels',
-    payload: {
-      url: '/api/models',
-      successAction: modelSlice.actions.loadModels.toString(),
-      errorAction: 'ERROR'
-    },
+    type: fetchModelsActionType,
     meta: {
-      callApi: true
+      callOSBApi: true
     }
   })
 }

@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "webpack-dev-server",
+    "start:dev": "webpack-dev-server --progress",
+    "prebuild": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "build": "webpack --mode=production -p --progress",
+    "prebuild-dev": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "build-dev": "webpack --mode=development --devtool eval",
+    "prebuild-dev-noTest": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "build-dev-noTest": "webpack --mode=development --devtool source-map --env.noTest=true",
+    "prebuild-dev-noTest:watch": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "build-dev-noTest:watch": "webpack --mode=development --devtool source-map --env.noTest=true --progress --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,15 +31,9 @@
     "@types/redux-devtools-extension": "^2.13.2",
     "@types/redux-logger": "^3.0.7",
     "@types/webpack-env": "^1.15.1",
+    "copy-webpack-plugin": "^5.1.1",
     "eslint-plugin-react": "^7.19.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-redux": "^7.2.0",
-    "react-router": "^5.1.2",
-    "react-router-redux": "^4.0.8",
-    "redux": "^4.0.5",
     "redux-devtools": "^3.5.0",
-    "redux-logger": "^3.0.6",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.2",
     "tslint": "^6.1.0",
@@ -41,5 +43,11 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6"
+  }
 }

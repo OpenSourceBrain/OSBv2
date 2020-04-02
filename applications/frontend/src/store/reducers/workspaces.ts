@@ -1,32 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CallApiAction } from '../../middleware/backend'
+import { CallOSBApiAction } from '../../middleware/osbbackend'
 import { Workspace } from '../../types/workspace'
 
 const initialState: Workspace[] = [];
 
 const workspaceSlice = createSlice({
-    name: 'workspaces',
-    initialState,
-    reducers: {
-        loadWorkspaces(state, action: PayloadAction<Workspace[]>) {
-            return action.payload;
-        },
-    }
+  name: 'workspaces',
+  initialState,
+  reducers: {
+    loadWorkspaces(state, action: PayloadAction<Workspace[]>) {
+      return action.payload;
+    },
+  }
 });
 
-export const fetchWorkspaces = (): CallApiAction => {
-    return ({
-      type: 'models/fetchModels',
-      payload: {
-        url: '/api/models',
-        successAction: workspaceSlice.actions.loadWorkspaces.toString(),
-        errorAction: 'ERROR'
-      },
-      meta: {
-        callApi: true
-      }
-    })
-  }
+export const loadWorkspacesActionType = workspaceSlice.actions.loadWorkspaces.toString();
+export const fetchWorkspacesActionType = 'workspaces/fetchWorkspaces';
+
+export const fetchWorkspaces = (): CallOSBApiAction => {
+  return ({
+    type: fetchWorkspacesActionType,
+    meta: {
+      callOSBApi: true
+    }
+  })
+}
 
 export default workspaceSlice.reducer;
