@@ -12,9 +12,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(1),
     margin: theme.spacing(1),
-    textAlign: 'left',
-    maxWidth: "20%"
-  },
+    textAlign: 'left'  },
   h3: {
     marginBottom: theme.spacing(2),
     color: "#00bcd4",
@@ -32,12 +30,14 @@ export const Workspaces = (props: any) => {
   const workspaces = props.workspaces;
   const workspaceList = workspaces !== null ? workspaces.map((workspace: Workspace, index: number) => {
     return (
-      <Paper key={index} className={classes.paper}>
-        <FolderIcon fontSize="large" className={classes.folder} />
-        <div><Typography variant="subtitle1">{workspace.name} - {workspace.id}</Typography></div>
-        <div><Typography variant="caption">{workspace.description}</Typography></div>
-        <div><Typography variant="caption">Last edited: {workspace.lastEditedUserId}, {workspace.lastEdited}</Typography></div>
-      </Paper>
+      <Grid item={true} xs={6} sm={4} md={3} lg={2} key={index}>
+        <Paper className={classes.paper}>
+          <FolderIcon fontSize="large" className={classes.folder} />
+          <div><Typography variant="subtitle1">{workspace.name} - {workspace.id}</Typography></div>
+          <div><Typography variant="caption">{workspace.description}</Typography></div>
+          <div><Typography variant="caption">Last edited: {workspace.lastEditedUserId}, {workspace.lastEdited}</Typography></div>
+        </Paper>
+      </Grid>
     )
   }) : null;
 
