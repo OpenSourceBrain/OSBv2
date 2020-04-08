@@ -62,8 +62,8 @@ export const Header = (props: any) => {
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <IconButton>
-          <img src="./images/osb-logo.png" onClick={handleToggleDrawer} alt={title} height="25" width="25" />
+        <IconButton onClick={handleToggleDrawer}>
+          <img src="./images/osb-logo.png" alt={title} height="25" width="25" />
         </IconButton>
         <Typography
           component="h2"
