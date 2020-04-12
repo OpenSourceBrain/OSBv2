@@ -7,7 +7,6 @@ import { Toolbar, Box, Typography, Button, IconButton } from '@material-ui/core'
 import PersonIcon from '@material-ui/icons/Person';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { toggleDrawer } from '../../store/reducers/drawer';
 import { MainMenu } from '../menu/MainMenu';
 
 const useStyles = makeStyles((theme) => ({
