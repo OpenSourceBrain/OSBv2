@@ -7,19 +7,19 @@ import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './drawer/WorkspaceDrawer'
 
 import { RootState } from '../store/rootReducer'
-import { fetchWorkspaces } from '../store/reducers/workspaces'
-import { fetchModels } from '../store/reducers/models';
-import { fetchNWBFiles } from '../store/reducers/nwbfiles';
-import { userLogin, userLogout } from '../store/reducers/user'
-import { toggleDrawer } from '../store/reducers/drawer'
+import { fetchWorkspacesAction } from '../store/actions/workspaces'
+import { fetchModelsAction } from '../store/actions/models';
+import { fetchNWBFilesAction } from '../store/actions/nwbfiles';
+import { userLogin, userLogout } from '../store/actions/user'
+import { toggleDrawer } from '../store/actions/drawer'
 
 const mapWorkspaceStateToProps = (state: RootState) => ({
   workspaces: state.workspaces,
 });
 const dispatchWorkspaceProps = {
-  onLoadWorkspaces: fetchWorkspaces,
-  onLoadModels: fetchModels,
-  onLoadNWBFiles: fetchNWBFiles
+  onLoadWorkspaces: fetchWorkspacesAction,
+  onLoadModels: fetchModelsAction,
+  onLoadNWBFiles: fetchNWBFilesAction
 }
 
 const mapUserStateToProps = (state: RootState) => ({

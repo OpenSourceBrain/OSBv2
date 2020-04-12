@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CallOSBApiAction } from '../../middleware/osbbackend'
 import { Workspace } from '../../types/workspace'
 
 const initialState: Workspace[] = [];
@@ -15,16 +14,5 @@ const workspaceSlice = createSlice({
   }
 });
 
-export const loadWorkspacesActionType = workspaceSlice.actions.loadWorkspaces.toString();
-export const fetchWorkspacesActionType = 'workspaces/fetchWorkspaces';
-
-export const fetchWorkspaces = (): CallOSBApiAction => {
-  return ({
-    type: fetchWorkspacesActionType,
-    meta: {
-      callOSBApi: true
-    }
-  })
-}
-
+export const WorkspaceActions = workspaceSlice.actions
 export default workspaceSlice.reducer;

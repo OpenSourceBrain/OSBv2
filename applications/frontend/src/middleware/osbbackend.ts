@@ -1,7 +1,7 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
-import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/reducers/workspaces'
-import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/reducers/nwbfiles'
-import { loadModelsActionType, fetchModelsActionType } from '../store/reducers/models'
+import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/actions/workspaces'
+import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/actions/nwbfiles'
+import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { CallApiAction } from './backend'
 
 // public call osb action type
@@ -13,7 +13,7 @@ export type CallOSBApiAction = {
 };
 
 // callapi middle actions
-const fetchWorkspaces = (): CallApiAction => {
+const fetchWorkspacesAction = (): CallApiAction => {
   return ({
     type: 'api/fetchWorkspaces',
     payload: {
@@ -27,7 +27,7 @@ const fetchWorkspaces = (): CallApiAction => {
   })
 }
 
-const fetchNWBFiles = (): CallApiAction => {
+const fetchNWBFilesAction = (): CallApiAction => {
   return ({
     type: 'api/fetchNWBFiles',
     payload: {
@@ -41,7 +41,7 @@ const fetchNWBFiles = (): CallApiAction => {
   })
 }
 
-const fetchModels = (): CallApiAction => {
+const fetchModelsAction = (): CallApiAction => {
   return ({
     type: 'api/fetchModels',
     payload: {
@@ -69,13 +69,13 @@ function createOSBAPIMiddleware() {
     let apiAction = null;
     switch (action.type) {
       case fetchWorkspacesActionType:
-        apiAction = fetchWorkspaces()
+        apiAction = fetchWorkspacesAction()
         break
       case fetchNWBFilesActionType:
-        apiAction = fetchNWBFiles()
+        apiAction = fetchNWBFilesAction()
         break
       case fetchModelsActionType:
-        apiAction = fetchModels()
+        apiAction = fetchModelsAction()
         break
       default:
       //

@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-// import { AppThunk, AppDispatch } from '../store'
-
 import { UserInfo } from '../../types/user'
 
 export const initialState: UserInfo = null;
@@ -19,6 +17,6 @@ export const userSlice = createSlice({
     }
 });
 
-export const { userLogin, userLogout } = userSlice.actions;
+export const UserActions = userSlice.actions;
 
 export default userSlice.reducer;

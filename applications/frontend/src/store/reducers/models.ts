@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CallOSBApiAction } from '../../middleware/osbbackend'
 import { Model } from '../../types/model'
 
 const initialState: Model[] = [];
@@ -15,16 +14,5 @@ const modelSlice = createSlice({
   }
 });
 
-export const loadModelsActionType = modelSlice.actions.loadModels.toString();
-export const fetchModelsActionType = 'models/fetchModels';
-
-export const fetchModels = (): CallOSBApiAction => {
-  return ({
-    type: fetchModelsActionType,
-    meta: {
-      callOSBApi: true
-    }
-  })
-}
-
+export const ModelActions = modelSlice.actions;
 export default modelSlice.reducer;
