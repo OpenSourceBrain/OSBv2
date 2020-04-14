@@ -1,0 +1,34 @@
+{
+  "data": {
+    "result": [
+      {
+          "id": 1,
+          "name": "Ferguson et Al., 2015",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img1.png",
+          "type": 2
+      },
+      {
+          "id": 2,
+          "name": "Ferguson et Al., 2015",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img1.png",
+          "type": 2
+      },
+      {
+          "id": 3,
+          "name": "Ferguson et Al., 2015",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img1.png",
+          "type": 2
+      },
+      {
+          "id": 4,
+          "name": "Ferguson et Al., 2015",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img1.png",
+          "type": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "data": {
+    "result": [
+      {
+        "id": 1,
+        "name": "Ferguson et Al., 2015",
+        "description": "Electrophysiology Recording V5",
+        "image": "workspace_img1.png",
+        "lastEdited": "2016-12-23T06:00:00.000Z",
+        "lastEditedUserId": 1,
+        "ownerId": 1,
+        "type": 0
+      },
+      {
+        "id": 2,
+        "name": "Ferguson et Al., 2015",
+        "description": "Electrophysiology Recording V5",
+        "image": "workspace_img1.png",
+        "lastEdited": "2017-12-23T07:15:00.000Z",
+        "lastEditedUserId": 1,
+        "ownerId": 1,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "name": "Dura-Bernal et Al., 2019",
+        "description": "Electrophysiology Recording V5",
+        "image": "workspace_img2.png",
+        "lastEdited": "2018-12-23T08:30:00.000Z",
+        "lastEditedUserId": 1,
+        "ownerId": 1,
+        "type": 2
+      },
+      {
+        "id": 4,
+        "name": "Dura-Bernal et Al., 2019",
+        "description": "Electrophysiology Recording V5",
+        "image": "workspace_img2.png",
+        "lastEdited": "2019-12-23T09:45:00.000Z",
+        "lastEditedUserId": 1,
+        "ownerId": 1,
+        "type": 2
+      }
+    ]
+  }
+}
