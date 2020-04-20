@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: 0.0.1
+description: 'CloudHarness Helm Chart'
+maintainers:
+  - email: facundo@metacell.us
+    name: 'Facundo Rodriguez'
+  - email: filippo@metacell.us
+    name: 'Filippo Ledda'
+name: cloudharness
+version: 0.0.1

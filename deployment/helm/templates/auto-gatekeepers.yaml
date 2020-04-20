@@ -1,0 +1,116 @@
+{{/* Secured Services/Deployments */}}
+{{- define "deploy_utils.securedservice" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .app.name }}-gk"
+  labels:
+    app: "{{ .app.name }}-gk"
+data:
+  proxy.yml: |-
+    verbose: true
+    discovery-url: https://{{ .root.Values.apps.accounts.subdomain }}.{{ .root.Values.domain }}/auth/realms/{{ .root.Values.namespace }}
+    client-id: {{ .root.Values.apps.accounts.webclient.id | quote }}
+    client-secret: {{ .root.Values.apps.accounts.webclient.secret }}
+    listen: 0.0.0.0:80
+    enable-refresh-tokens: true
+    tls-cert:
+    tls-private-key:
+    redirection-url: https://{{ .app.subdomain }}.{{ .root.Values.domain }}
+    encryption-key: AgXa7xRcoClDEU0ZDSH4X0XhL5Qy2Z2j
+    upstream-url: http://{{ .app.name }}.{{ .app.namespace | default .root.Release.Namespace }}:{{ .app.port | default 80}}
+    scopes:
+    - vpn-user
+    resources:
+    - uri: /*
+      methods:
+      - GET
+      roles:
+      - {{ .root.Values.apps.accounts.admin.role }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .app.name }}-gk"
+  labels:
+    app: "{{ .app.name }}-gk"
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: "{{ .app.name }}-gk"
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .app.name }}-gk"
+  labels:
+    app: "{{ .app.name }}-gk"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .app.name }}-gk"
+  template:
+    metadata:
+      labels:
+        app: "{{ .app.name }}-gk"
+    spec:
+      {{ if .root.Values.registry.secret }}
+      imagePullSecrets:
+      - name: {{ .root.Values.registry.secret }}
+      {{- end }}
+{{ include "deploy_utils.etcHosts" .root | indent 6 }}
+      containers:
+      - name: {{ .app.name | quote }}
+        {{ if .root.Values.local }}
+        image: {{ include "deploy_utils.registry" .root }}{{ .root.Values.apps.accounts.gatekeeper.image}}:{{ .root.Values.tag }}
+        imagePullPolicy: {{ include "deploy_utils.pullpolicy" .root }}
+        {{ else }}
+        image: "keycloak/keycloak-gatekeeper:9.0.2"
+        imagePullPolicy: IfNotPresent
+        {{- end }}
+
+        env:
+        - name: PROXY_CONFIG_FILE
+          value: /opt/proxy.yml
+        volumeMounts:
+        - name: "{{ .app.name }}-gk-proxy-config"
+          mountPath: /opt/proxy.yml
+          subPath: proxy.yml
+        ports:
+        - name: http
+          containerPort: {{ .root.Values.apps.accounts.port | default 8080 }}
+        - name: https
+          containerPort: 8443
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+      volumes:
+      - name: "{{ .app.name }}-gk-proxy-config"
+        configMap:
+          name: "{{ .app.name }}-gk"
+---
+{{- end }}
+{{- if .Values.secured_gatekeepers }}
+{{- range $app := .Values.apps }}
+  {{- if and (hasKey $app "port") ($app.secureme)   }}
+---
+    {{ include "deploy_utils.securedservice" (dict "root" $ "app" $app) }}
+    {{- end }}
+  {{- range $subapp := $app }}
+  {{- if contains "map" (typeOf $subapp)  }}
+  {{- if and (hasKey $subapp "port") $subapp.secureme }}
+---
+      {{ include "deploy_utils.securedservice" (dict "root" $ "app" $subapp) }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+ {{- end }}
+{{- end }}

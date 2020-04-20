@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zookeeper-config
+data:
+{{ (.Files.Glob "resources/events/zookeeper/*").AsConfig | indent 2 }}
