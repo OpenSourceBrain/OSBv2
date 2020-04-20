@@ -1,0 +1,62 @@
+{{- define "deploy_utils.deployment" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .app.name | quote }}
+  namespace: {{ .root.Values.namespace }}
+  labels:
+    app: {{ .app.name | quote }}
+{{ include "deploy_utils.labels" .root | indent 4 }}
+spec:
+  replicas: {{ .app.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .app.name | quote }}
+{{ include "deploy_utils.labels" .root | indent 6 }}
+  template:
+    metadata:
+      {{- if .app.harvest }}
+      annotations:
+        co.elastic.logs/enabled: "true"
+        metricbeat: "true"
+      {{- end }}
+      labels:
+        app: {{ .app.name | quote }}
+{{ include "deploy_utils.labels" .root | indent 8 }}
+    spec:
+      {{ if .root.Values.registry.secret }}
+      imagePullSecrets:
+      - name: {{ .root.Values.registry.secret }}
+      {{- end }}
+      containers:
+      - name: {{ .app.name | default "cloudharness-docs" | quote }}
+        image: {{ .app.image }}
+        imagePullPolicy: {{ include "deploy_utils.pullpolicy" .root }}
+        env:
+          {{- include "deploy_utils.env" .root | nindent 8 }}
+          {{- include "deploy_utils.privenv" .root | nindent 8 }}
+        ports:
+          - containerPort: {{ .app.port | default 8080 }}
+        resources:
+          requests:
+            memory: {{ .app.resources.requests.memory | default "32Mi" }}
+            cpu: {{ .app.resources.requests.cpu | default "25m" }}
+          limits:
+            memory: {{ .app.resources.limits.memory | default "64Mi" }}
+            cpu: {{ .app.resources.limits.cpu | default "50m" }}
+---
+{{- end }}
+{{- range $app := .Values.apps }}
+  {{- if and (hasKey $app "port") $app.autodeploy | default false  }}
+---
+    {{ include "deploy_utils.deployment" (dict "root" $ "app" $app) }}
+    {{- end }}
+  {{- range $subapp := $app }}
+  {{- if contains "map" (typeOf $subapp)  }}
+  {{- if and (hasKey $subapp "port") $subapp.autodeploy | default false }}
+---
+      {{ include "deploy_utils.deployment" (dict "root" $ "app" $subapp) }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+ {{- end }}
