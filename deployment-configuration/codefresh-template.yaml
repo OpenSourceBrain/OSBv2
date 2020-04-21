@@ -14,7 +14,7 @@ steps:
   post_main_clone:
     title: Post main clone
     type: parallel
-    stage: build
+    stage: prepare
     steps:
       - title: Cloning cloud-harness repository...
         type: git-clone
