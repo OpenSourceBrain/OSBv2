@@ -11,13 +11,17 @@ steps:
     repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
     revision: '${{CF_BRANCH}}'
     git: github
-  secondary_clone:
-    title: Cloning cloud-harness repository...
-    type: git-clone
-    stage: prepare
-    repo: 'https://github.com/MetaCell/cloud-harness.git'
-    revision: '${{CLOUDHARNESS_BRANCH}}'
-    git: github
+  post_main_clone:
+    title: Post main clone
+    type: parallel
+    stage: build
+    steps:
+      - title: Cloning cloud-harness repository...
+        type: git-clone
+        stage: prepare
+        repo: 'https://github.com/MetaCell/cloud-harness.git'
+        revision: '${{CLOUDHARNESS_BRANCH}}'
+        git: github
   build_base_images:
     title: Build base images
     type: parallel
