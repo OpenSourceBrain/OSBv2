@@ -1,0 +1,9 @@
+{
+  "realm": "ch",
+  "auth-server-url": "https://accounts.cloudharness.metacell.us/auth/",
+  "ssl-required": "external",
+  "resource": "frontend",
+  "public-client": true,
+  "enable-cors": true,
+  "confidential-port": 0
+}
