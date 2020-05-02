@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import Keycloak from 'keycloak-js';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Toolbar, Box, Typography, Button, IconButton } from '@material-ui/core';
@@ -35,14 +34,15 @@ export const Header = (props: any) => {
   const classes = useStyles();
 
   const user = props.user;
+  const keycloak = props.keycloak;
 
-  const handleUserLogin = () => props.onUserLogin({
-      id: 1,
-      firstName: 'Zoran',
-      lastName: 'Sinnema',
-      emailAddress: "zsinnema@gmail.com"
-    });
-  const handleUserLogout = () => props.onUserLogout();
+  const handleUserLogin = () => {
+      keycloak.login();
+    }
+  const handleUserLogout = () => {
+    keycloak.logout();
+    props.onUserLogout();
+  }
   const handleToggleDrawer = () => props.onToggleDrawer();
 
   const headerText = (user === null)
