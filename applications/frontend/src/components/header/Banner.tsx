@@ -47,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
 export const Banner = (props: any) => {
   const classes = useStyles();
   const user = props.user;
-  const signUp = user === null ? <Box ml={2}><Button variant="outlined" className={classes.button}>Sign Up</Button></Box> : null;
+  const handleSignup = () => {
+    props.keycloak.register();
+  }
+  const signUp = user === null ? <Box ml={2}><Button variant="outlined" className={classes.button} onClick={handleSignup}>Sign Up</Button></Box> : null;
   const text1 = user === null ? "Let us show you around" : `Welcome back ${user.firstName}`;
   const text2 = user === null ? "Get started in OSB with our short guided tour." : "Let's do some science.";
 
