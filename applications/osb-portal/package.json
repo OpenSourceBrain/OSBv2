@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node public/server.js",
     "start:dev": "webpack-dev-server --progress",
     "prebuild": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "build": "webpack --mode=production --config webpack.prod.js",
