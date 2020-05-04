@@ -1,6 +1,0 @@
-name: frontend
-subdomain: frontend
-port: 8080
-secureme: false
-autoservice: true
-autodeploy: true

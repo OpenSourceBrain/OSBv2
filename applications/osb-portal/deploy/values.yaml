@@ -1,0 +1,6 @@
+name: portal
+subdomain: portal
+port: 80
+secureme: false
+autoservice: true
+autodeploy: true
