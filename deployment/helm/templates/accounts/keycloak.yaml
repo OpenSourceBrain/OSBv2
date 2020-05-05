@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.apps.accounts.name | quote }}
+  labels:
+    app: {{ .Values.apps.accounts.name | quote }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.apps.accounts.name | quote }}
+{{ include "deploy_utils.labels" $ | indent 6 }}
+  template:
+    metadata:
+      {{- if .Values.apps.accounts.harvest }}
+      annotations:
+        co.elastic.logs/enabled: "true"
+        metricbeat: "true"
+      {{- end }}
+      labels:
+        app: {{ .Values.apps.accounts.name | quote }}
+{{ include "deploy_utils.labels" $ | indent 8 }}
+    spec:
+      {{ if .Values.codefresh }}
+      imagePullSecrets:
+      - name: {{ .Values.codefresh.secret }}
+      {{- end }}
+      containers:
+      - name: {{ .Values.apps.accounts.name | default "keycloak" | quote }}
+        image: {{ .Values.apps.accounts.image }}
+        imagePullPolicy: {{ include "deploy_utils.pullpolicy" . }}
+        env:
+        - name: KEYCLOAK_IMPORT
+          value: "/tmp/realm.json"
+        - name: KEYCLOAK_USER
+          value: {{ .Values.apps.accounts.admin.user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          value: {{ .Values.apps.accounts.admin.pass | quote }}
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: DB_VENDOR
+          value: POSTGRES
+        - name: DB_ADDR
+          value: {{ .Values.apps.accounts.db.name | quote }}
+        - name: DB_DATABASE
+          value: {{ .Values.apps.accounts.db.initialdb | quote }}
+        - name: DB_USER
+          value: {{ .Values.apps.accounts.db.user | quote }}
+        - name: DB_PASSWORD
+          value: {{ .Values.apps.accounts.db.pass | quote }}
+        {{- include "deploy_utils.env" . | nindent 8 }}
+        {{- include "deploy_utils.privenv" . | nindent 8 }}
+        volumeMounts:
+        - name: realm-config
+          mountPath: "/tmp/realm.json"
+          subPath: realm.json
+        ports:
+        - name: http
+          containerPort: {{ .Values.apps.accounts.port | default 8080 }}
+        - name: https
+          containerPort: 8443
+        readinessProbe:
+          httpGet:
+            path: /auth/realms/master
+            port: {{ .Values.apps.accounts.port }}
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+      volumes:
+      - name: realm-config
+        configMap:
+          name: {{ .Values.apps.accounts.name | quote }}
+---
