@@ -1,8 +1,8 @@
 {
-  "realm": "ch",
-  "auth-server-url": "https://accounts.__DOMAIN__/auth/",
+  "realm": "__NAMESPACE__",
+  "auth-server-url": "https://__DOMAIN__/auth/",
   "ssl-required": "external",
-  "resource": "portal",
+  "resource": "www",
   "public-client": true,
   "verify-token-audience": true,
   "confidential-port": 0

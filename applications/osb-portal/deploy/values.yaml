@@ -1,5 +1,5 @@
 name: portal
-subdomain: portal
+subdomain: www
 port: 80
 secureme: false
 autoservice: true

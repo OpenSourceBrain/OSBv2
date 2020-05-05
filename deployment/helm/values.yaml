@@ -2,18 +2,18 @@ local: true
 secured_gatekeepers: true
 nameOverride: ''
 fullnameOverride: ''
-domain: cloudharness.metacell.us
+domain: osb.local
 namespace: osb2
 registry:
   name: localhost:5000
   secret: ''
-tag: latest
+tag: '2'
 serviceaccount: argo-workflows
 apps:
   workflows:
     autoservice: true
     name: workflows
-    image: localhost:5000/workflows:latest
+    image: localhost:5000/workflows:2
     resources:
       requests:
         memory: 32Mi
@@ -29,7 +29,7 @@ apps:
   samples:
     autoservice: true
     name: samples
-    image: localhost:5000/samples:latest
+    image: localhost:5000/samples:2
     resources:
       requests:
         memory: 32Mi
@@ -43,7 +43,7 @@ apps:
   argo:
     autoservice: false
     name: argo-server
-    image: localhost:5000/argo:latest
+    image: localhost:5000/argo:2
     resources:
       requests:
         memory: 32Mi
@@ -61,7 +61,7 @@ apps:
   accounts:
     autoservice: true
     name: accounts
-    image: localhost:5000/accounts:latest
+    image: localhost:5000/accounts:2
     resources:
       requests:
         memory: 32Mi
@@ -97,7 +97,7 @@ apps:
   events:
     autoservice: true
     name: events
-    image: localhost:5000/events:latest
+    image: localhost:5000/events:2
     resources:
       requests:
         memory: 32Mi
@@ -115,7 +115,7 @@ apps:
   osb_portal:
     autoservice: true
     name: portal
-    image: localhost:5000/osb-portal:latest
+    image: localhost:5000/osb-portal:2
     resources:
       requests:
         memory: 32Mi
@@ -130,7 +130,7 @@ apps:
   workspace_manager:
     autoservice: true
     name: workspace-manager
-    image: localhost:5000/workspace-manager:latest
+    image: localhost:5000/workspace-manager:2
     resources:
       requests:
         memory: 32Mi
@@ -190,11 +190,11 @@ env:
 - name: CH_WORKSPACE_MANAGER_PORT
   value: 8080
 - name: CH_DOMAIN
-  value: cloudharness.metacell.us
+  value: osb.local
 - name: CH_IMAGE_REGISTRY
   value: localhost:5000
 - name: CH_IMAGE_TAG
-  value: latest
+  value: '2'
 privenv:
 - name: CH_SECRET
   value: "In God we trust; all others must bring data. \u2015 W. Edwards Deming"
@@ -203,5 +203,5 @@ ingress:
   name: cloudharness-ingress
   letsencrypt:
     email: facundo@metacell.us
-tls: cloudharness-metacell-us-tls
+tls: osb-local-tls
 localIp: 192.168.99.114

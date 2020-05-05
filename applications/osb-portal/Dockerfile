@@ -1,9 +1,11 @@
 FROM node:13.14 as base
 ENV BUILDDIR=/builddir
-COPY . $BUILDDIR
 
+COPY package.json ${BUILDDIR}
+COPY package-lock.json ${BUILDDIR}
 WORKDIR ${BUILDDIR}
 RUN npm ci
+COPY . $BUILDDIR
 RUN npm run build
 RUN ls -la
 ###
