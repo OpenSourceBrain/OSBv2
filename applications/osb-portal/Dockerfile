@@ -12,3 +12,7 @@ ENV BUILDDIR=/builddir
 COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 
 EXPOSE 80
+
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+CMD /entrypoint.sh

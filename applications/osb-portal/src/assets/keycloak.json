@@ -1,6 +1,6 @@
 {
   "realm": "ch",
-  "auth-server-url": "https://accounts.cloudharness.metacell.us/auth/",
+  "auth-server-url": "https://accounts.__DOMAIN__/auth/",
   "ssl-required": "external",
   "resource": "portal",
   "public-client": true,
