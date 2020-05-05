@@ -1,0 +1,6 @@
+name: workspace-manager
+subdomain: workspace-manager
+port: 8080
+secureme: true
+autoservice: true
+autodeploy: true

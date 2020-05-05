@@ -1,0 +1,11 @@
+connexion >= 2.6.0; python_version>="3.6"
+connexion >= 2.3.0; python_version=="3.5"
+connexion >= 2.3.0; python_version=="3.4"
+connexion == 2.4.0; python_version<="2.7"
+Flask==1.1.2
+Flask-SQLAlchemy==2.4.1
+OpenAlchemy==1.1.0
+#python_dateutil >= 2.6.0
+swagger-ui-bundle >= 0.0.2
+#wheel
+flask_oidc
