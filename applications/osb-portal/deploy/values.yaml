@@ -1,2 +1,6 @@
-name: osb
-subdomain: portal
+name: portal
+subdomain: www
+port: 80
+secureme: false
+autoservice: true
+autodeploy: true

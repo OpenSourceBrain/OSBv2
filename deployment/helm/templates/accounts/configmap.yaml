@@ -1,0 +1,11 @@
+{{- /* Be careful with json typos here, mainly trailing ',' */}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.apps.accounts.name | quote }}
+  labels:
+    app: {{ .Values.apps.accounts.name | quote }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+data:
+  realm.json: {{ tpl (.Files.Get "resources/accounts/realm.json") . | quote }}
+

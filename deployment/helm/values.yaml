@@ -1,0 +1,207 @@
+local: true
+secured_gatekeepers: true
+nameOverride: ''
+fullnameOverride: ''
+domain: cloudharness.metacell.us
+namespace: osb2
+registry:
+  name: localhost:5000
+  secret: ''
+tag: latest
+serviceaccount: argo-workflows
+apps:
+  workflows:
+    autoservice: true
+    name: workflows
+    image: localhost:5000/workflows:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    harvest: false
+    port: 8080
+    subdomain: workflows
+    autodeploy: true
+    serviceaccount: argo-workflows
+  samples:
+    autoservice: true
+    name: samples
+    image: localhost:5000/samples:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    port: 8080
+    subdomain: samples
+    autodeploy: true
+  argo:
+    autoservice: false
+    name: argo-server
+    image: localhost:5000/argo:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    enabled: true
+    subdomain: argo
+    port: 2746
+    serviceaccount: argo-workflows
+    namespace: argo
+    workflows_namespace: argo-workflows
+    secureme: true
+  accounts:
+    autoservice: true
+    name: accounts
+    image: localhost:5000/accounts:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    admin:
+      pass: metacell
+      user: admin
+      role: administrator
+    client:
+      id: rest-client
+      secret: 5678eb6e-9e2c-4ee5-bd54-34e7411339e8
+    db:
+      image: postgres:10.4
+      initialdb: auth_db
+      name: keycloak-postgress
+      pass: password
+      user: user
+    enabled: true
+    harvest: true
+    webclient:
+      id: web-client
+      secret: 452952ae-922c-4766-b912-7b106271e34b
+    portal:
+      id: portal
+      secret: 4a9e355d-7a90-4651-ac0f-59308cd90f46
+    port: 8080
+    subdomain: accounts
+    gatekeeper:
+      image: accounts-keycloak-gatekeeper
+  events:
+    autoservice: true
+    name: events
+    image: localhost:5000/events:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    subdomain: events
+    autodeploy: false
+    secureme: true
+    port: 80
+    kafka:
+      name: bootstrap
+      port: 9092
+  osb_portal:
+    autoservice: true
+    name: portal
+    image: localhost:5000/osb-portal:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    subdomain: www
+    port: 80
+    secureme: false
+    autodeploy: true
+  workspace_manager:
+    autoservice: true
+    name: workspace-manager
+    image: localhost:5000/workspace-manager:latest
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    subdomain: workspace-manager
+    port: 8080
+    secureme: true
+    autodeploy: true
+env:
+- name: CH_VERSION
+  value: 0.0.1
+- name: CH_CHART_VERSION
+  value: 0.0.1
+- name: CH_WORKFLOWS_NAME
+  value: workflows
+- name: CH_WORKFLOWS_PORT
+  value: 8080
+- name: CH_WORKFLOWS_SUBDOMAIN
+  value: workflows
+- name: CH_SAMPLES_NAME
+  value: samples
+- name: CH_SAMPLES_PORT
+  value: 8080
+- name: CH_SAMPLES_SUBDOMAIN
+  value: samples
+- name: CH_ARGO_NAME
+  value: argo-server
+- name: CH_ARGO_SUBDOMAIN
+  value: argo
+- name: CH_ARGO_PORT
+  value: 2746
+- name: CH_ACCOUNTS_NAME
+  value: accounts
+- name: CH_ACCOUNTS_PORT
+  value: 8080
+- name: CH_ACCOUNTS_SUBDOMAIN
+  value: accounts
+- name: CH_EVENTS_NAME
+  value: events
+- name: CH_EVENTS_SUBDOMAIN
+  value: events
+- name: CH_EVENTS_PORT
+  value: 80
+- name: CH_OSB_PORTAL_NAME
+  value: portal
+- name: CH_OSB_PORTAL_SUBDOMAIN
+  value: www
+- name: CH_OSB_PORTAL_PORT
+  value: 80
+- name: CH_WORKSPACE_MANAGER_NAME
+  value: workspace-manager
+- name: CH_WORKSPACE_MANAGER_SUBDOMAIN
+  value: workspace-manager
+- name: CH_WORKSPACE_MANAGER_PORT
+  value: 8080
+- name: CH_DOMAIN
+  value: cloudharness.metacell.us
+- name: CH_IMAGE_REGISTRY
+  value: localhost:5000
+- name: CH_IMAGE_TAG
+  value: latest
+privenv:
+- name: CH_SECRET
+  value: "In God we trust; all others must bring data. \u2015 W. Edwards Deming"
+ingress:
+  enabled: true
+  name: cloudharness-ingress
+  letsencrypt:
+    email: facundo@metacell.us
+tls: cloudharness-metacell-us-tls
+localIp: 192.168.99.114
