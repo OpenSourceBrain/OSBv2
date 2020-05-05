@@ -1,0 +1,197 @@
+version: '1.0'
+stages:
+- prepare
+- build
+- deploy
+steps:
+  main_clone:
+    title: Clone main repository
+    type: git-clone
+    stage: prepare
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    revision: ${{CF_BRANCH}}
+    git: github
+  post_main_clone:
+    title: Post main clone
+    type: parallel
+    stage: prepare
+    steps:
+    - title: Cloning cloud-harness repository...
+      type: git-clone
+      stage: prepare
+      repo: https://github.com/MetaCell/cloud-harness.git
+      revision: ${{CLOUDHARNESS_BRANCH}}
+      git: github
+  build_base_images:
+    title: Build base images
+    type: parallel
+    stage: build
+    steps:
+      cloudharness-base-debian:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: cloud-harness/infrastructure/base-images/cloudharness-base-debian/Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: cloudharness-base-debian
+        title: Cloudharness base debian
+        working_directory: ./.
+      cloudharness-base:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: cloud-harness/infrastructure/base-images/cloudharness-base/Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: cloudharness-base
+        title: Cloudharness base
+        working_directory: ./.
+  build_application_images:
+    type: parallel
+    stage: build
+    steps:
+      osb-portal:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: osb-portal
+        title: Osb portal
+        working_directory: ./applications/osb-portal
+      workflows:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: workflows
+        title: Workflows
+        working_directory: ./cloud-harness/applications/workflows/src
+      workflows-extract-s3:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: workflows-extract-s3
+        title: Workflows extract s3
+        working_directory: ./cloud-harness/applications/workflows/tasks/extract-s3
+      workflows-print-file:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: workflows-print-file
+        title: Workflows print file
+        working_directory: ./cloud-harness/applications/workflows/tasks/print-file
+      workflows-extract-download:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: workflows-extract-download
+        title: Workflows extract download
+        working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
+      workflows-send-result-event:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: workflows-send-result-event
+        title: Workflows send result event
+        working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
+      samples:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: samples
+        title: Samples
+        working_directory: ./cloud-harness/applications/samples/src
+      samples-sum:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: samples-sum
+        title: Samples sum
+        working_directory: ./cloud-harness/applications/samples/tasks/sum
+      accounts:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: accounts
+        title: Accounts
+        working_directory: ./cloud-harness/applications/accounts
+  prepare_deployment:
+    title: Prepare helm chart
+    image: python:3.7
+    stage: deploy
+    working_directory: .
+    commands:
+    - pip install -r cloud-harness/requirements.txt
+    - harness-deployment . cloud-harness -t ${{CF_REVISION}} -d ${{DOMAIN}}
+  prepare_deployment_view:
+    commands:
+    - helm template ./deployment/helm --debug -n ${{NAME}}
+    environment:
+    - ACTION=auth
+    - KUBE_CONTEXT=${{NAME}}
+    image: codefresh/cfstep-helm:2.16.1
+    stage: prepare
+    title: View helm chart
+  deployment:
+    stage: deploy
+    image: codefresh/cfstep-helm:2.16.1
+    title: Installing chart
+    environment:
+    - CHART_REF=./deployment/helm
+    - RELEASE_NAME=${{NAME}}
+    - KUBE_CONTEXT=${{NAME}}
+    - NAMESPACE=${{NAMESPACE}}
+    - TILLER_NAMESPACE=kube-system
+    - CHART_VERSION=0.0.1
+    - HELM_REPO_USE_HTTP=false
+    - HELM_REPO_CONTEXT_PATH=
+    - TIMEOUT=600
+    - VALUESFILE_values=./deployment/helm/values.yaml

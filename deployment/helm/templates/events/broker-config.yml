@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: broker-config
-data:
-{{ (.Files.Glob "resources/events/broker/*").AsConfig | indent 2 }}
-  
-  
-  
