@@ -1,8 +1,8 @@
 FROM node:13.14 as base
 ENV BUILDDIR=/builddir
 
-COPY package.json ${BUILDDIR}
-COPY package-lock.json ${BUILDDIR}
+COPY package.json ${BUILDDIR}/package.json
+COPY package-lock.json ${BUILDDIR}/package-lock.json
 WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
