@@ -2,7 +2,7 @@
   "realm": "__NAMESPACE__",
   "auth-server-url": "https://__DOMAIN__/auth/",
   "ssl-required": "external",
-  "resource": "www",
+  "resource": "web-client",
   "public-client": true,
   "verify-token-audience": true,
   "confidential-port": 0

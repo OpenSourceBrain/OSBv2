@@ -7,7 +7,6 @@ WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
 RUN npm run build
-RUN ls -la
 ###
 FROM nginx:1.17-alpine
 ENV BUILDDIR=/builddir

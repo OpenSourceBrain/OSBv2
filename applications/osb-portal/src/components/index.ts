@@ -1,7 +1,4 @@
 import { connect } from 'react-redux'
-import Keycloak from 'keycloak-js';
-
-import store from '../store/store';
 
 import { App as app } from './App'
 import { Workspaces as workspace } from './workspace/Workspaces'
@@ -13,24 +10,10 @@ import { RootState } from '../store/rootReducer'
 import { fetchWorkspacesAction } from '../store/actions/workspaces'
 import { fetchModelsAction } from '../store/actions/models';
 import { fetchNWBFilesAction } from '../store/actions/nwbfiles';
-import { userLogin, userLogout } from '../store/actions/user'
-import { toggleDrawer } from '../store/actions/drawer'
+import { userLogin, userLogout } from '../store/actions/user';
+import { toggleDrawer } from '../store/actions/drawer';
 
-const keycloak = Keycloak('/keycloak.json');
-keycloak.onAuthSuccess = () => {
-  keycloak.loadUserInfo().then((userInfo: any) => {
-    store.dispatch(userLogin({
-        id: userInfo.sub,
-        firstName: userInfo.given_name,
-        lastName: userInfo.family_name,
-        emailAddress: userInfo.email
-      })
-    );
-  });
-};
-keycloak.init({
-  onLoad: 'check-sso'
-});
+import { keycloak } from '../index';
 
 const mapWorkspaceStateToProps = (state: RootState) => ({
   workspaces: state.workspaces,
