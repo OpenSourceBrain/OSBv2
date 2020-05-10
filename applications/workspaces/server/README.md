@@ -1,7 +1,7 @@
 # OpenAPI generated server
 
 ## Overview
-Workspace manager REST api micro service.
+Workspaces manager REST api micro service.
 
 This example uses the [Connexion](https://github.com/zalando/connexion) library on top of Flask.
 

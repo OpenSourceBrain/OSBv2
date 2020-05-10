@@ -1,5 +1,5 @@
 from ..base_model_view import BaseModelView
-from workspace_manager.repository import WorkspaceRepository, OSBRepositoryRepository, GITRepositoryRepository, FigshareRepositoryRepository, VolumeStorageRepository
+from workspaces.repository import WorkspaceRepository, OSBRepositoryRepository, GITRepositoryRepository, FigshareRepositoryRepository, VolumeStorageRepository
 
 
 class WorkspaceView(BaseModelView):
