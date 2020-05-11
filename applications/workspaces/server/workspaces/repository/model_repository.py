@@ -24,7 +24,7 @@ class WorkspaceRepository(BaseModelRepository):
             q_base = q_base.filter(*filter)
         if self.keycloak_id != -1:
             q1 = q_base.filter_by(keycloakuser_id=self.keycloak_id)
-            q1 = q1.union(q_base.filter(Workspace.collaborators.any(id=self.keycloak_id)))
+            q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
