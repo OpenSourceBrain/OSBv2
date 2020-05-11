@@ -4,6 +4,7 @@ import connexion
 import logging
 
 from flask import send_from_directory, request
+from flask_cors import CORS
 from .config import Config
 from .repository.database import db, setup_db
 
@@ -36,6 +37,8 @@ app = connexion_app.app
 app.config.from_object(Config)
 setup_static_router()
 db.init_app(app)
+
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 with app.app_context():
     setup_logging()

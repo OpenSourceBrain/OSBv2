@@ -1,6 +1,6 @@
 name: workspaces
 subdomain: workspaces
 port: 8080
-secureme: true
+secureme: false
 autoservice: true
 autodeploy: true

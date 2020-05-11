@@ -45,9 +45,9 @@ paths:
           schema:
             type: string
             default: None
-            example: name__like=Work%ce 18 
+            example: name__like=Work%ce 18+id__=1
           required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [fieldname][comparator = , __not= , __like= ][value]     
       responses:
         200:
           description: Return all available workspaces
@@ -66,6 +66,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a Workspace to the repository. The owner will be automatically filled with the current user
+      security:
+        - bearerAuth: []
       requestBody:
         description: The Workspace to save.
         required: true
@@ -104,6 +106,8 @@ paths:
         - rest
     put:
       summary: Update an workspace in the repository.
+      security:
+        - bearerAuth: []
       requestBody:
         description: The workspace to save.
         required: true
@@ -124,6 +128,8 @@ paths:
         - rest
     delete:
       summary: Delete an workspace from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The workspace was deleted.
@@ -178,6 +184,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a OSBRepository to the repository. The owner will be automatically filled with the current user
+      security:
+        - bearerAuth: []
       requestBody:
         description: The OSBRepository to save.
         required: true
@@ -216,6 +224,8 @@ paths:
         - rest
     put:
       summary: Update an osbrepository in the repository.
+      security:
+        - bearerAuth: []
       requestBody:
         description: The osbrepository to save.
         required: true
@@ -236,6 +246,8 @@ paths:
         - rest
     delete:
       summary: Delete an osbrepository from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The osbrepository was deleted.
@@ -290,6 +302,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a GITRepository to the repository. The owner will be automatically filled with the current user
+      security:
+        - bearerAuth: []
       requestBody:
         description: The GITRepository to save.
         required: true
@@ -328,6 +342,8 @@ paths:
         - rest
     put:
       summary: Update an gitrepository in the repository.
+      security:
+        - bearerAuth: []
       requestBody:
         description: The gitrepository to save.
         required: true
@@ -348,6 +364,8 @@ paths:
         - rest
     delete:
       summary: Delete an gitrepository from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The gitrepository was deleted.
@@ -402,6 +420,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a FigshareRepository to the repository. The owner will be automatically filled with the current user
+      security:
+        - bearerAuth: []
       requestBody:
         description: The FigshareRepository to save.
         required: true
@@ -440,6 +460,8 @@ paths:
         - rest
     put:
       summary: Update an figsharerepository in the repository.
+      security:
+        - bearerAuth: []
       requestBody:
         description: The figsharerepository to save.
         required: true
@@ -460,6 +482,8 @@ paths:
         - rest
     delete:
       summary: Delete an figsharerepository from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The figsharerepository was deleted.
@@ -473,6 +497,8 @@ paths:
       tags:
         - rest
       summary: Used to list all available volumestorages.
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -514,6 +540,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a VolumeStorage to the repository. The owner will be automatically filled with the current user
+      security:
+        - bearerAuth: []      
       requestBody:
         description: The VolumeStorage to save.
         required: true
@@ -552,6 +580,8 @@ paths:
         - rest
     put:
       summary: Update an volumestorage in the repository.
+      security:
+        - bearerAuth: []
       requestBody:
         description: The volumestorage to save.
         required: true
@@ -572,6 +602,8 @@ paths:
         - rest
     delete:
       summary: Delete an volumestorage from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The volumestorage was deleted.
@@ -658,6 +690,16 @@ components:
           description: Workspace description.
           type: string
           example: Workspace One description
+        timestamp_created:
+          description: Date/time the Workspace is created
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z
+        timestamp_updated:
+          description: Date/time the Workspace is last updated
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z
         tags:
           description: Workspace tags
           type: array

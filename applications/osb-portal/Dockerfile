@@ -6,7 +6,7 @@ COPY package-lock.json ${BUILDDIR}/package-lock.json
 WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
-RUN npm run build
+RUN npm run build-dev
 ###
 FROM nginx:1.17-alpine
 ENV BUILDDIR=/builddir

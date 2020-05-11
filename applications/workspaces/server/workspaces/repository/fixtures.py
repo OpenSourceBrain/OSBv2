@@ -1,5 +1,6 @@
 import logging
 import random
+
 from ..config import Config
 from .database import db
 
@@ -31,6 +32,8 @@ def generate_fake(app):
                               description=f'Workspace description {i}',
                               keycloakuser_id=random.randint(1, 10),
                               publicable=random.randint(0, 1),
+                              timestamp_created=func.now(),
+                              timestamp_updated=func.now()
                               )
 
         for j in range(random.randint(1, 5), random.randint(5, 10)):
