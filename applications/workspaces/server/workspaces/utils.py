@@ -34,11 +34,13 @@ def _decode_token(token):
     :return: Decoded token information or None if token is invalid
     :rtype: dict | None
     """
-    SCHEMA = 'https://'
-    AUTH_DOMAIN = env.get_service_public_address('CH_ACCOUNTS')
+    SCHEMA = 'http://'
+    AUTH_SERVICE_HOST = env.get_variable('ACCOUNTS_SERVICE_HOST')
+    AUTH_SERVICE_PORT = env.get_variable('ACCOUNTS_SERVICE_PORT')
+    AUTH_DOMAIN = f'{AUTH_SERVICE_HOST}:{AUTH_SERVICE_PORT}'
     AUTH_REALM = env.get_variable('CH_ACCOUNTS_REALM')
-    BASE_PATH = f"//{os.path.join(AUTH_DOMAIN, 'auth/realms', AUTH_REALM)}"
-    AUTH_PUBLIC_KEY_URL = urljoin(SCHEMA, BASE_PATH)
+    BASE_PATH = f'{AUTH_DOMAIN}/auth/realms/{AUTH_REALM}'
+    AUTH_PUBLIC_KEY_URL = f'{SCHEMA}{BASE_PATH}'
     current_app.logger.debug(f'auth pub key url: {AUTH_PUBLIC_KEY_URL}')
 
     KEY = json.loads(requests.get(AUTH_PUBLIC_KEY_URL, verify=False).text)['public_key']
