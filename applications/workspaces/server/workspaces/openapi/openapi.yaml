@@ -2,16 +2,16 @@ openapi: 3.0.0
 info:
   contact:
     email: mnp@metacell.us
-  description: MetaCell Cloudharness Platform - Reference Workspace Manager API
+  description: MetaCell Cloudharness Platform - Reference Workspaces manager API
   license:
     name: UNLICENSED
-  title: Workspace Manager API
+  title: Workspaces manager API
   version: 0.1.0
 servers:
 - description: SwaggerHub API Auto Mocking
   url: /api
 tags:
-- description: rest API for Workspace Manager
+- description: rest API for Workspaces manager
   name: rest
 - description: Producer
   name: Producer

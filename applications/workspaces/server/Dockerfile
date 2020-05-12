@@ -23,4 +23,4 @@ ENV FLASK_ENV=development
 
 ENTRYPOINT ["python3"]
 
-CMD ["-m", "workspace_manager"]
+CMD ["-m", "workspaces"]

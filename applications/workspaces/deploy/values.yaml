@@ -1,5 +1,5 @@
-name: workspace-manager
-subdomain: workspace-manager
+name: workspaces
+subdomain: workspaces
 port: 8080
 secureme: true
 autoservice: true
