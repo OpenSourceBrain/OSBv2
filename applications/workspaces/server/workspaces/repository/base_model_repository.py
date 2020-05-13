@@ -153,7 +153,7 @@ class BaseModelRepository:
         else:
             sqs = self._get_qs()
         objects = sqs.paginate(page, per_page, True)
-        total_objects = db.session.query(func.count(self.model.id)).scalar()
+        total_objects = len(sqs.all())  # db.session.query(func.count(self.model.id)).scalar()
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         total_pages = math.ceil(total_objects / per_page)
