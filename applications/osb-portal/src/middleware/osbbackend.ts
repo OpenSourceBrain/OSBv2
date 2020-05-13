@@ -19,7 +19,7 @@ const fetchWorkspacesAction = (): CallApiAction => {
   return ({
     type: 'api/fetchWorkspaces',
     payload: {
-      url: 'https://workspaces.cloudharness.metacell.us/api/workspace?page=1&per_page=2000',
+      url: '/api/workspaces/api/workspace?page=1&per_page=2000',
       successAction: loadWorkspacesActionType,
       errorAction: 'ERROR',
       params: {
