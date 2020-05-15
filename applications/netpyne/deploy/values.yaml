@@ -1,0 +1,6 @@
+harness:
+  subdomain: netpyne
+  service:
+    auto: false
+    port: 80
+    name: proxy-public
