@@ -1,6 +1,5 @@
 {
-  "data": {
-    "result": [
+  "items": [
       {
           "id": 1,
           "name": "Private Dura-Bernal et Al., 2019",
@@ -30,5 +29,4 @@
           "type": 2
       }
     ]
-  }
 }

@@ -13,7 +13,7 @@ class Config(object):
     DATABASE_NAME = "wsmgr"
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, DATABASE_NAME+'.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
     BASE_DIR = os.path.dirname(__file__)
     WWW_DIR = os.path.join(BASE_DIR, "www")
@@ -21,7 +21,7 @@ class Config(object):
     OPENAPI_DIR = os.path.join(BASE_DIR, "openapi")
     OPENAPI_FILE = "openapi.yaml"
     LOG_LEVEL = logging.INFO
-    LOG_NAME = "workspace-manager"
+    LOG_NAME = "workspaces"
     WSMGR_HOSTNAME = socket.gethostname()
     WSMGR_IPADDRESS = socket.gethostbyname(WSMGR_HOSTNAME)
 

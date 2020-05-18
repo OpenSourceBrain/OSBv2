@@ -29,3 +29,14 @@ keycloak.init({
     document.getElementById('main')
   );
 });
+
+// set token refresh to 5 minutes
+keycloak.onTokenExpired = () => {
+  keycloak.updateToken(5).success((refreshed) => {
+    if (!refreshed){
+      alert('not refreshed ' + new Date());
+    }
+  }).error(() => {
+    alert('Failed to refresh token '  + new Date());
+  });
+}

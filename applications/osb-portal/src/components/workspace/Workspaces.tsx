@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FolderIcon from '@material-ui/icons/Folder';
 
-import { RootState } from '../../store/rootReducer';
 import { Workspace } from '../../types/workspace';
 
 const useStyles = makeStyles((theme) => ({
