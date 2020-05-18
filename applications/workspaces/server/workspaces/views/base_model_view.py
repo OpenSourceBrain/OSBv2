@@ -41,7 +41,7 @@ class BaseModelView(MethodView):
         """Get an object from the repository."""
         obj, found = self.repository.get(id)
         if not found:
-            return "{} with id {} not found.".format(self.model.__name__, id), 404
+            return "{} with id {} not found.".format(self.repository.model.__name__, id), 404
         return obj.to_dict()
 
     def put(self, body, id):

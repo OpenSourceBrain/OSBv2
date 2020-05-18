@@ -6,13 +6,16 @@ COPY package-lock.json ${BUILDDIR}/package-lock.json
 WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
-RUN npm run build
+RUN npm run build-dev
 ###
 FROM nginx:1.17-alpine
 ENV BUILDDIR=/builddir
 COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 
 EXPOSE 80
+
+RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+COPY deploy/nginx.conf /etc/nginx/nginx.conf
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

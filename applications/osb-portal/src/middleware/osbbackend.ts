@@ -3,6 +3,7 @@ import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/ac
 import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/actions/nwbfiles'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { CallApiAction } from './backend'
+import { keycloak } from '../index'
 
 // public call osb action type
 export type CallOSBApiAction = {
@@ -14,12 +15,15 @@ export type CallOSBApiAction = {
 
 // callapi middle actions
 const fetchWorkspacesAction = (): CallApiAction => {
+  // ToDo: pagination & size of pagination
   return ({
     type: 'api/fetchWorkspaces',
     payload: {
-      url: '/api-mocks/workspaces',
+      url: '/api/workspaces/api/workspace?page=1&per_page=2000',
       successAction: loadWorkspacesActionType,
-      errorAction: 'ERROR'
+      errorAction: 'ERROR',
+      params: {
+        headers: {'Authorization': 'Bearer ' + keycloak.token}}
     },
     meta: {
       callApi: true

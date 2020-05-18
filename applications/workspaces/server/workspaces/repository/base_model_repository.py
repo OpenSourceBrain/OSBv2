@@ -29,7 +29,8 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            obj = self.model.query.filter_by(id=id).first()
+            sqs = self._get_qs([self._create_filter(self.model.id, '=', id)])
+            obj = sqs.first()
             if obj:
                 return obj, True
         return None, False
@@ -55,7 +56,7 @@ class BaseModelRepository:
         Recursive copy of all data related attributes from the new object to the currect object
         """
         for key in new_obj.__dict__:
-            if key not in ("id", "timestamp_created") and not key.startswith("_") and hasattr(obj, key):
+            if key not in ("id", "timestamp_created") and not key.startswith("_") and hasattr(cur_obj, key):
                 if isinstance(getattr(cur_obj, key), list):
                     # copy the list and check if the items already exist if so update them else create them
                     new_obj_list = []
@@ -105,6 +106,22 @@ class BaseModelRepository:
         else:
             return field == value
 
+    def _get_qs(self,filter=None):
+        """
+        Helper function to get the queryset
+
+        Args:
+            filter: optional extra filter for the qs
+        """
+        if not self.search_qs:
+            sqs = self.model.query
+        else:
+            if isinstance(self.search_qs, str):
+                sqs = eval(self.search_qs)
+            else:
+                sqs = self.search_qs(filter)
+        return sqs
+
     def search(self, page=1, per_page=20, q=None, *args, **kwargs):
         """
         Query the model and return all records
@@ -118,22 +135,25 @@ class BaseModelRepository:
             page, total_pages, objects
         """
         """Get all objects from the repository."""
-        if not self.search_qs:
-            sqs = self.model.query
-        else:
-            sqs = eval(self.search_qs)
-        if q:
+        if q and q != 'None':
             filters = []
-            for arg in q.strip().split("+"):
+            for arg in q.strip().split('+'):
                 field_comparator, value = arg.strip().split('=')
-                field, comparator = field_comparator.split('__')
+                field_comparator = field_comparator.split('__')
+                field = field_comparator[0]
+                if len(field_comparator)>1:
+                    comparator = field_comparator[1]
+                else:
+                    comparator = '='
                 attr = getattr(self.model, field)
                 if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
                     value = value.upper() in ('TRUE', '1', 'T')
                 filters.append(self._create_filter(attr, comparator, value))
-            sqs = sqs.filter(*filters)
+            sqs = self._get_qs(filters)
+        else:
+            sqs = self._get_qs()
         objects = sqs.paginate(page, per_page, True)
-        total_objects = db.session.query(func.count(self.model.id)).scalar()
+        total_objects = len(sqs.all())  # db.session.query(func.count(self.model.id)).scalar()
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         total_pages = math.ceil(total_objects / per_page)
