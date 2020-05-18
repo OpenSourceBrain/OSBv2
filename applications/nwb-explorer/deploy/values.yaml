@@ -1,0 +1,6 @@
+harness:
+  subdomain: nwbexplorer
+  service:
+    auto: false
+    port: 80
+    name: proxy-public
