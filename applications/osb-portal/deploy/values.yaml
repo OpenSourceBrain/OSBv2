@@ -1,6 +1,9 @@
-name: portal
-subdomain: www
-port: 80
-secureme: false
-autoservice: true
-autodeploy: true
+harness:
+  subdomain: www
+  secured: false
+  deployment:
+    auto: true
+  service:
+    auto: true
+    port: 80
+    name: portal
