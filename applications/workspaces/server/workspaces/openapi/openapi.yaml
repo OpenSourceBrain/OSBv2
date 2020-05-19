@@ -1,8 +1,6 @@
 openapi: 3.0.0
 info:
-  contact:
-    email: mnp@metacell.us
-  description: MetaCell Cloudharness Platform - Reference Workspaces manager API
+  description: Opensource Brain Platform - Reference Workspaces manager API
   license:
     name: UNLICENSED
   title: Workspaces manager API
