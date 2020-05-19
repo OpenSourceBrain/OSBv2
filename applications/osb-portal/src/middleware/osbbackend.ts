@@ -2,8 +2,11 @@ import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/actions/workspaces'
 import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/actions/nwbfiles'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
-import { CallApiAction } from './backend'
-import { keycloak } from '../index'
+import { CallApiAction } from './backend';
+import { keycloak } from '../index';
+
+import * as workspaceApi from '../apiclient/workspaces/apis';
+import { Configuration, RestApi } from '../apiclient/workspaces';
 
 // public call osb action type
 export type CallOSBApiAction = {
@@ -13,13 +16,19 @@ export type CallOSBApiAction = {
   };
 };
 
+const workspacesApiUri = '/api/workspaces/api';
+export let workspacesApi: RestApi = null;
+export const initApis = (token: string) => {
+  workspacesApi =  new workspaceApi.RestApi(new Configuration({basePath: workspacesApiUri, accessToken: token}));
+}
+
 // callapi middle actions
 const fetchWorkspacesAction = (): CallApiAction => {
   // ToDo: pagination & size of pagination
   return ({
     type: 'api/fetchWorkspaces',
     payload: {
-      url: 'https://workspaces.cloudharness.metacell.us/api/workspace?page=1&per_page=2000',
+      url: workspacesApiUri + '/workspace?page=1&per_page=2000',
       successAction: loadWorkspacesActionType,
       errorAction: 'ERROR',
       params: {
@@ -89,7 +98,6 @@ function createOSBAPIMiddleware() {
       dispatch(apiAction)
     }
   };
-
   return callAPIMiddlewareFn;
 }
 

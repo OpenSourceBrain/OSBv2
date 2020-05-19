@@ -16,13 +16,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+
+
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
 
 import { UserInfo } from '../../types/user';
 
-import * as workspaceApi from '../../apiclient/workspaces/apis';
+import { workspacesApi } from '../../middleware/osbbackend';
 import { WorkspacePostRequest } from '../../apiclient/workspaces/apis/RestApi';
 import * as modelWorkspace from '../../apiclient/workspaces/models/Workspace';
-import { Configuration } from '../../apiclient/workspaces';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,15 +52,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 16,
   },
   dialogContentText: {
-    width: '50%',
+    maxWidth: '75%',
   },
   dialogTextField: {
-    width: '80%',
   },
   dialogButtons: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
+    paddingRight: 0,
   },
   roundedButton: {
     borderRadius: '5em',
@@ -86,13 +89,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const mdParser = new MarkdownIt(/* Markdown-it options */);
+
 export const WorkspaceToolBox = (props: any) => {
   const classes = useStyles();
 
   const user: UserInfo = props.user;
   const keycloak = props.keycloak;
 
-  let newWorkspaceInput: { value: string; } = null;
   let type: string = props.type;
 
   const [show, setShow] = React.useState(false);
@@ -115,15 +119,27 @@ export const WorkspaceToolBox = (props: any) => {
     handleClickOpen();
   }
 
-  const inputRefNew = (el: any) => newWorkspaceInput = el;
+  const [workspaceForm, setWorkspaceForm] = React.useState({
+    name: '',
+    description: ''
+  });
+  const updateWorkspaceForm = (e: any) => {
+    const field = (e.constructor.name === 'SyntheticEvent') ? 'name' : 'description';
+    const value = (e.constructor.name === 'SyntheticEvent') ? e.target.value : e.text;
+    setWorkspaceForm({
+      ...workspaceForm,
+      [field]: value
+    });
+  };
+  const renderMarkdown = (text: string) => {
+    return mdParser.render(text);
+  }
 
   const handleCreateWorkspace = async () => {
-    const newWorkspace: modelWorkspace.Workspace = {name: newWorkspaceInput.value, description: ''};
+    const newWorkspace: modelWorkspace.Workspace = workspaceForm;
 
-    keycloak.updateToken(1);
-    const api = new workspaceApi.RestApi(new Configuration({basePath: '/api/workspaces/api/', accessToken: keycloak.token}));
     const wspr: WorkspacePostRequest = {workspace: newWorkspace};
-    const result = await api.workspacePost(wspr).then(workspace => {
+    await workspacesApi.workspacePost(wspr).then(workspace => {
       if (workspace && workspace.id) {
         // ToDo: if not workspace or no id raise an error
         props.onLoadWorkspaces();
@@ -135,26 +151,44 @@ export const WorkspaceToolBox = (props: any) => {
   let dialogContent = null;
   if (user === undefined || user === null) {
     dialogContent = <>
-    <DialogContentText id="new-worspace-in-dialog-text" className={classes.dialogContentText}>
-      To create a new workspace you need a Open Source Brain account. If you already have one please sign in, if not create one for free. Workspaces will let you save your own models and data, run simulations and analysis.
-    </DialogContentText>
-    <DialogActions className={classes.dialogButtons}>
-      <Button onClick={handleSignup} className={classes.roundedButton}>
-          Sign Up
-      </Button>
-      <Button onClick={handleUserLogin} autoFocus={true} className={classes.roundedButtonActive}>
-          Sign In
-      </Button>
-    </DialogActions>
+    <Box display="flex" justifyContent="flex-start" m={0} p={0} bgcolor="background.paper">
+      <Box flexGrow={1}>
+        <DialogContentText id="new-worspace-in-dialog-text" className={classes.dialogContentText}>
+          To create a new workspace you need a Open Source Brain account. If you already have one please sign in, if not create one for free. Workspaces will let you save your own models and data, run simulations and analysis.
+        </DialogContentText>
+      </Box>
+      <Box>
+        <DialogActions className={classes.dialogButtons}>
+          <Button onClick={handleSignup} className={classes.roundedButton}>
+              Sign Up
+          </Button>
+          <Button onClick={handleUserLogin} autoFocus={true} className={classes.roundedButtonActive}>
+              Sign In
+          </Button>
+        </DialogActions>
+      </Box>
+    </Box>
     </>
   } else {
     dialogContent = <>
-    <TextField id='standard-basic' label='Name of the workspace' fullWidth={true} className={classes.dialogTextField} inputRef={inputRefNew}  />
-    <DialogActions className={classes.dialogButtons}>
-      <Button onClick={handleCreateWorkspace} className={classes.roundedButton}>
-          Create
-      </Button>
-    </DialogActions>
+    <Box display="flex" justifyContent="flex-start" m={0} p={0} bgcolor="background.paper">
+      <Box flexGrow={1}>
+        <TextField id='standard-basic' label='Name of the workspace' fullWidth={true} className={classes.dialogTextField} onChange={updateWorkspaceForm} />
+      </Box>
+      <Box>
+        <DialogActions className={classes.dialogButtons}>
+          <Button onClick={handleCreateWorkspace} className={classes.roundedButton}>
+              Create
+          </Button>
+        </DialogActions>
+      </Box>
+    </Box>
+    <MdEditor
+      value={workspaceForm.description}
+      style={{ height: "500px" }}
+      renderHTML={renderMarkdown}
+      onChange={updateWorkspaceForm}
+    />
     </>
   }
 
