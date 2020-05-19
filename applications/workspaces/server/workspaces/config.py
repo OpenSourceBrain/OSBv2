@@ -14,7 +14,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, DATABASE_NAME+'.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
     BASE_DIR = os.path.dirname(__file__)
     WWW_DIR = os.path.join(BASE_DIR, "www")
     IMG_DIR = os.path.join(WWW_DIR, "images")

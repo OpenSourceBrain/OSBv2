@@ -45,7 +45,6 @@ class WorkspaceRepository(BaseModelRepository):
         if not workspace.id:
             # in case of a new workspace assign the logged in user as owner
             keycloak_id, keycloak_data = get_keycloak_data()
-            logger.info(f'pre-commit keycloak id {keycloak_id}')
             usr_firstname = keycloak_data.get('given_name', '')
             usr_lastname = keycloak_data.get('family_name', '')
             usr_email = keycloak_data.get('email', '')
