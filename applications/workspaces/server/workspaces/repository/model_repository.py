@@ -23,8 +23,14 @@ class WorkspaceRepository(BaseModelRepository):
         if filter is not None:
             q_base = q_base.filter(*filter)
         if self.keycloak_id != -1:
-            q1 = q_base.filter_by(keycloakuser_id=self.keycloak_id)
-            q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
+            owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
+            if owner:
+                owner_id = owner.id
+            else:
+                # logged in but not known as owner so return no workspaces
+                owner_id = 0
+            q1 = q_base.filter_by(keycloakuser_id=owner_id)
+            q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=owner_id)))
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
@@ -51,6 +57,7 @@ class WorkspaceRepository(BaseModelRepository):
                              email=usr_email
                              )
             workspace.owner = owner
+        return workspace
 
 
 class OSBRepositoryRepository(BaseModelRepository):

@@ -1,6 +1,5 @@
 {
-  "data": {
-    "result": [
+  "items": [
       {
         "id": 1,
         "name": "Ferguson et Al., 2015",
@@ -42,5 +41,4 @@
         "type": 2
       }
     ]
-  }
 }

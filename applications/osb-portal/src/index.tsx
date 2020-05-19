@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 
 import Keycloak from 'keycloak-js';
 import { userLogin } from './store/actions/user';
+import { initApis } from "./middleware/osbbackend";
 
 export const keycloak = Keycloak('/keycloak.json');
 keycloak.init({
@@ -22,6 +23,7 @@ keycloak.init({
         emailAddress: userInfo.email
       }));
   }
+  initApis(keycloak.token);
   ReactDOM.render(
     <Provider store={store}>
       <App />
@@ -29,3 +31,16 @@ keycloak.init({
     document.getElementById('main')
   );
 });
+
+// set token refresh to 5 minutes
+keycloak.onTokenExpired = () => {
+  keycloak.updateToken(5).success((refreshed) => {
+    if (refreshed){
+      initApis(keycloak.token);
+    } else {
+      alert('not refreshed ' + new Date());
+    }
+  }).error(() => {
+    alert('Failed to refresh token '  + new Date());
+  });
+}

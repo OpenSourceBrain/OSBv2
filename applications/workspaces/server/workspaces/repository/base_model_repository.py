@@ -9,7 +9,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
 from open_alchemy import model_factory
 
-
+import logging
+from ..config import Config
+logger = logging.getLogger(Config.LOG_NAME)
 class BaseModelRepository:
     """Generic base class for handling REST API endpoints."""
 
@@ -43,7 +45,8 @@ class BaseModelRepository:
 
     def _pre_commit(self, new_obj):
         if hasattr(self, "pre_commit"):
-            self.pre_commit(new_obj)
+            return self.pre_commit(new_obj)
+        return new_obj
 
     def _get_and_copy_item(self, item):
         item_db = item.query.filter_by(id=item.id).first()
@@ -180,14 +183,17 @@ class BaseModelRepository:
                 setattr(new_obj, fld, default)
         try:
             # trigger post operation
-            self._pre_commit(new_obj)
+            new_obj = self._pre_commit(new_obj)
+            logger.info(f'new obj: {new_obj}')
+            logger.info(f'new obj owner: {new_obj.owner}')
             db.session.add(new_obj)
             db.session.commit()
         except IntegrityError as e:
             return "{}".format(e.orig), 400
         else:
             obj, found = self.get(id=new_obj.id)
-            return obj, 201
+            logger.info(f'found obj: {found}')
+            return new_obj, 201
 
     def get(self, id):
         """Get an object from the repository."""
