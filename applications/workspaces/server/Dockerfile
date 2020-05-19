@@ -6,6 +6,8 @@ RUN apk update
 RUN apk upgrade
 RUN apk add gcc
 RUN apk add libc-dev
+RUN apk add libffi-dev
+RUN apk add openssl-dev
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

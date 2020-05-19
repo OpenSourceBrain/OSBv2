@@ -23,7 +23,6 @@ setup(
     name=NAME,
     version=VERSION,
     description="Workspace Manager API",
-    author_email="mnp@metacell.us",
     url="",
     keywords=["OpenAPI", "Workspace Manager API"],
     install_requires=REQUIRES,
@@ -33,7 +32,7 @@ setup(
     entry_points={
         'console_scripts': ['wsmgr_api=wsmgr_api.__main__:main']},
     long_description="""\
-    MetaCell Cloudharness Platform - Reference Workspace Manager API
+    Opensource Brain Platform - Reference Workspace Manager API
     """
 )
 

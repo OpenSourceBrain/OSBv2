@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 
 import { App as app } from './App'
 import { Workspaces as workspace } from './workspace/Workspaces'
+import { WorkspaceToolBox as workspacetoolbox } from './workspace/WorkspaceToolBox'
 import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './drawer/WorkspaceDrawer'
@@ -42,6 +43,7 @@ const dispatchDrawerProps = {
 }
 
 export const Workspaces = connect(mapWorkspaceStateToProps, dispatchWorkspaceProps)(workspace)
+export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
 export const Banner = connect(mapUserStateToProps)(banner)
 export const Header = connect(mapUserStateToProps, {...dispatchUserProps, ...dispatchDrawerProps})(header)
 export const WorkspaceDrawer = connect(mapDrawerStateToProps, dispatchDrawerProps)(workspacedrawer)

@@ -35,7 +35,7 @@ function createCallAPIMiddleware(
       .then(res =>
         dispatch({
           type: successAction,
-          payload: res.data.result
+          payload: res.items
         })
       )
       .catch(res =>
