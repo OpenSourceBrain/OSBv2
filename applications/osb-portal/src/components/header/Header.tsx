@@ -5,6 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Toolbar, Box, Typography, Button, IconButton } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import SearchIcon from '@material-ui/icons/Search';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { MainMenu } from '../menu/MainMenu';
 
@@ -27,11 +32,25 @@ const useStyles = makeStyles((theme) => ({
   wrapIcon: {
     verticalAlign: 'middle',
     display: 'inline-flex'
+  },
+  paper: {
+    marginRight: theme.spacing(2)
   }
 }));
 
 export const Header = (props: any) => {
   const classes = useStyles();
+
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuAnchorRef = React.useRef(null);
+
+  const handleMenuToggle = () => {
+    setMenuOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleMenuClose = () => {
+    setMenuOpen(false);
+  };
 
   const user = props.user;
   const keycloak = props.keycloak;
@@ -48,13 +67,28 @@ export const Header = (props: any) => {
   const headerText = (user === null)
     ? <Button size="large" onClick={handleUserLogin}>Sign in</Button>
     : <Box alignItems="center" display="flex">
-      <Box>
-        <PersonIcon fontSize="large" onClick={handleUserLogout} />
+      <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
+      <Paper>
+      <ClickAwayListener onClickAway={handleMenuClose}>
+      <MenuList autoFocusItem={menuOpen} id="user-menu">
+        <MenuItem>My account</MenuItem>
+        <MenuItem>Settings</MenuItem>
+        <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+      </MenuList>
+      </ClickAwayListener>
+      </Paper>
+      </Popper>
+      <Button
+        size="large"
+        ref={menuAnchorRef}
+        aria-controls={menuOpen ? 'user-menu' : undefined}
+        aria-haspopup="true"
+        onClick={handleMenuToggle}
+        startIcon={<PersonIcon fontSize="large"/>}
+      >
+        {user.firstName}
+      </Button>
       </Box>
-      <Box>
-        <h4>{user.firstName}</h4>
-      </Box>
-    </Box>
 
   const title = "open source brain"
 
