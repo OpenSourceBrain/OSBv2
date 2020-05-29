@@ -3,11 +3,11 @@ The OSB portal app is the entrypoint of the OSBv2 platform. It serves the portal
 
 ## Get started
 
-### Prerequisites
+## Prerequisites
 
 Cloudharness must be installed.
 
-### Development instructions
+## Development instructions
 
 For developers it is very handy to run the app local instead of in the cluster.
 Locally changes made are directly reflected in the app. Also debugging a local app is easier.
@@ -32,3 +32,14 @@ sudo ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/npm" "/usr/local/bin/npm"
 
 The local webpack dev server uses [keycloak_dev.json](src/assets/keycloak_dev.json) for connecting to the keycloak accounts system.
 Please check this file and change the domain according to your setup.
+
+### Using mock ups
+
+To run the app with mock ups instead of real data set the environment variable USE_MOCKS to true.
+
+```
+sudo USE_MOCKS=true npm run start:dev
+```
+
+This will reroute the proxy /api/workspaces to https://www.osb.local/api-mocks instead of the workspace manager app.
+If you run the dev server on another domain then please change the mock up url (located in the webpack.dev.js)
