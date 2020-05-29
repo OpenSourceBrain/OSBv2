@@ -30,5 +30,5 @@ sudo ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/node" "/usr/local/bin/node
 sudo ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/npm" "/usr/local/bin/npm"
 ```
 
-The local webpack dev server uses [keycloak_dev.json](assets/keycloak_dev.json) for connecting to the keycloak accounts system.
+The local webpack dev server uses [keycloak_dev.json](src/assets/keycloak_dev.json) for connecting to the keycloak accounts system.
 Please check this file and change the domain according to your setup.
