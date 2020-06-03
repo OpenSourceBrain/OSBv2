@@ -48,7 +48,7 @@ const mapErrorStateToProps = (state: RootState) => ({
   error: state.error,
 })
 const dispatchErrorProps = {
-  setError: setError
+  setError
 }
 
 export const Workspaces = connect(mapWorkspaceStateToProps, dispatchWorkspaceProps)(workspace)

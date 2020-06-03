@@ -34,7 +34,7 @@ export const ErrorDialog = (props: any) => {
         <Button onClick={handleReport} color="primary">
           Report
         </Button>
-        <Button onClick={handleClose} color="primary" autoFocus>
+        <Button onClick={handleClose} color="primary" autoFocus={true}>
           Close
         </Button>
       </DialogActions>

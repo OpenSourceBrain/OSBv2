@@ -10,7 +10,7 @@ import { userLogin } from './store/actions/user';
 import { initApis } from "./middleware/osbbackend";
 
 import { CONFIGURATION } from "./config";
-let Sentry = require("@sentry/browser");
+import Sentry from "@sentry/browser";
 const sentryDSN = CONFIGURATION.sentryDSN;
 Sentry.init({dsn: sentryDSN});
 
@@ -29,12 +29,6 @@ keycloak.init({
       }));
   }
   initApis(keycloak.token);
-  // ReactDOM.render(
-  //   <Provider store={store}>
-  //     <App />
-  //   </Provider>,
-  //   document.getElementById('main')
-  // );
 });
 
 // set token refresh to 5 minutes

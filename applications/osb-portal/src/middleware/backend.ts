@@ -19,9 +19,9 @@ export type CallApiAction = {
 /**
  * @private
  */
-function createCallAPIMiddleware(
+const createCallAPIMiddleware = (
   fetchFn: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) {
+) => {
   const callAPIMiddlewareFn: Middleware<Dispatch> = ({
     dispatch
   }: MiddlewareAPI) => next => (action: AnyAction | CallApiAction) => {
@@ -32,7 +32,7 @@ function createCallAPIMiddleware(
     const { successAction, errorAction, url, params } = action.payload;
 
     const r = fetchFn(url, params)
-      .then(function(res) {
+      .then(res => {
         if (!res.ok) {
             throw Error(res.statusText);
         }
