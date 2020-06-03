@@ -21,6 +21,7 @@ steps:
       stage: prepare
       repo: https://github.com/MetaCell/cloud-harness.git
       revision: ${{CLOUDHARNESS_BRANCH}}
+      working_directory: .
       git: github
   build_base_images:
     title: Build base images
@@ -31,26 +32,26 @@ steps:
         type: build
         stage: build
         tag: ${{CF_REVISION}}
-        dockerfile: cloud-harness/infrastructure/base-images/cloudharness-base-debian/Dockerfile
+        dockerfile: infrastructure/base-images/cloudharness-base-debian/Dockerfile
         when:
           branch:
             only:
             - ${{CF_BRANCH}}
         image_name: cloudharness-base-debian
         title: Cloudharness base debian
-        working_directory: ./.
+        working_directory: ./cloud-harness
       cloudharness-base:
         type: build
         stage: build
         tag: ${{CF_REVISION}}
-        dockerfile: cloud-harness/infrastructure/base-images/cloudharness-base/Dockerfile
+        dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
         when:
           branch:
             only:
             - ${{CF_BRANCH}}
         image_name: cloudharness-base
         title: Cloudharness base
-        working_directory: ./.
+        working_directory: ./cloud-harness
   build_application_images:
     type: parallel
     stage: build
