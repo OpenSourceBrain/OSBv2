@@ -54,7 +54,7 @@ steps:
       - 'helm template ./deployment/helm --debug -n ${{NAME}}'
     environment:
       - ACTION=auth
-      - KUBE_CONTEXT=${{NAME}}
+      - KUBE_CONTEXT=${{CLUSTER_NAME}}
     image: codefresh/cfstep-helm:2.16.1
     stage: prepare
     title: 'View helm chart'
@@ -65,8 +65,8 @@ steps:
     title: Installing chart
     environment:
       - CHART_REF=./deployment/helm
-      - RELEASE_NAME=${{NAME}}
-      - KUBE_CONTEXT=${{NAME}}
+      - RELEASE_NAME=${{NAMESPACE}}
+      - KUBE_CONTEXT=${{CLUSTER_NAME}}
       - NAMESPACE=${{NAMESPACE}}
       - TILLER_NAMESPACE=kube-system
       - CHART_VERSION=0.0.1
