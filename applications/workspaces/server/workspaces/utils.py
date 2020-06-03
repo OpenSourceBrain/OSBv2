@@ -48,6 +48,4 @@ def _decode_token(token):
 
     decoded = jwt.decode(token, KEY, algorithms='RS256', audience='account')
 
-    valid = 'offline_access' in decoded['realm_access']['roles']
-    current_app.logger.debug(valid)
     return decoded
