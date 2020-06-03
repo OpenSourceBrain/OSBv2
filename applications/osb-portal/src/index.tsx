@@ -9,6 +9,10 @@ import Keycloak from 'keycloak-js';
 import { userLogin } from './store/actions/user';
 import { initApis } from "./middleware/osbbackend";
 
+import { CONFIGURATION } from "./config";
+//let Sentry = require("@sentry/browser");
+//Sentry.init({ dsn: CONFIGURATION.sentryDSN });
+
 export const keycloak = Keycloak('/keycloak.json');
 keycloak.init({
   onLoad: 'check-sso',

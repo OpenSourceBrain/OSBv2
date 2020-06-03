@@ -38,11 +38,13 @@ function createCallAPIMiddleware(
           payload: res.items
         })
       )
-      .catch(res =>
-        dispatch({
-          type: errorAction,
-          payload: res
-        })
+      .catch(res => {
+          dispatch({
+            type: errorAction,
+            payload: res
+          });
+          throw new Error('fetch middle error: '+ res);
+        }
       );
   };
 
