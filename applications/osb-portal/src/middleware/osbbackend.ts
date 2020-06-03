@@ -17,7 +17,7 @@ export type CallOSBApiAction = {
   };
 };
 
-const workspacesApiUri = '/api/workspaces/api_error_endpoint';
+const workspacesApiUri = '/api/workspaces/api';
 export let workspacesApi: RestApi = null;
 export const initApis = (token: string) => {
   workspacesApi =  new workspaceApi.RestApi(new Configuration({basePath: workspacesApiUri, accessToken: token}));
