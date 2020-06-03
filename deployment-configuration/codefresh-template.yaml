@@ -47,7 +47,7 @@ steps:
     stage: prepare
     working_directory: .
     commands:
-      - pip install -r cloud-harness/requirements.txt
+      - pip install cloud-harness/utilities
       - harness-deployment . cloud-harness -t ${{CF_REVISION}} -d ${{DOMAIN}}
 
   prepare_deployment_view:
