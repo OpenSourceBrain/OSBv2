@@ -10,8 +10,9 @@ import { userLogin } from './store/actions/user';
 import { initApis } from "./middleware/osbbackend";
 
 import { CONFIGURATION } from "./config";
-//let Sentry = require("@sentry/browser");
-//Sentry.init({ dsn: CONFIGURATION.sentryDSN });
+let Sentry = require("@sentry/browser");
+const sentryDSN = CONFIGURATION.sentryDSN;
+Sentry.init({dsn: sentryDSN});
 
 export const keycloak = Keycloak('/keycloak.json');
 keycloak.init({

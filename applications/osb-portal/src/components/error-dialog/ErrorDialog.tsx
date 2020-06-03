@@ -7,21 +7,21 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as Sentry from '@sentry/browser';
 
-const ErrorDialog = ({ errors, onClearErrors }) => {
+export const ErrorDialog = (props: any) => {
   const handleClose = () => {
-    onClearErrors();
+    props.setError(null);
   };
 
   const handleReport = () => {
-    errors.map((value, index) => Sentry.captureException(new Error(value)));
-    onClearErrors();
+    Sentry.captureException(new Error(props.error));
+    handleClose();
   };
 
-  if (errors.length > 0){
-    const alerts = errors.map((value, index) => <Alert severity="error" key={index}><div className="errorAlertDiv" key={"div-" + index} dangerouslySetInnerHTML={{ __html: value }} /></Alert>);
+  if (props.error !== null){
+    const alerts = <Alert severity="error" key={1}><div className="errorAlertDiv" key={"div-1"} dangerouslySetInnerHTML={{ __html: props.error }} /></Alert>;
 
     return (<Dialog
-      open={errors.length > 0}
+      open={props.error !== null}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
@@ -41,7 +41,5 @@ const ErrorDialog = ({ errors, onClearErrors }) => {
     </Dialog>);
   }
 
-  return "";
+  return <div />;
 };
-
-export default ErrorDialog;

@@ -8,7 +8,7 @@ import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
 
 import { Latest } from "./latest/Latest";
 
-import { Header, Banner, WorkspaceDrawer, Workspaces, WorkspaceToolBox } from "./index";
+import { Header, Banner, WorkspaceDrawer, Workspaces, WorkspaceToolBox, ErrorDialog } from "./index";
 
 const grey = "#434343";
 const black = "#111111";
@@ -33,6 +33,7 @@ export const App = (props: any) => {
     <SentryErrorBoundary>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <ErrorDialog />
         <Header />
         <WorkspaceDrawer />
         <Banner />

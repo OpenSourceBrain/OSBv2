@@ -1,3 +1,3 @@
 export const CONFIGURATION = {
-    "sentryDSN": "https://81d007aa741d46ada0741f1a4f1cfd1c@sentry.io/2069800",
+    "sentryDSN": "https://52652e4ed7b248cc90fc4ec469196f9d@o345271.ingest.sentry.io/5263112",
 };

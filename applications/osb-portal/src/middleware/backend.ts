@@ -1,4 +1,5 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
 export type CallApiPayload = {
   successAction: string;
@@ -30,7 +31,13 @@ function createCallAPIMiddleware(
 
     const { successAction, errorAction, url, params } = action.payload;
 
-    return fetchFn(url, params)
+    const r = fetchFn(url, params)
+      .then(function(res) {
+        if (!res.ok) {
+            throw Error(res.statusText);
+        }
+        return res;
+      })
       .then(res => res.json())
       .then(res =>
         dispatch({
@@ -41,11 +48,11 @@ function createCallAPIMiddleware(
       .catch(res => {
           dispatch({
             type: errorAction,
-            payload: res
+            payload: res.message + ' : ' + url
           });
-          throw new Error('fetch middle error: '+ res);
         }
       );
+    return r;
   };
 
   return callAPIMiddlewareFn;
