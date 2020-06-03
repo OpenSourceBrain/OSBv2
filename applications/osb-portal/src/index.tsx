@@ -29,12 +29,12 @@ keycloak.init({
       }));
   }
   initApis(keycloak.token);
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('main')
-  );
+  // ReactDOM.render(
+  //   <Provider store={store}>
+  //     <App />
+  //   </Provider>,
+  //   document.getElementById('main')
+  // );
 });
 
 // set token refresh to 5 minutes
@@ -49,3 +49,10 @@ keycloak.onTokenExpired = () => {
     alert('Failed to refresh token '  + new Date());
   });
 }
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('main')
+);
