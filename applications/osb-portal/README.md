@@ -36,7 +36,9 @@ Please check this file and change the domain according to your setup.
 ### Self Signed Certificates
 
 When running on a local minikube please make sure you import the generated cacert certificates. The certificate file is most likely to be found here ./deployment/helm/resources/certs/cacert.crt
+
 For Google Chrome: [manage certificates](chrome://settings/certificates?search=manage+certificate)
+
 Select Authorities
 and import the cacert
 
