@@ -1,8 +1,8 @@
 version: '1.0'
 stages:
-- prepare
-- build
-- deploy
+  - prepare
+  - build
+  - deploy
 steps:
   main_clone:
     title: Clone main repository
@@ -62,14 +62,13 @@ steps:
 
   deployment:
     stage: deploy
-    image: ${{DEPLOY_IMAGE}}
+    image: codefresh/cfstep-helm:3.0.3
     title: Installing chart
     environment:
       - CHART_REF=./deployment/helm
       - RELEASE_NAME=${{NAMESPACE}}
       - KUBE_CONTEXT=${{CLUSTER_NAME}}
       - NAMESPACE=${{NAMESPACE}}
-      - TILLER_NAMESPACE=kube-system
       - CHART_VERSION=0.0.1
       - HELM_REPO_USE_HTTP=false
       - HELM_REPO_CONTEXT_PATH=

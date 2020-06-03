@@ -39,6 +39,22 @@ To manually create the helm chart to use on any Kubernetes deployment, run:
 ```
 harness-deployment cloud-harness . 
 ```
+### Cluster setup
+The cert-manager must be installed in order to use letsencrypt generated certificates
+
+To check if cert-manager is installed, run:
+```
+kubectl get pods -n cert-manager
+```
+If cert manager is installed, the command will return 3 lines.
+
+To install the cert manager on a new cluster, run:
+```
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager-legacy.yaml
+```
+
+See also https://cert-manager.io/docs/installation/kubernetes/.
+
 
 ### Install and upgrade with Helm
 
