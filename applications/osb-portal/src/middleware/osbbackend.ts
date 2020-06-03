@@ -44,7 +44,7 @@ const fetchNWBFilesAction = (): CallApiAction => {
   return ({
     type: 'api/fetchNWBFiles',
     payload: {
-      url: '/api-mocks/nwbfiles',
+      url: '/api-mocks/api/nwbfiles',
       successAction: loadNWBFilesActionType,
       errorAction: 'ERROR'
     },
@@ -58,7 +58,7 @@ const fetchModelsAction = (): CallApiAction => {
   return ({
     type: 'api/fetchModels',
     payload: {
-      url: '/api-mocks/models',
+      url: '/api-mocks/api/models',
       successAction: loadModelsActionType,
       errorAction: 'ERROR'
     },
