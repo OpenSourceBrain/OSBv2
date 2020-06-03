@@ -205,7 +205,7 @@ steps:
         working_directory: ./cloud-harness/applications/jupyterhub
   deployment:
     stage: deploy
-    image: codefresh/cfstep-helm:2.16.1
+    image: ${{DEPLOY_IMAGE}}
     title: Installing chart
     environment:
     - CHART_REF=./deployment/helm
