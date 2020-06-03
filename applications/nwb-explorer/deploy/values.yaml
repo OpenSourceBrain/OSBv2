@@ -4,3 +4,5 @@ harness:
     auto: false
     port: 80
     name: proxy-public
+  jupyterhub:
+    args: ["--debug", "--port=8000", "--NotebookApp.default_url=/geppetto", "--library=nwb_explorer"]
