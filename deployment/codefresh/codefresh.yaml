@@ -55,6 +55,18 @@ steps:
     type: parallel
     stage: build
     steps:
+      workspaces:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: workspaces
+        title: Workspaces
+        working_directory: ./applications/workspaces/server
       osb-portal:
         type: build
         stage: build
@@ -67,6 +79,18 @@ steps:
         image_name: osb-portal
         title: Osb portal
         working_directory: ./applications/osb-portal
+      nwb-explorer:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: nwb-explorer
+        title: Nwb explorer
+        working_directory: ./applications/nwb-explorer
       workflows:
         type: build
         stage: build
@@ -163,6 +187,18 @@ steps:
         image_name: accounts
         title: Accounts
         working_directory: ./cloud-harness/applications/accounts
+      jupyterhub:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        when:
+          branch:
+            only:
+            - ${{CF_BRANCH}}
+        image_name: jupyterhub
+        title: Jupyterhub
+        working_directory: ./cloud-harness/applications/jupyterhub
   prepare_deployment:
     title: Prepare helm chart
     image: python:3.7
@@ -176,7 +212,7 @@ steps:
     - helm template ./deployment/helm --debug -n ${{NAME}}
     environment:
     - ACTION=auth
-    - KUBE_CONTEXT=${{NAME}}
+    - KUBE_CONTEXT=${{CLUSTER_NAME}}
     image: codefresh/cfstep-helm:2.16.1
     stage: prepare
     title: View helm chart
@@ -186,8 +222,8 @@ steps:
     title: Installing chart
     environment:
     - CHART_REF=./deployment/helm
-    - RELEASE_NAME=${{NAME}}
-    - KUBE_CONTEXT=${{NAME}}
+    - RELEASE_NAME=${{NAMESPACE}}
+    - KUBE_CONTEXT=${{CLUSTER_NAME}}
     - NAMESPACE=${{NAMESPACE}}
     - TILLER_NAMESPACE=kube-system
     - CHART_VERSION=0.0.1
