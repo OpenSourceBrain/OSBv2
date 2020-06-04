@@ -2,6 +2,7 @@ import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/actions/workspaces'
 import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/actions/nwbfiles'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
+import { setError } from '../store/actions/error'
 import { CallApiAction } from './backend';
 import { keycloak } from '../index';
 
@@ -30,7 +31,7 @@ const fetchWorkspacesAction = (): CallApiAction => {
     payload: {
       url: workspacesApiUri + '/workspace?page=1&per_page=2000',
       successAction: loadWorkspacesActionType,
-      errorAction: 'ERROR',
+      errorAction: setError.toString(),
       params: {
         headers: {'Authorization': 'Bearer ' + keycloak.token}}
     },
@@ -46,7 +47,7 @@ const fetchNWBFilesAction = (): CallApiAction => {
     payload: {
       url: '/api-mocks/api/nwbfiles',
       successAction: loadNWBFilesActionType,
-      errorAction: 'ERROR'
+      errorAction: setError.toString()
     },
     meta: {
       callApi: true
@@ -60,7 +61,7 @@ const fetchModelsAction = (): CallApiAction => {
     payload: {
       url: '/api-mocks/api/models',
       successAction: loadModelsActionType,
-      errorAction: 'ERROR'
+      errorAction: setError.toString()
     },
     meta: {
       callApi: true

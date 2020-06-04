@@ -1,4 +1,5 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
 export type CallApiPayload = {
   successAction: string;
@@ -18,9 +19,9 @@ export type CallApiAction = {
 /**
  * @private
  */
-function createCallAPIMiddleware(
+const createCallAPIMiddleware = (
   fetchFn: (input: RequestInfo, init?: RequestInit) => Promise<Response>
-) {
+) => {
   const callAPIMiddlewareFn: Middleware<Dispatch> = ({
     dispatch
   }: MiddlewareAPI) => next => (action: AnyAction | CallApiAction) => {
@@ -30,7 +31,13 @@ function createCallAPIMiddleware(
 
     const { successAction, errorAction, url, params } = action.payload;
 
-    return fetchFn(url, params)
+    const r = fetchFn(url, params)
+      .then(res => {
+        if (!res.ok) {
+            throw Error(res.statusText);
+        }
+        return res;
+      })
       .then(res => res.json())
       .then(res =>
         dispatch({
@@ -38,12 +45,14 @@ function createCallAPIMiddleware(
           payload: res.items
         })
       )
-      .catch(res =>
-        dispatch({
-          type: errorAction,
-          payload: res
-        })
+      .catch(res => {
+          dispatch({
+            type: errorAction,
+            payload: res.message + ' : ' + url
+          });
+        }
       );
+    return r;
   };
 
   return callAPIMiddlewareFn;
