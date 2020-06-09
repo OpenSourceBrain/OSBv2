@@ -30,7 +30,8 @@ steps:
     working_directory: .
     commands:
     - pip install cloud-harness/utilities
-    - harness-deployment . cloud-harness -t ${{CF_REVISION}} -d ${{DOMAIN}}
+    - harness-deployment . cloud-harness -t ${{CF_REVISION}} -d ${{DOMAIN}} -r ${{REGISTRY}}
+      -rs ${{REGISTRY_SECRET}}
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAME}}
