@@ -3,6 +3,7 @@ import configureStore from './configureStore'
 
 const initialState: RootState = {
   drawer: false,
+  error: null,
   user: null,
   workspaces: null,
   models: null,

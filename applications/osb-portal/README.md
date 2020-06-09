@@ -33,6 +33,15 @@ sudo ln -s "$NVM_DIR/versions/node/$(nvm version)/bin/npm" "/usr/local/bin/npm"
 The local webpack dev server uses [keycloak_dev.json](src/assets/keycloak_dev.json) for connecting to the keycloak accounts system.
 Please check this file and change the domain according to your setup.
 
+### Self Signed Certificates
+
+When running on a local minikube please make sure you import the generated cacert certificates. The certificate file is most likely to be found here ./deployment/helm/resources/certs/cacert.crt
+
+For Google Chrome: [manage certificates](chrome://settings/certificates?search=manage+certificate)
+
+Select Authorities
+and import the cacert
+
 ### Using mock ups
 
 To run the app with mock ups instead of real data set the environment variable USE_MOCKS to true.

@@ -22,7 +22,7 @@ module.exports = merge({
     publicPath: '/',
     filename: path.join('js', 'bundle.js'),
     compress: true,
-    https: true,
+    https: false,
     disableHostCheck: true,
     proxy : [
       {
@@ -33,7 +33,7 @@ module.exports = merge({
         pathRewrite: {'^/api/workspaces' : ''}
       },
     ],
-    port: 443
+    port: 80
   },
 
   plugins: [
