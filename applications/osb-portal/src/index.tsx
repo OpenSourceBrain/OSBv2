@@ -10,7 +10,8 @@ import { userLogin } from './store/actions/user';
 import { initApis } from "./middleware/osbbackend";
 
 import { CONFIGURATION } from "./config";
-import Sentry from "@sentry/browser";
+import * as Sentry from '@sentry/browser';
+
 const sentryDSN = CONFIGURATION.sentryDSN;
 Sentry.init({dsn: sentryDSN});
 
