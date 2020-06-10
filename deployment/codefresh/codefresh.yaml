@@ -54,7 +54,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: cloudharness-base-debian
         title: Cloudharness base debian
         working_directory: ./cloud-harness
@@ -66,7 +67,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: cloudharness-base
         title: Cloudharness base
         working_directory: ./cloud-harness
@@ -82,7 +84,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: workspaces
         title: Workspaces
         working_directory: ./applications/workspaces/server
@@ -94,7 +97,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: osb-portal
         title: Osb portal
         working_directory: ./applications/osb-portal
@@ -106,7 +110,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: nwb-explorer
         title: Nwb explorer
         working_directory: ./applications/nwb-explorer
@@ -118,7 +123,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: workflows
         title: Workflows
         working_directory: ./cloud-harness/applications/workflows/src
@@ -130,7 +136,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: workflows-extract-s3
         title: Workflows extract s3
         working_directory: ./cloud-harness/applications/workflows/tasks/extract-s3
@@ -142,7 +149,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: workflows-print-file
         title: Workflows print file
         working_directory: ./cloud-harness/applications/workflows/tasks/print-file
@@ -154,7 +162,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: workflows-extract-download
         title: Workflows extract download
         working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
@@ -166,7 +175,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: workflows-send-result-event
         title: Workflows send result event
         working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
@@ -178,7 +188,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: samples
         title: Samples
         working_directory: ./cloud-harness/applications/samples/src
@@ -190,7 +201,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: samples-sum
         title: Samples sum
         working_directory: ./cloud-harness/applications/samples/tasks/sum
@@ -202,7 +214,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: accounts
         title: Accounts
         working_directory: ./cloud-harness/applications/accounts
@@ -214,7 +227,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
-        registry: GCRegistry
+        registry: GCRPublic
+        no_cf_cache: ${DISABLE_CACHE}
         image_name: jupyterhub
         title: Jupyterhub
         working_directory: ./cloud-harness/applications/jupyterhub

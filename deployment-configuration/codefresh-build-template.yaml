@@ -1,1 +1,2 @@
-registry: GCRegistry
+registry: GCRPublic
+no_cf_cache: ${DISABLE_CACHE}
