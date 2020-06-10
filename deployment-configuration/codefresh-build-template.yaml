@@ -1,2 +1,2 @@
 registry: ${{CODEFRESH_REGISTRY}}
-no_cf_cache: ${{DISABLE_CACHE}}
+no_cf_cache: false
