@@ -1,2 +1,2 @@
 registry: GCRPublic
-no_cf_cache: ${DISABLE_CACHE}
+no_cf_cache: ${{DISABLE_CACHE}}
