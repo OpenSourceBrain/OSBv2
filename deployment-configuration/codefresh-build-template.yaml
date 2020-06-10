@@ -1,2 +1,2 @@
-registry: GCRPublic
+registry: ${{CODEFRESH_REGISTRY}}
 no_cf_cache: ${{DISABLE_CACHE}}
