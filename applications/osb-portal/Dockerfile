@@ -3,8 +3,7 @@ ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
 COPY package-lock.json ${BUILDDIR}/package-lock.json
-ENV CH_ACCOUNTS_AUTH_DOMAIN=https://accounts.osb.local/auth/
-ENV CH_ACCOUNTS_AUTH_REALM=osb2
+
 WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
