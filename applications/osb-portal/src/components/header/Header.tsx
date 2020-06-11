@@ -90,7 +90,7 @@ export const Header = (props: any) => {
       </Button>
       </Box>
 
-  const title = "open source brain"
+  const title = "Open Source Brain"
 
   return (
     <React.Fragment>
