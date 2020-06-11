@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "webpack-dev-server --progress --config webpack.dev.js",
     "prebuild": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "build": "webpack --mode=production --config webpack.prod.js",
+    "build": "webpack --mode=production --config webpack.prod.js --devtool source-map",
     "prebuild-dev": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "build-dev": "webpack --mode=development --devtool eval --config webpack.dev.js",
     "prebuild-dev-noTest": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
