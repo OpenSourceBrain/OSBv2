@@ -12,8 +12,12 @@ import { initApis } from "./middleware/osbbackend";
 import { CONFIGURATION } from "./config";
 import * as Sentry from '@sentry/browser';
 
-const sentryDSN = CONFIGURATION.sentryDSN;
-Sentry.init({dsn: sentryDSN});
+const appName = CONFIGURATION.appName;
+const commonUrl = window.location.href.replace('www', 'common') + 'api/sentry/getdsn/' + appName;
+fetch(commonUrl)
+  .then(response => response.json())
+  .then(sentryDSN => Sentry.init({dsn: sentryDSN}));
+
 
 export const keycloak = Keycloak('/keycloak.json');
 keycloak.init({
