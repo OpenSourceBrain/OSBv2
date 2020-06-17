@@ -21,9 +21,10 @@ class Config(object):
     OPENAPI_DIR = os.path.join(BASE_DIR, "openapi")
     OPENAPI_FILE = "openapi.yaml"
     LOG_LEVEL = logging.INFO
-    LOG_NAME = "workspaces"
+    APP_NAME = "workspaces"
     WSMGR_HOSTNAME = socket.gethostname()
     WSMGR_IPADDRESS = socket.gethostbyname(WSMGR_HOSTNAME)
+
 
     DEBUG = False
 

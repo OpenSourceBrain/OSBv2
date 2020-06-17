@@ -11,7 +11,7 @@ from open_alchemy import model_factory
 
 import logging
 from ..config import Config
-logger = logging.getLogger(Config.LOG_NAME)
+logger = logging.getLogger(Config.APP_NAME)
 class BaseModelRepository:
     """Generic base class for handling REST API endpoints."""
 

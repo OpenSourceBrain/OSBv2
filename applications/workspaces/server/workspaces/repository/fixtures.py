@@ -7,7 +7,7 @@ from .database import db
 from open_alchemy.models import User, Workspace, WorkspaceResource, VolumeStorage
 from sqlalchemy.sql import func
 
-logger = logging.getLogger(Config.LOG_NAME)
+logger = logging.getLogger(Config.APP_NAME)
 
 
 def insert_base_fixtures(app):
