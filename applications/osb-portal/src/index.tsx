@@ -16,7 +16,7 @@ const appName = CONFIGURATION.appName;
 const commonUrl = window.location.href.replace('www', 'common') + 'api/sentry/getdsn/' + appName;
 fetch(commonUrl)
   .then(response => response.json())
-  .then(sentryDSN => Sentry.init({dsn: sentryDSN}));
+  .then(sentryDSN => Sentry.init({dsn: sentryDSN.dsn}));
 
 
 export const keycloak = Keycloak('/keycloak.json');
