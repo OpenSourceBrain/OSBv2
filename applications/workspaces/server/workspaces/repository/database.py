@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from ..config import Config
 from open_alchemy import init_yaml
 
-logger = logging.getLogger(Config.LOG_NAME)
+logger = logging.getLogger(Config.APP_NAME)
 
 # Construct models
 db = SQLAlchemy()

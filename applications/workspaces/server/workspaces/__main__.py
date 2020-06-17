@@ -5,10 +5,13 @@ import logging
 
 from flask import send_from_directory, request
 from flask_cors import CORS
+
+import cloudharness
+
 from .config import Config
 from .repository.database import db, setup_db
 
-logger = logging.getLogger(Config.LOG_NAME)
+logger = logging.getLogger(Config.APP_NAME)
 
 
 def setup_logging():
@@ -32,7 +35,7 @@ def setup_static_router():
                      view_func=app.send_static_file)
 
 
-connexion_app = connexion.App(__name__, specification_dir=Config.OPENAPI_DIR)
+connexion_app = connexion.App(Config.APP_NAME, specification_dir=Config.OPENAPI_DIR)
 app = connexion_app.app
 app.config.from_object(Config)
 setup_static_router()
@@ -41,6 +44,7 @@ db.init_app(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 with app.app_context():
+    cloudharness.init(Config.APP_NAME)
     setup_logging()
     setup_db(app)
     connexion_app.add_api(Config.OPENAPI_FILE,

@@ -12,7 +12,7 @@ from .database import db
 from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage
 
 
-logger = logging.getLogger(Config.LOG_NAME)
+logger = logging.getLogger(Config.APP_NAME)
 
 class WorkspaceRepository(BaseModelRepository):
     model = Workspace

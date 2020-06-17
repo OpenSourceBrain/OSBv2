@@ -3,10 +3,11 @@ ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
 COPY package-lock.json ${BUILDDIR}/package-lock.json
+
 WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
-RUN npm run build-dev
+RUN npm run build
 ###
 FROM nginx:1.17-alpine
 ENV BUILDDIR=/builddir

@@ -36,10 +36,6 @@ module.exports = merge({
     port: 80
   },
 
-  plugins: [
-    new CopyPlugin([
-        { from: './src/assets/keycloak_dev.json', to: contentbase + '/keycloak.json' },
-    ]),
-  ],
+
 
 }, common);
