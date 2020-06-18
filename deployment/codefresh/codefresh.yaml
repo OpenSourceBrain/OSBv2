@@ -127,7 +127,7 @@ steps:
         no_cf_cache: false
         image_name: workflows
         title: Workflows
-        working_directory: ./cloud-harness/applications/workflows/src
+        working_directory: ./cloud-harness/applications/workflows/server
       workflows-extract-s3:
         type: build
         stage: build
@@ -180,6 +180,19 @@ steps:
         image_name: workflows-send-result-event
         title: Workflows send result event
         working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
+      common:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: common
+        title: Common
+        working_directory: ./cloud-harness/applications/common
       samples:
         type: build
         stage: build
@@ -192,7 +205,7 @@ steps:
         no_cf_cache: false
         image_name: samples
         title: Samples
-        working_directory: ./cloud-harness/applications/samples/src
+        working_directory: ./cloud-harness/applications/samples/server
       samples-sum:
         type: build
         stage: build
@@ -206,6 +219,19 @@ steps:
         image_name: samples-sum
         title: Samples sum
         working_directory: ./cloud-harness/applications/samples/tasks/sum
+      sentry:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: sentry
+        title: Sentry
+        working_directory: ./cloud-harness/applications/sentry
       accounts:
         type: build
         stage: build
