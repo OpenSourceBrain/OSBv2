@@ -7,3 +7,4 @@ harness:
     auto: true
     port: 80
     name: portal
+  sentry: true

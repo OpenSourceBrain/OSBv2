@@ -127,7 +127,7 @@ steps:
         no_cf_cache: false
         image_name: workflows
         title: Workflows
-        working_directory: ./cloud-harness/applications/workflows/src
+        working_directory: ./cloud-harness/applications/workflows/server
       workflows-extract-s3:
         type: build
         stage: build
@@ -205,7 +205,7 @@ steps:
         no_cf_cache: false
         image_name: samples
         title: Samples
-        working_directory: ./cloud-harness/applications/samples/src
+        working_directory: ./cloud-harness/applications/samples/server
       samples-sum:
         type: build
         stage: build

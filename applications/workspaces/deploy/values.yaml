@@ -1,7 +1,11 @@
-name: workspaces
-subdomain: workspaces
-port: 8080
-secureme: false
-sentry: true
-autoservice: true
-autodeploy: true
+harness:
+  name: workspaces
+  service:
+     subdomain: workspaces
+     port: 8080
+     auto: true
+  secured: false
+  sentry: true
+  deployment:
+    auto: true
+    port: 8080

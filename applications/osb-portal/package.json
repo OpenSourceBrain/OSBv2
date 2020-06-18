@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@material-ui/lab": "^4.0.0-alpha.55",
-    "@sentry/browser": "^5.16.0",
+    "@sentry/browser": "^5.17.0",
     "@types/markdown-it": "^10.0.1",
     "keycloak-js": "^10.0.2",
     "markdown-it": "^10.0.0",
