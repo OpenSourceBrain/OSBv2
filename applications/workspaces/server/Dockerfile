@@ -22,6 +22,8 @@ COPY . /usr/src/app
 EXPOSE 8080
 
 ENV FLASK_ENV=development
+# Todo: switch to production
+# ENV FLASK_ENV=production
 
 ENTRYPOINT ["python3"]
 
