@@ -1,9 +1,9 @@
 harness:
-  name: workspaces
+  subdomain: workspaces
   service:
-     subdomain: workspaces
      port: 8080
      auto: true
+     name: workspaces
   secured: false
   sentry: true
   deployment:
