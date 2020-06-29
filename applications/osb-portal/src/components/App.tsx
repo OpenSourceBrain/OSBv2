@@ -10,7 +10,7 @@ import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
 
 import { Latest } from "./latest/Latest";
 
-import { Header, Banner, WorkspaceDrawer, Workspaces, WorkspaceToolBox, ErrorDialog, NWBExplorerFrame } from "./index";
+import { Header, Banner, WorkspaceDrawer, Workspaces, WorkspaceToolBox, ErrorDialog, WorkspaceFrame } from "./index";
 import { MainMenu } from "./menu/MainMenu";
 
 const grey = "#434343";
@@ -41,10 +41,11 @@ export const App = (props: any) => {
         <Router>
           <Route exact={true} path="/workspace/:id">
             <WorkspaceDrawer>
-              <NWBExplorerFrame />
+              <WorkspaceFrame/>
             </WorkspaceDrawer>
           </Route>
           <Route exact={true} path="/">
+            <MainMenu />
             <Banner />
             <Grid container={true}>
               <Grid item={true} xs={6}>
@@ -57,17 +58,6 @@ export const App = (props: any) => {
             <Workspaces />
           </Route>
         </Router>
-        <MainMenu />
-        <Banner />
-        <Grid container={true}>
-          <Grid item={true} xs={6}>
-            <WorkspaceToolBox />
-          </Grid>
-          <Grid item={true} xs={6}>
-            <Latest />
-          </Grid>
-        </Grid>
-        <Workspaces />
       </ThemeProvider>
     </SentryErrorBoundary>
   );
