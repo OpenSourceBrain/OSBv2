@@ -9,6 +9,8 @@ import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
 import { Latest } from "./latest/Latest";
 
 import { Header, Banner, WorkspaceDrawer, Workspaces, WorkspaceToolBox, ErrorDialog } from "./index";
+import { MainMenu } from "./menu/MainMenu";
+
 
 const grey = "#434343";
 const black = "#111111";
@@ -35,7 +37,7 @@ export const App = (props: any) => {
         <CssBaseline />
         <ErrorDialog />
         <Header />
-        <WorkspaceDrawer />
+        <MainMenu />
         <Banner />
         <Grid container={true}>
           <Grid item={true} xs={6}>

@@ -113,7 +113,6 @@ export const Header = (props: any) => {
         </IconButton>
         {headerText}
       </Toolbar>
-      <MainMenu />
     </React.Fragment>
   )
 }
