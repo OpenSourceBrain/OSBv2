@@ -17,8 +17,8 @@ export const WorkspaceFrame = (props: any) => {
 
     const domain = window.location.host.split('.').slice(1).join('.');  // remove the first part of the hostname
 
-    const workspaceParam = 'workspace=${encodeURIComponent(id)}';
-    const userParam = (user == null) ? '' : '&user=${encodeURIComponent(user.id)}';
+    const workspaceParam = `workspace=${encodeURIComponent(id)}`;
+    const userParam = (user == null) ? '' : `&user=${encodeURIComponent(user.id)}`;
 
     const application = 'nwbexplorer';
     const frameUrl = `//${application}.${domain}?${workspaceParam}${userParam}`;
