@@ -68,7 +68,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
         >
           {props.title}
         </Button>
-        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper}>
+        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper} placement='bottom-start'>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}

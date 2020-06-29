@@ -34,7 +34,7 @@ module.exports = merge({
         pathRewrite: {'^/api/workspaces' : ''}
       },
     ],
-    port: 80
+    port: 8080
   },
 
 
