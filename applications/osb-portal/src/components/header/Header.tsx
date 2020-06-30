@@ -96,7 +96,7 @@ export const Header = (props: any) => {
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <IconButton onClick={handleToggleDrawer}>
-          <img src="./images/osb-logo.png" alt={title} height="25" width="25" />
+          <img src="/images/osb-logo.png" alt={title} height="25" width="25" />
         </IconButton>
         <Typography
           component="h2"
@@ -113,7 +113,6 @@ export const Header = (props: any) => {
         </IconButton>
         {headerText}
       </Toolbar>
-      <MainMenu />
     </React.Fragment>
   )
 }

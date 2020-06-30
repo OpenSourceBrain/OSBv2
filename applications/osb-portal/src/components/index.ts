@@ -7,6 +7,7 @@ import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './drawer/WorkspaceDrawer'
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
+import { WorkspaceFrame as workspaceFrame } from './iframe/WorkspaceFrame';
 
 import { RootState } from '../store/rootReducer'
 import { fetchWorkspacesAction } from '../store/actions/workspaces'
@@ -58,3 +59,4 @@ export const Header = connect(mapUserStateToProps, {...dispatchUserProps, ...dis
 export const WorkspaceDrawer = connect(mapDrawerStateToProps, dispatchDrawerProps)(workspacedrawer)
 export const App = connect(mapWorkspaceStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
+export const WorkspaceFrame = connect(mapUserStateToProps, null)(workspaceFrame)

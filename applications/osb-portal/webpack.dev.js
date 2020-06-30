@@ -24,6 +24,7 @@ module.exports = merge({
     compress: true,
     https: false,
     disableHostCheck: true,
+    historyApiFallback: true,
     proxy : [
       {
         path : '/api/workspaces',
@@ -33,7 +34,7 @@ module.exports = merge({
         pathRewrite: {'^/api/workspaces' : ''}
       },
     ],
-    port: 80
+    port: 8080
   },
 
 
