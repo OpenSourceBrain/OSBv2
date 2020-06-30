@@ -1,9 +1,13 @@
 import * as React from "react";
+import { withRouter } from 'react-router'
+import { BrowserRouter as Router, useRouteMatch, Route } from 'react-router-dom';
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
+import MainMenu from './menu/MainMenu';
+import { WorkspaceFrame } from '.';
 
 import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
 
@@ -30,21 +34,28 @@ export const App = (props: any) => {
         <CssBaseline />
         <ErrorDialog />
         <Header />
-        <WorkspaceDrawer />
-        <Box p={1}>
-          <Grid container alignItems="stretch" spacing={1}>
+        <Router>
+          <Route exact={true} path="/workspace/:id">
+            <WorkspaceDrawer>
+              <WorkspaceFrame/>
+            </WorkspaceDrawer>
+          </Route>
+          <Route exact={true} path="/">
+            <MainMenu />
             <Grid item xs={12}>
               <Banner />
             </Grid>
-            <Grid item xs={6}>
-              <WorkspaceToolBox />
+            <Grid container={true} alignItems="stretch">
+              <Grid item={true} xs={6}>
+                <WorkspaceToolBox />
+              </Grid>
+              <Grid item={true} xs={6}>
+                <Latest />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <Latest />
-            </Grid>
-          </Grid>
-        </Box>
-        <Workspaces />
+            <Workspaces />
+          </Route>
+        </Router>
       </ThemeProvider>
     </SentryErrorBoundary>
   );

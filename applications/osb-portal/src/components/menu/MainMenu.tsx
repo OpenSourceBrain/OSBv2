@@ -34,3 +34,5 @@ export const MainMenu = () => {
     </Box>
   );
 };
+
+export default MainMenu;

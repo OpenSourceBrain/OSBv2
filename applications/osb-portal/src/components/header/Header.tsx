@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
-    justifyContent: 'space-between'
+    justifyContent: "space-between",
   },
   toolbarTitle: {
     flex: 1,
@@ -103,27 +103,31 @@ export const Header = (props: any) => {
       </Box>
     );
 
+  const handleToggleDrawer = () => props.onToggleDrawer();
+  
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-          <div>
-            <a href="/">
-              <img
-                src="./images/osb-logo-full.png"
-                alt={title}
-                title={title}
-                height="25"
-              />
-            </a>
-          </div>
-          <div>
-            {/* <IconButton>
+        <IconButton onClick={handleToggleDrawer}>
+          <img src="/images/osb-logo.png" alt={title} height="25" width="25" />
+        </IconButton>
+        <div>
+          <a href="/">
+            <img
+              src="./images/osb-logo-full.png"
+              alt={title}
+              title={title}
+              height="25"
+            />
+          </a>
+        </div>
+        <div>
+          {/* <IconButton>
               <SearchIcon />
             </IconButton> */}
-            {headerText}
-          </div>
+          {headerText}
+        </div>
       </Toolbar>
-      <MainMenu />
     </React.Fragment>
   );
 };

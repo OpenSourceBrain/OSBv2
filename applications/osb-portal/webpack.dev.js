@@ -26,6 +26,7 @@ module.exports = merge({
     compress: true,
     https: false,
     disableHostCheck: true,
+    historyApiFallback: true,
     proxy : [
       {
         path : '/api/workspaces',
