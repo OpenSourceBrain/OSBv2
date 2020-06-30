@@ -9,13 +9,11 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
     position: 'relative',
-    backgroundColor: theme.palette.grey[800],
-    color: theme.palette.common.white,
-    margin: theme.spacing(1),
     backgroundImage: 'url(images/banner.png)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
+    overflow: 'hidden'
   },
   overlay: {
     position: 'absolute',
@@ -33,15 +31,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
     },
   },
-  button: {
-    borderRadius: "5em",
-    borderWidth: "2px",
-    borderColor: theme.palette.text.primary,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    minWidth: theme.spacing(15),
-    textTransform: "inherit",
-  },
+ 
 }));
 
 export const Banner = (props: any) => {
@@ -50,7 +40,7 @@ export const Banner = (props: any) => {
   const handleSignup = () => {
     props.keycloak.register();
   }
-  const signUp = user === null ? <Box ml={2}><Button variant="outlined" className={classes.button} onClick={handleSignup}>Sign Up</Button></Box> : null;
+
   const text1 = user === null ? "Let us show you around" : `Welcome back ${user.firstName}`;
   const text2 = user === null ? "Get started in OSB with our short guided tour." : "Let's do some science.";
 
@@ -62,17 +52,16 @@ export const Banner = (props: any) => {
       <Grid container={true}>
         <Grid item={true} md={6}>
           <div className={classes.mainFeaturedPostContent}>
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom={true}>
+            <Typography component="h2" variant="h3" color="inherit" gutterBottom={true}>
               {text1}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph={true}>
               {text2}
             </Typography>
-            <Box display="flex" flexDirection="row">
-              <Box>
-                <Button variant="outlined" className={classes.button}>Take the tour</Button>
-              </Box>
-              {signUp}
+            <Box display="flex" pt={1} flexDirection="row">
+
+                <Button variant="outlined" >Take the tour</Button>
+                {user === null ? <Box ml={2}><Button variant="outlined"  onClick={handleSignup}>Sign Up</Button></Box> : null}       
             </Box>
           </div>
         </Grid>

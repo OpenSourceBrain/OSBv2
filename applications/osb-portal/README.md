@@ -42,13 +42,13 @@ For Google Chrome: [manage certificates](chrome://settings/certificates?search=m
 Select Authorities
 and import the cacert
 
-### Using mock ups
+### Using mock responses
 
-To run the app with mock ups instead of real data set the environment variable USE_MOCKS to true.
+To run the app with mock responses instead of real data set the environment variable USE_MOCKS to true.
 
 ```
 sudo USE_MOCKS=true npm run start:dev
 ```
 
 This will reroute the proxy /api/workspaces to https://www.osb.local/api-mocks instead of the workspace manager app.
-If you run the dev server on another domain then please change the mock up url (located in the webpack.dev.js)
+If you run the dev server on another domain then please change the mock url (located in the webpack.dev.js)
