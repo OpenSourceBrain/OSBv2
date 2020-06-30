@@ -1,5 +1,5 @@
 import React from 'react';
-import {SvgIcon} from '@material-ui/core';
+import { SvgIcon } from '@material-ui/core';
 
 const FolderIcon = (props: any) => (
   <SvgIcon {...props} >
