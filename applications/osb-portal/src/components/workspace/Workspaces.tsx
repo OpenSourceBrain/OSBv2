@@ -35,7 +35,7 @@ export const Workspaces = (props: any) => {
         textColor="primary"
         indicatorColor="primary"
         onChange={handleChange}
-        
+
         aria-label="disabled tabs example"
       >
         <Tab label="Your workspaces" />
