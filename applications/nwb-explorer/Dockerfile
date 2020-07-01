@@ -28,17 +28,18 @@ RUN ls -la webapp/node_modules
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip -qq
 RUN apt-get install git -qq
+RUN apt-get install g++ -qq
 
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
 RUN jupyter nbextension install --py --symlink --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN pip install .
+RUN pip install . --no-cache-dir
 RUN jupyter labextension disable @jupyterlab/hub-extension
 USER $NB_UID
 CMD ./NWBE

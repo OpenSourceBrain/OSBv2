@@ -71,5 +71,5 @@ steps:
       - CHART_VERSION=0.0.1
       - HELM_REPO_USE_HTTP=false
       - HELM_REPO_CONTEXT_PATH=
-      - TIMEOUT=600
+      - TIMEOUT=600s
       - VALUESFILE_values=./deployment/helm/values.yaml
