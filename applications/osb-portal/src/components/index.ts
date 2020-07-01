@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 
 import { App as app } from './App'
 import { Workspaces as workspace } from './workspace/Workspaces'
-import { WorkspaceToolBox as workspacetoolbox } from './workspace/WorkspaceToolBox'
+import { WorkspaceToolBox as workspacetoolbox } from './workspace/NewWorkspaceToolBox'
 import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './drawer/WorkspaceDrawer'

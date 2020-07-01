@@ -1,51 +1,47 @@
-import * as React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import FolderIcon from '@material-ui/icons/Folder';
+import * as React from "react";
+import Grid from "@material-ui/core/Grid";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
-import { Workspace } from '../../types/workspace';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(1),
-    margin: theme.spacing(1),
-    textAlign: 'left'  },
-  h3: {
-    marginBottom: theme.spacing(2),
-    color: "#00bcd4",
-  },
-  folder: {
-    width: "100%",
-    height: "10rem",
-    margin: "auto",
-  }
-}));
+import WorkspaceCard from "./WorkspaceCard";
+import { Workspace } from "../../types/workspace";
 
 export const Workspaces = (props: any) => {
-  const classes = useStyles();
-
   const workspaces = props.workspaces;
-  const workspaceList = workspaces !== null ? workspaces.map((workspace: Workspace, index: number) => {
-    return (
-      <Grid item={true} xs={6} sm={4} md={3} lg={2} key={index}>
-        <Paper className={classes.paper}>
-          <FolderIcon fontSize="large" className={classes.folder} />
-          <div><Typography variant="subtitle1">{workspace.name} - {workspace.id}</Typography></div>
-          <div><Typography variant="caption">{workspace.description}</Typography></div>
-          <div><Typography variant="caption">Last edited: {workspace.lastEditedUserId}, {workspace.lastEdited}</Typography></div>
-        </Paper>
-      </Grid>
-    )
-  }) : null;
+  const workspaceList =
+    workspaces !== null
+      ? workspaces.map((workspace: Workspace, index: number) => {
+          return (
+            <Grid item={true} key={index}>
+              <WorkspaceCard workspace={workspace} />
+            </Grid>
+          );
+        })
+      : null;
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <React.Fragment>
-      <h3 className={classes.h3}>Your Workspaces</h3>
-      <Grid container={true}>
-        {workspaceList}
-      </Grid>
+      <Tabs
+        value={value}
+        textColor="primary"
+        onChange={handleChange}
+        aria-label="disabled tabs example"
+      >
+        <Tab label="Your workspaces" />
+        <Tab label="Featured workspaces" />
+      </Tabs>
+      <div className="verticalFit">
+        <div className="scrollbar">
+          
+          <Grid container={true} spacing={1}>{workspaceList}</Grid>
+        </div>
+      </div>
     </React.Fragment>
   );
-}
+};

@@ -6,6 +6,7 @@ require('./css/main.less');
 // Read the less file in as string: using the raw-loader to override the default loader
 export const vars = lessToJs(require('!!raw-loader!./css/variables.less'), { resolveVariables: true, stripPrefix: true });
 
+vars.gutter = vars.gutter.replace('px', '') * 1;
 
 export const {
   primaryColor, secondaryColor, font, fontColor,
@@ -15,6 +16,7 @@ export const {
 
 const theme = {
   darkMode: true,
+  spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 30, 40, 50, 100, 150, 200],
   typography: {
     useNextVariants: true,
     htmlFontSize: 12,
@@ -36,35 +38,52 @@ const theme = {
       dark: primaryColor 
     },
     background: {
-      default: bgDarkest,
+      default: bgDarker,
       paper: bgRegular
     },
   },
   typography: {
     fontFamily: font,
     h1: {
-      fontSize: '3rem',
-      fontWeight: 400
+      fontSize: '1.9rem',
+      fontWeight: 400,
+      flex: 1
     },
     
     h2: {
-      fontSize: '2.5rem',
-      fontWeight: 400
+      fontSize: '1.5rem',
+      fontWeight: 400,
+      flex: 1
     },
     h3: {
-      fontSize: '2.1rem',
-      fontWeight: 400
+      fontSize: '1.3rem',
+      fontWeight: 400,
+      flex: 1
     },
     h4: {
-      fontSize: '1.8rem',
-      fontWeight: 400
+      fontSize: '1.2rem',
+      fontWeight: 400,
+      flex: 1
     },
     h5: {
-      fontSize: '1.5rem'
+      fontSize: '1.1rem',
+      flex: 1,
+      fontWeight: 400,
     },
     h6: {
-      fontSize: '1.1rem'
+      fontSize: '1rem',
+      flex: 1,
+      lineHeight: 1,
+      fontWeight: 400,
     },
+    subtitle1: {
+      fontWeight: 400,
+      lineHeight: 1
+    },
+    subtitle2: {
+      fontWeight: 400,
+      lineHeight: 1
+    }
   },
   overrides: {
     MuiInput: {
@@ -85,34 +104,35 @@ const theme = {
       select: { "&:focus" :{ background: "none" } },
     },
     MuiGrid: {
-     
+     root: {
+       display: 'flex'
+     }
     },
-    MuiCard: { root: { backgroundColor: bgDarker, overflowY: 'auto', flex: 1 } },
+    MuiCard: { root: { flex: 1 } },
     MuiBottomNavigation: { root: { backgroundColor: bgRegular, marginBottom: 8, borderRadius: 4 } },
-    MuiPaper: { root: { color: 'inherit', backgroundColor: bgRegular } },
+    MuiPaper: { root: { color: 'inherit', backgroundColor: bgRegular, flex: 1 } },
     MuiBottomNavigationAction: { 
       root: { color: fontColor, textTransform: 'uppercase' },
       label: { fontSize: "0.65rem", "&.Mui-selected": { fontSize: "0.65rem" } },
     },
     MuiFormControl: { root: { overflow: 'visible' } },
     MuiFab:{ 
-      secondary: { color: fontColor },
-      primary: { color: fontColor } 
     },
     MuiButton: { 
       contained: { 
-        color: fontColor,
         backgroundColor: bgInputs
       },
-      containedSecondary: { color: fontColor },
-      containedPrimary: { color: fontColor },
+      outlined: {
+        borderWidth: 2,
+        borderColor: fontColor
+      },
+      text: {
+        padding: gutter / 2
+      }
     },
     MuiMenuItem: { 
       root:{
-        color: fontColor,
         paddingTop: gutter / 2, 
-        fontSize: '1.0rem', 
-        fontWeight: 200
       },
       gutters: {
         paddingLeft: gutter * 2,

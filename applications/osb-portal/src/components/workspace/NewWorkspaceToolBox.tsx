@@ -25,23 +25,22 @@ import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
+import { OSBApplication } from "../../types/global";
 
 import { workspacesApi } from "../../middleware/osbbackend";
 import { WorkspacePostRequest } from "../../apiclient/workspaces/apis/RestApi";
 import * as modelWorkspace from "../../apiclient/workspaces/models/Workspace";
+import WorkspaceItem from "./NewWorkspaceItem";
 
 const useStyles = makeStyles((theme) => ({
   iconButton: {
-    width: 24,
-    height: 24,
+    width: "2em",
+    height: "2em",
     padding: 0,
   },
-  svgIcon: {
-    paddingTop: 6,
-    paddingLeft: 4,
-  },
+  svgIcon: {},
   dialogContent: {
-    paddingBottom: 16,
+    paddingBottom: theme.spacing(2),
   },
   dialogContentText: {
     maxWidth: "75%",
@@ -50,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
   dialogButtons: {
     paddingRight: 0,
   },
-
 }));
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -219,31 +217,41 @@ export const WorkspaceToolBox = (props: any) => {
           {dialogContent}
         </DialogContent>
       </Dialog>
-      <Paper>
-        <Typography component="h2" variant="h6" >Create a new Workspace</Typography>
-        <Grid container={true} alignItems="center" justify="center" spacing={5}>
-          <Grid item={true}  onClick={createSingleCell}>
-            <RadioButtonUncheckedIcon fontSize="large" />
-            <Typography variant="subtitle1">Single Cell</Typography>
-            <Typography variant="caption">NetPyNe</Typography>
+      <Typography component="h2" variant="h6" align="center" gutterBottom>
+        Create a new Workspace
+      </Typography>
+      <Box mt={3}>
+        <Grid container alignItems="center" justify="center" spacing={5}>
+          <Grid item onClick={createSingleCell}>
+            <WorkspaceItem
+              icon={RadioButtonUncheckedIcon}
+              title="Single Cell"
+              application={OSBApplication.netpyne}
+            />
           </Grid>
-          <Grid item={true} justify="center">
-            <AppsOutlinedIcon fontSize="large" />
-            <Typography variant="subtitle1">Network</Typography>
-            <Typography variant="caption">NetPyNe</Typography>
+          <Grid item justify="center">
+            <WorkspaceItem
+              icon={AppsOutlinedIcon}
+              title="Network"
+              application={OSBApplication.netpyne}
+            />
           </Grid>
-          <Grid item={true} >
-            <InsertChartOutlinedIcon fontSize="large" />
-            <Typography variant="subtitle1">Data Analyses</Typography>
-            <Typography variant="caption">NWB Explorer</Typography>
+          <Grid item={true}>
+            <WorkspaceItem
+              icon={InsertChartOutlinedIcon}
+              title="Data Analysis"
+              application={OSBApplication.nwbexplorer}
+            />
           </Grid>
-          <Grid item={true} >
-            <CodeOutlinedIcon fontSize="large" />
-            <Typography variant="subtitle1">Playground</Typography>
-            <Typography variant="caption">Jupyter Lab</Typography>
+          <Grid item={true}>
+            <WorkspaceItem
+              icon={InsertChartOutlinedIcon}
+              title="Playground"
+              application={OSBApplication.jupyterlab}
+            />
           </Grid>
         </Grid>
-      </Paper>
+      </Box>
     </>
   );
 };

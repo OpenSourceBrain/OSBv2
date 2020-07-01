@@ -1,13 +1,16 @@
 import * as React from "react";
-import { withRouter } from 'react-router'
-import { BrowserRouter as Router, useRouteMatch, Route } from 'react-router-dom';
-
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { withRouter } from "react-router";
+import {
+  BrowserRouter as Router,
+  useRouteMatch,
+  Route,
+} from "react-router-dom";
+import { Grid, Paper } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
-import MainMenu from './menu/MainMenu';
-import { WorkspaceFrame } from '.';
+import MainMenu from "./menu/MainMenu";
+import { WorkspaceFrame } from ".";
 
 import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
 
@@ -33,29 +36,43 @@ export const App = (props: any) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ErrorDialog />
+        <div style={{overflow: "hidden", height: "100vh", display: "flex", flexDirection: "column"}}>
         <Header />
         <Router>
           <Route exact={true} path="/workspace/:id">
             <WorkspaceDrawer>
-              <WorkspaceFrame/>
+              <WorkspaceFrame />
             </WorkspaceDrawer>
           </Route>
           <Route exact={true} path="/">
             <MainMenu />
-            <Grid item xs={12}>
-              <Banner />
-            </Grid>
-            <Grid container={true} alignItems="stretch">
-              <Grid item={true} xs={6}>
-                <WorkspaceToolBox />
+            <Box p={1} className="verticalFit">
+              <Grid container spacing={1} alignItems="stretch">
+                <Grid item xs={12}>
+                  <Paper style={{ overflow: "hidden" }} elevation={0}>
+                    <Banner />
+                  </Paper>
+                </Grid>
+                <Grid item={true} xs={6}>
+                  <Paper elevation={0}>
+                    <Box p={3}>
+                      <WorkspaceToolBox />
+                    </Box>
+                  </Paper>
+                </Grid>
+                <Grid item={true} xs={6} className="verticalFit">
+                  <Paper elevation={0}>
+                    <Box p={3}>
+                      <Latest />
+                    </Box>
+                  </Paper>
+                </Grid>
               </Grid>
-              <Grid item={true} xs={6}>
-                <Latest />
-              </Grid>
-            </Grid>
-            <Workspaces />
+              <Workspaces />
+            </Box>
           </Route>
         </Router>
+        </div>
       </ThemeProvider>
     </SentryErrorBoundary>
   );

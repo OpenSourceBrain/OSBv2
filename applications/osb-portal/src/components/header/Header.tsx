@@ -15,8 +15,6 @@ import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grid from "@material-ui/core/Grid";
-import { MainMenu } from "../menu/MainMenu";
 
 const title = "Open Source Brain";
 
@@ -41,9 +39,6 @@ const useStyles = makeStyles((theme) => ({
   wrapIcon: {
     verticalAlign: "middle",
     display: "inline-flex",
-  },
-  paper: {
-    marginRight: theme.spacing(2),
   },
 }));
 
@@ -74,9 +69,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button size="large" onClick={handleUserLogin}>
-        Sign in
-      </Button>
+      <Button onClick={handleUserLogin}>Sign in</Button>
     ) : (
       <Box alignItems="center" display="flex">
         <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
@@ -103,16 +96,19 @@ export const Header = (props: any) => {
       </Box>
     );
 
-  const handleToggleDrawer = () => props.onToggleDrawer();
-  
+  const handleToggleDrawer = (e: any) => {
+    if(props.drawerEnabled) {
+      e.preventDefault();
+      props.onToggleDrawer();
+    }
+    
+  }
+
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <IconButton onClick={handleToggleDrawer}>
-          <img src="/images/osb-logo.png" alt={title} height="25" width="25" />
-        </IconButton>
         <div>
-          <a href="/">
+          <a href="/" onClick={handleToggleDrawer}>
             <img
               src="./images/osb-logo-full.png"
               alt={title}

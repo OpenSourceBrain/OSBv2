@@ -1,7 +1,8 @@
-import { FeaturedType } from './global'
+import { FeaturedType, OSBApplication } from './global'
 
 // Workspace object
 export interface Workspace {
+    
     id: number;
     name: string;
     description: string;
@@ -10,4 +11,5 @@ export interface Workspace {
     lastEdited: string;
     lastEditedUserId: number;
     type: FeaturedType;
+    lastApplicationEdit: OSBApplication;
 }
