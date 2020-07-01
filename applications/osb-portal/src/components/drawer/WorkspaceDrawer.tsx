@@ -92,6 +92,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: 0,
+    display: 'block',
   },
   closedTextBottom: {
     writingMode: 'vertical-lr',
