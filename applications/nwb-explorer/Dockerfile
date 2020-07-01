@@ -41,6 +41,9 @@ RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
 RUN pip install . --no-cache-dir
 RUN jupyter labextension disable @jupyterlab/hub-extension
+
+COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
+
 USER $NB_UID
 CMD ./NWBE
 

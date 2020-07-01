@@ -58,7 +58,7 @@ hub:
       c.Spawner.port = 8000
       c.Spawner.http_timeout = 300
       c.Spawner.start_timeout = 300
-      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' http://opensourcebrain.org:80 http://localhost:3000 http://comodl.org:80"}}
+      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.opensourcebrain.org *.v2.opensourcebrain.org *.osb.local"}}
     spawner: >-
       c.Spawner.args = ["--port=8000"]
   extraConfigMap: {}
