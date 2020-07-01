@@ -109,7 +109,7 @@ export const Header = (props: any) => {
         <div>
           <a href="/" onClick={handleToggleDrawer}>
             <img
-              src="./images/osb-logo-full.png"
+              src="/images/osb-logo-full.png"
               alt={title}
               title={title}
               height="25"
