@@ -217,19 +217,19 @@ export const WorkspaceToolBox = (props: any) => {
           {dialogContent}
         </DialogContent>
       </Dialog>
-      <Typography component="h2" variant="h6" align="center" gutterBottom>
+      <Typography component="h2" variant="h6" align="center" gutterBottom={true}>
         Create a new Workspace
       </Typography>
       <Box mt={3}>
-        <Grid container alignItems="center" justify="center" spacing={5}>
-          <Grid item onClick={createSingleCell}>
+        <Grid container={true} alignItems="center" justify="center" spacing={5}>
+          <Grid item={true} onClick={createSingleCell}>
             <WorkspaceItem
               icon={RadioButtonUncheckedIcon}
               title="Single Cell"
               application={OSBApplication.netpyne}
             />
           </Grid>
-          <Grid item justify="center">
+          <Grid item={true} justify="center">
             <WorkspaceItem
               icon={AppsOutlinedIcon}
               title="Network"

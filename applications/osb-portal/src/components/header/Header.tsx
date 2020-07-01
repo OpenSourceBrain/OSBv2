@@ -97,11 +97,10 @@ export const Header = (props: any) => {
     );
 
   const handleToggleDrawer = (e: any) => {
-    if(props.drawerEnabled) {
+    if (props.drawerEnabled) {
       e.preventDefault();
       props.onToggleDrawer();
     }
-    
   }
 
   return (

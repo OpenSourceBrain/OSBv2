@@ -47,8 +47,8 @@ export const App = (props: any) => {
           <Route exact={true} path="/">
             <MainMenu />
             <Box p={1} className="verticalFit">
-              <Grid container spacing={1} alignItems="stretch">
-                <Grid item xs={12}>
+              <Grid container={true} spacing={1} alignItems="stretch">
+                <Grid item={true} xs={12}>
                   <Paper style={{ overflow: "hidden" }} elevation={0}>
                     <Banner />
                   </Paper>

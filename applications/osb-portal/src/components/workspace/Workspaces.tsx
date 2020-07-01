@@ -38,7 +38,6 @@ export const Workspaces = (props: any) => {
       </Tabs>
       <div className="verticalFit">
         <div className="scrollbar">
-          
           <Grid container={true} spacing={1}>{workspaceList}</Grid>
         </div>
       </div>

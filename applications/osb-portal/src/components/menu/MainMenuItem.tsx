@@ -73,7 +73,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
             <Grow
               {...TransitionProps}
             >
-              <Paper square>
+              <Paper square={true}>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <MenuItem onClick={handleClose}>Profile</MenuItem>

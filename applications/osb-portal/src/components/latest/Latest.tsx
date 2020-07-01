@@ -16,7 +16,7 @@ export const Latest = () => {
 
   return (
     <>
-      <Typography component="h2" variant="h6" gutterBottom>
+      <Typography component="h2" variant="h6" gutterBottom={true}>
         Latest
       </Typography>
       <Box mt={3}>

@@ -25,7 +25,6 @@ export const MainMenu = () => {
       <MainMenuItem
         title="OSB"
         className={classes.button + ' ' + classes.firstButton}
-        
       />
       <MainMenuItem title="File" className={classes.button} />
       <MainMenuItem title="View" className={classes.button} />
