@@ -19,7 +19,10 @@ const useStyles = makeStyles((theme) => ({
   card: {
     width: `${cardWidth}em`,
     flex: 1,
-    height: `${cardWidth * 1.14}em`
+    height: `${cardWidth * 1.14}em`,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   icon: {
     fontSize: "8em",
@@ -46,9 +49,11 @@ export const WorkspaceCard = (props: Props) => {
         </Link>
       </CardActions>
       <CardContent>
+      <Link href={`/workspace/${workspace.id}`} color="inherit">
         <Typography component="h2" variant="h5">
           {workspace.name}
         </Typography>
+        </Link>
         {workspace.lastEdited ? (
           <Typography variant="subtitle2">
             Last edited: {workspace.lastApplicationEdit}, {workspace.lastEdited}

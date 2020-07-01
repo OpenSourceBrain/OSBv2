@@ -155,7 +155,14 @@ const theme = {
     MuiExpansionPanelDetails: { root: { padding: 0, margin: 0, minHeight: 'unset!important', flexDirection: 'column' } },
     MuiExpansionPanel: { root: { padding: 0, margin: '0px!important', minHeight: 'unset' } },
     MuiAutocomplete: { popupIndicator: { marginRight: 0 } },
-    MuiCardContent: { root: { padding: 8 } },
+    MuiCardContent: {  },
+    MuiTab: {
+      root: {
+        textTransform: 'none',
+        fontSize: '1rem',
+        fontWeight: 400
+      }
+    },
     MuiToolbar: {
       root: {
         minHeight: 15
