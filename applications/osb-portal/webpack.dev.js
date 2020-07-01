@@ -4,11 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 var path = require('path');
 
 const contentbase = path.join(__dirname, 'public')
-const osbDomain = 'osb.local';
+const osbDomain = 'v2.opensourcebrain.org';
+PORT = 3000;
 
 var proxyTarget = 'https://__APP_NAME__/'
 if (process.env.USE_MOCKS){
-  proxyTarget = 'https://www.osb.local/api-mocks'
+  console.log('Using mocks')
+  proxyTarget = `http://localhost:${PORT}/api-mocks`
 }
 
 const replaceHost = (uri, appName) => uri.replace("__APP_NAME__", appName + '.' + osbDomain);
@@ -34,7 +36,7 @@ module.exports = merge({
         pathRewrite: {'^/api/workspaces' : ''}
       },
     ],
-    port: 8080
+    port: PORT
   },
 
 

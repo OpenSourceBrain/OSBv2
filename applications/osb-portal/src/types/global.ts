@@ -3,3 +3,9 @@ export enum FeaturedType {
   Public = 1,
   Featured = 2,
 }
+
+export enum OSBApplication {
+  netpyne = "NetPyNE",
+  nwbexplorer = "NWB Explorer",
+  jupyterlab = "Jupyter Lab",
+}

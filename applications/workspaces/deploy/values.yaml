@@ -1,4 +1,5 @@
 harness:
+  name: workspaces
   subdomain: workspaces
   service:
      port: 8080

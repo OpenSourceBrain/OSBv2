@@ -72,9 +72,9 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
+    width: theme.spacing(6) + 10,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
+      width: theme.spacing(6) + 10,
     },
   },
   drawerPaper: {
@@ -92,6 +92,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: 0,
+    display: 'block',
   },
   closedTextBottom: {
     writingMode: 'vertical-lr',
