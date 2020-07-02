@@ -43,6 +43,7 @@ RUN pip install . --no-cache-dir
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
+COPY geppetto/GeppettoConfiguration.json webapp/GeppettoConfiguration.json
 
 USER $NB_UID
 CMD ./NWBE

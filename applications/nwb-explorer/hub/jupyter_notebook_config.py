@@ -18,7 +18,7 @@ c.FileContentsManager.delete_to_trash = False
 print(c.tornado_settings)
 c.NotebookApp.tornado_settings = {
     'headers': {
-        'Content-Security-Policy': "frame-ancestors 'self' *.opensourcebrain.org *.v2.opensourcebrain.org *.osb.local",
+        'Content-Security-Policy': "frame-ancestors 'self' *.osb.local *.opensourcebrain.org",
     }
 }
 
