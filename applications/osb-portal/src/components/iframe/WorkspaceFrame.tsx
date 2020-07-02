@@ -11,10 +11,19 @@ const useStyles = makeStyles((theme) => ({
     },
  }));
 
+
+
 export const WorkspaceFrame = (props: any) => {
     const classes = useStyles();
     const { id } = useParams();
     const user = props.user;
+
+    const onloadIframe = (e: any, fileName?: string) => {
+        if (fileName == null) {
+            fileName = "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb";
+        }
+        e.target.contentWindow.postMessage(fileName, '*');
+    }
 
     const domain = window.location.host.split('.').slice(1).join('.');  // remove the first part of the hostname
 
@@ -24,6 +33,6 @@ export const WorkspaceFrame = (props: any) => {
     const application = 'nwbexplorer';
     const frameUrl = `//${application}.${domain}?${workspaceParam}${userParam}`;
     return (
-        <iframe frameBorder="0" src={frameUrl} className={classes.iframe}/>
+        <iframe id="workspace-frame" frameBorder="0" src={frameUrl} className={classes.iframe} onLoad={onloadIframe}/>
     )
 }
