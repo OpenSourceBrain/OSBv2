@@ -3,8 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
-
+import Typography from "@material-ui/core/Typography";
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
@@ -14,7 +13,7 @@ export const Workspaces = (props: any) => {
     workspaces !== null
       ? workspaces.map((workspace: Workspace, index: number) => {
           return (
-            <Grid item={true} key={index}>
+            <Grid item={true} key={index} xs={6} sm={4} md={3} lg={2} xl={1}>
               <WorkspaceCard workspace={workspace} />
             </Grid>
           );
@@ -26,26 +25,33 @@ export const Workspaces = (props: any) => {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
+  if (!workspaces) {
+    return null;
+  }
 
   return (
     <React.Fragment>
       <Box mt={3} mb={2}>
-      <Tabs
-        value={value}
-        textColor="primary"
-        indicatorColor="primary"
-        onChange={handleChange}
-
-        aria-label="disabled tabs example"
-      >
-        <Tab label="Your workspaces" />
-        <Tab label="Featured workspaces" />
-      </Tabs>
+        <Tabs
+          value={value}
+          textColor="primary"
+          indicatorColor="primary"
+          onChange={handleChange}
+          aria-label="disabled tabs example"
+        >
+          <Tab label="Your workspaces" />
+          <Tab label="Featured workspaces" />
+        </Tabs>
+        <Typography variant="subtitle2" style={ {marginTop: "0.5em" }}>
+          {workspaceList.length} Workspaces
+        </Typography>
       </Box>
       <div className="verticalFit">
-        <div className="scrollbar">
-          <Grid container={true} spacing={1}>{workspaceList}</Grid>
-        </div>
+        <Box pt={1} pb={1} className="scrollbar">
+          <Grid container={true} spacing={1}>
+            {workspaceList}
+          </Grid>
+        </Box>
       </div>
     </React.Fragment>
   );

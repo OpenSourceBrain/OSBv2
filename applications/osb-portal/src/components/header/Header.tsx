@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     display: "inline-flex",
   },
+  button: {
+    textTransform: 'none'
+  }
 }));
 
 export const Header = (props: any) => {
@@ -69,7 +72,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin}>Sign in</Button>
+      <Button onClick={handleUserLogin} className={classes.button}>Sign in</Button>
     ) : (
       <Box alignItems="center" display="flex">
         <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
@@ -90,6 +93,7 @@ export const Header = (props: any) => {
           aria-haspopup="true"
           onClick={handleMenuToggle}
           startIcon={<PersonIcon fontSize="large" />}
+          className={classes.button}
         >
           {user.firstName}
         </Button>

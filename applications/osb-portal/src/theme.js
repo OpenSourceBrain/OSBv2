@@ -1,6 +1,7 @@
 
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import lessToJs from 'less-vars-to-js';
+
 require('./css/mui.less');
 require('./css/main.less');
 // Read the less file in as string: using the raw-loader to override the default loader
@@ -56,17 +57,17 @@ const theme = {
       flex: 1
     },
     h3: {
-      fontSize: '1.3rem',
+      fontSize: '1.4rem',
       fontWeight: 400,
       flex: 1
     },
     h4: {
-      fontSize: '1.2rem',
+      fontSize: '1.3rem',
       fontWeight: 400,
       flex: 1
     },
     h5: {
-      fontSize: '1.1rem',
+      fontSize: '1.2rem',
       flex: 1,
       fontWeight: 400,
     },
@@ -78,11 +79,12 @@ const theme = {
     },
     subtitle1: {
       fontWeight: 400,
-      lineHeight: 1
+      lineHeight: 1,
+      fontSize: '1rem'
     },
     subtitle2: {
       fontWeight: 400,
-      lineHeight: 1
+      lineHeight: 1,
     }
   },
   overrides: {
@@ -119,8 +121,11 @@ const theme = {
     MuiFab:{ 
     },
     MuiButton: { 
-      contained: { 
-        backgroundColor: bgInputs
+      root: {
+        marginRight: gutter * 3 / 2,
+        '&:last-child': {
+          marginRight: 0
+        }
       },
       outlined: {
         borderWidth: 2,
@@ -132,6 +137,7 @@ const theme = {
     },
     MuiMenuItem: { 
       root:{
+        fontSize: '1em',
         paddingTop: gutter / 2, 
       },
       gutters: {
@@ -140,8 +146,8 @@ const theme = {
       }
        
     },
-    MuiDialogTitle: { root: { color: fontColor } },
-    MuiTypography: { root: { color: fontColor } },
+    MuiDialogTitle: { root: { fontWeight: 600, fontSize: '1rem' } },
+
     MuiCollapse: { 
       container: { padding: 0 },
       wrapper: { padding: "0px!important" }
@@ -155,12 +161,19 @@ const theme = {
     MuiExpansionPanelDetails: { root: { padding: 0, margin: 0, minHeight: 'unset!important', flexDirection: 'column' } },
     MuiExpansionPanel: { root: { padding: 0, margin: '0px!important', minHeight: 'unset' } },
     MuiAutocomplete: { popupIndicator: { marginRight: 0 } },
-    MuiCardContent: {  },
+    MuiCardContent: { 
+      root: {
+        '&:last-child': {
+          paddingBottom: 16
+        }
+      }
+     },
     MuiTab: {
       root: {
         textTransform: 'none',
-        fontSize: '1rem',
-        fontWeight: 400
+        fontSize: '1.1rem',
+        fontWeight: 400,
+        paddingBottom: 0
       }
     },
     MuiToolbar: {

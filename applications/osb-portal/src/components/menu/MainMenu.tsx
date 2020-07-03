@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "auto",
     width: "auto",
     marginRight: "3em",
-    lineHeight: 1.4,
+    lineHeight: 1,
     fontWeight: 400,
   },
   firstButton: {

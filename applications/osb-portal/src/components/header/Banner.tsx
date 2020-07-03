@@ -25,10 +25,7 @@ const useStyles = makeStyles((theme) => ({
   mainFeaturedPostContent: {
     position: "relative",
     padding: theme.spacing(3),
-    paddingTop: theme.spacing(10),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(4),
-    },
+    paddingTop: "10vh",
   },
 }));
 
@@ -65,17 +62,15 @@ export const Banner = (props: any) => {
           <Typography component="h2" variant="h1" gutterBottom={true}>
             {text1}
           </Typography>
-          <Typography variant="subtitle2" paragraph={true}>
+          <Typography variant="subtitle1" paragraph={true}>
             {text2}
           </Typography>
           <Box display="flex" pt={1} flexDirection="row">
             <Button variant="outlined">Take the tour</Button>
             {user === null ? (
-              <Box ml={2}>
-                <Button variant="outlined" onClick={handleSignup}>
-                  Sign Up
-                </Button>
-              </Box>
+              <Button onClick={handleSignup}>
+                Sign in
+              </Button>
             ) : null}
           </Box>
         </Box>
