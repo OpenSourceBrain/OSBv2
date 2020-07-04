@@ -63,12 +63,12 @@ export default (props: WorkspaceEditProps) => {
             }
           />
         </Grid>
-        <Grid item xs={12} alignContent="flex-end">
-          <div>
+        <Grid item xs={12} direction="column" alignItems="flex-end">
+          
           <Button variant="contained" onClick={handleCreateWorkspace}>
             Create
           </Button>
-          </div>
+          
         </Grid>
       </Grid>
     </>

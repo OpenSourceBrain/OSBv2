@@ -4,10 +4,7 @@ import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
-      border: `1px solid ${theme.palette.background.default}`,
-      height: 'calc(100vh - 44px)',
-      width: '100%',
-      display: 'block',
+      flex: 1,
     },
  }));
 

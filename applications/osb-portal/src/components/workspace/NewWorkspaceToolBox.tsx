@@ -5,16 +5,12 @@ import { Typography, Grid, Paper } from "@material-ui/core";
 
 import Box from "@material-ui/core/Box";
 
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
+
 import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
 import { OSBApplication } from "../../types/global";
 
-import { workspacesApi } from "../../middleware/osbbackend";
-import { WorkspacePostRequest } from "../../apiclient/workspaces/apis/RestApi";
-import * as modelWorkspace from "../../apiclient/workspaces/models/Workspace";
 import WorkspaceItem from "./NewWorkspaceItem";
 
 import * as Icons from '../icons';

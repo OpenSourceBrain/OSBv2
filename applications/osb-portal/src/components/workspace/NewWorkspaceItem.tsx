@@ -5,7 +5,7 @@ import { OSBApplication } from "../../types/global";
 import { UserInfo } from "../../types/user";
 import OSBDialog from "../common/OSBDialog";
 import NewWorkspaceAskUser from "./NewWorkspaceAskUser";
-import WorkspaceEdit from "./WorkspaceEdit";
+import WorkspaceEdit from "./WorkspaceEditor";
 
 interface ItemProps {
   icon: React.ElementType;
@@ -15,12 +15,12 @@ interface ItemProps {
 }
 
 export default (props: ItemProps) => {
-  const { user, title, application, icon } = props;
+  const { user, title, application } = props;
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
 
   const handleClick = () => {
-    if (!!user) {
+    if (!user) {
       setAskLoginOpen(true);
     } else {
       setNewWorkspaceOpen(true);

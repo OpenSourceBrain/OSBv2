@@ -2,13 +2,16 @@ import { FeaturedType, OSBApplication } from './global'
 
 // Workspace object
 export interface Workspace {
-    id: number;
+    
+    id: string;
     name: string;
     description: string;
     image: string;
-    ownerId: number;
+    owner: string; // User id
     lastEdited: string;
-    lastEditedUserId: number;
-    type: FeaturedType;
+    lastEditedUserId: string;
+    shareType: FeaturedType;
+    types: OSBApplication[];
     lastApplicationEdit: OSBApplication;
+    volume: string; // Volume id
 }
