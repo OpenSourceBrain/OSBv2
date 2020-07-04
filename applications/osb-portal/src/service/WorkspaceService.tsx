@@ -17,7 +17,7 @@ class WorkspaceService {
       shareType: FeaturedType.Private,
       lastEditedUserId: "1",
       types: [OSBApplication.nwbexplorer]
-      
+
     };
   }
 }

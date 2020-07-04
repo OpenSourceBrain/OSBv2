@@ -27,6 +27,9 @@ export default (props: ItemProps) => {
     }
   };
 
+  const closeAskLogin = () => setAskLoginOpen(false);
+
+  const closeNewWorkspace = () => setNewWorkspaceOpen(false);
   return (
     <>
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
@@ -39,16 +42,16 @@ export default (props: ItemProps) => {
       <OSBDialog
         title="Create new workspace"
         open={askLoginOpen}
-        closeAction={() => setAskLoginOpen(false)}
+        closeAction={closeAskLogin}
       >
         <NewWorkspaceAskUser />
       </OSBDialog>
       <OSBDialog
         title="Create new workspace"
         open={newWorkspaceOpen}
-        closeAction={() => setNewWorkspaceOpen(false)}
+        closeAction={closeNewWorkspace}
       >
-        <WorkspaceEdit workspace={null} onLoadWorkspace={() => setNewWorkspaceOpen(false)}  />
+        <WorkspaceEdit workspace={null} onLoadWorkspace={closeNewWorkspace}  />
       </OSBDialog>
     </>
   );

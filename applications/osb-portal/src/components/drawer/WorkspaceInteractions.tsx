@@ -118,7 +118,7 @@ export default (props: WorkspaceProps) => {
 
         <ExpansionPanelDetails>
           <WorkspaceVolumePathBrowser
-            volumeId={null /* TODO get from logged user */}
+            volumeId={null/* TODO get from logged user */}
             path="/"
           />
         </ExpansionPanelDetails>

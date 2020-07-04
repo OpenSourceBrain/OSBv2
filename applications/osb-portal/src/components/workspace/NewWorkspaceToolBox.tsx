@@ -35,11 +35,11 @@ export const WorkspaceToolBox = (props: any) => {
 
   const user: UserInfo = props.user;
 
-  let type: string = props.type;  
+  const type: string = props.type;
 
   return (
     <>
-      
+
       <Typography component="h2" variant="h6" align="center" gutterBottom={true}>
         Create a new Workspace
       </Typography>

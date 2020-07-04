@@ -40,35 +40,33 @@ export default (props: WorkspaceEditProps) => {
     });
   };
 
+  const setNameField = (e: any) =>
+    setWorkspaceForm({ ...workspaceForm, name: e.target.value });
+  const setDescriptionField = (e: any) =>
+    setWorkspaceForm({ ...workspaceForm, description: e.text });
   return (
     <>
-      <Grid container justify="flex-start" spacing={1}>
-        <Grid item xs={12}>
+      <Grid container={true} justify="flex-start" spacing={1}>
+        <Grid item={true} xs={12}>
           <TextField
             id="standard-basic"
             label="Name of the workspace"
             fullWidth={true}
-            onChange={(e) =>
-              setWorkspaceForm({ ...workspaceForm, name: e.target.value })
-            }
+            onChange={setNameField}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item={true} xs={12}>
           <MdEditor
             value={workspaceForm.description}
             style={{ height: "20vh" }}
             renderHTML={renderMarkdown}
-            onChange={(e) =>
-              setWorkspaceForm({ ...workspaceForm, description: e.text })
-            }
+            onChange={setDescriptionField}
           />
         </Grid>
-        <Grid item xs={12} direction="column" alignItems="flex-end">
-          
+        <Grid item={true} xs={12} direction="column" alignItems="flex-end">
           <Button variant="contained" onClick={handleCreateWorkspace}>
             Create
           </Button>
-          
         </Grid>
       </Grid>
     </>

@@ -37,12 +37,12 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
     if (closeAction) {
       closeAction();
     } else {
-      console.warn("closeAction not defined on OSBDialog");
+      console.debug("closeAction not defined on OSBDialog");
     }
   };
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={"md"} fullWidth={true}>
-      <DialogTitle disableTypography>
+      <DialogTitle disableTypography={true}>
         <Box display="flex" justifyContent="space-between">
           {title}
           <IconButton aria-label="close" onClick={handleClose} style={{padding: 0}} >

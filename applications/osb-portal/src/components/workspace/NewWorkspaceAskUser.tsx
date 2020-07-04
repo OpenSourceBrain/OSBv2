@@ -19,8 +19,8 @@ export default (props: any) => {
 
   return (
     <>
-      <Grid container justify="space-between" alignItems="flex-end">
-        <Grid item xs={12} sm={8} md={6}>
+      <Grid container={true} justify="space-between" alignItems="flex-end">
+        <Grid item={true} xs={12} sm={8} md={6}>
           <DialogContentText>
             To create a new workspace you need a Open Source Brain account. If
             you already have one please sign in, if not create one for free.
@@ -28,7 +28,7 @@ export default (props: any) => {
             simulations and analysis.
           </DialogContentText>
         </Grid>
-        <Grid item>
+        <Grid item={true}>
           <div>
               <Button onClick={handleUserLogin} autoFocus={true}>
                 Sign In

@@ -2,7 +2,7 @@ import { FeaturedType, OSBApplication } from './global'
 
 // Workspace object
 export interface Workspace {
-    
+
     id: string;
     name: string;
     description: string;

@@ -5,6 +5,7 @@
     ],
     "rules": {
         "no-submodule-imports": false,
+        "no-console": false,
         "no-implicit-dependencies": false,
         "jsx-no-multiline-js": false,
         "indent": [

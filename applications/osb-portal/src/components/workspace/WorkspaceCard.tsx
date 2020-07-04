@@ -1,7 +1,6 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Card";
 import Link from "@material-ui/core/Link";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -60,7 +59,7 @@ export const WorkspaceCard = (props: Props) => {
         </div>
       </CardContent>
       <CardContent>
-        
+
         <Link href={`/workspace/${workspace.id}`} color="inherit">
           <Typography component="h2" variant="h5">
             {workspace.name}

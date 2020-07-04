@@ -42,7 +42,7 @@ export const Workspaces = (props: any) => {
           <Tab label="Your workspaces" />
           <Tab label="Featured workspaces" />
         </Tabs>
-        <Typography variant="subtitle2" style={ {marginTop: "0.5em" }}>
+        <Typography variant="subtitle2" style={{marginTop: "0.5em" }}>
           {workspaceList.length} Workspaces
         </Typography>
       </Box>
