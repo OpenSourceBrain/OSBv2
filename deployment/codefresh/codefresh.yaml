@@ -192,7 +192,7 @@ steps:
         no_cf_cache: false
         image_name: common
         title: Common
-        working_directory: ./cloud-harness/applications/common
+        working_directory: ./cloud-harness/applications/common/server
       samples:
         type: build
         stage: build
