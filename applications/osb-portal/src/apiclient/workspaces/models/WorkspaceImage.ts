@@ -14,41 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Workspace images of a workspace
  * @export
- * @interface Pagination
+ * @interface WorkspaceImage
  */
-export interface Pagination {
+export interface WorkspaceImage {
     /**
      * 
      * @type {number}
-     * @memberof Pagination
+     * @memberof WorkspaceImage
      */
-    currentPage?: number;
+    id?: number;
     /**
      * 
-     * @type {number}
-     * @memberof Pagination
+     * @type {string}
+     * @memberof WorkspaceImage
      */
-    numberOfPages?: number;
+    image: string;
 }
 
-export function PaginationFromJSON(json: any): Pagination {
-    return PaginationFromJSONTyped(json, false);
+export function WorkspaceImageFromJSON(json: any): WorkspaceImage {
+    return WorkspaceImageFromJSONTyped(json, false);
 }
 
-export function PaginationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Pagination {
+export function WorkspaceImageFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceImage {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'currentPage': !exists(json, 'current_page') ? undefined : json['current_page'],
-        'numberOfPages': !exists(json, 'number_of_pages') ? undefined : json['number_of_pages'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'image': json['image'],
     };
 }
 
-export function PaginationToJSON(value?: Pagination | null): any {
+export function WorkspaceImageToJSON(value?: WorkspaceImage | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function PaginationToJSON(value?: Pagination | null): any {
     }
     return {
         
-        'current_page': value.currentPage,
-        'number_of_pages': value.numberOfPages,
+        'id': value.id,
+        'image': value.image,
     };
 }
 

@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Valid
+ * @interface InlineObject1
  */
-export interface Valid {
+export interface InlineObject1 {
     /**
      * 
-     * @type {string}
-     * @memberof Valid
+     * @type {Blob}
+     * @memberof InlineObject1
      */
-    response?: string;
+    thumbNail?: Blob;
 }
 
-export function ValidFromJSON(json: any): Valid {
-    return ValidFromJSONTyped(json, false);
+export function InlineObject1FromJSON(json: any): InlineObject1 {
+    return InlineObject1FromJSONTyped(json, false);
 }
 
-export function ValidFromJSONTyped(json: any, ignoreDiscriminator: boolean): Valid {
+export function InlineObject1FromJSONTyped(json: any, ignoreDiscriminator: boolean): InlineObject1 {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'response': !exists(json, 'response') ? undefined : json['response'],
+        'thumbNail': !exists(json, 'thumbNail') ? undefined : json['thumbNail'],
     };
 }
 
-export function ValidToJSON(value?: Valid | null): any {
+export function InlineObject1ToJSON(value?: InlineObject1 | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +50,7 @@ export function ValidToJSON(value?: Valid | null): any {
     }
     return {
         
-        'response': value.response,
+        'thumbNail': value.thumbNail,
     };
 }
 

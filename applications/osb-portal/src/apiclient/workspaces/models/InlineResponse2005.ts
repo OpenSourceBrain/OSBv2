@@ -14,52 +14,52 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    OSBRepository,
-    OSBRepositoryFromJSON,
-    OSBRepositoryFromJSONTyped,
-    OSBRepositoryToJSON,
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
     PaginationToJSON,
+    WorkspaceHasType,
+    WorkspaceHasTypeFromJSON,
+    WorkspaceHasTypeFromJSONTyped,
+    WorkspaceHasTypeToJSON,
 } from './';
 
 /**
  * 
  * @export
- * @interface InlineResponse2001
+ * @interface InlineResponse2005
  */
-export interface InlineResponse2001 {
+export interface InlineResponse2005 {
     /**
      * 
      * @type {Pagination}
-     * @memberof InlineResponse2001
+     * @memberof InlineResponse2005
      */
     pagination?: Pagination;
     /**
      * 
-     * @type {Array<OSBRepository>}
-     * @memberof InlineResponse2001
+     * @type {Array<WorkspaceHasType>}
+     * @memberof InlineResponse2005
      */
-    osbrepositories?: Array<OSBRepository>;
+    osbrepositories?: Array<WorkspaceHasType>;
 }
 
-export function InlineResponse2001FromJSON(json: any): InlineResponse2001 {
-    return InlineResponse2001FromJSONTyped(json, false);
+export function InlineResponse2005FromJSON(json: any): InlineResponse2005 {
+    return InlineResponse2005FromJSONTyped(json, false);
 }
 
-export function InlineResponse2001FromJSONTyped(json: any, ignoreDiscriminator: boolean): InlineResponse2001 {
+export function InlineResponse2005FromJSONTyped(json: any, ignoreDiscriminator: boolean): InlineResponse2005 {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
-        'osbrepositories': !exists(json, 'osbrepositories') ? undefined : ((json['osbrepositories'] as Array<any>).map(OSBRepositoryFromJSON)),
+        'osbrepositories': !exists(json, 'osbrepositories') ? undefined : ((json['osbrepositories'] as Array<any>).map(WorkspaceHasTypeFromJSON)),
     };
 }
 
-export function InlineResponse2001ToJSON(value?: InlineResponse2001 | null): any {
+export function InlineResponse2005ToJSON(value?: InlineResponse2005 | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -69,7 +69,7 @@ export function InlineResponse2001ToJSON(value?: InlineResponse2001 | null): any
     return {
         
         'pagination': PaginationToJSON(value.pagination),
-        'osbrepositories': value.osbrepositories === undefined ? undefined : ((value.osbrepositories as Array<any>).map(OSBRepositoryToJSON)),
+        'osbrepositories': value.osbrepositories === undefined ? undefined : ((value.osbrepositories as Array<any>).map(WorkspaceHasTypeToJSON)),
     };
 }
 

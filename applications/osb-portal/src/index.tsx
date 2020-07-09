@@ -17,7 +17,7 @@ const commonUrl = window.location.host.replace('www', 'common') + '/api/sentry/g
 fetch(commonUrl)
   .then(response => response.json())
   .then(sentryDSN => Sentry.init({dsn: sentryDSN.dsn}))
-  .catch(err=>{
+  .catch(err => {
     // continue without Sentry
   });
 

@@ -13,42 +13,49 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    WorkspaceType,
+    WorkspaceTypeFromJSON,
+    WorkspaceTypeFromJSONTyped,
+    WorkspaceTypeToJSON,
+} from './';
+
 /**
- * Workspace tags linking to workspaces
+ * Workspace types of a workspace, a workspace can have multiple types
  * @export
- * @interface WorkspaceTag
+ * @interface WorkspaceHasType
  */
-export interface WorkspaceTag {
+export interface WorkspaceHasType {
     /**
      * 
      * @type {number}
-     * @memberof WorkspaceTag
+     * @memberof WorkspaceHasType
      */
     id?: number;
     /**
-     * WorkspaceTag tag
-     * @type {string}
-     * @memberof WorkspaceTag
+     * 
+     * @type {WorkspaceType}
+     * @memberof WorkspaceHasType
      */
-    tag: string;
+    type: WorkspaceType;
 }
 
-export function WorkspaceTagFromJSON(json: any): WorkspaceTag {
-    return WorkspaceTagFromJSONTyped(json, false);
+export function WorkspaceHasTypeFromJSON(json: any): WorkspaceHasType {
+    return WorkspaceHasTypeFromJSONTyped(json, false);
 }
 
-export function WorkspaceTagFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceTag {
+export function WorkspaceHasTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceHasType {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'tag': json['tag'],
+        'type': WorkspaceTypeFromJSON(json['type']),
     };
 }
 
-export function WorkspaceTagToJSON(value?: WorkspaceTag | null): any {
+export function WorkspaceHasTypeToJSON(value?: WorkspaceHasType | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +65,7 @@ export function WorkspaceTagToJSON(value?: WorkspaceTag | null): any {
     return {
         
         'id': value.id,
-        'tag': value.tag,
+        'type': WorkspaceTypeToJSON(value.type),
     };
 }
 

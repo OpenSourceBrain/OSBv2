@@ -50,10 +50,10 @@ export const WorkspaceCard = (props: Props) => {
       <CardContent>
       <div className={classes.image}>
           <Link href={`/workspace/${workspace.id}`} color="inherit">
-            {!workspace.image ? (
+            {!workspace.thumbnail ? (
               <FolderIcon className={classes.imageIcon} />
             ) : (
-              <img src={workspace.image} title={openTitle} alt={openTitle} />
+              <img src={workspace.thumbnail} title={openTitle} alt={openTitle} />
             )}
           </Link>
         </div>
@@ -66,7 +66,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption">
-          Last edited: {workspace.lastApplicationEdit}, {workspace.lastEdited}
+          Last edited: {workspace.timestampUpdated}, {workspace.lastType}
         </Typography>
       </CardContent>
     </Card>

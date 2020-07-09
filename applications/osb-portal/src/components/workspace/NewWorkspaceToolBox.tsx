@@ -9,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
-import { OSBApplication } from "../../types/global";
+import { WorkspaceType } from "../../apiclient/workspaces/models/WorkspaceType";
 
 import WorkspaceItem from "./NewWorkspaceItem";
 
@@ -49,7 +49,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.CircleIcon}
               title="Single Cell"
-              application={OSBApplication.netpyne}
+              application={WorkspaceType.Netpyne}
               user={user}
             />
           </Grid>
@@ -57,7 +57,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.SquareCirclesIcon}
               title="Network"
-              application={OSBApplication.netpyne}
+              application={WorkspaceType.Netpyne}
               user={user}
             />
           </Grid>
@@ -65,7 +65,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.ChartIcon}
               title="Data Analysis"
-              application={OSBApplication.nwbexplorer}
+              application={WorkspaceType.Nwbexplorer}
               user={user}
             />
           </Grid>
@@ -73,7 +73,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.CubeIcon}
               title="Playground"
-              application={OSBApplication.jupyterlab}
+              application={WorkspaceType.Jupyterlab}
               user={user}
             />
           </Grid>
