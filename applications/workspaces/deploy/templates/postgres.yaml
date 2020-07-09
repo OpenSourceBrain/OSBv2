@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspaces-db
+  labels:
+    app: {{ .Values.apps.workspaces.postgres.name }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.apps.workspaces.postgres.name }}
+  labels:
+    app: {{ .Values.apps.workspaces.postgres.name }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+   - port: 5432
+  selector:
+   app: {{ .Values.apps.workspaces.postgres.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.apps.workspaces.postgres.name }}
+  labels:
+    app: {{ .Values.apps.workspaces.postgres.name }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.apps.workspaces.postgres.name | quote }}
+{{ include "deploy_utils.labels" $ | indent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.apps.workspaces.postgres.name }}
+{{ include "deploy_utils.labels" $ | indent 8 }}
+    spec:
+      containers:
+      - name: {{ .Values.apps.workspaces.postgres.name | default "workspaces-postgress" | quote }}
+        image: {{ .Values.apps.workspaces.postgres.image | quote }}
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: POSTGRES_DB
+          value: {{ .Values.apps.workspaces.postgres.initialdb | quote }}
+        - name: POSTGRES_USER
+          value: {{ .Values.apps.workspaces.postgres.user | quote }}
+        - name: POSTGRES_PASSWORD
+          value: {{ .Values.apps.workspaces.postgres.password | quote }}
+        - name: PGDATA
+          value: {{ .Values.apps.workspaces.postgres.pgdata }}
+        ports:
+          - containerPort: {{ .Values.apps.workspaces.postgres.port }}
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: workspaces-db
+          mountPath: {{ .Values.apps.workspaces.postgres.datavolume }}
+      volumes:
+      - name: workspaces-db
+        persistentVolumeClaim:
+          claimName: workspaces-db
+---

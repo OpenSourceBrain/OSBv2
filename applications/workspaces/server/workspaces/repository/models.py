@@ -42,11 +42,11 @@ class TUser(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    keycloak_id: typing.Optional[str]
-    firstname: typing.Optional[str]
-    lastname: typing.Optional[str]
-    email: typing.Optional[str]
+    id: "sqlalchemy.Column[int]"
+    keycloak_id: "sqlalchemy.Column[typing.Optional[str]]"
+    firstname: "sqlalchemy.Column[typing.Optional[str]]"
+    lastname: "sqlalchemy.Column[typing.Optional[str]]"
+    email: "sqlalchemy.Column[typing.Optional[str]]"
 
     def __init__(
         self,
@@ -126,7 +126,7 @@ class TUser(typing_extensions.Protocol):
         ...
 
 
-User: TUser = models.User  # type: ignore
+User: typing.Type[TUser] = models.User  # type: ignore
 
 
 class _WorkspaceDictBase(typing_extensions.TypedDict, total=True):
@@ -140,9 +140,13 @@ class WorkspaceDict(_WorkspaceDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    timestamp_created: typing.Optional[datetime.datetime]
-    timestamp_updated: typing.Optional[datetime.datetime]
+    timestamp_created: typing.Optional[str]
+    timestamp_updated: typing.Optional[str]
     tags: typing.Sequence["WorkspaceTagDict"]
+    last_type: str
+    types: typing.Sequence["WorkspaceHasTypeDict"]
+    thumbnail: typing.Optional[str]
+    gallery: typing.Sequence["WorkspaceImageDict"]
     owner: typing.Optional["UserDict"]
     publicable: bool
     license: typing.Optional[str]
@@ -164,6 +168,13 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
         tags: Workspace tags
+        last_type: Workspace type: type of a Workspace, a workspace can have
+            multiple unique types assigned   * netpyne - Single cell/Network
+            NetPyNE  * nwbexplorer - Data analyses NWB Explorer  * jupyterlab -
+            Jupyter Lab playground
+        types: Workspace types of the workspace
+        thumbnail: The thumbnail of the Workspace.
+        gallery: Gallery with images of the workspace
         owner: The owner of the Workspace.
         publicable: Is the workspace available for non collaborators? Default
             false
@@ -180,18 +191,22 @@ class TWorkspace(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    name: str
-    description: str
-    timestamp_created: typing.Optional[datetime.datetime]
-    timestamp_updated: typing.Optional[datetime.datetime]
-    tags: typing.Sequence["TWorkspaceTag"]
-    owner: typing.Optional["TUser"]
-    publicable: bool
-    license: typing.Optional[str]
-    collaborators: typing.Sequence["TUser"]
-    resources: typing.Sequence["TWorkspaceResource"]
-    storage: typing.Optional["TVolumeStorage"]
+    id: "sqlalchemy.Column[int]"
+    name: "sqlalchemy.Column[str]"
+    description: "sqlalchemy.Column[str]"
+    timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
+    timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
+    tags: 'sqlalchemy.Column[typing.Sequence["TWorkspaceTag"]]'
+    last_type: "sqlalchemy.Column[str]"
+    types: 'sqlalchemy.Column[typing.Sequence["TWorkspaceHasType"]]'
+    thumbnail: "sqlalchemy.Column[typing.Optional[str]]"
+    gallery: 'sqlalchemy.Column[typing.Sequence["TWorkspaceImage"]]'
+    owner: 'sqlalchemy.Column[typing.Optional["TUser"]]'
+    publicable: "sqlalchemy.Column[bool]"
+    license: "sqlalchemy.Column[typing.Optional[str]]"
+    collaborators: 'sqlalchemy.Column[typing.Sequence["TUser"]]'
+    resources: 'sqlalchemy.Column[typing.Sequence["TWorkspaceResource"]]'
+    storage: 'sqlalchemy.Column[typing.Optional["TVolumeStorage"]]'
 
     def __init__(
         self,
@@ -201,6 +216,10 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["TWorkspaceTag"]] = None,
+        last_type: str = "netpyne",
+        types: typing.Optional[typing.Sequence["TWorkspaceHasType"]] = None,
+        thumbnail: typing.Optional[str] = None,
+        gallery: typing.Optional[typing.Sequence["TWorkspaceImage"]] = None,
         owner: typing.Optional["TUser"] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
@@ -218,6 +237,13 @@ class TWorkspace(typing_extensions.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: Workspace tags
+            last_type: Workspace type: type of a Workspace, a workspace can
+                have multiple unique types assigned   * netpyne - Single
+                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
+                Explorer  * jupyterlab - Jupyter Lab playground
+            types: Workspace types of the workspace
+            thumbnail: The thumbnail of the Workspace.
+            gallery: Gallery with images of the workspace
             owner: The owner of the Workspace.
             publicable: Is the workspace available for non collaborators?
                 Default false
@@ -238,6 +264,10 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["WorkspaceTagDict"]] = None,
+        last_type: str = "netpyne",
+        types: typing.Optional[typing.Sequence["WorkspaceHasTypeDict"]] = None,
+        thumbnail: typing.Optional[str] = None,
+        gallery: typing.Optional[typing.Sequence["WorkspaceImageDict"]] = None,
         owner: typing.Optional["UserDict"] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
@@ -255,6 +285,13 @@ class TWorkspace(typing_extensions.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: Workspace tags
+            last_type: Workspace type: type of a Workspace, a workspace can
+                have multiple unique types assigned   * netpyne - Single
+                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
+                Explorer  * jupyterlab - Jupyter Lab playground
+            types: Workspace types of the workspace
+            thumbnail: The thumbnail of the Workspace.
+            gallery: Gallery with images of the workspace
             owner: The owner of the Workspace.
             publicable: Is the workspace available for non collaborators?
                 Default false
@@ -301,7 +338,208 @@ class TWorkspace(typing_extensions.Protocol):
         ...
 
 
-Workspace: TWorkspace = models.Workspace  # type: ignore
+Workspace: typing.Type[TWorkspace] = models.Workspace  # type: ignore
+
+
+class _WorkspaceHasTypeDictBase(typing_extensions.TypedDict, total=True):
+    """TypedDict for properties that are required."""
+
+    type: str
+
+
+class WorkspaceHasTypeDict(_WorkspaceHasTypeDictBase, total=False):
+    """TypedDict for properties that are not required."""
+
+    id: int
+
+
+class TWorkspaceHasType(typing_extensions.Protocol):
+    """
+    SQLAlchemy model protocol.
+
+    Workspace types of a workspace, a workspace can have multiple types
+
+    Attrs:
+        id: The id of the WorkspaceHasType.
+        type: Workspace type: type of a Workspace, a workspace can have
+            multiple unique types assigned   * netpyne - Single cell/Network
+            NetPyNE  * nwbexplorer - Data analyses NWB Explorer  * jupyterlab -
+            Jupyter Lab playground
+
+    """
+
+    # SQLAlchemy properties
+    __table__: sqlalchemy.Table
+    __tablename__: str
+    query: orm.Query
+
+    # Model properties
+    id: "sqlalchemy.Column[int]"
+    type: "sqlalchemy.Column[str]"
+
+    def __init__(self, type: str, id: typing.Optional[int] = None) -> None:
+        """
+        Construct.
+
+        Args:
+            id: The id of the WorkspaceHasType.
+            type: Workspace type: type of a Workspace, a workspace can have
+                multiple unique types assigned   * netpyne - Single
+                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
+                Explorer  * jupyterlab - Jupyter Lab playground
+
+        """
+        ...
+
+    @classmethod
+    def from_dict(
+        cls, type: str, id: typing.Optional[int] = None
+    ) -> "TWorkspaceHasType":
+        """
+        Construct from a dictionary (eg. a POST payload).
+
+        Args:
+            id: The id of the WorkspaceHasType.
+            type: Workspace type: type of a Workspace, a workspace can have
+                multiple unique types assigned   * netpyne - Single
+                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
+                Explorer  * jupyterlab - Jupyter Lab playground
+
+        Returns:
+            Model instance based on the dictionary.
+
+        """
+        ...
+
+    @classmethod
+    def from_str(cls, value: str) -> "TWorkspaceHasType":
+        """
+        Construct from a JSON string (eg. a POST payload).
+
+        Returns:
+            Model instance based on the JSON string.
+
+        """
+        ...
+
+    def to_dict(self) -> WorkspaceHasTypeDict:
+        """
+        Convert to a dictionary (eg. to send back for a GET request).
+
+        Returns:
+            Dictionary based on the model instance.
+
+        """
+        ...
+
+    def to_str(self) -> str:
+        """
+        Convert to a JSON string (eg. to send back for a GET request).
+
+        Returns:
+            JSON string based on the model instance.
+
+        """
+        ...
+
+
+WorkspaceHasType: typing.Type[TWorkspaceHasType] = models.WorkspaceHasType  # type: ignore
+
+
+class _WorkspaceImageDictBase(typing_extensions.TypedDict, total=True):
+    """TypedDict for properties that are required."""
+
+    image: str
+
+
+class WorkspaceImageDict(_WorkspaceImageDictBase, total=False):
+    """TypedDict for properties that are not required."""
+
+    id: int
+
+
+class TWorkspaceImage(typing_extensions.Protocol):
+    """
+    SQLAlchemy model protocol.
+
+    Workspace images of a workspace
+
+    Attrs:
+        id: The id of the WorkspaceImage.
+        image: The image of the WorkspaceImage.
+
+    """
+
+    # SQLAlchemy properties
+    __table__: sqlalchemy.Table
+    __tablename__: str
+    query: orm.Query
+
+    # Model properties
+    id: "sqlalchemy.Column[int]"
+    image: "sqlalchemy.Column[str]"
+
+    def __init__(self, image: str, id: typing.Optional[int] = None) -> None:
+        """
+        Construct.
+
+        Args:
+            id: The id of the WorkspaceImage.
+            image: The image of the WorkspaceImage.
+
+        """
+        ...
+
+    @classmethod
+    def from_dict(
+        cls, image: str, id: typing.Optional[int] = None
+    ) -> "TWorkspaceImage":
+        """
+        Construct from a dictionary (eg. a POST payload).
+
+        Args:
+            id: The id of the WorkspaceImage.
+            image: The image of the WorkspaceImage.
+
+        Returns:
+            Model instance based on the dictionary.
+
+        """
+        ...
+
+    @classmethod
+    def from_str(cls, value: str) -> "TWorkspaceImage":
+        """
+        Construct from a JSON string (eg. a POST payload).
+
+        Returns:
+            Model instance based on the JSON string.
+
+        """
+        ...
+
+    def to_dict(self) -> WorkspaceImageDict:
+        """
+        Convert to a dictionary (eg. to send back for a GET request).
+
+        Returns:
+            Dictionary based on the model instance.
+
+        """
+        ...
+
+    def to_str(self) -> str:
+        """
+        Convert to a JSON string (eg. to send back for a GET request).
+
+        Returns:
+            JSON string based on the model instance.
+
+        """
+        ...
+
+
+WorkspaceImage: typing.Type[TWorkspaceImage] = models.WorkspaceImage  # type: ignore
 
 
 class _WorkspaceTagDictBase(typing_extensions.TypedDict, total=True):
@@ -334,8 +572,8 @@ class TWorkspaceTag(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    tag: str
+    id: "sqlalchemy.Column[int]"
+    tag: "sqlalchemy.Column[str]"
 
     def __init__(self, tag: str, id: typing.Optional[int] = None) -> None:
         """
@@ -395,7 +633,7 @@ class TWorkspaceTag(typing_extensions.Protocol):
         ...
 
 
-WorkspaceTag: TWorkspaceTag = models.WorkspaceTag  # type: ignore
+WorkspaceTag: typing.Type[TWorkspaceTag] = models.WorkspaceTag  # type: ignore
 
 
 class _WorkspaceResourceDictBase(typing_extensions.TypedDict, total=True):
@@ -431,9 +669,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    name: str
-    resource_type: str
+    id: "sqlalchemy.Column[int]"
+    name: "sqlalchemy.Column[str]"
+    resource_type: "sqlalchemy.Column[str]"
 
     def __init__(
         self, name: str, resource_type: str, id: typing.Optional[int] = None
@@ -501,7 +739,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         ...
 
 
-WorkspaceResource: TWorkspaceResource = models.WorkspaceResource  # type: ignore
+WorkspaceResource: typing.Type[TWorkspaceResource] = models.WorkspaceResource  # type: ignore
 
 
 class _VolumeStorageDictBase(typing_extensions.TypedDict, total=True):
@@ -534,8 +772,8 @@ class TVolumeStorage(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    name: str
+    id: "sqlalchemy.Column[int]"
+    name: "sqlalchemy.Column[str]"
 
     def __init__(self, name: str, id: typing.Optional[int] = None) -> None:
         """
@@ -595,7 +833,7 @@ class TVolumeStorage(typing_extensions.Protocol):
         ...
 
 
-VolumeStorage: TVolumeStorage = models.VolumeStorage  # type: ignore
+VolumeStorage: typing.Type[TVolumeStorage] = models.VolumeStorage  # type: ignore
 
 
 class _OSBRepositoryDictBase(typing_extensions.TypedDict, total=True):
@@ -634,11 +872,11 @@ class TOSBRepository(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    uuid: str
-    name: str
-    storage: "TVolumeStorage"
-    resources: typing.Sequence["TWorkspaceResource"]
+    id: "sqlalchemy.Column[int]"
+    uuid: "sqlalchemy.Column[str]"
+    name: "sqlalchemy.Column[str]"
+    storage: 'sqlalchemy.Column["TVolumeStorage"]'
+    resources: 'sqlalchemy.Column[typing.Sequence["TWorkspaceResource"]]'
 
     def __init__(
         self,
@@ -718,7 +956,7 @@ class TOSBRepository(typing_extensions.Protocol):
         ...
 
 
-OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
+OSBRepository: typing.Type[TOSBRepository] = models.OSBRepository  # type: ignore
 
 
 class _GITRepositoryDictBase(typing_extensions.TypedDict, total=True):
@@ -755,10 +993,10 @@ class TGITRepository(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    public_key: str
-    private_key: str
-    url: str
+    id: "sqlalchemy.Column[int]"
+    public_key: "sqlalchemy.Column[str]"
+    private_key: "sqlalchemy.Column[str]"
+    url: "sqlalchemy.Column[str]"
 
     def __init__(
         self,
@@ -834,7 +1072,7 @@ class TGITRepository(typing_extensions.Protocol):
         ...
 
 
-GITRepository: TGITRepository = models.GITRepository  # type: ignore
+GITRepository: typing.Type[TGITRepository] = models.GITRepository  # type: ignore
 
 
 class _FigshareRepositoryDictBase(typing_extensions.TypedDict, total=True):
@@ -867,8 +1105,8 @@ class TFigshareRepository(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: int
-    url: str
+    id: "sqlalchemy.Column[int]"
+    url: "sqlalchemy.Column[str]"
 
     def __init__(self, url: str, id: typing.Optional[int] = None) -> None:
         """
@@ -930,4 +1168,4 @@ class TFigshareRepository(typing_extensions.Protocol):
         ...
 
 
-FigshareRepository: TFigshareRepository = models.FigshareRepository  # type: ignore
+FigshareRepository: typing.Type[TFigshareRepository] = models.FigshareRepository  # type: ignore

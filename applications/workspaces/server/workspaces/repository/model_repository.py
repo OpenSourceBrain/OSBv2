@@ -9,7 +9,7 @@ from ..config import Config
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage
+from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, WorkspaceHasType
 
 
 logger = logging.getLogger(Config.APP_NAME)
@@ -74,3 +74,7 @@ class FigshareRepositoryRepository(BaseModelRepository):
 
 class VolumeStorageRepository(BaseModelRepository):
     model = VolumeStorage
+
+
+class WorkspaceHasTypeRepository(BaseModelRepository):
+    model = WorkspaceHasType

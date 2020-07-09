@@ -168,7 +168,7 @@ class BaseModelRepository:
         if new_obj.id is not None:
             tmp_obj, found = self._get(new_obj.id)
             if found:
-                return "{} with id {} already exists.".format(self.model.__name__, new_obj.id), 400
+                return f"{self.model.__name__} with id {id} already exists.", 400
             # POST means create new record so clear the current object ID
             new_obj.id = None
 
@@ -202,9 +202,9 @@ class BaseModelRepository:
 
     def put(self, body, id):
         """Update an object in the repository."""
-        obj, found = self._get(id)
+        obj, found = self._get(id=id)
         if not found:
-            return "{} with id {} not found.".format(self.model.__name__, id), 404
+            return f"{self.model.__name__} with id {id} not found.", 404
 
         new_obj = self.model.from_dict(**body)
         obj = self._copy_attrs(obj, new_obj)
@@ -220,6 +220,6 @@ class BaseModelRepository:
         """Delete an object from the repository."""
         result = self.model.query.filter_by(id=id).delete()
         if not result:
-            return "{} with id {} not found.".format(self.model.__name__, id), 404
+            return f"{self.model.__name__} with id {id} not found.", 404
         db.session.commit()
         return 200
