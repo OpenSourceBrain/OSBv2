@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 
 import Keycloak from 'keycloak-js';
 import { userLogin } from './store/actions/user';
+import { fetchWorkspacesAction } from './store/actions/workspaces';
 import { initApis } from "./middleware/osbbackend";
 
 import { CONFIGURATION } from "./config";
@@ -36,6 +37,7 @@ keycloak.init({
       }));
   }
   initApis(keycloak.token);
+  store.dispatch(fetchWorkspacesAction());
 });
 
 // set token refresh to 5 minutes
@@ -43,6 +45,7 @@ keycloak.onTokenExpired = () => {
   keycloak.updateToken(5).success((refreshed) => {
     if (refreshed){
       initApis(keycloak.token);
+      store.dispatch(fetchWorkspacesAction());
     } else {
       alert('not refreshed ' + new Date());
     }

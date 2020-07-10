@@ -36,9 +36,6 @@ import {
     InlineResponse2004,
     InlineResponse2004FromJSON,
     InlineResponse2004ToJSON,
-    InlineResponse2005,
-    InlineResponse2005FromJSON,
-    InlineResponse2005ToJSON,
     OSBRepository,
     OSBRepositoryFromJSON,
     OSBRepositoryToJSON,
@@ -48,9 +45,6 @@ import {
     Workspace,
     WorkspaceFromJSON,
     WorkspaceToJSON,
-    WorkspaceHasType,
-    WorkspaceHasTypeFromJSON,
-    WorkspaceHasTypeToJSON,
     WorkspaceType,
     WorkspaceTypeFromJSON,
     WorkspaceTypeToJSON,
@@ -171,15 +165,6 @@ export interface WorkspacePostRequest {
     workspace: Workspace;
 }
 
-export interface WorkspacehastypeGetRequest {
-    page?: number;
-    perPage?: number;
-}
-
-export interface WorkspacehastypePostRequest {
-    workspaceHasType: WorkspaceHasType;
-}
-
 export interface WorkspacesControllerWorkspaceAddimageRequest {
     id: number;
     image?: Blob;
@@ -188,6 +173,16 @@ export interface WorkspacesControllerWorkspaceAddimageRequest {
 export interface WorkspacesControllerWorkspaceAddtypeRequest {
     id: number;
     workspaceType?: WorkspaceType;
+}
+
+export interface WorkspacesControllerWorkspaceDelimageRequest {
+    id: number;
+    imageId: number;
+}
+
+export interface WorkspacesControllerWorkspaceDeltypeRequest {
+    id: number;
+    typeId: number;
 }
 
 export interface WorkspacesControllerWorkspaceSetthumbnailRequest {
@@ -1058,6 +1053,14 @@ export class RestApi extends runtime.BaseAPI {
         const queryParameters: runtime.HTTPQuery = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         const response = await this.request({
             path: `/workspace/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
@@ -1164,81 +1167,6 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to list all available workspacehastype.
-     */
-    async workspacehastypeGetRaw(requestParameters: WorkspacehastypeGetRequest): Promise<runtime.ApiResponse<InlineResponse2005>> {
-        const queryParameters: runtime.HTTPQuery = {};
-
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
-        }
-
-        if (requestParameters.perPage !== undefined) {
-            queryParameters['per_page'] = requestParameters.perPage;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/workspacehastype`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2005FromJSON(jsonValue));
-    }
-
-    /**
-     * Used to list all available workspacehastype.
-     */
-    async workspacehastypeGet(requestParameters: WorkspacehastypeGetRequest): Promise<InlineResponse2005> {
-        const response = await this.workspacehastypeGetRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Used to save a workspacehastype to the repository. The owner will be automatically filled with the current user
-     */
-    async workspacehastypePostRaw(requestParameters: WorkspacehastypePostRequest): Promise<runtime.ApiResponse<WorkspaceHasType>> {
-        if (requestParameters.workspaceHasType === null || requestParameters.workspaceHasType === undefined) {
-            throw new runtime.RequiredError('workspaceHasType','Required parameter requestParameters.workspaceHasType was null or undefined when calling workspacehastypePost.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/workspacehastype`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: WorkspaceHasTypeToJSON(requestParameters.workspaceHasType),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceHasTypeFromJSON(jsonValue));
-    }
-
-    /**
-     * Used to save a workspacehastype to the repository. The owner will be automatically filled with the current user
-     */
-    async workspacehastypePost(requestParameters: WorkspacehastypePostRequest): Promise<WorkspaceHasType> {
-        const response = await this.workspacehastypePostRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
      * Adds and image to the workspace.
      */
     async workspacesControllerWorkspaceAddimageRaw(requestParameters: WorkspacesControllerWorkspaceAddimageRequest): Promise<runtime.ApiResponse<void>> {
@@ -1271,7 +1199,7 @@ export class RestApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/workspace/{id}/addimage`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/workspace/{id}/gallery/add`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -1300,14 +1228,6 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const consumes: runtime.Consume[] = [
             { contentType: 'multipart/form-data' },
         ];
@@ -1327,7 +1247,7 @@ export class RestApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/workspace/{id}/addtype`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/workspace/{id}/type/add`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -1345,6 +1265,72 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
+     * Delete a Workspace Image from the workspace.
+     */
+    async workspacesControllerWorkspaceDelimageRaw(requestParameters: WorkspacesControllerWorkspaceDelimageRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllerWorkspaceDelimage.');
+        }
+
+        if (requestParameters.imageId === null || requestParameters.imageId === undefined) {
+            throw new runtime.RequiredError('imageId','Required parameter requestParameters.imageId was null or undefined when calling workspacesControllerWorkspaceDelimage.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/workspace/{id}/gallery/{image_id}/delete`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"image_id"}}`, encodeURIComponent(String(requestParameters.imageId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete a Workspace Image from the workspace.
+     */
+    async workspacesControllerWorkspaceDelimage(requestParameters: WorkspacesControllerWorkspaceDelimageRequest): Promise<void> {
+        await this.workspacesControllerWorkspaceDelimageRaw(requestParameters);
+    }
+
+    /**
+     * Delete a Workspace Type from the workspace.
+     */
+    async workspacesControllerWorkspaceDeltypeRaw(requestParameters: WorkspacesControllerWorkspaceDeltypeRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllerWorkspaceDeltype.');
+        }
+
+        if (requestParameters.typeId === null || requestParameters.typeId === undefined) {
+            throw new runtime.RequiredError('typeId','Required parameter requestParameters.typeId was null or undefined when calling workspacesControllerWorkspaceDeltype.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/workspace/{id}/type/{type_id}/delete`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"type_id"}}`, encodeURIComponent(String(requestParameters.typeId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete a Workspace Type from the workspace.
+     */
+    async workspacesControllerWorkspaceDeltype(requestParameters: WorkspacesControllerWorkspaceDeltypeRequest): Promise<void> {
+        await this.workspacesControllerWorkspaceDeltypeRaw(requestParameters);
+    }
+
+    /**
      * Sets the thumbnail of the workspace.
      */
     async workspacesControllerWorkspaceSetthumbnailRaw(requestParameters: WorkspacesControllerWorkspaceSetthumbnailRequest): Promise<runtime.ApiResponse<void>> {
@@ -1356,6 +1342,14 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const consumes: runtime.Consume[] = [
             { contentType: 'multipart/form-data' },
         ];
@@ -1377,7 +1371,7 @@ export class RestApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/workspace/{id}/setthumbnail`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/workspace/{id}/thumbnail/put`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

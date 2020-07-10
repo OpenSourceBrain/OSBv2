@@ -1,24 +1,23 @@
+import { WorkspaceIdGetRequest } from "../apiclient/workspaces/apis/RestApi";
+import { workspacesApi } from '../middleware/osbbackend';
+
 import { Workspace } from "../types/workspace";
-import { FeaturedType, OSBApplication } from '../types//global'
+import { FeaturedType } from '../types//global';
 
 
 class WorkspaceService {
-  getWorkspace(id: string): Workspace {
-    // TODO connect with backend
-    return {
-      name: "My workspace",
-      id: "1",
-      volume: "1",
-      description: "# Workspace descrition\n\ntext text",
-      image: null,
-      owner: "1",
-      lastEdited: Date(),
-      lastApplicationEdit: OSBApplication.nwbexplorer,
-      shareType: FeaturedType.Private,
-      lastEditedUserId: "1",
-      types: [OSBApplication.nwbexplorer]
+  async getWorkspace(id: number): Promise<Workspace> {
 
-    };
+    const wsigr: WorkspaceIdGetRequest = {id};
+    let result : Workspace = null;
+    await workspacesApi.workspaceIdGet(wsigr).then(workspace => {
+      result = {
+        ...workspace,
+        shareType: FeaturedType.Private,
+        volume: "1",
+      }
+    });
+    return result;
   }
 }
 
