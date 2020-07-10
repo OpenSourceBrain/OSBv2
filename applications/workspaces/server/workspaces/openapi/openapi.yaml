@@ -175,8 +175,8 @@ paths:
     post:
       summary: Sets the thumbnail of the workspace.
       operationId: workspaces.controller.workspace.setthumbnail
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           multipart/form-data:
@@ -204,8 +204,8 @@ paths:
     post:
       summary: Adds and image to the workspace.
       operationId: workspaces.controller.workspace.addimage
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           multipart/form-data:

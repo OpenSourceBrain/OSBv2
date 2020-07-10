@@ -3,11 +3,10 @@ import jwt
 import sys
 import json
 import requests
-from urllib.parse import urljoin
-from typing import List
-from flask import current_app
 from cloudharness.utils import env
-from flask import request
+from flask import request, current_app
+from typing import List
+from urllib.parse import urljoin
 
 
 def get_keycloak_data():
