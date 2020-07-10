@@ -135,7 +135,7 @@ paths:
           description: The workspace was not found.
       tags:
         - rest
-  /workspace/{id}/addtype:
+  /workspace/{id}/type/add:
     parameters:
       - in: path
         name: id
@@ -164,7 +164,33 @@ paths:
           description: The workspace was not found or workspace type not specified         
       tags:
         - rest
-  /workspace/{id}/setthumbnail:
+  /workspace/{id}/type/{type_id}/delete:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+      - in: path
+        name: type_id
+        required: true
+        schema:
+          type: integer
+        description: Workspace Type Id to be deleted from the workspace
+    get:
+      summary: Delete a Workspace Type from the workspace.
+      operationId: workspaces.controller.workspace.deltype
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The Workspace Type is successfully deleted from the workspace.
+        404:
+          description: The workspace was not found.
+      tags:
+        - rest
+  /workspace/{id}/thumbnail/put:
     parameters:
       - in: path
         name: id
@@ -193,7 +219,7 @@ paths:
           description: The workspace was not found or the thumbnail was not specified         
       tags:
         - rest
-  /workspace/{id}/addimage:
+  /workspace/{id}/gallery/add:
     parameters:
       - in: path
         name: id
@@ -220,6 +246,32 @@ paths:
           description: The image was added to the workspace.
         404:
           description: The workspace was not found or the image was not specified         
+      tags:
+        - rest
+  /workspace/{id}/gallery/{image_id}/delete:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+      - in: path
+        name: image_id
+        required: true
+        schema:
+          type: integer
+        description: Workspace Image Id to be deleted from the workspace
+    get:
+      summary: Delete a Workspace Image from the workspace.
+      operationId: workspaces.controller.workspace.delimage
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The Workspace Image is successfully deleted from the workspace.
+        404:
+          description: The workspace was not found.
       tags:
         - rest
 
@@ -697,63 +749,6 @@ paths:
       tags:
         - rest            
 
-  /workspacehastype:
-    get:
-      tags:
-        - rest
-      summary: Used to list all available workspacehastype.
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          required: false
-          description: The page number for starting to collect the result set.
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-            default: 20
-          required: false
-          description: The number of items to return.
-      responses:
-        200:
-          description: Return all available workspacehastype
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-                  osbrepositories:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/WorkspaceHasType"
-    post:
-      tags:
-        - rest                  
-      summary: Used to save a workspacehastype to the repository. The owner will be automatically filled with the current user
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The workspacehastype to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/WorkspaceHasType"
-      responses:
-        201:
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkspaceHasType"
-        400:
-          description: The WorkspaceHasType already exists.
-
 components:
   securitySchemes:
     bearerAuth:
@@ -1007,7 +1002,7 @@ components:
           type: array
           items:
             allOf:
-              - "$ref": "#/components/schemas/WorkspaceResource"
+              - $ref: "#/components/schemas/WorkspaceResource"
               - x-secondary: osbrepository_resources
       required:
         - uuid

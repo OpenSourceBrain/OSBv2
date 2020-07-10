@@ -1,6 +1,6 @@
 import logging
 
-from flask import request
+from flask import request, current_app
 from sqlalchemy import desc
 
 from ..utils import get_keycloak_data
@@ -9,7 +9,8 @@ from ..config import Config
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, WorkspaceHasType
+from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage,\
+     WorkspaceHasType, WorkspaceImage
 
 
 logger = logging.getLogger(Config.APP_NAME)
@@ -22,6 +23,7 @@ class WorkspaceRepository(BaseModelRepository):
         q_base = self.model.query
         if filter is not None:
             q_base = q_base.filter(*filter)
+        logger.info(f"keycloak_id: {self.keycloak_id}")
         if self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
             if owner:
@@ -30,7 +32,7 @@ class WorkspaceRepository(BaseModelRepository):
                 # logged in but not known as owner so return no workspaces
                 owner_id = 0
             q1 = q_base.filter_by(keycloakuser_id=owner_id)
-            q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=owner_id)))
+            q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
@@ -78,3 +80,6 @@ class VolumeStorageRepository(BaseModelRepository):
 
 class WorkspaceHasTypeRepository(BaseModelRepository):
     model = WorkspaceHasType
+
+class WorkspaceImageRepository(BaseModelRepository):
+    model = WorkspaceImage
