@@ -28,12 +28,13 @@ import {
 } from "./index";
 
 export const App = (props: any) => {
-  React.useEffect(() => {
+   React.useEffect(() => {
     props.onLoadWorkspaces();
     props.onLoadModels();
     props.onLoadNWBFiles();
   }, []);
-  return (
+
+   return (
     <SentryErrorBoundary>
       <ThemeProvider theme={theme}>
         <CssBaseline />
