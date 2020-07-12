@@ -11,13 +11,13 @@ import { fetchWorkspacesAction } from './store/actions/workspaces';
 import { initApis } from "./middleware/osbbackend";
 
 import { CONFIGURATION } from "./config";
-import * as Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/react';
 
 const appName = CONFIGURATION.appName;
 const commonUrl = window.location.host.replace('www', 'common') + '/api/sentry/getdsn/' + appName;
 fetch(commonUrl)
   .then(response => response.json())
-  .then(sentryDSN => Sentry.init({dsn: sentryDSN.dsn}))
+  .then(sentryDSN => Sentry.init({ dsn: sentryDSN.dsn }))
   .catch(err => {
     // continue without Sentry
   });
@@ -30,33 +30,34 @@ keycloak.init({
   if (authorized) {
     const userInfo: any = await keycloak.loadUserInfo();
     store.dispatch(userLogin({
-        id: userInfo.sub,
-        firstName: userInfo.given_name,
-        lastName: userInfo.family_name,
-        emailAddress: userInfo.email
-      }));
+      id: userInfo.sub,
+      firstName: userInfo.given_name,
+      lastName: userInfo.family_name,
+      emailAddress: userInfo.email
+      })
+    );
   }
   initApis(keycloak.token);
+}).finally(() => {
   store.dispatch(fetchWorkspacesAction());
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('main')
+  );
 });
 
 // set token refresh to 5 minutes
 keycloak.onTokenExpired = () => {
   keycloak.updateToken(5).success((refreshed) => {
-    if (refreshed){
+    if (refreshed) {
       initApis(keycloak.token);
       store.dispatch(fetchWorkspacesAction());
     } else {
       alert('not refreshed ' + new Date());
     }
   }).error(() => {
-    alert('Failed to refresh token '  + new Date());
+    alert('Failed to refresh token ' + new Date());
   });
 }
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('main')
-);
