@@ -22,6 +22,15 @@ fetch(commonUrl)
     // continue without Sentry
   });
 
+const renderMain = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('main')
+  );
+}
+
 export const keycloak = Keycloak('/keycloak.json');
 keycloak.init({
   onLoad: 'check-sso',
@@ -39,13 +48,7 @@ keycloak.init({
   }
   initApis(keycloak.token);
 }).finally(() => {
-  store.dispatch(fetchWorkspacesAction());
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('main')
-  );
+  renderMain();
 });
 
 // set token refresh to 5 minutes
@@ -53,11 +56,12 @@ keycloak.onTokenExpired = () => {
   keycloak.updateToken(5).success((refreshed) => {
     if (refreshed) {
       initApis(keycloak.token);
-      store.dispatch(fetchWorkspacesAction());
     } else {
       alert('not refreshed ' + new Date());
     }
   }).error(() => {
     alert('Failed to refresh token ' + new Date());
+  }).finally(() => {
+    renderMain();
   });
 }
