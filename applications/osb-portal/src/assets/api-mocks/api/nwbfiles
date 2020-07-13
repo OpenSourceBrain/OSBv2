@@ -1,5 +1,9 @@
 {
-  "items": [
+  "pagination": {
+    "current_page": 1,
+    "number_of_pages": 1
+  },
+  "nwbfiles": [
       {
           "id": 1,
           "name": "Ferguson et Al., 2015",

@@ -13,15 +13,7 @@ import { initApis } from "./middleware/osbbackend";
 import { CONFIGURATION } from "./config";
 import * as Sentry from '@sentry/react';
 
-const appName = CONFIGURATION.appName;
-const commonUrl = window.location.host.replace('www', 'common') + '/api/sentry/getdsn/' + appName;
-fetch(commonUrl)
-  .then(response => response.json())
-  .then(sentryDSN => Sentry.init({ dsn: sentryDSN.dsn }))
-  .catch(err => {
-    // continue without Sentry
-  });
-
+export const keycloak = Keycloak('keycloak.json');
 const renderMain = () => {
   ReactDOM.render(
     <Provider store={store}>
@@ -31,24 +23,34 @@ const renderMain = () => {
   );
 }
 
-export const keycloak = Keycloak('/keycloak.json');
-keycloak.init({
-  onLoad: 'check-sso',
-  silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
-}).then(async (authorized: boolean) => {
-  if (authorized) {
-    const userInfo: any = await keycloak.loadUserInfo();
-    store.dispatch(userLogin({
-      id: userInfo.sub,
-      firstName: userInfo.given_name,
-      lastName: userInfo.family_name,
-      emailAddress: userInfo.email
-      })
-    );
-  }
-  initApis(keycloak.token);
-}).finally(() => {
-  renderMain();
+const appName = CONFIGURATION.appName;
+const commonUrl = window.location.host.replace('www', 'common') + '/api/sentry/getdsn/' + appName;
+fetch(commonUrl)
+  .then(response => response.json())
+  .then(sentryDSN => Sentry.init({ dsn: sentryDSN.dsn }))
+  .finally(() => {
+    try{
+    keycloak.init({
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+    }).then(async (authorized: boolean) => {
+      if (authorized) {
+        const userInfo: any = await keycloak.loadUserInfo();
+        store.dispatch(userLogin({
+          id: userInfo.sub,
+          firstName: userInfo.given_name,
+          lastName: userInfo.family_name,
+          emailAddress: userInfo.email
+          })
+        );
+      }
+      initApis(keycloak.token);
+    }).finally(() => {
+      renderMain();
+    });
+    } catch {
+      renderMain();
+    }
 });
 
 // set token refresh to 5 minutes

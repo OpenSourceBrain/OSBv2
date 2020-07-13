@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const WorkspaceCard = (props: Props) => {
-  const { workspace } = props;
+  const workspace: Workspace = props.workspace;
   const classes = useStyles();
   const openTitle = "Open workspace";
   return (
@@ -66,7 +66,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption">
-          Last edited: {workspace.timestampUpdated}, {workspace.lastType}
+          Last edited: {workspace.timestampUpdated.toString()}, {workspace.lastType}
         </Typography>
       </CardContent>
     </Card>

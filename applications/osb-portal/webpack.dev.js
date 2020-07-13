@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 var path = require('path');
 
 const contentbase = path.join(__dirname, 'public')
-const osbDomain = 'v2.opensourcebrain.org';
+const osbDomain = 'osb.local';
 PORT = 3000;
 
 var proxyTarget = 'https://__APP_NAME__/'
@@ -14,7 +14,6 @@ if (process.env.USE_MOCKS){
 }
 
 const replaceHost = (uri, appName) => uri.replace("__APP_NAME__", appName + '.' + osbDomain);
-console.log(replaceHost( proxyTarget, 'workspaces'));
 
 module.exports = merge({
   mode: 'development',
@@ -24,18 +23,24 @@ module.exports = merge({
     publicPath: '/',
     filename: path.join('js', 'bundle.js'),
     compress: true,
-    https: false,
+    https: true,
     disableHostCheck: true,
     historyApiFallback: true,
-    proxy : [
-      {
-        path : '/api/workspaces',
-        target : replaceHost( proxyTarget, 'workspaces'),
-        secure : false,
-        changeOrigin: true,
-        pathRewrite: {'^/api/workspaces' : ''}
+    proxy : {
+      '/api/workspaces': {
+          target : replaceHost( proxyTarget, 'workspaces'),
+          secure : false,
+          changeOrigin: true,
+          logLevel: "debug",
+          pathRewrite: {'^/api/workspaces' : ''}
       },
-    ],
+      '/keycloak.json': {
+          // serve the dev version of the keycloak json file
+          target : 'https://localhost:'+PORT+'/keycloak/dev/',
+          secure : false,
+          changeOrigin: true
+      },
+    },
     port: PORT
   },
 

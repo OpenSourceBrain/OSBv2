@@ -4,10 +4,10 @@ import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/action
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { setError } from '../store/actions/error'
 import { CallApiAction } from './backend';
-import { keycloak } from '../index';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi } from '../apiclient/workspaces';
+import { WorkspaceGetRequest } from "../apiclient/workspaces/apis/RestApi";
 
 // public call osb action type
 export type CallOSBApiAction = {
@@ -24,20 +24,14 @@ export const initApis = (token: string) => {
 }
 
 // callapi middle actions
-const fetchWorkspacesAction = (): CallApiAction => {
+const fetchWorkspacesAction = (dispatch: any) => {
   // ToDo: pagination & size of pagination
-  return ({
-    type: 'api/fetchWorkspaces',
-    payload: {
-      url: workspacesApiUri + '/workspace?page=1&per_page=2000',
-      successAction: loadWorkspacesActionType,
-      errorAction: setError.toString(),
-      params: {
-        headers: {'Authorization': 'Bearer ' + keycloak.token}}
-    },
-    meta: {
-      callApi: true
-    }
+  const wspr: WorkspaceGetRequest = {};
+  workspacesApi.workspaceGet(wspr).then(({pagination, workspaces}) => {
+    dispatch({
+        type: loadWorkspacesActionType,
+        payload: workspaces
+      });
   })
 }
 
@@ -83,7 +77,8 @@ function createOSBAPIMiddleware() {
     let apiAction = null;
     switch (action.type) {
       case fetchWorkspacesActionType:
-        apiAction = fetchWorkspacesAction()
+        // fetch workspaces from workspaces app
+        fetchWorkspacesAction(dispatch)
         break
       case fetchNWBFilesActionType:
         apiAction = fetchNWBFilesAction()
