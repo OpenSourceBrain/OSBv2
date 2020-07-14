@@ -23,13 +23,22 @@ const renderMain = () => {
   );
 }
 
+const errorCallback = (error: any) => {
+  initApis(null);
+  renderMain();
+}
+
 const appName = CONFIGURATION.appName;
 const commonUrl = window.location.host.replace('www', 'common') + '/api/sentry/getdsn/' + appName;
 fetch(commonUrl)
-  .then(response => response.json())
-  .then(sentryDSN => Sentry.init({ dsn: sentryDSN.dsn }))
+  .then(response => response.json(), errorCallback)
+  .then(sentryDSN => {
+    if (sentryDSN) {
+      Sentry.init({ dsn: sentryDSN.dsn })
+    }
+
+  }, errorCallback)
   .finally(() => {
-    try{
     keycloak.init({
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
@@ -41,17 +50,13 @@ fetch(commonUrl)
           firstName: userInfo.given_name,
           lastName: userInfo.family_name,
           emailAddress: userInfo.email
-          })
+        })
         );
       }
       initApis(keycloak.token);
-    }).finally(() => {
-      renderMain();
-    });
-    } catch {
-      renderMain();
-    }
-});
+    }, errorCallback).finally(() => renderMain());
+
+  });
 
 // set token refresh to 5 minutes
 keycloak.onTokenExpired = () => {

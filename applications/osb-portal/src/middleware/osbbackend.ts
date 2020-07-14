@@ -20,18 +20,18 @@ export type CallOSBApiAction = {
 const workspacesApiUri = '/api/workspaces/api';
 export let workspacesApi: RestApi = null;
 export const initApis = (token: string) => {
-  workspacesApi =  new workspaceApi.RestApi(new Configuration({basePath: workspacesApiUri, accessToken: token}));
+  workspacesApi = new workspaceApi.RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
 }
 
 // callapi middle actions
 const fetchWorkspacesAction = (dispatch: any) => {
   // ToDo: pagination & size of pagination
   const wspr: WorkspaceGetRequest = {};
-  workspacesApi.workspaceGet(wspr).then(({pagination, workspaces}) => {
+  workspacesApi.workspaceGet(wspr).then(({ pagination, workspaces }) => {
     dispatch({
-        type: loadWorkspacesActionType,
-        payload: workspaces
-      });
+      type: loadWorkspacesActionType,
+      payload: workspaces
+    });
   })
 }
 
