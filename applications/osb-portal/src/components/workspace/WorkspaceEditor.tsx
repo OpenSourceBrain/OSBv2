@@ -1,14 +1,15 @@
 import * as React from "react";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from '@material-ui/core/Typography';
 import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
+import Dropzone from 'react-dropzone'
 import "react-markdown-editor-lite/lib/index.css";
-
+import PublishIcon from '@material-ui/icons/Publish';
 import { workspacesApi } from "../../middleware/osbbackend";
 import { WorkspacePostRequest } from "../../apiclient/workspaces/apis/RestApi";
 import * as modelWorkspace from "../../apiclient/workspaces/models/Workspace";
@@ -17,6 +18,22 @@ interface WorkspaceEditProps {
   workspace: modelWorkspace.Workspace;
   onLoadWorkspace: (workspace: modelWorkspace.Workspace) => void;
 }
+
+const style = {
+  flex: 1,
+  display: 'flex',
+  alignItems: 'center',
+  borderWidth: 2,
+  width : "100%",
+  height : "100%",
+  borderRadius: 2,
+  borderColor: '#eeeeee',
+  borderStyle: 'dashed',
+  color: '#bdbdbd',
+  outline: 'none',
+  transition: 'border .24s ease-in-out'
+};
+
 
 export default (props: WorkspaceEditProps) => {
   const mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -46,27 +63,58 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({ ...workspaceForm, description: e.text });
   return (
     <>
-      <Grid container={true} justify="flex-start" spacing={1}>
-        <Grid item={true} xs={12}>
-          <TextField
-            id="standard-basic"
-            label="Name of the workspace"
-            fullWidth={true}
-            onChange={setNameField}
-          />
+      <Grid container={true} justify="flex-start">
+        <Grid item={true} xs={6} >
+          <form noValidate={true} autoComplete="off">
+            <Box component="div" m={2} ml={0}>
+              <TextField
+                id="workspaceName"
+                label="Name"
+                fullWidth={true}
+                onChange={setNameField}
+                variant="outlined"
+              />
+            </Box>
+            <Box component="div" m={2} ml={0}>
+              <TextField
+                id="workspaceDescription"
+                label="Description"
+                multiline={true}
+                rows={5}
+                fullWidth={true}
+                onChange={setDescriptionField}
+                variant="outlined"
+              />
+            </Box>
+            <Box component="div" m={2} ml={0}>
+              <Button variant="contained" onClick={handleCreateWorkspace}>
+                Create
+              </Button>
+            </Box>
+          </form>
         </Grid>
-        <Grid item={true} xs={12}>
-          <MdEditor
-            value={workspaceForm.description}
-            style={{ height: "20vh" }}
-            renderHTML={renderMarkdown}
-            onChange={setDescriptionField}
-          />
-        </Grid>
-        <Grid item={true} xs={12} direction="column" alignItems="flex-end">
-          <Button variant="contained" onClick={handleCreateWorkspace}>
-            Create
-          </Button>
+        <Grid item={true} xs={6}>
+          <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+            {({getRootProps, getInputProps}) => (
+                <section>
+                  <div {...getRootProps({style})}>
+                    <input {...getInputProps()} />
+                    <Grid container={true} justify="center" alignItems="center" direction="row">
+                      <Grid item={true} xs={1}>
+                        <PublishIcon/>
+                      </Grid>
+                      <Grid item={true} xs={12}>
+                        <Box component="div" m={1}>
+                          <Typography variant="subtitle1" component="p">
+                            Upload workspace preview image
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </section>
+            )}
+          </Dropzone>
         </Grid>
       </Grid>
     </>

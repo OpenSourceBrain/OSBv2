@@ -53,7 +53,7 @@ export const WorkspaceToolBox = (props: any) => {
               user={user}
             />
           </Grid>
-          <Grid item={true} justify="center">
+          <Grid item={true}>
             <WorkspaceItem
               icon={Icons.SquareCirclesIcon}
               title="Network"
