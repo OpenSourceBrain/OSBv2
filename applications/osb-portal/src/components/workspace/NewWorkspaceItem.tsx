@@ -20,7 +20,7 @@ export default (props: ItemProps) => {
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
 
   const handleClick = () => {
-    if (!user && false) {
+    if (!user) {
       setAskLoginOpen(true);
     } else {
       setNewWorkspaceOpen(true);

@@ -48,7 +48,9 @@ export default (props: WorkspaceEditProps) => {
   const handleCreateWorkspace = async () => {
 
     workspaceService.createWorkspace(workspaceForm).then((workspace) => {
-
+      // TODO  add the thumbnail HERE
+      // 1 readFile
+      // 2 upload (create a new method on WorkspaceService)
     });
 
   };
@@ -58,7 +60,7 @@ export default (props: WorkspaceEditProps) => {
   const setDescriptionField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, description: e.target.value });
   const setThumbnail = (name: string) =>
-    setWorkspaceForm({ ...workspaceForm, thumbnail: name });
+    setWorkspaceForm({ ...workspaceForm, thumbnail: name }); // TODO Remove thumbnail from the workspace form
   return (
     <>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
