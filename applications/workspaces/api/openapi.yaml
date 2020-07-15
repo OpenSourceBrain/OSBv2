@@ -893,7 +893,6 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/User"
-              - x-secondary: workspace_collaborator
         resources:
           description: Resources of the workspace
           type: array
@@ -1002,7 +1001,6 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/WorkspaceResource"
-              - x-secondary: osbrepository_resources
       required:
         - uuid
         - name
