@@ -30,24 +30,27 @@ fetch(commonUrl)
   .then(sentryDSN => Sentry.init({ dsn: sentryDSN.dsn }))
   .finally(() => {
     try{
-    keycloak.init({
-      onLoad: 'check-sso',
-      silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
-    }).then(async (authorized: boolean) => {
-      if (authorized) {
-        const userInfo: any = await keycloak.loadUserInfo();
-        store.dispatch(userLogin({
-          id: userInfo.sub,
-          firstName: userInfo.given_name,
-          lastName: userInfo.family_name,
-          emailAddress: userInfo.email
-          })
-        );
-      }
-      initApis(keycloak.token);
-    }).finally(() => {
-      renderMain();
-    });
+      keycloak.init({
+        // onLoad: 'check-sso',
+        // silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+      }).then((authorized: boolean) => {
+        if (authorized) {
+          const userInfo: any = keycloak.loadUserInfo().then(() => {
+            store.dispatch(userLogin({
+              id: userInfo.sub,
+              firstName: userInfo.given_name,
+              lastName: userInfo.family_name,
+              emailAddress: userInfo.email
+              })
+            );
+          });
+          initApis(keycloak.token);
+        }
+      }, reason => { 
+        renderMain();
+      }).finally(() => {
+        renderMain();
+      });
     } catch {
       renderMain();
     }

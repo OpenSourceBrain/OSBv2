@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AnyType,
+    AnyTypeFromJSON,
+    AnyTypeFromJSONTyped,
+    AnyTypeToJSON,
     User,
     UserFromJSON,
     UserFromJSONTyped,
@@ -130,10 +134,10 @@ export interface Workspace {
     license?: string;
     /**
      * Collaborators who work on the workspace
-     * @type {Array<User>}
+     * @type {Array<User & AnyType>}
      * @memberof Workspace
      */
-    collaborators?: Array<User>;
+    collaborators?: Array<User & AnyType>;
     /**
      * Resources of the workspace
      * @type {Array<WorkspaceResource>}
@@ -171,7 +175,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'owner': !exists(json, 'owner') ? undefined : UserFromJSON(json['owner']),
         'publicable': !exists(json, 'publicable') ? undefined : json['publicable'],
         'license': !exists(json, 'license') ? undefined : json['license'],
-        'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(UserFromJSON)),
+        'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(User &amp; AnyTypeFromJSON)),
         'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
     };
@@ -199,7 +203,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'owner': UserToJSON(value.owner),
         'publicable': value.publicable,
         'license': value.license,
-        'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(UserToJSON)),
+        'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(User &amp; AnyTypeToJSON)),
         'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
         'storage': VolumeStorageToJSON(value.storage),
     };

@@ -135,7 +135,7 @@ paths:
           description: The workspace was not found.
       tags:
         - rest
-  /workspace/{id}/type/add:
+  /workspace/{id}/type:
     parameters:
       - in: path
         name: id
@@ -164,7 +164,7 @@ paths:
           description: The workspace was not found or workspace type not specified         
       tags:
         - rest
-  /workspace/{id}/type/{type_id}/delete:
+  /workspace/{id}/type/{type_id}:
     parameters:
       - in: path
         name: id
@@ -178,7 +178,7 @@ paths:
         schema:
           type: integer
         description: Workspace Type Id to be deleted from the workspace
-    get:
+    delete:
       summary: Delete a Workspace Type from the workspace.
       operationId: workspaces.controller.workspace.deltype
       security:
@@ -190,7 +190,7 @@ paths:
           description: The workspace was not found.
       tags:
         - rest
-  /workspace/{id}/thumbnail/put:
+  /workspace/{id}/thumbnail:
     parameters:
       - in: path
         name: id
@@ -198,7 +198,7 @@ paths:
         schema:
           type: integer
         description: Workspace ID of the workspace
-    post:
+    put:
       summary: Sets the thumbnail of the workspace.
       operationId: workspaces.controller.workspace.setthumbnail
       security:
@@ -219,7 +219,7 @@ paths:
           description: The workspace was not found or the thumbnail was not specified         
       tags:
         - rest
-  /workspace/{id}/gallery/add:
+  /workspace/{id}/gallery:
     parameters:
       - in: path
         name: id
@@ -248,7 +248,7 @@ paths:
           description: The workspace was not found or the image was not specified         
       tags:
         - rest
-  /workspace/{id}/gallery/{image_id}/delete:
+  /workspace/{id}/gallery/{image_id}:
     parameters:
       - in: path
         name: id
@@ -262,7 +262,7 @@ paths:
         schema:
           type: integer
         description: Workspace Image Id to be deleted from the workspace
-    get:
+    delete:
       summary: Delete a Workspace Image from the workspace.
       operationId: workspaces.controller.workspace.delimage
       security:

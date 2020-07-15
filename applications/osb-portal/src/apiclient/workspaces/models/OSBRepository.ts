@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AnyType,
+    AnyTypeFromJSON,
+    AnyTypeFromJSONTyped,
+    AnyTypeToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
@@ -56,10 +60,10 @@ export interface OSBRepository {
     storage: VolumeStorage;
     /**
      * 
-     * @type {Array<WorkspaceResource>}
+     * @type {Array<WorkspaceResource & AnyType>}
      * @memberof OSBRepository
      */
-    resources?: Array<WorkspaceResource>;
+    resources?: Array<WorkspaceResource & AnyType>;
 }
 
 export function OSBRepositoryFromJSON(json: any): OSBRepository {
@@ -76,7 +80,7 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
         'uuid': json['uuid'],
         'name': json['name'],
         'storage': VolumeStorageFromJSON(json['storage']),
-        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
+        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResource &amp; AnyTypeFromJSON)),
     };
 }
 
@@ -93,7 +97,7 @@ export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
         'uuid': value.uuid,
         'name': value.name,
         'storage': VolumeStorageToJSON(value.storage),
-        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
+        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResource &amp; AnyTypeToJSON)),
     };
 }
 
