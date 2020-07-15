@@ -20,7 +20,7 @@ export default (props: ItemProps) => {
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
 
   const handleClick = () => {
-    if (!user) {
+    if (!user && false) {
       setAskLoginOpen(true);
     } else {
       setNewWorkspaceOpen(true);
@@ -51,7 +51,7 @@ export default (props: ItemProps) => {
         open={newWorkspaceOpen}
         closeAction={closeNewWorkspace}
       >
-        <WorkspaceEdit workspace={null} onLoadWorkspace={closeNewWorkspace}  />
+        <WorkspaceEdit workspace={null} onLoadWorkspace={closeNewWorkspace} />
       </OSBDialog>
     </>
   );

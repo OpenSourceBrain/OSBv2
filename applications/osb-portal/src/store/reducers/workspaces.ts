@@ -1,18 +1,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { Workspace } from '../../types/workspace'
+import { Workspace } from '../../types/workspace';
 
-const initialState: Workspace[] = [];
+interface WorkspaceState {
+  userWorkspaces: Workspace[],
+  publicWorkspaces: Workspace[],
+  selectedWorkspace: Workspace
+}
+
+const initialState: WorkspaceState = {
+  userWorkspaces: null,
+  publicWorkspaces: [],
+  selectedWorkspace: null
+};
+
 
 const workspaceSlice = createSlice({
   name: 'workspaces',
   initialState,
   reducers: {
     loadWorkspaces(state, action: PayloadAction<Workspace[]>) {
-      return action.payload;
+      return { ...state, publicWorkspaces: action.payload };
     },
+    selectWorkspace(state, action: PayloadAction<Workspace>) {
+      return { ...state, selectedWorkspace: action.payload }
+    },
+    loadUserWorkspaces(state, action: PayloadAction<Workspace[]>) {
+      return { ...state, userWorkspaces: action.payload }
+    }
   }
 });
 
-export const WorkspaceActions = workspaceSlice.actions
+export const WorkspaceActions = workspaceSlice.actions;
 export default workspaceSlice.reducer;

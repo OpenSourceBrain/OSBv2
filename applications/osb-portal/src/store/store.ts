@@ -6,9 +6,8 @@ const initialState: RootState = {
   error: null,
   user: null,
   workspaces: null,
-  models: null,
-  nwbfiles: null
+  models: null
 };
 const store = configureStore(initialState);
 
-export default store
+export default store;

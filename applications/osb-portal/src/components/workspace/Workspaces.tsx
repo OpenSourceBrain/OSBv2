@@ -7,17 +7,19 @@ import Typography from "@material-ui/core/Typography";
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
+
+// TODO handle user's vs public workspaces
 export const Workspaces = (props: any) => {
   const workspaces = props.workspaces;
   const workspaceList =
-    workspaces !== null
+    workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
-          return (
-            <Grid item={true} key={index} xs={6} sm={4} md={3} lg={2} xl={1}>
-              <WorkspaceCard workspace={workspace} />
-            </Grid>
-          );
-        })
+        return (
+          <Grid item={true} key={index} xs={6} sm={4} md={3} lg={2} xl={1}>
+            <WorkspaceCard workspace={workspace} />
+          </Grid>
+        );
+      })
       : null;
 
   const [value, setValue] = React.useState(0);
@@ -42,7 +44,7 @@ export const Workspaces = (props: any) => {
           <Tab label="Your workspaces" />
           <Tab label="Featured workspaces" />
         </Tabs>
-        <Typography variant="subtitle2" style={{marginTop: "0.5em" }}>
+        <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
           {workspaceList.length} Workspaces
         </Typography>
       </Box>
@@ -56,3 +58,5 @@ export const Workspaces = (props: any) => {
     </React.Fragment>
   );
 };
+
+export default Workspaces;

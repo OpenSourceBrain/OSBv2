@@ -8,55 +8,69 @@ import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './drawer/WorkspaceDrawer'
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './iframe/WorkspaceFrame';
+import workspacePage from "./pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
-import { fetchWorkspacesAction } from '../store/actions/workspaces'
+import { fetchWorkspacesAction, selectWorkspace, loadUserWorkspaces, loadWorkspaces } from '../store/actions/workspaces'
 import { fetchModelsAction } from '../store/actions/models';
-import { fetchNWBFilesAction } from '../store/actions/nwbfiles';
 import { userLogin, userLogout } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
 
-import { keycloak } from '../index';
 
-const mapWorkspaceStateToProps = (state: RootState) => ({
-  workspaces: state.workspaces,
+
+const mapWorkspacesStateToProps = (state: RootState) => {
+  console.log(state)
+  return ({
+    workspaces: state.workspaces?.publicWorkspaces,
+    userWorkspace: state.workspaces?.userWorkspaces
+  })
+};
+
+const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
+  workspace: state.workspaces.selectedWorkspace,
 });
+
 const dispatchWorkspaceProps = {
   onLoadWorkspaces: fetchWorkspacesAction,
   onLoadModels: fetchModelsAction,
-  onLoadNWBFiles: fetchNWBFilesAction,
   onUserLogin: userLogin,
-  keycloak
-}
+  loadUserWorkspaces,
+  loadWorkspaces,
+  selectWorkspace
+};
 
 const mapUserStateToProps = (state: RootState) => ({
   user: state.user,
-  keycloak
 });
 
 const dispatchUserProps = {
   onUserLogin: userLogin,
   onUserLogout: userLogout
-}
+};
+
 const mapDrawerStateToProps = (state: RootState) => ({
   drawer: state.drawer,
 });
+
 const dispatchDrawerProps = {
   onToggleDrawer: toggleDrawer
-}
+};
+
 const mapErrorStateToProps = (state: RootState) => ({
   error: state.error,
-})
+});
+
 const dispatchErrorProps = {
   setError
-}
+};
 
-export const Workspaces = connect(mapWorkspaceStateToProps, dispatchWorkspaceProps)(workspace)
+export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
 export const Banner = connect(mapUserStateToProps)(banner)
-export const Header = connect(mapUserStateToProps, {...dispatchUserProps, ...dispatchDrawerProps})(header)
+export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
 export const WorkspaceDrawer = connect(mapDrawerStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
-export const App = connect(mapWorkspaceStateToProps, dispatchWorkspaceProps)(app)
+export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 export const WorkspaceFrame = connect(mapUserStateToProps, null)(workspaceFrame)
+export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)

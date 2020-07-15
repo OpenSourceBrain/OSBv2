@@ -2,7 +2,11 @@ import { CallOSBApiAction } from '../../middleware/osbbackend'
 
 import { WorkspaceActions } from '../reducers/workspaces'
 
+export const { loadWorkspaces, loadUserWorkspaces, selectWorkspace } = WorkspaceActions;
+
 export const loadWorkspacesActionType = WorkspaceActions.loadWorkspaces.toString();
+export const loadUserWorkspacesActionType = WorkspaceActions.loadUserWorkspaces.toString();
+export const selectWorkspaceActionType = WorkspaceActions.selectWorkspace.toString();
 export const fetchWorkspacesActionType = 'workspaces/fetchWorkspaces';
 export const postWorkspacesActionType = 'workspaces/postWorkspace';
 
