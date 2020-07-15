@@ -125,10 +125,6 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
-/// <reference lib="dom" />
-declare interface GlobalFetch {
-    fetch(input: RequestInfo, init?: RequestInit): Promise<Response>
-}
 export type FetchAPI = GlobalFetch['fetch'];
 
 export interface ConfigurationParameters {
