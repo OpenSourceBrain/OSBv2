@@ -23,15 +23,13 @@ const style = {
   flex: 1,
   display: 'flex',
   alignItems: 'center',
-  borderWidth: 2,
+  borderWidth: 1,
   width : "100%",
   height : "100%",
-  borderRadius: 2,
+  borderRadius: 1,
   borderColor: '#eeeeee',
   borderStyle: 'dashed',
-  color: '#bdbdbd',
-  outline: 'none',
-  transition: 'border .24s ease-in-out'
+  color: '#bdbdbd'
 };
 
 
@@ -60,7 +58,9 @@ export default (props: WorkspaceEditProps) => {
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
   const setDescriptionField = (e: any) =>
-    setWorkspaceForm({ ...workspaceForm, description: e.text });
+    setWorkspaceForm({ ...workspaceForm, description: e.target.value });
+  const setThumbnail = (e: any) =>
+    setWorkspaceForm({ ...workspaceForm, thumbnail: e[0].name });
   return (
     <>
       <Grid container={true} justify="flex-start">
@@ -94,16 +94,17 @@ export default (props: WorkspaceEditProps) => {
           </form>
         </Grid>
         <Grid item={true} xs={6}>
-          <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
-            {({getRootProps, getInputProps}) => (
-                <section>
-                  <div {...getRootProps({style})}>
-                    <input {...getInputProps()} />
+          <Dropzone onDrop={acceptedFiles => { setThumbnail(acceptedFiles) }}>
+            {({getRootProps, getInputProps, acceptedFiles}) => (
+              <section>
+                <div {...getRootProps({style})}>
+                  <input {...getInputProps()} />
+                  { acceptedFiles.length === 0 ?
                     <Grid container={true} justify="center" alignItems="center" direction="row">
-                      <Grid item={true} xs={1}>
+                      <Grid item={true}>
                         <PublishIcon/>
                       </Grid>
-                      <Grid item={true} xs={12}>
+                      <Grid item={true}>
                         <Box component="div" m={1}>
                           <Typography variant="subtitle1" component="p">
                             Upload workspace preview image
@@ -111,9 +112,25 @@ export default (props: WorkspaceEditProps) => {
                         </Box>
                       </Grid>
                     </Grid>
-                  </div>
-                </section>
-            )}
+                    :
+                    <Grid container={true} justify="center" alignItems="center" direction="row">
+                      <Grid item={true}>
+                        <Typography variant="subtitle1" component="p">
+                          Thumbnail File Uploaded:
+                        </Typography>
+                      </Grid>
+                      <Grid item={true}>
+                        <Box component="div" m={1}>
+                          <Typography variant="subtitle1" component="p">
+                            {acceptedFiles[0].name}
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  }
+                </div>
+              </section>
+          )}
           </Dropzone>
         </Grid>
       </Grid>
