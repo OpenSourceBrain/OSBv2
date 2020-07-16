@@ -16,7 +16,7 @@ import { fetchModelsAction } from '../store/actions/models';
 import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
-
+import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 
 
 const mapWorkspacesStateToProps = (state: RootState) => {
@@ -76,3 +76,4 @@ export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(ap
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 export const WorkspaceFrame = connect(mapUserStateToProps, null)(workspaceFrame)
 export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
+export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)

@@ -4,7 +4,7 @@ import { Typography, Box, ButtonBase, Button } from "@material-ui/core";
 import { WorkspaceType } from "../../apiclient/workspaces/models/WorkspaceType";
 import { UserInfo } from "../../types/user";
 import OSBDialog from "../common/OSBDialog";
-import NewWorkspaceAskUser from "./NewWorkspaceAskUser";
+import { NewWorkspaceAskUser } from "..";
 import WorkspaceEdit from "./WorkspaceEditor";
 
 interface ItemProps {

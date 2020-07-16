@@ -4,7 +4,7 @@ import workspaceService from './WorkspaceService';
 
 import { UserInfo } from '../types/user';
 
-const keycloak = Keycloak('keycloak.json');
+const keycloak = Keycloak('/keycloak.json');
 
 
 export const initApis = (token: string) => {

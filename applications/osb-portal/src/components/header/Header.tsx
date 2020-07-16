@@ -93,7 +93,7 @@ export const Header = (props: any) => {
             startIcon={<PersonIcon fontSize="large" />}
             className={classes.button}
           >
-            {user.firstName}
+            {user.firstname}
           </Button>
         </Box>
       );
