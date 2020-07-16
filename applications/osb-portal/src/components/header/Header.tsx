@@ -60,45 +60,43 @@ export const Header = (props: any) => {
   };
 
   const user = props.user;
-  const keycloak = props.keycloak;
 
   const handleUserLogin = () => {
-    keycloak.login();
+    props.login();
   };
   const handleUserLogout = () => {
-    keycloak.logout();
-    props.onUserLogout();
+    props.logout();
   };
 
   const headerText =
     user === null ? (
       <Button onClick={handleUserLogin} className={classes.button}>Sign in</Button>
     ) : (
-      <Box alignItems="center" display="flex">
-        <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
-          <Paper>
-            <ClickAwayListener onClickAway={handleMenuClose}>
-              <MenuList autoFocusItem={menuOpen} id="user-menu">
-                <MenuItem>My account</MenuItem>
-                <MenuItem>Settings</MenuItem>
-                <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Popper>
-        <Button
-          size="large"
-          ref={menuAnchorRef}
-          aria-controls={menuOpen ? "user-menu" : undefined}
-          aria-haspopup="true"
-          onClick={handleMenuToggle}
-          startIcon={<PersonIcon fontSize="large" />}
-          className={classes.button}
-        >
-          {user.firstName}
-        </Button>
-      </Box>
-    );
+        <Box alignItems="center" display="flex">
+          <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
+            <Paper>
+              <ClickAwayListener onClickAway={handleMenuClose}>
+                <MenuList autoFocusItem={menuOpen} id="user-menu">
+                  <MenuItem>My account</MenuItem>
+                  <MenuItem>Settings</MenuItem>
+                  <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Popper>
+          <Button
+            size="large"
+            ref={menuAnchorRef}
+            aria-controls={menuOpen ? "user-menu" : undefined}
+            aria-haspopup="true"
+            onClick={handleMenuToggle}
+            startIcon={<PersonIcon fontSize="large" />}
+            className={classes.button}
+          >
+            {user.firstName}
+          </Button>
+        </Box>
+      );
 
   const handleToggleDrawer = (e: any) => {
     if (props.drawerEnabled) {

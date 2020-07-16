@@ -13,7 +13,7 @@ import workspacePage from "./pages/WorkspacePage";
 import { RootState } from '../store/rootReducer'
 import { fetchWorkspacesAction, selectWorkspace, loadUserWorkspaces, loadWorkspaces } from '../store/actions/workspaces'
 import { fetchModelsAction } from '../store/actions/models';
-import { userLogin, userLogout } from '../store/actions/user';
+import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
 
@@ -34,7 +34,8 @@ const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
 const dispatchWorkspaceProps = {
   onLoadWorkspaces: fetchWorkspacesAction,
   onLoadModels: fetchModelsAction,
-  onUserLogin: userLogin,
+  login: userLogin,
+  logout: userLogout,
   loadUserWorkspaces,
   loadWorkspaces,
   selectWorkspace
@@ -45,8 +46,9 @@ const mapUserStateToProps = (state: RootState) => ({
 });
 
 const dispatchUserProps = {
-  onUserLogin: userLogin,
-  onUserLogout: userLogout
+  login: userLogin,
+  logout: userLogout,
+  register: userRegister
 };
 
 const mapDrawerStateToProps = (state: RootState) => ({

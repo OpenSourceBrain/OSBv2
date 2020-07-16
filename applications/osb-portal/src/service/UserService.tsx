@@ -1,32 +1,41 @@
 import Keycloak from 'keycloak-js';
-import { userLogin } from '../store/actions/user';
-import store from '../store/store';
+
 import workspaceService from './WorkspaceService';
-export const keycloak = Keycloak('keycloak.json');
+
+import { UserInfo } from '../types/user';
+
+const keycloak = Keycloak('keycloak.json');
 
 
 export const initApis = (token: string) => {
     workspaceService.initApis(token);
 }
 
-export async function initUser() {
+function mapUser(userInfo: any): UserInfo {
+    return {
+        id: userInfo.sub,
+        firstname: userInfo.given_name,
+        lastname: userInfo.family_name,
+        email: userInfo.email
+    }
+}
 
-    keycloak.init({
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
-    }).then(async (authorized: boolean) => {
+export async function initUser(): Promise<UserInfo> {
+    let user = null;
+    try {
+        const authorized = await await keycloak.init({
+            onLoad: 'check-sso',
+            silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+        })
         if (authorized) {
             const userInfo: any = await keycloak.loadUserInfo();
-            store.dispatch(userLogin({
-                id: userInfo.sub,
-                firstName: userInfo.given_name,
-                lastName: userInfo.family_name,
-                emailAddress: userInfo.email
-            })
-            );
+            user = mapUser(userInfo);
         }
         initApis(keycloak.token);
-    }, errorCallback);
+    } catch (err) {
+        errorCallback(err);
+        return null;
+    }
 
     // set token refresh to 5 minutes
     keycloak.onTokenExpired = () => {
@@ -40,9 +49,21 @@ export async function initUser() {
             console.error('Failed to refresh token ' + new Date());
         })
     }
-
+    return user;
 }
 
+export async function login(): Promise<UserInfo> {
+    const userInfo: any = await keycloak.login();
+    return mapUser(userInfo);
+}
+
+export async function logout() {
+    return keycloak.logout();
+}
+
+export async function register() {
+    return keycloak.register();
+}
 
 const errorCallback = (error: any) => {
     initApis(null);

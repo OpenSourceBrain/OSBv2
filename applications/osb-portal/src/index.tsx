@@ -4,12 +4,14 @@ import * as ReactDOM from "react-dom";
 import { App } from './components/index';
 import store from './store/store';
 import { Provider } from 'react-redux';
-
+import { userLogin } from './store/actions/user';
 
 
 import { CONFIGURATION } from "./config";
 import { initErrorHandler } from './service/ErrorHandleService';
 import { initUser } from './service/UserService';
+
+import { UserInfo } from "./types/user";
 
 const renderMain = () => {
   ReactDOM.render(
@@ -24,5 +26,9 @@ const renderMain = () => {
 
 const appName = CONFIGURATION.appName;
 
-initErrorHandler(appName).then(initUser).finally(renderMain);
+initErrorHandler(appName).then(initUser).then((user: UserInfo) => {
+  if (user) {
+    store.dispatch(userLogin(user));
+  }
+}).finally(renderMain);
 

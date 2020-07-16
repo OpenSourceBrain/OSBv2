@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import { UserInfo } from "../../types/user";
 
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
@@ -31,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const Banner = (props: any) => {
   const classes = useStyles();
-  const user = props.user;
+  const user: UserInfo = props.user;
   const handleSignup = () => {
-    props.keycloak.register();
+    props.register();
   };
 
   const text1 =
-    user === null ? "Let us show you around" : `Welcome back ${user.firstName}`;
+    user === null ? "Let us show you around" : `Welcome back ${user.firstname}`;
   const text2 =
     user === null
       ? "Get started in OSB with our short guided tour."

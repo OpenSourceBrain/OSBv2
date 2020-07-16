@@ -1,9 +1,11 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/actions/workspaces'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
+import { userLogin, userLogout, userRegister } from '../store/actions/user'
 import { setError } from '../store/actions/error'
 import { CallApiAction } from './backend';
 
+import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
 
 // public call osb action type
@@ -43,34 +45,39 @@ const fetchModelsAction = (): CallApiAction => {
 /**
  * @private
  */
-function createOSBAPIMiddleware() {
-  const callAPIMiddlewareFn: Middleware<Dispatch> = ({
-    dispatch
-  }: MiddlewareAPI) => next => (action: AnyAction | CallApiAction) => {
-    if (!action.meta || !action.meta.callOSBApi) {
+
+const callAPIMiddlewareFn: Middleware<Dispatch> = ({
+  dispatch
+}: MiddlewareAPI) => next => async (action: AnyAction | CallApiAction) => {
+
+  switch (action.type) {
+    case fetchWorkspacesActionType:
+      // fetch workspaces from workspaces app
+      fetchWorkspacesAction(dispatch)
+      break
+    case fetchModelsActionType:
+      next(fetchModelsAction());
+      break
+    case userLogin.toString(): {
+      if (!action.payload) {
+        UserService.login().then((user: any) => next({ ...action, payload: user }));
+      } else {
+        next(action);
+      }
+
+      break;
+    }
+    case userLogout.toString():
+      UserService.logout();
+      break;
+    case userRegister.toString():
+      UserService.register().then((user: any) => next({ ...action, payload: user }));
+      break;
+    default:
       return next(action);
-    }
+    //
+  }
+};
 
-    let apiAction = null;
-    switch (action.type) {
-      case fetchWorkspacesActionType:
-        // fetch workspaces from workspaces app
-        fetchWorkspacesAction(dispatch)
-        break
-      case fetchModelsActionType:
-        apiAction = fetchModelsAction()
-        break
-      default:
-      //
-    }
-    if (apiAction) {
-      // dispatch action to call api middleware
-      dispatch(apiAction)
-    }
-  };
-  return callAPIMiddlewareFn;
-}
 
-const callOSBAPIMiddleware = createOSBAPIMiddleware();
-
-export default callOSBAPIMiddleware;
+export default callAPIMiddlewareFn;

@@ -9,12 +9,16 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     userLogin(state, action: PayloadAction<UserInfo>) {
-        return {...action.payload};
-      },
+      return { ...action.payload };
+    },
     userLogout(state, action: PayloadAction<UserInfo>) {
-        return null;
-      },
-    }
+      return null;
+    },
+    userRegister(state, action: PayloadAction<UserInfo>) {
+      return { ...action.payload };
+    },
+  }
+
 });
 
 export const UserActions = userSlice.actions;

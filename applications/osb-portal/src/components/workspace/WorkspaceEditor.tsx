@@ -101,11 +101,17 @@ export default (props: WorkspaceEditProps) => {
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
                     <Grid item={true}>
-                      <IconButton><PublishIcon /></IconButton> {acceptedFiles.length === 0 ? '' : <IconButton onClick={(e: any) => {
-                        e.preventDefault();
-                        setThumbnail(null)
-                      }
-                      }><DeleteForeverIcon /></IconButton>}
+                      <IconButton><PublishIcon /></IconButton>
+                      {acceptedFiles.length === 0 ? '' :
+                        <IconButton
+                          onClick={(e: any) => {
+                            e.preventDefault();
+                            setThumbnail(null)
+                          }
+                          }
+                        >
+                          <DeleteForeverIcon />
+                        </IconButton>}
                     </Grid>
                     <Grid item={true}>
                       <Box component="div" m={1}>

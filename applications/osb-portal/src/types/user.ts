@@ -1,7 +1,6 @@
+import { User } from '../apiclient/workspaces';
+
 // UserInfo object
-export interface UserInfo {
-    id: number;
-    firstName: string;
-    lastName: string;
-    emailAddress: string;
+export interface UserInfo extends User {
+
 }

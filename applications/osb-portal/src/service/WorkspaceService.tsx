@@ -25,14 +25,17 @@ class WorkspaceService {
   }
 
 
-  async fetchWorkspaces() {
+  async fetchWorkspaces(): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
     const wspr: WorkspaceGetRequest = {};
-    let resultWorkspaces: Workspace[] = [];
-    await this.workspacesApi.workspaceGet(wspr).then((response: InlineResponse200) => {
-      resultWorkspaces = response.workspaces.map(mapWorkspace);
-    })
-    return resultWorkspaces;
+    if (this.workspacesApi) {
+      const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
+      return response.workspaces.map(mapWorkspace);
+    } else {
+      console.debug('Attempting to fetch workspaces before init');
+    }
+
+    return null;
   }
 
   async createWorkspace(newWorkspace: Workspace) {
