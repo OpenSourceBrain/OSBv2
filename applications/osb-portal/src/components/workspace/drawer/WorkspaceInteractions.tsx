@@ -1,16 +1,11 @@
 import * as React from "react";
-import clsx from "clsx";
-import { useDispatch } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
 
 import Typography from "@material-ui/core/Typography";
-import ArrowDownIcon from "@material-ui/icons/ArrowDropDown";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -21,8 +16,8 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 import WorkspaceVolumePathBrowser from "./WorkspaceVolumePathBrowser";
 
-import { ShareIcon } from "../icons";
-import { Workspace } from "../../types/workspace";
+import { ShareIcon } from "../../icons";
+import { Workspace } from "../../../types/workspace";
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {

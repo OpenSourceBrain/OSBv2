@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   mainFeaturedPostContent: {
     position: "relative",
     padding: theme.spacing(3),
-    paddingTop: "10vh",
+    paddingTop: "8vh",
   },
 }));
 

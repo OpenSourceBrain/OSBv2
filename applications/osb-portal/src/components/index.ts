@@ -5,9 +5,9 @@ import { Workspaces as workspace } from './workspace/Workspaces'
 import { WorkspaceToolBox as workspacetoolbox } from './workspace/NewWorkspaceToolBox'
 import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
-import { WorkspaceDrawer as workspacedrawer } from './drawer/WorkspaceDrawer'
+import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/WorkspaceDrawer'
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
-import { WorkspaceFrame as workspaceFrame } from './iframe/WorkspaceFrame';
+import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import workspacePage from "./pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
@@ -23,12 +23,13 @@ const mapWorkspacesStateToProps = (state: RootState) => {
   console.log(state)
   return ({
     workspaces: state.workspaces?.publicWorkspaces,
-    userWorkspace: state.workspaces?.userWorkspaces
+    userWorkspaces: state.workspaces?.userWorkspaces
   })
 };
 
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   workspace: state.workspaces.selectedWorkspace,
+  user: state.user,
 });
 
 const dispatchWorkspaceProps = {
@@ -71,9 +72,9 @@ export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspacePr
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
 export const Banner = connect(mapUserStateToProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
-export const WorkspaceDrawer = connect(mapDrawerStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
+export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
-export const WorkspaceFrame = connect(mapUserStateToProps, null)(workspaceFrame)
+export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, null)(workspaceFrame)
 export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)

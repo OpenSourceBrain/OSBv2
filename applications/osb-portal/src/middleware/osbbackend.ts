@@ -1,5 +1,5 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
-import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/actions/workspaces'
+import { loadWorkspacesActionType, fetchWorkspacesActionType, selectWorkspace } from '../store/actions/workspaces'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { userLogin, userLogout, userRegister } from '../store/actions/user'
 import { setError } from '../store/actions/error'
@@ -7,6 +7,7 @@ import { CallApiAction } from './backend';
 
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
+import { Workspace } from "../apiclient/workspaces";
 
 // public call osb action type
 export type CallOSBApiAction = {
@@ -73,6 +74,8 @@ const callAPIMiddlewareFn: Middleware<Dispatch> = ({
     case userRegister.toString():
       UserService.register().then((user: any) => next({ ...action, payload: user }));
       break;
+    case selectWorkspace.toString():
+      workspaceService.getWorkspace(action.payload).then((workspace: Workspace) => next({ ...action, payload: workspace }));
     default:
       return next(action);
     //

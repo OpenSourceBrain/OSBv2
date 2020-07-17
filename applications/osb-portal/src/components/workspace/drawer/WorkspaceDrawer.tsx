@@ -8,9 +8,9 @@ import AddIcon from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 
 import WorkspaceInteractions from "./WorkspaceInteractions";
-import { Workspace } from "../../types/workspace";
+import { Workspace } from "../../../types/workspace";
 
-import { ShareIcon, ArrowLeft, ArrowRight } from "../icons";
+import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 
 
 
@@ -104,31 +104,29 @@ const useStyles = makeStyles((theme) => ({
 
 interface WorkspaceDrawerProps {
   workspace: Workspace;
-  drawer: boolean;
-  onToggleDrawer(): void;
 }
 
-export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({drawer, workspace, children, onToggleDrawer}) => {
+export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, children }) => {
   const classes = useStyles();
 
-  const open = drawer;
+  const [open, setOpen] = React.useState(false);
 
-  const handleToggleDrawer = () => onToggleDrawer();
+  const handleToggleDrawer = () => setOpen(!open);
 
   const drawerContent = open ? (
     <WorkspaceInteractions workspace={workspace} />
   ) : (
-    <>
-      <div className={classes.closedText}>
-        <AddIcon style={{ marginBottom: "0.3em" }} />
+      <>
+        <div className={classes.closedText}>
+          <AddIcon style={{ marginBottom: "0.3em" }} />
         Workspace XYZ&nbsp;&nbsp;
         <ShareIcon
-          className={[classes.svgIcon, classes.rotate180].join(" ")}
-          style={{ marginTop: "0.3em" }}
-        />
-      </div>
-    </>
-  );
+            className={[classes.svgIcon, classes.rotate180].join(" ")}
+            style={{ marginTop: "0.3em" }}
+          />
+        </div>
+      </>
+    );
 
   return (
     <div className={classes.root}>
@@ -156,8 +154,8 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
               {open ? (
                 <ArrowLeft style={{ fontSize: "1rem" }} />
               ) : (
-                <ArrowRight style={{ fontSize: "1rem" }} />
-              )}
+                  <ArrowRight style={{ fontSize: "1rem" }} />
+                )}
             </IconButton>
           </div>
         </div>

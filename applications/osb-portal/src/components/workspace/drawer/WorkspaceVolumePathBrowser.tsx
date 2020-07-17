@@ -12,7 +12,7 @@ import {
   FileLinkIcon,
   LoadingIcon,
   FolderIcon,
-} from "../icons";
+} from "../../icons";
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
@@ -107,20 +107,20 @@ export default (props: VolumeProps) => (
           <TreeItem nodeId="9" label={<FolderItem name="folder 2" />} />
         </>
       ) : (
-        <>
-          <TreeItem nodeId="10" label={<FolderItem name="every_workspace" />}>
-            <TreeItem nodeId="11" label="can.npy" />
-            <TreeItem nodeId="12" label="see_these.nwb" />
-            <TreeItem nodeId="13" label="resources.json" />
-          </TreeItem>
-          <TreeItem nodeId="14" label="Material-UI">
-            <TreeItem nodeId="15" label="src">
-              <TreeItem nodeId="16" label="index.js" />
-              <TreeItem nodeId="17" label="tree-view.js" />
+          <>
+            <TreeItem nodeId="10" label={<FolderItem name="every_workspace" />}>
+              <TreeItem nodeId="11" label="can.npy" />
+              <TreeItem nodeId="12" label="see_these.nwb" />
+              <TreeItem nodeId="13" label="resources.json" />
             </TreeItem>
-          </TreeItem>
-        </>
-      )}
+            <TreeItem nodeId="14" label="Material-UI">
+              <TreeItem nodeId="15" label="src">
+                <TreeItem nodeId="16" label="index.js" />
+                <TreeItem nodeId="17" label="tree-view.js" />
+              </TreeItem>
+            </TreeItem>
+          </>
+        )}
     </TreeView>
   </Box>
 );
