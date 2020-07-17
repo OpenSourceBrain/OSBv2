@@ -119,8 +119,8 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
       <>
         <div className={classes.closedText}>
           <AddIcon style={{ marginBottom: "0.3em" }} />
-        Workspace XYZ&nbsp;&nbsp;
-        <ShareIcon
+          Workspace XYZ&nbsp;&nbsp;
+          <ShareIcon
             className={[classes.svgIcon, classes.rotate180].join(" ")}
             style={{ marginTop: "0.3em" }}
           />

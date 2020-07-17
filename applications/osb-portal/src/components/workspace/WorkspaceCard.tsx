@@ -67,7 +67,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption">
-          Last edited: {workspace.lastType /* TODO change workspace.lastOpen.type.application.name */}, {formatDate(workspace.timestampUpdated)}
+          Last edited: {workspace.lastType/* TODO change workspace.lastOpen.type.application.name */}, {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>
     </Card>
