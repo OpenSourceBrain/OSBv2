@@ -1,5 +1,9 @@
 {
-  "items": [
+  "pagination": {
+    "current_page": 1,
+    "number_of_pages": 1
+  },
+  "models": [
       {
           "id": 1,
           "name": "Private Dura-Bernal et Al., 2019",

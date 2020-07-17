@@ -1,13 +1,13 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
-import { loadWorkspacesActionType, fetchWorkspacesActionType } from '../store/actions/workspaces'
-import { loadNWBFilesActionType, fetchNWBFilesActionType } from '../store/actions/nwbfiles'
+import { loadWorkspacesActionType, fetchWorkspacesActionType, selectWorkspace } from '../store/actions/workspaces'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
+import { userLogin, userLogout, userRegister } from '../store/actions/user'
 import { setError } from '../store/actions/error'
 import { CallApiAction } from './backend';
-import { keycloak } from '../index';
 
-import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi } from '../apiclient/workspaces';
+import * as UserService from '../service/UserService';
+import workspaceService from '../service/WorkspaceService';
+import { Workspace } from "../apiclient/workspaces";
 
 // public call osb action type
 export type CallOSBApiAction = {
@@ -17,43 +17,17 @@ export type CallOSBApiAction = {
   };
 };
 
-const workspacesApiUri = '/api/workspaces/api';
-export let workspacesApi: RestApi = null;
-export const initApis = (token: string) => {
-  workspacesApi =  new workspaceApi.RestApi(new Configuration({basePath: workspacesApiUri, accessToken: token}));
-}
-
 // callapi middle actions
-const fetchWorkspacesAction = (): CallApiAction => {
+const fetchWorkspacesAction = (dispatch: any) => {
   // ToDo: pagination & size of pagination
-  return ({
-    type: 'api/fetchWorkspaces',
-    payload: {
-      url: workspacesApiUri + '/workspace?page=1&per_page=2000',
-      successAction: loadWorkspacesActionType,
-      errorAction: setError.toString(),
-      params: {
-        headers: {'Authorization': 'Bearer ' + keycloak.token}}
-    },
-    meta: {
-      callApi: true
-    }
+  workspaceService.fetchWorkspaces().then((workspaces) => {
+    dispatch({
+      type: loadWorkspacesActionType,
+      payload: workspaces
+    });
   })
 }
 
-const fetchNWBFilesAction = (): CallApiAction => {
-  return ({
-    type: 'api/fetchNWBFiles',
-    payload: {
-      url: '/api-mocks/api/nwbfiles',
-      successAction: loadNWBFilesActionType,
-      errorAction: setError.toString()
-    },
-    meta: {
-      callApi: true
-    }
-  })
-}
 
 const fetchModelsAction = (): CallApiAction => {
   return ({
@@ -72,36 +46,41 @@ const fetchModelsAction = (): CallApiAction => {
 /**
  * @private
  */
-function createOSBAPIMiddleware() {
-  const callAPIMiddlewareFn: Middleware<Dispatch> = ({
-    dispatch
-  }: MiddlewareAPI) => next => (action: AnyAction | CallApiAction) => {
-    if (!action.meta || !action.meta.callOSBApi) {
+
+const callAPIMiddlewareFn: Middleware<Dispatch> = ({
+  dispatch
+}: MiddlewareAPI) => next => async (action: AnyAction | CallApiAction) => {
+
+  switch (action.type) {
+    case fetchWorkspacesActionType:
+      // fetch workspaces from workspaces app
+      fetchWorkspacesAction(dispatch)
+      break
+    case fetchModelsActionType:
+      next(fetchModelsAction());
+      break
+    case userLogin.toString(): {
+      if (!action.payload) {
+        UserService.login().then((user: any) => next({ ...action, payload: user }));
+      } else {
+        next(action);
+      }
+
+      break;
+    }
+    case userLogout.toString():
+      UserService.logout();
+      break;
+    case userRegister.toString():
+      UserService.register().then((user: any) => next({ ...action, payload: user }));
+      break;
+    case selectWorkspace.toString():
+      workspaceService.getWorkspace(action.payload).then((workspace: Workspace) => next({ ...action, payload: workspace }));
+    default:
       return next(action);
-    }
+    //
+  }
+};
 
-    let apiAction = null;
-    switch (action.type) {
-      case fetchWorkspacesActionType:
-        apiAction = fetchWorkspacesAction()
-        break
-      case fetchNWBFilesActionType:
-        apiAction = fetchNWBFilesAction()
-        break
-      case fetchModelsActionType:
-        apiAction = fetchModelsAction()
-        break
-      default:
-      //
-    }
-    if (apiAction) {
-      // dispatch action to call api middleware
-      dispatch(apiAction)
-    }
-  };
-  return callAPIMiddlewareFn;
-}
 
-const callOSBAPIMiddleware = createOSBAPIMiddleware();
-
-export default callOSBAPIMiddleware;
+export default callAPIMiddlewareFn;

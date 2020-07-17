@@ -42,13 +42,19 @@ For Google Chrome: [manage certificates](chrome://settings/certificates?search=m
 Select Authorities
 and import the cacert
 
-### Using mock responses
+### Development
 
-To run the app with mock responses instead of real data set the environment variable USE_MOCKS to true.
+The application relies on other backend applications to be in place:
+ - accounts.* for user management
+ - workspaces.* for workspaces
 
-```
-sudo USE_MOCKS=true npm run start:dev
-```
+The dependency on these applications can be handled differently with the following commands:
+- `npm run start:dev`: No backend 
+- `npm run start:test`: use test deployment applications (v2.opensourcebrain.org)
+- `npm run start:minikube`: use local minikube deployment applications (osb.local)
+- `USE_MOCKS=true npm run start:dev`: uses workspace mock responses
 
-This will reroute the proxy /api/workspaces to https://www.osb.local/api-mocks instead of the workspace manager app.
-If you run the dev server on another domain then please change the mock url (located in the webpack.dev.js)
+The webpack-dev-server will reroute the proxy /api/workspaces to the given backend instead of the workspace manager app.
+
+
+

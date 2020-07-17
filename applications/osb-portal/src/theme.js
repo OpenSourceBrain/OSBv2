@@ -122,14 +122,15 @@ const theme = {
     },
     MuiButton: { 
       root: {
+        
+      },
+      outlined: {
+        borderWidth: 2,
+        borderColor: fontColor,
         marginRight: gutter * 3 / 2,
         '&:last-child': {
           marginRight: 0
         }
-      },
-      outlined: {
-        borderWidth: 2,
-        borderColor: fontColor
       },
       text: {
         padding: gutter / 2
@@ -147,7 +148,7 @@ const theme = {
        
     },
     MuiDialogTitle: { root: { fontWeight: 600, fontSize: '1rem' } },
-
+    MuiDialogContent: { root: { paddingBottom: gutter} },
     MuiCollapse: { 
       container: { padding: 0 },
       wrapper: { padding: "0px!important" }

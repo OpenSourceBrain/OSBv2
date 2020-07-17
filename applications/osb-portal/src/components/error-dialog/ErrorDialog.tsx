@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import * as Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/react';
 
 export const ErrorDialog = (props: any) => {
   const handleClose = () => {

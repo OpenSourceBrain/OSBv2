@@ -2,6 +2,9 @@
 
 import connexion
 import logging
+import os
+
+from pathlib import Path
 
 from flask import send_from_directory, request
 from flask_cors import CORS
@@ -24,9 +27,13 @@ def setup_logging():
     logger.info("setting up logging, done.")
 
 
+def mkdirs():
+    Path(os.path.join(Config.STATIC_DIR,Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
+
+
 def setup_static_router():
     # set the static folder root to the www folder
-    app.static_folder = "static"
+    app.static_folder = Config.STATIC_DIR
     # remove the static route (if exists)
     app.url_map._rules_by_endpoint['static'] = []
     # add / as static route
@@ -39,12 +46,14 @@ connexion_app = connexion.App(Config.APP_NAME, specification_dir=Config.OPENAPI_
 app = connexion_app.app
 app.config.from_object(Config)
 setup_static_router()
+mkdirs()
 db.init_app(app)
 
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 with app.app_context():
-    cloudharness.init(Config.APP_NAME)
+    if app.config['ENV'] != 'development':
+        cloudharness.init(Config.APP_NAME)
     setup_logging()
     setup_db(app)
     connexion_app.add_api(Config.OPENAPI_FILE,

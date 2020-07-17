@@ -19,7 +19,7 @@ def generate_fake(app):
         ' * Creating new fake test data. Please wait, this can take a while....')
 
     # some random fake data to fill the database
-    for i in range(1, 10):
+    for i in range(1, 15):
         user = User(firstname=f'User {i}',
                     lastname=f'Lastname {i}',
                     keycloak_id=f'{i}',
@@ -53,15 +53,17 @@ def generate_fake(app):
 
 
 def create_fixtures(app):
-    insert_base_fixtures(app)
-    if app.config['ENV'] == 'development':
-        logger.info(" * " + "*"*70)
-        logger.info(" * *")
-        logger.info(
-            f" * * for development purpose you may want to remove the {Config.DATABASE_NAME}.db file")
-        logger.info(
-            " * * and restart the application to generate a random dataset")
-        logger.info(" * *")
-        logger.info(" * " + "*"*70)
+    workspace = Workspace.query.first()
+    if not workspace:
+        insert_base_fixtures(app)
+        if app.config['ENV'] == 'development':
+            logger.info(" * " + "*"*70)
+            logger.info(" * *")
+            logger.info(
+                f" * * for development purpose you may want to drop schema public cascade; and create schema public; in psql")
+            logger.info(
+                " * * and restart the application to generate a random dataset")
+            logger.info(" * *")
+            logger.info(" * " + "*"*70)
 
-        generate_fake(app)
+            generate_fake(app)

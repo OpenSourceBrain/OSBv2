@@ -9,12 +9,12 @@ import "react-markdown-editor-lite/lib/index.css";
 
 
 export default (props: any) => {
-  const keycloak = props.keycloak;
+
   const handleUserLogin = () => {
-    keycloak.login();
+    props.login();
   };
   const handleSignup = () => {
-    keycloak.register();
+    props.register();
   };
 
   return (
@@ -30,8 +30,8 @@ export default (props: any) => {
         </Grid>
         <Grid item={true}>
           <div>
-              <Button onClick={handleUserLogin} autoFocus={true}>
-                Sign In
+            <Button onClick={handleUserLogin} autoFocus={true}>
+              Sign In
               </Button>
             <Button
               variant="contained"

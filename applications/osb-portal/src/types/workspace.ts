@@ -1,17 +1,9 @@
-import { FeaturedType, OSBApplication } from './global'
+import { Workspace as WorkspaceBase } from '../apiclient/workspaces/models/Workspace'
+import { FeaturedType } from './global'
 
 // Workspace object
-export interface Workspace {
-
-    id: string;
-    name: string;
-    description: string;
-    image: string;
-    owner: string; // User id
-    lastEdited: string;
-    lastEditedUserId: string;
+export interface Workspace extends WorkspaceBase {
+    lastResource?: any; // TODO add to api
     shareType: FeaturedType;
-    types: OSBApplication[];
-    lastApplicationEdit: OSBApplication;
     volume: string; // Volume id
-}
+};

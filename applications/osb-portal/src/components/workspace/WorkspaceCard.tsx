@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import FolderIcon from "@material-ui/icons/Folder";
 
 import { Workspace } from "../../types/workspace";
+import { formatDate } from "../../utils";
 import * as Icons from "../icons";
 
 interface Props {
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const WorkspaceCard = (props: Props) => {
-  const { workspace } = props;
+  const workspace: Workspace = props.workspace;
   const classes = useStyles();
   const openTitle = "Open workspace";
   return (
@@ -48,13 +49,13 @@ export const WorkspaceCard = (props: Props) => {
         <Icons.InfoIcon className={classes.icon} />
       </CardActions>
       <CardContent>
-      <div className={classes.image}>
+        <div className={classes.image}>
           <Link href={`/workspace/${workspace.id}`} color="inherit">
-            {!workspace.image ? (
+            {!workspace.thumbnail ? (
               <FolderIcon className={classes.imageIcon} />
             ) : (
-              <img src={workspace.image} title={openTitle} alt={openTitle} />
-            )}
+                <img src={workspace.thumbnail} title={openTitle} alt={openTitle} />
+              )}
           </Link>
         </div>
       </CardContent>
@@ -66,7 +67,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption">
-          Last edited: {workspace.lastApplicationEdit}, {workspace.lastEdited}
+          Last edited: {workspace.lastType/* TODO change workspace.lastOpen.type.application.name */}, {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>
     </Card>

@@ -26,9 +26,11 @@ class BaseModelView(MethodView):
                                                             *args,
                                                             **kwargs)
         obj_dicts = map(lambda obj: obj.to_dict(), objects.items)
-        return {"current_page": page,
-                "number_of_pages": total_pages,
-                "items": list(obj_dicts)}
+        return {"pagination": {
+                    "current_page": page,
+                    "number_of_pages": total_pages,
+                    },
+                f"{self.repository.model.__tablename__}s": list(obj_dicts)}
 
     def post(self, body):
         """Save an object to the repository."""

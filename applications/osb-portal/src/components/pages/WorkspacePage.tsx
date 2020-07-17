@@ -7,18 +7,20 @@ import {
   WorkspaceFrame
 } from "..";
 
-import workspaceService from "../../service/WorkspaceService";
+// import workspaceService from "../../service/WorkspaceService";
+// import { Workspace } from "../../types/workspace";
 
 export default (props: any) => {
   const { workspaceId } = useParams();
-  const workspace = workspaceService.getWorkspace(workspaceId);
+
+  props.selectWorkspace(workspaceId as string);
 
   return (
-      <>
+    <>
       <Divider variant="fullWidth" />
-    <WorkspaceDrawer workspace={workspace}>
-      <WorkspaceFrame />
-    </WorkspaceDrawer>
+      <WorkspaceDrawer>
+        <WorkspaceFrame />
+      </WorkspaceDrawer>
     </>
   );
 };

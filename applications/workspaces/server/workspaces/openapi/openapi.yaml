@@ -134,7 +134,146 @@ paths:
         404:
           description: The workspace was not found.
       tags:
-        - rest 
+        - rest
+  /workspace/{id}/type:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+    post:
+      summary: Add a Workspace type to the workspace.
+      operationId: workspaces.controller.workspace.addtype
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                workspaceType:
+                  $ref: "#/components/schemas/WorkspaceType"
+                  required: true
+      responses:
+        200:
+          description: The Workspace type was added to the workspace.
+        404:
+          description: The workspace was not found or workspace type not specified         
+      tags:
+        - rest
+  /workspace/{id}/type/{type_id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+      - in: path
+        name: type_id
+        required: true
+        schema:
+          type: integer
+        description: Workspace Type Id to be deleted from the workspace
+    delete:
+      summary: Delete a Workspace Type from the workspace.
+      operationId: workspaces.controller.workspace.deltype
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The Workspace Type is successfully deleted from the workspace.
+        404:
+          description: The workspace was not found.
+      tags:
+        - rest
+  /workspace/{id}/thumbnail:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+    put:
+      summary: Sets the thumbnail of the workspace.
+      operationId: workspaces.controller.workspace.setthumbnail
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                thumbNail:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: The workspace was updated with the thumbnail.
+        404:
+          description: The workspace was not found or the thumbnail was not specified         
+      tags:
+        - rest
+  /workspace/{id}/gallery:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+    post:
+      summary: Adds and image to the workspace.
+      operationId: workspaces.controller.workspace.addimage
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: The image was added to the workspace.
+        404:
+          description: The workspace was not found or the image was not specified         
+      tags:
+        - rest
+  /workspace/{id}/gallery/{image_id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+      - in: path
+        name: image_id
+        required: true
+        schema:
+          type: integer
+        description: Workspace Image Id to be deleted from the workspace
+    delete:
+      summary: Delete a Workspace Image from the workspace.
+      operationId: workspaces.controller.workspace.delimage
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The Workspace Image is successfully deleted from the workspace.
+        404:
+          description: The workspace was not found.
+      tags:
+        - rest
 
   /osbrepository:
     get:
@@ -647,6 +786,21 @@ components:
         - g
       default: g
       example: g
+    WorkspaceType:
+      description: >
+        Workspace type: type of a Workspace, a workspace can have multiple unique types assigned 
+         * netpyne - Single cell/Network NetPyNE
+         * nwbexplorer - Data analyses NWB Explorer
+         * jupyterlab - Jupyter Lab playground
+      type: string
+      enum:
+        - netpyne
+        - nwbexplorer
+        - jupyterlab
+      default: netpyne
+      example: netpyne
+    ImageType:
+      type: string
     User:
       description: key cloak User
       type: object
@@ -704,6 +858,24 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/WorkspaceTag"
+        last_type:
+          description: The last type the workspace is opened with
+          $ref: "#/components/schemas/WorkspaceType"
+        types:
+          description: Workspace types of the workspace
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/WorkspaceHasType"      
+        thumbnail:
+          description: Workspace type icon.
+          $ref: "#/components/schemas/ImageType"
+        gallery:
+          description: Gallery with images of the workspace
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/WorkspaceImage"
         owner:
           description: Workspace owner, will be automatically be set to the logged in user
           $ref: "#/components/schemas/User"
@@ -735,6 +907,32 @@ components:
       required:
         - name
         - description
+    WorkspaceHasType:
+      description: Workspace types of a workspace, a workspace can have multiple types
+      type: object
+      x-tablename: workspacehastype
+      properties:
+        id:
+          description: Unique identifier of the WorkspaceHasType
+          $ref: "#/components/schemas/PrimaryKey"
+        type:
+          description: Workspace type
+          $ref: "#/components/schemas/WorkspaceType"
+      required:
+        - type        
+    WorkspaceImage:
+      description: Workspace images of a workspace
+      type: object
+      x-tablename: workspaceimage
+      properties:
+        id:
+          description: Unique identifier of the WorkspaceImage
+          $ref: "#/components/schemas/PrimaryKey"
+        image:
+          description: Workspace Image
+          $ref: "#/components/schemas/ImageType"
+      required:
+        - image    
     WorkspaceTag:
       description: Workspace tags linking to workspaces
       type: object
@@ -804,7 +1002,7 @@ components:
           type: array
           items:
             allOf:
-              - "$ref": "#/components/schemas/WorkspaceResource"
+              - $ref: "#/components/schemas/WorkspaceResource"
               - x-secondary: osbrepository_resources
       required:
         - uuid

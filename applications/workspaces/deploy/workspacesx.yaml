@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspaces-images
+  labels:
+    app: {{ .Values.apps.workspaces.harness.name }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.apps.workspaces.harness.name }}
+  labels:
+    app: {{ .Values.apps.workspaces.harness.name }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+   - port: {{ .Values.apps.workspaces.harness.deployment.port }}
+  selector:
+   app: {{ .Values.apps.workspaces.harness.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.apps.workspaces.harness.name }}
+  labels:
+    app: {{ .Values.apps.workspaces.harness.name }}
+{{ include "deploy_utils.labels" $ | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.apps.workspaces.harness.name | quote }}
+{{ include "deploy_utils.labels" $ | indent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.apps.workspaces.harness.name }}
+{{ include "deploy_utils.labels" $ | indent 8 }}
+    spec:
+      containers:
+      - name: {{ .Values.apps.workspaces.harness.name | default "workspaces" | quote }}
+        image: {{ .Values.apps.workspaces.harness.deployment.image }}
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: IMAGEDIR
+          value: {{ .Values.apps.workspaces.harness.imagesdir }}
+        ports:
+          - containerPort: {{ .Values.apps.workspaces.harness.deployment.port }}
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: workspaces-images
+          mountPath: {{ .Values.apps.workspaces.harness.imagesdir }}
+      volumes:
+      - name: workspaces-images
+        persistentVolumeClaim:
+          claimName: workspaces-images
+---

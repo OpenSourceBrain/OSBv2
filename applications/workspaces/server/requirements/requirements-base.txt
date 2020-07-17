@@ -10,3 +10,4 @@ Flask-SQLAlchemy==2.4.1
 OpenAlchemy==1.1.0
 pyjwt>=1.7.1
 swagger-ui-bundle >= 0.0.2
+psycopg2-binary==2.8.5

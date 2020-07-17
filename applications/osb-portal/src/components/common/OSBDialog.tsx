@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Grid, Paper } from "@material-ui/core";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
@@ -22,6 +21,7 @@ import * as Icons from "../icons";
 interface DialogProps {
   open: boolean;
   title: string;
+
   actions?: React.ReactElement;
   closeAction: () => void;
 }
@@ -41,7 +41,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
     }
   };
   return (
-    <Dialog onClose={handleClose} open={open} maxWidth={"md"} fullWidth={true}>
+    <Dialog onClose={handleClose} open={open} fullWidth={true}>
       <DialogTitle disableTypography={true}>
         <Box display="flex" justifyContent="space-between">
           {title}
