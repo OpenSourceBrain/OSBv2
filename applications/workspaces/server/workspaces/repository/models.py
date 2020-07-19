@@ -143,7 +143,7 @@ class WorkspaceDict(_WorkspaceDictBase, total=False):
     timestamp_created: typing.Optional[str]
     timestamp_updated: typing.Optional[str]
     tags: typing.Sequence["WorkspaceTagDict"]
-    last_open: typing.Optional[int]
+    last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
     gallery: typing.Sequence["WorkspaceImageDict"]
     owner: typing.Optional["UserDict"]
@@ -167,7 +167,8 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
         tags: Workspace tags
-        last_open: The last workspace resource id the workspace is opened with
+        last_opened_resource_id: The workspace resource id the workspace is
+            opened last with
         thumbnail: The thumbnail of the Workspace.
         gallery: Gallery with images of the workspace
         owner: The owner of the Workspace.
@@ -192,7 +193,7 @@ class TWorkspace(typing_extensions.Protocol):
     timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     tags: 'sqlalchemy.Column[typing.Sequence["TWorkspaceTag"]]'
-    last_open: "sqlalchemy.Column[typing.Optional[int]]"
+    last_opened_resource_id: "sqlalchemy.Column[typing.Optional[int]]"
     thumbnail: "sqlalchemy.Column[typing.Optional[str]]"
     gallery: 'sqlalchemy.Column[typing.Sequence["TWorkspaceImage"]]'
     owner: 'sqlalchemy.Column[typing.Optional["TUser"]]'
@@ -210,7 +211,7 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["TWorkspaceTag"]] = None,
-        last_open: typing.Optional[int] = None,
+        last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["TWorkspaceImage"]] = None,
         owner: typing.Optional["TUser"] = None,
@@ -230,8 +231,8 @@ class TWorkspace(typing_extensions.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: Workspace tags
-            last_open: The last workspace resource id the workspace is opened
-                with
+            last_opened_resource_id: The workspace resource id the workspace is
+                opened last with
             thumbnail: The thumbnail of the Workspace.
             gallery: Gallery with images of the workspace
             owner: The owner of the Workspace.
@@ -254,7 +255,7 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["WorkspaceTagDict"]] = None,
-        last_open: typing.Optional[int] = None,
+        last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["WorkspaceImageDict"]] = None,
         owner: typing.Optional["UserDict"] = None,
@@ -274,8 +275,8 @@ class TWorkspace(typing_extensions.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: Workspace tags
-            last_open: The last workspace resource id the workspace is opened
-                with
+            last_opened_resource_id: The workspace resource id the workspace is
+                opened last with
             thumbnail: The thumbnail of the Workspace.
             gallery: Gallery with images of the workspace
             owner: The owner of the Workspace.

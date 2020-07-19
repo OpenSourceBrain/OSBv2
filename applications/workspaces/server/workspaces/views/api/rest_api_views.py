@@ -18,5 +18,5 @@ class FigsharerepositoryView(BaseModelView):
 class VolumestorageView(BaseModelView):
     repository = VolumeStorageRepository()
 
-class WorkspacereourceView(BaseModelView):
+class WorkspaceresourceView(BaseModelView):
     repository = WorkspaceResourceRepository

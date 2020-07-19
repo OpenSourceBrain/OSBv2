@@ -224,7 +224,7 @@ paths:
       tags:
         - rest
 
-  /workspacereource/{id}:
+  /workspaceresource/{id}:
     parameters:
       - in: path
         name: id
@@ -278,7 +278,7 @@ paths:
       tags:
         - rest       
 
-  /workspacereource/{id}/open:
+  /workspaceresource/{id}/open:
     parameters:
       - in: path
         name: id
@@ -291,11 +291,7 @@ paths:
       operationId: workspaces.controller.workspace_resource.open
       responses:
         200:
-          description: The WorkspaceResource.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkspaceResource"
+          description: The WorkspaceResource was updated.
         404:
           description: The WorkspaceResource was not found.
       tags:
