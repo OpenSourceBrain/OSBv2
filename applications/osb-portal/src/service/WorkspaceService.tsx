@@ -4,9 +4,10 @@ import { Workspace } from "../types/workspace";
 import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, WorkspaceResource as ApiWorkspaceResource } from '../apiclient/workspaces';
 import store from '../store/store';
 import { fetchWorkspacesAction } from '../store/actions/workspaces';
+import WorkspaceResourceService from './WorkspaceResourceService';
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
@@ -19,8 +20,13 @@ class WorkspaceService {
     const wsigr: WorkspaceIdGetRequest = { id };
     let result: Workspace = null;
     await this.workspacesApi.workspaceIdGet(wsigr).then((workspace: ApiWorkspace) => {
-      result = mapWorkspace(workspace)
+      result = mapWorkspace(workspace);
     });
+    if (result && result.lastOpenedResourceId > 0) {
+      const workspaceResource: ApiWorkspaceResource = await WorkspaceResourceService.getWorkspaceResource(result.lastOpenedResourceId);
+      result.lastResource = workspaceResource;
+      result.lastType = workspaceResource.resourceType;
+    }
     return result;
   }
 
@@ -54,6 +60,8 @@ class WorkspaceService {
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   return {
     ...workspace,
+    lastType: '-',
+    lastResource: null,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
   }

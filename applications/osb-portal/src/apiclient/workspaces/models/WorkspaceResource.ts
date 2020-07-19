@@ -39,6 +39,24 @@ export interface WorkspaceResource {
      */
     name: string;
     /**
+     * Date/time of creation of the WorkspaceResource
+     * @type {Date}
+     * @memberof WorkspaceResource
+     */
+    timestampCreated?: Date;
+    /**
+     * Date/time of last updating of the WorkspaceResource
+     * @type {Date}
+     * @memberof WorkspaceResource
+     */
+    timestampUpdated?: Date;
+    /**
+     * Date/time of last opening of the WorkspaceResource
+     * @type {Date}
+     * @memberof WorkspaceResource
+     */
+    timestampLastOpened?: Date;
+    /**
      * 
      * @type {ResourceType}
      * @memberof WorkspaceResource
@@ -58,6 +76,9 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
+        'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
+        'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
+        'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
     };
 }
@@ -73,6 +94,9 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         
         'id': value.id,
         'name': value.name,
+        'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
+        'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
+        'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
     };
 }

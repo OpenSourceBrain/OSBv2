@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    WorkspaceType,
-    WorkspaceTypeFromJSON,
-    WorkspaceTypeFromJSONTyped,
-    WorkspaceTypeToJSON,
-} from './';
-
 /**
  * 
  * @export
@@ -28,10 +21,10 @@ import {
 export interface InlineObject {
     /**
      * 
-     * @type {WorkspaceType}
+     * @type {Blob}
      * @memberof InlineObject
      */
-    workspaceType?: WorkspaceType;
+    thumbNail?: Blob;
 }
 
 export function InlineObjectFromJSON(json: any): InlineObject {
@@ -44,7 +37,7 @@ export function InlineObjectFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'workspaceType': !exists(json, 'workspaceType') ? undefined : WorkspaceTypeFromJSON(json['workspaceType']),
+        'thumbNail': !exists(json, 'thumbNail') ? undefined : json['thumbNail'],
     };
 }
 
@@ -57,7 +50,7 @@ export function InlineObjectToJSON(value?: InlineObject | null): any {
     }
     return {
         
-        'workspaceType': WorkspaceTypeToJSON(value.workspaceType),
+        'thumbNail': value.thumbNail,
     };
 }
 

@@ -22,10 +22,6 @@ import {
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
     VolumeStorageToJSON,
-    WorkspaceHasType,
-    WorkspaceHasTypeFromJSON,
-    WorkspaceHasTypeFromJSONTyped,
-    WorkspaceHasTypeToJSON,
     WorkspaceImage,
     WorkspaceImageFromJSON,
     WorkspaceImageFromJSONTyped,
@@ -38,10 +34,6 @@ import {
     WorkspaceTagFromJSON,
     WorkspaceTagFromJSONTyped,
     WorkspaceTagToJSON,
-    WorkspaceType,
-    WorkspaceTypeFromJSON,
-    WorkspaceTypeFromJSONTyped,
-    WorkspaceTypeToJSON,
 } from './';
 
 /**
@@ -87,17 +79,11 @@ export interface Workspace {
      */
     tags?: Array<WorkspaceTag>;
     /**
-     * 
-     * @type {WorkspaceType}
+     * The workspace resource id the workspace is opened last with
+     * @type {number}
      * @memberof Workspace
      */
-    lastType?: WorkspaceType;
-    /**
-     * Workspace types of the workspace
-     * @type {Array<WorkspaceHasType>}
-     * @memberof Workspace
-     */
-    types?: Array<WorkspaceHasType>;
+    lastOpenedResourceId?: number;
     /**
      * 
      * @type {string}
@@ -164,8 +150,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(WorkspaceTagFromJSON)),
-        'lastType': !exists(json, 'last_type') ? undefined : WorkspaceTypeFromJSON(json['last_type']),
-        'types': !exists(json, 'types') ? undefined : ((json['types'] as Array<any>).map(WorkspaceHasTypeFromJSON)),
+        'lastOpenedResourceId': !exists(json, 'last_opened_resource_id') ? undefined : json['last_opened_resource_id'],
         'thumbnail': !exists(json, 'thumbnail') ? undefined : json['thumbnail'],
         'gallery': !exists(json, 'gallery') ? undefined : ((json['gallery'] as Array<any>).map(WorkspaceImageFromJSON)),
         'owner': !exists(json, 'owner') ? undefined : UserFromJSON(json['owner']),
@@ -192,8 +177,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(WorkspaceTagToJSON)),
-        'last_type': WorkspaceTypeToJSON(value.lastType),
-        'types': value.types === undefined ? undefined : ((value.types as Array<any>).map(WorkspaceHasTypeToJSON)),
+        'last_opened_resource_id': value.lastOpenedResourceId,
         'thumbnail': value.thumbnail,
         'gallery': value.gallery === undefined ? undefined : ((value.gallery as Array<any>).map(WorkspaceImageToJSON)),
         'owner': UserToJSON(value.owner),
