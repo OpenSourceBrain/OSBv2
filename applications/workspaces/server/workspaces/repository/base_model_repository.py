@@ -34,7 +34,8 @@ class BaseModelRepository:
             sqs = self._get_qs([self._create_filter(self.model.id, '=', id)])
             obj = sqs.first()
             if obj:
-                return obj, True
+                obj, found = self._post_get(obj)
+                return obj, found
         return None, False
 
     def _calculated_fields_populate(self, obj):
@@ -42,6 +43,11 @@ class BaseModelRepository:
             for fld in self.calculated_fields:
                 setattr(obj, fld, getattr(self, fld)(obj.id))
         return obj
+
+    def _post_get(self, new_obj):
+        if hasattr(self, "post_get"):
+            return self.post_get(new_obj)
+        return new_obj, True
 
     def _pre_commit(self, new_obj):
         if hasattr(self, "pre_commit"):
@@ -109,7 +115,7 @@ class BaseModelRepository:
         else:
             return field == value
 
-    def _get_qs(self,filter=None):
+    def _get_qs(self, filter=None):
         """
         Helper function to get the queryset
 
@@ -118,6 +124,8 @@ class BaseModelRepository:
         """
         if not self.search_qs:
             sqs = self.model.query
+            if filter:
+                sqs = sqs.filter(*filter)
         else:
             if isinstance(self.search_qs, str):
                 sqs = eval(self.search_qs)

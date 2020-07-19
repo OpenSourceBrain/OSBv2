@@ -107,7 +107,7 @@ paths:
       tags:
         - rest
     put:
-      summary: Update an workspace in the repository.
+      summary: Update a workspace in the repository.
       security:
         - bearerAuth: []
       requestBody:
@@ -129,65 +129,12 @@ paths:
       tags:
         - rest
     delete:
-      summary: Delete an workspace from the repository.
+      summary: Delete a workspace from the repository.
       security:
         - bearerAuth: []
       responses:
         200:
           description: The workspace was deleted.
-        404:
-          description: The workspace was not found.
-      tags:
-        - rest
-  /workspace/{id}/type:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-    post:
-      summary: Add a Workspace type to the workspace.
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                workspaceType:
-                  $ref: "#/components/schemas/WorkspaceType"
-                  required: true
-      responses:
-        200:
-          description: The Workspace type was added to the workspace.
-        404:
-          description: The workspace was not found or workspace type not specified         
-      tags:
-        - rest
-  /workspace/{id}/type/{type_id}:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-      - in: path
-        name: type_id
-        required: true
-        schema:
-          type: integer
-        description: Workspace Type Id to be deleted from the workspace
-    delete:
-      summary: Delete a Workspace Type from the workspace.
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: The Workspace Type is successfully deleted from the workspace.
         404:
           description: The workspace was not found.
       tags:
@@ -202,6 +149,7 @@ paths:
         description: Workspace ID of the workspace
     put:
       summary: Sets the thumbnail of the workspace.
+      operationId: workspaces.controller.workspace.setthumbnail
       security:
         - bearerAuth: []
       requestBody:
@@ -230,6 +178,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Adds and image to the workspace.
+      operationId: workspaces.controller.workspace.addimage
       security:
         - bearerAuth: []
       requestBody:
@@ -264,6 +213,7 @@ paths:
         description: Workspace Image Id to be deleted from the workspace
     delete:
       summary: Delete a Workspace Image from the workspace.
+      operationId: workspaces.controller.workspace.delimage
       security:
         - bearerAuth: []
       responses:
@@ -271,6 +221,83 @@ paths:
           description: The Workspace Image is successfully deleted from the workspace.
         404:
           description: The workspace was not found.
+      tags:
+        - rest
+
+  /workspacereource/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Used to retrieve a WorkspaceResource.
+      responses:
+        200:
+          description: The WorkspaceResource.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceResource"
+        404:
+          description: The WorkspaceResource was not found.
+      tags:
+        - rest
+    put:
+      summary: Update the WorkspaceResource.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The WorkspaceResource to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkspaceResource"
+      responses:
+        200:
+          description: The WorkspaceResource was updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceResource"
+        404:
+          description: The WorkspaceResource was not found.
+      tags:
+        - rest
+    delete:
+      summary: Delete a WorkspaceResource.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The WorkspaceResource was deleted.
+        404:
+          description: The WorkspaceResource was not found.
+      tags:
+        - rest       
+
+  /workspacereource/{id}/open:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: WorkspaceResource ID of the WorkspaceResource
+    get:
+      summary: Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
+      operationId: workspaces.controller.workspace_resource.open
+      responses:
+        200:
+          description: The WorkspaceResource.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceResource"
+        404:
+          description: The WorkspaceResource was not found.
       tags:
         - rest
 
@@ -464,7 +491,7 @@ paths:
           type: integer
         required: true
     get:
-      summary: Used to retrieve an gitrepository from the repository.
+      summary: Used to retrieve a gitrepository from the repository.
       responses:
         200:
           description: The gitrepository.
@@ -477,7 +504,7 @@ paths:
       tags:
         - rest
     put:
-      summary: Update an gitrepository in the repository.
+      summary: Update a gitrepository in the repository.
       security:
         - bearerAuth: []
       requestBody:
@@ -499,7 +526,7 @@ paths:
       tags:
         - rest
     delete:
-      summary: Delete an gitrepository from the repository.
+      summary: Delete a gitrepository from the repository.
       security:
         - bearerAuth: []
       responses:
@@ -785,19 +812,6 @@ components:
         - g
       default: g
       example: g
-    WorkspaceType:
-      description: >
-        Workspace type: type of a Workspace, a workspace can have multiple unique types assigned 
-         * netpyne - Single cell/Network NetPyNE
-         * nwbexplorer - Data analyses NWB Explorer
-         * jupyterlab - Jupyter Lab playground
-      type: string
-      enum:
-        - netpyne
-        - nwbexplorer
-        - jupyterlab
-      default: netpyne
-      example: netpyne
     ImageType:
       type: string
     User:
@@ -857,15 +871,9 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/WorkspaceTag"
-        last_type:
-          description: The last type the workspace is opened with
-          $ref: "#/components/schemas/WorkspaceType"
-        types:
-          description: Workspace types of the workspace
-          type: array
-          items:
-            allOf:
-              - $ref: "#/components/schemas/WorkspaceHasType"      
+        last_opened_resource_id:
+          description: The workspace resource id the workspace is opened last with
+          type: integer
         thumbnail:
           description: Workspace type icon.
           $ref: "#/components/schemas/ImageType"
@@ -897,27 +905,13 @@ components:
           description: Resources of the workspace
           type: array
           items:
-            allOf:
-              - $ref: "#/components/schemas/WorkspaceResource"
+              $ref: "#/components/schemas/WorkspaceResource"
         storage:
           description: Storage of the workspace
           $ref: "#/components/schemas/VolumeStorage"
       required:
         - name
         - description
-    WorkspaceHasType:
-      description: Workspace types of a workspace, a workspace can have multiple types
-      type: object
-      x-tablename: workspacehastype
-      properties:
-        id:
-          description: Unique identifier of the WorkspaceHasType
-          $ref: "#/components/schemas/PrimaryKey"
-        type:
-          description: Workspace type
-          $ref: "#/components/schemas/WorkspaceType"
-      required:
-        - type        
     WorkspaceImage:
       description: Workspace images of a workspace
       type: object
@@ -957,6 +951,21 @@ components:
           description: WorkspaceResource name
           type: string
           example: Workspace Resource One
+        timestamp_created:
+          description: Date/time of creation of the WorkspaceResource
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z
+        timestamp_updated:
+          description: Date/time of last updating of the WorkspaceResource
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z
+        timestamp_last_opened:
+          description: Date/time of last opening of the WorkspaceResource
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z  
         resource_type:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"

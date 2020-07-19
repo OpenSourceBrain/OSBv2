@@ -9,8 +9,8 @@ from ..config import Config
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage,\
-     WorkspaceHasType, WorkspaceImage
+from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, \
+    WorkspaceImage, WorkspaceResource
 
 
 logger = logging.getLogger(Config.APP_NAME)
@@ -19,7 +19,7 @@ class WorkspaceRepository(BaseModelRepository):
     model = Workspace
     defaults = {}
 
-    def search_qs(self,filter=None):
+    def search_qs(self, filter=None):
         q_base = self.model.query
         if filter is not None:
             q_base = q_base.filter(*filter)
@@ -78,8 +78,16 @@ class VolumeStorageRepository(BaseModelRepository):
     model = VolumeStorage
 
 
-class WorkspaceHasTypeRepository(BaseModelRepository):
-    model = WorkspaceHasType
-
 class WorkspaceImageRepository(BaseModelRepository):
     model = WorkspaceImage
+
+
+class WorkspaceResourceRepository(BaseModelRepository):
+    model = WorkspaceResource
+
+    def post_get(self, workspace_resource):
+        workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        if not found:
+            # workspace not found means no access rights to the workspace so fail with resource not found
+            return workspace_resource, False
+        return workspace_resource, True
