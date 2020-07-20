@@ -529,6 +529,7 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
+    location: typing.Optional[str]
     timestamp_created: typing.Optional[str]
     timestamp_updated: typing.Optional[str]
     timestamp_last_opened: typing.Optional[str]
@@ -543,6 +544,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
     Attrs:
         id: The id of the WorkspaceResource.
         name: WorkspaceResource name
+        location: WorkspaceResource location where the resource is stored
         timestamp_created: Date/time of creation of the WorkspaceResource
         timestamp_updated: Date/time of last updating of the WorkspaceResource
         timestamp_last_opened: Date/time of last opening of the
@@ -560,6 +562,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
     # Model properties
     id: "sqlalchemy.Column[int]"
     name: "sqlalchemy.Column[str]"
+    location: "sqlalchemy.Column[typing.Optional[str]]"
     timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     timestamp_last_opened: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
@@ -570,6 +573,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         name: str,
         resource_type: str,
         id: typing.Optional[int] = None,
+        location: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
@@ -580,6 +584,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
+            location: WorkspaceResource location where the resource is stored
             timestamp_created: Date/time of creation of the WorkspaceResource
             timestamp_updated: Date/time of last updating of the
                 WorkspaceResource
@@ -597,6 +602,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         name: str,
         resource_type: str,
         id: typing.Optional[int] = None,
+        location: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
@@ -607,6 +613,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
+            location: WorkspaceResource location where the resource is stored
             timestamp_created: Date/time of creation of the WorkspaceResource
             timestamp_updated: Date/time of last updating of the
                 WorkspaceResource

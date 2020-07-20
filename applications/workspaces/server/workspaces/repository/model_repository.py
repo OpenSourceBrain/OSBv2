@@ -59,6 +59,12 @@ class WorkspaceRepository(BaseModelRepository):
                              email=usr_email
                              )
             workspace.owner = owner
+
+        # ToDo: temporary add a resource to the new workspace
+        wr = WorkspaceResource(name="Demo file", 
+            location="https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
+            resource_type="E")
+        workspace.resources.add(wr)
         return workspace
 
 

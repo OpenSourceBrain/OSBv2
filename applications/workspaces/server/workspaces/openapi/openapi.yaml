@@ -944,6 +944,10 @@ components:
           description: WorkspaceResource name
           type: string
           example: Workspace Resource One
+        location:
+          description: WorkspaceResource location where the resource is stored
+          type: string
+          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
         timestamp_created:
           description: Date/time of creation of the WorkspaceResource
           type: string

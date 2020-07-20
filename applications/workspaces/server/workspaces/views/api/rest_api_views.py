@@ -19,4 +19,4 @@ class VolumestorageView(BaseModelView):
     repository = VolumeStorageRepository()
 
 class WorkspaceresourceView(BaseModelView):
-    repository = WorkspaceResourceRepository
+    repository = WorkspaceResourceRepository()

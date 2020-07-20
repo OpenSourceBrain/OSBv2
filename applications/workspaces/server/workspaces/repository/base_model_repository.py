@@ -192,8 +192,6 @@ class BaseModelRepository:
         try:
             # trigger post operation
             new_obj = self._pre_commit(new_obj)
-            logger.info(f'new obj: {new_obj}')
-            logger.info(f'new obj owner: {new_obj.owner}')
             db.session.add(new_obj)
             db.session.commit()
         except IntegrityError as e:
@@ -210,7 +208,7 @@ class BaseModelRepository:
 
     def put(self, body, id):
         """Update an object in the repository."""
-        obj, found = self._get(id=id)
+        obj, found = self._get(id)
         if not found:
             return f"{self.model.__name__} with id {id} not found.", 404
 
