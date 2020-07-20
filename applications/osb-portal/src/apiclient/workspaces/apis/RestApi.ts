@@ -1242,7 +1242,7 @@ export class RestApi extends runtime.BaseAPI {
 
         const queryParameters: runtime.HTTPQuery = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+        const headerParameters: runtime.HTTPHeaders = { 'accept' : '*/*',  'Content-Type' : 'multipart/form-data' };
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -1425,6 +1425,11 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacePost(requestParameters: WorkspacePostRequest): Promise<Workspace> {
         const response = await this.workspacePostRaw(requestParameters);
+        return await response.value();
+    }
+    
+    async workspacePutThumbnail(requestParameters: WorkspaceIdThumbnailPutRequest): Promise<void> {
+        const response = await this.workspaceIdThumbnailPutRaw(requestParameters);
         return await response.value();
     }
 
