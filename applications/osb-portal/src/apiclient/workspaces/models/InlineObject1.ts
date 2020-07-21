@@ -24,7 +24,7 @@ export interface InlineObject1 {
      * @type {Blob}
      * @memberof InlineObject1
      */
-    thumbNail?: Blob;
+    image?: Blob;
 }
 
 export function InlineObject1FromJSON(json: any): InlineObject1 {
@@ -37,7 +37,7 @@ export function InlineObject1FromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'thumbNail': !exists(json, 'thumbNail') ? undefined : json['thumbNail'],
+        'image': !exists(json, 'image') ? undefined : json['image'],
     };
 }
 
@@ -50,7 +50,7 @@ export function InlineObject1ToJSON(value?: InlineObject1 | null): any {
     }
     return {
         
-        'thumbNail': value.thumbNail,
+        'image': value.image,
     };
 }
 

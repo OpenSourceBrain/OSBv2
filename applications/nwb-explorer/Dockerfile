@@ -25,10 +25,9 @@ COPY --from=jsbuild --chown=1000:1000 $FOLDER $FOLDER
 WORKDIR $FOLDER
 
 RUN ls -la webapp/node_modules
+RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
-    apt-get install python3-tk vim nano unzip -qq
-RUN apt-get install git -qq
-RUN apt-get install g++ -qq
+    apt-get install python3-tk vim nano unzip git g++ -qq
 
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45

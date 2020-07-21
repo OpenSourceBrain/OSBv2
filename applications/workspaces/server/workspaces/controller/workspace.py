@@ -4,45 +4,8 @@ import os
 from pathlib import Path
 from flask import current_app
 from ..config import Config
-from ..repository.model_repository import WorkspaceRepository, WorkspaceImageRepository, WorkspaceHasTypeRepository, db
-from ..repository.models import WorkspaceHasType, WorkspaceImage
-
-def addtype(id=None, body=None, **kwargs):
-    workspace, found = WorkspaceRepository().get(id=id)
-    if not found:
-        return f"Workspace with id {id} not found.", 404
-
-    workspace_type = body.get('workspaceType', None)
-    if not workspace_type:
-        return f"Workspace type not specified.", 404
-
-    try:
-        next(filter(lambda x: x.type == workspace_type,  workspace.types))
-    except StopIteration:
-        # workspace type not in workspaces.types --> insert one
-        workspace.types.append(WorkspaceHasType(type=workspace_type))
-
-    workspace.last_type = workspace_type
-    db.session.add(workspace)
-    db.session.commit()
-    return "Saved", 200
-
-def deltype(id=None, type_id=None, **kwargs):
-    workspace, found = WorkspaceRepository().get(id=id)
-    if not found:
-        return f"Workspace with id {id} not found.", 404
-    if not type_id:
-        return f"Workspace Type Id is not specified.", 404
-
-    wshtr = WorkspaceHasTypeRepository()
-    wsht, found = wshtr.get(id=type_id)
-    if not found:
-        return f"Workspace Type with id {type_id} not found.", 404
-
-    if wsht.workspace_id != id:
-        return f"Workspace Type Id {type_id} doesn't belong to Workspace {id}.", 404
-
-    return wshtr.delete(id=type_id)
+from ..repository.model_repository import WorkspaceRepository, WorkspaceImageRepository, db
+from ..repository.models import WorkspaceImage
 
 def _save_image(id=None, image=None, filename_base=None):
     ext = mimetypes.guess_extension(image.mimetype)

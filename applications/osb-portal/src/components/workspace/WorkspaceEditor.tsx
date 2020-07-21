@@ -15,7 +15,7 @@ import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 interface WorkspaceEditProps {
   workspace: Workspace;
-  onLoadWorkspace: (workspace: Workspace) => void;
+  onLoadWorkspace: () => void;
 }
 
 const dropAreaStyle = {
@@ -54,6 +54,7 @@ export default (props: WorkspaceEditProps) => {
 
   const handleCreateWorkspace = async () => {
     const workspace : any = await workspaceService.createWorkspace(workspaceForm);
+    props.onLoadWorkspace();
     if (thumbnail) {
       const fileThumbnail : any = await readFile(thumbnail);
       workspaceService.updateWorkspaceThumbnail(workspace.id, fileThumbnail);

@@ -9,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
-import { WorkspaceType } from "../../apiclient/workspaces/models/WorkspaceType";
+import { ResourceType } from "../../apiclient/workspaces/models/ResourceType";
 
 import WorkspaceItem from "./NewWorkspaceItem";
 
@@ -49,7 +49,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.CircleIcon}
               title="Single Cell"
-              application={WorkspaceType.Netpyne}
+              application={ResourceType.M}
               user={user}
             />
           </Grid>
@@ -57,7 +57,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.SquareCirclesIcon}
               title="Network"
-              application={WorkspaceType.Netpyne}
+              application={ResourceType.M}
               user={user}
             />
           </Grid>
@@ -65,7 +65,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.ChartIcon}
               title="Data Analysis"
-              application={WorkspaceType.Nwbexplorer}
+              application={ResourceType.E}
               user={user}
             />
           </Grid>
@@ -73,7 +73,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.CubeIcon}
               title="Playground"
-              application={WorkspaceType.Jupyterlab}
+              application={ResourceType.G}
               user={user}
             />
           </Grid>
