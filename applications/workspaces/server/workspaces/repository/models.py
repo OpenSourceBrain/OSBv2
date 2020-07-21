@@ -143,8 +143,7 @@ class WorkspaceDict(_WorkspaceDictBase, total=False):
     timestamp_created: typing.Optional[str]
     timestamp_updated: typing.Optional[str]
     tags: typing.Sequence["WorkspaceTagDict"]
-    last_type: str
-    types: typing.Sequence["WorkspaceHasTypeDict"]
+    last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
     gallery: typing.Sequence["WorkspaceImageDict"]
     owner: typing.Optional["UserDict"]
@@ -168,11 +167,8 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
         tags: Workspace tags
-        last_type: Workspace type: type of a Workspace, a workspace can have
-            multiple unique types assigned   * netpyne - Single cell/Network
-            NetPyNE  * nwbexplorer - Data analyses NWB Explorer  * jupyterlab -
-            Jupyter Lab playground
-        types: Workspace types of the workspace
+        last_opened_resource_id: The workspace resource id the workspace is
+            opened last with
         thumbnail: The thumbnail of the Workspace.
         gallery: Gallery with images of the workspace
         owner: The owner of the Workspace.
@@ -197,8 +193,7 @@ class TWorkspace(typing_extensions.Protocol):
     timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     tags: 'sqlalchemy.Column[typing.Sequence["TWorkspaceTag"]]'
-    last_type: "sqlalchemy.Column[str]"
-    types: 'sqlalchemy.Column[typing.Sequence["TWorkspaceHasType"]]'
+    last_opened_resource_id: "sqlalchemy.Column[typing.Optional[int]]"
     thumbnail: "sqlalchemy.Column[typing.Optional[str]]"
     gallery: 'sqlalchemy.Column[typing.Sequence["TWorkspaceImage"]]'
     owner: 'sqlalchemy.Column[typing.Optional["TUser"]]'
@@ -216,8 +211,7 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["TWorkspaceTag"]] = None,
-        last_type: str = "netpyne",
-        types: typing.Optional[typing.Sequence["TWorkspaceHasType"]] = None,
+        last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["TWorkspaceImage"]] = None,
         owner: typing.Optional["TUser"] = None,
@@ -237,11 +231,8 @@ class TWorkspace(typing_extensions.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: Workspace tags
-            last_type: Workspace type: type of a Workspace, a workspace can
-                have multiple unique types assigned   * netpyne - Single
-                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
-                Explorer  * jupyterlab - Jupyter Lab playground
-            types: Workspace types of the workspace
+            last_opened_resource_id: The workspace resource id the workspace is
+                opened last with
             thumbnail: The thumbnail of the Workspace.
             gallery: Gallery with images of the workspace
             owner: The owner of the Workspace.
@@ -264,8 +255,7 @@ class TWorkspace(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["WorkspaceTagDict"]] = None,
-        last_type: str = "netpyne",
-        types: typing.Optional[typing.Sequence["WorkspaceHasTypeDict"]] = None,
+        last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["WorkspaceImageDict"]] = None,
         owner: typing.Optional["UserDict"] = None,
@@ -285,11 +275,8 @@ class TWorkspace(typing_extensions.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: Workspace tags
-            last_type: Workspace type: type of a Workspace, a workspace can
-                have multiple unique types assigned   * netpyne - Single
-                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
-                Explorer  * jupyterlab - Jupyter Lab playground
-            types: Workspace types of the workspace
+            last_opened_resource_id: The workspace resource id the workspace is
+                opened last with
             thumbnail: The thumbnail of the Workspace.
             gallery: Gallery with images of the workspace
             owner: The owner of the Workspace.
@@ -339,111 +326,6 @@ class TWorkspace(typing_extensions.Protocol):
 
 
 Workspace: typing.Type[TWorkspace] = models.Workspace  # type: ignore
-
-
-class _WorkspaceHasTypeDictBase(typing_extensions.TypedDict, total=True):
-    """TypedDict for properties that are required."""
-
-    type: str
-
-
-class WorkspaceHasTypeDict(_WorkspaceHasTypeDictBase, total=False):
-    """TypedDict for properties that are not required."""
-
-    id: int
-
-
-class TWorkspaceHasType(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    Workspace types of a workspace, a workspace can have multiple types
-
-    Attrs:
-        id: The id of the WorkspaceHasType.
-        type: Workspace type: type of a Workspace, a workspace can have
-            multiple unique types assigned   * netpyne - Single cell/Network
-            NetPyNE  * nwbexplorer - Data analyses NWB Explorer  * jupyterlab -
-            Jupyter Lab playground
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    id: "sqlalchemy.Column[int]"
-    type: "sqlalchemy.Column[str]"
-
-    def __init__(self, type: str, id: typing.Optional[int] = None) -> None:
-        """
-        Construct.
-
-        Args:
-            id: The id of the WorkspaceHasType.
-            type: Workspace type: type of a Workspace, a workspace can have
-                multiple unique types assigned   * netpyne - Single
-                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
-                Explorer  * jupyterlab - Jupyter Lab playground
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls, type: str, id: typing.Optional[int] = None
-    ) -> "TWorkspaceHasType":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            id: The id of the WorkspaceHasType.
-            type: Workspace type: type of a Workspace, a workspace can have
-                multiple unique types assigned   * netpyne - Single
-                cell/Network NetPyNE  * nwbexplorer - Data analyses NWB
-                Explorer  * jupyterlab - Jupyter Lab playground
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TWorkspaceHasType":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> WorkspaceHasTypeDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-WorkspaceHasType: typing.Type[TWorkspaceHasType] = models.WorkspaceHasType  # type: ignore
 
 
 class _WorkspaceImageDictBase(typing_extensions.TypedDict, total=True):
@@ -647,6 +529,10 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
+    location: typing.Optional[str]
+    timestamp_created: typing.Optional[str]
+    timestamp_updated: typing.Optional[str]
+    timestamp_last_opened: typing.Optional[str]
 
 
 class TWorkspaceResource(typing_extensions.Protocol):
@@ -658,6 +544,11 @@ class TWorkspaceResource(typing_extensions.Protocol):
     Attrs:
         id: The id of the WorkspaceResource.
         name: WorkspaceResource name
+        location: WorkspaceResource location where the resource is stored
+        timestamp_created: Date/time of creation of the WorkspaceResource
+        timestamp_updated: Date/time of last updating of the WorkspaceResource
+        timestamp_last_opened: Date/time of last opening of the
+            WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
             Generic
 
@@ -671,10 +562,21 @@ class TWorkspaceResource(typing_extensions.Protocol):
     # Model properties
     id: "sqlalchemy.Column[int]"
     name: "sqlalchemy.Column[str]"
+    location: "sqlalchemy.Column[typing.Optional[str]]"
+    timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
+    timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
+    timestamp_last_opened: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
     resource_type: "sqlalchemy.Column[str]"
 
     def __init__(
-        self, name: str, resource_type: str, id: typing.Optional[int] = None
+        self,
+        name: str,
+        resource_type: str,
+        id: typing.Optional[int] = None,
+        location: typing.Optional[str] = None,
+        timestamp_created: typing.Optional[datetime.datetime] = None,
+        timestamp_updated: typing.Optional[datetime.datetime] = None,
+        timestamp_last_opened: typing.Optional[datetime.datetime] = None,
     ) -> None:
         """
         Construct.
@@ -682,6 +584,12 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
+            location: WorkspaceResource location where the resource is stored
+            timestamp_created: Date/time of creation of the WorkspaceResource
+            timestamp_updated: Date/time of last updating of the
+                WorkspaceResource
+            timestamp_last_opened: Date/time of last opening of the
+                WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic
 
@@ -690,7 +598,14 @@ class TWorkspaceResource(typing_extensions.Protocol):
 
     @classmethod
     def from_dict(
-        cls, name: str, resource_type: str, id: typing.Optional[int] = None
+        cls,
+        name: str,
+        resource_type: str,
+        id: typing.Optional[int] = None,
+        location: typing.Optional[str] = None,
+        timestamp_created: typing.Optional[datetime.datetime] = None,
+        timestamp_updated: typing.Optional[datetime.datetime] = None,
+        timestamp_last_opened: typing.Optional[datetime.datetime] = None,
     ) -> "TWorkspaceResource":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -698,6 +613,12 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
+            location: WorkspaceResource location where the resource is stored
+            timestamp_created: Date/time of creation of the WorkspaceResource
+            timestamp_updated: Date/time of last updating of the
+                WorkspaceResource
+            timestamp_last_opened: Date/time of last opening of the
+                WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic
 
