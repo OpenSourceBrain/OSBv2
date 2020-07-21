@@ -40,21 +40,25 @@ class WorkspaceService {
 
   async createWorkspace(newWorkspace: Workspace) : Promise<any> {
     const wspr: workspaceApi.WorkspacePostRequest = { workspace: newWorkspace };
-    let newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
+    const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
       if (workspace && workspace.id) {
         // TODO: if not workspace or no id raise an error
         store.dispatch(fetchWorkspacesAction());
       }
       return workspace;
     });
-    
+
     return newCreatedWorkspace;
   };
-  
+
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob : Blob) {
     const wspr: workspaceApi.WorkspaceIdThumbnailPutRequest = { id : workspaceId , thumbNail : thumbNailBlob};
-    await this.workspacesApi.workspacePutThumbnail(wspr).then((id) => {
-    });
+    await this.workspacesApi.workspaceIdThumbnailPut(wspr);
+  };
+  
+  async postImage(workspaceId: number, thumbNailBlob : Blob) {
+    const wspr: workspaceApi.WorkspaceIdGalleryPostRequest = { id : workspaceId , image : thumbNailBlob};
+    await this.workspacesApi.workspaceIdGalleryPost(wspr);
   };
 }
 

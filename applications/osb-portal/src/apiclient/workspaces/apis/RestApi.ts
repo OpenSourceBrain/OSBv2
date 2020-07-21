@@ -1146,7 +1146,8 @@ export class RestApi extends runtime.BaseAPI {
      * Adds and image to the workspace.
      */
     async workspaceIdGalleryPost(requestParameters: WorkspaceIdGalleryPostRequest): Promise<void> {
-        await this.workspaceIdGalleryPostRaw(requestParameters);
+        const response = await this.workspaceIdGalleryPostRaw(requestParameters);
+        return await response.value();
     }
 
     /**
@@ -1269,6 +1270,7 @@ export class RestApi extends runtime.BaseAPI {
         }
 
         if (requestParameters.thumbNail !== undefined) {
+            console.log("Thumbnail " , requestParameters.thumbNail);
             formParams.append('thumbNail', requestParameters.thumbNail as any);
         }
 
@@ -1287,7 +1289,8 @@ export class RestApi extends runtime.BaseAPI {
      * Sets the thumbnail of the workspace.
      */
     async workspaceIdThumbnailPut(requestParameters: WorkspaceIdThumbnailPutRequest): Promise<void> {
-        await this.workspaceIdThumbnailPutRaw(requestParameters);
+        const response = await this.workspaceIdThumbnailPutRaw(requestParameters);
+        return await response.value();
     }
 
     /**
@@ -1427,10 +1430,4 @@ export class RestApi extends runtime.BaseAPI {
         const response = await this.workspacePostRaw(requestParameters);
         return await response.value();
     }
-    
-    async workspacePutThumbnail(requestParameters: WorkspaceIdThumbnailPutRequest): Promise<void> {
-        const response = await this.workspaceIdThumbnailPutRaw(requestParameters);
-        return await response.value();
-    }
-
 }

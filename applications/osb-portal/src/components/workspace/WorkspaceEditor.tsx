@@ -30,7 +30,7 @@ const dropAreaStyle = {
 };
 
 
-async function readFile(file: Blob) {  
+async function readFile(file: Blob) {
   return new Promise((resolve, reject) => {
     const fileReader: FileReader = new FileReader();
 
@@ -53,9 +53,9 @@ export default (props: WorkspaceEditProps) => {
   >({ ...props.workspace });
 
   const handleCreateWorkspace = async () => {
-    let workspace : any = await workspaceService.createWorkspace(workspaceForm);
-    if ( thumbnail ) {
-      let fileThumbnail : any = await readFile(thumbnail);
+    const workspace : any = await workspaceService.createWorkspace(workspaceForm);
+    if (thumbnail) {
+      const fileThumbnail : any = await readFile(thumbnail);
       workspaceService.updateWorkspaceThumbnail(workspace.id, fileThumbnail);
     }
   };
