@@ -64,7 +64,7 @@ class WorkspaceRepository(BaseModelRepository):
         wr = WorkspaceResource(name="Demo file", 
             location="https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
             resource_type="E")
-        workspace.resources.add(wr)
+        workspace.resources.append(wr)
         return workspace
 
 
