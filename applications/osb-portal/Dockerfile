@@ -1,10 +1,10 @@
 FROM node:13.14 as base
+ARG DOMAIN=v2.opensourcebrain.org
+ARG NAMESPACE=osb2
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
 COPY package-lock.json ${BUILDDIR}/package-lock.json
-ENV DOMAIN=v2.opensourcebrain.org
-ENV NAMESPACE=osb2
 WORKDIR ${BUILDDIR}
 RUN npm ci
 COPY . $BUILDDIR
