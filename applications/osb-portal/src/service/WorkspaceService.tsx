@@ -57,7 +57,7 @@ class WorkspaceService {
     return newCreatedWorkspace;
   };
 
-  async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob : Blob) {
+  async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob : Blob) : Promise<any> {
     const wspr: workspaceApi.WorkspacesControllerWorkspaceSetthumbnailRequest = { id : workspaceId , thumbNail : thumbNailBlob};
     await this.workspacesApi.workspacesControllerWorkspaceSetthumbnail(wspr);
   };

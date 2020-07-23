@@ -1432,7 +1432,9 @@ export class RestApi extends runtime.BaseAPI {
 
         const queryParameters: runtime.HTTPQuery = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+        const headerParameters: runtime.HTTPHeaders = {
+          "Content-Type" : "multipart/form-data;"
+        };
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;

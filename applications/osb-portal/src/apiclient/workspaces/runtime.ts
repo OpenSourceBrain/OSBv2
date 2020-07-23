@@ -97,8 +97,6 @@ export class BaseAPI {
             }
         }
         
-        const body = await response.text();
-        console.log("Body : ", body);
         return response;
     }
 
