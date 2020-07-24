@@ -96,7 +96,6 @@ export class BaseAPI {
                 }) || response;
             }
         }
-        
         return response;
     }
 

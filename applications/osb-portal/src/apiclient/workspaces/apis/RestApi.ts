@@ -1262,7 +1262,7 @@ export class RestApi extends runtime.BaseAPI {
 
         const queryParameters: runtime.HTTPQuery = {};
 
-        const headerParameters: runtime.HTTPHeaders = { 'accept' : '*/*',  'Content-Type' : 'multipart/form-data' };
+        const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
 
@@ -1274,7 +1274,6 @@ export class RestApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-
         const response = await this.request({
             path: `/workspaceresource/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
@@ -1432,9 +1431,7 @@ export class RestApi extends runtime.BaseAPI {
 
         const queryParameters: runtime.HTTPQuery = {};
 
-        const headerParameters: runtime.HTTPHeaders = {
-          "Content-Type" : "multipart/form-data;"
-        };
+        const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -1479,7 +1476,7 @@ export class RestApi extends runtime.BaseAPI {
      * Sets the thumbnail of the workspace.
      */
     async workspacesControllerWorkspaceSetthumbnail(requestParameters: WorkspacesControllerWorkspaceSetthumbnailRequest): Promise<void> {
-        const response = await this.workspacesControllerWorkspaceSetthumbnailRaw(requestParameters);
-        return await response.value();
+        await this.workspacesControllerWorkspaceSetthumbnailRaw(requestParameters);
     }
+
 }

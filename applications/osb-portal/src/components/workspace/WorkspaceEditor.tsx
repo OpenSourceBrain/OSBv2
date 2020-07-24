@@ -57,7 +57,7 @@ export default (props: WorkspaceEditProps) => {
     props.onLoadWorkspace();
     if (thumbnail) {
       const fileThumbnail : any = await readFile(thumbnail);
-      workspaceService.updateWorkspaceThumbnail(workspace.id, fileThumbnail);
+      workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail]));
     }
   };
 
