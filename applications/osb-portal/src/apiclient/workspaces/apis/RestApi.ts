@@ -1466,7 +1466,7 @@ export class RestApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/workspace/{id}/thumbnail`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: formParams,
