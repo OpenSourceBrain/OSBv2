@@ -5,9 +5,9 @@ var path = require('path');
 
 const contentbase = path.join(__dirname, 'public')
 
-PORT = 443;
+PORT = 3000;
 
-var proxyTarget = 'http://localhost:5000/'
+var proxyTarget = 'https://__APP_NAME__/'
 if (process.env.USE_MOCKS){
   console.log('Using mocks')
   proxyTarget = `http://localhost:${PORT}/api-mocks`
