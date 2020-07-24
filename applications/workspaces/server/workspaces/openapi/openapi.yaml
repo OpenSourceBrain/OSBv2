@@ -143,7 +143,7 @@ paths:
         schema:
           type: integer
         description: Workspace ID of the workspace
-    put:
+    post:
       summary: Sets the thumbnail of the workspace.
       operationId: workspaces.controller.workspace.setthumbnail
       security:
