@@ -5,9 +5,9 @@ var path = require('path');
 
 const contentbase = path.join(__dirname, 'public')
 
-PORT = 3000;
+PORT = 443;
 
-var proxyTarget = 'https://__APP_NAME__/'
+var proxyTarget = 'http://localhost:5000/'
 if (process.env.USE_MOCKS){
   console.log('Using mocks')
   proxyTarget = `http://localhost:${PORT}/api-mocks`
@@ -32,11 +32,15 @@ module.exports = env => {
     historyApiFallback: true,
     proxy : {
       '/api/workspaces': {
-          target : replaceHost( proxyTarget, 'workspaces'),
-          secure : false,
-          changeOrigin: true,
-          logLevel: "debug",
-          pathRewrite: {'^/api/workspaces' : ''}
+        target : replaceHost( proxyTarget, 'workspaces'),
+        secure : false,
+        changeOrigin: true,
+        pathRewrite: {'^/api/workspaces' : ''}
+      },
+      '/workspaces/': {
+        target : replaceHost( proxyTarget, 'workspaces'),
+        secure : false,
+        changeOrigin: true,
       }
     },
     port: PORT
