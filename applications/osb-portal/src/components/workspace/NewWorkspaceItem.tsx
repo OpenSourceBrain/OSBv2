@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Typography, Box, ButtonBase, Button } from "@material-ui/core";
 
-import { ResourceType } from "../../apiclient/workspaces/models/ResourceType";
+import { ResourceType } from "../../types/global";
 import { UserInfo } from "../../types/user";
 import OSBDialog from "../common/OSBDialog";
 import { NewWorkspaceAskUser } from "..";
@@ -29,7 +29,9 @@ export default (props: ItemProps) => {
 
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = () => setNewWorkspaceOpen(false);
+  const closeNewWorkspace = () => {
+    setNewWorkspaceOpen(false);
+  }
   return (
     <>
       <Button style={{ textTransform: "none" }} onClick={handleClick}>

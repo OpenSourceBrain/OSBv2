@@ -76,19 +76,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      workspaces:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workspaces
-        title: Workspaces
-        working_directory: ./applications/workspaces/server
       osb-portal:
         type: build
         stage: build
@@ -102,6 +89,19 @@ steps:
         image_name: osb-portal
         title: Osb portal
         working_directory: ./applications/osb-portal
+      workspaces:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workspaces
+        title: Workspaces
+        working_directory: ./applications/workspaces/server
       nwb-explorer:
         type: build
         stage: build
@@ -115,7 +115,7 @@ steps:
         image_name: nwb-explorer
         title: Nwb explorer
         working_directory: ./applications/nwb-explorer
-      workflows:
+      workflows-extract-download:
         type: build
         stage: build
         tag: ${{CF_REVISION}}
@@ -125,9 +125,9 @@ steps:
         - TAG=${{CF_REVISION}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
-        image_name: workflows
-        title: Workflows
-        working_directory: ./cloud-harness/applications/workflows/server
+        image_name: workflows-extract-download
+        title: Workflows extract download
+        working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
       workflows-extract-s3:
         type: build
         stage: build
@@ -154,19 +154,6 @@ steps:
         image_name: workflows-print-file
         title: Workflows print file
         working_directory: ./cloud-harness/applications/workflows/tasks/print-file
-      workflows-extract-download:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows-extract-download
-        title: Workflows extract download
-        working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
       workflows-send-result-event:
         type: build
         stage: build
@@ -180,7 +167,7 @@ steps:
         image_name: workflows-send-result-event
         title: Workflows send result event
         working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
-      common:
+      workflows:
         type: build
         stage: build
         tag: ${{CF_REVISION}}
@@ -190,35 +177,9 @@ steps:
         - TAG=${{CF_REVISION}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
-        image_name: common
-        title: Common
-        working_directory: ./cloud-harness/applications/common/server
-      samples:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: samples
-        title: Samples
-        working_directory: ./cloud-harness/applications/samples/server
-      samples-sum:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: samples-sum
-        title: Samples sum
-        working_directory: ./cloud-harness/applications/samples/tasks/sum
+        image_name: workflows
+        title: Workflows
+        working_directory: ./cloud-harness/applications/workflows/server
       sentry:
         type: build
         stage: build
@@ -232,19 +193,6 @@ steps:
         image_name: sentry
         title: Sentry
         working_directory: ./cloud-harness/applications/sentry
-      accounts:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: accounts
-        title: Accounts
-        working_directory: ./cloud-harness/applications/accounts
       jupyterhub:
         type: build
         stage: build
@@ -258,6 +206,58 @@ steps:
         image_name: jupyterhub
         title: Jupyterhub
         working_directory: ./cloud-harness/applications/jupyterhub
+      accounts:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: accounts
+        title: Accounts
+        working_directory: ./cloud-harness/applications/accounts
+      samples-sum:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: samples-sum
+        title: Samples sum
+        working_directory: ./cloud-harness/applications/samples/tasks/sum
+      samples:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: samples
+        title: Samples
+        working_directory: ./cloud-harness/applications/samples/server
+      common:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: common
+        title: Common
+        working_directory: ./cloud-harness/applications/common/server
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.0.3

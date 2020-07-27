@@ -32,11 +32,15 @@ module.exports = env => {
     historyApiFallback: true,
     proxy : {
       '/api/workspaces': {
-          target : replaceHost( proxyTarget, 'workspaces'),
-          secure : false,
-          changeOrigin: true,
-          logLevel: "debug",
-          pathRewrite: {'^/api/workspaces' : ''}
+        target : replaceHost( proxyTarget, 'workspaces'),
+        secure : false,
+        changeOrigin: true,
+        pathRewrite: {'^/api/workspaces' : ''}
+      },
+      '/workspaces/': {
+        target : replaceHost( proxyTarget, 'workspaces'),
+        secure : false,
+        changeOrigin: true,
       }
     },
     port: PORT

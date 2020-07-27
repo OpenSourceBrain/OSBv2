@@ -15,7 +15,7 @@ import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 interface WorkspaceEditProps {
   workspace: Workspace;
-  onLoadWorkspace: (workspace: Workspace) => void;
+  onLoadWorkspace: () => void;
 }
 
 const dropAreaStyle = {
@@ -30,14 +30,21 @@ const dropAreaStyle = {
 };
 
 
-async function readFile(file: any) {
-  const fileReader: FileReader = new FileReader();
+async function readFile(file: Blob) {
+  return new Promise((resolve, reject) => {
+    const fileReader: FileReader = new FileReader();
 
-  fileReader.onloadend = (e) => {
-    return fileReader.result
-  };
-  fileReader.readAsArrayBuffer(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = reject;
+
+    fileReader.readAsArrayBuffer(file);
+  })
 }
+
+let thumbnail : Blob;
 
 export default (props: WorkspaceEditProps) => {
 
@@ -46,21 +53,21 @@ export default (props: WorkspaceEditProps) => {
   >({ ...props.workspace });
 
   const handleCreateWorkspace = async () => {
-
-    workspaceService.createWorkspace(workspaceForm).then((workspace) => {
-      // TODO  add the thumbnail HERE
-      // 1 readFile
-      // 2 upload (create a new method on WorkspaceService)
-    });
-
+    const workspace : any = await workspaceService.createWorkspace(workspaceForm);
+    props.onLoadWorkspace();
+    if (thumbnail) {
+      const fileThumbnail : any = await readFile(thumbnail);
+      workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail]));
+    }
   };
 
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
   const setDescriptionField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, description: e.target.value });
-  const setThumbnail = (name: string) =>
-    setWorkspaceForm({ ...workspaceForm, thumbnail: name }); // TODO Remove thumbnail from the workspace form
+  const setThumbnail = (uploadedThumbnail: any) => {
+    thumbnail = uploadedThumbnail;
+  }
   return (
     <>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
@@ -94,7 +101,7 @@ export default (props: WorkspaceEditProps) => {
           </Grid>
         </Grid>
         <Grid item={true} xs={6} >
-          <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0].name) }}>
+          <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
               <section style={{ display: 'flex', alignItems: 'stretch' }}>
                 <div {...getRootProps({ style: dropAreaStyle })}>

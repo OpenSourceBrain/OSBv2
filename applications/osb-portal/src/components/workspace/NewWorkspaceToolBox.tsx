@@ -9,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
-import { ResourceType } from "../../apiclient/workspaces/models/ResourceType";
+import { ResourceType } from "../../types/global";
 
 import WorkspaceItem from "./NewWorkspaceItem";
 
