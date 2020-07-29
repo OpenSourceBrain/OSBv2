@@ -11,4 +11,4 @@ harness:
         c.Spawner.port = 8000
         c.Spawner.http_timeout = 300
         c.Spawner.start_timeout = 300
-        c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local"}}
+        c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local localhost"}}
