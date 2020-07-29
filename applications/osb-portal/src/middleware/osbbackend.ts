@@ -7,7 +7,7 @@ import { CallApiAction } from './backend';
 
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
-import { Workspace } from "../apiclient/workspaces";
+import { Workspace } from "../types/workspace";
 
 // public call osb action type
 export type CallOSBApiAction = {
@@ -76,6 +76,7 @@ const callAPIMiddlewareFn: Middleware<Dispatch> = ({
       break;
     case selectWorkspace.toString():
       workspaceService.getWorkspace(action.payload).then((workspace: Workspace) => next({ ...action, payload: workspace }));
+      break;
     default:
       return next(action);
     //

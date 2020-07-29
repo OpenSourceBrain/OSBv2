@@ -11,7 +11,7 @@ import "react-markdown-editor-lite/lib/index.css";
 import { UserInfo } from "../../types/user";
 import { ResourceType } from "../../types/global";
 
-import WorkspaceItem from "./NewWorkspaceItem";
+import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
 import * as Icons from '../icons';
 
@@ -49,7 +49,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.CircleIcon}
               title="Single Cell"
-              application={ResourceType.M}
+              template={WorkspaceTemplateType.singleCell}
               user={user}
             />
           </Grid>
@@ -57,7 +57,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.SquareCirclesIcon}
               title="Network"
-              application={ResourceType.M}
+              template={WorkspaceTemplateType.network}
               user={user}
             />
           </Grid>
@@ -65,7 +65,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.ChartIcon}
               title="Data Analysis"
-              application={ResourceType.E}
+              template={WorkspaceTemplateType.explorer}
               user={user}
             />
           </Grid>
@@ -73,7 +73,7 @@ export const WorkspaceToolBox = (props: any) => {
             <WorkspaceItem
               icon={Icons.CubeIcon}
               title="Playground"
-              application={ResourceType.G}
+              template={WorkspaceTemplateType.playground}
               user={user}
             />
           </Grid>

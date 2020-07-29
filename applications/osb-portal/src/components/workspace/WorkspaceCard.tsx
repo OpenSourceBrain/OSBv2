@@ -33,10 +33,15 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     textAlign: "right",
   },
-  image: {
+  imageContainer: {
     display: "flex",
     justifyContent: "center",
+    height: 150,
+    overflow: "hidden"
   },
+  image: {
+    width: "100%"
+  }
 }));
 
 export const WorkspaceCard = (props: Props) => {
@@ -48,17 +53,17 @@ export const WorkspaceCard = (props: Props) => {
       <CardActions className={classes.actions}>
         <Icons.InfoIcon className={classes.icon} />
       </CardActions>
-      <CardContent>
-        <div className={classes.image}>
-          <Link href={`/workspace/${workspace.id}`} color="inherit">
-            {!workspace.thumbnail ? (
-              <FolderIcon className={classes.imageIcon} />
-            ) : (
-                <img src={workspace.thumbnail} title={openTitle} alt={openTitle} />
-              )}
-          </Link>
-        </div>
-      </CardContent>
+
+      <div className={classes.imageContainer}>
+        <Link href={`/workspace/${workspace.id}`} color="inherit">
+          {!workspace.thumbnail ? (
+            <FolderIcon className={classes.imageIcon} />
+          ) : (
+              <img src={workspace.thumbnail} className={classes.image} title={openTitle} alt={openTitle} />
+            )}
+        </Link>
+      </div>
+
       <CardContent>
 
         <Link href={`/workspace/${workspace.id}`} color="inherit">
@@ -67,7 +72,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption">
-          Last edited: {workspace.lastType/* TODO change workspace.lastOpen.type.application.name */}, {formatDate(workspace.timestampUpdated)}
+          Last edited: {workspace.lastOpen.type.application.name}, {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>
     </Card>

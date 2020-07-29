@@ -13,20 +13,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
+    height: "25vh"
   },
-  overlay: {
+  mainFeaturedPostContent: {
     position: "absolute",
-    top: 0,
     bottom: 0,
     right: 0,
     left: 0,
-
+    top: 0,
     backgroundColor: "rgba(0,0,0,.3)",
-  },
-  mainFeaturedPostContent: {
-    position: "relative",
+    display: "flex",
+    alignItems: "flex-end",
     padding: theme.spacing(3),
-    paddingTop: "8vh",
   },
 }));
 
@@ -57,9 +55,9 @@ export const Banner = (props: any) => {
           alt="Let us show you around"
         />
       }
-      <div className={classes.overlay} />
+
       <div className={classes.mainFeaturedPostContent}>
-        <Box pt={8}>
+        <Box>
           <Typography component="h2" variant="h1" gutterBottom={true}>
             {text1}
           </Typography>
@@ -70,7 +68,7 @@ export const Banner = (props: any) => {
             <Button variant="outlined">Take the tour</Button>
             {user === null ? (
               <Button onClick={handleSignup}>
-                Sign in
+                Sign up
               </Button>
             ) : null}
           </Box>

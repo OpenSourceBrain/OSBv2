@@ -28,7 +28,7 @@ const mapWorkspacesStateToProps = (state: RootState) => {
 };
 
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
-  workspace: state.workspaces.selectedWorkspace,
+  workspace: state.workspaces?.selectedWorkspace,
   user: state.user,
 });
 
@@ -70,7 +70,7 @@ const dispatchErrorProps = {
 
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
-export const Banner = connect(mapUserStateToProps)(banner)
+export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)

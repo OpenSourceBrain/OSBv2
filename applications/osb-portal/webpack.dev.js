@@ -21,7 +21,7 @@ module.exports = env => {
   return merge(
   {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
     publicPath: '/',
