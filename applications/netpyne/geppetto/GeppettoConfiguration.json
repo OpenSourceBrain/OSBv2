@@ -6,13 +6,13 @@
     "embedderURL": ["/"],
     "rootRedirect":"",
     "noTest": false,
-    "themes": "styles/colors",
+    "themes": "css/colors",
     "properties": {
-        "title" : "Netpyne",
-        "description": "",
+        "title" : "NetPyNE",
+        "description": "NetPyNE-UI is a user interface for building, visualizing and simulationg neuronal network models using NetPyNE.",
         "type": "website",
-        "url": "http://live.geppetto.org",
-        "icon" :"geppetto/style/favicon.png",
+        "url": "https://github.com/MetaCell/NetPyNE-UI",
+        "icon" :"https://d30y9cdsu7xlg0.cloudfront.net/png/38902-200.png",
         "image": "http://www.geppetto.org/images/logo.png"
     }
 }

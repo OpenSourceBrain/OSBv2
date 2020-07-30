@@ -29,12 +29,14 @@ RUN apt-get update -qq &&\
 USER $NB_UID
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
+COPY geppetto/GeppettoConfiguration.json webapp/GeppettoConfiguration.json
+COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
+
 RUN ls -la
 RUN pip install -r requirements.txt --no-cache-dir
 RUN python utilities/install.py --npm-skip
 
-COPY geppetto/GeppettoConfiguration.json webapp/GeppettoConfiguration.json
-COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
+
 
 EXPOSE 8888
 CMD /bin/bash -c "jupyter notebook --NotebookApp.default_url=/geppetto --NotebookApp.token='' --library=netpyne_ui --NotebookApp.disable_check_xsrf=True"
