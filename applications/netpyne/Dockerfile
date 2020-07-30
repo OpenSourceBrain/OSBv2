@@ -32,6 +32,8 @@ USER $NB_UID
 RUN ls -la
 RUN pip install -r requirements.txt --no-cache-dir
 RUN python utilities/install.py --npm-skip
+
+COPY geppetto/GeppettoConfiguration.json webapp/GeppettoConfiguration.json
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 EXPOSE 8888
