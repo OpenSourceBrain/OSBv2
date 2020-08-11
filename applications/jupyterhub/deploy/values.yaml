@@ -9,6 +9,7 @@ harness:
 custom: {}
 hub:
   allowNamedServers: true
+  namedServerLimitPerUser: 10
   service:
     type: ClusterIP
     annotations: {}
