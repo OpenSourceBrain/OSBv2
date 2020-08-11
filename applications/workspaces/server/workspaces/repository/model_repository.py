@@ -11,6 +11,7 @@ from .base_model_repository import BaseModelRepository
 from .database import db
 from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, \
     WorkspaceImage, WorkspaceResource
+from ..service.kubernetes import create_persistent_volume_claim
 
 
 logger = logging.getLogger(Config.APP_NAME)
@@ -65,6 +66,12 @@ class WorkspaceRepository(BaseModelRepository):
             location="https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
             resource_type="E")
         workspace.resources.append(wr)
+        return workspace
+
+    def post_commit(self, workspace):
+        # Create a new Persistent Volume Claim for this workspace
+        print(f'workspace id: {workspace.id}')
+        create_persistent_volume_claim(name=f'workspace-{workspace.id}', size='2Gi', logger=logger)
         return workspace
 
 
