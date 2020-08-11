@@ -145,7 +145,7 @@ proxy:
           - ipBlock:
               cidr: 0.0.0.0/0
 auth:
-  type: tmp
+  type: ch
   whitelist:
     users: null
   admin:

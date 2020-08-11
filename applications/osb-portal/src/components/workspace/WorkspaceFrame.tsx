@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Workspace, WorkspaceResource } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
+import WorkspaceService from '../../service/WorkspaceService';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -46,13 +47,13 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace }) 
     }
 
     const domain = window.location.host.includes('.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
-
     const workspaceParam = `workspace=${encodeURIComponent(id)}`;
-    const userParam = (user == null) ? '' : `&user=${encodeURIComponent(user.id)}`;
-
+    const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;
+    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/ws${id}`;
+    document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
+    document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
 
-    const frameUrl = `//${application}.${domain}?${workspaceParam}${userParam}`;
     return (
         <iframe id="workspace-frame" frameBorder="0" src={frameUrl} className={classes.iframe} onLoad={onloadIframe} />
     )
