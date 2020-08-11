@@ -233,6 +233,8 @@ paths:
         required: true
     get:
       summary: Used to retrieve a WorkspaceResource.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The WorkspaceResource.
@@ -288,6 +290,8 @@ paths:
         description: WorkspaceResource ID of the WorkspaceResource
     get:
       summary: Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
+      security:
+        - bearerAuth: []
       operationId: workspaces.controller.workspace_resource.open
       responses:
         200:
