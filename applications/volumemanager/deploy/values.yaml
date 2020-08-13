@@ -1,0 +1,12 @@
+harness:
+    name: volumemanager
+    subdomain: volumemanager
+    service:
+       port: 8080
+       auto: true
+       name: volumemanager
+    secured: false
+    sentry: true
+    deployment:
+      auto: true
+      port: 8080
