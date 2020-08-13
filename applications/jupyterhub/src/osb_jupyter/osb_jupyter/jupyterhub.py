@@ -37,4 +37,4 @@ def change_pod_manifest(self: KubeSpawner):
         # add the volume to the pod
         self.volumes.append(ws_pvc)
         # mount the workspace volume in the pod
-        self.volume_mounts.append({'name': volume_name, 'mountPath': '/opt/workspace'})
+        self.volume_mounts.append({'name': volume_name, 'mountPath': '/home/jovyan/work/workspace'})
