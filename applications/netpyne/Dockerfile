@@ -5,6 +5,9 @@ ENV FOLDER=/home/jovyan/work/netpyne
 
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
+
+COPY geppetto/GeppettoConfiguration.json $FOLDER/webapp/GeppettoConfiguration.json
+
 WORKDIR $FOLDER/webapp
 RUN npm ci
 RUN npm run build-dev
@@ -29,7 +32,6 @@ RUN apt-get update -qq &&\
 USER $NB_UID
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
-COPY geppetto/GeppettoConfiguration.json webapp/GeppettoConfiguration.json
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN ls -la
