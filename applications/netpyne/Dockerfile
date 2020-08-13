@@ -38,10 +38,9 @@ RUN ls -la
 RUN pip install -r requirements.txt --no-cache-dir
 RUN python utilities/install.py --npm-skip
 
-
+# sym link workspace pvc to $FOLDER
+RUN mkdir ../work/workspace
+RUN ln -s ../work/workspace .
 
 EXPOSE 8888
 CMD /bin/bash -c "jupyter notebook --NotebookApp.default_url=/geppetto --NotebookApp.token='' --library=netpyne_ui --NotebookApp.disable_check_xsrf=True"
-
-
-
