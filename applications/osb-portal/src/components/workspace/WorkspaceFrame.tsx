@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom";
-import { Workspace, WorkspaceResource } from '../../types/workspace';
+import { Workspace, WorkspaceResource, OSBApplications } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import WorkspaceService from '../../service/WorkspaceService';
+import { BorderAll } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -50,7 +51,19 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace }) 
     const workspaceParam = `workspace=${encodeURIComponent(id)}`;
     const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;
-    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/ws${id}`;
+    let type: string = '';
+    switch (workspace.lastOpen.type.application) {
+        case OSBApplications.nwbexplorer:
+            type = 'nwbe';
+            break;
+        case OSBApplications.netpyne:
+            type = 'netp';
+            break;
+        case OSBApplications.jupyter:
+            type = 'jupy';
+            break;
+    }
+    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/ws${id}${type}`;
     document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
     document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
 
