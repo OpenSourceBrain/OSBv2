@@ -24,10 +24,6 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
         return null;
     }
 
-    if (!user) {
-        props.login();
-    }
-
     const id = workspace.id;
     const onloadIframe = (e: any, fileName: string = null) => {
         let workspaceResource: WorkspaceResource = workspace.lastOpen;
