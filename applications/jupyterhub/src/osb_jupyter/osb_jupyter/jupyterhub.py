@@ -29,7 +29,7 @@ def change_pod_manifest(self: KubeSpawner):
             'persistentVolumeClaim': {
                 'claimName': volume_name, 
                 'spec': {
-                    'accessModes': ['ReadWriteMany']
+                    'accessModes': ['ReadWriteOne']
                 }
             }
         }
