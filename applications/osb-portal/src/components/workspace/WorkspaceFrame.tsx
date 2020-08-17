@@ -5,6 +5,7 @@ import { Workspace, WorkspaceResource, OSBApplications } from '../../types/works
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import WorkspaceService from '../../service/WorkspaceService';
+import { userLogin } from '../../store/actions/user';
 import { BorderAll } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,13 +16,18 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace }) => {
+export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any }) => {
     const classes = useStyles();
 
     const { user, workspace } = props;
     if (!workspace) {
         return null;
     }
+
+    if (!user) {
+        props.login();
+    }
+
     const id = workspace.id;
     const onloadIframe = (e: any, fileName: string = null) => {
         let workspaceResource: WorkspaceResource = workspace.lastOpen;

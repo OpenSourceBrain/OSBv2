@@ -23,7 +23,8 @@ const mapWorkspacesStateToProps = (state: RootState) => {
   console.log(state)
   return ({
     workspaces: state.workspaces?.publicWorkspaces,
-    userWorkspaces: state.workspaces?.userWorkspaces
+    userWorkspaces: state.workspaces?.userWorkspaces,
+    user: state.user
   })
 };
 
@@ -75,6 +76,6 @@ export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...di
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
-export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, null)(workspaceFrame)
+export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, dispatchUserProps)(workspaceFrame)
 export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
