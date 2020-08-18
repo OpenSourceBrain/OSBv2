@@ -5,6 +5,9 @@ ENV FOLDER=nwb-explorer
 
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
+
+COPY geppetto/GeppettoConfiguration.json $FOLDER/webapp/GeppettoConfiguration.json
+
 WORKDIR $FOLDER/webapp
 RUN npm ci
 RUN npm run build
@@ -42,7 +45,10 @@ RUN pip install . --no-cache-dir
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-COPY geppetto/GeppettoConfiguration.json webapp/GeppettoConfiguration.json
+
+# sym link workspace pvc to $FOLDER
+RUN mkdir ../work/workspace
+RUN ln -s ../work/workspace .
 
 USER $NB_UID
 CMD ./NWBE

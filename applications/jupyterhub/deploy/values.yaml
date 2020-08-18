@@ -9,6 +9,7 @@ harness:
 custom: {}
 hub:
   allowNamedServers: true
+  namedServerLimitPerUser: 10
   service:
     type: ClusterIP
     annotations: {}
@@ -145,7 +146,7 @@ proxy:
           - ipBlock:
               cidr: 0.0.0.0/0
 auth:
-  type: tmp
+  type: ch
   whitelist:
     users: null
   admin:

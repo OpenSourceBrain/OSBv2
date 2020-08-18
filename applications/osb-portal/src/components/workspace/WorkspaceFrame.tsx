@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom";
-import { Workspace, WorkspaceResource } from '../../types/workspace';
+import { Workspace, WorkspaceResource, OSBApplications } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
+import WorkspaceService from '../../service/WorkspaceService';
+import { userLogin } from '../../store/actions/user';
+import { BorderAll } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -13,13 +16,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace }) => {
+export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any }) => {
     const classes = useStyles();
 
     const { user, workspace } = props;
     if (!workspace) {
         return null;
     }
+
     const id = workspace.id;
     const onloadIframe = (e: any, fileName: string = null) => {
         let workspaceResource: WorkspaceResource = workspace.lastOpen;
@@ -46,13 +50,25 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace }) 
     }
 
     const domain = window.location.host.includes('.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
-
     const workspaceParam = `workspace=${encodeURIComponent(id)}`;
-    const userParam = (user == null) ? '' : `&user=${encodeURIComponent(user.id)}`;
-
+    const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;
+    let type: string = '';
+    switch (workspace.lastOpen.type.application) {
+        case OSBApplications.nwbexplorer:
+            type = 'nwbe';
+            break;
+        case OSBApplications.netpyne:
+            type = 'netp';
+            break;
+        case OSBApplications.jupyter:
+            type = 'jupy';
+            break;
+    }
+    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/ws${id}${type}`;
+    document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
+    document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
 
-    const frameUrl = `//${application}.${domain}?${workspaceParam}${userParam}`;
     return (
         <iframe id="workspace-frame" frameBorder="0" src={frameUrl} className={classes.iframe} onLoad={onloadIframe} />
     )

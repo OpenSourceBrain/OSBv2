@@ -3,11 +3,11 @@ import * as React from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Switch
 } from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
 
 import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
 
@@ -16,7 +16,8 @@ import theme from "../theme";
 import {
   Header,
   ErrorDialog,
-  WorkspacePage
+  WorkspacePage,
+  ProtectedRoute
 } from "./index";
 
 export const App = (props: any) => {
@@ -33,12 +34,14 @@ export const App = (props: any) => {
         <div style={{ overflow: "hidden", height: "100vh", display: "flex", flexDirection: "column" }}>
           <Header />
           <Router>
-            <Route exact={true} path="/workspace/:workspaceId">
-              <WorkspacePage />
-            </Route>
-            <Route exact={true} path="/">
-              <HomePage />
-            </Route>
+            <Switch>
+              <Route exact={true} path="/">
+                <HomePage />
+              </Route>
+              <ProtectedRoute exact={true} path="/workspace/:workspaceId">
+                <WorkspacePage />
+              </ProtectedRoute>
+            </Switch>
           </Router>
         </div>
       </ThemeProvider>

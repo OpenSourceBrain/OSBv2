@@ -54,6 +54,11 @@ class BaseModelRepository:
             return self.pre_commit(new_obj)
         return new_obj
 
+    def _post_commit(self, new_obj):
+        if hasattr(self, "post_commit"):
+            return self.post_commit(new_obj)
+        return new_obj
+
     def _get_and_copy_item(self, item):
         item_db = item.query.filter_by(id=item.id).first()
         if item_db:
@@ -194,6 +199,7 @@ class BaseModelRepository:
             new_obj = self._pre_commit(new_obj)
             db.session.add(new_obj)
             db.session.commit()
+            new_obj = self._post_commit(new_obj)
         except IntegrityError as e:
             return "{}".format(e.orig), 400
         else:

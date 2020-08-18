@@ -8,6 +8,7 @@ import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/WorkspaceDrawer'
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
+import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
 import workspacePage from "./pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
@@ -23,7 +24,8 @@ const mapWorkspacesStateToProps = (state: RootState) => {
   console.log(state)
   return ({
     workspaces: state.workspaces?.publicWorkspaces,
-    userWorkspaces: state.workspaces?.userWorkspaces
+    userWorkspaces: state.workspaces?.userWorkspaces,
+    user: state.user
   })
 };
 
@@ -75,6 +77,7 @@ export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...di
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
-export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, null)(workspaceFrame)
+export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, dispatchUserProps)(workspaceFrame)
 export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
+export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)

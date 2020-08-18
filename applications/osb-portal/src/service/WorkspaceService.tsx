@@ -12,7 +12,9 @@ const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
   workspacesApi: RestApi = null;
+  accessToken: string = null;
   initApis = (token: string) => {
+    this.accessToken = token;
     this.workspacesApi = new workspaceApi.RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
   }
 

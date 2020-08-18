@@ -62,6 +62,7 @@ See also https://cert-manager.io/docs/installation/kubernetes/.
 1. Create the namespace `kubectl create ns osb2`
 1. Create the namespace `kubectl create ns argo-workflows`
 1. Run  `helm install osb2 deployment/helm  --namespace osb2` to install.
+1. Run `kubectl create rolebinding osb-admin-default --clusterrole=admin --serviceaccount=osb2:default -n osb2` to grant admin rights to osb2 on namespace osb2
 
 To upgrade an existing deployment, use:
 

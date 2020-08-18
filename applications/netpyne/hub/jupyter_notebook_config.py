@@ -15,12 +15,15 @@ c.NotebookApp.open_browser = False
 # https://github.com/jupyter/notebook/issues/3130
 c.FileContentsManager.delete_to_trash = False
 
-print(c.tornado_settings)
+print('*'*80)
+print(c.NotebookApp.tornado_settings)
 c.NotebookApp.tornado_settings = {
     'headers': {
         'Content-Security-Policy': "frame-ancestors 'self' localhost *.osb.local *.opensourcebrain.org",
     }
 }
+print(c.NotebookApp.tornado_settings)
+print('*'*80)
 
 # Generate a self-signed certificate
 if 'GEN_CERT' in os.environ:
