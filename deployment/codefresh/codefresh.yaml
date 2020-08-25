@@ -54,6 +54,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: cloudharness-base-debian
@@ -67,6 +69,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: cloudharness-base
@@ -84,6 +88,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: netpyne
@@ -97,6 +103,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workspaces
@@ -110,6 +118,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: osb-portal
@@ -123,11 +133,28 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: nwb-explorer
         title: Nwb explorer
         working_directory: ./applications/nwb-explorer
+      jupyterhub:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: jupyterhub
+        title: Jupyterhub
+        working_directory: ./cloud-harness/applications/jupyterhub
       workflows:
         type: build
         stage: build
@@ -136,6 +163,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows
@@ -149,6 +178,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-extract-s3
@@ -162,6 +193,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-print-file
@@ -175,6 +208,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-extract-download
@@ -188,6 +223,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-send-result-event
@@ -201,6 +238,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: common
@@ -214,6 +253,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: samples
@@ -227,6 +268,8 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: samples-sum
@@ -240,11 +283,28 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: sentry
         title: Sentry
         working_directory: ./cloud-harness/applications/sentry
+      volumemanager:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: volumemanager
+        title: Volumemanager
+        working_directory: ./cloud-harness/applications/volumemanager/server
       accounts:
         type: build
         stage: build
@@ -253,24 +313,13 @@ steps:
         build_arguments:
         - REGISTRY=${{REGISTRY}}
         - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: accounts
         title: Accounts
         working_directory: ./cloud-harness/applications/accounts
-      jupyterhub:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: jupyterhub
-        title: Jupyterhub
-        working_directory: ./cloud-harness/applications/jupyterhub
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.0.3
