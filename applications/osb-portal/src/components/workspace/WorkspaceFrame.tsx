@@ -53,19 +53,8 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     const workspaceParam = `workspace=${encodeURIComponent(id)}`;
     const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;
-    let type: string = '';
-    switch (workspace.lastOpen.type.application) {
-        case OSBApplications.nwbexplorer:
-            type = 'nwbe';
-            break;
-        case OSBApplications.netpyne:
-            type = 'netp';
-            break;
-        case OSBApplications.jupyter:
-            type = 'jupy';
-            break;
-    }
-    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/ws${id}${type}`;
+
+    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/${id}`;
     document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
     document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
 

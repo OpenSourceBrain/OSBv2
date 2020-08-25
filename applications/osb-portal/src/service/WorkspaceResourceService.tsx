@@ -29,10 +29,21 @@ export function mapResource(resource: ApiWorkspaceResource): WorkspaceResource {
   };
 }
 
+function mapResourceType(resource: WorkspaceResource) {
+  switch (resource.type.application.subdomain) {
+    case 'nwbexplorer':
+      return ResourceType.E
+    case 'netpyne':
+      return ResourceType.M
+    default:
+      return ResourceType.G
+  }
+}
+
 export function mapPostResource(resource: WorkspaceResource): ApiWorkspaceResource {
   return {
     ...resource,
-    resourceType: resource.type.application.subdomain === 'nwbexplorer' ? ResourceType.E : ResourceType.M // TODO improve
+    resourceType: mapResourceType(resource)
   }
 }
 
