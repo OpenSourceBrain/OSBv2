@@ -1,5 +1,5 @@
 harness:
-  subdomain: jupyterhub
+  subdomain: jupyter
   service:
     auto: false
     port: 80
