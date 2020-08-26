@@ -324,7 +324,7 @@ steps:
         image_name: nwb-explorer
         title: Nwb explorer
         working_directory: ./applications/nwb-explorer
-      jupyterhub:
+      jupyterhubosb:
         type: build
         stage: build
         tag: ${{CF_REVISION}}
@@ -337,7 +337,7 @@ steps:
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: jupyterhub
-        title: Jupyterhub
+        title: Jupyterhub OSB
         working_directory: ./cloud-harness/applications/jupyterhub
   deployment:
     stage: deploy
