@@ -91,7 +91,7 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
+        no_cf_cache: true
         image_name: jupyterhub
         title: Jupyterhub
         working_directory: ./cloud-harness/applications/jupyterhub
@@ -338,7 +338,7 @@ steps:
         no_cf_cache: false
         image_name: jupyterhub
         title: Jupyterhub OSB
-        working_directory: ./cloud-harness/applications/jupyterhub
+        working_directory: ./applications/jupyterhub
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.0.3
