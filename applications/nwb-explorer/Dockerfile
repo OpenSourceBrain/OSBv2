@@ -47,8 +47,11 @@ RUN jupyter labextension disable @jupyterlab/hub-extension
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 # sym link workspace pvc to $FOLDER
-RUN mkdir ../work/workspace
-RUN ln -s ../work/workspace .
+RUN mkdir -p /opt/workspace
+RUN mkdir -p /opt/home
+RUN chown -R jovyan /opt/*
+RUN ln -s /opt/workspace ./netpyne_workspace
+RUN ln -s /opt/home ./netpyne_workspace
 
 USER $NB_UID
 CMD ./NWBE

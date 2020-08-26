@@ -48,8 +48,11 @@ RUN jupyter labextension disable @jupyterlab/hub-extension
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 # sym link workspace pvc to $FOLDER
-RUN mkdir -p ../work/workspace
-RUN ln -s ../work/workspace .
+RUN mkdir -p /opt/workspace
+RUN mkdir -p /opt/home
+RUN chown -R jovyan /opt/*
+RUN ln -s /opt/workspace ./netpyne_workspace
+RUN ln -s /opt/home ./netpyne_workspace
 
 # ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
 # and thus removes the frame ancestor cors settings
