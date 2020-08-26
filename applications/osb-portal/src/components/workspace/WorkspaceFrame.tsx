@@ -53,8 +53,9 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     const workspaceParam = `workspace=${encodeURIComponent(id)}`;
     const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;
+    const type = application.slice(0,4);
 
-    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/${id}`;
+    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/${id}${type}`;
     document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
     document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
 
