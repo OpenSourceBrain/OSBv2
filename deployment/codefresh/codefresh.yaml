@@ -290,6 +290,21 @@ steps:
         image_name: sentry
         title: Sentry
         working_directory: ./cloud-harness/applications/sentry
+      volumemanager:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: volumemanager
+        title: Volumemanager
+        working_directory: ./cloud-harness/applications/volumemanager/server
       accounts:
         type: build
         stage: build
