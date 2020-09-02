@@ -62,7 +62,7 @@ class WorkspaceService {
 async function mapWorkspace(workspace: ApiWorkspace): Promise<Workspace> {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
   const resources: WorkspaceResource[] = null; // TODO map resources
-  const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { name: "Generic", type: SampleResourceTypes.g };
+  const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { name: "Generic", type: SampleResourceTypes.g, location: '' };
 
   return {
     ...workspace,

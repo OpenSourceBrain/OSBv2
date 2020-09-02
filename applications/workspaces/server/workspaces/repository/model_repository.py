@@ -20,7 +20,11 @@ class WorkspaceRepository(BaseModelRepository):
     model = Workspace
     defaults = {}
 
+    def get_pvc_name(self, workspace):
+        return f'workspace-{workspace.id}'
+
     def search_qs(self, filter=None):
+        logger.debug(f'Search for workspace filter: {filter}')
         q_base = self.model.query
         if filter is not None:
             q_base = q_base.filter(*filter)
@@ -46,6 +50,7 @@ class WorkspaceRepository(BaseModelRepository):
         return object.__getattribute__(self, name)
 
     def pre_commit(self, workspace):
+        logger.debug(f'Pre Commit for workspace id: {workspace.id}')
         if not workspace.id:
             # in case of a new workspace assign the logged in user as owner
             keycloak_id, keycloak_data = get_keycloak_data()
@@ -61,18 +66,15 @@ class WorkspaceRepository(BaseModelRepository):
                              email=usr_email
                              )
             workspace.owner = owner
-
-        # ToDo: temporary add a resource to the new workspace
-        wr = WorkspaceResource(name="Demo file", 
-            location="https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
-            resource_type="E")
-        workspace.resources.append(wr)
         return workspace
 
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
-        print(f'workspace id: {workspace.id}')
-        create_persistent_volume_claim(name=f'workspace-{workspace.id}', size='2Gi', logger=logger)
+        logger.debug(f'Post Commit for workspace id: {workspace.id}')
+        create_persistent_volume_claim(name=self.get_pvc_name(workspace), size='2Gi', logger=logger)
+        wsrr = WorkspaceResourceRepository()
+        for workspace_resource in workspace.resources:
+            wsrr.post_commit(workspace_resource)
         return workspace
 
 
@@ -99,9 +101,33 @@ class WorkspaceImageRepository(BaseModelRepository):
 class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResource
 
+    def post_commit(self, workspace_resource):
+        # Create a load WorkspaceResource workflow task
+        logger.debug(f'Post Commit for workspace resource id: {workspace_resource.id}')
+        workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        if found:
+            from ..service.workflow import create_operation
+            create_operation(workspace, workspace_resource)
+        return workspace_resource
+
     def post_get(self, workspace_resource):
         workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
         if not found:
             # workspace not found means no access rights to the workspace so fail with resource not found
             return workspace_resource, False
         return workspace_resource, True
+
+    def open(self, workspace_resource):
+        # test if workspace resource status is "available"
+        if workspace_resource.status != "a":
+            return f"WorkspaceResource with id {workspace_resource.id} is not yet available for opening. Please wait until the status is a(vailable)", 422
+
+        workspace_resource.timestamp_last_opened = func.now()
+        workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        if found:
+            workspace.last_opened_resource_id = workspace_resource.id
+        db.session.add(workspace_resource)
+        db.session.add(workspace)
+        db.session.commit()
+
+        return "Saved", 200

@@ -42,11 +42,11 @@ class TUser(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    keycloak_id: "sqlalchemy.Column[typing.Optional[str]]"
-    firstname: "sqlalchemy.Column[typing.Optional[str]]"
-    lastname: "sqlalchemy.Column[typing.Optional[str]]"
-    email: "sqlalchemy.Column[typing.Optional[str]]"
+    id: int
+    keycloak_id: typing.Optional[str]
+    firstname: typing.Optional[str]
+    lastname: typing.Optional[str]
+    email: typing.Optional[str]
 
     def __init__(
         self,
@@ -126,7 +126,7 @@ class TUser(typing_extensions.Protocol):
         ...
 
 
-User: typing.Type[TUser] = models.User  # type: ignore
+User: TUser = models.User  # type: ignore
 
 
 class _WorkspaceDictBase(typing_extensions.TypedDict, total=True):
@@ -140,8 +140,8 @@ class WorkspaceDict(_WorkspaceDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    timestamp_created: typing.Optional[str]
-    timestamp_updated: typing.Optional[str]
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
     tags: typing.Sequence["WorkspaceTagDict"]
     last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
@@ -187,21 +187,21 @@ class TWorkspace(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    name: "sqlalchemy.Column[str]"
-    description: "sqlalchemy.Column[str]"
-    timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
-    timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
-    tags: 'sqlalchemy.Column[typing.Sequence["TWorkspaceTag"]]'
-    last_opened_resource_id: "sqlalchemy.Column[typing.Optional[int]]"
-    thumbnail: "sqlalchemy.Column[typing.Optional[str]]"
-    gallery: 'sqlalchemy.Column[typing.Sequence["TWorkspaceImage"]]'
-    owner: 'sqlalchemy.Column[typing.Optional["TUser"]]'
-    publicable: "sqlalchemy.Column[bool]"
-    license: "sqlalchemy.Column[typing.Optional[str]]"
-    collaborators: 'sqlalchemy.Column[typing.Sequence["TUser"]]'
-    resources: 'sqlalchemy.Column[typing.Sequence["TWorkspaceResource"]]'
-    storage: 'sqlalchemy.Column[typing.Optional["TVolumeStorage"]]'
+    id: int
+    name: str
+    description: str
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
+    tags: typing.Sequence["TWorkspaceTag"]
+    last_opened_resource_id: typing.Optional[int]
+    thumbnail: typing.Optional[str]
+    gallery: typing.Sequence["TWorkspaceImage"]
+    owner: typing.Optional["TUser"]
+    publicable: bool
+    license: typing.Optional[str]
+    collaborators: typing.Sequence["TUser"]
+    resources: typing.Sequence["TWorkspaceResource"]
+    storage: typing.Optional["TVolumeStorage"]
 
     def __init__(
         self,
@@ -325,7 +325,7 @@ class TWorkspace(typing_extensions.Protocol):
         ...
 
 
-Workspace: typing.Type[TWorkspace] = models.Workspace  # type: ignore
+Workspace: TWorkspace = models.Workspace  # type: ignore
 
 
 class _WorkspaceImageDictBase(typing_extensions.TypedDict, total=True):
@@ -358,8 +358,8 @@ class TWorkspaceImage(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    image: "sqlalchemy.Column[str]"
+    id: int
+    image: str
 
     def __init__(self, image: str, id: typing.Optional[int] = None) -> None:
         """
@@ -421,7 +421,7 @@ class TWorkspaceImage(typing_extensions.Protocol):
         ...
 
 
-WorkspaceImage: typing.Type[TWorkspaceImage] = models.WorkspaceImage  # type: ignore
+WorkspaceImage: TWorkspaceImage = models.WorkspaceImage  # type: ignore
 
 
 class _WorkspaceTagDictBase(typing_extensions.TypedDict, total=True):
@@ -454,8 +454,8 @@ class TWorkspaceTag(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    tag: "sqlalchemy.Column[str]"
+    id: int
+    tag: str
 
     def __init__(self, tag: str, id: typing.Optional[int] = None) -> None:
         """
@@ -515,13 +515,14 @@ class TWorkspaceTag(typing_extensions.Protocol):
         ...
 
 
-WorkspaceTag: typing.Type[TWorkspaceTag] = models.WorkspaceTag  # type: ignore
+WorkspaceTag: TWorkspaceTag = models.WorkspaceTag  # type: ignore
 
 
 class _WorkspaceResourceDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
+    location: str
     resource_type: str
 
 
@@ -529,10 +530,11 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    location: typing.Optional[str]
-    timestamp_created: typing.Optional[str]
-    timestamp_updated: typing.Optional[str]
-    timestamp_last_opened: typing.Optional[str]
+    status: str
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
+    timestamp_last_opened: typing.Optional[datetime.datetime]
+    workspace_id: typing.Optional[int]
 
 
 class TWorkspaceResource(typing_extensions.Protocol):
@@ -545,12 +547,15 @@ class TWorkspaceResource(typing_extensions.Protocol):
         id: The id of the WorkspaceResource.
         name: WorkspaceResource name
         location: WorkspaceResource location where the resource is stored
+        status: Resource status:  * a - Available  * e - Error, not available
+            * p - Pending
         timestamp_created: Date/time of creation of the WorkspaceResource
         timestamp_updated: Date/time of last updating of the WorkspaceResource
         timestamp_last_opened: Date/time of last opening of the
             WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
             Generic
+        workspace_id: workspace_id
 
     """
 
@@ -560,23 +565,27 @@ class TWorkspaceResource(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    name: "sqlalchemy.Column[str]"
-    location: "sqlalchemy.Column[typing.Optional[str]]"
-    timestamp_created: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
-    timestamp_updated: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
-    timestamp_last_opened: "sqlalchemy.Column[typing.Optional[datetime.datetime]]"
-    resource_type: "sqlalchemy.Column[str]"
+    id: int
+    name: str
+    location: str
+    status: str
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
+    timestamp_last_opened: typing.Optional[datetime.datetime]
+    resource_type: str
+    workspace_id: typing.Optional[int]
 
     def __init__(
         self,
         name: str,
+        location: str,
         resource_type: str,
         id: typing.Optional[int] = None,
-        location: typing.Optional[str] = None,
+        status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        workspace_id: typing.Optional[int] = None,
     ) -> None:
         """
         Construct.
@@ -585,6 +594,8 @@ class TWorkspaceResource(typing_extensions.Protocol):
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
             location: WorkspaceResource location where the resource is stored
+            status: Resource status:  * a - Available  * e - Error, not
+                available  * p - Pending
             timestamp_created: Date/time of creation of the WorkspaceResource
             timestamp_updated: Date/time of last updating of the
                 WorkspaceResource
@@ -592,6 +603,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic
+            workspace_id: workspace_id
 
         """
         ...
@@ -600,12 +612,14 @@ class TWorkspaceResource(typing_extensions.Protocol):
     def from_dict(
         cls,
         name: str,
+        location: str,
         resource_type: str,
         id: typing.Optional[int] = None,
-        location: typing.Optional[str] = None,
+        status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        workspace_id: typing.Optional[int] = None,
     ) -> "TWorkspaceResource":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -614,6 +628,8 @@ class TWorkspaceResource(typing_extensions.Protocol):
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
             location: WorkspaceResource location where the resource is stored
+            status: Resource status:  * a - Available  * e - Error, not
+                available  * p - Pending
             timestamp_created: Date/time of creation of the WorkspaceResource
             timestamp_updated: Date/time of last updating of the
                 WorkspaceResource
@@ -621,6 +637,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic
+            workspace_id: workspace_id
 
         Returns:
             Model instance based on the dictionary.
@@ -660,7 +677,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         ...
 
 
-WorkspaceResource: typing.Type[TWorkspaceResource] = models.WorkspaceResource  # type: ignore
+WorkspaceResource: TWorkspaceResource = models.WorkspaceResource  # type: ignore
 
 
 class _VolumeStorageDictBase(typing_extensions.TypedDict, total=True):
@@ -693,8 +710,8 @@ class TVolumeStorage(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    name: "sqlalchemy.Column[str]"
+    id: int
+    name: str
 
     def __init__(self, name: str, id: typing.Optional[int] = None) -> None:
         """
@@ -754,7 +771,7 @@ class TVolumeStorage(typing_extensions.Protocol):
         ...
 
 
-VolumeStorage: typing.Type[TVolumeStorage] = models.VolumeStorage  # type: ignore
+VolumeStorage: TVolumeStorage = models.VolumeStorage  # type: ignore
 
 
 class _OSBRepositoryDictBase(typing_extensions.TypedDict, total=True):
@@ -793,11 +810,11 @@ class TOSBRepository(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    uuid: "sqlalchemy.Column[str]"
-    name: "sqlalchemy.Column[str]"
-    storage: 'sqlalchemy.Column["TVolumeStorage"]'
-    resources: 'sqlalchemy.Column[typing.Sequence["TWorkspaceResource"]]'
+    id: int
+    uuid: str
+    name: str
+    storage: "TVolumeStorage"
+    resources: typing.Sequence["TWorkspaceResource"]
 
     def __init__(
         self,
@@ -877,7 +894,7 @@ class TOSBRepository(typing_extensions.Protocol):
         ...
 
 
-OSBRepository: typing.Type[TOSBRepository] = models.OSBRepository  # type: ignore
+OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
 
 
 class _GITRepositoryDictBase(typing_extensions.TypedDict, total=True):
@@ -914,10 +931,10 @@ class TGITRepository(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    public_key: "sqlalchemy.Column[str]"
-    private_key: "sqlalchemy.Column[str]"
-    url: "sqlalchemy.Column[str]"
+    id: int
+    public_key: str
+    private_key: str
+    url: str
 
     def __init__(
         self,
@@ -993,7 +1010,7 @@ class TGITRepository(typing_extensions.Protocol):
         ...
 
 
-GITRepository: typing.Type[TGITRepository] = models.GITRepository  # type: ignore
+GITRepository: TGITRepository = models.GITRepository  # type: ignore
 
 
 class _FigshareRepositoryDictBase(typing_extensions.TypedDict, total=True):
@@ -1026,8 +1043,8 @@ class TFigshareRepository(typing_extensions.Protocol):
     query: orm.Query
 
     # Model properties
-    id: "sqlalchemy.Column[int]"
-    url: "sqlalchemy.Column[str]"
+    id: int
+    url: str
 
     def __init__(self, url: str, id: typing.Optional[int] = None) -> None:
         """
@@ -1089,4 +1106,4 @@ class TFigshareRepository(typing_extensions.Protocol):
         ...
 
 
-FigshareRepository: typing.Type[TFigshareRepository] = models.FigshareRepository  # type: ignore
+FigshareRepository: TFigshareRepository = models.FigshareRepository  # type: ignore

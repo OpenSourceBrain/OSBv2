@@ -50,8 +50,8 @@ COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
 RUN chown -R jovyan /opt/*
-RUN ln -s /opt/workspace ./netpyne_workspace
-RUN ln -s /opt/home ./netpyne_workspace
+RUN ln -s /opt/workspace ./workspace
+RUN ln -s /opt/home ./workspace
 
 USER $NB_UID
 CMD ./NWBE

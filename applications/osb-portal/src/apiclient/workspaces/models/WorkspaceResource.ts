@@ -43,7 +43,7 @@ export interface WorkspaceResource {
      * @type {string}
      * @memberof WorkspaceResource
      */
-    location?: string;
+    location: string;
     /**
      * Date/time of creation of the WorkspaceResource
      * @type {Date}
