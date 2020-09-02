@@ -973,29 +973,6 @@ components:
           example: Workspace Tag One
       required:
         - tag
-    WorkspaceResourceCreate:
-      description: Workspace Resource creation item of a Workspace
-      type: object
-      properties:
-        name:
-          description: WorkspaceResource name
-          type: string
-          example: Workspace Resource One
-        location:
-          description: WorkspaceResource location where the resource is stored
-          type: string
-          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
-        resource_type:
-          description: WorkspaceResource type
-          $ref: "#/components/schemas/ResourceType"
-        workspace_id:
-          description: The id of the Workspace this Workspace Resource belongs to
-          type: integer
-      required:
-        - name
-        - resource_type
-        - location
-        - workspace_id
     WorkspaceResource:
       description: Workspace Resource item of a Workspace
       type: object
