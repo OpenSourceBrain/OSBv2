@@ -3,7 +3,7 @@ import { WorkspaceresourceIdGetRequest, WorkspacesControllerWorkspaceResourceOpe
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';
-import { WorkspaceResource, OSBApplications, SampleResourceTypes } from "../types/workspace";
+import { WorkspaceResource, OSBApplications, SampleResourceTypes, Workspace } from "../types/workspace";
 
 class WorkspaceResourceService {
 

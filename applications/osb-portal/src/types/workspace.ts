@@ -9,6 +9,7 @@ export interface OSBApplication {
 }
 
 export interface WorkspaceResource {
+    workspaceId: number,
     id?: number,
     name: string,
     location: string,
