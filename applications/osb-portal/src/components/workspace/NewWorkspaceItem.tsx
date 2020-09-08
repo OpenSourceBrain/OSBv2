@@ -25,7 +25,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       name: "singleCellModel.np",
       type: SampleResourceTypes.m,
       location: "singleCellModel.np.location",
-      workspaceId: null
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -37,7 +37,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       name: "networkModel.np",
       type: SampleResourceTypes.m,
       location: "networkModel.np.location",
-      workspaceId: null
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -49,7 +49,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       name: "sampleNwbFile.nwb",
       type: SampleResourceTypes.e,
       location: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
-      workspaceId: null
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -61,7 +61,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       name: "notebook.ipynb",
       type: SampleResourceTypes.g,
       location: "notebook.ipynb.location",
-      workspaceId: null
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
