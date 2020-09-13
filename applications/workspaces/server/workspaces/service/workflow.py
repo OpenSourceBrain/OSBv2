@@ -1,9 +1,10 @@
 import logging
 import os
 
-logger = logging.getLogger(__name__)
-
+from ..config import Config
 from ..repository.model_repository import WorkspaceRepository
+
+logger = logging.getLogger(Config.APP_NAME)
 
 try:
     from cloudharness.workflows import operations, tasks
@@ -19,13 +20,15 @@ def create_operation(workspace, workspace_resource):
     workspace_pvc_name = WorkspaceRepository().get_pvc_name(workspace)
     shared_directory = f'{workspace_pvc_name}:/project_download'
 
-    download_task = tasks.CustomTask(name='download-file',
+    download_task = tasks.CustomTask(name='osb-download-file',
                                      image_name='workflows-extract-download',
                                      url=workspace_resource.location,
                                      shared_directory=shared_directory)
 
-    op = operations.PipelineOperation(basename=f'download-file-job-',
+    op = operations.PipelineOperation(basename=f'osb-download-file-job',
                                       tasks=(download_task,),
                                       shared_directory=shared_directory,
-                                      shared_volume_size=100)
+                                      shared_volume_size=100,
+                                      on_exit_notify={'queue':'osb-download-file-queue','payload':str(workspace_resource.id)}
+                                     )
     workflow = op.execute()

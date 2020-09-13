@@ -22,10 +22,13 @@ COPY . /usr/src/app
 
 EXPOSE 8080
 
-ENV FLASK_ENV=development
-# Todo: switch to production
 # ENV FLASK_ENV=production
+ENV FLASK_ENV=production
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=8080
+ENV FLASK_APP=workspaces.__main__
+ENV FLASK_LOG_LEVEL=info
 
-ENTRYPOINT ["python3"]
+ENTRYPOINT ["flask"]
 
-CMD ["-m", "workspaces"]
+CMD ["run"]

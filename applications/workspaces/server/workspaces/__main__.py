@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import atexit
 import connexion
 import logging
 import os
@@ -13,17 +14,21 @@ import cloudharness
 
 from .config import Config
 from .repository.database import db, setup_db
+from .service.events import start_kafka_consumers, stop_kafka_consumers
 
 logger = logging.getLogger(Config.APP_NAME)
 
+from flask.logging import default_handler
 
 def setup_logging():
     logger.setLevel(logging.INFO)
-    ch = logging.StreamHandler()
-    ch.setLevel(Config.LOG_LEVEL)
-    ch.setFormatter(logging.Formatter(
+    # app.logger.removeHandler(default_handler)
+    # app.logger.getLogger
+    # ch = logging.StreamHandler()
+    # ch.setLevel(Config.LOG_LEVEL)
+    default_handler.setFormatter(logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(ch)
+    # logger.addHandler(ch)
     logger.info("setting up logging, done.")
 
 
@@ -52,14 +57,15 @@ db.init_app(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 with app.app_context():
+    setup_logging()
     if app.config['ENV'] != 'development':
         cloudharness.init(Config.APP_NAME)
-    setup_logging()
     setup_db(app)
     connexion_app.add_api(Config.OPENAPI_FILE,
                           arguments={'title': 'Workspace Manager API'},
                           resolver=connexion.resolver.MethodViewResolver(__package__+'.views.api'))
-
+    atexit.register(stop_kafka_consumers)
+    start_kafka_consumers()
 
 @app.route('/', defaults={'file': 'index.html'})
 def index(file):

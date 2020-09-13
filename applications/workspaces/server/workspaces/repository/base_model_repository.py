@@ -20,6 +20,10 @@ class BaseModelRepository:
     defaults = None
     search_qs = None
 
+    def __init__(self, model=None):
+        if model:
+            self.model = model
+
     def _get(self, id):
         """
         Query the model and get the record with the provided id
@@ -212,6 +216,14 @@ class BaseModelRepository:
         obj, found = self._get(id)
         return obj, found
 
+    def save(self, obj):
+        if hasattr(obj, "timestamp_updated"):
+            setattr(obj, "timestamp_updated", func.now())
+
+        self._pre_commit(obj)
+        db.session.commit()
+        return "Saved", 200
+
     def put(self, body, id):
         """Update an object in the repository."""
         obj, found = self._get(id)
@@ -220,13 +232,7 @@ class BaseModelRepository:
 
         new_obj = self.model.from_dict(**body)
         obj = self._copy_attrs(obj, new_obj)
-
-        if hasattr(obj, "timestamp_updated"):
-            setattr(obj, "timestamp_updated", func.now())
-
-        self._pre_commit(obj)
-        db.session.commit()
-        return "Saved", 200
+        return self.save(obj)
 
     def delete(self, id):
         """Delete an object from the repository."""
