@@ -229,8 +229,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a WorkspaceResource to the repository.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         description: The WorkspaceResource to save.
         required: true
