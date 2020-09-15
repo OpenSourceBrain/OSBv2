@@ -4,7 +4,7 @@ info:
   license:
     name: UNLICENSED
   title: Workspaces manager API
-  version: 0.1.0
+  version: 0.2.0
 servers:
 - description: SwaggerHub API Auto Mocking
   url: /api
