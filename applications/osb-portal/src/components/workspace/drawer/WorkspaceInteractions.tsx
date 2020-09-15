@@ -18,6 +18,8 @@ import WorkspaceVolumePathBrowser from "./WorkspaceVolumePathBrowser";
 
 import { ShareIcon } from "../../icons";
 import { Workspace } from "../../../types/workspace";
+import OSBDialog from "../../common/OSBDialog";
+import AddResourceForm from "../AddResourceForm";
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
@@ -58,10 +60,22 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  closedText: {
+    writingMode: "vertical-lr",
+    textOrientation: "mixed",
+    transform: "rotate(-180deg)",
+    margin: "auto",
+    display: 'flex',
+    alignItems: 'center'
+  },
+  rotate180: {
+    transform: "rotate(-180deg)",
+  },
 }));
 
 interface WorkspaceProps {
   workspace: Workspace;
+  open?: boolean;
 }
 
 const TitleWithShareIcon = (props: any) => {
@@ -76,48 +90,88 @@ const TitleWithShareIcon = (props: any) => {
   );
 };
 
+
+
 export default (props: WorkspaceProps) => {
   const classes = useStyles();
-  return (
-    <>
-      <ExpansionPanel elevation={0}>
-        <ExpansionPanelSummary
-          expandIcon={<ArrowUpIcon />}
-          className={classes.expandHeader}
-        >
-          <TitleWithShareIcon name="Workspace XYZ" />
-        </ExpansionPanelSummary>
+  const [addResourceOpen, setAddResourceOpen] = React.useState(false);
+  const closeAskLogin = () => setAddResourceOpen(false);
 
-        <ExpansionPanelDetails>
-          <Divider />
-          <ListItem button={true}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Add resource"} />
-          </ListItem>
-          <Divider />
-          <WorkspaceVolumePathBrowser
-            volumeId={props.workspace.volume}
-            path="/"
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel elevation={0}>
-        <ExpansionPanelSummary
-          expandIcon={<ArrowUpIcon />}
-          className={classes.expandHeader}
-        >
-          <TitleWithShareIcon name="User shared space" />
-        </ExpansionPanelSummary>
+  const showAddResource = () => {
+    setAddResourceOpen(true);
+  }
 
-        <ExpansionPanelDetails>
-          <WorkspaceVolumePathBrowser
-            volumeId={null/* TODO get from logged user */}
-            path="/"
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </>
-  );
+  const handleResourceAdded = () => {
+    setAddResourceOpen(false);
+  }
+
+  return (<>
+    <OSBDialog
+      title={"Add resource to Workspace " + props.workspace.name}
+      open={addResourceOpen}
+      closeAction={() => setAddResourceOpen(false)}
+    >
+        <AddResourceForm workspace={props.workspace} onResourceAdded={handleResourceAdded} />
+    </OSBDialog>
+    {props.open ? (
+      <>
+        <ExpansionPanel elevation={0}>
+          <ExpansionPanelSummary
+            expandIcon={<ArrowUpIcon />}
+            className={classes.expandHeader}
+          >
+            <TitleWithShareIcon name={props.workspace.name} />
+          </ExpansionPanelSummary>
+
+          <ExpansionPanelDetails>
+            <Divider />
+            <ListItem button={true} onClick={showAddResource}>
+              <ListItemIcon>
+
+                <AddIcon style={{ fontSize: "1rem" }} />
+
+              </ListItemIcon>
+              <ListItemText primary={"Add resource"} />
+            </ListItem>
+            <Divider />
+            <WorkspaceVolumePathBrowser
+              volumeId={props.workspace.volume}
+              path="/"
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <ExpansionPanel elevation={0}>
+          <ExpansionPanelSummary
+            expandIcon={<ArrowUpIcon />}
+            className={classes.expandHeader}
+          >
+            <TitleWithShareIcon name="User shared space" />
+          </ExpansionPanelSummary>
+
+          <ExpansionPanelDetails>
+            <WorkspaceVolumePathBrowser
+              volumeId={null/* TODO get from logged user */}
+              path="/"
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      </>) :
+      <>
+        <div className={classes.closedText}>
+          <IconButton onClick={showAddResource}>
+            <AddIcon style={{ fontSize: "1.3rem" }} />
+          </IconButton>
+          {props.workspace.name}
+
+          <IconButton onClick={showAddResource}>
+            <ShareIcon
+              className={[classes.svgIcon, classes.rotate180].join(" ")}
+              style={{ fontSize: "1rem" }}
+            />
+          </IconButton>
+        </div>
+      </>
+    }
+  </>);
+
 };

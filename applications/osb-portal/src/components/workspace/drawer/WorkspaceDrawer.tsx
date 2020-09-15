@@ -80,16 +80,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     height: "70vh",
   },
-  closedText: {
-    writingMode: "vertical-lr",
-    textOrientation: "mixed",
-    transform: "rotate(-180deg)",
-    margin: "auto",
-    marginBottom: "0.3em",
-  },
-  rotate180: {
-    transform: "rotate(-180deg)",
-  },
+
   svgIcon: {},
   loading: {
     color: theme.palette.grey[600],
@@ -104,29 +95,20 @@ const useStyles = makeStyles((theme) => ({
 
 interface WorkspaceDrawerProps {
   workspace: Workspace;
+
 }
 
 export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, children }) => {
+  if (!workspace) {
+    return <></>;
+  }
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
 
   const handleToggleDrawer = () => setOpen(!open);
 
-  const drawerContent = open ? (
-    <WorkspaceInteractions workspace={workspace} />
-  ) : (
-      <>
-        <div className={classes.closedText}>
-          <AddIcon style={{ marginBottom: "0.3em" }} />
-          Workspace XYZ&nbsp;&nbsp;
-          <ShareIcon
-            className={[classes.svgIcon, classes.rotate180].join(" ")}
-            style={{ marginTop: "0.3em" }}
-          />
-        </div>
-      </>
-    );
+
 
   return (
     <div className={classes.root}>
@@ -146,7 +128,9 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           }),
         }}
       >
-        <div className={classes.drawerContent}>{drawerContent}</div>
+        <div className={classes.drawerContent}>
+          <WorkspaceInteractions workspace={workspace} open={open} />
+        </div>
         <div>
           <Divider />
           <div className={classes.drawerHeader}>
