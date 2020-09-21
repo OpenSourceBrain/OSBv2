@@ -71,7 +71,7 @@ const TitleWithShareIcon = (props: any) => {
   const classes = useStyles();
   return (
     <>
-     
+
       <Typography variant="h5" className={classes.flexCenter}>{props.name}</Typography>
       <IconButton>
         <ShareIcon />

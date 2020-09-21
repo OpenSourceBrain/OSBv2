@@ -9,9 +9,9 @@ export interface OSBApplication {
 }
 
 export enum ResourceStatus {
-    pending="PENDING",
-    available="AVAILABLE",
-    error="ERROR"
+    pending= "PENDING",
+    available= "AVAILABLE",
+    error= "ERROR"
 }
 export interface WorkspaceResource {
     workspaceId: number,
