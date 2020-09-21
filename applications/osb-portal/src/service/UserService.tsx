@@ -30,7 +30,7 @@ export async function initUser(): Promise<UserInfo> {
             onLoad: 'check-sso',
             silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
         }).then(authenticated => authorized = authenticated).catch(() => console.error("Cannot connect to user authenticator."));
- 
+
         if (authorized) {
             const userInfo: any = await keycloak.loadUserInfo();
             user = mapUser(userInfo);
@@ -39,7 +39,7 @@ export async function initUser(): Promise<UserInfo> {
     } catch (err) {
         errorCallback(err);
         return null;
-    } 
+    }
 
     // set token refresh to 5 minutes
     keycloak.onTokenExpired = () => {

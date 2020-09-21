@@ -5,7 +5,8 @@ export enum FeaturedType {
 }
 
 export enum ResourceType {
-  M = "NetPyNE",
-  E = "NWB Explorer",
-  G = "Jupyter Lab",
+  Model = "NetPyNE",
+  Experiment = "NWB Explorer",
+  Generic = "Jupyter Lab",
+  Folder = "Folder"
 }

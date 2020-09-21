@@ -70,5 +70,15 @@ npm install @openapitools/openapi-generator-cli -g
 openapi-generator generate -i ../workspaces/api/openapi.yaml -g typescript-fetch -o src/apiclient/workspaces
 ```
 
+After the generation, may need to fix runtime.ts file:
+
+
+replace `export type FetchAPI = GlobalFetch['fetch'];` with
+
+```typescript
+export type FetchAPI = WindowOrWorkerGlobalScope['fetch'];
+```
+
+
 
 

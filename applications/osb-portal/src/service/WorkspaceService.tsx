@@ -22,7 +22,7 @@ class WorkspaceService {
     const wsigr: WorkspaceIdGetRequest = { id };
     const result = await this.workspacesApi.workspaceIdGet(wsigr);
 
-    const ws = await mapWorkspace(result);
+    const ws = mapWorkspace(result);
     return ws;
   }
 
@@ -32,7 +32,7 @@ class WorkspaceService {
     const wspr: WorkspaceGetRequest = {};
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
-      return Promise.all(response.workspaces.map(mapWorkspace));
+      return response.workspaces.map(mapWorkspace);
     } else {
       console.debug('Attempting to fetch workspaces before init');
     }
@@ -59,9 +59,9 @@ class WorkspaceService {
   };
 }
 
-async function mapWorkspace(workspace: ApiWorkspace): Promise<Workspace> {
+function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
-  const resources: WorkspaceResource[] = null; // TODO map resources
+  const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g, location: '' };
 
   return {
@@ -72,5 +72,6 @@ async function mapWorkspace(workspace: ApiWorkspace): Promise<Workspace> {
     volume: "1",
   }
 }
+
 
 export default new WorkspaceService();

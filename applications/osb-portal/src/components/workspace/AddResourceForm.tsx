@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from '@material-ui/core/Typography';
 
 import { radius, gutter } from '../../theme';
-import workspaceService from '../../service/WorkspaceService'
+import workspaceResourceService from '../../service/WorkspaceResourceService'
 import { Workspace } from '../../types/workspace';
 
 interface WorkspaceEditProps {
@@ -35,6 +35,7 @@ export default (props: WorkspaceEditProps) => {
   const handleSetName = (e: any) =>
     setName(e.target.value);
   const handleAddResource = () => {
+    workspaceResourceService.addResource(workspace, url, name);
     onResourceAdded();
   }
 

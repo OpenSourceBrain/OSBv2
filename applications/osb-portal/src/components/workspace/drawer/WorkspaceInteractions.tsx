@@ -14,8 +14,8 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
-import WorkspaceVolumePathBrowser from "./WorkspaceVolumePathBrowser";
-
+import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
+import VolumePathBrowser from "./VolumePathBrowser";
 import { ShareIcon } from "../../icons";
 import { Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
@@ -32,31 +32,17 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
-  expandHeader: {
-    display: "flex",
-    flexDirection: "row-reverse",
-  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   hide: {
     display: "none",
   },
-
-  content: {
-    flex: 1,
-    display: "flex",
-  },
-
   svgIcon: {},
   loading: {
     color: theme.palette.grey[600],
   },
-  FlexDisplay: {
-    display: "flex",
-  },
-  headerText: {
-    flex: 1,
+  flexCenter: {
     display: "flex",
     alignItems: "center",
   },
@@ -71,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   rotate180: {
     transform: "rotate(-180deg)",
   },
+  treePadding: {
+    paddingLeft: 48
+  }
 }));
 
 interface WorkspaceProps {
@@ -82,7 +71,8 @@ const TitleWithShareIcon = (props: any) => {
   const classes = useStyles();
   return (
     <>
-      <Typography variant="h5" className={classes.headerText}>{props.name}</Typography>
+     
+      <Typography variant="h5" className={classes.flexCenter}>{props.name}</Typography>
       <IconButton>
         <ShareIcon />
       </IconButton>
@@ -105,6 +95,13 @@ export default (props: WorkspaceProps) => {
     setAddResourceOpen(false);
   }
 
+  const [expanded, setExpanded] = React.useState<string | false>('workspace');
+
+  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
+
   return (<>
     <OSBDialog
       title={"Add resource to Workspace " + props.workspace.name}
@@ -115,41 +112,36 @@ export default (props: WorkspaceProps) => {
     </OSBDialog>
     {props.open ? (
       <>
-        <ExpansionPanel elevation={0}>
+        <ExpansionPanel elevation={0} expanded={expanded === 'workspace'} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon />}
-            className={classes.expandHeader}
+            expandIcon={<ArrowUpIcon style={{padding: 0}} />}
           >
             <TitleWithShareIcon name={props.workspace.name} />
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
             <Divider />
-            <ListItem button={true} onClick={showAddResource}>
-              <ListItemIcon>
-
-                <AddIcon style={{ fontSize: "1rem" }} />
-
+            <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
+              <ListItemIcon style={{paddingLeft: 0}}>
+                <AddIcon style={{ fontSize: "1.3rem" }} />
               </ListItemIcon>
               <ListItemText primary={"Add resource"} />
             </ListItem>
             <Divider />
-            <WorkspaceVolumePathBrowser
-              volumeId={props.workspace.volume}
-              path="/"
+            <WorkspaceResourceBrowser
+              workspace={props.workspace}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
         <ExpansionPanel elevation={0}>
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon />}
-            className={classes.expandHeader}
           >
             <TitleWithShareIcon name="User shared space" />
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
-            <WorkspaceVolumePathBrowser
+            <VolumePathBrowser
               volumeId={null/* TODO get from logged user */}
               path="/"
             />

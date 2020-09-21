@@ -15,15 +15,10 @@ import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "stretch",
-  },
+
   drawerContent: {
     maxWidth: 400,
   },
-
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -41,10 +36,6 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  content: {
-    flex: 1,
-    display: "flex",
   },
   drawerClose: {
     top: "initial",
@@ -80,16 +71,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     height: "70vh",
   },
-
-  svgIcon: {},
   loading: {
     color: theme.palette.grey[600],
-  },
-  FlexDisplay: {
-    display: "flex",
-  },
-  FlexGrowOne: {
-    flex: 1,
   },
 }));
 
@@ -111,7 +94,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
 
 
   return (
-    <div className={classes.root}>
+    <Box display="flex" alignItems="stretch" flex="1">
       <Drawer
         variant="permanent"
         anchor="left"
@@ -145,7 +128,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         </div>
       </Drawer>
 
-      <div className={classes.content}>{children}</div>
-    </div>
+      <Box display="flex" flex="1">{children}</Box>
+    </Box>
   );
 };

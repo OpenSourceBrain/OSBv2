@@ -5,8 +5,6 @@ import { Workspace, WorkspaceResource, OSBApplications } from '../../types/works
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import WorkspaceService from '../../service/WorkspaceService';
-import { userLogin } from '../../store/actions/user';
-import { BorderAll } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
