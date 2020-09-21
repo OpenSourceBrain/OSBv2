@@ -2,10 +2,10 @@ import logging
 
 from flask import request, current_app
 from sqlalchemy import desc
-
-from ..utils import get_keycloak_data
+from sqlalchemy.sql import func
 
 from ..config import Config
+from ..utils import get_keycloak_data
 
 from .base_model_repository import BaseModelRepository
 from .database import db
