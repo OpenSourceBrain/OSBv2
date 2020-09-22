@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 
-import WorkspaceInteractions from "./WorkspaceInteractions";
+import { WorkspaceInteractions } from "../..";
 import { Workspace } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";

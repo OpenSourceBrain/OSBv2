@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { App as app } from './App'
 import { Workspaces as workspace } from './workspace/Workspaces'
 import { WorkspaceToolBox as workspacetoolbox } from './workspace/NewWorkspaceToolBox'
+import workspaceInteractions from './workspace/drawer/WorkspaceInteractions';
+
 import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/WorkspaceDrawer'
@@ -12,7 +14,7 @@ import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
 import workspacePage from "./pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
-import { fetchWorkspacesAction, selectWorkspace, loadUserWorkspaces, loadWorkspaces } from '../store/actions/workspaces'
+import { fetchWorkspacesAction, selectWorkspace, refreshWorkspace, loadUserWorkspaces, loadWorkspaces } from '../store/actions/workspaces'
 import { fetchModelsAction } from '../store/actions/models';
 import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
@@ -75,6 +77,8 @@ export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspacePr
 export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
+export const WorkspaceInteractions = connect(null, { refreshWorkspace })(workspaceInteractions) as any
+
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, dispatchUserProps)(workspaceFrame)

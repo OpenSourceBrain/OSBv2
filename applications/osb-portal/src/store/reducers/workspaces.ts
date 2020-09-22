@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, AnyAction } from '@reduxjs/toolkit'
 
 import { Workspace } from '../../types/workspace';
 
@@ -23,6 +23,9 @@ const workspaceSlice = createSlice({
       return { ...state, publicWorkspaces: action.payload };
     },
     selectWorkspace(state, action: PayloadAction<Workspace>) {
+      return { ...state, selectedWorkspace: action.payload }
+    },
+    refreshWorkspace(state, action: AnyAction) {
       return { ...state, selectedWorkspace: action.payload }
     },
     loadUserWorkspaces(state, action: PayloadAction<Workspace[]>) {

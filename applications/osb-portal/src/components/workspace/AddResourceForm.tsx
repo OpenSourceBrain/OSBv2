@@ -35,8 +35,7 @@ export default (props: WorkspaceEditProps) => {
   const handleSetName = (e: any) =>
     setName(e.target.value);
   const handleAddResource = () => {
-    workspaceResourceService.addResource(workspace, url, name);
-    onResourceAdded();
+    workspaceResourceService.addResource(workspace, url, name).then(onResourceAdded, () => alert('An error occurred while adding the resource'));
   }
 
   return (

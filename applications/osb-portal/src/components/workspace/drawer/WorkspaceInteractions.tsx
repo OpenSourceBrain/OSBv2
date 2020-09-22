@@ -17,7 +17,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 import VolumePathBrowser from "./VolumePathBrowser";
 import { ShareIcon } from "../../icons";
-import { Workspace } from "../../../types/workspace";
+import { ResourceStatus, Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 
@@ -58,13 +58,14 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(-180deg)",
   },
   treePadding: {
-    paddingLeft: 48
+    paddingLeft: 43
   }
 }));
 
 interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
+  refreshWorkspace?: () => any;
 }
 
 const TitleWithShareIcon = (props: any) => {
@@ -83,9 +84,9 @@ const TitleWithShareIcon = (props: any) => {
 
 
 export default (props: WorkspaceProps) => {
+  const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
-  const closeAskLogin = () => setAddResourceOpen(false);
 
   const showAddResource = () => {
     setAddResourceOpen(true);
@@ -93,7 +94,13 @@ export default (props: WorkspaceProps) => {
 
   const handleResourceAdded = () => {
     setAddResourceOpen(false);
+    props.refreshWorkspace();
   }
+
+  if (workspace.resources.find(resource => resource.status === ResourceStatus.pending)) {
+    setTimeout(props.refreshWorkspace, 10000);
+  }
+
 
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
 
@@ -104,32 +111,32 @@ export default (props: WorkspaceProps) => {
 
   return (<>
     <OSBDialog
-      title={"Add resource to Workspace " + props.workspace.name}
+      title={"Add resource to Workspace " + workspace.name}
       open={addResourceOpen}
       closeAction={() => setAddResourceOpen(false)}
     >
-        <AddResourceForm workspace={props.workspace} onResourceAdded={handleResourceAdded} />
+      <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} />
     </OSBDialog>
     {props.open ? (
       <>
         <ExpansionPanel elevation={0} expanded={expanded === 'workspace'} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon style={{padding: 0}} />}
+            expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <TitleWithShareIcon name={props.workspace.name} />
+            <TitleWithShareIcon name={workspace.name} />
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
             <Divider />
             <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
-              <ListItemIcon style={{paddingLeft: 0}}>
+              <ListItemIcon style={{ paddingLeft: 0 }}>
                 <AddIcon style={{ fontSize: "1.3rem" }} />
               </ListItemIcon>
               <ListItemText primary={"Add resource"} />
             </ListItem>
             <Divider />
             <WorkspaceResourceBrowser
-              workspace={props.workspace}
+              workspace={workspace}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
