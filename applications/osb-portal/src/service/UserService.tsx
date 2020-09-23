@@ -43,7 +43,7 @@ export async function initUser(): Promise<UserInfo> {
 
     // set token refresh to 5 minutes
     keycloak.onTokenExpired = () => {
-        keycloak.updateToken(5).then((refreshed) => {
+        keycloak.updateToken(60).then((refreshed) => {
             if (refreshed) {
                 initApis(keycloak.token);
             } else {
