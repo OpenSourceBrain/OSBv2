@@ -41,6 +41,9 @@ RUN python utilities/install.py --npm-skip --no-test
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
+# and thus removes the frame ancestor cors settings
+RUN rm -f ~/.jupyter/*.json
+
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
