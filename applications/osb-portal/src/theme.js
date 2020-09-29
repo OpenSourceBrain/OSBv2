@@ -155,7 +155,8 @@ const theme = {
     },
     MuiIcon: { fontSizeLarge: { fontSize: '1.75rem' } },
     MuiExpansionPanelSummary: { 
-      root: { padding: '0px!important', margin: 0, minHeight: 'unset!important' },
+      root: { padding: '0px!important', margin: 0, minHeight: 'unset!important',     display: "flex",
+      flexDirection: "row-reverse" },
       content: { margin: '0px!important', cursor: 'auto' },
       expandIcon: { marginRight: 0 }
     },

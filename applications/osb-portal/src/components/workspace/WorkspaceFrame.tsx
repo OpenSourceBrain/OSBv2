@@ -5,8 +5,6 @@ import { Workspace, WorkspaceResource, OSBApplications } from '../../types/works
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import WorkspaceService from '../../service/WorkspaceService';
-import { userLogin } from '../../store/actions/user';
-import { BorderAll } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -34,8 +32,8 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
                 workspaceResource = workspace.resources[0];
             }
             fileName = ((workspaceResource != null) && (workspaceResource !== undefined) &&
-                (workspaceResource.uri !== undefined) && (workspaceResource.uri != null))
-                ? workspaceResource.uri
+                (workspaceResource.location !== undefined) && (workspaceResource.location != null))
+                ? workspaceResource.location
                 : "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb"; // TODO workspace has no resources or resource.location is null --> open this resource , temporarily hardcoded
         } else {
             // ToDo: loop workspace resources for given fileName (if not null), when location==fileName mark resource as opened

@@ -8,11 +8,18 @@ export interface OSBApplication {
     subdomain: string
 }
 
+export enum ResourceStatus {
+    pending= "PENDING",
+    available= "AVAILABLE",
+    error= "ERROR"
+}
 export interface WorkspaceResource {
+    workspaceId: number,
     id?: number,
     name: string,
-    uri?: string,
-    type: ResourceType
+    location: string,
+    type: ResourceType,
+    status?: ResourceStatus
 }
 
 export interface ResourceType {

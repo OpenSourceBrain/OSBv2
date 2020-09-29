@@ -9,6 +9,7 @@ export * from './InlineResponse2003';
 export * from './InlineResponse2004';
 export * from './OSBRepository';
 export * from './Pagination';
+export * from './ResourceStatus';
 export * from './ResourceType';
 export * from './User';
 export * from './Valid';

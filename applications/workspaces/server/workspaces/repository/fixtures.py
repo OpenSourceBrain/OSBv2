@@ -42,7 +42,8 @@ def generate_fake(app):
 
         for j in range(1, random.randint(1, 10)):
             wsresource = WorkspaceResource(name=f'Workspace resource {j}',
-                                           resource_type='e')
+                                           resource_type='e',
+                                           location='opensourcebrain.org')
             workspace.resources.append(wsresource)
 
         wsstorage = VolumeStorage(name=f'Storage WS {i}')

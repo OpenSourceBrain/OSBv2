@@ -215,6 +215,21 @@ steps:
         image_name: workflows-extract-download
         title: Workflows extract download
         working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
+      workflows-notify-queue:
+        type: build
+        stage: build
+        tag: ${{CF_REVISION}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows-notify-queue
+        title: Workflows notify queue
+        working_directory: ./cloud-harness/applications/workflows/tasks/notify-queue
       workflows-send-result-event:
         type: build
         stage: build

@@ -1,5 +1,5 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
-import { loadWorkspacesActionType, fetchWorkspacesActionType, selectWorkspace } from '../store/actions/workspaces'
+import { loadWorkspacesActionType, fetchWorkspacesActionType, selectWorkspace, refreshWorkspace } from '../store/actions/workspaces'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { userLogin, userLogout, userRegister } from '../store/actions/user'
 import { setError } from '../store/actions/error'
@@ -47,14 +47,12 @@ const fetchModelsAction = (): CallApiAction => {
  * @private
  */
 
-const callAPIMiddlewareFn: Middleware<Dispatch> = ({
-  dispatch
-}: MiddlewareAPI) => next => async (action: AnyAction | CallApiAction) => {
+const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyAction | CallApiAction) => {
 
   switch (action.type) {
     case fetchWorkspacesActionType:
       // fetch workspaces from workspaces app
-      fetchWorkspacesAction(dispatch)
+      fetchWorkspacesAction(store.dispatch)
       break
     case fetchModelsActionType:
       next(fetchModelsAction());
@@ -76,6 +74,9 @@ const callAPIMiddlewareFn: Middleware<Dispatch> = ({
       break;
     case selectWorkspace.toString():
       workspaceService.getWorkspace(action.payload).then((workspace: Workspace) => next({ ...action, payload: workspace }));
+      break;
+    case refreshWorkspace.toString():
+      workspaceService.getWorkspace(store.getState().workspaces.selectedWorkspace.id).then((workspace: Workspace) => next({ ...action, payload: workspace }));
       break;
     default:
       return next(action);

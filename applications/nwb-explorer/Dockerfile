@@ -1,6 +1,6 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-ENV BRANCH_TAG=development
+ENV BRANCH_TAG="v0.5.0"
 ENV FOLDER=nwb-explorer
 
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
@@ -36,27 +36,20 @@ RUN apt-get update -qq &&\
 # RUN pip install setuptools==45
 
 RUN pip install -r requirements.txt --no-cache-dir
-RUN jupyter nbextension install --py --symlink --sys-prefix jupyter_geppetto
-RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
-RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
-RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN pip install . --no-cache-dir
-RUN jupyter labextension disable @jupyterlab/hub-extension
+RUN python utilities/install.py --npm-skip --no-test
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
+
+# and thus removes the frame ancestor cors settings
+RUN rm -f ~/.jupyter/*.json
 
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
 RUN chown -R jovyan /opt/*
-RUN ln -s /opt/workspace ./netpyne_workspace
-RUN ln -s /opt/home ./netpyne_workspace
+RUN ln -s /opt/workspace ./workspace
+RUN ln -s /opt/home ./workspace
 
 USER $NB_UID
-CMD ./NWBE
-
-
-EXPOSE 8888
-
 CMD ./NWBE

@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 
-import WorkspaceInteractions from "./WorkspaceInteractions";
+import { WorkspaceInteractions } from "../..";
 import { Workspace } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
@@ -15,15 +15,10 @@ import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "stretch",
-  },
+
   drawerContent: {
     maxWidth: 400,
   },
-
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -41,10 +36,6 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  content: {
-    flex: 1,
-    display: "flex",
   },
   drawerClose: {
     top: "initial",
@@ -80,56 +71,30 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     height: "70vh",
   },
-  closedText: {
-    writingMode: "vertical-lr",
-    textOrientation: "mixed",
-    transform: "rotate(-180deg)",
-    margin: "auto",
-    marginBottom: "0.3em",
-  },
-  rotate180: {
-    transform: "rotate(-180deg)",
-  },
-  svgIcon: {},
   loading: {
     color: theme.palette.grey[600],
-  },
-  FlexDisplay: {
-    display: "flex",
-  },
-  FlexGrowOne: {
-    flex: 1,
   },
 }));
 
 interface WorkspaceDrawerProps {
   workspace: Workspace;
+
 }
 
 export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, children }) => {
+  if (!workspace) {
+    return <></>;
+  }
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
 
   const handleToggleDrawer = () => setOpen(!open);
 
-  const drawerContent = open ? (
-    <WorkspaceInteractions workspace={workspace} />
-  ) : (
-      <>
-        <div className={classes.closedText}>
-          <AddIcon style={{ marginBottom: "0.3em" }} />
-          Workspace XYZ&nbsp;&nbsp;
-          <ShareIcon
-            className={[classes.svgIcon, classes.rotate180].join(" ")}
-            style={{ marginTop: "0.3em" }}
-          />
-        </div>
-      </>
-    );
+
 
   return (
-    <div className={classes.root}>
+    <Box display="flex" alignItems="stretch" flex="1">
       <Drawer
         variant="permanent"
         anchor="left"
@@ -146,7 +111,9 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           }),
         }}
       >
-        <div className={classes.drawerContent}>{drawerContent}</div>
+        <div className={classes.drawerContent}>
+          <WorkspaceInteractions workspace={workspace} open={open} />
+        </div>
         <div>
           <Divider />
           <div className={classes.drawerHeader}>
@@ -161,7 +128,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         </div>
       </Drawer>
 
-      <div className={classes.content}>{children}</div>
-    </div>
+      <Box display="flex" flex="1">{children}</Box>
+    </Box>
   );
 };

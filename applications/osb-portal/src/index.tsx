@@ -26,9 +26,23 @@ const renderMain = () => {
 
 const appName = CONFIGURATION.appName;
 
-initErrorHandler(appName).then(initUser).then((user: UserInfo) => {
+
+const timeout = (ms: number, promise: Promise<any>) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error("timeout"))
+    }, ms)
+    promise.then(resolve, reject)
+  })
+}
+
+
+
+timeout(5000, initUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   }
 }).finally(renderMain);
+
+initErrorHandler(appName);
 

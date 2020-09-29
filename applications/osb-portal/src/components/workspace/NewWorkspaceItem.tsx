@@ -19,11 +19,13 @@ export enum WorkspaceTemplateType {
   playground = "playground"
 }
 
-const WorkspaceTemplates: { [id: string]: Workspace } = {
+const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
   [WorkspaceTemplateType.singleCell]: {
     resources: [{
       name: "singleCellModel.np",
       type: SampleResourceTypes.m,
+      location: "singleCellModel.np.location",
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -34,6 +36,8 @@ const WorkspaceTemplates: { [id: string]: Workspace } = {
     resources: [{
       name: "networkModel.np",
       type: SampleResourceTypes.m,
+      location: "networkModel.np.location",
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -44,6 +48,8 @@ const WorkspaceTemplates: { [id: string]: Workspace } = {
     resources: [{
       name: "sampleNwbFile.nwb",
       type: SampleResourceTypes.e,
+      location: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -54,6 +60,8 @@ const WorkspaceTemplates: { [id: string]: Workspace } = {
     resources: [{
       name: "notebook.ipynb",
       type: SampleResourceTypes.g,
+      location: "notebook.ipynb.location",
+      workspaceId: -1
     }],
     volume: null,
     shareType: null,
@@ -87,7 +95,7 @@ export default (props: ItemProps) => {
   const closeNewWorkspace = () => {
     setNewWorkspaceOpen(false);
   }
-  const defaultWorkspace: Workspace = WorkspaceTemplates[template];
+  const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 
   return (
     <>

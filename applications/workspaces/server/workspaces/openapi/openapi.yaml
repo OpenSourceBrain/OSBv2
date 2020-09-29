@@ -4,7 +4,7 @@ info:
   license:
     name: UNLICENSED
   title: Workspaces manager API
-  version: 0.1.0
+  version: 0.2.0
 servers:
 - description: SwaggerHub API Auto Mocking
   url: /api
@@ -219,6 +219,30 @@ paths:
           description: The workspace was not found.
       tags:
         - rest
+
+  /workspaceresource:
+    post:
+      tags:
+        - rest                  
+      summary: Used to save a WorkspaceResource to the repository.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The WorkspaceResource to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkspaceResource"
+      responses:
+        201:
+          description: Save successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceResource"
+        400:
+          description: The WorkspaceResource already exists.
 
   /workspaceresource/{id}:
     parameters:
@@ -808,6 +832,19 @@ components:
         - g
       default: g
       example: g
+    ResourceStatus:
+        description: >
+          Resource status:
+           * a - Available
+           * e - Error, not available
+           * p - Pending
+        type: string
+        enum:
+          - a
+          - e
+          - p
+        default: p
+        example: p
     ImageType:
       type: string
     User:
@@ -952,6 +989,9 @@ components:
           description: WorkspaceResource location where the resource is stored
           type: string
           example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
+        status:
+          description: WorkspaceResource status is the resource
+          $ref: "#/components/schemas/ResourceStatus"
         timestamp_created:
           description: Date/time of creation of the WorkspaceResource
           type: string
@@ -970,9 +1010,14 @@ components:
         resource_type:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
+        workspace_id:
+          description: workspace_id
+          type: integer
+          x-foreign-key: workspace.id
       required:
         - name
         - resource_type
+        - location
     VolumeStorage:
       description: Volume which can be connected to a workspace
       type: object
