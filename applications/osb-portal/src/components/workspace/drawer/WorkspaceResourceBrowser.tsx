@@ -18,11 +18,16 @@ import {
 } from "../../icons";
 
 
+const openFileResource = (resource: WorkspaceResource) => (e: any) => {
+  const fileName = resource.location.slice(resource.location.lastIndexOf("/")+1);
+  const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
+  iFrame.contentWindow.postMessage(fileName, '*');
+}
 
 const OSBTreeItem = (props: { resource: WorkspaceResource }) => {
   const { resource } = props;
   return (
-    <Box display="flex" alignItems="center" justifyContent="space-between">
+    <Box display="flex" alignItems="center" justifyContent="space-between" onClick={openFileResource(resource)} >
       {resource.type.application === null ? <FolderIcon /> : ""}
       <Typography style={{ opacity: resource.status === ResourceStatus.pending ? 0.3 : 1 }}>{resource.name}</Typography>
       {resource.status === ResourceStatus.pending ? <LoadingIcon /> : null}
