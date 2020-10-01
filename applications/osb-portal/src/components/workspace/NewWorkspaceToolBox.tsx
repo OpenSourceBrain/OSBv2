@@ -26,6 +26,14 @@ const useStyles = makeStyles((theme) => ({
   dialogButtons: {
     paddingRight: 0,
   },
+  cardHeading: {
+    textAlign: "center",
+    marginBottom: "20px",
+    [theme.breakpoints.up("md")]: {
+      paddingLeft: "20px",
+      textAlign: "left",
+    }
+  },
 }));
 
 
@@ -40,42 +48,46 @@ export const WorkspaceToolBox = (props: any) => {
   return (
     <>
 
-      <Typography component="h2" variant="h6" align="center" gutterBottom={true}>
-        Create a new Workspace
-      </Typography>
       <Box mt={3}>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
-          <Grid item={true}>
-            <WorkspaceItem
-              icon={Icons.CircleIcon}
-              title="Single Cell"
-              template={WorkspaceTemplateType.singleCell}
-              user={user}
-            />
+          <Grid sm={12} md={3}>
+            <Typography component="h2" variant="h6" className={classes.cardHeading}>
+              Create a new Workspace
+            </Typography>
           </Grid>
-          <Grid item={true}>
-            <WorkspaceItem
-              icon={Icons.SquareCirclesIcon}
-              title="Network"
-              template={WorkspaceTemplateType.network}
-              user={user}
-            />
-          </Grid>
-          <Grid item={true}>
-            <WorkspaceItem
-              icon={Icons.ChartIcon}
-              title="Data Analysis"
-              template={WorkspaceTemplateType.explorer}
-              user={user}
-            />
-          </Grid>
-          <Grid item={true}>
-            <WorkspaceItem
-              icon={Icons.CubeIcon}
-              title="Playground"
-              template={WorkspaceTemplateType.playground}
-              user={user}
-            />
+          <Grid xs={12} sm={12} md={9}>
+            <Grid xs={12} justify="center" item={true}>
+              <WorkspaceItem
+                icon={Icons.CircleIcon}
+                title="Single Cell"
+                template={WorkspaceTemplateType.singleCell}
+                user={user}
+              />
+            </Grid>
+            <Grid xs={12} justify="center" item={true}>
+              <WorkspaceItem
+                icon={Icons.SquareCirclesIcon}
+                title="Network"
+                template={WorkspaceTemplateType.network}
+                user={user}
+              />
+            </Grid>
+            <Grid xs={12} justify="center" item={true}>
+              <WorkspaceItem
+                icon={Icons.ChartIcon}
+                title="Data Analysis"
+                template={WorkspaceTemplateType.explorer}
+                user={user}
+              />
+            </Grid>
+            <Grid xs={12} justify="center" item={true}>
+              <WorkspaceItem
+                icon={Icons.CubeIcon}
+                title="Playground"
+                template={WorkspaceTemplateType.playground}
+                user={user}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Box>
