@@ -19,28 +19,34 @@ export default (props: any) => (
   <>
     <MainMenu />
     <Box p={1} className="verticalFit">
-      <Grid container={true} spacing={1} alignItems="stretch">
-        <Grid item={true} xs={12}>
-          <Paper style={{ overflow: "hidden" }} elevation={0}>
-            <Banner />
-          </Paper>
+      <Grid container>
+        <Grid item xs={12} sm={12} md={6} container alignItems="stretch">
+          <Grid item={true} xs={12}>
+            <Paper style={{ overflow: "hidden", marginBottom: "10px" }} elevation={0}>
+              <Banner />
+            </Paper>
+          </Grid>
+          <Grid item={true} xs={12}>
+            <Paper style={{ marginBottom: "10px" }} elevation={0}>
+              <Box p={3}>
+                <WorkspaceToolBox />
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item={true} xs={12} className="verticalFit">
+            <Paper style={{ marginBottom: "10px" }} elevation={0}>
+              <Box p={3}>
+                <Latest />
+              </Box>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item={true} xs={6}>
-          <Paper elevation={0}>
-            <Box p={3}>
-              <WorkspaceToolBox />
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item={true} xs={6} className="verticalFit">
-          <Paper elevation={0}>
-            <Box p={3}>
-              <Latest />
-            </Box>
-          </Paper>
+        <Grid item xs={12} sm={12} md={6} container alignItems="stretch">
+          <Box pl={2} width={1}>
+              <Workspaces />
+          </Box>
         </Grid>
       </Grid>
-      <Workspaces />
     </Box>
   </>
 );
