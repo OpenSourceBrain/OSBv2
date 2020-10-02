@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
@@ -20,7 +21,17 @@ import {
   ProtectedRoute
 } from "./index";
 
+const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    overflow: "auto",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  }
+}));
+
 export const App = (props: any) => {
+  const classes = useStyles();
   React.useEffect(() => {
     props.onLoadWorkspaces();
     props.onLoadModels();
@@ -31,7 +42,7 @@ export const App = (props: any) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ErrorDialog />
-        <div style={{ overflow: "hidden", height: "100vh", display: "flex", flexDirection: "column" }}>
+        <div className={classes.mainContainer}>
           <Header />
           <Router>
             <Switch>
