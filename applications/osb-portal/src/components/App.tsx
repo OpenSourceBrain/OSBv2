@@ -1,33 +1,19 @@
 import * as React from "react";
-
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-
+import { CssBaseline, makeStyles } from "@material-ui/core";
 import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
-
 import HomePage from "./pages/HomePage";
 import theme from "../theme";
-import {
-  Header,
-  ErrorDialog,
-  WorkspacePage,
-  ProtectedRoute
-} from "./index";
+import { Header, ErrorDialog, WorkspacePage, ProtectedRoute } from "./index";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   mainContainer: {
     overflow: "auto",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-  }
+  },
 }));
 
 export const App = (props: any) => {
