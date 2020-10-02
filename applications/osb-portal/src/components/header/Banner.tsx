@@ -2,7 +2,6 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { UserInfo } from "../../types/user";
 
@@ -13,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-    height: "25vh"
+    height: "25vh",
   },
   mainFeaturedPostContent: {
     position: "absolute",
@@ -43,20 +42,8 @@ export const Banner = (props: any) => {
       : "Let's do some science.";
 
   return (
-    <section
-      className={classes.mainFeaturedPost}
-      style={{ backgroundImage: `url(images/banner.png)` }}
-    >
-      {/* Increase the priority of the hero background image */}
-      {
-        <img
-          style={{ display: "none" }}
-          src="images/banner.png"
-          alt="Let us show you around"
-        />
-      }
-
-      <div className={classes.mainFeaturedPostContent}>
+    <Box className={classes.mainFeaturedPost}>
+      <Box className={classes.mainFeaturedPostContent}>
         <Box>
           <Typography component="h2" variant="h1" gutterBottom={true}>
             {text1}
@@ -67,13 +54,11 @@ export const Banner = (props: any) => {
           <Box display="flex" pt={1} flexDirection="row">
             <Button variant="outlined">Take the tour</Button>
             {user === null ? (
-              <Button onClick={handleSignup}>
-                Sign up
-              </Button>
+              <Button onClick={handleSignup}>Sign up</Button>
             ) : null}
           </Box>
         </Box>
-      </div>
-    </section>
+      </Box>
+    </Box>
   );
 };
