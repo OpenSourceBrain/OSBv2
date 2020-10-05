@@ -32,7 +32,15 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       paddingLeft: "20px",
       textAlign: "left",
-    }
+    },
+  },
+  cardText: {
+    display: "inline-block",
+    marginRight: "5px",
+    [theme.breakpoints.up("md")]: {
+      display: "block",
+      marginRight: "0",
+    },
   },
 }));
 
@@ -50,12 +58,13 @@ export const WorkspaceToolBox = (props: any) => {
 
       <Box mt={3}>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
-          <Grid sm={12} md={3}>
+          <Grid sm={12} md={4} lg={3}>
             <Typography component="h2" variant="h6" className={classes.cardHeading}>
-              Create a new Workspace
+              <Box component="span" className={classes.cardText}>Create a</Box>
+              <Box component="span" className={classes.cardText}>new Workspace</Box>
             </Typography>
           </Grid>
-          <Grid xs={12} sm={12} md={9}>
+          <Grid xs={12} sm={12} md={8} lg={9}>
             <Grid xs={12} justify="center" item={true}>
               <WorkspaceItem
                 icon={Icons.CircleIcon}
