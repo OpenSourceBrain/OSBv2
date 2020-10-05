@@ -112,7 +112,14 @@ const theme = {
     },
     MuiCard: { root: { flex: 1 } },
     MuiBottomNavigation: { root: { backgroundColor: bgRegular, marginBottom: 8, borderRadius: 4 } },
-    MuiPaper: { root: { color: 'inherit', backgroundColor: bgRegular, flex: 1 } },
+    MuiPaper: {
+      root: {
+        color: 'inherit', backgroundColor: bgRegular, flex: 1
+      },
+      rounded: {
+        borderRadius: '5px'
+      },
+    },
     MuiBottomNavigationAction: { 
       root: { color: fontColor, textTransform: 'uppercase' },
       label: { fontSize: "0.65rem", "&.Mui-selected": { fontSize: "0.65rem" } },
@@ -170,12 +177,33 @@ const theme = {
         }
       }
      },
+    MuiTabs: {
+      root: {
+        minHeight: '20px',
+        height: '20px',
+      },
+      indicator: {
+        backgroundColor: 'transparent',
+      }
+    },
     MuiTab: {
       root: {
         textTransform: 'none',
         fontSize: '1.1rem',
         fontWeight: 400,
-        paddingBottom: 0
+        padding: '0 8px 0 0',
+        textDecoration: 'none',
+        border: 0,
+        minHeight: '20px',
+        height: '20px',
+        minWidth: '150px !important',
+        textAlign: 'left',
+        '&:first-child': {
+          borderRight: '1px solid #FFF',
+        },
+        '&:last-child': {
+          padding: '0 0 0 8px',
+        }
       }
     },
     MuiToolbar: {
