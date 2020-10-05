@@ -45,6 +45,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "100%"
   },
+  ellipses: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    width: "100%",
+    display: "block",
+  },
 }));
 
 export const WorkspaceCard = (props: Props) => {
@@ -73,12 +80,12 @@ export const WorkspaceCard = (props: Props) => {
       </Box>
 
       <CardContent>
-        <Link href={`/workspace/${workspace.id}`} color="inherit">
-          <Typography component="h2" variant="h5">
+        <Link href={`/workspace/${workspace.id}`} color="inherit" title={`${workspace.name}`}>
+          <Typography component="h2" variant="h5" className={classes.ellipses}>
             {workspace.name}
           </Typography>
         </Link>
-        <Typography variant="caption">
+        <Typography variant="caption" className={classes.ellipses}>
           {workspace.lastOpen.type.application.name},{" "}
           {formatDate(workspace.timestampUpdated)}
         </Typography>
