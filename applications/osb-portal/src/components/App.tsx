@@ -13,6 +13,10 @@ const useStyles = makeStyles(() => ({
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
+    [theme.breakpoints.up("md")]: {
+      maxHeight: "100vh",
+      overflow: "hidden",
+    }
   },
 }));
 
