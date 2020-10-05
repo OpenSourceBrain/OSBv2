@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.9em",
   },
   imageIcon: {
-    fontSize: "8em",
+    fontSize: "7em",
   },
   actions: {
     display: "block",
@@ -38,9 +38,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     overflow: "hidden",
+    alignItems: "center",
+    height: '130px',
   },
   image: {
     width: "100%",
+    maxWidth: "100%"
   },
 }));
 

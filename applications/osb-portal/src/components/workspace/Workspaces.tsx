@@ -15,7 +15,7 @@ export const Workspaces = (props: any) => {
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
-          <Grid item={true} key={index} xs={6} sm={3} md={6} lg={3} >
+          <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
             <WorkspaceCard workspace={workspace} />
           </Grid>
         );
@@ -48,7 +48,7 @@ export const Workspaces = (props: any) => {
           {workspaceList.length} Workspaces
         </Typography>
       </Box>
-      <Box className="verticalFit">
+      <Box className="verticalFit card-container">
         <Box pt={1} pb={1} className="scrollbar">
           <Grid container={true} spacing={1}>
             {workspaceList}
