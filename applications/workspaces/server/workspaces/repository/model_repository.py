@@ -101,6 +101,14 @@ class WorkspaceImageRepository(BaseModelRepository):
 class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResource
 
+    def pre_commit(self, workspace_resource):
+        # Check if we can determine the resource type
+        logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id}')
+        if workspace_resource.location[-3:] == "nwb":
+            logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
+            workspace_resource.resource_type = "e"
+        return workspace_resource
+
     def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
         logger.debug(f'Post Commit for workspace resource id: {workspace_resource.id}')
