@@ -1,0 +1,15 @@
+harness:
+  subdomain: netpyne
+  service:
+    auto: false
+    port: 80
+    name: proxy-public
+  jupyterhub:
+    args: ["--debug", "--port=8000", "--NotebookApp.default_url=/geppetto", "--library=netpyne_ui"]
+    applicationHook: "osb_jupyter.change_pod_manifest"
+    extraConfig:
+      timing: |
+        c.Spawner.port = 8000
+        c.Spawner.http_timeout = 300
+        c.Spawner.start_timeout = 300
+        c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local localhost *.opensourcebrain.org"}}

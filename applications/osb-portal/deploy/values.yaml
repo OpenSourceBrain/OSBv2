@@ -1,0 +1,10 @@
+harness:
+  subdomain: www
+  secured: false
+  deployment:
+    auto: true
+  service:
+    auto: true
+    port: 80
+    name: portal
+  sentry: true

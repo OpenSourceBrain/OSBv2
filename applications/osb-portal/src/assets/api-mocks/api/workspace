@@ -1,0 +1,845 @@
+{
+  "pagination": {
+    "current_page": 1,
+    "number_of_pages": 1
+  },
+  "workspaces": [
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        }
+      ],
+      "description": "Workspace description 24",
+      "gallery": [],
+      "id": 24,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 24",
+      "owner": {
+        "email": null,
+        "firstname": "User 7",
+        "id": 7,
+        "keycloak_id": "7",
+        "lastname": "Lastname 7"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 106,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 107,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 108,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 109,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        },
+        {
+          "id": 110,
+          "name": "Workspace resource 5",
+          "resource_type": "e"
+        },
+        {
+          "id": 111,
+          "name": "Workspace resource 6",
+          "resource_type": "e"
+        },
+        {
+          "id": 112,
+          "name": "Workspace resource 7",
+          "resource_type": "e"
+        },
+        {
+          "id": 113,
+          "name": "Workspace resource 8",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 24,
+        "name": "Storage WS 24"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.744291",
+      "timestamp_updated": "2020-07-12T08:58:48.744291",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 1",
+          "id": 1,
+          "keycloak_id": "1",
+          "lastname": "Lastname 1"
+        },
+        {
+          "email": null,
+          "firstname": "User 2",
+          "id": 2,
+          "keycloak_id": "2",
+          "lastname": "Lastname 2"
+        },
+        {
+          "email": null,
+          "firstname": "User 3",
+          "id": 3,
+          "keycloak_id": "3",
+          "lastname": "Lastname 3"
+        },
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        }
+      ],
+      "description": "Workspace description 23",
+      "gallery": [],
+      "id": 23,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 23",
+      "owner": {
+        "email": null,
+        "firstname": "User 5",
+        "id": 5,
+        "keycloak_id": "5",
+        "lastname": "Lastname 5"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 102,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 103,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 104,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 105,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 23,
+        "name": "Storage WS 23"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.729799",
+      "timestamp_updated": "2020-07-12T08:58:48.729799",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 1",
+          "id": 1,
+          "keycloak_id": "1",
+          "lastname": "Lastname 1"
+        },
+        {
+          "email": null,
+          "firstname": "User 2",
+          "id": 2,
+          "keycloak_id": "2",
+          "lastname": "Lastname 2"
+        },
+        {
+          "email": null,
+          "firstname": "User 3",
+          "id": 3,
+          "keycloak_id": "3",
+          "lastname": "Lastname 3"
+        },
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        },
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        },
+        {
+          "email": null,
+          "firstname": "User 6",
+          "id": 6,
+          "keycloak_id": "6",
+          "lastname": "Lastname 6"
+        },
+        {
+          "email": null,
+          "firstname": "User 7",
+          "id": 7,
+          "keycloak_id": "7",
+          "lastname": "Lastname 7"
+        },
+        {
+          "email": null,
+          "firstname": "User 8",
+          "id": 8,
+          "keycloak_id": "8",
+          "lastname": "Lastname 8"
+        },
+        {
+          "email": null,
+          "firstname": "User 9",
+          "id": 9,
+          "keycloak_id": "9",
+          "lastname": "Lastname 9"
+        }
+      ],
+      "description": "Workspace description 20",
+      "gallery": [],
+      "id": 20,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 20",
+      "owner": {
+        "email": null,
+        "firstname": "User 1",
+        "id": 1,
+        "keycloak_id": "1",
+        "lastname": "Lastname 1"
+      },
+      "publicable": true,
+      "resources": [],
+      "storage": {
+        "id": 20,
+        "name": "Storage WS 20"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.653445",
+      "timestamp_updated": "2020-07-12T08:58:48.653445",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        },
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        },
+        {
+          "email": null,
+          "firstname": "User 6",
+          "id": 6,
+          "keycloak_id": "6",
+          "lastname": "Lastname 6"
+        },
+        {
+          "email": null,
+          "firstname": "User 7",
+          "id": 7,
+          "keycloak_id": "7",
+          "lastname": "Lastname 7"
+        },
+        {
+          "email": null,
+          "firstname": "User 8",
+          "id": 8,
+          "keycloak_id": "8",
+          "lastname": "Lastname 8"
+        }
+      ],
+      "description": "Workspace description 19",
+      "gallery": [],
+      "id": 19,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 19",
+      "owner": {
+        "email": null,
+        "firstname": "User 3",
+        "id": 3,
+        "keycloak_id": "3",
+        "lastname": "Lastname 3"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 82,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 83,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 84,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 85,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        },
+        {
+          "id": 86,
+          "name": "Workspace resource 5",
+          "resource_type": "e"
+        },
+        {
+          "id": 87,
+          "name": "Workspace resource 6",
+          "resource_type": "e"
+        },
+        {
+          "id": 88,
+          "name": "Workspace resource 7",
+          "resource_type": "e"
+        },
+        {
+          "id": 89,
+          "name": "Workspace resource 8",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 19,
+        "name": "Storage WS 19"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.641630",
+      "timestamp_updated": "2020-07-12T08:58:48.641630",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        },
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        },
+        {
+          "email": null,
+          "firstname": "User 6",
+          "id": 6,
+          "keycloak_id": "6",
+          "lastname": "Lastname 6"
+        },
+        {
+          "email": null,
+          "firstname": "User 7",
+          "id": 7,
+          "keycloak_id": "7",
+          "lastname": "Lastname 7"
+        },
+        {
+          "email": null,
+          "firstname": "User 8",
+          "id": 8,
+          "keycloak_id": "8",
+          "lastname": "Lastname 8"
+        }
+      ],
+      "description": "Workspace description 17",
+      "gallery": [],
+      "id": 17,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 17",
+      "owner": {
+        "email": null,
+        "firstname": "User 8",
+        "id": 8,
+        "keycloak_id": "8",
+        "lastname": "Lastname 8"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 71,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 72,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 73,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 74,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        },
+        {
+          "id": 75,
+          "name": "Workspace resource 5",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 17,
+        "name": "Storage WS 17"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.617133",
+      "timestamp_updated": "2020-07-12T08:58:48.617133",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 3",
+          "id": 3,
+          "keycloak_id": "3",
+          "lastname": "Lastname 3"
+        },
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        },
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        },
+        {
+          "email": null,
+          "firstname": "User 6",
+          "id": 6,
+          "keycloak_id": "6",
+          "lastname": "Lastname 6"
+        }
+      ],
+      "description": "Workspace description 14",
+      "gallery": [],
+      "id": 14,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 14",
+      "owner": {
+        "email": null,
+        "firstname": "User 1",
+        "id": 1,
+        "keycloak_id": "1",
+        "lastname": "Lastname 1"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 57,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 58,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 59,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 60,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        },
+        {
+          "id": 61,
+          "name": "Workspace resource 5",
+          "resource_type": "e"
+        },
+        {
+          "id": 62,
+          "name": "Workspace resource 6",
+          "resource_type": "e"
+        },
+        {
+          "id": 63,
+          "name": "Workspace resource 7",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 14,
+        "name": "Storage WS 14"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.541297",
+      "timestamp_updated": "2020-07-12T08:58:48.541297",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        }
+      ],
+      "description": "Workspace description 9",
+      "gallery": [],
+      "id": 9,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 9",
+      "owner": {
+        "email": null,
+        "firstname": "User 5",
+        "id": 5,
+        "keycloak_id": "5",
+        "lastname": "Lastname 5"
+      },
+      "publicable": true,
+      "resources": [],
+      "storage": {
+        "id": 9,
+        "name": "Storage WS 9"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.452890",
+      "timestamp_updated": "2020-07-12T08:58:48.452890",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 2",
+          "id": 2,
+          "keycloak_id": "2",
+          "lastname": "Lastname 2"
+        },
+        {
+          "email": null,
+          "firstname": "User 3",
+          "id": 3,
+          "keycloak_id": "3",
+          "lastname": "Lastname 3"
+        },
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        },
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        },
+        {
+          "email": null,
+          "firstname": "User 6",
+          "id": 6,
+          "keycloak_id": "6",
+          "lastname": "Lastname 6"
+        },
+        {
+          "email": null,
+          "firstname": "User 7",
+          "id": 7,
+          "keycloak_id": "7",
+          "lastname": "Lastname 7"
+        },
+        {
+          "email": null,
+          "firstname": "User 8",
+          "id": 8,
+          "keycloak_id": "8",
+          "lastname": "Lastname 8"
+        }
+      ],
+      "description": "Workspace description 8",
+      "gallery": [],
+      "id": 8,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 8",
+      "owner": {
+        "email": null,
+        "firstname": "User 8",
+        "id": 8,
+        "keycloak_id": "8",
+        "lastname": "Lastname 8"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 31,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 32,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 33,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 34,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        },
+        {
+          "id": 35,
+          "name": "Workspace resource 5",
+          "resource_type": "e"
+        },
+        {
+          "id": 36,
+          "name": "Workspace resource 6",
+          "resource_type": "e"
+        },
+        {
+          "id": 37,
+          "name": "Workspace resource 7",
+          "resource_type": "e"
+        },
+        {
+          "id": 38,
+          "name": "Workspace resource 8",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 8,
+        "name": "Storage WS 8"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.439328",
+      "timestamp_updated": "2020-07-12T08:58:48.439328",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 1",
+          "id": 1,
+          "keycloak_id": "1",
+          "lastname": "Lastname 1"
+        },
+        {
+          "email": null,
+          "firstname": "User 2",
+          "id": 2,
+          "keycloak_id": "2",
+          "lastname": "Lastname 2"
+        },
+        {
+          "email": null,
+          "firstname": "User 3",
+          "id": 3,
+          "keycloak_id": "3",
+          "lastname": "Lastname 3"
+        },
+        {
+          "email": null,
+          "firstname": "User 4",
+          "id": 4,
+          "keycloak_id": "4",
+          "lastname": "Lastname 4"
+        }
+      ],
+      "description": "Workspace description 4",
+      "gallery": [],
+      "id": 4,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 4",
+      "owner": {
+        "email": null,
+        "firstname": "User 10",
+        "id": 10,
+        "keycloak_id": "10",
+        "lastname": "Lastname 10"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 17,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 18,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 19,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 20,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        },
+        {
+          "id": 21,
+          "name": "Workspace resource 5",
+          "resource_type": "e"
+        },
+        {
+          "id": 22,
+          "name": "Workspace resource 6",
+          "resource_type": "e"
+        },
+        {
+          "id": 23,
+          "name": "Workspace resource 7",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 4,
+        "name": "Storage WS 4"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.362161",
+      "timestamp_updated": "2020-07-12T08:58:48.362161",
+      "types": []
+    },
+    {
+      "collaborators": [
+        {
+          "email": null,
+          "firstname": "User 5",
+          "id": 5,
+          "keycloak_id": "5",
+          "lastname": "Lastname 5"
+        },
+        {
+          "email": null,
+          "firstname": "User 6",
+          "id": 6,
+          "keycloak_id": "6",
+          "lastname": "Lastname 6"
+        }
+      ],
+      "description": "Workspace description 2",
+      "gallery": [],
+      "id": 2,
+      "last_type": "netpyne",
+      "license": null,
+      "name": "Workspace 2",
+      "owner": {
+        "email": null,
+        "firstname": "User 8",
+        "id": 8,
+        "keycloak_id": "8",
+        "lastname": "Lastname 8"
+      },
+      "publicable": true,
+      "resources": [
+        {
+          "id": 7,
+          "name": "Workspace resource 1",
+          "resource_type": "e"
+        },
+        {
+          "id": 8,
+          "name": "Workspace resource 2",
+          "resource_type": "e"
+        },
+        {
+          "id": 9,
+          "name": "Workspace resource 3",
+          "resource_type": "e"
+        },
+        {
+          "id": 10,
+          "name": "Workspace resource 4",
+          "resource_type": "e"
+        }
+      ],
+      "storage": {
+        "id": 2,
+        "name": "Storage WS 2"
+      },
+      "tags": [],
+      "thumbnail": null,
+      "timestamp_created": "2020-07-12T08:58:48.340539",
+      "timestamp_updated": "2020-07-12T08:58:48.340539",
+      "types": []
+    }
+  ]
+}

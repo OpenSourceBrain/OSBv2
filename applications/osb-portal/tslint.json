@@ -1,0 +1,19 @@
+{
+    "extends": [
+        "tslint:latest",
+        "tslint-react"
+    ],
+    "rules": {
+        "no-submodule-imports": false,
+        "no-console": false,
+        "no-implicit-dependencies": false,
+        "jsx-no-multiline-js": false,
+        "jsx-no-lambda": false,
+        "indent": [
+            true,
+            "spaces",
+            2
+        ],
+        "jsx-wrap-multiline": false
+    }
+}

@@ -1,0 +1,75 @@
+version: '1.0'
+stages:
+  - prepare
+  - build
+  - deploy
+steps:
+  main_clone:
+    title: Clone main repository
+    type: git-clone
+    stage: prepare
+    repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
+    revision: '${{CF_BRANCH}}'
+    git: github
+  post_main_clone:
+    title: Post main clone
+    type: parallel
+    stage: prepare
+    steps:
+      - title: Cloning cloud-harness repository...
+        type: git-clone
+        stage: prepare
+        repo: 'https://github.com/MetaCell/cloud-harness.git'
+        revision: '${{CLOUDHARNESS_BRANCH}}'
+        working_directory: .
+        git: github
+  build_base_images:
+    title: Build base images
+    type: parallel
+    stage: build
+    steps:
+      REPLACE_ME
+  build_static_images:
+    title: Build static images
+    type: parallel
+    stage: build
+    steps:
+      REPLACE_ME
+  build_application_images:
+    type: parallel
+    stage: build
+    steps:
+      REPLACE_ME
+
+  prepare_deployment:
+    title: "Prepare helm chart"
+    image: python:3.7
+    stage: prepare
+    working_directory: .
+    commands:
+      - pip install cloud-harness/utilities
+      - harness-deployment cloud-harness . -m -t ${{CF_REVISION}} -d ${{DOMAIN}} -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}}
+  prepare_deployment_view:
+    commands:
+      - 'helm template ./deployment/helm --debug -n ${{NAME}}'
+    environment:
+      - ACTION=auth
+      - KUBE_CONTEXT=${{CLUSTER_NAME}}
+    image: codefresh/cfstep-helm:2.16.1
+    stage: prepare
+    title: 'View helm chart'
+
+  deployment:
+    stage: deploy
+    image: codefresh/cfstep-helm:3.0.3
+    title: Installing chart
+    environment:
+      - CHART_REF=./deployment/helm
+      - RELEASE_NAME=${{NAMESPACE}}
+      - KUBE_CONTEXT=${{CLUSTER_NAME}}
+      - NAMESPACE=${{NAMESPACE}}
+      - CHART_VERSION=0.0.1
+      - HELM_REPO_USE_HTTP=false
+      - HELM_REPO_CONTEXT_PATH=
+      - TIMEOUT=600s
+      - VALUESFILE_values=./deployment/helm/values.yaml

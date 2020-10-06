@@ -1,0 +1,36 @@
+{
+  "pagination": {
+    "current_page": 1,
+    "number_of_pages": 1
+  },
+  "models": [
+      {
+          "id": 1,
+          "name": "Private Dura-Bernal et Al., 2019",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img2.png",
+          "type": 2
+      },
+      {
+          "id": 2,
+          "name": "Private Dura-Bernal et Al., 2019",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img2.png",
+          "type": 2
+      },
+      {
+          "id": 3,
+          "name": "Featured Dura-Bernal et Al., 2019",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img2.png",
+          "type": 2
+      },
+      {
+          "id": 4,
+          "name": "Featured Dura-Bernal et Al., 2019",
+          "description": "Electrophysiology Recording V5",
+          "image": "workspace_img2.png",
+          "type": 2
+      }
+    ]
+}

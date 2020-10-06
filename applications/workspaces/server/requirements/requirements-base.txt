@@ -1,0 +1,14 @@
+connexion >= 2.6.0; python_version>="3.6"
+connexion >= 2.3.0; python_version=="3.5"
+connexion >= 2.3.0; python_version=="3.4"
+connexion == 2.4.0; python_version<="2.7"
+cryptography==2.9.2
+Flask==1.1.2
+Flask-Cors==3.0.8
+flask-oidc==1.4.0
+Flask-SQLAlchemy==2.4.1
+OpenAlchemy==1.1.0
+pyjwt>=1.7.1
+swagger-ui-bundle >= 0.0.2
+psycopg2-binary==2.8.5
+kubernetes==11.0.0

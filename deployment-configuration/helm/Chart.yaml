@@ -1,0 +1,13 @@
+apiVersion: v1
+appVersion: 0.0.1
+description: 'Open Source Brain Helm Chart'
+metadata:
+  name: osb2
+  namespace: osb2
+  labels:
+    app.kubernetes.io/managed-by: Helm
+maintainers:
+  - email: filippo@metacell.us
+    name: 'Filippo Ledda'
+name: OSB
+version: 0.0.1

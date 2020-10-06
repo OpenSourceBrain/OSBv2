@@ -1,0 +1,283 @@
+harness:
+  subdomain: jupyter
+  service:
+    auto: false
+    port: 80
+    name: proxy-public
+  deployment:
+    auto: false
+custom: {}
+hub:
+  allowNamedServers: true
+  namedServerLimitPerUser: 10
+  service:
+    type: ClusterIP
+    annotations: {}
+    ports:
+      nodePort:
+    loadBalancerIP:
+  baseUrl: /
+  cookieSecret:
+  publicURL:
+  initContainers: []
+  uid: 1000
+  fsGid: 1000
+  nodeSelector: {}
+  concurrentSpawnLimit: 64
+  consecutiveFailureLimit: 5
+  activeServerLimit:
+  image:
+    pullSecrets: false
+  imagePullSecret:
+    enabled: false
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  deploymentStrategy:
+    type: Recreate
+    rollingUpdate: null
+  db:
+    type: sqlite-pvc
+    upgrade: null
+    pvc:
+      annotations: {}
+      selector: {}
+      accessModes:
+        - ReadWriteOnce
+      storage: 1Gi
+      subPath: null
+      storageClassName: null
+    url: null
+    password: null
+  labels: {}
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: /hub/metrics
+  extraConfig:
+    timing: |
+      c.Spawner.port = 8000
+      c.Spawner.http_timeout = 300
+      c.Spawner.start_timeout = 300
+      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local *.opensourcebrain.org *.v2.opensourcebrain.org"}}
+    spawner: >-
+      c.Spawner.args = ["--port=8000"]
+  extraConfigMap: {}
+  extraEnv: {}
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+  services: {}
+  imagePullPolicy: IfNotPresent
+  pdb:
+    enabled: true
+    minAvailable: 1
+  networkPolicy:
+    enabled: false
+    egress:
+      - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+rbac:
+  enabled: true
+proxy:
+  secretToken: b3fed077c7538cfc5e2a6469ddac7d43a18fc645789407b53e580b7342b968d8
+  service:
+    type: LoadBalancer
+    labels: {}
+    annotations: {}
+    nodePorts:
+      http: null
+      https: null
+    loadBalancerIP: null
+
+  chp:
+    image:
+      name: jupyterhub/configurable-http-proxy
+      tag: 4.0.1
+      pullPolicy: IfNotPresent
+    livenessProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+  nginx:
+    image:
+      name: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
+      tag: 0.15.0
+      pullPolicy: IfNotPresent
+    proxyBodySize: 64m
+    resources: {}
+  lego:
+    image:
+      name: jetstack/kube-lego
+      tag: 0.1.7
+      pullPolicy: IfNotPresent
+    resources: {}
+  labels: {}
+  nodeSelector: {}
+  pdb:
+    enabled: true
+    minAvailable: 1
+  https:
+    enabled: true
+    type: letsencrypt
+    letsencrypt:
+      contactEmail: ''
+    manual:
+      key: null
+      cert: null
+    secret:
+      name: ''
+      key: tls.key
+      crt: tls.crt
+    hosts: []
+  networkPolicy:
+    enabled: false
+    egress:
+      - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+auth:
+  type: ch
+  whitelist:
+    users: null
+  admin:
+    access: true
+    users: null
+  dummy:
+    password: null
+  ldap:
+    dn:
+      search: {}
+      user: {}
+    user: {}
+  state:
+    enabled: false
+    cryptoKey: null
+singleuser:
+  extraTolerations: []
+  nodeSelector: {}
+  extraNodeAffinity:
+    required: []
+    preferred: []
+  extraPodAffinity:
+    required: []
+    preferred: []
+  extraPodAntiAffinity:
+    required: []
+    preferred: []
+  networkTools:
+    image:
+      name: jupyterhub/k8s-network-tools
+      tag: 0.9-b51ffeb
+  cloudMetadata:
+    enabled: false
+    ip: 169.254.169.254
+  networkPolicy:
+    enabled: false
+    egress:
+      - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+              except:
+                - 169.254.169.254/32
+  events: true
+  extraAnnotations: {}
+  extraLabels: {}
+  extraEnv: {}
+  lifecycleHooks: null
+  initContainers: []
+  extraContainers: []
+  uid: 1000
+  fsGid: 100
+  serviceAccountName: null
+  storage:
+    type: dynamic
+    capacity: 2Mi
+    dynamic:
+      pvcNameTemplate: osb-jupyter-{userid}
+      volumeNameTemplate: osb-jupyter-{userid}
+    homeMountPath: /opt/home
+    extraLabels: {}
+  image:
+    name: jupyter/base-notebook
+    tag: hub-1.1.0
+    pullPolicy: IfNotPresent
+  imagePullSecret:
+    enabled: false
+  startTimeout: 300
+  cpu:
+    limit: null
+    guarantee: null
+  memory:
+    limit: null
+    guarantee: 0.5G
+  extraResource:
+    limits: {}
+    guarantees: {}
+  cmd: jupyterhub-singleuser
+  defaultUrl: null
+scheduling:
+  userScheduler:
+    enabled: false
+    replicas: 1
+    logLevel: 4
+    image:
+      name: gcr.io/google_containers/kube-scheduler-amd64
+      tag: v1.11.2
+    nodeSelector: {}
+    pdb:
+      enabled: true
+      minAvailable: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+  podPriority:
+    enabled: false
+  userPlaceholder:
+    enabled: true
+    replicas: 0
+  corePods:
+    nodeAffinity:
+      matchNodePurpose: prefer
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: prefer
+prePuller:
+  hook:
+    enabled: true
+    extraEnv: {}
+    image:
+      name: jupyterhub/k8s-image-awaiter
+      tag: 0.9-b51ffeb
+  continuous:
+    enabled: false
+  extraImages: {}
+  pause:
+    image:
+      name: gcr.io/google_containers/pause
+      tag: '3.0'
+ingress:
+  enabled: false
+  annotations: {}
+  hosts: []
+  pathSuffix: ''
+  tls: null
+cull:
+  enabled: true
+  users: false
+  timeout: 600
+  every: 60
+  concurrency: 10
+  maxAge: 0
+debug:
+  enabled: false
