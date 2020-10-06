@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
   dialogButtons: {
     paddingRight: 0,
   },
-  cardHeading: {
+  toolBoxHeading: {
     textAlign: "center",
-    marginBottom: "20px",
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
-      paddingLeft: "20px",
+      paddingLeft: theme.spacing(2),
       textAlign: "left",
     },
   },
@@ -59,7 +59,7 @@ export const WorkspaceToolBox = (props: any) => {
       <Box mt={3}>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
           <Grid sm={12} md={4} lg={3}>
-            <Typography component="h2" variant="h6" className={classes.cardHeading}>
+            <Typography component="h2" variant="h6" className={classes.toolBoxHeading}>
               <Box component="span" className={classes.cardText}>Create a</Box>
               <Box component="span" className={classes.cardText}>new Workspace</Box>
             </Typography>
