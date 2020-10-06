@@ -32,8 +32,8 @@ export default (props: any) => {
   return <>
     <MainMenu />
     <Box p={1} className="verticalFit">
-      <Grid container>
-        <Grid item xs={12} sm={12} md={6} container className="leftContainer">
+      <Grid container={true}>
+        <Grid item={true} xs={12} sm={12} md={6} container={true} className="leftContainer">
           <Grid item={true} xs={12}>
             <Paper className={classes.paper} elevation={0}>
               <Banner />
@@ -54,7 +54,7 @@ export default (props: any) => {
             </Paper>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} container alignItems="stretch">
+        <Grid item={true} xs={12} sm={12} md={6} container={true} alignItems="stretch">
           <Box pl={2} width={1}>
               <Workspaces />
           </Box>
