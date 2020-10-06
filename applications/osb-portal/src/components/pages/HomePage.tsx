@@ -3,7 +3,7 @@ import * as React from "react";
 import { Grid, Paper } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import MainMenu from "../menu/MainMenu";
-
+import { makeStyles } from "@material-ui/core/styles";
 import { Latest } from "../latest/Latest";
 
 import {
@@ -15,27 +15,40 @@ import {
   ErrorDialog,
 } from "..";
 
-export default (props: any) => (
-  <>
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginBottom: theme.spacing(2),
+    overflow: "hidden",
+  },
+  moreMargin: {
+    marginBottom: theme.spacing(4),
+  },
+}));
+
+
+export default (props: any) => {
+  const classes = useStyles();
+
+  return <>
     <MainMenu />
     <Box p={1} className="verticalFit">
       <Grid container>
         <Grid item xs={12} sm={12} md={6} container className="leftContainer">
           <Grid item={true} xs={12}>
-            <Paper style={{ overflow: "hidden", marginBottom: "12px" }} elevation={0}>
+            <Paper className={classes.paper} elevation={0}>
               <Banner />
             </Paper>
           </Grid>
           <Grid item={true} xs={12}>
-            <Paper style={{ marginBottom: "12px" }} elevation={0}>
-              <Box p={3}>
+            <Paper className={classes.paper} elevation={0}>
+              <Box p={3} >
                 <WorkspaceToolBox />
               </Box>
             </Paper>
           </Grid>
           <Grid item={true} xs={12} className="verticalFit">
-            <Paper style={{ marginBottom: "27px" }} elevation={0}>
-              <Box p={3} height="40vh">
+            <Paper className={classes.moreMargin} elevation={0}>
+              <Box p={3} height="36vh">
                 <Latest />
               </Box>
             </Paper>
@@ -49,4 +62,4 @@ export default (props: any) => (
       </Grid>
     </Box>
   </>
-);
+};
