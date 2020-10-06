@@ -25,25 +25,26 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   icon: {
-    fontSize: "0.9em",
+    fontSize: "1em",
   },
   imageIcon: {
     fontSize: "7em",
   },
   actions: {
-    display: "block",
-    textAlign: "right",
+    lineHeight: "0",
+    justifyContent: "flex-end",
   },
   imageContainer: {
-    display: "flex",
-    justifyContent: "center",
     overflow: "hidden",
-    alignItems: "center",
-    height: '130px',
+    height: "130px",
+    margin: "0 0 auto",
   },
   image: {
+    height: "100%",
     width: "100%",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    objectFit: "cover",
+    minHeight: "130px",
   },
   ellipses: {
     overflow: "hidden",
@@ -51,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     width: "100%",
     display: "block",
+  },
+  link: {
+    lineHeight: "0",
+    display: "inline-block",
+    width: "100%",
+    textAlign: "center",
   },
 }));
 
@@ -64,8 +71,17 @@ export const WorkspaceCard = (props: Props) => {
         <Icons.InfoIcon className={classes.icon} />
       </CardActions>
 
-      <Box className={classes.imageContainer}>
-        <Link href={`/workspace/${workspace.id}`} color="inherit">
+      <Box
+        className={classes.imageContainer}
+        justifyContent="center"
+        alignItems="center"
+        display="flex"
+      >
+        <Link
+          href={`/workspace/${workspace.id}`}
+          color="inherit"
+          className={classes.link}
+        >
           {!workspace.thumbnail ? (
             <FolderIcon className={classes.imageIcon} />
           ) : (
@@ -80,7 +96,11 @@ export const WorkspaceCard = (props: Props) => {
       </Box>
 
       <CardContent>
-        <Link href={`/workspace/${workspace.id}`} color="inherit" title={`${workspace.name}`}>
+        <Link
+          href={`/workspace/${workspace.id}`}
+          color="inherit"
+          title={`${workspace.name}`}
+        >
           <Typography component="h2" variant="h5" className={classes.ellipses}>
             {workspace.name}
           </Typography>
