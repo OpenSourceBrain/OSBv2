@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom";
-import { Workspace, WorkspaceResource, OSBApplications } from '../../types/workspace';
+import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import WorkspaceService from '../../service/WorkspaceService';
@@ -23,28 +23,32 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     }
 
     const id = workspace.id;
-    const onloadIframe = (e: any, fileName: string = null) => {
-        let workspaceResource: WorkspaceResource = workspace.lastOpen;
-        if (fileName == null) {
-            if ((workspaceResource == null) && (workspace.resources != null) && (workspace.resources.length > 0)) {
-                // ToDo: loop workspace resources for given fileName (if not null), when location==fileName use that workspaceresource
-                // for now we just use the first resource
-                workspaceResource = workspace.resources[0];
-            }
-            fileName = ((workspaceResource != null) && (workspaceResource !== undefined) &&
-                (workspaceResource.location !== undefined) && (workspaceResource.location != null))
-                ? workspaceResource.location
-                : "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb"; // TODO workspace has no resources or resource.location is null --> open this resource , temporarily hardcoded
-        } else {
-            // ToDo: loop workspace resources for given fileName (if not null), when location==fileName mark resource as opened
-            // for now we just use the given fileName, do nothing ;-)
-            //
-        }
-        if (workspaceResource != null) {
-            WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(workspaceResource.id); // Mark the workspace resource as "opened"
-        }
+    let timerId: any = null;
 
-        e.target.contentWindow.postMessage(fileName, '*');
+    const openResource = async (e: any, workspaceResource: WorkspaceResource) => {
+        if (timerId !== null) {
+            clearTimeout(timerId);
+        }
+        workspaceResource = await WorkspaceResourceService.getResource(workspaceResource.id); // refresh the workspace resource from the db
+        if (workspaceResource.status === ResourceStatus.available) {
+            const location: string = ((workspaceResource != null) && (workspaceResource !== undefined) &&
+            (workspaceResource.location !== undefined) && (workspaceResource.location != null))
+            ? workspaceResource.location : "";
+            if (location.length > 0) {
+                const fileName: string = location.slice(location.lastIndexOf("/") + 1)
+                WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(workspaceResource.id); // Mark the workspace resource as "opened"
+                e.target.contentWindow.postMessage(fileName, '*');
+            }
+        } else {
+            timerId = setTimeout(openResource, 3000, e, workspaceResource);
+        }
+    }
+
+    const onloadIframe = (e: any) => {
+        if ((workspace.resources != null) && (workspace.resources.length > 0)) {
+            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
+            openResource(e, workspaceResource);
+        }
     }
 
     const domain = window.location.host.includes('.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
