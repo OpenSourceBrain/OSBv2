@@ -25,7 +25,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     const id = workspace.id;
     let timerId: any = null;
 
-    const openResource = async (e: any, workspaceResource: WorkspaceResource) => {
+    const openResource = async (contentWindow: any, workspaceResource: WorkspaceResource) => {
         if (timerId !== null) {
             clearTimeout(timerId);
         }
@@ -37,17 +37,17 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
             if (location.length > 0) {
                 const fileName: string = location.slice(location.lastIndexOf("/") + 1)
                 WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(workspaceResource.id); // Mark the workspace resource as "opened"
-                e.target.contentWindow.postMessage(fileName, '*');
+                contentWindow.postMessage(fileName, '*');
             }
         } else {
-            timerId = setTimeout(openResource, 3000, e, workspaceResource);
+            timerId = setTimeout(openResource, 3000, contentWindow, workspaceResource);
         }
     }
 
     const onloadIframe = (e: any) => {
         if ((workspace.resources != null) && (workspace.resources.length > 0)) {
             const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
-            openResource(e, workspaceResource);
+            openResource(e.target.contentWindow, workspaceResource);
         }
     }
 
