@@ -15,7 +15,7 @@ export const Workspaces = (props: any) => {
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
-          <Grid item={true} key={index} xs={6} sm={4} md={3} lg={2} xl={1}>
+          <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
             <WorkspaceCard workspace={workspace} />
           </Grid>
         );
@@ -33,7 +33,7 @@ export const Workspaces = (props: any) => {
 
   return (
     <React.Fragment>
-      <Box mt={3} mb={2}>
+      <Box mb={2}>
         <Tabs
           value={value}
           textColor="primary"
@@ -48,13 +48,13 @@ export const Workspaces = (props: any) => {
           {workspaceList.length} Workspaces
         </Typography>
       </Box>
-      <div className="verticalFit">
+      <Box className="verticalFit card-container">
         <Box pt={1} pb={1} className="scrollbar">
           <Grid container={true} spacing={1}>
             {workspaceList}
           </Grid>
         </Box>
-      </div>
+      </Box>
     </React.Fragment>
   );
 };
