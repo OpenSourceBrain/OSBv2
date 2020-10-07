@@ -137,6 +137,7 @@ export default (props: WorkspaceProps) => {
             <Divider />
             <WorkspaceResourceBrowser
               workspace={workspace}
+              refreshWorkspace={props.refreshWorkspace}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>

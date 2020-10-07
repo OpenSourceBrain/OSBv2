@@ -14,30 +14,37 @@ import {
   LoadingIcon,
   FolderIcon,
 } from "../../icons";
+import { ActionLineWeight } from "material-ui/svg-icons";
 
-
-const openFileResource = (resource: WorkspaceResource) => (e: any) => {
+const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
   const fileName = resource.location.slice(resource.location.lastIndexOf("/") + 1);
   const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
     const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
     iFrame.contentWindow.postMessage(fileName, '*');
+    refreshWorkspace();
   }).catch(() => {
     alert("Error open resource, ResourceOpen function failed!");
   });
 }
 
-const OSBTreeItem = (props: { resource: WorkspaceResource }) => {
-  const { resource } = props;
+const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: any }) => {
+  const { resource, active, refreshWorkspace } = props;
   const canOpenFile: boolean = resource.status === ResourceStatus.available;
+  const style: any = {
+    fontWeight: active ? "bold" : "normal",
+    opacity: resource.status === ResourceStatus.pending ? 0.3 : 1
+  };
+
   return (
     <Box
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      onClick={canOpenFile ? openFileResource(resource) : undefined}
+      fontWeight={active ? "bold" : "normal"}
+      onClick={canOpenFile ? openFileResource(resource, refreshWorkspace) : undefined}
     >
       {resource.type.application === null ? <FolderIcon /> : ""}
-      <Typography style={{ opacity: resource.status === ResourceStatus.pending ? 0.3 : 1 }}>{resource.name}</Typography>
+      <Typography style={style}>{resource.name}</Typography>
       {resource.status === ResourceStatus.pending ? <LoadingIcon /> : null}
     </Box>
   );
@@ -46,12 +53,14 @@ const OSBTreeItem = (props: { resource: WorkspaceResource }) => {
 
 interface WorkspaceProps {
   workspace: Workspace;
+  refreshWorkspace: any;
 }
 
 export default (props: WorkspaceProps) => {
-  const { workspace } = props;
+  const { workspace, refreshWorkspace } = props;
 
   const resources = workspace.resources;
+  const lastOpenResourceId = workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
 
   if (!resources) {
     return null;
@@ -70,7 +79,7 @@ export default (props: WorkspaceProps) => {
             icon={null}
             key={idx}
             nodeId={idx + ''}
-            label={<OSBTreeItem resource={resource} />}
+            label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace}/>}
           />)
         )
       }
