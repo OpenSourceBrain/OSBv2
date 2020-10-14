@@ -61,6 +61,7 @@ See also https://cert-manager.io/docs/installation/kubernetes/.
 
 1. Create the namespace `kubectl create ns osb2`
 1. Create the namespace `kubectl create ns argo-workflows`
+
 1. Run  `helm install osb2 deployment/helm  --namespace osb2` to install.
 1. Run `kubectl create rolebinding osb-admin-default --clusterrole=admin --serviceaccount=osb2:default -n osb2` to allow workflows to run on namespace osb2
 
@@ -80,8 +81,8 @@ In order to install it in the cluster, run
 ```
 kubectl create ns argo
 kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/v2.4.3/manifests/install.yaml
-kubectl create rolebinding argo-workflows --clusterrole=admin --serviceaccount=argo-workflows:argo-workflows -n argo-workflows
 kubectl create rolebinding argo-workflows-default --clusterrole=admin --serviceaccount=argo-workflows:default -n argo-workflows
+kubectl create rolebinding argo-workflows --clusterrole=admin --serviceaccount=argo-workflows:argo-workflows -n argo-workflows
 ```
 
 
@@ -98,6 +99,12 @@ At least 6GB of ram and 4 processors are needed to run MNP
 To create a new cluster, run
 ```
 minikube start --memory="6000mb" --cpus=4
+```
+
+Enable the ingress addon:
+
+```
+minikube addons enable ingress
 ```
 
 ### Minikube on the host machine
@@ -179,8 +186,6 @@ In the machine running the infrastructure-generate script, run
 ```bash
 kubectl port-forward --namespace kube-system $(kubectl get po -n kube-system --field-selector=status.phase=Running | grep registry | grep -v proxy | \awk '{print $1;}') 5000:5000
 ```
-
-
 
 
 
