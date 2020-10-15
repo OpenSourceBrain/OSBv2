@@ -2,7 +2,6 @@
 
 An updated version of the Open Source Brain platform
 
-
 ## Deploy
 
 ### Prerequisites
@@ -68,7 +67,7 @@ See also https://cert-manager.io/docs/installation/kubernetes/.
 To upgrade an existing deployment, use:
 
 ```
-helm upgrade osb2 deployment/helm --namespace osb2 --install --force --reset-values
+helm upgrade osb2 deployment/helm --namespace osb2 --install --reset-values [--force]
 ```
 
 
