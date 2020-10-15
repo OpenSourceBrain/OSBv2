@@ -124,6 +124,7 @@ harness-deployment cloud-harness . -l -r localhost:5000 -b -d osb.local
 See below to learn how to configure Minikube and forward the registry.
 
 #### Setup kubectl
+
 If Minikube is installed in a different machine, the following procedure will allow to connect kubectl.
 
 1. Install kubectl in the client machine
@@ -131,6 +132,7 @@ If Minikube is installed in a different machine, the following procedure will al
 1. Copy `~/.kube/config` from the Minikube server to the client machine (make a backup of the previous version) and adjust paths to match the home folder on the client machine
 
 ##### Kube configuration copy
+
 If you don't want to replace the whole content of the configuration you can copy only
  the relevant entries in `~/.kube/config` from the server to the client on `clusters`, `context`
 
