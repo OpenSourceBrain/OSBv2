@@ -70,7 +70,6 @@ To upgrade an existing deployment, use:
 helm upgrade osb2 deployment/helm --namespace osb2 --install --reset-values [--force]
 ```
 
-
 ### Install Argo (temporary)
 
 Argo is not yet part of the helm chart (issue https://github.com/MetaCell/mnp/issues/31)
@@ -83,7 +82,6 @@ kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/v2.4.3/
 kubectl create rolebinding argo-workflows-default --clusterrole=admin --serviceaccount=argo-workflows:default -n argo-workflows
 kubectl create rolebinding argo-workflows --clusterrole=admin --serviceaccount=argo-workflows:argo-workflows -n argo-workflows
 ```
-
 
 ## Development setup
 
