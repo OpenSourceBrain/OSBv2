@@ -2,7 +2,9 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Box from "@material-ui/core/Box";
+import Checkbox from '@material-ui/core/Checkbox';
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from '@material-ui/core/Typography';
@@ -29,7 +31,6 @@ const dropAreaStyle = {
   borderStyle: 'dashed',
 };
 
-
 async function readFile(file: Blob) {
   return new Promise((resolve, reject) => {
     const fileReader: FileReader = new FileReader();
@@ -52,8 +53,8 @@ export default (props: WorkspaceEditProps) => {
     Workspace
   >({ ...props.workspace });
 
-  const handleCreateWorkspace = async () => {
-    const workspace : any = await workspaceService.createWorkspace(workspaceForm);
+  const handleCreateWorkspace = async (publicable: boolean = false) => {
+    const workspace : any = await workspaceService.createWorkspace({...workspaceForm, publicable: publicable});
     props.onLoadWorkspace();
     if (thumbnail) {
       const fileThumbnail : any = await readFile(thumbnail);
@@ -94,9 +95,18 @@ export default (props: WorkspaceEditProps) => {
               />
             </Grid>
             <Grid item={true}>
-              <Button variant="contained" onClick={handleCreateWorkspace}>
-                Create
-              </Button>
+              <Grid container={true} spacing={2} justify="space-between">
+                <Grid item={true}>
+                  <Button variant="contained" onClick={e => handleCreateWorkspace(false)}>
+                    Create
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button variant="contained" onClick={e => handleCreateWorkspace(true)}>
+                    Create Public
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
