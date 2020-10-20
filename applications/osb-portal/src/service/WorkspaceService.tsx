@@ -41,7 +41,7 @@ class WorkspaceService {
   }
 
   async createWorkspace(newWorkspace: Workspace): Promise<any> {
-    const wspr: workspaceApi.WorkspacePostRequest = { workspace: { name: newWorkspace.name, description: newWorkspace.description, resources: newWorkspace.resources.map(mapPostResource) } };
+    const wspr: workspaceApi.WorkspacePostRequest = { workspace: { name: newWorkspace.name, description: newWorkspace.description, publicable: newWorkspace.publicable, resources: newWorkspace.resources.map(mapPostResource) } };
     const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
       if (workspace && workspace.id) {
         // TODO: if not workspace or no id raise an error
