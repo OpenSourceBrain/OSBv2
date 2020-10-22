@@ -5,14 +5,18 @@ import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
-import store from '../store/store';
-import { fetchWorkspacesAction } from '../store/actions/workspaces';
+
 import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
   workspacesApi: RestApi = null;
   accessToken: string = null;
+
+  constructor() {
+    this.initApis(null);
+  }
+
   initApis = (token: string) => {
     this.accessToken = token;
     this.workspacesApi = new workspaceApi.RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
@@ -27,9 +31,10 @@ class WorkspaceService {
   }
 
 
-  async fetchWorkspaces(): Promise<Workspace[]> {
+
+  async fetchWorkspaces(featured= false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = {};
+    const wspr: WorkspaceGetRequest = { q: 'publicable=' + JSON.stringify(featured)};
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -43,10 +48,6 @@ class WorkspaceService {
   async createWorkspace(newWorkspace: Workspace): Promise<any> {
     const wspr: workspaceApi.WorkspacePostRequest = { workspace: { name: newWorkspace.name, description: newWorkspace.description, publicable: newWorkspace.publicable, resources: newWorkspace.resources.map(mapPostResource) } };
     const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
-      if (workspace && workspace.id) {
-        // TODO: if not workspace or no id raise an error
-        store.dispatch(fetchWorkspacesAction());
-      }
       return workspace;
     });
 

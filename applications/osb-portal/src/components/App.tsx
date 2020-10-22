@@ -22,10 +22,6 @@ const useStyles = makeStyles(() => ({
 
 export const App = (props: any) => {
   const classes = useStyles();
-  React.useEffect(() => {
-    props.onLoadWorkspaces();
-    props.onLoadModels();
-  }, []);
 
   return (
     <SentryErrorBoundary>
