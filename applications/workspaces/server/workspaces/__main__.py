@@ -20,6 +20,7 @@ logger = logging.getLogger(Config.APP_NAME)
 
 from flask.logging import default_handler
 
+
 def setup_logging():
     logger.setLevel(logging.INFO)
     # app.logger.removeHandler(default_handler)
@@ -33,7 +34,7 @@ def setup_logging():
 
 
 def mkdirs():
-    Path(os.path.join(Config.STATIC_DIR,Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
+    Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
 
 
 def setup_static_router():
@@ -63,9 +64,10 @@ with app.app_context():
     setup_db(app)
     connexion_app.add_api(Config.OPENAPI_FILE,
                           arguments={'title': 'Workspace Manager API'},
-                          resolver=connexion.resolver.MethodViewResolver(__package__+'.views.api'))
+                          resolver=connexion.resolver.MethodViewResolver(__package__ + '.views.api'))
     atexit.register(stop_kafka_consumers)
     start_kafka_consumers()
+
 
 @app.route('/', defaults={'file': 'index.html'})
 def index(file):

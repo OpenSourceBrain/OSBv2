@@ -1,23 +1,22 @@
-import { CallOSBApiAction } from '../../middleware/osbbackend'
 
 import { WorkspaceActions } from '../reducers/workspaces'
 
-export const { loadWorkspaces, loadUserWorkspaces, selectWorkspace, refreshWorkspace } = WorkspaceActions;
+export const { loadPublicWorkspaces: loadPublicWorkspaces, loadUserWorkspaces, selectWorkspace, refreshWorkspace, showPublicWorkspaces, showUserWorkspaces, } = WorkspaceActions;
 
-export const loadWorkspacesActionType = WorkspaceActions.loadWorkspaces.toString();
-export const loadUserWorkspacesActionType = WorkspaceActions.loadUserWorkspaces.toString();
-export const selectWorkspaceActionType = WorkspaceActions.selectWorkspace.toString();
-export const fetchWorkspacesActionType = 'workspaces/fetchWorkspaces';
 export const postWorkspacesActionType = 'workspaces/postWorkspace';
+export const refreshWorkspacesActionType = 'workspaces/refreshWorkspace';
 
-export const fetchWorkspacesAction = (): CallOSBApiAction => {
-  return ({
-    type: fetchWorkspacesActionType,
-    meta: {
-      callOSBApi: true
-    }
-  })
-}
+// public call osb action type
+export type CallOSBApiAction = {
+  type: string;
+  meta: {
+    callOSBApi: true;
+  };
+};
+
+
+export const refreshWorkspaces = () => ({ type: refreshWorkspacesActionType });
+
 
 export const postWorkspacesAction = (): CallOSBApiAction => {
   return ({

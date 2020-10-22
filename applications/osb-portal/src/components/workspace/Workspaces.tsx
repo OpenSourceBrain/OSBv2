@@ -8,9 +8,11 @@ import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
 
+
 // TODO handle user's vs public workspaces
-export const Workspaces = (props: any) => {
-  const workspaces = props.workspaces;
+export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user }: any) => {
+
+  const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
   const workspaceList =
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
@@ -22,10 +24,14 @@ export const Workspaces = (props: any) => {
       })
       : null;
 
-  const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+
+  const handleChange = (event: React.ChangeEvent<{}>, isPublicSelected: boolean) => {
+    if (isPublicSelected) {
+      showPublicWorkspaces()
+    } else {
+      showUserWorkspaces()
+    }
   };
   if (!workspaces) {
     return null;
@@ -33,17 +39,21 @@ export const Workspaces = (props: any) => {
 
   return (
     <React.Fragment>
-      <Box mb={2}>
-        <Tabs
-          value={value}
+      {
+        Boolean(user) && <Tabs
+          value={showPublic}
           textColor="primary"
           indicatorColor="primary"
           onChange={handleChange}
           aria-label="disabled tabs example"
         >
-          <Tab label="Your workspaces" />
-          <Tab label="Featured workspaces" />
+          <Tab value={false} label="Your workspaces" />
+          <Tab value={true} label="Featured workspaces" />
         </Tabs>
+      }
+
+      <Box mb={2}>
+
         <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
           {workspaceList.length} Workspaces
         </Typography>

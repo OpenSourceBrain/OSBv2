@@ -5,14 +5,13 @@ import rootReducer, { RootState } from "./rootReducer";
 import callOSBAPIMiddleware from "../middleware/osbbackend";
 import callAPIMiddleware from "../middleware/backend";
 
-export default function configureStore(preloadedState: RootState) {
+export default function configureStore() {
   const middlewares = [loggerMiddleware, callOSBAPIMiddleware, callAPIMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
   const composedEnhancers = composeWithDevTools(middlewareEnhancer);
 
   const store = createStore<RootState, Action<any>, {}, {}>(
     rootReducer,
-    preloadedState,
     composedEnhancers
   );
 
