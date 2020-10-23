@@ -1,6 +1,6 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-ENV BRANCH_TAG="develop"
+ENV BRANCH_TAG="development"
 ENV FOLDER=nwb-explorer
 
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
