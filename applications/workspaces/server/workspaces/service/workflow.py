@@ -23,11 +23,13 @@ def create_operation(workspace, workspace_resource):
     download_task = tasks.CustomTask(name='osb-download-file',
                                      image_name='workflows-extract-download',
                                      url=workspace_resource.location,
-                                     shared_directory=shared_directory)
+                                     shared_directory=shared_directory,
+                                     folder=workspace_resource.folder)
 
     op = operations.PipelineOperation(basename=f'osb-download-file-job',
                                       tasks=(download_task,),
                                       shared_directory=shared_directory,
+                                      folder=workspace_resource.folder,
                                       shared_volume_size=100,
                                       on_exit_notify={'queue':'osb-download-file-queue','payload':str(workspace_resource.id)}
                                      )

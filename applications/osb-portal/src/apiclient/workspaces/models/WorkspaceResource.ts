@@ -43,11 +43,17 @@ export interface WorkspaceResource {
      */
     name: string;
     /**
-     * WorkspaceResource location where the resource is stored
+     * WorkspaceResource WorkspaceResource location original location of the resource
      * @type {string}
      * @memberof WorkspaceResource
      */
     location: string;
+    /**
+     * WorkspaceResource WorkspaceResource folder where the resource will stored in the pvc
+     * @type {string}
+     * @memberof WorkspaceResource
+     */
+    folder?: string;
     /**
      * 
      * @type {ResourceStatus}
@@ -99,6 +105,7 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
         'location': json['location'],
+        'folder': json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
@@ -120,6 +127,7 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         'id': value.id,
         'name': value.name,
         'location': value.location,
+        'folder': value.folder,
         'status': ResourceStatusToJSON(value.status),
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),

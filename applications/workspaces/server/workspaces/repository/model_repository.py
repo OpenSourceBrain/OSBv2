@@ -107,12 +107,16 @@ class WorkspaceResourceRepository(BaseModelRepository):
         if workspace_resource.location[-3:] == "nwb":
             logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
             workspace_resource.resource_type = "e"
+        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+            workspace_resource.folder = workspace_resource.name
         return workspace_resource
 
     def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
         logger.debug(f'Post Commit for workspace resource id: {workspace_resource.id}')
         workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+            workspace_resource.folder = workspace_resource.name
         if found:
             from ..service.workflow import create_operation
             create_operation(workspace, workspace_resource)
