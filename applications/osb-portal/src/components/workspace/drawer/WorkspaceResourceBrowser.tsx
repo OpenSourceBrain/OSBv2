@@ -17,7 +17,7 @@ import {
 import { ActionLineWeight } from "material-ui/svg-icons";
 
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
-  const fileName = resource.location.slice(resource.location.lastIndexOf("/") + 1);
+  const fileName = resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
   const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
     const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
     iFrame.contentWindow.postMessage(fileName, '*');

@@ -989,9 +989,13 @@ components:
           type: string
           example: Workspace Resource One
         location:
-          description: WorkspaceResource location where the resource is stored
+          description: WorkspaceResource location original location of the resource
           type: string
           example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb  
+        folder:
+          description: WorkspaceResource folder where the resource will stored in the pvc
+          type: string
+          example: Workspace Resource One
         status:
           description: WorkspaceResource status is the resource
           $ref: "#/components/schemas/ResourceStatus"
