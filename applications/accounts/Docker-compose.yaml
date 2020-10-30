@@ -1,0 +1,40 @@
+version: "3.2"
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    volumes:
+      - type: bind
+        source: ./themes/custom
+        target: /opt/jboss/keycloak/themes/custom
+      # disable cache
+      - type: bind
+        source: ./standalone.xml
+        target: /opt/jboss/keycloak/standalone/configuration/standalone.xml
+
+      # - type: bind
+      #   source: ./keycloak
+      #   target: /opt/jboss/keycloak/themes/keycloak
+      # - type: bind
+      #   source: ./base
+      #   target: /opt/jboss/keycloak/themes/base
