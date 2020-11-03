@@ -8,7 +8,7 @@
         <div class="login-pf-logo"></div>
     <#elseif section = "form">
         <form id="kc-reset-password-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
-            <div class="${properties.kcFormGroupClass!}">
+            <div <#if message?has_content && message.type == 'error'>class="${properties.kcFormGroupClass!} ${properties.kcFormGroupErrorClass!}"</#if> class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcInputWrapperClass!}">
                     <#if auth?has_content && auth.showUsername()>
                         <input placeholder="Username or Email" type="text" id="username" name="username" class="${properties.kcInputClass!}" autofocus value="${auth.attemptedUsername}"/>
