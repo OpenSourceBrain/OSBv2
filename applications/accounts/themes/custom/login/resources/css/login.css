@@ -44,9 +44,10 @@ input:-webkit-autofill::first-line {
   font-size: 14px;
 }
 
-.has-error .form-control {
+.login-pf-page .has-error .form-control {
   border: 0;
   border-bottom: #eb5757 1px solid;
+  box-shadow: none;
 }
 
 input:-webkit-autofill,
@@ -77,7 +78,7 @@ input:-webkit-autofill:active {
 }
 
 .form-control::placeholder {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.5);
   font-size: 14px;
   font-weight: 400;
   font-style: normal;
