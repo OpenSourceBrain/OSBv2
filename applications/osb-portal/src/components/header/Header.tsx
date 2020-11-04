@@ -130,7 +130,7 @@ export const Header = (props: any) => {
               title={title}
               height="25"
             />
-            
+
           </a>
           <sup className={classes.logoChip} >beta</sup>
         </Box>

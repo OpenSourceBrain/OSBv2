@@ -30,7 +30,7 @@ export const Latest = () => {
         <br/>
         <Typography>
           For now please use the live <Link href="http://opensourcebrain.org">OSBv1 platform</Link>, <Link href="http://nwbexplorer.opensourcebrain.org">NWB Explorer</Link> or <Link href="http://netpyne.opensourcebrain.org">NetPyNE</Link>.
-        
+
           Please <Link href="http://opensourcebrain.org/docs#How_To_Contact_Us">get in contact</Link> if you would like to help with user testing.
         </Typography>
       </Box>

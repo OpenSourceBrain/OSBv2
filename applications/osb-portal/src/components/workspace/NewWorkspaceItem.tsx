@@ -93,12 +93,12 @@ export default (props: ItemProps) => {
 
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = (refresh=false) => {
+  const closeNewWorkspace = (refresh= false) => {
     setNewWorkspaceOpen(false);
-    if(refresh) {
+    if (refresh) {
       props.refreshWorkspaces();
     }
-    
+
   }
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 

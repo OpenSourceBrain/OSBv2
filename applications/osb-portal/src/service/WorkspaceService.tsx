@@ -10,7 +10,7 @@ import WorkspaceResourceService, { mapResource, mapPostResource } from './Worksp
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
- 
+
   workspacesApi: RestApi = null;
   accessToken: string = null;
 
@@ -47,7 +47,7 @@ class WorkspaceService {
   }
 
   async createWorkspace(newWorkspace: Workspace): Promise<any> {
-    if(!newWorkspace.description) {
+    if (!newWorkspace.description) {
       newWorkspace.description = newWorkspace.name;
     }
     const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(newWorkspace) };

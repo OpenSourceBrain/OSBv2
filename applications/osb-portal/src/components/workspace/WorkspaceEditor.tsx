@@ -64,7 +64,7 @@ export default (props: WorkspaceEditProps) => {
         }
       }
     );
-    
+
   };
 
   const setNameField = (e: any) =>
