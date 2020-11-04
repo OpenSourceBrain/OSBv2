@@ -75,6 +75,7 @@ interface ItemProps {
   title: string,
   template: WorkspaceTemplateType,
   user: UserInfo;
+  refreshWorkspaces: () => null;
 }
 
 export default (props: ItemProps) => {
@@ -92,8 +93,12 @@ export default (props: ItemProps) => {
 
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = () => {
+  const closeNewWorkspace = (refresh=false) => {
     setNewWorkspaceOpen(false);
+    if(refresh) {
+      props.refreshWorkspaces();
+    }
+    
   }
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 

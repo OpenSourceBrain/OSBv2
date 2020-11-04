@@ -10,7 +10,7 @@ import { Workspace } from "../../types/workspace";
 
 
 // TODO handle user's vs public workspaces
-export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user }: any) => {
+export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace }: any) => {
 
   const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
   const workspaceList =
@@ -18,7 +18,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
           <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
-            <WorkspaceCard workspace={workspace} />
+            <WorkspaceCard workspace={workspace} deleteWorkspace={deleteWorkspace} updateWorkspace={updateWorkspace} user={user} />
           </Grid>
         );
       })

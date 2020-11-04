@@ -17,7 +17,7 @@ import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 interface WorkspaceEditProps {
   workspace: Workspace;
-  onLoadWorkspace: () => void;
+  onLoadWorkspace: (refresh?: boolean) => void;
 }
 
 const dropAreaStyle = {
@@ -54,12 +54,17 @@ export default (props: WorkspaceEditProps) => {
   >({ ...props.workspace });
 
   const handleCreateWorkspace = async (publicable: boolean = false) => {
-    const workspace : any = await workspaceService.createWorkspace({...workspaceForm, publicable});
-    props.onLoadWorkspace();
-    if (thumbnail) {
-      const fileThumbnail : any = await readFile(thumbnail);
-      workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail]));
-    }
+    const workspace : any = await workspaceService.createWorkspace({...workspaceForm, publicable}).then(
+      async () => {
+        if (thumbnail) {
+          const fileThumbnail : any = await readFile(thumbnail);
+          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true));
+        } else {
+          props.onLoadWorkspace(true)
+        }
+      }
+    );
+    
   };
 
   const setNameField = (e: any) =>

@@ -71,6 +71,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Single Cell"
                 template={WorkspaceTemplateType.singleCell}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
             <Grid xs={12} justify="center" item={true}>
@@ -79,6 +80,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Network"
                 template={WorkspaceTemplateType.network}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
             <Grid xs={12} justify="center" item={true}>
@@ -87,6 +89,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Data Analysis"
                 template={WorkspaceTemplateType.explorer}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
             <Grid xs={12} justify="center" item={true}>
@@ -95,6 +98,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Playground"
                 template={WorkspaceTemplateType.playground}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
           </Grid>
