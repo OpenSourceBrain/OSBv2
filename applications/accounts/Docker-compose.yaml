@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    image: quay.io/keycloak/keycloak
+    image: quay.io/keycloak/keycloak:11.0.2
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
