@@ -109,7 +109,7 @@ export const WorkspaceCard = (props: Props) => {
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
-          keepMounted
+          keepMounted={true}
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
