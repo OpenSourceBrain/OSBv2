@@ -1,6 +1,6 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
-ENV BRANCH_TAG=development
+ENV BRANCH_TAG=feature/180
 ENV FOLDER=netpyne
 
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
