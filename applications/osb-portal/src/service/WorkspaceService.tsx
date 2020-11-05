@@ -33,9 +33,9 @@ class WorkspaceService {
 
 
 
-  async fetchWorkspaces(featured= false): Promise<Workspace[]> {
+  async fetchWorkspaces(featured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = { q: 'publicable=' + JSON.stringify(featured)};
+    const wspr: WorkspaceGetRequest = { q: 'publicable=' + (featured ? 'True' : 'False') };
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -63,11 +63,11 @@ class WorkspaceService {
   }
 
   async deleteWorkspace(workspaceId: number) {
-    this.workspacesApi.workspaceresourceIdDelete({id: workspaceId});
+    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
   }
 
   async updateWorkspace(workspace: Workspace) {
-    this.workspacesApi.workspaceIdPut({id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined })});
+    this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
   }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {

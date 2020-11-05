@@ -13,8 +13,8 @@ from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepos
     WorkspaceImage, WorkspaceResource
 from ..service.kubernetes import create_persistent_volume_claim
 
-
 logger = logging.getLogger(Config.APP_NAME)
+
 
 class WorkspaceRepository(BaseModelRepository):
     model = Workspace
@@ -28,7 +28,7 @@ class WorkspaceRepository(BaseModelRepository):
         q_base = self.model.query
         if filter is not None:
             q_base = q_base.filter(*filter)
-        logger.info(f"keycloak_id: {self.keycloak_id}")
+        logger.info(f"searching workspaces on keycloak_id: {self.keycloak_id}")
         if self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
             if owner:
@@ -42,6 +42,16 @@ class WorkspaceRepository(BaseModelRepository):
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
+
+    def delete(self, id):
+        resource_repository = WorkspaceResourceRepository()
+        workspace = self.model.query.filter_by(id=id).first()
+
+        for resource in workspace.resources:
+            logger.info("deleting resource %s", resource.id)
+            resource_repository.delete(resource.id)
+        logger.info("deleting workspace %s", id)
+        super().delete(id)
 
     def __getattribute__(self, name):
         if name == "keycloak_id":

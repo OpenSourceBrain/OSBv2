@@ -99,6 +99,8 @@ export const WorkspaceCard = (props: Props) => {
     window.location.href = `/workspace/${workspace.id}`;
   }
 
+  const defaultResource = workspace.lastOpen || workspace.resources[0];
+
 
   return (
     <Card className={classes.card} elevation={0}>
@@ -155,7 +157,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption" className={classes.ellipses}>
-          {workspace.lastOpen.type.application.name},{" "}
+          {defaultResource && defaultResource.type.application.name},{" "}
           {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>
