@@ -29,7 +29,9 @@ class WorkspaceRepository(BaseModelRepository):
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
         logger.info(f"searching workspaces on keycloak_id: {self.keycloak_id}")
-        if self.keycloak_id != -1:
+        if filter and any(field for field, condition, value  in filter if field.key == 'publicable' and value):
+            q1 = q_base
+        elif self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
             if owner:
                 owner_id = owner.id
