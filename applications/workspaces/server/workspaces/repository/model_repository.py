@@ -24,10 +24,10 @@ class WorkspaceRepository(BaseModelRepository):
         return f'workspace-{workspace.id}'
 
     def search_qs(self, filter=None):
-        logger.debug(f'Search for workspace filter: {filter}')
+
         q_base = self.model.query
         if filter is not None:
-            q_base = q_base.filter(*filter)
+            q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
         logger.info(f"searching workspaces on keycloak_id: {self.keycloak_id}")
         if self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
@@ -38,7 +38,6 @@ class WorkspaceRepository(BaseModelRepository):
                 owner_id = 0
             q1 = q_base.filter_by(keycloakuser_id=owner_id)
             q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
-            q1 = q1.union(q_base.filter_by(publicable=True))
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
