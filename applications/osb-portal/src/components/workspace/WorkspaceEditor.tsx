@@ -54,8 +54,8 @@ export default (props: WorkspaceEditProps) => {
   >({ ...props.workspace });
 
   const handleCreateWorkspace = async (publicable: boolean = false) => {
-    const workspace : any = await workspaceService.createWorkspace({...workspaceForm, publicable}).then(
-      async () => {
+    workspaceService.createWorkspace({...workspaceForm, publicable}).then(
+      async (workspace) => {
         if (thumbnail) {
           const fileThumbnail : any = await readFile(thumbnail);
           workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true));
@@ -64,6 +64,7 @@ export default (props: WorkspaceEditProps) => {
         }
       }
     );
+    props.onLoadWorkspace(false)
 
   };
 

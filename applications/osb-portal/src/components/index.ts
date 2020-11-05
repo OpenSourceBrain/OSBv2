@@ -74,7 +74,7 @@ export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspacePr
 export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
-export const WorkspaceInteractions = connect(null, { refreshWorkspace: WorkspacesActions.refreshWorkspace })(workspaceInteractions) as any
+export const WorkspaceInteractions = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspaceInteractions) as any
 
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)

@@ -13,7 +13,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem'
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 import VolumePathBrowser from "./VolumePathBrowser";
 import { ShareIcon } from "../../icons";
@@ -66,24 +67,16 @@ interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
   refreshWorkspace?: () => any;
+  updateWorkspace: (ws: Workspace) => null,
+  deleteWorkspace: (wsId: number) => null,
+  user: any,
+  [propName: string]: any;
 }
 
-const TitleWithShareIcon = (props: any) => {
-  const classes = useStyles();
-  return (
-    <>
-
-      <Typography variant="h5" className={classes.flexCenter}>{props.name}</Typography>
-      <IconButton>
-        <ShareIcon />
-      </IconButton>
-    </>
-  );
-};
 
 
 
-export default (props: WorkspaceProps) => {
+export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
@@ -97,7 +90,7 @@ export default (props: WorkspaceProps) => {
     props.refreshWorkspace();
   }
 
-  if (workspace.resources.find(resource => resource.status === ResourceStatus.pending)) {
+  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
     setTimeout(props.refreshWorkspace, 10000);
   }
 
@@ -105,8 +98,32 @@ export default (props: WorkspaceProps) => {
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
 
   const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : false);
+    if (!anchorEl) {
+      setExpanded(newExpanded ? panel : false);
+    }
   };
+
+
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleShareClose = () => {
+    setAnchorEl(null);
+  };
+  const handlePublicWorkspace = () => {
+    props.updateWorkspace({ ...workspace, publicable: true });
+    handleShareClose();
+  }
+
+  const handlePrivateWorkspace = () => {
+    props.updateWorkspace({ ...workspace, publicable: false });
+    handleShareClose();
+  }
+
 
 
   return (<>
@@ -123,7 +140,21 @@ export default (props: WorkspaceProps) => {
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <TitleWithShareIcon name={workspace.name} />
+            <Typography variant="h5" className={classes.flexCenter}>{workspace.name}</Typography>
+            <IconButton onMouseDown={handleShareClick}>
+              <ShareIcon />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted={true}
+              open={Boolean(anchorEl)}
+              onClose={handleShareClose}
+            >
+              {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
+              {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
+            </Menu>
+
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
@@ -145,7 +176,7 @@ export default (props: WorkspaceProps) => {
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon />}
           >
-            <TitleWithShareIcon name="User shared space" />
+            <Typography variant="h5" className={classes.flexCenter}>User shared space</Typography>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
