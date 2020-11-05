@@ -41,7 +41,9 @@ export function urlToName(url: string): string {
 }
 
 export function mapResource(resource: ApiWorkspaceResource): WorkspaceResource {
-  console.log(SampleResourceTypes)
+  if (!resource) {
+    return null;
+  }
   return {
     ...resource,
     type: SampleResourceTypes[resource.resourceType.toLowerCase()],
