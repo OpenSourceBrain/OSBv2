@@ -10,6 +10,7 @@ import WorkspaceResourceService, { mapResource, mapPostResource } from './Worksp
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
+
   workspacesApi: RestApi = null;
   accessToken: string = null;
 
@@ -32,9 +33,9 @@ class WorkspaceService {
 
 
 
-  async fetchWorkspaces(featured= false): Promise<Workspace[]> {
+  async fetchWorkspaces(featured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = { q: 'publicable=' + JSON.stringify(featured)};
+    const wspr: WorkspaceGetRequest = featured ? { q:  'publicable=true' } : {};
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -46,13 +47,28 @@ class WorkspaceService {
   }
 
   async createWorkspace(newWorkspace: Workspace): Promise<any> {
-    const wspr: workspaceApi.WorkspacePostRequest = { workspace: { name: newWorkspace.name, description: newWorkspace.description, publicable: newWorkspace.publicable, resources: newWorkspace.resources.map(mapPostResource) } };
+    if (!newWorkspace.description) {
+      newWorkspace.description = newWorkspace.name;
+    }
+    const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(newWorkspace) };
     const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
       return workspace;
     });
 
     return newCreatedWorkspace;
-  };
+  }
+
+  private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
+    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostResource) };
+  }
+
+  async deleteWorkspace(workspaceId: number) {
+    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
+  }
+
+  async updateWorkspace(workspace: Workspace) {
+    this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
+  }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
     const wspr: workspaceApi.WorkspacesControllerWorkspaceSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };

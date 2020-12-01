@@ -4,11 +4,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from '@material-ui/core/Typography';
 
-import { radius, gutter } from '../../theme';
-import workspaceResourceService from '../../service/WorkspaceResourceService'
+import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService'
 import { Workspace } from '../../types/workspace';
 
 interface WorkspaceEditProps {
@@ -22,18 +19,17 @@ export default (props: WorkspaceEditProps) => {
 
   const { workspace, onResourceAdded } = props;
 
-  const [url, setUrl] = React.useState<
-    string
-  >(null);
+  const [url, setUrl] = React.useState<string>(null);
 
-  const [name, setName] = React.useState<
-    string
-  >(null);
+  const [name, setName] = React.useState<string>(null);
 
-  const handleSetUrl = (e: any) =>
+  const handleSetUrl = (e: any) => {
     setUrl(e.target.value);
-  const handleSetName = (e: any) =>
-    setName(e.target.value);
+    setName(urlToName(e.target.value));
+  }
+
+  const handleSetName = (e: any) => setName(e.target.value);
+
   const handleAddResource = () => {
     workspaceResourceService.addResource(workspace, url, name).then(onResourceAdded, () => alert('An error occurred while adding the resource'));
   }
@@ -52,9 +48,11 @@ export default (props: WorkspaceEditProps) => {
         </Grid>
         <Grid item={true} style={{ flex: 1 }}>
           <TextField
+            key={name}
             id="workspaceName"
             label="Resource name"
             fullWidth={true}
+            defaultValue={name}
             onChange={handleSetName}
             variant="standard"
           />

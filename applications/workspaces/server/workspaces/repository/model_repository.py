@@ -13,8 +13,8 @@ from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepos
     WorkspaceImage, WorkspaceResource
 from ..service.kubernetes import create_persistent_volume_claim
 
-
 logger = logging.getLogger(Config.APP_NAME)
+
 
 class WorkspaceRepository(BaseModelRepository):
     model = Workspace
@@ -24,12 +24,14 @@ class WorkspaceRepository(BaseModelRepository):
         return f'workspace-{workspace.id}'
 
     def search_qs(self, filter=None):
-        logger.debug(f'Search for workspace filter: {filter}')
+
         q_base = self.model.query
         if filter is not None:
-            q_base = q_base.filter(*filter)
-        logger.info(f"keycloak_id: {self.keycloak_id}")
-        if self.keycloak_id != -1:
+            q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
+        logger.info(f"searching workspaces on keycloak_id: {self.keycloak_id}")
+        if filter and any(field for field, condition, value  in filter if field.key == 'publicable' and value):
+            q1 = q_base
+        elif self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
             if owner:
                 owner_id = owner.id
@@ -38,10 +40,19 @@ class WorkspaceRepository(BaseModelRepository):
                 owner_id = 0
             q1 = q_base.filter_by(keycloakuser_id=owner_id)
             q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
-            q1 = q1.union(q_base.filter_by(publicable=True))
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
+
+    def delete(self, id):
+        resource_repository = WorkspaceResourceRepository()
+        workspace = self.model.query.filter_by(id=id).first()
+
+        for resource in workspace.resources:
+            logger.info("deleting resource %s", resource.id)
+            resource_repository.delete(resource.id)
+        logger.info("deleting workspace %s", id)
+        super().delete(id)
 
     def __getattribute__(self, name):
         if name == "keycloak_id":

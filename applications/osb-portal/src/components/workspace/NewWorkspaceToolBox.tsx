@@ -28,9 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolBoxHeading: {
     textAlign: "center",
-    marginBottom: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
-      paddingLeft: theme.spacing(2),
       textAlign: "left",
     },
   },
@@ -56,21 +54,22 @@ export const WorkspaceToolBox = (props: any) => {
   return (
     <>
 
-      <Box mt={3}>
+      <Box>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
-          <Grid sm={12} md={4} lg={3}>
+          <Grid item={true} sm={12} md={4} lg={3}>
             <Typography component="h2" variant="h6" className={classes.toolBoxHeading}>
               <Box component="span" className={classes.cardText}>Create a</Box>
               <Box component="span" className={classes.cardText}>new Workspace</Box>
             </Typography>
           </Grid>
-          <Grid xs={12} sm={12} md={8} lg={9}>
+          <Grid item={true} xs={12} sm={12} md={8} lg={9}>
             <Grid xs={12} justify="center" item={true}>
               <WorkspaceItem
                 icon={Icons.CircleIcon}
                 title="Single Cell"
                 template={WorkspaceTemplateType.singleCell}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
             <Grid xs={12} justify="center" item={true}>
@@ -79,6 +78,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Network"
                 template={WorkspaceTemplateType.network}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
             <Grid xs={12} justify="center" item={true}>
@@ -87,6 +87,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Data Analysis"
                 template={WorkspaceTemplateType.explorer}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
             <Grid xs={12} justify="center" item={true}>
@@ -95,6 +96,7 @@ export const WorkspaceToolBox = (props: any) => {
                 title="Playground"
                 template={WorkspaceTemplateType.playground}
                 user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
           </Grid>

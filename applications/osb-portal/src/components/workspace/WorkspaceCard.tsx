@@ -7,13 +7,19 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import FolderIcon from "@material-ui/icons/Folder";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem'
 
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import * as Icons from "../icons";
+import { IconButton } from "@material-ui/core";
 
 interface Props {
   workspace: Workspace;
+  updateWorkspace: (ws: Workspace) => null,
+  deleteWorkspace: (wsId: number) => null,
+  user: any
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -65,10 +71,55 @@ export const WorkspaceCard = (props: Props) => {
   const workspace: Workspace = props.workspace;
   const classes = useStyles();
   const openTitle = "Open workspace";
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteWorkspace = () => {
+    props.deleteWorkspace(workspace.id);
+    handleClose();
+  }
+
+  const handlePublicWorkspace = () => {
+    props.updateWorkspace({ ...workspace, publicable: true });
+    handleClose();
+  }
+
+  const handlePrivateWorkspace = () => {
+    props.updateWorkspace({ ...workspace, publicable: false });
+    handleClose();
+  }
+
+  const handleOpenWorkspace = () => {
+    window.location.href = `/workspace/${workspace.id}`;
+  }
+
+  const defaultResource = workspace.lastOpen || workspace.resources[0];
+
+
   return (
     <Card className={classes.card} elevation={0}>
       <CardActions className={classes.actions}>
-        <Icons.InfoIcon className={classes.icon} />
+        <IconButton size="small" onClick={handleClick}>
+          <Icons.Dots className={classes.icon} />
+        </IconButton>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted={true}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          {props.user && !workspace.publicable && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
+          {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
+          {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
+          <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+        </Menu>
       </CardActions>
 
       <Box
@@ -85,13 +136,13 @@ export const WorkspaceCard = (props: Props) => {
           {!workspace.thumbnail ? (
             <FolderIcon className={classes.imageIcon} />
           ) : (
-            <img
-              src={workspace.thumbnail}
-              className={classes.image}
-              title={openTitle}
-              alt={openTitle}
-            />
-          )}
+              <img
+                src={workspace.thumbnail}
+                className={classes.image}
+                title={openTitle}
+                alt={openTitle}
+              />
+            )}
         </Link>
       </Box>
 
@@ -106,7 +157,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption" className={classes.ellipses}>
-          {workspace.lastOpen.type.application.name},{" "}
+          {defaultResource && defaultResource.type.application.name},{" "}
           {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>

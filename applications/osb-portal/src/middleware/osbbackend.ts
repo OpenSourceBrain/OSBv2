@@ -29,6 +29,15 @@ const fetchModelsAction = (): CallApiAction => {
  */
 const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyAction | CallApiAction) => {
 
+  function refreshWorkspaces() {
+    workspaceService.fetchWorkspaces(true).then((workspaces) => {
+      next(Workspaces.loadPublicWorkspaces(workspaces));
+    });
+    workspaceService.fetchWorkspaces().then((workspaces) => {
+      next(Workspaces.loadUserWorkspaces(workspaces));
+    });
+  }
+
   switch (action.type) {
     case Workspaces.showPublicWorkspaces.toString():
       if (!store.getState().workspaces.publicWorkspaces) {
@@ -47,12 +56,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
         next(action);
         break;
     case Workspaces.refreshWorkspacesActionType: {
-      workspaceService.fetchWorkspaces(true).then((workspaces) => {
-        next(Workspaces.loadPublicWorkspaces(workspaces));
-      });
-      workspaceService.fetchWorkspaces().then((workspaces) => {
-        next(Workspaces.loadUserWorkspaces(workspaces));
-      });
+      refreshWorkspaces();
     }
     case fetchModelsActionType:
       next(fetchModelsAction());
@@ -78,6 +82,12 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
     case Workspaces.refreshWorkspace.toString():
       workspaceService.getWorkspace(store.getState().workspaces.selectedWorkspace.id).then((workspace: Workspace) => next({ ...action, payload: workspace }));
       break;
+      case Workspaces.updateWorkspace.toString():
+        workspaceService.updateWorkspace(action.payload).then(() => { next(action); refreshWorkspaces()});
+        break;
+      case Workspaces.deleteWorkspace.toString():
+        workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces()});
+        break;
     default:
       return next(action);
     //
@@ -86,3 +96,5 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
 
 
 export default callAPIMiddlewareFn;
+
+

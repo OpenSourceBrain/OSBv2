@@ -12,6 +12,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
+import { radius } from '../../theme';
 
 const title = "Open Source Brain";
 
@@ -40,6 +41,20 @@ const useStyles = makeStyles((theme) => ({
   button: {
     textTransform: "none",
   },
+  logoChip: {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: 2,
+    textTransform: 'uppercase',
+    fontSize: 9,
+    padding: 3,
+    lineHeight: '1em',
+    marginTop: 3,
+    fontWeight: 700,
+    marginLeft: '1em',
+    alignSelf: 'flex-start'
+
+
+  }
 }));
 
 export const Header = (props: any) => {
@@ -107,7 +122,7 @@ export const Header = (props: any) => {
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Box>
+        <Box display="flex">
           <a href="/" onClick={handleToggleDrawer}>
             <img
               src="/images/osb-logo-full.png"
@@ -115,7 +130,9 @@ export const Header = (props: any) => {
               title={title}
               height="25"
             />
+
           </a>
+          <sup className={classes.logoChip} >beta</sup>
         </Box>
         <Box>
           {/* <IconButton>

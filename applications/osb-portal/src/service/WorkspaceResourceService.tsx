@@ -36,12 +36,14 @@ class WorkspaceResourceService {
     });
   }
 }
-function urlToName(url: string): string {
+export function urlToName(url: string): string {
   return url.split('/').slice(-1).pop();
 }
 
 export function mapResource(resource: ApiWorkspaceResource): WorkspaceResource {
-  console.log(SampleResourceTypes)
+  if (!resource) {
+    return null;
+  }
   return {
     ...resource,
     type: SampleResourceTypes[resource.resourceType.toLowerCase()],

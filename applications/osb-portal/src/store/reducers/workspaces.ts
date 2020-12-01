@@ -38,6 +38,12 @@ const workspaceSlice = createSlice({
     },
     loadUserWorkspaces(state, action: PayloadAction<Workspace[]>) {
       return { ...state, userWorkspaces: action.payload }
+    },
+    deleteWorkspace(state, action: PayloadAction<number>) {
+      return state; // everything goes in the middleware
+    },
+    updateWorkspace(state, action: PayloadAction<Workspace>) {
+      return state; // everything goes in the middleware
     }
   }
 });
