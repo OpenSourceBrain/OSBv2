@@ -1,3 +1,5 @@
 registry: ${{CODEFRESH_REGISTRY}}
 no_cf_cache: false
 tag: '${{CF_BUILD_ID}}'
+build_arguments:
+  - TAG='${{CF_BUILD_ID}}'
