@@ -52,7 +52,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: cloudharness-base
@@ -64,7 +67,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: infrastructure/base-images/cloudharness-base-debian/Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: cloudharness-base-debian
@@ -80,7 +86,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: sentry
@@ -92,7 +101,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: common
@@ -104,7 +116,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: jupyterhub
@@ -116,7 +131,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: osb-portal
@@ -128,7 +146,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workspaces
@@ -140,7 +161,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: nwb-explorer
@@ -152,7 +176,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: volumemanager
@@ -164,7 +191,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: samples
@@ -176,7 +206,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: samples-sum
@@ -188,7 +221,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: netpyne
@@ -200,7 +236,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: accounts
@@ -212,7 +251,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows
@@ -224,7 +266,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-extract-s3
@@ -236,7 +281,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-send-result-event
@@ -248,7 +296,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-notify-queue
@@ -260,7 +311,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-print-file
@@ -272,7 +326,10 @@ steps:
         tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
-        - TAG='${{CF_BUILD_ID}}'
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
         registry: ${{CODEFRESH_REGISTRY}}
         no_cf_cache: false
         image_name: workflows-extract-download
