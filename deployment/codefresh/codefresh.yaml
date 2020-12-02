@@ -30,7 +30,8 @@ steps:
     working_directory: .
     commands:
     - pip install cloud-harness/utilities
-    - harness-deployment cloud-harness . -m build -t ${{CF_REVISION}} -d ${{DOMAIN}} -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}}
+    - harness-deployment cloud-harness . -m build -t ${{CF_BUILD_ID}} -d ${{DOMAIN}}
+      -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}}
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAME}}
@@ -45,25 +46,10 @@ steps:
     type: parallel
     stage: build
     steps:
-      cloudharness-base-debian:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: infrastructure/base-images/cloudharness-base-debian/Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: cloudharness-base-debian
-        title: Cloudharness base debian
-        working_directory: ./cloud-harness
       cloudharness-base:
         type: build
         stage: build
-        tag: ${{CF_REVISION}}
+        tag: ${{CF_BUILD_ID}}
         dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
         build_arguments:
         - REGISTRY=${{REGISTRY}}
@@ -74,240 +60,30 @@ steps:
         no_cf_cache: false
         image_name: cloudharness-base
         title: Cloudharness base
-        working_directory: ./cloud-harness
+        working_directory: ./build
+      cloudharness-base-debian:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: infrastructure/base-images/cloudharness-base-debian/Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: cloudharness-base-debian
+        title: Cloudharness base debian
+        working_directory: ./build
   build_application_images:
     type: parallel
     stage: build
     steps:
-      netpyne:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: netpyne
-        title: Netpyne
-        working_directory: ./applications/netpyne
-      workspaces:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workspaces
-        title: Workspaces
-        working_directory: ./applications/workspaces/server
-      osb-portal:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: osb-portal
-        title: Osb portal
-        working_directory: ./applications/osb-portal
-      nwb-explorer:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: nwb-explorer
-        title: Nwb explorer
-        working_directory: ./applications/nwb-explorer
-      jupyterhub:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: jupyterhub
-        title: Jupyterhub
-        working_directory: ./cloud-harness/applications/jupyterhub
-      workflows:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows
-        title: Workflows
-        working_directory: ./cloud-harness/applications/workflows/server
-      workflows-extract-s3:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows-extract-s3
-        title: Workflows extract s3
-        working_directory: ./cloud-harness/applications/workflows/tasks/extract-s3
-      workflows-print-file:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows-print-file
-        title: Workflows print file
-        working_directory: ./cloud-harness/applications/workflows/tasks/print-file
-      workflows-extract-download:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows-extract-download
-        title: Workflows extract download
-        working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
-      workflows-notify-queue:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows-notify-queue
-        title: Workflows notify queue
-        working_directory: ./cloud-harness/applications/workflows/tasks/notify-queue
-      workflows-send-result-event:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: workflows-send-result-event
-        title: Workflows send result event
-        working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
-      common:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: common
-        title: Common
-        working_directory: ./cloud-harness/applications/common/server
-      samples:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: samples
-        title: Samples
-        working_directory: ./cloud-harness/applications/samples/server
-      samples-sum:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: samples-sum
-        title: Samples sum
-        working_directory: ./cloud-harness/applications/samples/tasks/sum
-      sentry:
-        type: build
-        stage: build
-        tag: ${{CF_REVISION}}
-        dockerfile: Dockerfile
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}
-        - TAG=${{CF_REVISION}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        registry: ${{CODEFRESH_REGISTRY}}
-        no_cf_cache: false
-        image_name: sentry
-        title: Sentry
-        working_directory: ./cloud-harness/applications/sentry
       volumemanager:
         type: build
         stage: build
-        tag: ${{CF_REVISION}}
+        tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
         - REGISTRY=${{REGISTRY}}
@@ -318,11 +94,11 @@ steps:
         no_cf_cache: false
         image_name: volumemanager
         title: Volumemanager
-        working_directory: ./cloud-harness/applications/volumemanager/server
+        working_directory: ./build/applications/volumemanager/server
       accounts:
         type: build
         stage: build
-        tag: ${{CF_REVISION}}
+        tag: ${{CF_BUILD_ID}}
         dockerfile: Dockerfile
         build_arguments:
         - REGISTRY=${{REGISTRY}}
@@ -333,7 +109,232 @@ steps:
         no_cf_cache: false
         image_name: accounts
         title: Accounts
-        working_directory: ./cloud-harness/applications/accounts
+        working_directory: ./build/applications/accounts
+      samples-sum:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: samples-sum
+        title: Samples sum
+        working_directory: ./build/applications/samples/tasks/sum
+      samples:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: samples
+        title: Samples
+        working_directory: ./build/applications/samples/server
+      osb-portal:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: osb-portal
+        title: Osb portal
+        working_directory: ./build/applications/osb-portal
+      common:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: common
+        title: Common
+        working_directory: ./build/applications/common/server
+      netpyne:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: netpyne
+        title: Netpyne
+        working_directory: ./build/applications/netpyne
+      nwb-explorer:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: nwb-explorer
+        title: Nwb explorer
+        working_directory: ./build/applications/nwb-explorer
+      jupyterhub:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: jupyterhub
+        title: Jupyterhub
+        working_directory: ./build/applications/jupyterhub
+      workspaces:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workspaces
+        title: Workspaces
+        working_directory: ./build/applications/workspaces/server
+      workflows-print-file:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows-print-file
+        title: Workflows print file
+        working_directory: ./build/applications/workflows/tasks/print-file
+      workflows-extract-download:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows-extract-download
+        title: Workflows extract download
+        working_directory: ./build/applications/workflows/tasks/extract-download
+      workflows-send-result-event:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows-send-result-event
+        title: Workflows send result event
+        working_directory: ./build/applications/workflows/tasks/send-result-event
+      workflows-notify-queue:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows-notify-queue
+        title: Workflows notify queue
+        working_directory: ./build/applications/workflows/tasks/notify-queue
+      workflows-extract-s3:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows-extract-s3
+        title: Workflows extract s3
+        working_directory: ./build/applications/workflows/tasks/extract-s3
+      workflows:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: workflows
+        title: Workflows
+        working_directory: ./build/applications/workflows/server
+      sentry:
+        type: build
+        stage: build
+        tag: ${{CF_BUILD_ID}}
+        dockerfile: Dockerfile
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}
+        - TAG=${{CF_REVISION}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        registry: ${{CODEFRESH_REGISTRY}}
+        no_cf_cache: false
+        image_name: sentry
+        title: Sentry
+        working_directory: ./build/applications/sentry
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.0.3
