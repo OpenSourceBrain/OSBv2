@@ -29,16 +29,15 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
         if (timerId !== null) {
             clearTimeout(timerId);
         }
-        workspaceResource = await WorkspaceResourceService.getResource(workspaceResource.id); // refresh the workspace resource from the db
-        if (workspaceResource.status === ResourceStatus.available) {
-            const location: string = ((workspaceResource != null) && (workspaceResource !== undefined) &&
-            (workspaceResource.location !== undefined) && (workspaceResource.location != null))
-            ? workspaceResource.location : "";
-            if (location.length > 0) {
-                const fileName: string = location.slice(location.lastIndexOf("/") + 1)
-                WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(workspaceResource.id); // Mark the workspace resource as "opened"
-                contentWindow.postMessage(fileName, '*');
-            }
+        const resource = await WorkspaceResourceService.getResource(workspaceResource.id); // refresh the workspace resource from the db
+        if (resource.status === ResourceStatus.available) {
+            const fileName: string = resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+            const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
+                const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
+                iFrame.contentWindow.postMessage(fileName, '*');
+            }).catch(() => {
+                alert("Error open resource, ResourceOpen function failed!");
+            });
         } else {
             timerId = setTimeout(openResource, 3000, contentWindow, workspaceResource);
         }
