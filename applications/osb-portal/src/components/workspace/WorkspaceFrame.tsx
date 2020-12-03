@@ -31,7 +31,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
         }
         const resource = await WorkspaceResourceService.getResource(workspaceResource.id); // refresh the workspace resource from the db
         if (resource.status === ResourceStatus.available) {
-            const fileName: string = resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+            const fileName: string = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
             const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
                 const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
                 iFrame.contentWindow.postMessage(fileName, '*');
