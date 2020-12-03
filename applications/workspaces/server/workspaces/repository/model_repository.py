@@ -86,7 +86,9 @@ class WorkspaceRepository(BaseModelRepository):
         create_persistent_volume_claim(name=self.get_pvc_name(workspace), size='2Gi', logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
-            wsrr.post_commit(workspace_resource)
+            wsr = wsrr.post_commit(workspace_resource)
+            db.session.add(wsr)
+            db.session.commit()
         return workspace
 
 
