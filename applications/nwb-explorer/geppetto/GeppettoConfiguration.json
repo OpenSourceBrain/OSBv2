@@ -3,7 +3,7 @@
     "contextPath": "org.geppetto.frontend",
     "useSsl": true,
     "embedded": true,
-    "embedderURL": ["/"],
+    "embedderURL": ["*"],
     "rootRedirect":"",
     "noTest": false,
     "themes": "styles/colors",
