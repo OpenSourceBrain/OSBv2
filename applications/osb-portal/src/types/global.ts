@@ -1,3 +1,5 @@
+
+
 export enum FeaturedType {
   Private = 0,
   Public = 1,
@@ -10,3 +12,4 @@ export enum ResourceType {
   Generic = "Jupyter Lab",
   Folder = "Folder"
 }
+

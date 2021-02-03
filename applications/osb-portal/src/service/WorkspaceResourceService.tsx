@@ -1,6 +1,3 @@
-import { WorkspaceresourceIdGetRequest, WorkspacesControllerWorkspaceResourceOpenRequest } from "../apiclient/workspaces/apis/RestApi";
-
-import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';
 import { WorkspaceResource, OSBApplications, SampleResourceTypes, Workspace, ResourceStatus } from "../types/workspace";
@@ -11,27 +8,24 @@ class WorkspaceResourceService {
 
   async addResource(workspace: Workspace, url: string, name: string) {
     return WorkspaceService.workspacesApi.workspaceresourcePost(
-      {
-        workspaceResource:
+      
         {
           name: name ? name : urlToName(url),
           location: url,
-          resourceType: ResourceType.G,
-          workspaceId: workspace.id
+          resource_type: ResourceType.G,
+          workspace_id: workspace.id
         }
-      });
+      );
   }
 
   async getResource(id: number): Promise<WorkspaceResource> {
-    const wsrigr: WorkspaceresourceIdGetRequest = { id };
-    const result: ApiWorkspaceResource = await WorkspaceService.workspacesApi.workspaceresourceIdGet(wsrigr);
-    return mapResource(result);
+    const result = await WorkspaceService.workspacesApi.workspaceresourceIdGet(id);
+    return mapResource(result.data);
   }
 
 
   async workspacesControllerWorkspaceResourceOpen(id: number): Promise<void> {
-    const wsrogr: WorkspacesControllerWorkspaceResourceOpenRequest = { id };
-    await WorkspaceService.workspacesApi.workspacesControllerWorkspaceResourceOpen(wsrogr).then(() => {
+    await WorkspaceService.workspacesApi.workspacesControllerWorkspaceResourceOpen(id).then(() => {
       //
     });
   }
@@ -46,8 +40,9 @@ export function mapResource(resource: ApiWorkspaceResource): WorkspaceResource {
   }
   return {
     ...resource,
-    type: SampleResourceTypes[resource.resourceType.toLowerCase()],
-    status: mapResourceStatus(resource)
+    type: SampleResourceTypes[resource?.resource_type.toLowerCase()],
+    status: mapResourceStatus(resource),
+    workspaceId: resource.workspace_id
   };
 }
 
@@ -75,7 +70,8 @@ export function mapPostResource(resource: WorkspaceResource): ApiWorkspaceResour
   return {
     ...resource,
     status: ApiResourceStatus.P,
-    resourceType: mapResourceType(resource)
+    resource_type: mapResourceType(resource),
+    workspace_id: resource.workspaceId
   }
 }
 

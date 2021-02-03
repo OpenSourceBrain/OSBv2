@@ -1,4 +1,5 @@
 import { FeaturedType } from './global'
+import type { KeycloakInstance, KeycloakTokenParsed } from 'keycloak-js';
 
 // Model object
 export interface Model {
@@ -8,3 +9,15 @@ export interface Model {
   image: string;
   type: FeaturedType;
 }
+
+export type User = KeycloakTokenParsed & {
+  email?: string
+
+  preferred_username?: string
+
+  given_name?: string
+
+  family_name?: string
+}
+
+

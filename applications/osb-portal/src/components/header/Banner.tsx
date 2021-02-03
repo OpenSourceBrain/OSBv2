@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import { UserInfo } from "../../types/user";
+import { useKeycloak } from '@react-keycloak/ssr';
+import type { KeycloakInstance } from 'keycloak-js';
+import { User } from "../../types/model";
 
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
@@ -29,15 +31,19 @@ const useStyles = makeStyles((theme) => ({
 
 export const Banner = (props: any) => {
   const classes = useStyles();
-  const user: UserInfo = props.user;
+  const { keycloak, initialized } = useKeycloak<KeycloakInstance>();
+
+  const user : User | undefined = keycloak?.tokenParsed;
   const handleSignup = () => {
-    props.register();
+    if (keycloak) {
+      window.location.href = keycloak.createRegisterUrl()
+    }
   };
 
   const text1 =
-    user === null ? "Let us show you around" : `Welcome back ${user.firstname}`;
+    !user ? "Let us show you around" : `Welcome back ${user?.given_name || user?.email}`;
   const text2 =
-    user === null
+    !user
       ? "Get started in OSB with our short guided tour."
       : "Let's do some science.";
 
@@ -53,9 +59,9 @@ export const Banner = (props: any) => {
           </Typography>
           <Box display="flex" pt={1} flexDirection="row">
             <Button variant="outlined">Take the tour</Button>
-            {user === null ? (
+            {!user && (
               <Button onClick={handleSignup}>Sign up</Button>
-            ) : null}
+            ) }
           </Box>
         </Box>
       </Box>

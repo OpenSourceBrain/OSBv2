@@ -7,12 +7,21 @@ import Typography from "@material-ui/core/Typography";
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
-
+import { useKeycloak } from '@react-keycloak/ssr';
+import type { KeycloakInstance } from 'keycloak-js'
+import { User } from "../../types/model";
 
 // TODO handle user's vs public workspaces
-export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace }: any) => {
+export const Workspaces = (props: any) => {
+  const { publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, deleteWorkspace, updateWorkspace } = props;
+  
 
+  const { keycloak } = useKeycloak<KeycloakInstance>();
+  const user : User | undefined = keycloak?.tokenParsed;
   const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
+
+  
+
   const workspaceList =
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
@@ -68,5 +77,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
     </React.Fragment>
   );
 };
+
+
 
 export default Workspaces;

@@ -14,8 +14,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 
-import "react-markdown-editor-lite/lib/index.css";
-
 import * as Icons from "../icons";
 
 interface DialogProps {

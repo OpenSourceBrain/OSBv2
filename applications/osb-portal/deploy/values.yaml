@@ -8,3 +8,8 @@ harness:
     port: 80
     name: portal
   sentry: true
+  requirements:
+    soft:
+      - accounts
+      - volumemanager
+      - workspaces

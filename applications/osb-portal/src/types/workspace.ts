@@ -1,5 +1,3 @@
-import { Workspace as WorkspaceBase } from '../apiclient/workspaces/models/Workspace'
-import { WorkspaceResource as WR } from '../apiclient/workspaces/models/WorkspaceResource'
 import { FeaturedType } from './global'
 import { ResourceType as ResourceTypeApi } from '../apiclient/workspaces'
 
@@ -51,8 +49,8 @@ export interface Workspace {
     id?: number;
     name: string;
     description: string;
-    timestampCreated?: Date;
-    timestampUpdated?: Date;
+    timestampCreated?: string | Date;
+    timestampUpdated?: string | Date;
     thumbnail?: string;
     publicable?: boolean;
     license?: string;

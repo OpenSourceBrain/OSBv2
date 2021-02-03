@@ -1,13 +1,11 @@
-import { WorkspaceIdGetRequest, WorkspaceGetRequest } from "../apiclient/workspaces/apis/RestApi";
-
 import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } from "../types/workspace";
-import { FeaturedType } from '../types//global';
+import { FeaturedType } from '../types/global';
 
-import * as workspaceApi from '../apiclient/workspaces/apis';
+import * as workspaceApi from '../apiclient/workspaces';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
-const workspacesApiUri = '/api/workspaces/api';
+const workspacesApiUri = 'https://workspaces.v2.opensourcebrain.org/api';
 
 class WorkspaceService {
 
@@ -20,14 +18,14 @@ class WorkspaceService {
 
   initApis = (token: string) => {
     this.accessToken = token;
-    this.workspacesApi = new workspaceApi.RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
+    this.workspacesApi = new RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
   }
 
   async getWorkspace(id: number): Promise<Workspace> {
-    const wsigr: WorkspaceIdGetRequest = { id };
-    const result = await this.workspacesApi.workspaceIdGet(wsigr);
 
-    const ws = mapWorkspace(result);
+    const result = await this.workspacesApi.workspaceIdGet(id);
+
+    const ws = mapWorkspace(result.data);
     return ws;
   }
 
@@ -35,10 +33,10 @@ class WorkspaceService {
 
   async fetchWorkspaces(featured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = featured ? { q:  'publicable=true' } : {};
+
     if (this.workspacesApi) {
-      const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
-      return response.workspaces.map(mapWorkspace);
+      const response = await this.workspacesApi.workspaceGet(1, 30, featured ? 'publicable=true': null);
+      return response.data.workspaces.map(mapWorkspace);
     } else {
       console.debug('Attempting to fetch workspaces before init');
     }
@@ -50,8 +48,8 @@ class WorkspaceService {
     if (!newWorkspace.description) {
       newWorkspace.description = newWorkspace.name;
     }
-    const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(newWorkspace) };
-    const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
+
+    const newCreatedWorkspace = await this.workspacesApi.workspacePost(this.mapWorkspaceToApi(newWorkspace)).then((workspace) => {
       return workspace;
     });
 
@@ -63,21 +61,20 @@ class WorkspaceService {
   }
 
   async deleteWorkspace(workspaceId: number) {
-    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
+    this.workspacesApi.workspaceIdDelete( workspaceId);
   }
 
   async updateWorkspace(workspace: Workspace) {
-    this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
+    this.workspacesApi.workspaceIdPut(workspace.id, this.mapWorkspaceToApi({ ...workspace, resources: undefined }));
   }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
-    const wspr: workspaceApi.WorkspacesControllerWorkspaceSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };
-    await this.workspacesApi.workspacesControllerWorkspaceSetthumbnail(wspr);
+    await this.workspacesApi.workspacesControllerWorkspaceSetthumbnail(workspaceId, thumbNailBlob);
   };
 }
 
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
-  const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
+  const defaultResourceId = workspace.last_opened_resource_id || workspace?.resources[0]?.id;
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g, location: '' };
 
@@ -87,6 +84,8 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
     lastOpen,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
+    timestampCreated: workspace.timestamp_created,
+    timestampUpdated: workspace.timestamp_updated
   }
 }
 

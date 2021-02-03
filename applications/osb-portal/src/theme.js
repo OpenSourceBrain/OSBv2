@@ -2,10 +2,10 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import lessToJs from 'less-vars-to-js';
 
-require('./css/mui.less');
-require('./css/main.less');
+require('./styles/mui.less');
+require('./styles/main.less');
 // Read the less file in as string: using the raw-loader to override the default loader
-export const vars = lessToJs(require('!!raw-loader!./css/variables.less'), { resolveVariables: true, stripPrefix: true });
+export const vars = lessToJs(require('!!raw-loader!./styles/variables.less'), { resolveVariables: true, stripPrefix: true });
 
 vars.gutter = vars.gutter.replace('px', '') * 1;
 
@@ -17,7 +17,7 @@ export const {
 
 const theme = {
   darkMode: true,
-  spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 30, 40, 50, 100, 150, 200],
+  spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 30, 40, 50, 100, 150, 200, 250, 300],
   typography: {
     useNextVariants: true,
     htmlFontSize: 12,

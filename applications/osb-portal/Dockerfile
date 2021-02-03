@@ -2,13 +2,13 @@ FROM node:13.14 as base
 ARG DOMAIN=v2.opensourcebrain.org
 ARG NAMESPACE=osb2
 ENV BUILDDIR=/builddir
-
+RUN npm install -g yarn
 COPY package.json ${BUILDDIR}/package.json
-COPY package-lock.json ${BUILDDIR}/package-lock.json
+COPY yarn.lock ${BUILDDIR}/yarn.lock
 WORKDIR ${BUILDDIR}
-RUN npm ci
+RUN yarn install
 COPY . $BUILDDIR
-RUN npm run build
+RUN yarn build
 ###
 FROM nginx:1.17-alpine
 ENV BUILDDIR=/builddir
@@ -16,9 +16,4 @@ COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 
 EXPOSE 80
 
-RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-COPY deploy/nginx.conf /etc/nginx/nginx.conf
-
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-CMD /entrypoint.sh
+yarn start

@@ -157,7 +157,7 @@ export const WorkspaceCard = (props: Props) => {
           </Typography>
         </Link>
         <Typography variant="caption" className={classes.ellipses}>
-          {defaultResource && defaultResource.type.application.name},{" "}
+          {defaultResource && defaultResource.type?.application?.name},{" "}
           {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>

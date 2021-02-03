@@ -6,8 +6,6 @@ import { Typography, Grid, Paper } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 
 
-import "react-markdown-editor-lite/lib/index.css";
-
 import { UserInfo } from "../../types/user";
 import { ResourceType } from "../../types/global";
 
@@ -62,8 +60,8 @@ export const WorkspaceToolBox = (props: any) => {
               <Box component="span" className={classes.cardText}>new Workspace</Box>
             </Typography>
           </Grid>
-          <Grid item={true} xs={12} sm={12} md={8} lg={9}>
-            <Grid xs={12} justify="center" item={true}>
+          <Grid item container justify="space-between" xs={12} sm={12} md={8} lg={9}>
+            <Grid item >
               <WorkspaceItem
                 icon={Icons.CircleIcon}
                 title="Single Cell"
@@ -72,7 +70,7 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
-            <Grid xs={12} justify="center" item={true}>
+            <Grid item>
               <WorkspaceItem
                 icon={Icons.SquareCirclesIcon}
                 title="Network"
@@ -81,7 +79,7 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
-            <Grid xs={12} justify="center" item={true}>
+            <Grid item>
               <WorkspaceItem
                 icon={Icons.ChartIcon}
                 title="Data Analysis"
@@ -90,7 +88,7 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
               />
             </Grid>
-            <Grid xs={12} justify="center" item={true}>
+            <Grid item>
               <WorkspaceItem
                 icon={Icons.CubeIcon}
                 title="Playground"

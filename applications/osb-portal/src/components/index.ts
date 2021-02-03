@@ -11,47 +11,34 @@ import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/Workspace
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
-import workspacePage from "./pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
-import { fetchModelsAction } from '../store/actions/models';
-import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
+
 
 
 const mapWorkspacesStateToProps = (state: RootState) => {
   console.log(state)
   return ({
     showPublic: state.workspaces?.showPublic,
-    publicWorkspaces: state.workspaces?.publicWorkspaces,
-    userWorkspaces: state.workspaces?.userWorkspaces,
-    user: state.user
   })
 };
 
+
+
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   workspace: state.workspaces?.selectedWorkspace,
-  user: state.user,
 });
 
 const dispatchWorkspaceProps = {
-  login: userLogin,
-  logout: userLogout,
   ...WorkspacesActions
 };
 
-const mapUserStateToProps = (state: RootState) => ({
-  user: state.user,
-});
 
-const dispatchUserProps = {
-  login: userLogin,
-  logout: userLogout,
-  register: userRegister
-};
+
 
 const mapDrawerStateToProps = (state: RootState) => ({
   drawer: state.drawer,
@@ -69,16 +56,16 @@ const dispatchErrorProps = {
   setError
 };
 
-export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
-export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
-export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
-export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
+export const Workspaces: any = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
+
+export const WorkspaceToolBox = connect(null, dispatchWorkspaceProps)(workspacetoolbox)
+export { banner as Banner };
+export const Header = connect(null, dispatchDrawerProps)(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
-export const WorkspaceInteractions = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspaceInteractions) as any
+export const WorkspaceInteractions = connect(null, dispatchWorkspaceProps)(workspaceInteractions) as any
 
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
-export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, dispatchUserProps)(workspaceFrame)
-export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
-export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
-export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)
+export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, null)(workspaceFrame)
+export {newWorkspaceAskUser as NewWorkspaceAskUser}
+export {protectedRoute as ProtectedRoute }

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, makeStyles } from "@material-ui/core";
 import SentryErrorBoundary from "./sentry/SentryErrorBoundary";
-import HomePage from "./pages/HomePage";
+import HomePage from "../pages";
 import theme from "../theme";
 import { Header, ErrorDialog, WorkspacePage, ProtectedRoute } from "./index";
 
@@ -30,16 +30,9 @@ export const App = (props: any) => {
         <ErrorDialog />
         <div className={classes.mainContainer}>
           <Header />
-          <Router>
-            <Switch>
-              <Route exact={true} path="/">
+          
                 <HomePage />
-              </Route>
-              <ProtectedRoute exact={true} path="/workspace/:workspaceId">
-                <WorkspacePage />
-              </ProtectedRoute>
-            </Switch>
-          </Router>
+
         </div>
       </ThemeProvider>
     </SentryErrorBoundary>

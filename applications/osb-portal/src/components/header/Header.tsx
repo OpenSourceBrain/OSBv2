@@ -1,5 +1,6 @@
 import * as React from "react";
-
+import { useKeycloak } from '@react-keycloak/ssr';
+import type { KeycloakInstance } from 'keycloak-js';
 import {
   Toolbar,
   Box,
@@ -12,7 +13,8 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import { radius } from '../../theme';
+
+import { User } from "../../types/model";
 
 const title = "Open Source Brain";
 
@@ -52,10 +54,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
     marginLeft: '1em',
     alignSelf: 'flex-start'
-
-
   }
 }));
+
+
 
 export const Header = (props: any) => {
   const classes = useStyles();
@@ -71,17 +73,25 @@ export const Header = (props: any) => {
     setMenuOpen(false);
   };
 
-  const user = props.user;
+  
+  const { keycloak } = useKeycloak<KeycloakInstance>();
+  
 
+  const user : User | undefined = keycloak?.tokenParsed;
+  
   const handleUserLogin = () => {
-    props.login();
+    if (keycloak) {
+      window.location.href = keycloak.createLoginUrl()
+    }
   };
   const handleUserLogout = () => {
-    props.logout();
+    if (keycloak) {
+      window.location.href = keycloak.createLogoutUrl()
+    }
   };
 
   const headerText =
-    user === null ? (
+    !user ? (
       <Button onClick={handleUserLogin} className={classes.button}>
         Sign in
       </Button>
@@ -107,7 +117,7 @@ export const Header = (props: any) => {
           startIcon={<PersonIcon fontSize="large" />}
           className={classes.button}
         >
-          {user.firstname}
+          {user?.given_name || user?.preferred_username || user.email}
         </Button>
       </Box>
     );

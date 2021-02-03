@@ -5,10 +5,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import DialogContentText from "@material-ui/core/DialogContentText";
 
-import "react-markdown-editor-lite/lib/index.css";
 
-
-export default (props: any) => {
+const NewWorkspaceAskUser = (props: any) => {
 
   const handleUserLogin = () => {
     props.login();
@@ -46,3 +44,5 @@ export default (props: any) => {
     </>
   );
 };
+
+export default NewWorkspaceAskUser;
