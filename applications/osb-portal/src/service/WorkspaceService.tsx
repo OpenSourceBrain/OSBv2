@@ -35,7 +35,7 @@ class WorkspaceService {
     // ToDo: pagination & size of pagination
 
     if (this.workspacesApi) {
-      const response = await this.workspacesApi.workspaceGet(1, 30, featured ? 'publicable=true': null);
+      const response = await this.workspacesApi.workspaceGet(1, 30, featured ? 'publicable=true' : null);
       return response.data.workspaces.map(mapWorkspace);
     } else {
       console.debug('Attempting to fetch workspaces before init');
@@ -61,7 +61,7 @@ class WorkspaceService {
   }
 
   async deleteWorkspace(workspaceId: number) {
-    this.workspacesApi.workspaceIdDelete( workspaceId);
+    this.workspacesApi.workspaceIdDelete(workspaceId);
   }
 
   async updateWorkspace(workspace: Workspace) {

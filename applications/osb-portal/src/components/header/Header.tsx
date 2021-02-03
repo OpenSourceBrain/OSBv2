@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useKeycloak } from '@react-keycloak/ssr';
-import type { KeycloakInstance } from 'keycloak-js';
+import { useUserService } from "../../service/UserService";
+
 import {
   Toolbar,
   Box,
@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 
-import { User } from "../../types/model";
+
 
 const title = "Open Source Brain";
 
@@ -63,6 +63,8 @@ export const Header = (props: any) => {
   const classes = useStyles();
 
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const userService = useUserService();
+
   const menuAnchorRef = React.useRef(null);
 
   const handleMenuToggle = () => {
@@ -73,21 +75,16 @@ export const Header = (props: any) => {
     setMenuOpen(false);
   };
 
-  
-  const { keycloak } = useKeycloak<KeycloakInstance>();
-  
 
-  const user : User | undefined = keycloak?.tokenParsed;
-  
+
+
+  const user = userService.getLoggedInUser();
+
   const handleUserLogin = () => {
-    if (keycloak) {
-      window.location.href = keycloak.createLoginUrl()
-    }
+    userService.login()
   };
   const handleUserLogout = () => {
-    if (keycloak) {
-      window.location.href = keycloak.createLogoutUrl()
-    }
+    userService.logout()
   };
 
   const headerText =
@@ -96,31 +93,31 @@ export const Header = (props: any) => {
         Sign in
       </Button>
     ) : (
-      <Box alignItems="center" display="flex">
-        <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
-          <Paper>
-            <ClickAwayListener onClickAway={handleMenuClose}>
-              <MenuList autoFocusItem={menuOpen} id="user-menu">
-                <MenuItem>My account</MenuItem>
-                <MenuItem>Settings</MenuItem>
-                <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Popper>
-        <Button
-          size="large"
-          ref={menuAnchorRef}
-          aria-controls={menuOpen ? "user-menu" : undefined}
-          aria-haspopup="true"
-          onClick={handleMenuToggle}
-          startIcon={<PersonIcon fontSize="large" />}
-          className={classes.button}
-        >
-          {user?.given_name || user?.preferred_username || user.email}
-        </Button>
-      </Box>
-    );
+        <Box alignItems="center" display="flex">
+          <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
+            <Paper>
+              <ClickAwayListener onClickAway={handleMenuClose}>
+                <MenuList autoFocusItem={menuOpen} id="user-menu">
+                  <MenuItem>My account</MenuItem>
+                  <MenuItem>Settings</MenuItem>
+                  <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Popper>
+          <Button
+            size="large"
+            ref={menuAnchorRef}
+            aria-controls={menuOpen ? "user-menu" : undefined}
+            aria-haspopup="true"
+            onClick={handleMenuToggle}
+            startIcon={<PersonIcon fontSize="large" />}
+            className={classes.button}
+          >
+            {user?.given_name || user?.preferred_username || user.email}
+          </Button>
+        </Box>
+      );
 
   const handleToggleDrawer = (e: any) => {
     if (props.drawerEnabled) {

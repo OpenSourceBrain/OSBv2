@@ -3,6 +3,7 @@ harness:
   secured: false
   deployment:
     auto: true
+    port: 3000
   service:
     auto: true
     port: 80

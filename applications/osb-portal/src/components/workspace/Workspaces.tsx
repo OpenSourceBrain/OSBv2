@@ -4,30 +4,32 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+
+
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
-import { useKeycloak } from '@react-keycloak/ssr';
-import type { KeycloakInstance } from 'keycloak-js'
-import { User } from "../../types/model";
+
+import { useUserService } from "../../service/UserService";
+import { WorkspaceContext } from '..'
 
 // TODO handle user's vs public workspaces
 export const Workspaces = (props: any) => {
-  const { publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, deleteWorkspace, updateWorkspace } = props;
-  
+  const { showPublicWorkspaces, showUserWorkspaces, showPublic } = props;
+  const { publicWorkspaces, userWorkspaces, refreshWorkspaces } = React.useContext(WorkspaceContext);
 
-  const { keycloak } = useKeycloak<KeycloakInstance>();
-  const user : User | undefined = keycloak?.tokenParsed;
+  const userService = useUserService();
+  const user = userService.getLoggedInUser();
   const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
 
-  
+
 
   const workspaceList =
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
           <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
-            <WorkspaceCard workspace={workspace} deleteWorkspace={deleteWorkspace} updateWorkspace={updateWorkspace} user={user} />
+            <WorkspaceCard workspace={workspace} user={user} refreshWorkspaces={refreshWorkspaces} />
           </Grid>
         );
       })

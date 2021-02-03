@@ -1,19 +1,25 @@
-FROM node:13.14 as base
-ARG DOMAIN=v2.opensourcebrain.org
-ARG NAMESPACE=osb2
-ENV BUILDDIR=/builddir
-RUN npm install -g yarn
-COPY package.json ${BUILDDIR}/package.json
-COPY yarn.lock ${BUILDDIR}/yarn.lock
-WORKDIR ${BUILDDIR}
+FROM node:15 AS yarn
+
+FROM yarn AS base
+WORKDIR /base
+COPY package.json ./
+COPY yarn.lock ./
 RUN yarn install
-COPY . $BUILDDIR
+COPY . .
+
+FROM base AS build
+ENV NODE_ENV=production
+WORKDIR /build
+COPY --from=base /base ./
 RUN yarn build
-###
-FROM nginx:1.17-alpine
-ENV BUILDDIR=/builddir
-COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 
-EXPOSE 80
+FROM node:15 AS production
+ENV NODE_ENV=production
+WORKDIR /app
+COPY --from=build /build/package*.json ./
+COPY --from=build /build/.next ./.next
+COPY --from=build /build/public ./public
+RUN yarn install next
 
-yarn start
+EXPOSE 3000
+CMD yarn start

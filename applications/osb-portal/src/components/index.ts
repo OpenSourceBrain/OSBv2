@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
 import { Workspaces as workspace } from './workspace/Workspaces'
-import { WorkspaceToolBox as workspacetoolbox } from './workspace/NewWorkspaceToolBox'
+import { NewWorkspaceBox as workspacetoolbox } from './workspace/NewWorkspaceBox'
 import workspaceInteractions from './workspace/drawer/WorkspaceInteractions';
 
 import { Banner as banner } from './header/Banner'
@@ -16,7 +16,8 @@ import * as WorkspacesActions from '../store/actions/workspaces'
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
-
+import React from 'react';
+import { Workspace } from '../types/workspace';
 
 
 const mapWorkspacesStateToProps = (state: RootState) => {
@@ -26,22 +27,25 @@ const mapWorkspacesStateToProps = (state: RootState) => {
   })
 };
 
+type WorkspaceDataType = {
+  refreshWorkspaces(): void;
+  publicWorkspaces: Workspace[];
+  userWorkspaces: Workspace[];
+}
 
+const WorkspaceData: WorkspaceDataType = {
+  refreshWorkspaces: (): any => null,
+  publicWorkspaces: [],
+  userWorkspaces: null
+}
 
-const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
-  workspace: state.workspaces?.selectedWorkspace,
-});
+export const WorkspaceContext = React.createContext(WorkspaceData);
+
 
 const dispatchWorkspaceProps = {
   ...WorkspacesActions
 };
 
-
-
-
-const mapDrawerStateToProps = (state: RootState) => ({
-  drawer: state.drawer,
-});
 
 const dispatchDrawerProps = {
   onToggleDrawer: toggleDrawer
@@ -60,10 +64,10 @@ export const Workspaces: any = connect(mapWorkspacesStateToProps, dispatchWorksp
 export const WorkspaceToolBox = connect(null, dispatchWorkspaceProps)(workspacetoolbox)
 export { banner as Banner };
 export const Header = connect(null, dispatchDrawerProps)(header)
-export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
+export const WorkspaceDrawer = connect(null, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const WorkspaceInteractions = connect(null, dispatchWorkspaceProps)(workspaceInteractions) as any
 
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
-export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, null)(workspaceFrame)
-export {newWorkspaceAskUser as NewWorkspaceAskUser}
-export {protectedRoute as ProtectedRoute }
+export { workspaceFrame as WorkspaceFrame }
+export { newWorkspaceAskUser as NewWorkspaceAskUser }
+export { protectedRoute as ProtectedRoute }

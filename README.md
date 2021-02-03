@@ -95,7 +95,7 @@ At least 6GB of ram and 4 processors are needed to run MNP
 
 To create a new cluster, run
 ```
-minikube start --memory="6000mb" --cpus=4 --disk-size=80mb
+minikube start --memory="6000mb" --cpus=4
 ```
 
 Enable the ingress addon:

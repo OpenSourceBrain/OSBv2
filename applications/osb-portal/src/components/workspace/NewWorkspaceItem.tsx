@@ -6,6 +6,7 @@ import { NewWorkspaceAskUser } from "..";
 import WorkspaceEdit from "./WorkspaceEditor";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
 import { User } from "../../types/model";
+import { useUserService } from "../../service/UserService";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -78,10 +79,13 @@ interface ItemProps {
   refreshWorkspaces: () => null;
 }
 
-export default (props: ItemProps) => {
-  const { user, template, title } = props;
+export default function NewWorkspaceItem(props: ItemProps) {
+  const { template, title } = props;
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
+  const userService = useUserService();
+
+  const user = userService.getLoggedInUser();
 
   const handleClick = () => {
     if (!user) {
@@ -93,7 +97,7 @@ export default (props: ItemProps) => {
 
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = (refresh= false) => {
+  const closeNewWorkspace = (refresh = false) => {
     setNewWorkspaceOpen(false);
     if (refresh) {
       props.refreshWorkspaces();

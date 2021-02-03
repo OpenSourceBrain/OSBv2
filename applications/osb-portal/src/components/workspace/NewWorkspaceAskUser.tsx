@@ -1,18 +1,18 @@
 import * as React from "react";
 
-import { Typography, Grid, Box } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import DialogContentText from "@material-ui/core/DialogContentText";
+import { useUserService } from "../../service/UserService";
 
 
-const NewWorkspaceAskUser = (props: any) => {
-
+const NewWorkspaceAskUser = () => {
+  const userService = useUserService();
   const handleUserLogin = () => {
-    props.login();
+    userService.login();
   };
   const handleSignup = () => {
-    props.register();
+    userService.register();
   };
 
   return (

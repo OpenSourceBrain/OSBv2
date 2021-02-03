@@ -14,12 +14,13 @@ import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import * as Icons from "../icons";
 import { IconButton } from "@material-ui/core";
+import workspaceService from "../../service/WorkspaceService";
+
 
 interface Props {
   workspace: Workspace;
-  updateWorkspace: (ws: Workspace) => null,
-  deleteWorkspace: (wsId: number) => null,
-  user: any
+  user: any;
+  refreshWorkspaces: () => void
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +73,8 @@ export const WorkspaceCard = (props: Props) => {
   const classes = useStyles();
   const openTitle = "Open workspace";
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -81,17 +84,18 @@ export const WorkspaceCard = (props: Props) => {
   };
 
   const handleDeleteWorkspace = () => {
-    props.deleteWorkspace(workspace.id);
+    workspaceService.deleteWorkspace(workspace.id)
+      .then(props.refreshWorkspaces); // this is refreshing page props
     handleClose();
   }
 
   const handlePublicWorkspace = () => {
-    props.updateWorkspace({ ...workspace, publicable: true });
+    workspaceService.updateWorkspace({ ...workspace, publicable: true }).then(props.refreshWorkspaces);
     handleClose();
   }
 
   const handlePrivateWorkspace = () => {
-    props.updateWorkspace({ ...workspace, publicable: false });
+    workspaceService.updateWorkspace({ ...workspace, publicable: false }).then(props.refreshWorkspaces);
     handleClose();
   }
 
