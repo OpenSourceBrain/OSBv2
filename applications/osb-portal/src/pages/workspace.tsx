@@ -1,6 +1,6 @@
 import * as React from "react";
 import Divider from "@material-ui/core/Divider";
-import { useParams } from "react-router-dom";
+
 
 import {
   WorkspaceDrawer,
@@ -19,7 +19,7 @@ export default (props: any) => {
     <>
       <Divider variant="fullWidth" />
       <WorkspaceDrawer>
-        <WorkspaceFrame />
+        <WorkspaceFrame user={null}/>
       </WorkspaceDrawer>
     </>
   );

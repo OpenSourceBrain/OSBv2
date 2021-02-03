@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Typography, Box, ButtonBase, Button } from "@material-ui/core";
 
-import { UserInfo } from "../../types/user";
 import OSBDialog from "../common/OSBDialog";
 import { NewWorkspaceAskUser } from "..";
 import WorkspaceEdit from "./WorkspaceEditor";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
+import { User } from "../../types/model";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -74,7 +74,7 @@ interface ItemProps {
   icon: React.ElementType;
   title: string,
   template: WorkspaceTemplateType,
-  user: UserInfo;
+  user: User;
   refreshWorkspaces: () => null;
 }
 

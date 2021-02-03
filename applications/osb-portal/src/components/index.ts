@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 
-import { App as app } from './App'
 import { Workspaces as workspace } from './workspace/Workspaces'
 import { WorkspaceToolBox as workspacetoolbox } from './workspace/NewWorkspaceToolBox'
 import workspaceInteractions from './workspace/drawer/WorkspaceInteractions';
@@ -64,7 +63,6 @@ export const Header = connect(null, dispatchDrawerProps)(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const WorkspaceInteractions = connect(null, dispatchWorkspaceProps)(workspaceInteractions) as any
 
-export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, null)(workspaceFrame)
 export {newWorkspaceAskUser as NewWorkspaceAskUser}

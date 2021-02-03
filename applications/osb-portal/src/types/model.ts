@@ -12,7 +12,7 @@ export interface Model {
 
 export type User = KeycloakTokenParsed & {
   email?: string
-
+  id?: string
   preferred_username?: string
 
   given_name?: string

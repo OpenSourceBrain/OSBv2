@@ -5,13 +5,10 @@ import { Typography, Grid, Paper } from "@material-ui/core";
 
 import Box from "@material-ui/core/Box";
 
-
-import { UserInfo } from "../../types/user";
-import { ResourceType } from "../../types/global";
-
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
 import * as Icons from '../icons';
+import { User } from "../../types/model";
 
 const useStyles = makeStyles((theme) => ({
   iconButton: {
@@ -45,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export const WorkspaceToolBox = (props: any) => {
   const classes = useStyles();
 
-  const user: UserInfo = props.user;
+  const user: User = props.user;
 
   const type: string = props.type;
 

@@ -2,9 +2,10 @@ import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom";
 import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '../../types/workspace';
-import { UserInfo } from '../../types/user';
+
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import WorkspaceService from '../../service/WorkspaceService';
+import { User } from '../../types/model';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any }) => {
+export const WorkspaceFrame = (props: { user: User, workspace: Workspace }) => {
     const classes = useStyles();
 
     const { user, workspace } = props;

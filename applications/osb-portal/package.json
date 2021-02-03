@@ -45,6 +45,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/redux-devtools-extension": "^2.13.2",
     "@types/redux-logger": "^3.0.8",
+    "@types/request": "^2.48.5",
     "@types/webpack-env": "^1.15.2",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
