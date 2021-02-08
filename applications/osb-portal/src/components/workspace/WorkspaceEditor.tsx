@@ -45,7 +45,7 @@ async function readFile(file: Blob) {
   })
 }
 
-let thumbnail : Blob;
+let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
 
@@ -54,10 +54,10 @@ export default (props: WorkspaceEditProps) => {
   >({ ...props.workspace });
 
   const handleCreateWorkspace = async (publicable: boolean = false) => {
-    workspaceService.createWorkspace({...workspaceForm, publicable}).then(
+    workspaceService.createWorkspace({ ...workspaceForm, publicable }).then(
       async (workspace) => {
         if (thumbnail) {
-          const fileThumbnail : any = await readFile(thumbnail);
+          const fileThumbnail: any = await readFile(thumbnail);
           workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true));
         } else {
           props.onLoadWorkspace(true)

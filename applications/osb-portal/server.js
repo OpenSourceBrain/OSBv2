@@ -2,7 +2,7 @@
 const express = require('express')
 const next = require('next')
 var proxyTarget = 'https://__APP_NAME__/'
-const osbDomain = 'v2.opensourcebrain.org'
+const osbDomain = process.env.DOMAIN || 'v2.opensourcebrain.org'
 const replaceHost = (uri, appName) => uri.replace("__APP_NAME__", appName + '.' + osbDomain);
 
 const devProxy = {

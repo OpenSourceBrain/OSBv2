@@ -1,0 +1,1717 @@
+---
+# Source: OSB/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: deployment-secrets
+type: Opaque
+data:
+  CH_SECRET: "IkluIEdvZCB3ZSB0cnVzdDsgYWxsIG90aGVycyBtdXN0IGJyaW5nIGRhdGEuIOKAlSBXLiBFZHdhcmRzIERlbWluZyI="
+---
+# Source: OSB/templates/tls-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "osb-local-tls"
+type: kubernetes.io/tls
+data:
+  tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVJRENDQWdpZ0F3SUJBZ0lKQUp4UUFjaFA5S29LTUEwR0NTcUdTSWIzRFFFQkN3VUFNRUl4Q3pBSkJnTlYKQkFZVEFsVlRNUXN3Q1FZRFZRUUlEQUpEUVRFVE1CRUdBMVVFQ2d3S1FXTnRaU3dnU1c1akxqRVJNQThHQTFVRQpBd3dJVFdWMFlVTmxiR3d3SGhjTk1qRXdNakEwTVRZME1qVXhXaGNOTWpJd01qQTBNVFkwTWpVeFdqQVVNUkl3CkVBWURWUVFEREFsdmMySXViRzlqWVd3d2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFDN1RhU3o1cWdVc0t0SllhREh0M3lFMVM1NE82R3hYMTRjeVMxdE5tV0ppaTc2TExWbGZXbWFYeUJMSm1XKwp0TVV4bEU4NHlLM2EzOFZVYUVTNVczSWdGTFNvUzEyREpQT2sxWG15R1YvYzl1bVFBOVZMWm94Z2QrQm5hQms3CjlxMGtUREtzTklYWU1reEtUNFZnUGZSQVFNRkl3dG1ZN3o1ZnpZcUMzVTVFd2dGY0M1QW9wRjVZSm1TRC92My8KYS80UjU3U2RuWEpCMkFhMWxXbzVBRmZPVEJHeGgxTllBWExkUWN0N3kyaEJZdEJaNWdBaHVabTUxUWtOVzJvVApobGJ4RGE2Si9VR2tKTmp1Q3pQYk5HeHhnNGVmUWd4cldvU2ltYk5Ha1VFalRNdk1FekovV2t0QmtYbjlzMUtxCkNldW9WdFNGSGRUVVBLaHVjTTVoOXlrdkFnTUJBQUdqUnpCRk1Bc0dBMVVkRHdRRUF3SUY0REFUQmdOVkhTVUUKRERBS0JnZ3JCZ0VGQlFjREFUQWhCZ05WSFJFRUdqQVlnZ2x2YzJJdWJHOWpZV3lDQ3lvdWIzTmlMbXh2WTJGcwpNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUNBUUJKS0lId3FrMkVzY1pmYlZ6bzkxaVJ1ZWpuczFvSjhxcG1HaGE5CmdHcTMveEl4eHJURHNrWXdPZ2JKaGt0RnJBS0pKaG5uUW5qWjVMRGpGUTVYNndTRmllK1lpY3MyY0QyYmZaYXAKNDVhY3JYandmZUphV1F0K0lpeWtXQTA5aVpva3B3QUp4K1YzVEVSSCtHMWdqci9mcTBLSmNteU1wUVBwK21rcApwUktwZ0JWUlhsUnZVMVlVUHNVVy9ibktQTExqL2dKVU0xNkpyY2xkSUdQaGdNMHM1bE0zbUliVldZWXpxdWwrCnFyeHhXM1VvcjhzL1U2M0lGaVdFZFZEMzFySkNDMDBPVkJIbGtzVTVnNnVZd2pwMEtxUmpEZjFWajRNMjk2V2wKS2c2Rlp1dXBBVWN5a21oNGV6VzgvalFEVGtONDlobW9ZTXBNSHl4UlRmSWZnM05wSU9sUkk2emdiOFAybGQ4UQo1NTY5TkV6bUtWY3JQUjdBYk4yYU5kWCtxQlk4YUNIbFlzQmpvZkx3YWVhbjFPVnhuNERZTFRSWnlXVlYrdzlRCkpMZjRSZGJKNGVtTThKUENab1RzenhnakFPMW1oc00xajBqUWhyOUpUSG03a1A5djA3UkhDTU5qTDhQNndpcW0KaXpTZDlrN0hxeDI4OS9JRjRkc2tyQUdZV1UzRDgyWTlLWnZVT3pXYmloMGxmaHBtaXp1RzFPWTF3UGYzNnZURwp6S3dha0puOGxqbDFuNU5NN203Z3V1dWdFcSs2YkNzVFp4eXFpd0tvTG9TdE5kd1NTMzgrWGs3blVCM0JacGxVCkNmR2h3NDl2Q01kQWtkU1dnblV2YzNBeFJyc0NrcHMxS2ZJbnljUjl6SFA4eWh0a1NBUVc3c1JzRVFHWXhMejEKaVBIN2p3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
+  tls.key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBdTAya3MrYW9GTENyU1dHZ3g3ZDhoTlV1ZUR1aHNWOWVITWt0YlRabGlZb3UraXkxClpYMXBtbDhnU3labHZyVEZNWlJQT01pdDJ0L0ZWR2hFdVZ0eUlCUzBxRXRkZ3lUenBOVjVzaGxmM1BicGtBUFYKUzJhTVlIZmdaMmdaTy9hdEpFd3lyRFNGMkRKTVNrK0ZZRDMwUUVEQlNNTFptTzgrWDgyS2d0MU9STUlCWEF1UQpLS1JlV0Naa2cvNzkvMnYrRWVlMG5aMXlRZGdHdFpWcU9RQlh6a3dSc1lkVFdBRnkzVUhMZTh0b1FXTFFXZVlBCklibVp1ZFVKRFZ0cUU0Wlc4UTJ1aWYxQnBDVFk3Z3N6MnpSc2NZT0huMElNYTFxRW9wbXpScEZCSTB6THpCTXkKZjFwTFFaRjUvYk5TcWducnFGYlVoUjNVMUR5b2JuRE9ZZmNwTHdJREFRQUJBb0lCQUVGalBxOXJRNXhOZk02VwpYWW03WGFZRndqNUpHdzZQNjR3REUyL0FBTHgrV0I0UVE1ZFZxK3N2Y0ZlcjVQTXBxbm0vZTlTb0FrR1p3d3JQCmg4WnB6VEt6NThtazNkVnRyZjBLWlh5dWJRLzN4dHYyNnB4ekJXaWNFT1FvckQ2SnhESWF3OG5vWUIxMG1idUwKZlZWMjYzRU82aXNia3RsWUZCOWY0dzRDY2xPQUNnVE1ISlBxaVlDdGhocE0xNXMrY0pSTmg0QWtVWE52TmxGaQp6bW9EN2U5UVRLeGJSajBaR1gvYThJRnAvRlI2ZGMvRjJ5SS9sRXhTYWZHUTZxcWVtc2hrVCtHYVFsSDlnNW1YCm5mOTFxZUdwVzN3YTdZMjVRbUdRQkZJSksxWmQ2bzFuUy9TYVlKR2FjS2lPUFJieFhMUWtqc0ZOQ3VKY3prYlYKWEVVNU04a0NnWUVBNFJKYnJNL0JxSHlxSzEwNkkvMW9lWjlNcUpHWjAyUXd0RHhpajZlMkRMT2VPa3FnamlFdwpLOFZMM08wbkI2M2pxQXA4aFIwMWN4QkdPcXk1aVhYWTZ1d20rUnR3VDhIa1h0NExwcnVVUGV0Z1VGdG4wK3oyCjZnMDJUc1NNaDI4ZlVkL3MyS09QeXVwWnkzd2I1OFZ3S3JCZksyTHlEVnhrTU0wN1RMd2NjdTBDZ1lFQTFRcW8KQWJFNVRMaGxNcmcxUllPQnltVVdkNTBFc0NmMFRxeHUzVDVvUDJpZkFTb04rM0hLNGNabG5wSjJuYW9mc3NPVgpRK3VjcnR3TzhXd3VacmEwY2IrRDZsTWFCVG93djgzZzFIenY0L2ROc0ZiYndlYjNaQlVjRXNUN0h1MXJWT1M3CnBWVGQ0UmhFTXhhWnZOcEJzcXlheEt3RHB2c256YkRQbXJTUy9Rc0NnWUVBMHhjK3VCT2FsQVZvTEllaGNnUEgKcXRvSE1jcHROV0F3ZGJwMHpqc0RlV0kxTW9Ldmx0MzFxZmUvTVJPVG1aWXpnSFZsV0F1UEI3M3B3RG9qUVpNdgp3UlYvYi8rV0ZKZkxNbGFiSXVPbkkzUFF2MDBiVWg1YmJpUzZIS0luRXhiYmp4U3Z0SGVpOHpOY3lJWThQZUpsClV3UmNIZnNNL2c3N1FQSWJmZHFuNi9rQ2dZQmlnWlhqaW0yak10UGdHdHJPOUpxcjJnZ0VjTDc5TU13L0lHMzIKc09lRkFqd2JUclcrWVFSZFZ0NGY3enNYZGRWSVZEVU5mY0VwL1NpUHF1VGRxM2RON1M3eXgxQU53TFZQeXNNOQpuVE5TNWtPdTJNcXVJcnliTTBPU3pqQUxRZDVTRjUxSU9qQ0o1eTJKcmRhU1F4MERuOW5FUElGSDBYTzdJUmt0ClFIZUN0d0tCZ1FDdUoyamFpb1E1T09WeHhXYjIybncrT0tTT01lSU5jU2VXYk5NNWdkdGdBVHErRjVaNVdyc1IKOW1ReW11VjI2VnBjTUdNYmUvSldVUVh1bFFMYXptLzlua2h3UkYzZmdLeU51ZkRYaHY3ZTMrelhUU2VTYi9NNgp2WjI0akptUW5tdTFwNUNSWE5ySEZTcys1azNjUGZmR0FtL1BRVGcxN2puYzhKWUtXd21xcmc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo="
+---
+# Source: OSB/templates/accounts/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "accounts"
+  labels:
+    app: "accounts"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+data:
+  realm.json: "{\n        \"id\": \"osb2\",\n        \"realm\": \"osb2\",\n        \"enabled\": true,\n        \"sslRequired\": \"external\",\n        \"loginTheme\": \"custom\",\n        \"accountTheme\": \"custom\",\n        \"adminTheme\": \"custom\",\n        \"emailTheme\": \"custom\",\n        \"registrationAllowed\": true,\n        \"registrationEmailAsUsername\": false,\n        \"rememberMe\": true,\n        \"verifyEmail\": false,\n        \"loginWithEmailAllowed\": true,\n        \"duplicateEmailsAllowed\": false,\n        \"resetPasswordAllowed\": true,\n        \"editUsernameAllowed\": true,\n        \"roles\": {\n            \"realm\": [\n                {\n                    \"id\": \"70835ad6-1454-4bc5-86a4-f1597e776b75\",\n                    \"name\": \"administrator\",\n                    \"composite\": false,\n                    \"clientRole\": false,\n                    \"containerId\": \"osb2\",\n                    \"attributes\": {}\n                },\n                {\n                    \"id\": \"498353dd-88eb-4a5e-99b8-d912e0f20f23\",\n                    \"name\": \"uma_authorization\",\n                    \"description\": \"${role_uma_authorization}\",\n                    \"composite\": false,\n                    \"clientRole\": false,\n                    \"containerId\": \"osb2\",\n                    \"attributes\": {}\n                },\n                {\n                    \"id\": \"f99970f1-958b-4bb8-8b39-0d7498b0ecc4\",\n                    \"name\": \"offline_access\",\n                    \"description\": \"${role_offline-access}\",\n                    \"composite\": false,\n                    \"clientRole\": false,\n                    \"containerId\": \"osb2\",\n                    \"attributes\": {}\n                }\n            ]\n        },\n        \"clients\": [\n            {\n                \"id\": \"9a6a2560-c6be-4493-8bd5-3fdc4522d82b\",\n                \"clientId\": \"rest-client\",\n                \"baseUrl\": \"https://accounts.osb.local\",\n                \"surrogateAuthRequired\": false,\n                \"enabled\": true,\n                \"clientAuthenticatorType\": \"client-secret\",\n                \"secret\": \"5678eb6e-9e2c-4ee5-bd54-34e7411339e8\",\n                \"redirectUris\": [\n                    \"*\"\n                ],\n                \"webOrigins\": [\n                    \"*\"\n                ],\n                \"standardFlowEnabled\": true,\n                \"directAccessGrantsEnabled\": true,\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"access.token.lifespan\": \"3600\"\n                },\n                \"fullScopeAllowed\": true,\n                \"defaultClientScopes\": [\n                    \"web-origins\",\n                    \"role_list\",\n                    \"profile\",\n                    \"roles\",\n                    \"email\"\n                ],\n                \"optionalClientScopes\": [\n                    \"address\",\n                    \"phone\",\n                    \"offline_access\",\n                    \"microprofile-jwt\"\n                ]\n            },\n            {\n                \"id\": \"111caf43-3d26-484d-8dc9-7fa911ac221c\",\n                \"clientId\": \"web-client\",\n                \"baseUrl\": \"https://accounts.osb.local\",\n                \"surrogateAuthRequired\": false,\n                \"enabled\": true,\n                \"clientAuthenticatorType\": \"client-secret\",\n                \"secret\": \"452952ae-922c-4766-b912-7b106271e34b\",\n                \"redirectUris\": [\n                    \"*\"\n                ],\n                \"webOrigins\": [\n                    \"*\",\n                    \"+\"\n                ],\n                \"standardFlowEnabled\": true,\n                \"directAccessGrantsEnabled\": true,\n                \"publicClient\": true,\n                \"protocol\": \"openid-connect\",\n                \"fullScopeAllowed\": true,\n                \"defaultClientScopes\": [\n                    \"web-origins\",\n                    \"role_list\",\n                    \"administrator-scope\",\n                    \"profile\",\n                    \"roles\",\n                    \"email\"\n                ],\n                \"optionalClientScopes\": [\n                    \"address\",\n                    \"phone\",\n                    \"offline_access\",\n                    \"microprofile-jwt\"\n                ]\n            }\n        ],\n        \"clientScopes\": [\n            {\n                \"id\": \"a8cddc84-c506-4196-8f2d-1bd5e8769f3c\",\n                \"name\": \"administrator-scope\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"true\",\n                    \"display.on.consent.screen\": \"true\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"45fc2547-1761-420b-b6a8-7dc882a51507\",\n                        \"name\": \"administrator-audience\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-audience-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"included.client.audience\": \"web-client\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"35c37cdc-6841-41e7-b90f-2964fc563998\",\n                \"name\": \"microprofile-jwt\",\n                \"description\": \"Microprofile - JWT built-in scope\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"true\",\n                    \"display.on.consent.screen\": \"false\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"611fb1bc-56cd-49d2-a11b-ddf05bd220db\",\n                        \"name\": \"upn\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-property-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"username\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"upn\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"63850e7d-1031-447a-a8af-3df588a39350\",\n                        \"name\": \"groups\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-realm-role-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"multivalued\": \"true\",\n                            \"user.attribute\": \"foo\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"groups\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"dc927013-0448-4a29-ac72-7d6b019180d9\",\n                \"name\": \"web-origins\",\n                \"description\": \"OpenID Connect scope for add allowed web origins to the access token\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"false\",\n                    \"display.on.consent.screen\": \"false\",\n                    \"consent.screen.text\": \"\"\n                },\n                \"protocolMappers\": [\n                    {\n                    \"id\": \"3cc4569c-83b0-4bc9-af31-186c8081f8ac\",\n                    \"name\": \"allowed web origins\",\n                    \"protocol\": \"openid-connect\",\n                    \"protocolMapper\": \"oidc-allowed-origins-mapper\",\n                    \"consentRequired\": false,\n                    \"config\": {}\n                    }\n                ]\n            },\n            {\n                \"id\": \"4bd583e6-9f6d-4846-9a94-2f02b1b4b1db\",\n                \"name\": \"roles\",\n                \"description\": \"OpenID Connect scope for add user roles to the access token\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"false\",\n                    \"display.on.consent.screen\": \"true\",\n                    \"consent.screen.text\": \"${rolesScopeConsentText}\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"0d359e4f-3d4d-4ef3-88fd-2dd9f41da8cd\",\n                        \"name\": \"client roles\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-client-role-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"multivalued\": \"true\",\n                            \"user.attribute\": \"foo\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"resource_access.${client_id}.roles\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"98ea5505-f703-49d2-b927-7715a7fc7a19\",\n                        \"name\": \"realm roles\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-realm-role-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"multivalued\": \"true\",\n                            \"user.attribute\": \"foo\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"realm_access.roles\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"28b26ce3-7edc-47c2-982f-881f1c001ef3\",\n                        \"name\": \"audience resolve\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-audience-resolve-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {}\n                    }\n                ]\n            },\n            {\n                \"id\": \"e2606962-dd91-4926-af4e-cce6a036a04a\",\n                \"name\": \"phone\",\n                \"description\": \"OpenID Connect built-in scope: phone\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"true\",\n                    \"display.on.consent.screen\": \"true\",\n                    \"consent.screen.text\": \"${phoneScopeConsentText}\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"c7e30f92-6026-4291-b526-3716662c26f1\",\n                        \"name\": \"phone number verified\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"phoneNumberVerified\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"phone_number_verified\",\n                            \"jsonType.label\": \"boolean\"\n                        }\n                    },\n                    {\n                        \"id\": \"b1927570-c38d-49b8-9bbb-3cf9571f00be\",\n                        \"name\": \"phone number\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"phoneNumber\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"phone_number\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"6f532104-efc0-41d9-8fbc-9c78372d3f1b\",\n                \"name\": \"address\",\n                \"description\": \"OpenID Connect built-in scope: address\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"true\",\n                    \"display.on.consent.screen\": \"true\",\n                    \"consent.screen.text\": \"${addressScopeConsentText}\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"548dd8e4-1ee8-4f7d-8934-439bdd1cc0bb\",\n                        \"name\": \"address\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-address-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"user.attribute.formatted\": \"formatted\",\n                            \"user.attribute.country\": \"country\",\n                            \"user.attribute.postal_code\": \"postal_code\",\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute.street\": \"street\",\n                            \"id.token.claim\": \"true\",\n                            \"user.attribute.region\": \"region\",\n                            \"access.token.claim\": \"true\",\n                            \"user.attribute.locality\": \"locality\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"b16d9232-a4e2-47d4-a368-5279a0d84913\",\n                \"name\": \"email\",\n                \"description\": \"OpenID Connect built-in scope: email\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"true\",\n                    \"display.on.consent.screen\": \"true\",\n                    \"consent.screen.text\": \"${emailScopeConsentText}\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"4bd6701a-cc02-481e-83c5-e048ea5d83a9\",\n                        \"name\": \"email\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-property-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"email\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"email\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"4cf00282-d385-456a-8943-4bdde6357c16\",\n                        \"name\": \"email verified\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-property-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"emailVerified\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"email_verified\",\n                            \"jsonType.label\": \"boolean\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"1e9fa514-8ae1-4980-9ccc-2d2d2c43c7e6\",\n                \"name\": \"profile\",\n                \"description\": \"OpenID Connect built-in scope: profile\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"include.in.token.scope\": \"true\",\n                    \"display.on.consent.screen\": \"true\",\n                    \"consent.screen.text\": \"${profileScopeConsentText}\"\n                },\n                \"protocolMappers\": [\n                    {\n                        \"id\": \"2e186cd7-b7d5-4b63-b765-c77036183db6\",\n                        \"name\": \"updated at\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"updatedAt\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"updated_at\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"86e94688-d91b-493b-809a-07005c7e6cab\",\n                        \"name\": \"picture\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"picture\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"picture\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"8e65f9c7-a3c0-4bf6-9c4e-47be99464408\",\n                        \"name\": \"zoneinfo\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"zoneinfo\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"zoneinfo\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"9eeaaeb3-93fc-439f-a8db-d6f3693a8ba1\",\n                        \"name\": \"given name\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-property-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"firstName\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"given_name\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"34e60d98-fcde-49a2-b093-748464886a0d\",\n                        \"name\": \"middle name\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"middleName\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"middle_name\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"08fa0341-5dd3-42e2-babb-1151c35b72c3\",\n                        \"name\": \"nickname\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"nickname\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"nickname\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"9d9f1655-9b23-4e15-b244-aeffcb20c5ba\",\n                        \"name\": \"gender\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"gender\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"gender\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"23b19dbb-5af2-494e-b462-e8f63d9266f4\",\n                        \"name\": \"birthdate\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"birthdate\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"birthdate\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"b4644d65-ffbb-4e0b-8aac-238665af40dc\",\n                        \"name\": \"locale\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"locale\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"locale\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"6366756e-bf69-4844-b127-60fa514ad768\",\n                        \"name\": \"website\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"website\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"website\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"3d763f84-d417-4b4e-99e4-2b0e05bf861a\",\n                        \"name\": \"family name\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-property-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"lastName\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"family_name\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"d05efa25-5348-4a14-9550-69791df4ec5e\",\n                        \"name\": \"full name\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-full-name-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"userinfo.token.claim\": \"true\"\n                        }\n                    },\n                    {\n                        \"id\": \"0d66e664-6b0c-45de-ba88-b2b86b23cacc\",\n                        \"name\": \"profile\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-attribute-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"profile\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"profile\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    },\n                    {\n                        \"id\": \"17d3b93d-993b-4768-892c-0b20f8462be3\",\n                        \"name\": \"username\",\n                        \"protocol\": \"openid-connect\",\n                        \"protocolMapper\": \"oidc-usermodel-property-mapper\",\n                        \"consentRequired\": false,\n                        \"config\": {\n                            \"userinfo.token.claim\": \"true\",\n                            \"user.attribute\": \"username\",\n                            \"id.token.claim\": \"true\",\n                            \"access.token.claim\": \"true\",\n                            \"claim.name\": \"preferred_username\",\n                            \"jsonType.label\": \"String\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"a46716b3-8da1-4657-b703-13a5cd472c92\",\n                \"name\": \"role_list\",\n                \"description\": \"SAML role list\",\n                \"protocol\": \"saml\",\n                \"attributes\": {\n                    \"consent.screen.text\": \"${samlRoleListScopeConsentText}\",\n                    \"display.on.consent.screen\": \"true\"\n                },\n                \"protocolMappers\": [\n                    {\n                    \"id\": \"0ab50259-1e8b-40bd-9686-fb9a54dfc37d\",\n                    \"name\": \"role list\",\n                    \"protocol\": \"saml\",\n                    \"protocolMapper\": \"saml-role-list-mapper\",\n                    \"consentRequired\": false,\n                    \"config\": {\n                        \"single\": \"false\",\n                        \"attribute.nameformat\": \"Basic\",\n                        \"attribute.name\": \"Role\"\n                    }\n                    }\n                ]\n            },\n            {\n                \"id\": \"0f9bd78c-129e-4f87-9cf7-8b68b628ea1b\",\n                \"name\": \"offline_access\",\n                \"description\": \"OpenID Connect built-in scope: offline_access\",\n                \"protocol\": \"openid-connect\",\n                \"attributes\": {\n                    \"consent.screen.text\": \"${offlineAccessScopeConsentText}\",\n                    \"display.on.consent.screen\": \"true\"\n                }\n            }\n        ],\n        \"keycloakVersion\": \"9.0.2\"\n    }"
+---
+# Source: OSB/templates/configmap.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloudharness-allvalues
+  labels:
+    app: cloudharness
+data:
+  allvalues.yaml: |
+    apps:
+      accounts:
+        admin:
+          pass: metacell
+          role: administrator
+          user: admin
+        client:
+          id: rest-client
+          secret: 5678eb6e-9e2c-4ee5-bd54-34e7411339e8
+        db:
+          image: postgres:10.4
+          initialdb: auth_db
+          name: keycloak-postgress
+          pass: password
+          user: user
+        enabled: true
+        gatekeeper:
+          image: accounts-keycloak-gatekeeper
+        harness:
+          database:
+            auto: false
+            mongo:
+              image: mongo:latest
+              ports:
+              - name: http
+                port: 27017
+            name: accounts-db
+            neo4j:
+              dbms_security_auth_enabled: "false"
+              image: neo4j:latest
+              memory:
+                heap:
+                  initial: 64M
+                  max: 128M
+                pagecache:
+                  size: 64M
+                size: 256M
+              ports:
+              - name: http
+                port: 7474
+              - name: bolt
+                port: 7687
+            pass: metacell
+            postgres:
+              image: postgres:latest
+              initialdb: cloudharness
+              ports:
+              - name: http
+                port: 5432
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            size: 1Gi
+            type: null
+            user: mnp
+          dependencies:
+            build: []
+            hard: []
+            soft: []
+          deployment:
+            auto: false
+            image: localhost:5000/accounts:latest
+            name: accounts
+            port: 8080
+            replicas: 1
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 25m
+                memory: 32Mi
+          domain: null
+          name: accounts
+          secured: false
+          service:
+            auto: true
+            name: accounts
+            port: 8080
+          subdomain: accounts
+          uri_role_mapping:
+          - roles:
+            - administrator
+            uri: /*
+          use_services: []
+        harvest: true
+        image: localhost:5000/accounts:latest
+        name: accounts
+        port: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 25m
+            memory: 32Mi
+        subdomain: accounts
+        webclient:
+          id: web-client
+          secret: 452952ae-922c-4766-b912-7b106271e34b
+      common:
+        harness:
+          database:
+            auto: false
+            mongo:
+              image: mongo:latest
+              ports:
+              - name: http
+                port: 27017
+            name: common-db
+            neo4j:
+              dbms_security_auth_enabled: "false"
+              image: neo4j:latest
+              memory:
+                heap:
+                  initial: 64M
+                  max: 128M
+                pagecache:
+                  size: 64M
+                size: 256M
+              ports:
+              - name: http
+                port: 7474
+              - name: bolt
+                port: 7687
+            pass: metacell
+            postgres:
+              image: postgres:latest
+              initialdb: cloudharness
+              ports:
+              - name: http
+                port: 5432
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            size: 1Gi
+            type: null
+            user: mnp
+          dependencies:
+            build: []
+            hard: []
+            soft: []
+          deployment:
+            auto: true
+            image: localhost:5000/common:latest
+            name: common
+            port: 8080
+            replicas: 1
+            resources:
+              limits:
+                cpu: 200m
+                memory: 256Mi
+              requests:
+                cpu: 100m
+                memory: 128Mi
+          domain: null
+          name: common
+          secured: false
+          service:
+            auto: true
+            name: common
+            port: 8080
+          subdomain: common
+          uri_role_mapping:
+          - roles:
+            - administrator
+            uri: /*
+          use_services: []
+        image: localhost:5000/common:latest
+        name: common
+        port: 8080
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      osb_portal:
+        harness:
+          database:
+            auto: false
+            mongo:
+              image: mongo:latest
+              ports:
+              - name: http
+                port: 27017
+            name: osb-portal-db
+            neo4j:
+              dbms_security_auth_enabled: "false"
+              image: neo4j:latest
+              memory:
+                heap:
+                  initial: 64M
+                  max: 128M
+                pagecache:
+                  size: 64M
+                size: 256M
+              ports:
+              - name: http
+                port: 7474
+              - name: bolt
+                port: 7687
+            pass: metacell
+            postgres:
+              image: postgres:latest
+              initialdb: cloudharness
+              ports:
+              - name: http
+                port: 5432
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            size: 1Gi
+            type: null
+            user: mnp
+          dependencies:
+            build: []
+            hard: []
+            soft:
+            - accounts
+            - common
+            - volumemanager
+            - workspaces
+            - workflows
+          deployment:
+            auto: true
+            image: localhost:5000/osb-portal:latest
+            name: osb-portal
+            port: 3000
+            replicas: 1
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+          domain: null
+          name: osb-portal
+          secured: false
+          sentry: true
+          service:
+            auto: true
+            name: portal
+            port: 80
+          subdomain: www
+          uri_role_mapping:
+          - roles:
+            - administrator
+            uri: /*
+          use_services: []
+        image: localhost:5000/osb-portal:latest
+        name: osb-portal
+        port: 3000
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+      volumemanager:
+        harness:
+          database:
+            auto: false
+            mongo:
+              image: mongo:latest
+              ports:
+              - name: http
+                port: 27017
+            name: volumemanager-db
+            neo4j:
+              dbms_security_auth_enabled: "false"
+              image: neo4j:latest
+              memory:
+                heap:
+                  initial: 64M
+                  max: 128M
+                pagecache:
+                  size: 64M
+                size: 256M
+              ports:
+              - name: http
+                port: 7474
+              - name: bolt
+                port: 7687
+            pass: metacell
+            postgres:
+              image: postgres:latest
+              initialdb: cloudharness
+              ports:
+              - name: http
+                port: 5432
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            size: 1Gi
+            type: null
+            user: mnp
+          dependencies:
+            build: []
+            hard: []
+            soft: []
+          deployment:
+            auto: true
+            image: localhost:5000/volumemanager:latest
+            name: volumemanager
+            port: 8080
+            replicas: 1
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+          domain: null
+          name: volumemanager
+          secured: false
+          sentry: true
+          service:
+            auto: true
+            name: volumemanager
+            port: 8080
+          subdomain: volumemanager
+          uri_role_mapping:
+          - roles:
+            - administrator
+            uri: /*
+          use_services: []
+        image: localhost:5000/volumemanager:latest
+        name: volumemanager
+        port: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+      workflows:
+        harness:
+          database:
+            auto: false
+            mongo:
+              image: mongo:latest
+              ports:
+              - name: http
+                port: 27017
+            name: workflows-db
+            neo4j:
+              dbms_security_auth_enabled: "false"
+              image: neo4j:latest
+              memory:
+                heap:
+                  initial: 64M
+                  max: 128M
+                pagecache:
+                  size: 64M
+                size: 256M
+              ports:
+              - name: http
+                port: 7474
+              - name: bolt
+                port: 7687
+            pass: metacell
+            postgres:
+              image: postgres:latest
+              initialdb: cloudharness
+              ports:
+              - name: http
+                port: 5432
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            size: 1Gi
+            type: null
+            user: mnp
+          dependencies:
+            build: []
+            hard: []
+            soft: []
+          deployment:
+            auto: true
+            image: localhost:5000/workflows:latest
+            name: workflows
+            port: 8080
+            replicas: 1
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+          domain: null
+          name: workflows
+          secured: false
+          service:
+            auto: true
+            name: workflows
+            port: 8080
+          subdomain: workflows
+          uri_role_mapping:
+          - roles:
+            - administrator
+            uri: /*
+          use_services: []
+        image: localhost:5000/workflows:latest
+        name: workflows
+        port: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+      workspaces:
+        harness:
+          database:
+            auto: false
+            mongo:
+              image: mongo:latest
+              ports:
+              - name: http
+                port: 27017
+            name: workspaces-db
+            neo4j:
+              dbms_security_auth_enabled: "false"
+              image: neo4j:latest
+              memory:
+                heap:
+                  initial: 64M
+                  max: 128M
+                pagecache:
+                  size: 64M
+                size: 256M
+              ports:
+              - name: http
+                port: 7474
+              - name: bolt
+                port: 7687
+            pass: metacell
+            postgres:
+              image: postgres:latest
+              initialdb: cloudharness
+              ports:
+              - name: http
+                port: 5432
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            size: 1Gi
+            type: null
+            user: mnp
+          dependencies:
+            build: []
+            hard: []
+            soft: []
+          deployment:
+            auto: true
+            image: localhost:5000/workspaces:latest
+            name: workspaces
+            port: 8080
+            replicas: 1
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+            volume:
+              mountpath: /usr/src/app/workspaces/static/workspaces
+              name: workspaces-images
+              size: 4G
+          domain: null
+          name: workspaces
+          secured: false
+          sentry: true
+          service:
+            auto: true
+            name: workspaces
+            port: 8080
+          subdomain: workspaces
+          uri_role_mapping:
+          - roles:
+            - administrator
+            uri: /*
+          use_services: []
+        image: localhost:5000/workspaces:latest
+        name: workspaces
+        port: 8080
+        postgres:
+          datavolume: /opt/data/
+          image: postgres:latest
+          initialdb: workspaces
+          name: workspaces-postgres-host
+          password: secret
+          pgdata: /opt/data/pgdata
+          port: 5432
+          user: workspace
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+    backup:
+      active: true
+      dir: /backups
+      keep_days: "7"
+      keep_months: "6"
+      keep_weeks: "4"
+      resources:
+        limits:
+          cpu: 50m
+          memory: 64Mi
+        requests:
+          cpu: 25m
+          memory: 32Mi
+      schedule: '@daily'
+      suffix: .gz
+    domain: osb.local
+    env:
+    - name: CH_VERSION
+      value: 0.0.1
+    - name: CH_CHART_VERSION
+      value: 0.0.1
+    - name: CH_VOLUMEMANAGER_NAME
+      value: volumemanager
+    - name: CH_VOLUMEMANAGER_SUBDOMAIN
+      value: volumemanager
+    - name: CH_ACCOUNTS_NAME
+      value: accounts
+    - name: CH_ACCOUNTS_SUBDOMAIN
+      value: accounts
+    - name: CH_OSB_PORTAL_NAME
+      value: osb-portal
+    - name: CH_OSB_PORTAL_SUBDOMAIN
+      value: www
+    - name: CH_COMMON_NAME
+      value: common
+    - name: CH_COMMON_SUBDOMAIN
+      value: common
+    - name: CH_WORKSPACES_NAME
+      value: workspaces
+    - name: CH_WORKSPACES_SUBDOMAIN
+      value: workspaces
+    - name: CH_WORKFLOWS_NAME
+      value: workflows
+    - name: CH_WORKFLOWS_SUBDOMAIN
+      value: workflows
+    - name: CH_DOMAIN
+      value: osb.local
+    - name: CH_IMAGE_REGISTRY
+      value: localhost:5000/
+    - name: CH_IMAGE_TAG
+      value: latest
+    fullnameOverride: ""
+    ingress:
+      enabled: true
+      letsencrypt:
+        email: filippo@metacell.us
+      name: cloudharness-ingress
+      ssl_redirect: true
+    local: true
+    localIp: 192.168.99.104
+    mainapp: osb-portal
+    nameOverride: ""
+    namespace: osb2
+    privenv:
+    - name: CH_SECRET
+      value: In God we trust; all others must bring data. ― W. Edwards Deming
+    registry:
+      name: localhost:5000/
+      secret: ""
+    secured_gatekeepers: true
+    tag: latest
+    tls: osb-local-tls
+---
+# Source: OSB/templates/accounts/keycloak-postgres.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: accounts-db
+  labels:
+    app: keycloak-postgress
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+# Source: OSB/templates/auto-volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspaces-images
+  labels:
+    app: "workspaces"
+spec:
+  storageClassName: standard
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4G
+---
+# Source: OSB/templates/workspaces/postgres.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspaces-db
+  labels:
+    app: workspaces-postgres-host
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+# Source: OSB/templates/accounts/keycloak-postgres.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-postgress
+  labels:
+    app: keycloak-postgress
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+   - port: 5432
+  selector:
+   app: keycloak-postgress
+---
+# Source: OSB/templates/auto-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "accounts"
+  labels:
+    app: "accounts"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: "accounts"
+  ports:
+    - port: 8080
+      name: http
+---
+# Source: OSB/templates/auto-services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "common"
+  labels:
+    app: "common"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: "common"
+  ports:
+    - port: 8080
+      name: http
+---
+# Source: OSB/templates/auto-services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "portal"
+  labels:
+    app: "osb-portal"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: "osb-portal"
+  ports:
+    - port: 80
+      name: http
+---
+# Source: OSB/templates/auto-services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "volumemanager"
+  labels:
+    app: "volumemanager"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: "volumemanager"
+  ports:
+    - port: 8080
+      name: http
+---
+# Source: OSB/templates/auto-services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "workflows"
+  labels:
+    app: "workflows"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: "workflows"
+  ports:
+    - port: 8080
+      name: http
+---
+# Source: OSB/templates/auto-services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "workspaces"
+  labels:
+    app: "workspaces"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  selector:
+    app: "workspaces"
+  ports:
+    - port: 8080
+      name: http
+---
+# Source: OSB/templates/workspaces/postgres.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: workspaces-postgres-host
+  labels:
+    app: workspaces-postgres-host
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+   - port: 5432
+  selector:
+   app: workspaces-postgres-host
+---
+# Source: OSB/templates/accounts/keycloak-postgres.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-postgress
+  labels:
+    app: keycloak-postgress
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "keycloak-postgress"
+      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: keycloak-postgress
+        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "keycloak-postgress"
+        image: postgres:10.4
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: POSTGRES_DB
+          value: "auth_db"
+        - name: POSTGRES_USER
+          value: "user"
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+          - containerPort: 5432
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: accounts-db
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: accounts-db
+        persistentVolumeClaim:
+          claimName: accounts-db
+---
+# Source: OSB/templates/accounts/keycloak.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "accounts"
+  labels:
+    app: "accounts"
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "accounts"
+      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      annotations:
+        co.elastic.logs/enabled: "true"
+        metricbeat: "true"
+      labels:
+        app: "accounts"
+        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      
+      containers:
+      - name: "accounts"
+        image: localhost:5000/accounts:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: KEYCLOAK_IMPORT
+          value: "/tmp/realm.json"
+        - name: KEYCLOAK_USER
+          value: "admin"
+        - name: KEYCLOAK_PASSWORD
+          value: "metacell"
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: DB_VENDOR
+          value: POSTGRES
+        - name: DB_ADDR
+          value: "keycloak-postgress"
+        - name: DB_DATABASE
+          value: "auth_db"
+        - name: DB_USER
+          value: "user"
+        - name: DB_PASSWORD
+          value: "password"
+        
+        - name: "CH_VERSION"
+          value: "0.0.1"
+        - name: "CH_CHART_VERSION"
+          value: "0.0.1"
+        - name: "CH_VOLUMEMANAGER_NAME"
+          value: "volumemanager"
+        - name: "CH_VOLUMEMANAGER_SUBDOMAIN"
+          value: "volumemanager"
+        - name: "CH_ACCOUNTS_NAME"
+          value: "accounts"
+        - name: "CH_ACCOUNTS_SUBDOMAIN"
+          value: "accounts"
+        - name: "CH_OSB_PORTAL_NAME"
+          value: "osb-portal"
+        - name: "CH_OSB_PORTAL_SUBDOMAIN"
+          value: "www"
+        - name: "CH_COMMON_NAME"
+          value: "common"
+        - name: "CH_COMMON_SUBDOMAIN"
+          value: "common"
+        - name: "CH_WORKSPACES_NAME"
+          value: "workspaces"
+        - name: "CH_WORKSPACES_SUBDOMAIN"
+          value: "workspaces"
+        - name: "CH_WORKFLOWS_NAME"
+          value: "workflows"
+        - name: "CH_WORKFLOWS_SUBDOMAIN"
+          value: "workflows"
+        - name: "CH_DOMAIN"
+          value: "osb.local"
+        - name: "CH_IMAGE_REGISTRY"
+          value: "localhost:5000/"
+        - name: "CH_IMAGE_TAG"
+          value: "latest"
+        - name: CH_ACCOUNTS_CLIENT_SECRET
+          value: "5678eb6e-9e2c-4ee5-bd54-34e7411339e8"
+        - name: CH_ACCOUNTS_REALM
+          value: "osb2"
+        - name: CH_ACCOUNTS_AUTH_DOMAIN
+          value: "accounts.osb.local"
+        - name: CH_ACCOUNTS_CLIENT_ID
+          value: "rest-client"
+        - name: DOMAIN
+          value: "osb.local"
+        
+        - name: "CH_SECRET"
+          valueFrom:
+            secretKeyRef:
+              name: deployment-secrets
+              key: "CH_SECRET"
+        volumeMounts:
+        - name: realm-config
+          mountPath: "/tmp/realm.json"
+          subPath: realm.json
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        readinessProbe:
+          httpGet:
+            path: /auth/realms/master
+            port: 8080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+      volumes:
+      - name: realm-config
+        configMap:
+          name: "accounts"
+---
+# Source: OSB/templates/auto-deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "common"
+  namespace: osb2
+  labels:
+    app: "common"    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "common"      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: "common"        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "common"
+        image: localhost:5000/common:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        
+        - name: "CH_VERSION"
+          value: "0.0.1"
+        - name: "CH_CHART_VERSION"
+          value: "0.0.1"
+        - name: "CH_VOLUMEMANAGER_NAME"
+          value: "volumemanager"
+        - name: "CH_VOLUMEMANAGER_SUBDOMAIN"
+          value: "volumemanager"
+        - name: "CH_ACCOUNTS_NAME"
+          value: "accounts"
+        - name: "CH_ACCOUNTS_SUBDOMAIN"
+          value: "accounts"
+        - name: "CH_OSB_PORTAL_NAME"
+          value: "osb-portal"
+        - name: "CH_OSB_PORTAL_SUBDOMAIN"
+          value: "www"
+        - name: "CH_COMMON_NAME"
+          value: "common"
+        - name: "CH_COMMON_SUBDOMAIN"
+          value: "common"
+        - name: "CH_WORKSPACES_NAME"
+          value: "workspaces"
+        - name: "CH_WORKSPACES_SUBDOMAIN"
+          value: "workspaces"
+        - name: "CH_WORKFLOWS_NAME"
+          value: "workflows"
+        - name: "CH_WORKFLOWS_SUBDOMAIN"
+          value: "workflows"
+        - name: "CH_DOMAIN"
+          value: "osb.local"
+        - name: "CH_IMAGE_REGISTRY"
+          value: "localhost:5000/"
+        - name: "CH_IMAGE_TAG"
+          value: "latest"
+        - name: CH_ACCOUNTS_CLIENT_SECRET
+          value: "5678eb6e-9e2c-4ee5-bd54-34e7411339e8"
+        - name: CH_ACCOUNTS_REALM
+          value: "osb2"
+        - name: CH_ACCOUNTS_AUTH_DOMAIN
+          value: "accounts.osb.local"
+        - name: CH_ACCOUNTS_CLIENT_ID
+          value: "rest-client"
+        - name: DOMAIN
+          value: "osb.local"
+        
+        - name: "CH_SECRET"
+          valueFrom:
+            secretKeyRef:
+              name: deployment-secrets
+              key: "CH_SECRET"
+
+
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+        volumeMounts:
+          - name: cloudharness-allvalues
+            mountPath: /opt/cloudharness/resources/allvalues.yaml
+            subPath: allvalues.yaml
+      volumes:
+        - name: cloudharness-allvalues
+          configMap:
+            name: cloudharness-allvalues
+---
+# Source: OSB/templates/auto-deployments.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "osb-portal"
+  namespace: osb2
+  labels:
+    app: "osb-portal"    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "osb-portal"      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: "osb-portal"        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "osb-portal"
+        image: localhost:5000/osb-portal:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        
+        - name: "CH_VERSION"
+          value: "0.0.1"
+        - name: "CH_CHART_VERSION"
+          value: "0.0.1"
+        - name: "CH_VOLUMEMANAGER_NAME"
+          value: "volumemanager"
+        - name: "CH_VOLUMEMANAGER_SUBDOMAIN"
+          value: "volumemanager"
+        - name: "CH_ACCOUNTS_NAME"
+          value: "accounts"
+        - name: "CH_ACCOUNTS_SUBDOMAIN"
+          value: "accounts"
+        - name: "CH_OSB_PORTAL_NAME"
+          value: "osb-portal"
+        - name: "CH_OSB_PORTAL_SUBDOMAIN"
+          value: "www"
+        - name: "CH_COMMON_NAME"
+          value: "common"
+        - name: "CH_COMMON_SUBDOMAIN"
+          value: "common"
+        - name: "CH_WORKSPACES_NAME"
+          value: "workspaces"
+        - name: "CH_WORKSPACES_SUBDOMAIN"
+          value: "workspaces"
+        - name: "CH_WORKFLOWS_NAME"
+          value: "workflows"
+        - name: "CH_WORKFLOWS_SUBDOMAIN"
+          value: "workflows"
+        - name: "CH_DOMAIN"
+          value: "osb.local"
+        - name: "CH_IMAGE_REGISTRY"
+          value: "localhost:5000/"
+        - name: "CH_IMAGE_TAG"
+          value: "latest"
+        - name: CH_ACCOUNTS_CLIENT_SECRET
+          value: "5678eb6e-9e2c-4ee5-bd54-34e7411339e8"
+        - name: CH_ACCOUNTS_REALM
+          value: "osb2"
+        - name: CH_ACCOUNTS_AUTH_DOMAIN
+          value: "accounts.osb.local"
+        - name: CH_ACCOUNTS_CLIENT_ID
+          value: "rest-client"
+        - name: DOMAIN
+          value: "osb.local"
+        
+        - name: "CH_SECRET"
+          valueFrom:
+            secretKeyRef:
+              name: deployment-secrets
+              key: "CH_SECRET"
+
+
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 10m
+          limits:
+            memory: 500Mi
+            cpu: 500m
+        volumeMounts:
+          - name: cloudharness-allvalues
+            mountPath: /opt/cloudharness/resources/allvalues.yaml
+            subPath: allvalues.yaml
+      volumes:
+        - name: cloudharness-allvalues
+          configMap:
+            name: cloudharness-allvalues
+---
+# Source: OSB/templates/auto-deployments.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "volumemanager"
+  namespace: osb2
+  labels:
+    app: "volumemanager"    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "volumemanager"      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: "volumemanager"        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "volumemanager"
+        image: localhost:5000/volumemanager:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        
+        - name: "CH_VERSION"
+          value: "0.0.1"
+        - name: "CH_CHART_VERSION"
+          value: "0.0.1"
+        - name: "CH_VOLUMEMANAGER_NAME"
+          value: "volumemanager"
+        - name: "CH_VOLUMEMANAGER_SUBDOMAIN"
+          value: "volumemanager"
+        - name: "CH_ACCOUNTS_NAME"
+          value: "accounts"
+        - name: "CH_ACCOUNTS_SUBDOMAIN"
+          value: "accounts"
+        - name: "CH_OSB_PORTAL_NAME"
+          value: "osb-portal"
+        - name: "CH_OSB_PORTAL_SUBDOMAIN"
+          value: "www"
+        - name: "CH_COMMON_NAME"
+          value: "common"
+        - name: "CH_COMMON_SUBDOMAIN"
+          value: "common"
+        - name: "CH_WORKSPACES_NAME"
+          value: "workspaces"
+        - name: "CH_WORKSPACES_SUBDOMAIN"
+          value: "workspaces"
+        - name: "CH_WORKFLOWS_NAME"
+          value: "workflows"
+        - name: "CH_WORKFLOWS_SUBDOMAIN"
+          value: "workflows"
+        - name: "CH_DOMAIN"
+          value: "osb.local"
+        - name: "CH_IMAGE_REGISTRY"
+          value: "localhost:5000/"
+        - name: "CH_IMAGE_TAG"
+          value: "latest"
+        - name: CH_ACCOUNTS_CLIENT_SECRET
+          value: "5678eb6e-9e2c-4ee5-bd54-34e7411339e8"
+        - name: CH_ACCOUNTS_REALM
+          value: "osb2"
+        - name: CH_ACCOUNTS_AUTH_DOMAIN
+          value: "accounts.osb.local"
+        - name: CH_ACCOUNTS_CLIENT_ID
+          value: "rest-client"
+        - name: DOMAIN
+          value: "osb.local"
+        
+        - name: "CH_SECRET"
+          valueFrom:
+            secretKeyRef:
+              name: deployment-secrets
+              key: "CH_SECRET"
+
+
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 10m
+          limits:
+            memory: 500Mi
+            cpu: 500m
+        volumeMounts:
+          - name: cloudharness-allvalues
+            mountPath: /opt/cloudharness/resources/allvalues.yaml
+            subPath: allvalues.yaml
+      volumes:
+        - name: cloudharness-allvalues
+          configMap:
+            name: cloudharness-allvalues
+---
+# Source: OSB/templates/auto-deployments.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "workflows"
+  namespace: osb2
+  labels:
+    app: "workflows"    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "workflows"      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: "workflows"        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "workflows"
+        image: localhost:5000/workflows:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        
+        - name: "CH_VERSION"
+          value: "0.0.1"
+        - name: "CH_CHART_VERSION"
+          value: "0.0.1"
+        - name: "CH_VOLUMEMANAGER_NAME"
+          value: "volumemanager"
+        - name: "CH_VOLUMEMANAGER_SUBDOMAIN"
+          value: "volumemanager"
+        - name: "CH_ACCOUNTS_NAME"
+          value: "accounts"
+        - name: "CH_ACCOUNTS_SUBDOMAIN"
+          value: "accounts"
+        - name: "CH_OSB_PORTAL_NAME"
+          value: "osb-portal"
+        - name: "CH_OSB_PORTAL_SUBDOMAIN"
+          value: "www"
+        - name: "CH_COMMON_NAME"
+          value: "common"
+        - name: "CH_COMMON_SUBDOMAIN"
+          value: "common"
+        - name: "CH_WORKSPACES_NAME"
+          value: "workspaces"
+        - name: "CH_WORKSPACES_SUBDOMAIN"
+          value: "workspaces"
+        - name: "CH_WORKFLOWS_NAME"
+          value: "workflows"
+        - name: "CH_WORKFLOWS_SUBDOMAIN"
+          value: "workflows"
+        - name: "CH_DOMAIN"
+          value: "osb.local"
+        - name: "CH_IMAGE_REGISTRY"
+          value: "localhost:5000/"
+        - name: "CH_IMAGE_TAG"
+          value: "latest"
+        - name: CH_ACCOUNTS_CLIENT_SECRET
+          value: "5678eb6e-9e2c-4ee5-bd54-34e7411339e8"
+        - name: CH_ACCOUNTS_REALM
+          value: "osb2"
+        - name: CH_ACCOUNTS_AUTH_DOMAIN
+          value: "accounts.osb.local"
+        - name: CH_ACCOUNTS_CLIENT_ID
+          value: "rest-client"
+        - name: DOMAIN
+          value: "osb.local"
+        
+        - name: "CH_SECRET"
+          valueFrom:
+            secretKeyRef:
+              name: deployment-secrets
+              key: "CH_SECRET"
+
+
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 10m
+          limits:
+            memory: 500Mi
+            cpu: 500m
+        volumeMounts:
+          - name: cloudharness-allvalues
+            mountPath: /opt/cloudharness/resources/allvalues.yaml
+            subPath: allvalues.yaml
+      volumes:
+        - name: cloudharness-allvalues
+          configMap:
+            name: cloudharness-allvalues
+---
+# Source: OSB/templates/auto-deployments.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "workspaces"
+  namespace: osb2
+  labels:
+    app: "workspaces"    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "workspaces"      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: "workspaces"        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "workspaces"
+        image: localhost:5000/workspaces:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        
+        - name: "CH_VERSION"
+          value: "0.0.1"
+        - name: "CH_CHART_VERSION"
+          value: "0.0.1"
+        - name: "CH_VOLUMEMANAGER_NAME"
+          value: "volumemanager"
+        - name: "CH_VOLUMEMANAGER_SUBDOMAIN"
+          value: "volumemanager"
+        - name: "CH_ACCOUNTS_NAME"
+          value: "accounts"
+        - name: "CH_ACCOUNTS_SUBDOMAIN"
+          value: "accounts"
+        - name: "CH_OSB_PORTAL_NAME"
+          value: "osb-portal"
+        - name: "CH_OSB_PORTAL_SUBDOMAIN"
+          value: "www"
+        - name: "CH_COMMON_NAME"
+          value: "common"
+        - name: "CH_COMMON_SUBDOMAIN"
+          value: "common"
+        - name: "CH_WORKSPACES_NAME"
+          value: "workspaces"
+        - name: "CH_WORKSPACES_SUBDOMAIN"
+          value: "workspaces"
+        - name: "CH_WORKFLOWS_NAME"
+          value: "workflows"
+        - name: "CH_WORKFLOWS_SUBDOMAIN"
+          value: "workflows"
+        - name: "CH_DOMAIN"
+          value: "osb.local"
+        - name: "CH_IMAGE_REGISTRY"
+          value: "localhost:5000/"
+        - name: "CH_IMAGE_TAG"
+          value: "latest"
+        - name: CH_ACCOUNTS_CLIENT_SECRET
+          value: "5678eb6e-9e2c-4ee5-bd54-34e7411339e8"
+        - name: CH_ACCOUNTS_REALM
+          value: "osb2"
+        - name: CH_ACCOUNTS_AUTH_DOMAIN
+          value: "accounts.osb.local"
+        - name: CH_ACCOUNTS_CLIENT_ID
+          value: "rest-client"
+        - name: DOMAIN
+          value: "osb.local"
+        
+        - name: "CH_SECRET"
+          valueFrom:
+            secretKeyRef:
+              name: deployment-secrets
+              key: "CH_SECRET"
+
+
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 10m
+          limits:
+            memory: 500Mi
+            cpu: 500m
+        volumeMounts:
+          - name: cloudharness-allvalues
+            mountPath: /opt/cloudharness/resources/allvalues.yaml
+            subPath: allvalues.yaml
+          - name: workspaces-images
+            mountPath: /usr/src/app/workspaces/static/workspaces
+      volumes:
+        - name: cloudharness-allvalues
+          configMap:
+            name: cloudharness-allvalues
+        - name: workspaces-images
+          persistentVolumeClaim:
+            claimName: workspaces-images
+---
+# Source: OSB/templates/workspaces/postgres.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspaces-postgres-host
+  labels:
+    app: workspaces-postgres-host
+    
+    chart: OSB-0.0.1
+    release: "RELEASE-NAME"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "workspaces-postgres-host"
+      
+      chart: OSB-0.0.1
+      release: "RELEASE-NAME"
+      heritage: "Helm"
+  template:
+    metadata:
+      labels:
+        app: workspaces-postgres-host
+        
+        chart: OSB-0.0.1
+        release: "RELEASE-NAME"
+        heritage: "Helm"
+    spec:
+      containers:
+      - name: "workspaces-postgres-host"
+        image: "postgres:latest"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: POSTGRES_DB
+          value: "workspaces"
+        - name: POSTGRES_USER
+          value: "workspace"
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+        - name: PGDATA
+          value: /opt/data/pgdata
+        ports:
+          - containerPort: 5432
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: workspaces-db
+          mountPath: /opt/data/
+      volumes:
+      - name: workspaces-db
+        persistentVolumeClaim:
+          claimName: workspaces-db
+---
+# Source: OSB/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "cloudharness-ingress"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: '10m'
+    nginx.ingress.kubernetes.io/from-to-www-redirect: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: "accounts.osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: accounts
+          servicePort: 8080
+  - host: "common.osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: common
+          servicePort: 8080
+  - host: "osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: portal
+          servicePort: 80
+  - host: "www.osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: portal
+          servicePort: 80
+  - host: "volumemanager.osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: volumemanager
+          servicePort: 8080
+  - host: "workflows.osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: workflows
+          servicePort: 8080
+  - host: "workspaces.osb.local"
+    
+  
+  
+    http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: workspaces
+          servicePort: 8080
+  tls:
+  - hosts:
+      - "accounts.osb.local"
+      - "common.osb.local"
+      - "www.osb.local"
+      - "volumemanager.osb.local"
+      - "workflows.osb.local"
+      - "workspaces.osb.local"
+      - "osb.local"
+    secretName: tls-secret

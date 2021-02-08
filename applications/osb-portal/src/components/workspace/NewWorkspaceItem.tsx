@@ -7,7 +7,7 @@ import WorkspaceEdit from "./WorkspaceEditor";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
 import { User } from "../../types/model";
 import { useUserService } from "../../service/UserService";
-
+import { useForm, usePlugin, useCMS } from 'tinacms'
 export interface WorkspaceTemplate {
   title: string;
   application: OSBApplication;
@@ -108,6 +108,8 @@ export default function NewWorkspaceItem(props: ItemProps) {
 
   return (
     <>
+
+
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
           <props.icon style={{ marginBottom: "0.2em" }} />

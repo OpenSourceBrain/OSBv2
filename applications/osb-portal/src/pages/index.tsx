@@ -4,15 +4,14 @@ import Box from "@material-ui/core/Box";
 import MainMenu from "../components/menu/MainMenu";
 import { makeStyles } from "@material-ui/core/styles";
 import { Latest } from "../components/latest/Latest";
+
 import { useRouter } from 'next/router';
 import { keycloakCfg } from "../config";
-import type { AppProps, AppContext } from 'next/app'
-import { parseCookies } from "../utils";
+import { parseCookies, deleteCookies } from "../utils";
 import { SSRKeycloakProvider, SSRCookies, getKeycloakInstance } from '@react-keycloak/ssr';
+
 import workspaceService from '../service/WorkspaceService';
-
-
-
+import kc from 'keycloak-js'
 
 import {
   Banner,
@@ -73,15 +72,26 @@ const Home = (props: any) => {
 
 
 
-export async function getServerSideProps(context: AppContext) {
+export async function getServerSideProps(context: any): Promise<any> {
   // Extract cookies from AppContext
-  const cookies = parseCookies(context?.ctx?.req);
+  const cookies = parseCookies(context?.req);
 
   const keycloak = getKeycloakInstance(keycloakCfg, SSRCookies(cookies));
-  const publicWorkspaces = await workspaceService.fetchWorkspaces(true);
+  let publicWorkspaces;
+  try {
+    publicWorkspaces = await workspaceService.fetchWorkspaces(true);
+  } catch (e) {
+    keycloak.token = null;
+    deleteCookies(context.res)
+    workspaceService.initApis(null);
+    publicWorkspaces = await workspaceService.fetchWorkspaces(true);
+
+  }
+
   // console.log("Cookies: ", cookies)
   // console.log("Token: ", keycloak.token)
   let userWorkspaces = null;
+
   if (keycloak.token) {
     workspaceService.initApis(keycloak.token)
     userWorkspaces = await workspaceService.fetchWorkspaces(false)
@@ -94,6 +104,7 @@ export async function getServerSideProps(context: AppContext) {
     }
 
   }
+
 }
 
 export default Home;

@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Link } from "@material-ui/core";
+import { useForm, usePlugin, useCMS } from 'tinacms'
+import { InlineForm, InlineText } from 'react-tinacms-inline';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,11 +25,11 @@ export const Latest = () => {
         <Typography>
           This is a beta release of version 2.0 of the Open Source Brain platform, which is under active development and testing.
         </Typography>
-        <br/>
+        <br />
         <Typography>
           <strong>User accounts, data and workspaces are subject to change without notice.</strong>
         </Typography>
-        <br/>
+        <br />
         <Typography>
           For now please use the live <Link href="http://opensourcebrain.org">OSBv1 platform</Link>, <Link href="http://nwbexplorer.opensourcebrain.org">NWB Explorer</Link> or <Link href="http://netpyne.opensourcebrain.org">NetPyNE</Link>.
 

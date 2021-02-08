@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' NODE_ENV='development' node server.js",
+    "dev-local": "NODE_TLS_REJECT_UNAUTHORIZED=0 CH_DOMAIN='osb.local' NODE_OPTIONS='--inspect' NODE_ENV='development' node server.js",
     "build": "next build",
     "start": "next start"
   },
@@ -27,8 +28,11 @@
     "react-redux": "^7.2.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "react-tinacms-inline": "^0.36.1",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "styled-components": "^5.2.1",
+    "tinacms": "^0.36.1"
   },
   "devDependencies": {
     "@material-ui/core": "^4.10.1",

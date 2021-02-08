@@ -5,7 +5,7 @@ import * as workspaceApi from '../apiclient/workspaces';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
-const workspacesApiUri = 'https://workspaces.v2.opensourcebrain.org/api';
+const workspacesApiUri = `http://workspaces.${process.env.DOMAIN || 'v2.opensourcebrain.org'}/api`;
 
 class WorkspaceService {
 
@@ -37,6 +37,8 @@ class WorkspaceService {
     if (this.workspacesApi) {
       const response = await this.workspacesApi.workspaceGet(1, 30, featured ? 'publicable=true' : null);
       return response.data.workspaces.map(mapWorkspace);
+
+
     } else {
       console.debug('Attempting to fetch workspaces before init');
     }

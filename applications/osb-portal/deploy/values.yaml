@@ -9,8 +9,10 @@ harness:
     port: 80
     name: portal
   sentry: true
-  requirements:
+  dependencies:
     soft:
       - accounts
+      - common
       - volumemanager
       - workspaces
+      - workflows
