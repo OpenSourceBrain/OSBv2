@@ -9,9 +9,9 @@ export interface OSBApplication {
 }
 
 export enum ResourceStatus {
-    pending= "PENDING",
-    available= "AVAILABLE",
-    error= "ERROR"
+    pending = "PENDING",
+    available = "AVAILABLE",
+    error = "ERROR"
 }
 export interface WorkspaceResource {
     workspaceId: number,
@@ -32,7 +32,7 @@ export interface ResourceType {
 export const OSBApplications: { [id: string]: OSBApplication } = {
     nwbexplorer: { name: "NWB Explorer", subdomain: "nwbexplorer" },
     netpyne: { name: "NetPyNE", subdomain: "netpyne" },
-    jupyter: { name: "Jupyter", subdomain: "jupyter" },
+    jupyter: { name: "Jupyter", subdomain: "notebooks" },
 }
 
 

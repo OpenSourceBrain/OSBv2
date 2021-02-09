@@ -14,6 +14,12 @@ harness:
       name: workspaces-images
       size: 4G
       mountpath: /usr/src/app/workspaces/static/workspaces
+  dependencies:
+    soft:
+      - events
+      - common
+    hard:
+      - argo
 postgres:
   name: workspaces-postgres-host
   port: 5432
