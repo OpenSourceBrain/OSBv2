@@ -60,7 +60,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
     resources: [{
       name: "notebook.ipynb",
       type: SampleResourceTypes.g,
-      location: window.location + "/workspace-data/notebook.ipynb",
+      location: window.location.origin + "/workspace-data/notebook.ipynb",
       workspaceId: -1
     }],
     volume: null,
