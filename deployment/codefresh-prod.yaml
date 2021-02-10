@@ -31,7 +31,7 @@ steps:
     commands:
     - pip install cloud-harness/utilities
     - harness-deployment . cloud-harness -m build -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}}
-      -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}} -e prod -i osb-portal
+      -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e prod -i osb-portal
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
