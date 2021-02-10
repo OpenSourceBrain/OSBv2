@@ -53,12 +53,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: cloudharness-base
         title: Cloudharness base
         working_directory: ./build
@@ -68,12 +66,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: infrastructure/base-images/cloudharness-base-debian/Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: cloudharness-base-debian
         title: Cloudharness base debian
         working_directory: ./build
@@ -83,12 +79,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: cloudharness-frontend-build
         title: Cloudharness frontend build
         working_directory: ./build
@@ -103,12 +97,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: cloudharness-flask
         title: Cloudharness flask
         working_directory: ./build/infrastructure/common-images/cloudharness-flask
@@ -122,12 +114,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: volumemanager
         title: Volumemanager
         working_directory: ./build/applications/volumemanager/server
@@ -137,12 +127,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: accounts
         title: Accounts
         working_directory: ./build/applications/accounts
@@ -152,12 +140,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: osb-portal
         title: Osb portal
         working_directory: ./build/applications/osb-portal
@@ -167,12 +153,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: common
         title: Common
         working_directory: ./build/applications/common/server
@@ -182,12 +166,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: netpyne
         title: Netpyne
         working_directory: ./build/applications/netpyne
@@ -197,12 +179,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: nwb-explorer
         title: Nwb explorer
         working_directory: ./build/applications/nwb-explorer
@@ -212,12 +192,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: jupyterhub
         title: Jupyterhub
         working_directory: ./build/applications/jupyterhub
@@ -227,12 +205,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workspaces
         title: Workspaces
         working_directory: ./build/applications/workspaces/server
@@ -242,12 +218,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workflows-print-file
         title: Workflows print file
         working_directory: ./build/applications/workflows/tasks/print-file
@@ -257,12 +231,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workflows-extract-download
         title: Workflows extract download
         working_directory: ./build/applications/workflows/tasks/extract-download
@@ -272,12 +244,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workflows-send-result-event
         title: Workflows send result event
         working_directory: ./build/applications/workflows/tasks/send-result-event
@@ -287,12 +257,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workflows-notify-queue
         title: Workflows notify queue
         working_directory: ./build/applications/workflows/tasks/notify-queue
@@ -302,12 +270,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workflows-extract-s3
         title: Workflows extract s3
         working_directory: ./build/applications/workflows/tasks/extract-s3
@@ -317,12 +283,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: workflows
         title: Workflows
         working_directory: ./build/applications/workflows/server
@@ -332,12 +296,10 @@ steps:
         tag: '${{CF_BUILD_ID}}'
         dockerfile: Dockerfile
         build_arguments:
-        - REGISTRY=${{REGISTRY}}
+        - REGISTRY=${{REGISTRY}}/
         - TAG=${{CF_BUILD_ID}}
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
-        registry: '${{CODEFRESH_REGISTRY}}'
-        no_cf_cache: false
         image_name: sentry
         title: Sentry
         working_directory: ./build/applications/sentry
