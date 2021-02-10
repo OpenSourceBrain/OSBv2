@@ -30,7 +30,7 @@ steps:
     working_directory: .
     commands:
     - pip install cloud-harness/utilities
-    - harness-deployment . cloud-harness -m build -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}}
+    - harness-deployment cloud-harness . -m build -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}}
       -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e prod -i osb-portal
   prepare_deployment_view:
     commands:
