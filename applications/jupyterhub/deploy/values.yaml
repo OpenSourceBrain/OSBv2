@@ -7,13 +7,14 @@ harness:
   deployment:
     auto: false
   jupyterhub:
-    args: ["--debug", "--NotebookApp.default_url=/lab"]
+    args: ["--debug", "--NotebookApp.default_url=/lab", "--NotebookApp.notebook_dir=/opt/workspace"]
     applicationHook: "osb_jupyter.change_pod_manifest"
     extraConfig:
       timing: |
         c.Spawner.port = 8000
         c.Spawner.http_timeout = 300
         c.Spawner.start_timeout = 300
+
         c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local localhost *.opensourcebrain.org"}}
 custom: {}
 hub:
@@ -214,7 +215,7 @@ singleuser:
     dynamic:
       pvcNameTemplate: osb-jupyter-{userid}
       volumeNameTemplate: osb-jupyter-{userid}
-    homeMountPath: /opt/home
+    homeMountPath: /opt/workspace
     extraLabels: {}
   image:
     name: jupyter/base-notebook
