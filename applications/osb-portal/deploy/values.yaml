@@ -17,6 +17,6 @@ harness:
       - workspaces
       - workflows
       - netpyne
-      - nwbexplorer
+      - nwb-explorer
       - jupyterhub
       - sentry
