@@ -60,7 +60,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
     resources: [{
       name: "notebook.ipynb",
       type: SampleResourceTypes.g,
-      location: "notebook.ipynb.location",
+      location: window.location + "/workspace-data/notebook.ipynb",
       workspaceId: -1
     }],
     volume: null,
@@ -93,7 +93,7 @@ export default (props: ItemProps) => {
 
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = (refresh= false) => {
+  const closeNewWorkspace = (refresh = false) => {
     setNewWorkspaceOpen(false);
     if (refresh) {
       props.refreshWorkspaces();

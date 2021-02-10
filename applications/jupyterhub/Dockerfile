@@ -13,4 +13,12 @@ COPY --chown=1000:1000 theming/hot_fix_for_eventsource.js /opt/conda/share/jupyt
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
+# Link jupyter lab workspace to osb workspace
+RUN mkdir /opt/workspace
+RUN chown jovyan /opt/workspace
 USER jovyan
+RUN mkdir -p .jupyter/lab
+RUN ln -s /opt/workspace .jupyter/lab/workspaces
+
+
+WORKDIR /opt/workspace

@@ -215,7 +215,7 @@ singleuser:
     dynamic:
       pvcNameTemplate: osb-jupyter-{userid}
       volumeNameTemplate: osb-jupyter-{userid}
-    homeMountPath: /opt/workspace
+    homeMountPath: /opt/home
     extraLabels: {}
   image:
     name: jupyter/base-notebook
