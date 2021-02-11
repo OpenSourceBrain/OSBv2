@@ -1,3 +1,4 @@
 cloud-harness
 .idea
 **/helm
+/build

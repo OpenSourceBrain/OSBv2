@@ -1,0 +1,10 @@
+harness:
+  dependencies:
+    soft:
+      - accounts
+      - common
+      - volumemanager
+      - workspaces
+      - workflows
+      - jupyterhub
+      - sentry

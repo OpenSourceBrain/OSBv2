@@ -1,6 +1,4 @@
 FROM node:13.14 as base
-ARG DOMAIN=v2.opensourcebrain.org
-ARG NAMESPACE=osb2
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json

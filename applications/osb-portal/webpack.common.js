@@ -79,11 +79,8 @@ module.exports = env => {
         plugins: [
             new CleanWebpackPlugin(),
             new CopyPlugin([
-                { 
+                {
                     from: './src/assets-parametrized', contentbase,
-                    transform(content, path) {
-                        return setEnv(content);
-                    }
                 },
                 { 
                     from: './src/assets', contentbase,
