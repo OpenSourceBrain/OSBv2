@@ -15,7 +15,7 @@ COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 EXPOSE 80
 
 RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-COPY deploy/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

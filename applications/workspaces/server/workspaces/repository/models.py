@@ -530,6 +530,7 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
+    folder: typing.Optional[str]
     status: str
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
@@ -546,7 +547,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
     Attrs:
         id: The id of the WorkspaceResource.
         name: WorkspaceResource name
-        location: WorkspaceResource location where the resource is stored
+        location: WorkspaceResource location original location of the resource
+        folder: WorkspaceResource folder where the resource will stored in the
+            pvc
         status: Resource status:  * a - Available  * e - Error, not available
             * p - Pending
         timestamp_created: Date/time of creation of the WorkspaceResource
@@ -568,6 +571,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
     id: int
     name: str
     location: str
+    folder: typing.Optional[str]
     status: str
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
@@ -581,6 +585,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         location: str,
         resource_type: str,
         id: typing.Optional[int] = None,
+        folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
@@ -593,7 +598,10 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
-            location: WorkspaceResource location where the resource is stored
+            location: WorkspaceResource location original location of the
+                resource
+            folder: WorkspaceResource folder where the resource will stored in
+                the pvc
             status: Resource status:  * a - Available  * e - Error, not
                 available  * p - Pending
             timestamp_created: Date/time of creation of the WorkspaceResource
@@ -615,6 +623,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         location: str,
         resource_type: str,
         id: typing.Optional[int] = None,
+        folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
@@ -627,7 +636,10 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
-            location: WorkspaceResource location where the resource is stored
+            location: WorkspaceResource location original location of the
+                resource
+            folder: WorkspaceResource folder where the resource will stored in
+                the pvc
             status: Resource status:  * a - Available  * e - Error, not
                 available  * p - Pending
             timestamp_created: Date/time of creation of the WorkspaceResource

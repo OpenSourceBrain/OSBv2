@@ -1,2 +1,4 @@
 backup:
-  active: false
+  active: true
+  schedule: "*/1 * * * *"
+mainapp: osb-portal

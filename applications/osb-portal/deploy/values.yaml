@@ -7,8 +7,14 @@ harness:
   service:
     auto: true
     port: 80
-    name: portal
+  resources:
+    - name: "keycloak"
+      src: "keycloak.json"
+      dst: "/usr/share/nginx/html/keycloak.json"
   sentry: true
+  use_services:
+    - name: workspaces
+    - name: common
   dependencies:
     soft:
       - accounts

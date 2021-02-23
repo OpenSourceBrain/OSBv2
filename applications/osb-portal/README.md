@@ -79,6 +79,17 @@ replace `export type FetchAPI = GlobalFetch['fetch'];` with
 export type FetchAPI = WindowOrWorkerGlobalScope['fetch'];
 ```
 
+# Trubleshooting
+
+## 502 error on registration
+
+The error is related to ingress nginx proxy size.
+Edit the configmap nginx-load-balancer-conf (or nginx-ingress-controller) and set value:
+
+```yaml
+data:
+  "proxy-buffer-size": "16k"
+```
 
 
 

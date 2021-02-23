@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from flask.logging import default_handler
 import atexit
 import connexion
 import logging
@@ -11,14 +12,13 @@ from flask import send_from_directory, request
 from flask_cors import CORS
 
 import cloudharness
+from cloudharness.utils.server import init_flask, main
 
 from workspaces.config import Config
 from workspaces.repository.database import db, setup_db
 from workspaces.service.events import start_kafka_consumers, stop_kafka_consumers
 
-logger = logging.getLogger(Config.APP_NAME)
-
-from flask.logging import default_handler
+logger = cloudharness.log
 
 
 def setup_logging():
@@ -34,10 +34,11 @@ def setup_logging():
 
 
 def mkdirs():
-    Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
+    Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(
+        parents=True, exist_ok=True)
 
 
-def setup_static_router():
+def setup_static_router(app):
     # set the static folder root to the www folder
     app.static_folder = Config.STATIC_DIR
     # remove the static route (if exists)
@@ -48,34 +49,28 @@ def setup_static_router():
                      view_func=app.send_static_file)
 
 
-connexion_app = connexion.App(Config.APP_NAME, specification_dir=Config.OPENAPI_DIR)
-app = connexion_app.app
-app.config.from_object(Config)
-setup_static_router()
-mkdirs()
-db.init_app(app)
-
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-with app.app_context():
-    setup_logging()
+def init_app(app):
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     if app.config['ENV'] != 'development':
         cloudharness.init(Config.APP_NAME)
-    setup_db(app)
-    connexion_app.add_api(Config.OPENAPI_FILE,
-                          arguments={'title': 'Workspace Manager API'},
-                          resolver=connexion.resolver.MethodViewResolver((__package__ or '') + '.views.api'))
-    atexit.register(stop_kafka_consumers)
+
     try:
+        setup_db(app)
+    except Exception as e:
+        logger.error("Could not init database. Some application functionality won't be available.", exc_info=True)
+
+    try:
+        atexit.register(stop_kafka_consumers)
         start_kafka_consumers()
-    except:
-        logger.error('Couldn not start kafka consumers', exc_info=True)
+    except Exception as e:
+        logger.error("Could not start kafka consumers. Some application functionality won't be available.", exc_info=True)
+    setup_static_router(app)
 
 
-@app.route('/', defaults={'file': 'index.html'})
-def index(file):
-    return send_from_directory(app.static_folder, file)
+app = init_flask(title="Workspace Manager API", webapp=True, init_app_fn=init_app,
+                 resolver=connexion.resolver.MethodViewResolver(
+                     'workspaces.views.api'),
+                 config=Config)
 
-
-if __name__ == "__main__":
-    connexion_app.run(port=8080)
+if __name__ == '__main__':
+    main()

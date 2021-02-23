@@ -8,20 +8,12 @@ console.log(contentbase);
 
 
 module.exports = env => {
-    if(!env) {
+    if (!env) {
         env = {}
     }
-    
 
-    function setEnv(content) {
-        console.log("Replacing ENV", env);
-        let result = content.toString();
-        for(const v in env) {
-            result = result.replace(new RegExp(`__${v}__`), env[v]);
-        }
-        console.log(result);
-        return result;
-    }
+
+
     return {
         output: {
             path: path.resolve(__dirname, 'public'),
@@ -51,15 +43,15 @@ module.exports = env => {
                 {
                     test: /\.less$/,
                     use: [
-                    {
-                        loader: 'style-loader',
-                    },
-                    {
-                        loader: 'css-loader',
-                    },
-                    {
-                        loader: 'less-loader',
-                    },
+                        {
+                            loader: 'style-loader',
+                        },
+                        {
+                            loader: 'css-loader',
+                        },
+                        {
+                            loader: 'less-loader',
+                        },
                     ],
                 },
                 {
@@ -72,7 +64,7 @@ module.exports = env => {
                     test: /\.js$/,
                     loader: "source-map-loader"
                 },
-                
+
             ]
         },
 
@@ -82,10 +74,10 @@ module.exports = env => {
                 {
                     from: './src/assets-parametrized', contentbase,
                 },
-                { 
+                {
                     from: './src/assets', contentbase,
                 },
-               
+
             ]),
         ],
 

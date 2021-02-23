@@ -15,6 +15,9 @@ harness:
       size: 4G
       mountpath: /usr/src/app/workspaces/static/workspaces
   dependencies:
+    build:
+      - cloudharness-base
+      - cloudharness-flask
     soft:
       - events
       - common

@@ -1,13 +1,12 @@
 """Setup for the repository."""
 
-import logging
+from cloudharness import log
 import os
 
 from flask_sqlalchemy import SQLAlchemy
 from ..config import Config
 from open_alchemy import init_yaml
 
-logger = logging.getLogger(Config.APP_NAME)
 
 # Construct models
 db = SQLAlchemy()
@@ -17,6 +16,7 @@ init_yaml(SPEC_FILE, base=db.Model, models_filename=MODELS_FILENAME)
 
 
 def setup_db(app):
+    db.init_app(app)
     db.create_all()
     from .fixtures import create_fixtures
     create_fixtures(app)
