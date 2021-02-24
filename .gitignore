@@ -4,3 +4,4 @@ cloud-harness
 /build
 .vscode
 skaffold.yaml
+/deployment.yaml
