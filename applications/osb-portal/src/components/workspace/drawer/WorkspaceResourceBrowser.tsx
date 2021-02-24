@@ -14,7 +14,7 @@ import {
   LoadingIcon,
   FolderIcon,
 } from "../../icons";
-import { ActionLineWeight } from "material-ui/svg-icons";
+
 
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
   const fileName = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
@@ -79,7 +79,7 @@ export default (props: WorkspaceProps) => {
             icon={null}
             key={idx}
             nodeId={idx + ''}
-            label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace}/>}
+            label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} />}
           />)
         )
       }
