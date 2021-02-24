@@ -43,17 +43,17 @@ class BaseModelView(MethodView):
             obj = obj.to_dict()
         return obj, result_code
 
-    def get(self, id):
+    def get(self, id_):
         """Get an object from the repository."""
-        obj, found = self.repository.get(id=id)
+        obj, found = self.repository.get(id=id_)
         if not found:
-            return f"{self.repository.model.__name__} with id {id} not found.", 404
+            return f"{self.repository.model.__name__} with id {id_} not found.", 404
         return obj.to_dict()
 
-    def put(self, body, id):
+    def put(self, body, id_):
         """Update an object in the repository."""
-        return self.repository.put(body, id)
+        return self.repository.put(body, id_)
 
-    def delete(self, id):
+    def delete(self, id_):
         """Delete an object from the repository."""
-        return self.repository.delete(id)
+        return self.repository.delete(id_)

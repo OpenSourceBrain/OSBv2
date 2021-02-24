@@ -25,11 +25,12 @@ export const MainMenu = () => {
       <MainMenuItem
         title="OSB"
         className={classes.button + " " + classes.firstButton}
+        items={[]}
       />
-      <MainMenuItem title="File" className={classes.button} />
-      <MainMenuItem title="View" className={classes.button} />
-      <MainMenuItem title="Model" className={classes.button} />
-      <MainMenuItem title="Help" className={classes.button} />
+      <MainMenuItem title="File" className={classes.button} items={[]} />
+      <MainMenuItem title="View" className={classes.button} items={[]} />
+      <MainMenuItem title="Model" className={classes.button} items={[]} />
+      <MainMenuItem title="Help" className={classes.button} items={[]} />
     </Box>
   );
 };

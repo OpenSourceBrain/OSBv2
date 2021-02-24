@@ -50,7 +50,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
         }
     }
 
-    const domain = window.location.host.includes('.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
+    const domain = window.location.host.includes('www.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
     const workspaceParam = `workspace=${encodeURIComponent(id)}`;
     const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;

@@ -52,7 +52,9 @@ export const Banner = (props: any) => {
             {text2}
           </Typography>
           <Box display="flex" pt={1} flexDirection="row">
-            <Button variant="outlined">Take the tour</Button>
+            {'' && // TODO temporarily disabled
+              <Button variant="outlined">Take the tour</Button>
+            }
             {user === null ? (
               <Button onClick={handleSignup}>Sign up</Button>
             ) : null}

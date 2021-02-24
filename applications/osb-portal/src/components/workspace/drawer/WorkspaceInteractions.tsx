@@ -91,7 +91,7 @@ export default (props: WorkspaceProps | any) => {
   }
 
   if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
-    setTimeout(props.refreshWorkspace, 10000);
+    setTimeout(props.refreshWorkspace, 30000);
   }
 
 
@@ -172,20 +172,23 @@ export default (props: WorkspaceProps | any) => {
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel elevation={0}>
-          <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon />}
-          >
-            <Typography variant="h5" className={classes.flexCenter}>User shared space</Typography>
-          </ExpansionPanelSummary>
+        { false && // TODO user shared space back when available
+          <ExpansionPanel elevation={0}>
+            <ExpansionPanelSummary
+              expandIcon={<ArrowUpIcon />}
+            >
+              <Typography variant="h5" className={classes.flexCenter}>User shared space</Typography>
+            </ExpansionPanelSummary>
 
-          <ExpansionPanelDetails>
-            <VolumePathBrowser
-              volumeId={null/* TODO get from logged user */}
-              path="/"
-            />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+            <ExpansionPanelDetails>
+              <VolumePathBrowser
+                volumeId={null/* TODO get from logged user */}
+                path="/"
+              />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        }
+
       </>) :
       <>
         <div className={classes.closedText}>

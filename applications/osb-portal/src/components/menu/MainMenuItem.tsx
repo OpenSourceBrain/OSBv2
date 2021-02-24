@@ -15,9 +15,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+export interface MenuItem {
+  label: string;
+  callback: (e: any) => void;
+}
+
 export type MenuItemProps = {
   title: string,
-  className: string
+  className: string,
+  items: MenuItem[]
 }
 
 
@@ -76,9 +82,22 @@ export const MainMenuItem = (props: MenuItemProps) => {
               <Paper square={true}>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    {
+                      props.items.map(item =>
+                        <MenuItem
+                          key={item.label}
+                          onClick={
+                            (e) => {
+                              item.callback(e);
+                              handleClose(e);
+                            }
+                          }
+                        >
+                          {item.label}
+                        </MenuItem>
+                      )
+                    }
+
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -86,6 +105,6 @@ export const MainMenuItem = (props: MenuItemProps) => {
           )}
         </Popper>
       </Box>
-   </Box>
+    </Box>
   )
 }

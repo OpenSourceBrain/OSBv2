@@ -18,6 +18,7 @@ if (process.env.USE_MOCKS) {
 module.exports = env => {
   const osbDomain = env && env.DOMAIN ? env.DOMAIN : 'osb.local';
   const replaceHost = (uri, appName) => uri.replace("__APP_NAME__", appName + '.' + osbDomain);
+
   function setEnv(content) {
     console.log("Replacing ENV", env);
     let result = content.toString();
@@ -27,6 +28,7 @@ module.exports = env => {
     console.log(result);
     return result;
   }
+
   return merge(
     {
       mode: 'development',

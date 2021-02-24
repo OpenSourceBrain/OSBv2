@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { App as app } from './App'
+import { App as app } from '../App'
 import { Workspaces as workspace } from './workspace/Workspaces'
 import { WorkspaceToolBox as workspacetoolbox } from './workspace/NewWorkspaceToolBox'
 import workspaceInteractions from './workspace/drawer/WorkspaceInteractions';
@@ -11,7 +11,7 @@ import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/Workspace
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
-import workspacePage from "./pages/WorkspacePage";
+import workspacePage from "../pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
