@@ -1,4 +1,4 @@
-FROM node:13.14 as jsbuild
+FROM node:15 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
 ENV BRANCH_TAG="development"
 ENV FOLDER=nwb-explorer

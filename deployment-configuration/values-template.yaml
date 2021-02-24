@@ -1,2 +1,3 @@
 domain: v2.opensourcebrain.org
 mainapp: osb-portal
+tls: true
