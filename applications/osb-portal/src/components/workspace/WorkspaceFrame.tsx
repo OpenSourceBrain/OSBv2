@@ -36,10 +36,10 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
                 const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
                 iFrame.contentWindow.postMessage(fileName, '*');
             }).catch(() => {
-                alert("Error open resource, ResourceOpen function failed!");
+                console.error("Error opening resource, ResourceOpen function failed!");
             });
         } else {
-            timerId = setTimeout(openResource, 15000, contentWindow, workspaceResource);
+            timerId = setTimeout(openResource, 5000, contentWindow, workspaceResource);
         }
     }
 

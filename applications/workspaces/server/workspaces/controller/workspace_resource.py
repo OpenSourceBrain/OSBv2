@@ -4,11 +4,12 @@ from ..repository.model_repository import WorkspaceRepository, WorkspaceResource
 from ..repository.database import db
 from ..repository.models import WorkspaceResource
 
-def open(id=None, **kwargs):
+
+def open(id_=None, **kwargs):
     # upate last open timestamp
     wsrr = WorkspaceResourceRepository()
-    workspace_resource, found = wsrr.get(id=id)
+    workspace_resource, found = wsrr.get(id=id_)
     if not found:
-        return f"WorkspaceResource with id {id} not found.", 404
+        return f"WorkspaceResource with id {id_} not found.", 404
 
     return wsrr.open(workspace_resource)

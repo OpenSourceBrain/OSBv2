@@ -23,7 +23,7 @@ const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) =>
     iFrame.contentWindow.postMessage(fileName, '*');
     refreshWorkspace();
   }).catch(() => {
-    alert("Error open resource, ResourceOpen function failed!");
+    console.error("Error opening resource, ResourceOpen function failed!");
   });
 }
 

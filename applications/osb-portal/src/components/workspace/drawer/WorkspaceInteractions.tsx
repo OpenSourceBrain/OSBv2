@@ -91,7 +91,7 @@ export default (props: WorkspaceProps | any) => {
   }
 
   if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
-    setTimeout(props.refreshWorkspace, 5000);
+    setTimeout(props.refreshWorkspace, 15000);
   }
 
 
