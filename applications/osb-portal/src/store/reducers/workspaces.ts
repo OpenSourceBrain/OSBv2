@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, AnyAction, Action } from '@reduxjs/toolkit'
 
 import { Workspace } from '../../types/workspace';
+import * as UserActions from '../actions/user';
 
 interface WorkspaceState {
   userWorkspaces: Workspace[],
@@ -21,10 +22,10 @@ const workspaceSlice = createSlice({
   name: 'workspaces',
   initialState,
   reducers: {
-    showPublicWorkspaces(state, action: Action){
+    showPublicWorkspaces(state, action: Action) {
       return { ...state, showPublic: true };
     },
-    showUserWorkspaces(state, action: Action){
+    showUserWorkspaces(state, action: Action) {
       return { ...state, showPublic: false };
     },
     loadPublicWorkspaces(state, action: PayloadAction<Workspace[]>) {
@@ -48,6 +49,17 @@ const workspaceSlice = createSlice({
   }
 });
 
+
+
 export const WorkspaceActions = workspaceSlice.actions;
 
-export default workspaceSlice.reducer;
+
+function reduceRest(state: WorkspaceState, action: Action) {
+  switch (action.type) {
+
+    case UserActions.userLogin.type:
+      return { ...state, showPublic: false }
+  }
+}
+
+export default (state: WorkspaceState, action: Action) => ({ ...workspaceSlice.reducer(state, action), ...reduceRest(state, action) })

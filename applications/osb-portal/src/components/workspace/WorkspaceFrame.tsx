@@ -39,7 +39,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
                 alert("Error open resource, ResourceOpen function failed!");
             });
         } else {
-            timerId = setTimeout(openResource, 3000, contentWindow, workspaceResource);
+            timerId = setTimeout(openResource, 15000, contentWindow, workspaceResource);
         }
     }
 

@@ -45,7 +45,6 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
           textColor="primary"
           indicatorColor="primary"
           onChange={handleChange}
-          aria-label="disabled tabs example"
         >
           <Tab value={false} label="Your workspaces" />
           <Tab value={true} label="Featured workspaces" />
