@@ -1,8 +1,8 @@
-import logging
-
 from flask import request, current_app
 from sqlalchemy import desc
 from sqlalchemy.sql import func
+
+from cloudharness import log as logger
 
 from ..config import Config
 from ..utils import get_keycloak_data
@@ -13,7 +13,7 @@ from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepos
     WorkspaceImage, WorkspaceResource
 from ..service.kubernetes import create_persistent_volume_claim
 
-logger = logging.getLogger(Config.APP_NAME)
+
 
 
 class WorkspaceRepository(BaseModelRepository):
@@ -28,7 +28,7 @@ class WorkspaceRepository(BaseModelRepository):
         q_base = self.model.query
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
-        logger.info(f"searching workspaces on keycloak_id: {self.keycloak_id}")
+        logger.debug(f"searching workspaces on keycloak_id: {self.keycloak_id}")
         if filter and any(field for field, condition, value  in filter if field.key == 'publicable' and value):
             q1 = q_base
         elif self.keycloak_id != -1:
@@ -50,7 +50,7 @@ class WorkspaceRepository(BaseModelRepository):
         workspace = self.model.query.filter_by(id=id).first()
 
         for resource in workspace.resources:
-            logger.info("deleting resource %s", resource.id)
+            logger.debug("deleting resource %s", resource.id)
             resource_repository.delete(resource.id)
         logger.info("deleting workspace %s", id)
         super().delete(id)

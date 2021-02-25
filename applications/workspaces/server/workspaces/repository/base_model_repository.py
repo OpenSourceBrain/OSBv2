@@ -11,7 +11,7 @@ from open_alchemy import model_factory
 
 import logging
 from ..config import Config
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
 
 
 class BaseModelRepository:
@@ -117,7 +117,8 @@ class BaseModelRepository:
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        logger.info('Search for workspace filter: %s %s %s', field.key, comparator, value)
+        logger.debug('Search for workspace filter: %s %s %s',
+                     field.key, comparator, value)
         if comparator == '==':
             return field == value
         elif comparator in ('!', 'not'):
@@ -165,20 +166,22 @@ class BaseModelRepository:
                 field_comparator, value = arg.strip().split('=')
                 field_comparator = field_comparator.split('__')
                 field = field_comparator[0]
-                if len(field_comparator)>1:
+                if len(field_comparator) > 1:
                     comparator = field_comparator[1]
                 else:
                     comparator = '='
                 attr = getattr(self.model, field)
                 if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
                     value = value.upper() in ('TRUE', '1', 'T')
-                logger.info("Filter attr: %s comparator: %s value: %s", attr.key, comparator, value)
+                logger.debug("Filter attr: %s comparator: %s value: %s",
+                             attr.key, comparator, value)
                 filters.append((attr, comparator, value))
             sqs = self._get_qs(filters)
         else:
             sqs = self._get_qs()
         objects = sqs.paginate(page, per_page, True)
-        total_objects = len(sqs.all())  # db.session.query(func.count(self.model.id)).scalar()
+        # db.session.query(func.count(self.model.id)).scalar()
+        total_objects = len(sqs.all())
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         total_pages = math.ceil(total_objects / per_page)

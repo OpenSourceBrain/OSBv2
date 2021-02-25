@@ -21,18 +21,6 @@ from workspaces.service.events import start_kafka_consumers, stop_kafka_consumer
 logger = cloudharness.log
 
 
-def setup_logging():
-    logger.setLevel(logging.INFO)
-    # app.logger.removeHandler(default_handler)
-    # app.logger.getLogger
-    # ch = logging.StreamHandler()
-    # ch.setLevel(Config.LOG_LEVEL)
-    default_handler.setFormatter(logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    # logger.addHandler(ch)
-    logger.info("setting up logging, done.")
-
-
 def mkdirs():
     Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(
         parents=True, exist_ok=True)
@@ -57,13 +45,16 @@ def init_app(app):
     try:
         setup_db(app)
     except Exception as e:
-        logger.error("Could not init database. Some application functionality won't be available.", exc_info=True)
+        log.error(
+            "Could not init database. Some application functionality won't be available.", exc_info=True)
 
     try:
         atexit.register(stop_kafka_consumers)
         start_kafka_consumers()
     except Exception as e:
-        logger.error("Could not start kafka consumers. Some application functionality won't be available.", exc_info=True)
+        log.error(
+            "Could not start kafka consumers. Some application functionality won't be available.", exc_info=True)
+    mkdirs()
     setup_static_router(app)
 
 
@@ -73,4 +64,5 @@ app = init_flask(title="Workspace Manager API", webapp=True, init_app_fn=init_ap
                  config=Config)
 
 if __name__ == '__main__':
+    cloudharness.set_debug()
     main()

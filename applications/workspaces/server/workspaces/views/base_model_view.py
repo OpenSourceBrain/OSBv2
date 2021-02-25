@@ -23,8 +23,8 @@ class BaseModelView(MethodView):
             current page
             number of pages
         """
-        logger.info("Search args %s", args)
-        logger.info("Search kwargs %s", kwargs)
+        logger.debug("Search args %s", args)
+        logger.debug("Search kwargs %s", kwargs)
         page, total_pages, objects = self.repository.search(page=page,
                                                             per_page=per_page,
                                                             *args,
