@@ -23,12 +23,15 @@ harness:
       - common
     hard:
       - argo
-postgres:
-  name: workspaces-postgres-host
-  port: 5432
-  image: postgres:latest
-  initialdb: workspaces
-  user: workspace
-  password: secret
-  datavolume: /opt/data/
-  pgdata: /opt/data/pgdata
+  database:
+    auto: false
+    name: workspaces-postgres-host
+    type: postgres
+    port: 5432
+    image: postgres:latest
+    initialdb: workspaces
+    user: workspace
+    password: secret
+    datavolume: /opt/data/
+    pgdata: /opt/data/pgdata
+
