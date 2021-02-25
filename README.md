@@ -2,7 +2,6 @@
 
 An updated version of the Open Source Brain platform
 
-
 ## Deploy
 
 ### Prerequisites
@@ -61,15 +60,15 @@ See also https://cert-manager.io/docs/installation/kubernetes/.
 
 1. Create the namespace `kubectl create ns osb2`
 1. Create the namespace `kubectl create ns argo-workflows`
+
 1. Run  `helm install osb2 deployment/helm  --namespace osb2` to install.
 1. Run `kubectl create rolebinding osb-admin-default --clusterrole=admin --serviceaccount=osb2:default -n osb2` to allow workflows to run on namespace osb2
 
 To upgrade an existing deployment, use:
 
 ```
-helm upgrade osb2 deployment/helm --namespace osb2 --install --force --reset-values
+helm upgrade osb2 deployment/helm --namespace osb2 --install --reset-values [--force]
 ```
-
 
 ### Install Argo (temporary)
 
@@ -80,10 +79,9 @@ In order to install it in the cluster, run
 ```
 kubectl create ns argo
 kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/v2.4.3/manifests/install.yaml
-kubectl create rolebinding argo-workflows --clusterrole=admin --serviceaccount=argo-workflows:argo-workflows -n argo-workflows
 kubectl create rolebinding argo-workflows-default --clusterrole=admin --serviceaccount=argo-workflows:default -n argo-workflows
+kubectl create rolebinding argo-workflows --clusterrole=admin --serviceaccount=argo-workflows:argo-workflows -n argo-workflows
 ```
-
 
 ## Development setup
 
@@ -97,7 +95,13 @@ At least 6GB of ram and 4 processors are needed to run MNP
 
 To create a new cluster, run
 ```
-minikube start --memory="6000mb" --cpus=4
+minikube start --memory="6000mb" --cpus=4 --disk-size=80mb
+```
+
+Enable the ingress addon:
+
+```
+minikube addons enable ingress
 ```
 
 ### Minikube on the host machine
@@ -120,6 +124,7 @@ harness-deployment cloud-harness . -l -r localhost:5000 -b -d osb.local
 See below to learn how to configure Minikube and forward the registry.
 
 #### Setup kubectl
+
 If Minikube is installed in a different machine, the following procedure will allow to connect kubectl.
 
 1. Install kubectl in the client machine
@@ -127,6 +132,7 @@ If Minikube is installed in a different machine, the following procedure will al
 1. Copy `~/.kube/config` from the Minikube server to the client machine (make a backup of the previous version) and adjust paths to match the home folder on the client machine
 
 ##### Kube configuration copy
+
 If you don't want to replace the whole content of the configuration you can copy only
  the relevant entries in `~/.kube/config` from the server to the client on `clusters`, `context`
 
@@ -179,8 +185,6 @@ In the machine running the infrastructure-generate script, run
 ```bash
 kubectl port-forward --namespace kube-system $(kubectl get po -n kube-system --field-selector=status.phase=Running | grep registry | grep -v proxy | \awk '{print $1;}') 5000:5000
 ```
-
-
 
 
 

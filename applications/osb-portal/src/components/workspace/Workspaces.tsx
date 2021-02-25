@@ -8,24 +8,30 @@ import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
 
+
 // TODO handle user's vs public workspaces
-export const Workspaces = (props: any) => {
-  const workspaces = props.workspaces;
+export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace }: any) => {
+
+  const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
   const workspaceList =
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
-          <Grid item={true} key={index} xs={6} sm={4} md={3} lg={2} xl={1}>
-            <WorkspaceCard workspace={workspace} />
+          <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
+            <WorkspaceCard workspace={workspace} deleteWorkspace={deleteWorkspace} updateWorkspace={updateWorkspace} user={user} />
           </Grid>
         );
       })
       : null;
 
-  const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+
+  const handleChange = (event: React.ChangeEvent<{}>, isPublicSelected: boolean) => {
+    if (isPublicSelected) {
+      showPublicWorkspaces()
+    } else {
+      showUserWorkspaces()
+    }
   };
   if (!workspaces) {
     return null;
@@ -33,28 +39,32 @@ export const Workspaces = (props: any) => {
 
   return (
     <React.Fragment>
-      <Box mt={3} mb={2}>
-        <Tabs
-          value={value}
+      {
+        Boolean(user) && <Tabs
+          value={showPublic}
           textColor="primary"
           indicatorColor="primary"
           onChange={handleChange}
           aria-label="disabled tabs example"
         >
-          <Tab label="Your workspaces" />
-          <Tab label="Featured workspaces" />
+          <Tab value={false} label="Your workspaces" />
+          <Tab value={true} label="Featured workspaces" />
         </Tabs>
+      }
+
+      <Box mb={2}>
+
         <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
           {workspaceList.length} Workspaces
         </Typography>
       </Box>
-      <div className="verticalFit">
+      <Box className="verticalFit card-container">
         <Box pt={1} pb={1} className="scrollbar">
           <Grid container={true} spacing={1}>
             {workspaceList}
           </Grid>
         </Box>
-      </div>
+      </Box>
     </React.Fragment>
   );
 };

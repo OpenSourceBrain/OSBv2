@@ -2,8 +2,8 @@
     "_README" : "http://docs.geppetto.org/en/latest/build.html",
     "contextPath": "org.geppetto.frontend",
     "useSsl": true,
-    "embedded": false,
-    "embedderURL": ["/"],
+    "embedded": true,
+    "embedderURL": ["*"],
     "rootRedirect":"",
     "noTest": false,
     "themes": "styles/colors",
@@ -14,5 +14,7 @@
         "url": "http://live.geppetto.org",
         "icon" :"geppetto/style/favicon.png",
         "image": "http://www.geppetto.org/images/logo.png"
-    }
+    },
+    "forceNewNotebook": false, 
+    "oneFileOneNotebook": false
 }

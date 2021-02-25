@@ -1,20 +1,18 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Toolbar,
   Box,
-  Typography,
   Button,
-  IconButton,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList,
+  ClickAwayListener,
+  makeStyles,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import SearchIcon from "@material-ui/icons/Search";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { radius } from '../../theme';
 
 const title = "Open Source Brain";
 
@@ -41,7 +39,21 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-flex",
   },
   button: {
-    textTransform: 'none'
+    textTransform: "none",
+  },
+  logoChip: {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: 2,
+    textTransform: 'uppercase',
+    fontSize: 9,
+    padding: 3,
+    lineHeight: '1em',
+    marginTop: 3,
+    fontWeight: 700,
+    marginLeft: '1em',
+    alignSelf: 'flex-start'
+
+
   }
 }));
 
@@ -70,45 +82,47 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin} className={classes.button}>Sign in</Button>
+      <Button onClick={handleUserLogin} className={classes.button}>
+        Sign in
+      </Button>
     ) : (
-        <Box alignItems="center" display="flex">
-          <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleMenuClose}>
-                <MenuList autoFocusItem={menuOpen} id="user-menu">
-                  <MenuItem>My account</MenuItem>
-                  <MenuItem>Settings</MenuItem>
-                  <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Popper>
-          <Button
-            size="large"
-            ref={menuAnchorRef}
-            aria-controls={menuOpen ? "user-menu" : undefined}
-            aria-haspopup="true"
-            onClick={handleMenuToggle}
-            startIcon={<PersonIcon fontSize="large" />}
-            className={classes.button}
-          >
-            {user.firstname}
-          </Button>
-        </Box>
-      );
+      <Box alignItems="center" display="flex">
+        <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
+          <Paper>
+            <ClickAwayListener onClickAway={handleMenuClose}>
+              <MenuList autoFocusItem={menuOpen} id="user-menu">
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Settings</MenuItem>
+                <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
+        </Popper>
+        <Button
+          size="large"
+          ref={menuAnchorRef}
+          aria-controls={menuOpen ? "user-menu" : undefined}
+          aria-haspopup="true"
+          onClick={handleMenuToggle}
+          startIcon={<PersonIcon fontSize="large" />}
+          className={classes.button}
+        >
+          {user.firstname}
+        </Button>
+      </Box>
+    );
 
   const handleToggleDrawer = (e: any) => {
     if (props.drawerEnabled) {
       e.preventDefault();
       props.onToggleDrawer();
     }
-  }
+  };
 
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <div>
+        <Box display="flex">
           <a href="/" onClick={handleToggleDrawer}>
             <img
               src="/images/osb-logo-full.png"
@@ -116,14 +130,16 @@ export const Header = (props: any) => {
               title={title}
               height="25"
             />
+
           </a>
-        </div>
-        <div>
+          <sup className={classes.logoChip} >beta</sup>
+        </Box>
+        <Box>
           {/* <IconButton>
               <SearchIcon />
             </IconButton> */}
           {headerText}
-        </div>
+        </Box>
       </Toolbar>
     </React.Fragment>
   );

@@ -5,6 +5,21 @@ import workspaceService from './WorkspaceService';
 import { UserInfo } from '../types/user';
 
 const keycloak = Keycloak('/keycloak.json');
+
+// set token refresh to 5 minutes
+keycloak.onTokenExpired = () => {
+    keycloak.updateToken(300).then((refreshed) => {
+        if (refreshed) {
+            initApis(keycloak.token);
+        } else {
+            console.error('not refreshed ' + new Date());
+        }
+    }).catch(() => {
+        console.error('Failed to refresh token ' + new Date());
+    })
+}
+
+
 declare const window: any;
 
 export const initApis = (token: string) => {
@@ -19,7 +34,6 @@ function mapUser(userInfo: any): UserInfo {
         email: userInfo.email
     }
 }
-
 
 export async function initUser(): Promise<UserInfo> {
     let user = null;
@@ -41,18 +55,6 @@ export async function initUser(): Promise<UserInfo> {
         return null;
     }
 
-    // set token refresh to 5 minutes
-    keycloak.onTokenExpired = () => {
-        keycloak.updateToken(60).then((refreshed) => {
-            if (refreshed) {
-                initApis(keycloak.token);
-            } else {
-                console.error('not refreshed ' + new Date());
-            }
-        }).catch(() => {
-            console.error('Failed to refresh token ' + new Date());
-        })
-    }
     return user;
 }
 

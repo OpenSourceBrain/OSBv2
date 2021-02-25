@@ -12,9 +12,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     # ...
     DATABASE_NAME = "wsmgr"
-    #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-    #                          'sqlite:///' + os.path.join(basedir, DATABASE_NAME+'.db')
+
     SQLALCHEMY_DATABASE_URI = 'postgresql://workspace:secret@workspaces-postgres-host:5432/workspaces'
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
     BASE_DIR = os.path.dirname(__file__)
@@ -28,7 +28,12 @@ class Config(object):
     WSMGR_HOSTNAME = socket.gethostname()
     WSMGR_IPADDRESS = socket.gethostbyname(WSMGR_HOSTNAME)
 
-    CH_NAMESPACE = conf.get_configuration()['namespace']
+    try:
+       CH_NAMESPACE = conf.get_configuration()['namespace']
+    except:
+       logging.warning('Cannot get cluster deployment configuration: assuming local deployment', exc_info=True)
+       SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, DATABASE_NAME + '.db')
+       CH_NAMESPACE = 'osb'
 
     DEBUG = False
 

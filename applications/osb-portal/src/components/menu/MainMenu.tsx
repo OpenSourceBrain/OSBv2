@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { MainMenuItem } from "./MainMenuItem";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   button: {
     textTransform: "inherit",
     minWidth: "auto",
@@ -21,10 +21,10 @@ export const MainMenu = () => {
   const classes = useStyles();
 
   return (
-    <Box display="flex" p={0} bgcolor="background.paper">
+    <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper">
       <MainMenuItem
         title="OSB"
-        className={classes.button + ' ' + classes.firstButton}
+        className={classes.button + " " + classes.firstButton}
       />
       <MainMenuItem title="File" className={classes.button} />
       <MainMenuItem title="View" className={classes.button} />

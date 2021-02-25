@@ -7,6 +7,7 @@ export {
   Add as AddIcon,
   Share as ShareIcon,
   Link as FileLinkIcon,
+  MoreHoriz as Dots
 } from "@material-ui/icons";
 
 export const CircleIcon = (props: SvgIconProps) => (

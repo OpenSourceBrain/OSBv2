@@ -12,13 +12,14 @@ from flask_cors import CORS
 
 import cloudharness
 
-from .config import Config
-from .repository.database import db, setup_db
-from .service.events import start_kafka_consumers, stop_kafka_consumers
+from workspaces.config import Config
+from workspaces.repository.database import db, setup_db
+from workspaces.service.events import start_kafka_consumers, stop_kafka_consumers
 
 logger = logging.getLogger(Config.APP_NAME)
 
 from flask.logging import default_handler
+
 
 def setup_logging():
     logger.setLevel(logging.INFO)
@@ -33,7 +34,7 @@ def setup_logging():
 
 
 def mkdirs():
-    Path(os.path.join(Config.STATIC_DIR,Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
+    Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
 
 
 def setup_static_router():
@@ -63,9 +64,13 @@ with app.app_context():
     setup_db(app)
     connexion_app.add_api(Config.OPENAPI_FILE,
                           arguments={'title': 'Workspace Manager API'},
-                          resolver=connexion.resolver.MethodViewResolver(__package__+'.views.api'))
+                          resolver=connexion.resolver.MethodViewResolver((__package__ or '') + '.views.api'))
     atexit.register(stop_kafka_consumers)
-    start_kafka_consumers()
+    try:
+        start_kafka_consumers()
+    except:
+        logger.error('Couldn not start kafka consumers', exc_info=True)
+
 
 @app.route('/', defaults={'file': 'index.html'})
 def index(file):

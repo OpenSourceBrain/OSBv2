@@ -5,14 +5,19 @@ import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
-import store from '../store/store';
-import { fetchWorkspacesAction } from '../store/actions/workspaces';
+
 import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
+
   workspacesApi: RestApi = null;
   accessToken: string = null;
+
+  constructor() {
+    this.initApis(null);
+  }
+
   initApis = (token: string) => {
     this.accessToken = token;
     this.workspacesApi = new workspaceApi.RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
@@ -27,9 +32,10 @@ class WorkspaceService {
   }
 
 
-  async fetchWorkspaces(): Promise<Workspace[]> {
+
+  async fetchWorkspaces(featured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = {};
+    const wspr: WorkspaceGetRequest = featured ? { q:  'publicable=true' } : {};
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -41,17 +47,28 @@ class WorkspaceService {
   }
 
   async createWorkspace(newWorkspace: Workspace): Promise<any> {
-    const wspr: workspaceApi.WorkspacePostRequest = { workspace: { name: newWorkspace.name, description: newWorkspace.description, resources: newWorkspace.resources.map(mapPostResource) } };
+    if (!newWorkspace.description) {
+      newWorkspace.description = newWorkspace.name;
+    }
+    const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(newWorkspace) };
     const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
-      if (workspace && workspace.id) {
-        // TODO: if not workspace or no id raise an error
-        store.dispatch(fetchWorkspacesAction());
-      }
       return workspace;
     });
 
     return newCreatedWorkspace;
-  };
+  }
+
+  private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
+    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostResource) };
+  }
+
+  async deleteWorkspace(workspaceId: number) {
+    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
+  }
+
+  async updateWorkspace(workspace: Workspace) {
+    this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
+  }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
     const wspr: workspaceApi.WorkspacesControllerWorkspaceSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };

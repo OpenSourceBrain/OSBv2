@@ -1,8 +1,7 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-ENV BRANCH_TAG="v0.5.0"
+ENV BRANCH_TAG="development"
 ENV FOLDER=nwb-explorer
-
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -10,6 +9,7 @@ COPY geppetto/GeppettoConfiguration.json $FOLDER/webapp/GeppettoConfiguration.js
 
 WORKDIR $FOLDER/webapp
 RUN npm ci
+
 RUN npm run build
 #Remove node_modules, need to keep the geppetto client
 RUN mv node_modules/@geppettoengine .

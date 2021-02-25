@@ -18,9 +18,10 @@ REQUIRES = [
     "swagger-ui-bundle>=0.0.2",
     "python_dateutil>=2.6.0"
     "Flask-SQLAlchemy>=2.4.1",
-    "OpenAlchemy>=1.1.0"
-    "psycopg2-binaryA=2.8.5"
-    "cloudharness>=0.1.0"
+    "OpenAlchemy>=1.1.0",
+    "psycopg2-binary==2.8.5",
+    "cloudharness",
+    "flask_cors"
 ]
 
 setup(

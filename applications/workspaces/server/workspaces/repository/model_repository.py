@@ -13,8 +13,8 @@ from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepos
     WorkspaceImage, WorkspaceResource
 from ..service.kubernetes import create_persistent_volume_claim
 
-
 logger = logging.getLogger(Config.APP_NAME)
+
 
 class WorkspaceRepository(BaseModelRepository):
     model = Workspace
@@ -24,12 +24,14 @@ class WorkspaceRepository(BaseModelRepository):
         return f'workspace-{workspace.id}'
 
     def search_qs(self, filter=None):
-        logger.debug(f'Search for workspace filter: {filter}')
+
         q_base = self.model.query
         if filter is not None:
-            q_base = q_base.filter(*filter)
-        logger.info(f"keycloak_id: {self.keycloak_id}")
-        if self.keycloak_id != -1:
+            q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
+        logger.info(f"searching workspaces on keycloak_id: {self.keycloak_id}")
+        if filter and any(field for field, condition, value  in filter if field.key == 'publicable' and value):
+            q1 = q_base
+        elif self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
             if owner:
                 owner_id = owner.id
@@ -42,6 +44,16 @@ class WorkspaceRepository(BaseModelRepository):
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
+
+    def delete(self, id):
+        resource_repository = WorkspaceResourceRepository()
+        workspace = self.model.query.filter_by(id=id).first()
+
+        for resource in workspace.resources:
+            logger.info("deleting resource %s", resource.id)
+            resource_repository.delete(resource.id)
+        logger.info("deleting workspace %s", id)
+        super().delete(id)
 
     def __getattribute__(self, name):
         if name == "keycloak_id":
@@ -74,7 +86,9 @@ class WorkspaceRepository(BaseModelRepository):
         create_persistent_volume_claim(name=self.get_pvc_name(workspace), size='2Gi', logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
-            wsrr.post_commit(workspace_resource)
+            wsr = wsrr.post_commit(workspace_resource)
+            db.session.add(wsr)
+            db.session.commit()
         return workspace
 
 
@@ -101,10 +115,22 @@ class WorkspaceImageRepository(BaseModelRepository):
 class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResource
 
+    def pre_commit(self, workspace_resource):
+        # Check if we can determine the resource type
+        logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id}')
+        if workspace_resource.location[-3:] == "nwb":
+            logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
+            workspace_resource.resource_type = "e"
+        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+            workspace_resource.folder = workspace_resource.name
+        return workspace_resource
+
     def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
         logger.debug(f'Post Commit for workspace resource id: {workspace_resource.id}')
         workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+            workspace_resource.folder = workspace_resource.name
         if found:
             from ..service.workflow import create_operation
             create_operation(workspace, workspace_resource)

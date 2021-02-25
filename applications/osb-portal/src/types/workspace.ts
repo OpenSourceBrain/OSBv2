@@ -18,6 +18,7 @@ export interface WorkspaceResource {
     id?: number,
     name: string,
     location: string,
+    folder?: string,
     type: ResourceType,
     status?: ResourceStatus
 }

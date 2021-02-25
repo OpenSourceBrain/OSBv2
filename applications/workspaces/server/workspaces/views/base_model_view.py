@@ -1,5 +1,7 @@
 """Model base class"""
-
+import logging
+from ..config import Config
+logger = logging.getLogger(Config.APP_NAME)
 from flask.views import MethodView
 
 
@@ -21,6 +23,8 @@ class BaseModelView(MethodView):
             current page
             number of pages
         """
+        logger.info("Search args %s", args)
+        logger.info("Search kwargs %s", kwargs)
         page, total_pages, objects = self.repository.search(page=page,
                                                             per_page=per_page,
                                                             *args,

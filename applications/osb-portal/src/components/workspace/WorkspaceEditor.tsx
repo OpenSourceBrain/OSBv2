@@ -2,7 +2,9 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Box from "@material-ui/core/Box";
+import Checkbox from '@material-ui/core/Checkbox';
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from '@material-ui/core/Typography';
@@ -15,7 +17,7 @@ import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 interface WorkspaceEditProps {
   workspace: Workspace;
-  onLoadWorkspace: () => void;
+  onLoadWorkspace: (refresh?: boolean) => void;
 }
 
 const dropAreaStyle = {
@@ -28,7 +30,6 @@ const dropAreaStyle = {
   borderColor: fade('#ffffff', 0.42),
   borderStyle: 'dashed',
 };
-
 
 async function readFile(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -52,13 +53,19 @@ export default (props: WorkspaceEditProps) => {
     Workspace
   >({ ...props.workspace });
 
-  const handleCreateWorkspace = async () => {
-    const workspace : any = await workspaceService.createWorkspace(workspaceForm);
-    props.onLoadWorkspace();
-    if (thumbnail) {
-      const fileThumbnail : any = await readFile(thumbnail);
-      workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail]));
-    }
+  const handleCreateWorkspace = async (publicable: boolean = false) => {
+    workspaceService.createWorkspace({...workspaceForm, publicable}).then(
+      async (workspace) => {
+        if (thumbnail) {
+          const fileThumbnail : any = await readFile(thumbnail);
+          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true));
+        } else {
+          props.onLoadWorkspace(true)
+        }
+      }
+    );
+    props.onLoadWorkspace(false)
+
   };
 
   const setNameField = (e: any) =>
@@ -94,9 +101,18 @@ export default (props: WorkspaceEditProps) => {
               />
             </Grid>
             <Grid item={true}>
-              <Button variant="contained" onClick={handleCreateWorkspace}>
-                Create
-              </Button>
+              <Grid container={true} spacing={2} justify="space-between">
+                <Grid item={true}>
+                  <Button variant="contained" onClick={e => handleCreateWorkspace(false)}>
+                    Create
+                  </Button>
+                </Grid>
+                <Grid item={true}>
+                  <Button variant="contained" onClick={e => handleCreateWorkspace(true)}>
+                    Create Public
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

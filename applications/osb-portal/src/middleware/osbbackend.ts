@@ -1,5 +1,5 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
-import { loadWorkspacesActionType, fetchWorkspacesActionType, selectWorkspace, refreshWorkspace } from '../store/actions/workspaces'
+import * as Workspaces from '../store/actions/workspaces'
 import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { userLogin, userLogout, userRegister } from '../store/actions/user'
 import { setError } from '../store/actions/error'
@@ -8,25 +8,6 @@ import { CallApiAction } from './backend';
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
 import { Workspace } from "../types/workspace";
-
-// public call osb action type
-export type CallOSBApiAction = {
-  type: string;
-  meta: {
-    callOSBApi: true;
-  };
-};
-
-// callapi middle actions
-const fetchWorkspacesAction = (dispatch: any) => {
-  // ToDo: pagination & size of pagination
-  workspaceService.fetchWorkspaces().then((workspaces) => {
-    dispatch({
-      type: loadWorkspacesActionType,
-      payload: workspaces
-    });
-  })
-}
 
 
 const fetchModelsAction = (): CallApiAction => {
@@ -46,14 +27,37 @@ const fetchModelsAction = (): CallApiAction => {
 /**
  * @private
  */
-
 const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyAction | CallApiAction) => {
 
+  function refreshWorkspaces() {
+    workspaceService.fetchWorkspaces(true).then((workspaces) => {
+      next(Workspaces.loadPublicWorkspaces(workspaces));
+    });
+    workspaceService.fetchWorkspaces().then((workspaces) => {
+      next(Workspaces.loadUserWorkspaces(workspaces));
+    });
+  }
+
   switch (action.type) {
-    case fetchWorkspacesActionType:
-      // fetch workspaces from workspaces app
-      fetchWorkspacesAction(store.dispatch)
-      break
+    case Workspaces.showPublicWorkspaces.toString():
+      if (!store.getState().workspaces.publicWorkspaces) {
+        workspaceService.fetchWorkspaces(true).then((workspaces) => {
+          next(Workspaces.loadPublicWorkspaces(workspaces));
+        });
+      }
+      next(action);
+      break;
+    case Workspaces.showUserWorkspaces.toString():
+        if (!store.getState().workspaces.userWorkspaces) {
+          workspaceService.fetchWorkspaces(false).then((workspaces) => {
+            next(Workspaces.loadUserWorkspaces(workspaces));
+          });
+        }
+        next(action);
+        break;
+    case Workspaces.refreshWorkspacesActionType: {
+      refreshWorkspaces();
+    }
     case fetchModelsActionType:
       next(fetchModelsAction());
       break
@@ -72,12 +76,18 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
     case userRegister.toString():
       UserService.register().then((user: any) => next({ ...action, payload: user }));
       break;
-    case selectWorkspace.toString():
+    case Workspaces.selectWorkspace.toString():
       workspaceService.getWorkspace(action.payload).then((workspace: Workspace) => next({ ...action, payload: workspace }));
       break;
-    case refreshWorkspace.toString():
+    case Workspaces.refreshWorkspace.toString():
       workspaceService.getWorkspace(store.getState().workspaces.selectedWorkspace.id).then((workspace: Workspace) => next({ ...action, payload: workspace }));
       break;
+      case Workspaces.updateWorkspace.toString():
+        workspaceService.updateWorkspace(action.payload).then(() => { next(action); refreshWorkspaces()});
+        break;
+      case Workspaces.deleteWorkspace.toString():
+        workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces()});
+        break;
     default:
       return next(action);
     //
@@ -86,3 +96,5 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
 
 
 export default callAPIMiddlewareFn;
+
+
