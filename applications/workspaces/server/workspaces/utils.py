@@ -3,21 +3,24 @@ import jwt
 import sys
 import json
 import requests
-from cloudharness.utils import env
-from flask import request, current_app
+from flask import request
 from typing import List
 from urllib.parse import urljoin
+
+from cloudharness import log
+from cloudharness.utils import env
+from cloudharness.auth import AuthClient
 
 
 def get_keycloak_data():
     bearer = request.headers.get('Authorization', None)
-    current_app.logger.debug(f'Bearer: {bearer}')
+    log.debug(f'Bearer: {bearer}')
     if not bearer or bearer == 'Bearer undefined':
         decoded_token = None
         keycloak_id = -1  # No authorization --> no user --> only publicable workspaces
     else:
         token = bearer.split(' ')[1]
-        decoded_token = _decode_token(token)
+        decoded_token = AuthClient.decode_token(token)
         keycloak_id = decoded_token['sub']
     return keycloak_id, decoded_token
 
@@ -42,8 +45,10 @@ def _decode_token(token):
     AUTH_PUBLIC_KEY_URL = f'{SCHEMA}{BASE_PATH}'
     current_app.logger.debug(f'auth pub key url: {AUTH_PUBLIC_KEY_URL}')
 
-    KEY = json.loads(requests.get(AUTH_PUBLIC_KEY_URL, verify=False).text)['public_key']
-    KEY = b"-----BEGIN PUBLIC KEY-----\n" + str.encode(KEY) + b"\n-----END PUBLIC KEY-----"
+    KEY = json.loads(requests.get(AUTH_PUBLIC_KEY_URL,
+                                  verify=False).text)['public_key']
+    KEY = b"-----BEGIN PUBLIC KEY-----\n" + \
+        str.encode(KEY) + b"\n-----END PUBLIC KEY-----"
 
     decoded = jwt.decode(token, KEY, algorithms='RS256', audience='account')
 

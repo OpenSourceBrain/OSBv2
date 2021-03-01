@@ -58,13 +58,12 @@ export default (props: WorkspaceEditProps) => {
       async (workspace) => {
         if (thumbnail) {
           const fileThumbnail: any = await readFile(thumbnail);
-          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true));
+          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true), e => console.error('Error uploading thumbnail'));
         } else {
           props.onLoadWorkspace(true)
         }
       }
     );
-    props.onLoadWorkspace(false)
 
   };
 

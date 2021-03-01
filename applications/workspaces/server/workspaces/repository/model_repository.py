@@ -14,8 +14,6 @@ from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepos
 from ..service.kubernetes import create_persistent_volume_claim
 
 
-
-
 class WorkspaceRepository(BaseModelRepository):
     model = Workspace
     defaults = {}
@@ -28,8 +26,9 @@ class WorkspaceRepository(BaseModelRepository):
         q_base = self.model.query
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
-        logger.debug(f"searching workspaces on keycloak_id: {self.keycloak_id}")
-        if filter and any(field for field, condition, value  in filter if field.key == 'publicable' and value):
+        logger.debug(
+            f"searching workspaces on keycloak_id: {self.keycloak_id}")
+        if filter and any(field for field, condition, value in filter if field.key == 'publicable' and value):
             q1 = q_base
         elif self.keycloak_id != -1:
             owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
@@ -39,7 +38,8 @@ class WorkspaceRepository(BaseModelRepository):
                 # logged in but not known as owner so return no workspaces
                 owner_id = 0
             q1 = q_base.filter_by(keycloakuser_id=owner_id)
-            q1 = q1.union(q_base.filter(Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
+            q1 = q1.union(q_base.filter(
+                Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
             q1 = q1.union(q_base.filter_by(publicable=True))
         else:
             q1 = q_base.filter_by(publicable=True)
@@ -83,7 +83,8 @@ class WorkspaceRepository(BaseModelRepository):
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f'Post Commit for workspace id: {workspace.id}')
-        create_persistent_volume_claim(name=self.get_pvc_name(workspace), size='2Gi', logger=logger)
+        create_persistent_volume_claim(name=self.get_pvc_name(
+            workspace), size='2Gi', logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
@@ -117,9 +118,11 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def pre_commit(self, workspace_resource):
         # Check if we can determine the resource type
-        logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id}')
+        logger.debug(
+            f'Pre Commit for workspace resource id: {workspace_resource.id}')
         if workspace_resource.location[-3:] == "nwb":
-            logger.debug(f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
+            logger.debug(
+                f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
             workspace_resource.resource_type = "e"
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
@@ -127,13 +130,18 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
-        logger.debug(f'Post Commit for workspace resource id: {workspace_resource.id}')
+        logger.debug(
+            f'Post Commit for workspace resource id: {workspace_resource.id}')
         workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
         if found:
-            from ..service.workflow import create_operation
-            create_operation(workspace, workspace_resource)
+            try:
+                from ..service.workflow import create_operation
+                create_operation(workspace, workspace_resource)
+            except Exception as e:
+                logger.error(
+                    "An error occurred while adding the default resource to the workspace", exc_info=True)
         return workspace_resource
 
     def post_get(self, workspace_resource):

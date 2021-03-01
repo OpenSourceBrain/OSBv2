@@ -805,7 +805,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      x-bearerInfoFunc: workspaces.utils._decode_token
+      x-bearerInfoFunc: cloudharness.auth.AuthClient.decode_token
   schemas:
     Valid:
       type: object

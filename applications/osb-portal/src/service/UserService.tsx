@@ -6,18 +6,7 @@ import { UserInfo } from '../types/user';
 
 const keycloak = Keycloak('/keycloak.json');
 
-// set token refresh to 5 minutes
-keycloak.onTokenExpired = () => {
-    keycloak.updateToken(300).then((refreshed) => {
-        if (refreshed) {
-            initApis(keycloak.token);
-        } else {
-            console.error('not refreshed ' + new Date());
-        }
-    }).catch(() => {
-        console.error('Failed to refresh token ' + new Date());
-    })
-}
+
 
 
 declare const window: any;
@@ -54,7 +43,19 @@ export async function initUser(): Promise<UserInfo> {
         errorCallback(err);
         return null;
     }
-
+    // set token refresh to 5 minutes
+    keycloak.onTokenExpired = () => {
+        keycloak.updateToken(3).then((refreshed) => {
+            if (refreshed) {
+                initApis(keycloak.token);
+            } else {
+                console.error('not refreshed ' + new Date());
+            }
+        }).catch(() => {
+            console.error('Failed to refresh token ' + new Date());
+        })
+    }
+    keycloak.updateToken(-1);  // activate refresh token
     return user;
 }
 
