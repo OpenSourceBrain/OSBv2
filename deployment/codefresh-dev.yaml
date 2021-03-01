@@ -182,34 +182,6 @@ steps:
         image_name: common
         title: Common
         working_directory: ./build/applications/common/server
-      netpyne:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}/
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        image_name: netpyne
-        title: Netpyne
-        working_directory: ./build/applications/netpyne
-      nwb-explorer:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}/
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        image_name: nwb-explorer
-        title: Nwb explorer
-        working_directory: ./build/applications/nwb-explorer
       jupyterhub:
         type: build
         stage: build
@@ -423,22 +395,6 @@ steps:
         type: push
         title: Common
         candidate: '${{REGISTRY}}/common:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
-        stage: publish
-        type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/netpyne:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
-        stage: publish
-        type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/nwb-explorer:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

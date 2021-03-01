@@ -34,6 +34,7 @@
             <script src="${script}" type="text/javascript"></script>
         </#list>
     </#if>
+
 </head>
 
 <body class="${properties.kcBodyClass!}">
@@ -147,6 +148,16 @@
 
     </div>
   </div>
+      <script>
+        const logo = document.getElementsByClassName("login-pf-logo");
+        for(const l of logo) {
+            l.addEventListener("click",function(e){
+
+                window.location.href = window.location.href.replace('accounts.', '')
+            },false);
+        }
+
+    </script>
 </body>
 </html>
 </#macro>
