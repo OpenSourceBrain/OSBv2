@@ -45,6 +45,9 @@ async function readFile(file: Blob) {
   })
 }
 
+
+
+
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
@@ -52,6 +55,9 @@ export default (props: WorkspaceEditProps) => {
   const [workspaceForm, setWorkspaceForm] = React.useState<
     Workspace
   >({ ...props.workspace });
+
+
+  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(null);
 
   const handleCreateWorkspace = async (publicable: boolean = false) => {
     workspaceService.createWorkspace({ ...workspaceForm, publicable }).then(
@@ -65,7 +71,21 @@ export default (props: WorkspaceEditProps) => {
       }
     );
 
-  };
+  }
+
+
+
+  const previewFile = (file: Blob) => {
+
+    const fileReader: FileReader = new FileReader();
+
+    fileReader.onload = () => {
+      setThumbnailPreview(fileReader.result);
+    };
+
+    fileReader.readAsDataURL(file);
+
+  }
 
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
@@ -73,6 +93,7 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({ ...workspaceForm, description: e.target.value });
   const setThumbnail = (uploadedThumbnail: any) => {
     thumbnail = uploadedThumbnail;
+    previewFile(thumbnail);
   }
   return (
     <>
@@ -110,10 +131,10 @@ export default (props: WorkspaceEditProps) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item={true} xs={6} >
+        <Grid item={true} xs={6} alignItems="stretch" >
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section style={{ display: 'flex', alignItems: 'stretch' }}>
+              <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
                 <div {...getRootProps({ style: dropAreaStyle })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
@@ -130,15 +151,13 @@ export default (props: WorkspaceEditProps) => {
                           <DeleteForeverIcon />
                         </IconButton>}
                     </Grid>
-                    <Grid item={true}>
+                    <Grid item={true} >
                       <Box component="div" m={1}>
                         <Typography variant="subtitle2" component="p">
                           {acceptedFiles.length === 0 ?
                             "Upload workspace preview image"
                             :
-                            <span>Thumbnail File Uploaded: <br />
-                              {acceptedFiles[0].name}
-                            </span>
+                            null
                           }
                         </Typography>
                       </Box>
