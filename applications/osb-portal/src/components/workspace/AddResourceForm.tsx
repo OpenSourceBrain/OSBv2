@@ -25,7 +25,10 @@ export default (props: WorkspaceEditProps) => {
 
   const handleSetUrl = (e: any) => {
     setUrl(e.target.value);
+
     setName(urlToName(e.target.value));
+
+
   }
 
   const handleSetName = (e: any) => setName(e.target.value);
@@ -39,6 +42,7 @@ export default (props: WorkspaceEditProps) => {
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch" direction="column">
         <Grid item={true} style={{ flex: 1 }}>
           <TextField
+            key="input-resource-url"
             id="workspaceName"
             label="Paste URL of resource"
             fullWidth={true}
@@ -48,7 +52,7 @@ export default (props: WorkspaceEditProps) => {
         </Grid>
         <Grid item={true} style={{ flex: 1 }}>
           <TextField
-            key={name}
+            key={"namefor-" + url}
             id="workspaceName"
             label="Resource name"
             fullWidth={true}
