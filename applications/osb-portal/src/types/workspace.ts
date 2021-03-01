@@ -1,5 +1,3 @@
-import { Workspace as WorkspaceBase } from '../apiclient/workspaces/models/Workspace'
-import { WorkspaceResource as WR } from '../apiclient/workspaces/models/WorkspaceResource'
 import { FeaturedType } from './global'
 import { ResourceType as ResourceTypeApi } from '../apiclient/workspaces'
 
@@ -20,7 +18,9 @@ export interface WorkspaceResource {
     location: string,
     folder?: string,
     type: ResourceType,
-    status?: ResourceStatus
+    status?: ResourceStatus,
+    timestampUpdated?: Date,
+    timestampCreated?: Date
 }
 
 export interface ResourceType {

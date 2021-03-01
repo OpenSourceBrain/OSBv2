@@ -144,7 +144,8 @@ export default (props: WorkspaceEditProps) => {
                         left: '50%',
                         marginTop: -12,
                         marginLeft: -12,
-                      }} />}
+                      }}
+                    />}
                 </Grid>
               </Grid>
             </Grid>

@@ -22,6 +22,8 @@ import { ResourceStatus, Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 
+const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
+
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
     maxWidth: 400,
@@ -90,7 +92,8 @@ export default (props: WorkspaceProps | any) => {
     props.refreshWorkspace();
   }
 
-  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
+  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending
+    && (new Date().getTime() - resource.timestampUpdated.getTime() < MAX_RESOURCE_WAIT_TIME))) {
     setTimeout(props.refreshWorkspace, 15000);
   }
 

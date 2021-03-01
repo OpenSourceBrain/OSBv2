@@ -88,8 +88,9 @@ class WorkspaceRepository(BaseModelRepository):
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
-            db.session.add(wsr)
-            db.session.commit()
+            if wsr:
+                db.session.add(wsr)
+                db.session.commit()
         return workspace
 
 
@@ -142,6 +143,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
             except Exception as e:
                 logger.error(
                     "An error occurred while adding the default resource to the workspace", exc_info=True)
+                return None
         return workspace_resource
 
     def post_get(self, workspace_resource):

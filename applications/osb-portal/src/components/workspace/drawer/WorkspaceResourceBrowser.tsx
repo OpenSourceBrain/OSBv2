@@ -16,6 +16,7 @@ import {
 } from "../../icons";
 
 
+
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
   const fileName = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
   const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
@@ -56,7 +57,7 @@ interface WorkspaceProps {
   refreshWorkspace: any;
 }
 
-export default (props: WorkspaceProps) => {
+const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace } = props;
 
   const resources = workspace.resources;
@@ -88,3 +89,5 @@ export default (props: WorkspaceProps) => {
   </Box>
   );
 }
+
+export default WorkspaceResourceBrowser;
