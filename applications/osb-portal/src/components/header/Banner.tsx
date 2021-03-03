@@ -35,10 +35,10 @@ export const Banner = (props: any) => {
   };
 
   const text1 =
-    user === null ? "Let us show you around" : `Welcome back ${user.firstname}`;
+    user === null ? "Welcome to the Open Source Brain v2.0 preview" : `Welcome back ${user.firstname}`;
   const text2 =
     user === null
-      ? "Coming soon: Open Source Brain v2.0."
+      ? "Coming soon with NeuroML model creation, NWB data exploration and interactive playgrounds."
       : "Let's do some science.";
 
   return (

@@ -66,17 +66,8 @@ export const WorkspaceToolBox = (props: any) => {
             <Grid container={true} direction="row" justify="space-between" spacing={5} >
               <Grid item={true}>
                 <WorkspaceItem
-                  icon={Icons.CircleIcon}
-                  title="Single Cell"
-                  template={WorkspaceTemplateType.singleCell}
-                  user={user}
-                  refreshWorkspaces={props.refreshWorkspaces}
-                />
-              </Grid>
-              <Grid item={true}>
-                <WorkspaceItem
                   icon={Icons.SquareCirclesIcon}
-                  title="Network"
+                  title="Computational modeling"
                   template={WorkspaceTemplateType.network}
                   user={user}
                   refreshWorkspaces={props.refreshWorkspaces}

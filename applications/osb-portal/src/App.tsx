@@ -28,19 +28,23 @@ export const App = (props: any) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ErrorDialog />
-        <div className={classes.mainContainer}>
-          <Header />
-          <Router>
-            <Switch>
-              <Route exact={true} path="/">
-                <HomePage />
-              </Route>
-              <ProtectedRoute exact={true} path="/workspace/:workspaceId">
-                <WorkspacePage />
-              </ProtectedRoute>
-            </Switch>
-          </Router>
-        </div>
+        {!props.error &&
+          <>
+            <div className={classes.mainContainer}>
+              <Header />
+              <Router>
+                <Switch>
+                  <Route exact={true} path="/">
+                    <HomePage />
+                  </Route>
+                  <ProtectedRoute exact={true} path="/workspace/:workspaceId">
+                    <WorkspacePage />
+                  </ProtectedRoute>
+                </Switch>
+              </Router>
+            </div>
+          </>
+        }
       </ThemeProvider>
     </SentryErrorBoundary>
   );

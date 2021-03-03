@@ -80,12 +80,12 @@ class WorkspaceRepository(BaseModelRepository):
             # in case of a new workspace assign the logged in user as owner
             keycloak_data = self.get_logged_user()
             keycloak_id = keycloak_data.get('id', -1)
-            usr_firstname = keycloak_data.get('firstName', '')
-            usr_lastname = keycloak_data.get('lastName', '')
-            usr_email = keycloak_data.get('email', '')
 
             owner = User.query.filter_by(keycloak_id=keycloak_id).first()
             if not owner:
+                usr_firstname = keycloak_data.get('firstName', '')
+                usr_lastname = keycloak_data.get('lastName', '')
+                usr_email = keycloak_data.get('email', '')
                 owner = User(firstname=usr_firstname,
                              lastname=usr_lastname,
                              keycloak_id=keycloak_id,

@@ -92,7 +92,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
 
 
 
-  return (
+  return workspace && (
     <Box display="flex" alignItems="stretch" flex="1">
       <Drawer
         variant="permanent"

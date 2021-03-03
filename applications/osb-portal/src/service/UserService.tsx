@@ -15,9 +15,10 @@ export const initApis = (token: string) => {
     workspaceService.initApis(token);
 }
 
-export function mapUser(userInfo: any): UserInfo {
+function mapKeycloakUser(userInfo: any): UserInfo {
     return {
         id: userInfo.sub,
+        keycloakId: userInfo.sub,
         firstname: userInfo.given_name,
         lastname: userInfo.family_name,
         email: userInfo.email,
@@ -41,7 +42,7 @@ export async function initUser(): Promise<UserInfo> {
 
         if (authorized) {
             const userInfo: any = await keycloak.loadUserInfo();
-            user = mapUser(userInfo);
+            user = mapKeycloakUser(userInfo);
         }
         initApis(keycloak.token);
     } catch (err) {
@@ -60,13 +61,16 @@ export async function initUser(): Promise<UserInfo> {
             console.error('Failed to refresh token ' + new Date());
         })
     }
-    keycloak.updateToken(-1);  // activate refresh token
+    if (user) {
+        keycloak.updateToken(-1);  // activate refresh token
+    }
+
     return user;
 }
 
 export async function login(): Promise<UserInfo> {
     const userInfo: any = await keycloak.login();
-    return mapUser(userInfo);
+    return mapKeycloakUser(userInfo);
 }
 
 export async function logout() {

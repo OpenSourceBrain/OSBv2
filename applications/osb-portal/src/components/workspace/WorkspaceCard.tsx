@@ -103,7 +103,7 @@ export const WorkspaceCard = (props: Props) => {
 
   const defaultResource = workspace.lastOpen || workspace.resources[0];
 
-  const canEdit = props.user && (props.user.isAdmin || !workspace.publicable)
+  const canEdit = props.user && (props.user.isAdmin || workspace.owner.keycloakId === props.user.keycloakId)
 
 
   return (

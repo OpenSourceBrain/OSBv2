@@ -48,13 +48,13 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       next(action);
       break;
     case Workspaces.showUserWorkspaces.toString():
-        if (!store.getState().workspaces.userWorkspaces) {
-          workspaceService.fetchWorkspaces(false).then((workspaces) => {
-            next(Workspaces.loadUserWorkspaces(workspaces));
-          });
-        }
-        next(action);
-        break;
+      if (!store.getState().workspaces.userWorkspaces) {
+        workspaceService.fetchWorkspaces(false).then((workspaces) => {
+          next(Workspaces.loadUserWorkspaces(workspaces));
+        });
+      }
+      next(action);
+      break;
     case Workspaces.refreshWorkspacesActionType: {
       refreshWorkspaces();
     }
@@ -77,17 +77,23 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       UserService.register().then((user: any) => next({ ...action, payload: user }));
       break;
     case Workspaces.selectWorkspace.toString():
-      workspaceService.getWorkspace(action.payload).then((workspace: Workspace) => next({ ...action, payload: workspace }));
+      workspaceService.getWorkspace(action.payload).then(
+        (workspace: Workspace) => next({ ...action, payload: workspace }),
+        () => next(setError("Workspace not found or not accessible"))
+      );
       break;
     case Workspaces.refreshWorkspace.toString():
-      workspaceService.getWorkspace(store.getState().workspaces.selectedWorkspace.id).then((workspace: Workspace) => next({ ...action, payload: workspace }));
+      workspaceService.getWorkspace(store.getState().workspaces.selectedWorkspace.id).then(
+        (workspace: Workspace) => next({ ...action, payload: workspace }),
+        () => next(setError("Workspace not found or not accessible"))
+      );
       break;
-      case Workspaces.updateWorkspace.toString():
-        workspaceService.updateWorkspace(action.payload).then(() => { next(action); refreshWorkspaces()});
-        break;
-      case Workspaces.deleteWorkspace.toString():
-        workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces()});
-        break;
+    case Workspaces.updateWorkspace.toString():
+      workspaceService.updateWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
+      break;
+    case Workspaces.deleteWorkspace.toString():
+      workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
+      break;
     default:
       return next(action);
     //
