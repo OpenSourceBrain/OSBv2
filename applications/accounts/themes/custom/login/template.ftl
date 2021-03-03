@@ -153,7 +153,7 @@
         for(const l of logo) {
             l.addEventListener("click",function(e){
 
-                window.location.href = window.location.href.replace('accounts.', '')
+                window.location.href = window.location.protocol + '//' + window.location.host.replace('accounts.', '')
             },false);
         }
 

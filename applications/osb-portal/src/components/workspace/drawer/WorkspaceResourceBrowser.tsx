@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@material-ui/core/Box";
-
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
 import Typography from '@material-ui/core/Typography';
 import TreeView from "@material-ui/lab/TreeView";
@@ -10,7 +9,6 @@ import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/wor
 import WorkspaceResourceService from "../../../service/WorkspaceResourceService";
 
 import {
-  FileLinkIcon,
   LoadingIcon,
   FolderIcon,
 } from "../../icons";

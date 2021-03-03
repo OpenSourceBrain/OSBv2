@@ -1,5 +1,6 @@
 import { FeaturedType } from './global'
 import { ResourceType as ResourceTypeApi } from '../apiclient/workspaces'
+import { UserInfo } from './user'
 
 export interface OSBApplication {
     name: string,
@@ -11,6 +12,7 @@ export enum ResourceStatus {
     available = "AVAILABLE",
     error = "ERROR"
 }
+
 export interface WorkspaceResource {
     workspaceId: number,
     id?: number,
@@ -27,14 +29,11 @@ export interface ResourceType {
     application: OSBApplication
 }
 
-
-
 export const OSBApplications: { [id: string]: OSBApplication } = {
     nwbexplorer: { name: "NWB Explorer", subdomain: "nwbexplorer" },
     netpyne: { name: "NetPyNE", subdomain: "netpyne" },
     jupyter: { name: "Jupyter", subdomain: "notebooks" },
 }
-
 
 export const SampleResourceTypes = {
     [ResourceTypeApi.E.toString()]: { application: OSBApplications.nwbexplorer, name: "NWB File" },
@@ -56,5 +55,6 @@ export interface Workspace {
     thumbnail?: string;
     publicable?: boolean;
     license?: string;
+    owner?: UserInfo;
     [other: string]: any;
 };

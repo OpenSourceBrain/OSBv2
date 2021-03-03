@@ -7,6 +7,7 @@ import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
+import { mapUser } from './UserService';
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
@@ -35,7 +36,7 @@ class WorkspaceService {
 
   async fetchWorkspaces(featured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = featured ? { q:  'publicable=true' } : {};
+    const wspr: WorkspaceGetRequest = featured ? { q: 'publicable=true' } : {};
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -85,6 +86,7 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
     ...workspace,
     resources,
     lastOpen,
+    owner: mapUser(workspace.owner),
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
   }

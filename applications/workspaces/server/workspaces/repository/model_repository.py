@@ -3,6 +3,7 @@ from sqlalchemy import desc
 from sqlalchemy.sql import func
 
 from cloudharness import log as logger
+from cloudharness.auth import AuthClient
 
 from ..config import Config
 from ..utils import get_keycloak_data
@@ -18,29 +19,37 @@ class WorkspaceRepository(BaseModelRepository):
     model = Workspace
     defaults = {}
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.auth_client = AuthClient()
+
     def get_pvc_name(self, workspace):
         return f'workspace-{workspace.id}'
 
     def search_qs(self, filter=None):
 
         q_base = self.model.query
+
+        keycloak_id = self.keycloak_id
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
         logger.debug(
-            f"searching workspaces on keycloak_id: {self.keycloak_id}")
+            "searching workspaces on keycloak_id: %s", keycloak_id)
         if filter and any(field for field, condition, value in filter if field.key == 'publicable' and value):
             q1 = q_base
-        elif self.keycloak_id != -1:
-            owner = User.query.filter_by(keycloak_id=self.keycloak_id).first()
-            if owner:
-                owner_id = owner.id
+        elif keycloak_id is not None:
+            if not self.auth_client.current_user_has_realm_role('administrator'):
+                # Check if the current user is registered as a workspace owner
+                owner = User.query.filter_by(keycloak_id=keycloak_id).first()
+
+                owner_id = owner.id if owner else 0
+                # non admin users can see only their own workspaces
+                q1 = q_base.filter_by(keycloakuser_id=owner_id)
+                q1 = q1.union(q_base.filter(
+                    Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
+                q1 = q1.union(q_base.filter_by(publicable=True))
             else:
-                # logged in but not known as owner so return no workspaces
-                owner_id = 0
-            q1 = q_base.filter_by(keycloakuser_id=owner_id)
-            q1 = q1.union(q_base.filter(
-                Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
-            q1 = q1.union(q_base.filter_by(publicable=True))
+                q1 = q_base
         else:
             q1 = q_base.filter_by(publicable=True)
         return q1.order_by(desc(Workspace.timestamp_updated))
@@ -55,19 +64,24 @@ class WorkspaceRepository(BaseModelRepository):
         logger.info("deleting workspace %s", id)
         super().delete(id)
 
-    def __getattribute__(self, name):
-        if name == "keycloak_id":
-            keycloak_id, keycloak_data = get_keycloak_data()
-            return keycloak_id
-        return object.__getattribute__(self, name)
+    @property
+    def keycloak_id(self):
+        try:
+            return self.auth_client.get_current_user().get('id', None)
+        except:
+            return None
+
+    def get_logged_user(self) -> User:
+        return self.auth_client.get_current_user()
 
     def pre_commit(self, workspace):
         logger.debug(f'Pre Commit for workspace id: {workspace.id}')
         if not workspace.id:
             # in case of a new workspace assign the logged in user as owner
-            keycloak_id, keycloak_data = get_keycloak_data()
-            usr_firstname = keycloak_data.get('given_name', '')
-            usr_lastname = keycloak_data.get('family_name', '')
+            keycloak_data = self.get_logged_user()
+            keycloak_id = keycloak_data.get('id', -1)
+            usr_firstname = keycloak_data.get('firstName', '')
+            usr_lastname = keycloak_data.get('lastName', '')
             usr_email = keycloak_data.get('email', '')
 
             owner = User.query.filter_by(keycloak_id=keycloak_id).first()

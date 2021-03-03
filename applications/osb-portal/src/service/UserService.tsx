@@ -15,13 +15,18 @@ export const initApis = (token: string) => {
     workspaceService.initApis(token);
 }
 
-function mapUser(userInfo: any): UserInfo {
+export function mapUser(userInfo: any): UserInfo {
     return {
         id: userInfo.sub,
         firstname: userInfo.given_name,
         lastname: userInfo.family_name,
-        email: userInfo.email
+        email: userInfo.email,
+        isAdmin: isUserAdmin()
     }
+}
+
+export function isUserAdmin(): boolean {
+    return keycloak.hasRealmRole('administrator');
 }
 
 export async function initUser(): Promise<UserInfo> {
