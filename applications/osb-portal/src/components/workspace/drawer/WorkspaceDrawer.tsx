@@ -10,6 +10,7 @@ import { WorkspaceInteractions } from "../..";
 import { Workspace } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
+import { UserInfo } from "../../../types/user";
 
 
 
@@ -77,10 +78,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface WorkspaceDrawerProps {
   workspace: Workspace;
+  user: UserInfo;
 
 }
 
-export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, children }) => {
+export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, user, children }) => {
   if (!workspace) {
     return <></>;
   }
@@ -92,7 +94,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
 
 
 
-  return workspace && (
+  return user && workspace && (
     <Box display="flex" alignItems="stretch" flex="1">
       <Drawer
         variant="permanent"
