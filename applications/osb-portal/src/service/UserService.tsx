@@ -3,6 +3,7 @@ import Keycloak from 'keycloak-js';
 import workspaceService from './WorkspaceService';
 
 import { UserInfo } from '../types/user';
+import { getBaseDomain } from '../utils';
 
 const keycloak = Keycloak('/keycloak.json');
 
@@ -12,6 +13,8 @@ const keycloak = Keycloak('/keycloak.json');
 declare const window: any;
 
 export const initApis = (token: string) => {
+    document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
+
     workspaceService.initApis(token);
 }
 
@@ -62,7 +65,7 @@ export async function initUser(): Promise<UserInfo> {
         })
     }
     if (user) {
-        keycloak.updateToken(-1);  // activate refresh token
+        // keycloak.updateToken(-1);  // activate refresh token
     }
 
     return user;

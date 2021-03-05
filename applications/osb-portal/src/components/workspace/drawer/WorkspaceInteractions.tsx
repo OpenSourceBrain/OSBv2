@@ -92,8 +92,7 @@ export default (props: WorkspaceProps | any) => {
     props.refreshWorkspace();
   }
 
-  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending
-    && (new Date().getTime() - resource.timestampUpdated.getTime() < MAX_RESOURCE_WAIT_TIME))) {
+  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
     setTimeout(props.refreshWorkspace, 15000);
   }
 

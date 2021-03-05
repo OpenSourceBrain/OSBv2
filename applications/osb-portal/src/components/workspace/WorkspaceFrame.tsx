@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
-import WorkspaceService from '../../service/WorkspaceService';
+import { getBaseDomain } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -50,15 +50,15 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
         }
     }
 
-    const domain = window.location.host.includes('www.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
-    const workspaceParam = `workspace=${encodeURIComponent(id)}`;
+    const domain = getBaseDomain()
+
     const userParam = (user == null) ? '' : `${user.id}`;
     const application = workspace.lastOpen.type.application.subdomain;
     const type = application.slice(0, 4);
 
     const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/${id}${type}`;
-    document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
     document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
+    document.cookie = `workspaceOwner=${workspace.owner.keycloakId};path=/;domain=${domain}`;
 
     return (
         <iframe id="workspace-frame" frameBorder="0" src={frameUrl} className={classes.iframe} onLoad={onloadIframe} />
