@@ -7,4 +7,3 @@ harness:
       - workspaces
       - workflows
       - jupyterhub
-      - sentry

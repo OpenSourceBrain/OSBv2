@@ -1,10 +1,12 @@
 import sys
 
+import yaml
 from jupyterhub.user import User
 from kubespawner.spawner import KubeSpawner
 
 from cloudharness.auth import AuthClient
 from cloudharness import log
+from pprint import pprint
 
 
 def change_pod_manifest(self: KubeSpawner):
@@ -20,9 +22,16 @@ def change_pod_manifest(self: KubeSpawner):
     """
 
     # get the workspace cookie to determine the workspace id
-    workspace_cookie = self.handler.request.cookies.get('workspaceId', None)
-    if workspace_cookie:
-        workspace_id = workspace_cookie.value
+
+    def get_from_cookie(cookie_name):
+        cookie = self.handler.request.cookies.get(cookie_name, None)
+        if cookie is None:
+            raise Exception(
+                "Required cookie not found. Check that the cookie named '%s' is set.", cookie_name)
+        return cookie.value
+
+    try:
+        workspace_id = get_from_cookie('workspaceId')
         volume_name = f'workspace-{workspace_id}'
         log.info('Mapping to volume %s', volume_name)
 
@@ -40,23 +49,47 @@ def change_pod_manifest(self: KubeSpawner):
             }
         }
 
+        self.extra_labels['workspace'] = workspace_id
 
         # add the volume to the pod
         self.volumes.append(ws_pvc)
-        workspace_owner = self.handler.request.cookies.get('workspaceOwner', None)
-        if workspace_owner is None:
-            console.error("Cannot determine the workspace owner. "
-                          "Check that the cookie named 'workspaceOwner' is set.")
 
-            # mount the workspace volume in the pod
+        workspace_owner = get_from_cookie('workspaceOwner')
+
+        # mount the workspace volume in the pod
+        write_access = has_user_write_access(
+            workspace_id, self.user, workspace_owner)
+
+        if write_access:
+            # Pods with write access must be on the same node
+            affinity_spec = {
+                'labelSelector':
+                    {
+                        'matchExpressions': [
+                            {
+                                'key': 'workspace',
+                                'operator': 'In',
+                                'values': [workspace_id]
+                            },
+                        ]
+                    },
+                    'topologyKey': 'topology.kubernetes.io/zone'
+            }
+
+            self.pod_affinity_required.append(affinity_spec)
+
         self.volume_mounts.append({
             'name': volume_name,
             'mountPath': '/opt/workspace',
-            'readOnly': not has_user_write_access(workspace_id, self.user, workspace_owner)
+            'readOnly': not write_access
         })
+        print(self.__dict__)
+    except Exception as e:
+        log.error('Change pod manifest failed due to an error.', exc_info=True)
 
 
 def has_user_write_access(workspace_id, user: User, workspace_owner: str):
+    print('name:', user.name, workspace_owner)
     if workspace_owner == user.name:
         return True
     auth_client = AuthClient()
