@@ -52,20 +52,24 @@ export async function initUser(): Promise<UserInfo> {
         errorCallback(err);
         return null;
     }
-    // set token refresh to 5 minutes
+
+    const tokenUpdated = (refreshed: any) => {
+        if (refreshed) {
+            initApis(keycloak.token);
+        } else {
+            console.error('not refreshed ' + new Date());
+        }
+    }
+    // set token refresh before 5 minutes
     keycloak.onTokenExpired = () => {
-        keycloak.updateToken(3).then((refreshed) => {
-            if (refreshed) {
-                initApis(keycloak.token);
-            } else {
-                console.error('not refreshed ' + new Date());
-            }
-        }).catch(() => {
+        keycloak.updateToken(60).then(tokenUpdated).catch(() => {
             console.error('Failed to refresh token ' + new Date());
         })
     }
     if (user) {
-        // keycloak.updateToken(-1);  // activate refresh token
+        keycloak.updateToken(-1).then(tokenUpdated).catch(() => {
+            console.error('Failed to refresh token ' + new Date());
+        });  // activate refresh token
     }
 
     return user;
