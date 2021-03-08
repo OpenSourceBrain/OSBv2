@@ -38,7 +38,6 @@ def change_pod_manifest(self: KubeSpawner):
         # We found the workspace id and now we try to mount the
         # workspace persistent volume claim
 
-        # ToDo: add pod affinity so that all pods in read-write
         ws_pvc = {
             'name': volume_name,
             'persistentVolumeClaim': {

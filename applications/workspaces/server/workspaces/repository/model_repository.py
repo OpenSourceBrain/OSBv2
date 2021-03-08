@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 
 from cloudharness import log as logger
 from cloudharness.auth import AuthClient
+from cloudharness.service import pvc
 
 from ..config import Config
 from ..utils import get_keycloak_data
@@ -63,6 +64,10 @@ class WorkspaceRepository(BaseModelRepository):
             resource_repository.delete(resource.id)
         logger.info("deleting workspace %s", id)
         super().delete(id)
+        logger.info("deleted workspace %s", id)
+        logger.info("deleting volume %s", id)
+        pvc.delete_persistent_volume_claim(f"workspace-{id}")
+        logger.info("deleted volume %s", id)
 
     @property
     def keycloak_id(self):
