@@ -74,7 +74,8 @@ export default (props: WorkspaceEditProps) => {
       }
       , (e) => {
         setLoading(false);
-        console.error('Error submitting the workspace', e);
+        throw new Error('Error submitting the workspace')
+        // console.error('Error submitting the workspace', e);
       }
 
     );
