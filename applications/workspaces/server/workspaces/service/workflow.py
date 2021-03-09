@@ -15,7 +15,7 @@ except Exception as e:
 
 
 def create_operation(workspace, workspace_resource):
-    resources = {'requests': {'memory': '256Mi', 'cpu': '250m'}, 'limits': {'memory': '2048Mi', 'cpu': '2500m'}}
+    resources = {'requests': {'memory': '256Mi', 'cpu': '10m'}, 'limits': {'memory': '512Mi', 'cpu': '100m'}}
 
     workspace_pvc_name = WorkspaceRepository().get_pvc_name(workspace)
     shared_directory = f'{workspace_pvc_name}:/project_download'
@@ -30,7 +30,8 @@ def create_operation(workspace, workspace_resource):
                                       tasks=(download_task,),
                                       shared_directory=shared_directory,
                                       folder=workspace_resource.folder,
-                                      shared_volume_size=100,
-                                      on_exit_notify={'queue':'osb-download-file-queue','payload':str(workspace_resource.id)}
-                                     )
+                                      pod_context=operations.PodExecutionContext('workspace', workspace.id),
+                                      on_exit_notify={'queue': 'osb-download-file-queue',
+                                                      'payload': str(workspace_resource.id)}
+                                      )
     workflow = op.execute()

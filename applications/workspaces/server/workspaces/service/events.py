@@ -28,20 +28,19 @@ def set_resource_state(event_client, app, message):
     with app.app_context():
         status = message.get('status', OperationStatus.FAILED)
         workspaceResourceRepository = BaseModelRepository(WorkspaceResource)
-
+        workspace_resource: WorkspaceResource = workspaceResourceRepository.get(
+            id=workspace_resource_id)
         if status == OperationStatus.SUCCEEDED:
-            workspace_resource, found = workspaceResourceRepository.get(
-                id=workspace_resource_id)
             workspace_resource.status = ResourceStatus.SUCCESS  # success
-            log.info('Going to update Workspace Resource %s',
-                     workspace_resource_id)
-            workspaceResourceRepository.save(obj=workspace_resource)
-            log.info(
-                f'Updated WorkspaceResource status to {workspace_resource.status}')
         else:
             log.error(
-                f'WorkspaceResource {workspace_resource_id} errored: deleting resource.')
-            workspaceResourceRepository.delete(id=workspace_resource_id)
+                f'WorkspaceResource {workspace_resource_id} ingestion errored.')
+            workspace_resource.status = ResourceStatus.ERROR
+
+        log.info('Updating WorkspaceResource %s', workspace_resource_id)
+        workspaceResourceRepository.save(obj=workspace_resource)
+        log.info(
+            f'Updated WorkspaceResource status to {workspace_resource.status}')
 
 
 _consumer_clients = []

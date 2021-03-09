@@ -40,9 +40,9 @@ class BaseModelRepository:
             sqs = self._get_qs([(self.model.id, '=', id)])
             obj = sqs.first()
             if obj:
-                obj, found = self._post_get(obj)
-                return obj, found
-        return None, False
+                obj = self._post_get(obj)
+                return obj
+        return None
 
     def _calculated_fields_populate(self, obj):
         if self.calculated_fields:
@@ -53,7 +53,7 @@ class BaseModelRepository:
     def _post_get(self, new_obj):
         if hasattr(self, "post_get"):
             return self.post_get(new_obj)
-        return new_obj, True
+        return new_obj
 
     def _pre_commit(self, new_obj):
         if hasattr(self, "pre_commit"):
@@ -191,8 +191,8 @@ class BaseModelRepository:
         """Save an object to the repository."""
         new_obj = self.model.from_dict(**body)
         if new_obj.id is not None:
-            tmp_obj, found = self._get(new_obj.id)
-            if found:
+            tmp_obj = self._get(new_obj.id)
+            if tmp_obj is not None:
                 return f"{self.model.__name__} with id {id} already exists.", 400
             # POST means create new record so clear the current object ID
             new_obj.id = None
@@ -215,14 +215,13 @@ class BaseModelRepository:
         except IntegrityError as e:
             return "{}".format(e.orig), 400
         else:
-            obj, found = self.get(id=new_obj.id)
-            logger.info(f'found obj: {found}')
+            obj = self.get(id=new_obj.id)
             return new_obj, 201
 
     def get(self, id):
         """Get an object from the repository."""
-        obj, found = self._get(id)
-        return obj, found
+        obj = self._get(id)
+        return obj
 
     def save(self, obj):
         if hasattr(obj, "timestamp_updated"):
@@ -234,8 +233,8 @@ class BaseModelRepository:
 
     def put(self, body, id):
         """Update an object in the repository."""
-        obj, found = self._get(id)
-        if not found:
+        obj = self._get(id)
+        if obj is None:
             return f"{self.model.__name__} with id {id} not found.", 404
 
         new_obj = self.model.from_dict(**body)

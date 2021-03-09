@@ -152,10 +152,10 @@ class WorkspaceResourceRepository(BaseModelRepository):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f'Post Commit for workspace resource id: {workspace_resource.id}')
-        workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
-        if found:
+        if workspace is not None:
             try:
                 from ..service.workflow import create_operation
                 create_operation(workspace, workspace_resource)
@@ -166,11 +166,9 @@ class WorkspaceResourceRepository(BaseModelRepository):
         return workspace_resource
 
     def post_get(self, workspace_resource):
-        workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
-        if not found:
-            # workspace not found means no access rights to the workspace so fail with resource not found
-            return workspace_resource, False
-        return workspace_resource, True
+        workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+
+        return workspace_resource
 
     def open(self, workspace_resource):
         # test if workspace resource status is "available"
@@ -178,8 +176,8 @@ class WorkspaceResourceRepository(BaseModelRepository):
             return f"WorkspaceResource with id {workspace_resource.id} is not yet available for opening. Please wait until the status is a(vailable)", 422
 
         workspace_resource.timestamp_last_opened = func.now()
-        workspace, found = WorkspaceRepository().get(id=workspace_resource.workspace_id)
-        if found:
+        workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        if workspace is not None:
             workspace.last_opened_resource_id = workspace_resource.id
         db.session.add(workspace_resource)
         db.session.add(workspace)
