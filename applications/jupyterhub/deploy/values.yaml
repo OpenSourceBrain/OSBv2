@@ -213,9 +213,9 @@ singleuser:
     type: dynamic
     capacity: 2Mi
     dynamic:
-      pvcNameTemplate: osb-jupyter-{userid}
-      volumeNameTemplate: osb-jupyter-{userid}
-    homeMountPath: /opt/home
+      pvcNameTemplate: osb-user-{userid}
+      volumeNameTemplate: osb-user-{userid}
+    homeMountPath: /opt/user
     extraLabels: {}
   image:
     name: jupyter/base-notebook

@@ -38,5 +38,4 @@ RUN chown jovyan /opt/workspace
 RUN mkdir -p .jupyter/lab
 RUN ln -s /opt/workspace .jupyter/lab/workspaces
 
-
 WORKDIR /opt/workspace

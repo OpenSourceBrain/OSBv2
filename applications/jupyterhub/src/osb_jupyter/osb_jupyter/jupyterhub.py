@@ -48,7 +48,7 @@ def change_pod_manifest(self: KubeSpawner):
             }
         }
 
-        self.extra_labels['workspace'] = workspace_id
+        self.extra_labels['workspace'] = str(workspace_id)
 
         # add the volume to the pod
         self.volumes.append(ws_pvc)
@@ -68,7 +68,7 @@ def change_pod_manifest(self: KubeSpawner):
                             {
                                 'key': 'workspace',
                                 'operator': 'In',
-                                'values': [workspace_id]
+                                'values': [str(workspace_id)]
                             },
                         ]
                     },
