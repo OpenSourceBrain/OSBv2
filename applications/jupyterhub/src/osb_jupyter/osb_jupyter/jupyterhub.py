@@ -62,20 +62,23 @@ def change_pod_manifest(self: KubeSpawner):
         if write_access:
             # Pods with write access must be on the same node
             affinity_spec = {
-                'labelSelector':
-                    {
-                        'matchExpressions': [
-                            {
-                                'key': 'workspace',
-                                'operator': 'In',
-                                'values': [str(workspace_id)]
-                            },
-                        ]
-                    },
-                    'topologyKey': 'topology.kubernetes.io/zone'
+                'weight': 100,
+                'podAffinityTerm': {
+                    'labelSelector':
+                        {
+                            'matchExpressions': [
+                                {
+                                    'key': 'workspace',
+                                    'operator': 'In',
+                                    'values': [str(workspace_id)]
+                                },
+                            ]
+                        },
+                    'topologyKey': 'kubernetes.io/hostname'
+                }
             }
 
-            self.pod_affinity_required.append(affinity_spec)
+            self.pod_affinity_preferred.append(affinity_spec)
 
         self.volume_mounts.append({
             'name': volume_name,
