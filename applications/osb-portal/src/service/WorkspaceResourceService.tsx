@@ -18,7 +18,6 @@ class WorkspaceResourceService {
           location: url,
           resourceType: ResourceType.G,
           workspaceId: workspace.id,
-          timestampCreated: new Date()
         }
       });
   }
