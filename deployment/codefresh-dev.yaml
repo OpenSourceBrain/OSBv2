@@ -182,6 +182,34 @@ steps:
         image_name: common
         title: Common
         working_directory: ./build/applications/common/server
+      netpyne:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}/
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        image_name: netpyne
+        title: Netpyne
+        working_directory: ./build/applications/netpyne
+      nwb-explorer:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - REGISTRY=${{REGISTRY}}/
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        image_name: nwb-explorer
+        title: Nwb explorer
+        working_directory: ./build/applications/nwb-explorer
       jupyterhub:
         type: build
         stage: build
@@ -294,20 +322,6 @@ steps:
         image_name: workflows
         title: Workflows
         working_directory: ./build/applications/workflows/server
-      sentry:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}/
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        image_name: sentry
-        title: Sentry
-        working_directory: ./build/applications/sentry
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.4.1
@@ -398,6 +412,22 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_netpyne:
+        stage: publish
+        type: push
+        title: Netpyne
+        candidate: '${{REGISTRY}}/netpyne:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nwb-explorer:
+        stage: publish
+        type: push
+        title: Nwb explorer
+        candidate: '${{REGISTRY}}/nwb-explorer:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_jupyterhub:
         stage: publish
         type: push
@@ -459,14 +489,6 @@ steps:
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/workflows:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_sentry:
-        stage: publish
-        type: push
-        title: Sentry
-        candidate: '${{REGISTRY}}/sentry:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
