@@ -12,7 +12,12 @@ import { Workspace } from "../../types/workspace";
 
 
 // TODO handle user's vs public workspaces
-export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace }: any) => {
+export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
+
+
+  React.useEffect(() => {
+    refreshWorkspaces();
+  }, [])
 
   const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
   const workspaceList =

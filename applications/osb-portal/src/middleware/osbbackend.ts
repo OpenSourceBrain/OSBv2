@@ -7,7 +7,7 @@ import { CallApiAction } from './backend';
 
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
-import { Workspace } from "../types/workspace";
+import { ResourceStatus, Workspace } from "../types/workspace";
 
 
 const fetchModelsAction = (): CallApiAction => {
@@ -23,6 +23,8 @@ const fetchModelsAction = (): CallApiAction => {
     }
   })
 }
+
+let refreshPending = false;
 
 /**
  * @private
@@ -77,17 +79,40 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       UserService.register().then((user: any) => next({ ...action, payload: user }));
       break;
     case Workspaces.selectWorkspace.toString():
-      workspaceService.getWorkspace(action.payload).then(
-        (workspace: Workspace) => next({ ...action, payload: workspace }),
-        () => next(setError("Workspace not found or not accessible"))
-      );
-      break;
+
     case Workspaces.refreshWorkspace.toString():
-      workspaceService.getWorkspace(store.getState().workspaces.selectedWorkspace.id).then(
-        (workspace: Workspace) => next({ ...action, payload: workspace }),
-        () => next(setError("Workspace not found or not accessible"))
-      );
+      function refreshWorkspace(callback: (workspace: Workspace) => any) {
+        const workspaceId = action.payload || store.getState().workspaces.selectedWorkspace.id;
+        refreshPending = true;
+        workspaceService.getWorkspace(workspaceId).then(
+          (workspace: Workspace) => {
+            callback(workspace);
+            refreshPending = false;
+            if (!refreshPending && workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
+              setTimeout(() => {
+
+                refreshWorkspace(
+                  (workspaceUpdated) => {
+
+                    if (workspaceUpdated.resources.length !== workspace.resources.length ||
+                      workspaceUpdated.resources.find((resource: any, idx) => resource.status !== workspace.resources[idx].status)) {
+                      // update state only if something happened in resources
+                      next({ ...action, payload: workspaceUpdated });
+                    }
+
+                  }
+                );
+              }, 15000);
+            }
+
+          },
+          () => next(setError("Workspace not found or not accessible"))
+        );
+      }
+      refreshWorkspace((workspace) => next({ ...action, payload: workspace }));
+
       break;
+
     case Workspaces.updateWorkspace.toString():
       workspaceService.updateWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
       break;

@@ -92,9 +92,7 @@ export default (props: WorkspaceProps | any) => {
     props.refreshWorkspace();
   }
 
-  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
-    setTimeout(props.refreshWorkspace, 15000);
-  }
+
 
 
   const [expanded, setExpanded] = React.useState<string | false>('workspace');

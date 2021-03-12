@@ -15,7 +15,6 @@ import workspacePage from "../pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
-import { fetchModelsAction } from '../store/actions/models';
 import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';

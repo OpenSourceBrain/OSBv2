@@ -5,6 +5,7 @@ import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '.
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
+import { refreshWorkspace } from '../../store/actions/workspaces';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -21,15 +22,21 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     if (!workspace) {
         return null;
     }
+    let iframeReady = false;
+
+    React.useEffect(() => {
+        if (iframeReady && (workspace.resources != null) && (workspace.resources.length > 0)) {
+            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
+            openResource(workspaceResource);
+        }
+    }, [workspace]);
+
+
 
     const id = workspace.id;
-    let timerId: any = null;
 
-    const openResource = async (contentWindow: any, workspaceResource: WorkspaceResource) => {
-        if (timerId !== null) {
-            clearTimeout(timerId);
-        }
-        const resource = await WorkspaceResourceService.getResource(workspaceResource.id); // refresh the workspace resource from the db
+    const openResource = async (resource: WorkspaceResource) => {
+
         if (resource.status === ResourceStatus.available) {
             const fileName: string = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
             const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
@@ -38,16 +45,12 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
             }).catch(() => {
                 console.error("Error opening resource, ResourceOpen function failed!");
             });
-        } else {
-            timerId = setTimeout(openResource, 5000, contentWindow, workspaceResource);
         }
     }
 
     const onloadIframe = (e: any) => {
-        if ((workspace.resources != null) && (workspace.resources.length > 0)) {
-            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
-            openResource(e.target.contentWindow, workspaceResource);
-        }
+        iframeReady = true;
+        refreshWorkspace();
     }
 
     const domain = getBaseDomain()

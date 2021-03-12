@@ -42,11 +42,9 @@ timeout(10000, initUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   }
-  store.dispatch(WorkspacesActions.refreshWorkspaces());
-  store.dispatch(ModelsActions.fetchModelsAction());
+  // store.dispatch(ModelsActions.fetchModelsAction());
 }, () => {
-  store.dispatch(WorkspacesActions.refreshWorkspaces());
-  store.dispatch(ModelsActions.fetchModelsAction());
+  // store.dispatch(ModelsActions.fetchModelsAction());
 }).finally(renderMain);
 
 initErrorHandler(appName);
