@@ -7,6 +7,7 @@ import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
+
 const workspacesApiUri = '/api/workspaces/api';
 
 class WorkspaceService {
@@ -25,9 +26,11 @@ class WorkspaceService {
 
   async getWorkspace(id: number): Promise<Workspace> {
     const wsigr: WorkspaceIdGetRequest = { id };
-    const result = await this.workspacesApi.workspaceIdGet(wsigr);
-
-    const ws = mapWorkspace(result);
+    let ws = null;
+    await this.workspacesApi.workspaceIdGet(wsigr).then(result => ws = mapWorkspace(result));
+    if (!ws) {
+      throw new Error("Workspace not found")
+    }
     return ws;
   }
 
@@ -35,7 +38,7 @@ class WorkspaceService {
 
   async fetchWorkspaces(featured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = featured ? { q:  'publicable=true' } : {};
+    const wspr: WorkspaceGetRequest = featured ? { q: 'publicable=true' } : {};
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -76,6 +79,8 @@ class WorkspaceService {
   };
 }
 
+
+
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
@@ -85,6 +90,7 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
     ...workspace,
     resources,
     lastOpen,
+    owner: workspace.owner,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
   }

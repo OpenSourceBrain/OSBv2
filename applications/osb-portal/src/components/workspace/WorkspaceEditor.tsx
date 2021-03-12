@@ -1,20 +1,21 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Box from "@material-ui/core/Box";
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone'
 import PublishIcon from '@material-ui/icons/Publish';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+
 import { radius, gutter } from '../../theme';
 import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
+
+
 interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean) => void;
@@ -45,6 +46,9 @@ async function readFile(file: Blob) {
   })
 }
 
+
+
+
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
@@ -53,20 +57,44 @@ export default (props: WorkspaceEditProps) => {
     Workspace
   >({ ...props.workspace });
 
+
+  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(null);
+
   const handleCreateWorkspace = async (publicable: boolean = false) => {
+    setLoading(true)
     workspaceService.createWorkspace({ ...workspaceForm, publicable }).then(
       async (workspace) => {
         if (thumbnail) {
           const fileThumbnail: any = await readFile(thumbnail);
-          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true));
+          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true), e => console.error('Error uploading thumbnail'));
         } else {
+          setLoading(true)
           props.onLoadWorkspace(true)
         }
       }
-    );
-    props.onLoadWorkspace(false)
+      , (e) => {
+        setLoading(false);
+        throw new Error('Error submitting the workspace')
+        // console.error('Error submitting the workspace', e);
+      }
 
-  };
+    );
+
+  }
+
+
+
+  const previewFile = (file: Blob) => {
+
+    const fileReader: FileReader = new FileReader();
+
+    fileReader.onload = () => {
+      setThumbnailPreview(fileReader.result);
+    };
+
+    fileReader.readAsDataURL(file);
+
+  }
 
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
@@ -74,7 +102,9 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({ ...workspaceForm, description: e.target.value });
   const setThumbnail = (uploadedThumbnail: any) => {
     thumbnail = uploadedThumbnail;
+    previewFile(thumbnail);
   }
+  const [loading, setLoading] = React.useState(false);
   return (
     <>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
@@ -103,18 +133,29 @@ export default (props: WorkspaceEditProps) => {
             <Grid item={true}>
               <Grid container={true} spacing={2} justify="space-between">
                 <Grid item={true}>
-                  <Button variant="contained" onClick={e => handleCreateWorkspace(false)}>
+                  <Button variant="contained" disabled={loading} onClick={e => handleCreateWorkspace(false)}>
                     Create
                   </Button>
+                  {loading &&
+                    <CircularProgress
+                      size={24}
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: -12,
+                        marginLeft: -12,
+                      }}
+                    />}
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item={true} xs={6} >
+        <Grid item={true} xs={6} alignItems="stretch" >
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section style={{ display: 'flex', alignItems: 'stretch' }}>
+              <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
                 <div {...getRootProps({ style: dropAreaStyle })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
@@ -131,15 +172,13 @@ export default (props: WorkspaceEditProps) => {
                           <DeleteForeverIcon />
                         </IconButton>}
                     </Grid>
-                    <Grid item={true}>
+                    <Grid item={true} >
                       <Box component="div" m={1}>
                         <Typography variant="subtitle2" component="p">
                           {acceptedFiles.length === 0 ?
                             "Upload workspace preview image"
                             :
-                            <span>Thumbnail File Uploaded: <br />
-                              {acceptedFiles[0].name}
-                            </span>
+                            null
                           }
                         </Typography>
                       </Box>

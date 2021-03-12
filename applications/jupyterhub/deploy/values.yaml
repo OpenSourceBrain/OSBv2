@@ -15,7 +15,7 @@ harness:
         c.Spawner.http_timeout = 300
         c.Spawner.start_timeout = 300
 
-        c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local localhost *.opensourcebrain.org"}}
+        c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local osb.local localhost *.opensourcebrain.org"}}
 custom: {}
 hub:
   allowNamedServers: true
@@ -213,9 +213,9 @@ singleuser:
     type: dynamic
     capacity: 2Mi
     dynamic:
-      pvcNameTemplate: osb-jupyter-{userid}
-      volumeNameTemplate: osb-jupyter-{userid}
-    homeMountPath: /opt/home
+      pvcNameTemplate: osb-user-{userid}
+      volumeNameTemplate: osb-user-{userid}
+    homeMountPath: /opt/user
     extraLabels: {}
   image:
     name: jupyter/base-notebook

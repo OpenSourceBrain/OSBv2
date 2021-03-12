@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "webpack-dev-server --progress --config webpack.dev.js --env.DOMAIN=v2dev.opensourcebrain.org --env.NAMESPACE=osb2dev",
     "start:test": "webpack-dev-server --progress --config webpack.dev.js --env.DOMAIN=v2.opensourcebrain.org --env.NAMESPACE=osb2",
-    "start:minikube": "webpack-dev-server --progress --config webpack.dev.js --env.DOMAIN=osb.local --env.NAMESPACE=osb2",
+    "start:minikube": "webpack-dev-server --progress --config webpack.dev.js --env.DOMAIN=osb.local --env.NAMESPACE=osblocal",
     "prebuild": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "build": "webpack --mode=production --config webpack.prod.js --devtool source-map --env.DOMAIN=$DOMAIN --env.NAMESPACE=$NAMESPACE",
     "prebuild-dev": "tslint --fix -c tslint.json 'src/**/*.{ts,tsx}'",

@@ -35,10 +35,10 @@ export const Banner = (props: any) => {
   };
 
   const text1 =
-    user === null ? "Let us show you around" : `Welcome back ${user.firstname}`;
+    user === null ? "Welcome to the Open Source Brain v2.0 preview" : `Welcome back ${user.firstname}`;
   const text2 =
     user === null
-      ? "Get started in OSB with our short guided tour."
+      ? "Coming soon with NeuroML model creation, NWB data exploration and interactive playgrounds."
       : "Let's do some science.";
 
   return (
@@ -56,7 +56,7 @@ export const Banner = (props: any) => {
               <Button variant="outlined">Take the tour</Button>
             }
             {user === null ? (
-              <Button onClick={handleSignup}>Sign up</Button>
+              <Button variant="outlined" onClick={handleSignup}>Sign up</Button>
             ) : null}
           </Box>
         </Box>

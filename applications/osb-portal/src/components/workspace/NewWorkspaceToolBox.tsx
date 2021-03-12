@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "left",
     },
   },
+  justifyCenter: {
+    justifyContent: 'center'
+  },
   cardText: {
     display: "inline-block",
     marginRight: "5px",
@@ -63,41 +66,35 @@ export const WorkspaceToolBox = (props: any) => {
             </Typography>
           </Grid>
           <Grid item={true} xs={12} sm={12} md={8} lg={9}>
-            <Grid xs={12} justify="center" item={true}>
-              <WorkspaceItem
-                icon={Icons.CircleIcon}
-                title="Single Cell"
-                template={WorkspaceTemplateType.singleCell}
-                user={user}
-                refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-            <Grid xs={12} justify="center" item={true}>
-              <WorkspaceItem
-                icon={Icons.SquareCirclesIcon}
-                title="Network"
-                template={WorkspaceTemplateType.network}
-                user={user}
-                refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-            <Grid xs={12} justify="center" item={true}>
-              <WorkspaceItem
-                icon={Icons.ChartIcon}
-                title="Data Analysis"
-                template={WorkspaceTemplateType.explorer}
-                user={user}
-                refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-            <Grid xs={12} justify="center" item={true}>
-              <WorkspaceItem
-                icon={Icons.CubeIcon}
-                title="Playground"
-                template={WorkspaceTemplateType.playground}
-                user={user}
-                refreshWorkspaces={props.refreshWorkspaces}
-              />
+            <Grid container={true} direction="row" justify="space-between" spacing={5} >
+              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter} >
+                <WorkspaceItem
+                  icon={Icons.SquareCirclesIcon}
+                  title="Computational modeling"
+                  template={WorkspaceTemplateType.network}
+                  user={user}
+                  refreshWorkspaces={props.refreshWorkspaces}
+
+                />
+              </Grid>
+              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+                <WorkspaceItem
+                  icon={Icons.ChartIcon}
+                  title="Data Analysis"
+                  template={WorkspaceTemplateType.explorer}
+                  user={user}
+                  refreshWorkspaces={props.refreshWorkspaces}
+                />
+              </Grid>
+              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+                <WorkspaceItem
+                  icon={Icons.CubeIcon}
+                  title="Playground"
+                  template={WorkspaceTemplateType.playground}
+                  user={user}
+                  refreshWorkspaces={props.refreshWorkspaces}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

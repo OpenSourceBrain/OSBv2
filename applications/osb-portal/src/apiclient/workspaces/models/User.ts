@@ -49,6 +49,8 @@ export interface User {
      * @memberof User
      */
     email?: string;
+
+
 }
 
 export function UserFromJSON(json: any): User {
@@ -60,7 +62,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         return json;
     }
     return {
-        
+
         'id': !exists(json, 'id') ? undefined : json['id'],
         'keycloakId': !exists(json, 'keycloak_id') ? undefined : json['keycloak_id'],
         'firstname': !exists(json, 'firstname') ? undefined : json['firstname'],
@@ -77,7 +79,7 @@ export function UserToJSON(value?: User | null): any {
         return null;
     }
     return {
-        
+
         'id': value.id,
         'keycloak_id': value.keycloakId,
         'firstname': value.firstname,

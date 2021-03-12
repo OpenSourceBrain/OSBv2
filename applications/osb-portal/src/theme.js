@@ -17,7 +17,7 @@ export const {
 
 const theme = {
   darkMode: true,
-  spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 30, 40, 50, 100, 150, 200],
+  spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 30, 40, 50, 100, 150, 200, 300],
   typography: {
     useNextVariants: true,
     htmlFontSize: 12,
@@ -31,12 +31,12 @@ const theme = {
   palette: {
     type: 'dark',
     primary: {
-      main: primaryColor, 
+      main: primaryColor,
       dark: secondaryColor
     },
-    secondary: { 
-      main: secondaryColor, 
-      dark: primaryColor 
+    secondary: {
+      main: secondaryColor,
+      dark: primaryColor
     },
     background: {
       default: bgDarker,
@@ -50,7 +50,7 @@ const theme = {
       fontWeight: 400,
       flex: 1
     },
-    
+
     h2: {
       fontSize: '1.5rem',
       fontWeight: 400,
@@ -90,25 +90,25 @@ const theme = {
   overrides: {
     MuiInput: {
       input: {
-        outline: 'none !important', 
-        border: 'none !important', 
+        outline: 'none !important',
+        border: 'none !important',
         boxShadow: 'none !important',
       },
-      root:{ color: fontColor }
+      root: { color: fontColor }
 
     },
     MuiSelect: {
       root: {
-        outline: 'none !important', 
-        border: 'none !important', 
+        outline: 'none !important',
+        border: 'none !important',
         boxShadow: 'none !important'
       },
-      select: { "&:focus" :{ background: "none" } },
+      select: { "&:focus": { background: "none" } },
     },
     MuiGrid: {
-     root: {
-       display: 'flex'
-     }
+      root: {
+        display: 'flex'
+      }
     },
     MuiCard: { root: { flex: 1 } },
     MuiBottomNavigation: { root: { backgroundColor: bgRegular, marginBottom: 8, borderRadius: 4 } },
@@ -120,16 +120,16 @@ const theme = {
         borderRadius: '5px'
       },
     },
-    MuiBottomNavigationAction: { 
+    MuiBottomNavigationAction: {
       root: { color: fontColor, textTransform: 'uppercase' },
       label: { fontSize: "0.65rem", "&.Mui-selected": { fontSize: "0.65rem" } },
     },
     MuiFormControl: { root: { overflow: 'visible' } },
-    MuiFab:{ 
+    MuiFab: {
     },
-    MuiButton: { 
+    MuiButton: {
       root: {
-        
+
       },
       outlined: {
         borderWidth: 2,
@@ -143,40 +143,42 @@ const theme = {
         padding: gutter / 2
       }
     },
-    MuiMenuItem: { 
-      root:{
+    MuiMenuItem: {
+      root: {
         fontSize: '1em',
-        paddingTop: gutter / 2, 
+        paddingTop: gutter / 2,
       },
       gutters: {
         paddingLeft: gutter * 2,
         paddingRight: gutter * 2
       }
-       
+
     },
     MuiDialogTitle: { root: { fontWeight: 600, fontSize: '1rem' } },
-    MuiDialogContent: { root: { paddingBottom: gutter} },
-    MuiCollapse: { 
+    MuiDialogContent: { root: { paddingBottom: gutter } },
+    MuiCollapse: {
       container: { padding: 0 },
       wrapper: { padding: "0px!important" }
     },
     MuiIcon: { fontSizeLarge: { fontSize: '1.75rem' } },
-    MuiExpansionPanelSummary: { 
-      root: { padding: '0px!important', margin: 0, minHeight: 'unset!important',     display: "flex",
-      flexDirection: "row-reverse" },
+    MuiExpansionPanelSummary: {
+      root: {
+        padding: '0px!important', margin: 0, minHeight: 'unset!important', display: "flex",
+        flexDirection: "row-reverse"
+      },
       content: { margin: '0px!important', cursor: 'auto' },
       expandIcon: { marginRight: 0 }
     },
     MuiExpansionPanelDetails: { root: { padding: 0, margin: 0, minHeight: 'unset!important', flexDirection: 'column' } },
     MuiExpansionPanel: { root: { padding: 0, margin: '0px!important', minHeight: 'unset' } },
     MuiAutocomplete: { popupIndicator: { marginRight: 0 } },
-    MuiCardContent: { 
+    MuiCardContent: {
       root: {
         '&:last-child': {
           paddingBottom: 16
         }
       }
-     },
+    },
     MuiTabs: {
       root: {
         minHeight: '20px',

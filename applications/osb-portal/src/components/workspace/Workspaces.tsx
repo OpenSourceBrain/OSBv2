@@ -4,6 +4,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
@@ -46,21 +48,23 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
           indicatorColor="primary"
           onChange={handleChange}
         >
-          <Tab value={false} label="Your workspaces" />
+          <Tab value={false} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
           <Tab value={true} label="Featured workspaces" />
         </Tabs>
       }
+      {
+        workspaceList && <Box mb={2}>
 
-      <Box mb={2}>
+          <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
+            {workspaceList.length} Workspace{workspaceList.length !== 1 ? 's' : ''}
+          </Typography>
+        </Box>
+      }
 
-        <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
-          {workspaceList.length} Workspaces
-        </Typography>
-      </Box>
       <Box className="verticalFit card-container">
         <Box pt={1} pb={1} className="scrollbar">
           <Grid container={true} spacing={1}>
-            {workspaceList}
+            {workspaceList ? workspaceList : <CircularProgress />}
           </Grid>
         </Box>
       </Box>

@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@material-ui/core/Box";
-
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
 import Typography from '@material-ui/core/Typography';
 import TreeView from "@material-ui/lab/TreeView";
@@ -10,10 +9,10 @@ import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/wor
 import WorkspaceResourceService from "../../../service/WorkspaceResourceService";
 
 import {
-  FileLinkIcon,
   LoadingIcon,
   FolderIcon,
 } from "../../icons";
+
 
 
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
@@ -56,7 +55,7 @@ interface WorkspaceProps {
   refreshWorkspace: any;
 }
 
-export default (props: WorkspaceProps) => {
+const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace } = props;
 
   const resources = workspace.resources;
@@ -88,3 +87,5 @@ export default (props: WorkspaceProps) => {
   </Box>
   );
 }
+
+export default WorkspaceResourceBrowser;

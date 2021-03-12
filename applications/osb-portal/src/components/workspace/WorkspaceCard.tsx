@@ -9,17 +9,19 @@ import Typography from "@material-ui/core/Typography";
 import FolderIcon from "@material-ui/icons/Folder";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
+import { IconButton } from "@material-ui/core";
 
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import * as Icons from "../icons";
-import { IconButton } from "@material-ui/core";
+import { UserInfo } from "../../types/user";
+
 
 interface Props {
   workspace: Workspace;
   updateWorkspace: (ws: Workspace) => null,
   deleteWorkspace: (wsId: number) => null,
-  user: any
+  user: UserInfo
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -101,6 +103,8 @@ export const WorkspaceCard = (props: Props) => {
 
   const defaultResource = workspace.lastOpen || workspace.resources[0];
 
+  const canEdit = props.user && (props.user.isAdmin || workspace.owner.keycloakId === props.user.keycloakId)
+
 
   return (
     <Card className={classes.card} elevation={0}>
@@ -115,9 +119,9 @@ export const WorkspaceCard = (props: Props) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          {props.user && !workspace.publicable && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
-          {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
-          {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
+          {canEdit && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
+          {canEdit && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
+          {canEdit && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
           <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
         </Menu>
       </CardActions>

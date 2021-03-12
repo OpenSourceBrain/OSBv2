@@ -322,20 +322,6 @@ steps:
         image_name: workflows
         title: Workflows
         working_directory: ./build/applications/workflows/server
-      sentry:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - REGISTRY=${{REGISTRY}}/
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        image_name: sentry
-        title: Sentry
-        working_directory: ./build/applications/sentry
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.4.1
@@ -503,14 +489,6 @@ steps:
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/workflows:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_sentry:
-        stage: publish
-        type: push
-        title: Sentry
-        candidate: '${{REGISTRY}}/sentry:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

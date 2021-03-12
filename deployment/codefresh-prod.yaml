@@ -238,15 +238,6 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_sentry:
-        stage: publish
-        type: push
-        title: Sentry
-        candidate: '${{REGISTRY}}/sentry:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
     when:
       condition:
         all:

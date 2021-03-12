@@ -12,7 +12,7 @@ interface WorkspaceState {
 
 export const initialState: WorkspaceState = {
   userWorkspaces: null,
-  publicWorkspaces: [],
+  publicWorkspaces: null,
   selectedWorkspace: null,
   showPublic: true
 };

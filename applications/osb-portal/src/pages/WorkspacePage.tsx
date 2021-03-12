@@ -11,9 +11,9 @@ import {
 // import { Workspace } from "../../types/workspace";
 
 export default (props: any) => {
-  const { workspaceId } = useParams();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
 
-  props.selectWorkspace(workspaceId as string);
+  props.selectWorkspace(workspaceId);
 
   return (
     <>

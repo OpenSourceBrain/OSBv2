@@ -28,14 +28,16 @@ def set_resource_state(event_client, app, message):
     with app.app_context():
         status = message.get('status', OperationStatus.FAILED)
         workspaceResourceRepository = BaseModelRepository(WorkspaceResource)
-        workspace_resource, found = workspaceResourceRepository.get(
+        workspace_resource: WorkspaceResource = workspaceResourceRepository.get(
             id=workspace_resource_id)
         if status == OperationStatus.SUCCEEDED:
             workspace_resource.status = ResourceStatus.SUCCESS  # success
         else:
-            workspace_resource.status = ResourceStatus.ERROR  # error
+            log.error(
+                f'WorkspaceResource {workspace_resource_id} ingestion errored.')
+            workspace_resource.status = ResourceStatus.ERROR
 
-        log.info('Going to update Workspace Resource')
+        log.info('Updating WorkspaceResource %s', workspace_resource_id)
         workspaceResourceRepository.save(obj=workspace_resource)
         log.info(
             f'Updated WorkspaceResource status to {workspace_resource.status}')

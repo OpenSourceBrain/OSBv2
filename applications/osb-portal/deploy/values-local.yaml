@@ -7,4 +7,4 @@ harness:
       - workspaces
       - workflows
       - jupyterhub
-      - sentry
+      - netpyne

@@ -23,11 +23,11 @@ def _save_image(id_=None, image=None, filename_base=None):
     return filename
 
 
-def setthumbnail(id_=None, thumbNail=None, body=None, **kwargs):
-    workspace, found = WorkspaceRepository().get(id=id_)
-    if not found:
+def setthumbnail(id_=None, thumb_nail=None, body=None, **kwargs):
+    workspace = WorkspaceRepository().get(id=id_)
+    if workspace is None:
         return f"Workspace with id {id_} not found.", 404
-    if not thumbNail:
+    if not thumb_nail:
         return f"Thumbnail is not specified.", 404
     # ext = mimetypes.guess_extension(thumbNail.mimetype)
     # folder = os.path.join(Config.WORKSPACES_DIR, f"{id}")
@@ -36,7 +36,7 @@ def setthumbnail(id_=None, thumbNail=None, body=None, **kwargs):
     # filename = f"{folder}/thumbnail{ext}"
     # thumbNail.save(os.path.join(Config.STATIC_DIR,filename))
     saved_filename = _save_image(
-        id=id_, image=thumbNail, filename_base="thumbnail")
+        id_=id_, image=thumb_nail, filename_base="thumbnail")
     workspace.thumbnail = saved_filename
     db.session.add(workspace)
     db.session.commit()
@@ -44,11 +44,11 @@ def setthumbnail(id_=None, thumbNail=None, body=None, **kwargs):
 
 
 def addimage(id_=None, image=None, body=None, **kwargs):
-    workspace, found = WorkspaceRepository().get(id=id_)
-    if not found:
+    workspace = WorkspaceRepository().get(id=id_)
+    if workspace is None:
         return f"Workspace with id {id_} not found.", 404
     if not image:
-        return f"Workspace Image is not specified.", 404
+        return f"Workspace Image is not specified.", 400
 
     # ext = mimetypes.guess_extension(image.mimetype)
     # folder = os.path.join(Config.WORKSPACES_DIR, f"{id}")
@@ -64,19 +64,19 @@ def addimage(id_=None, image=None, body=None, **kwargs):
 
 
 def delimage(id_=None, image_id=None, **kwargs):
-    workspace, found = WorkspaceRepository().get(id=id_)
-    if not found:
+    workspace = WorkspaceRepository().get(id=id_)
+    if workspace is None:
         return f"Workspace with id {id_} not found.", 404
     if not image_id:
-        return f"Image Id is not specified.", 404
+        return f"Image Id is not specified.", 400
 
     wsir = WorkspaceImageRepository()
-    wsi, found = wsir.get(id=image_id)
-    if not found:
+    wsi = wsir.get(id=image_id)
+    if wsi is None:
         return f"Workspace Image with id {image_id} not found.", 404
 
     if wsi.workspace_id != id_:
-        return f"Workspace Image Id {image_id} doesn't belong to Workspace {id_}.", 404
+        return f"Workspace Image Id {image_id} doesn't belong to Workspace {id_}.", 400
 
     result = wsir.delete(id=image_id)
     try:

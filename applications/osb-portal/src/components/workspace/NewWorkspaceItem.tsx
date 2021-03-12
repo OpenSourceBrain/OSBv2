@@ -20,23 +20,11 @@ export enum WorkspaceTemplateType {
 }
 
 const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
-  [WorkspaceTemplateType.singleCell]: {
-    resources: [{
-      name: "singleCellModel.np",
-      type: SampleResourceTypes.m,
-      location: "singleCellModel.np.location",
-      workspaceId: -1
-    }],
-    volume: null,
-    shareType: null,
-    name: null,
-    description: null
-  },
   [WorkspaceTemplateType.network]: {
     resources: [{
-      name: "networkModel.np",
+      name: "NetPyNE tutorials",
       type: SampleResourceTypes.m,
-      location: "networkModel.np.location",
+      location: "https://github.com/Neurosim-lab/netpyne_workspace/archive/master.zip",
       workspaceId: -1
     }],
     volume: null,
@@ -46,9 +34,9 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
   },
   [WorkspaceTemplateType.explorer]: {
     resources: [{
-      name: "sampleNwbFile.nwb",
+      name: "sample.nwb",
       type: SampleResourceTypes.e,
-      location: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb",
+      location: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/FergusonEtAl2015/FergusonEtAl2015.nwb",
       workspaceId: -1
     }],
     volume: null,

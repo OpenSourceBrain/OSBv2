@@ -22,6 +22,8 @@ import { ResourceStatus, Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 
+const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
+
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
     maxWidth: 400,
