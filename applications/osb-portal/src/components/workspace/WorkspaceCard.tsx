@@ -8,10 +8,15 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import FolderIcon from "@material-ui/icons/Folder";
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem'
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popper from '@material-ui/core/Popper';
 import { IconButton } from "@material-ui/core";
-
-import { Workspace } from "../../types/workspace";
+import NestedMenuItem from "material-ui-nested-menu-item";
+import { OSBApplication, OSBApplications, Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import * as Icons from "../icons";
 import { UserInfo } from "../../types/user";
@@ -97,9 +102,18 @@ export const WorkspaceCard = (props: Props) => {
     handleClose();
   }
 
+  /**
+   * 
+   * @param applicatonType OSBApplication key
+   */
+  const handleOpenWorkspaceWithApp = (applicatonType: string) => {
+    window.location.href = `/workspace/${workspace.id}/${applicatonType}`;
+  }
+
   const handleOpenWorkspace = () => {
     window.location.href = `/workspace/${workspace.id}`;
   }
+
 
   const defaultResource = workspace.lastOpen || workspace.resources[0];
 
@@ -123,6 +137,28 @@ export const WorkspaceCard = (props: Props) => {
           {canEdit && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
           {canEdit && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
           <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+          <NestedMenuItem
+            label="Open with..."
+            parentMenuOpen={true}
+
+          >
+            {
+              Object.keys(OSBApplications).map(item =>
+                <MenuItem
+                  key={item}
+                  onClick={
+                    (e) => {
+                      handleOpenWorkspaceWithApp(item);
+                    }
+                  }
+                >
+                  {OSBApplications[item].name}
+                </MenuItem>
+              )
+            }
+
+
+          </NestedMenuItem>
         </Menu>
       </CardActions>
 
@@ -140,13 +176,13 @@ export const WorkspaceCard = (props: Props) => {
           {!workspace.thumbnail ? (
             <FolderIcon className={classes.imageIcon} />
           ) : (
-              <img
-                src={workspace.thumbnail}
-                className={classes.image}
-                title={openTitle}
-                alt={openTitle}
-              />
-            )}
+            <img
+              src={workspace.thumbnail}
+              className={classes.image}
+              title={openTitle}
+              alt={openTitle}
+            />
+          )}
         </Link>
       </Box>
 
@@ -165,7 +201,7 @@ export const WorkspaceCard = (props: Props) => {
           {formatDate(workspace.timestampUpdated)}
         </Typography>
       </CardContent>
-    </Card>
+    </Card >
   );
 };
 

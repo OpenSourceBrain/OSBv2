@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any }) => {
     const classes = useStyles();
-
+    const { app } = useParams<{ app: string }>();
     const { user, workspace } = props;
     if (!workspace) {
         return null;
@@ -25,7 +25,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     let iframeReady = false;
 
     React.useEffect(() => {
-        if (iframeReady && (workspace.resources != null) && (workspace.resources.length > 0)) {
+        if (!app && iframeReady && (workspace.resources != null) && (workspace.resources.length > 0)) {
             const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
             openResource(workspaceResource);
         }
@@ -56,7 +56,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, lo
     const domain = getBaseDomain()
 
     const userParam = (user == null) ? '' : `${user.id}`;
-    const application = workspace.lastOpen.type.application.subdomain;
+    const application = app ? OSBApplications[app].subdomain : workspace.lastOpen.type.application.subdomain;
     const type = application.slice(0, 4);
 
     const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/${id}${type}`;
