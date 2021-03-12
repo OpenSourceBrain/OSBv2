@@ -103,7 +103,7 @@ export const WorkspaceCard = (props: Props) => {
   }
 
   /**
-   * 
+   *
    * @param applicatonType OSBApplication key
    */
   const handleOpenWorkspaceWithApp = (applicatonType: string) => {
