@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any }) => {
+export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any, app: string }) => {
     const classes = useStyles();
-    const { app } = useParams<{ app: string }>();
-    const { user, workspace } = props;
+
+    const { user, workspace, app } = props;
     if (!workspace) {
         return null;
     }
