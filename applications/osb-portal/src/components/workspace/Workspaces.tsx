@@ -25,7 +25,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
           <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
-            <WorkspaceCard workspace={workspace} deleteWorkspace={deleteWorkspace} updateWorkspace={updateWorkspace} user={user} />
+            <WorkspaceCard workspace={workspace} deleteWorkspace={deleteWorkspace} updateWorkspace={updateWorkspace} user={user} refreshWorkspaces={refreshWorkspaces} />
           </Grid>
         );
       })

@@ -53,20 +53,25 @@ let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
 
+  const { workspace } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<
     Workspace
   >({ ...props.workspace });
 
 
-  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(null);
+  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
 
-  const handleCreateWorkspace = async (publicable: boolean = false) => {
+
+  const handleCreateWorkspace = async () => {
     setLoading(true)
-    workspaceService.createWorkspace({ ...workspaceForm, publicable }).then(
-      async (workspace) => {
+    workspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
+      async (returnedWorkspace) => {
         if (thumbnail) {
           const fileThumbnail: any = await readFile(thumbnail);
-          workspaceService.updateWorkspaceThumbnail(workspace.id, new Blob([fileThumbnail])).then(() => props.onLoadWorkspace(true), e => console.error('Error uploading thumbnail'));
+          workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
+            .then(() => props.onLoadWorkspace(true),
+              e => console.error('Error uploading thumbnail', e)
+            );
         } else {
           setLoading(true)
           props.onLoadWorkspace(true)
@@ -117,6 +122,7 @@ export default (props: WorkspaceEditProps) => {
                 fullWidth={true}
                 onChange={setNameField}
                 variant="outlined"
+                defaultValue={workspace?.name}
               />
             </Grid>
             <Grid item={true}>
@@ -128,13 +134,14 @@ export default (props: WorkspaceEditProps) => {
                 fullWidth={true}
                 onChange={setDescriptionField}
                 variant="outlined"
+                defaultValue={workspace?.description}
               />
             </Grid>
             <Grid item={true}>
               <Grid container={true} spacing={2} justify="space-between">
                 <Grid item={true}>
-                  <Button variant="contained" disabled={loading} onClick={e => handleCreateWorkspace(false)}>
-                    Create
+                  <Button variant="contained" disabled={loading} onClick={handleCreateWorkspace}>
+                    {workspace.id ? "Save" : "Create"}
                   </Button>
                   {loading &&
                     <CircularProgress

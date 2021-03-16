@@ -49,11 +49,18 @@ class WorkspaceService {
     return null;
   }
 
-  async createWorkspace(newWorkspace: Workspace): Promise<any> {
-    if (!newWorkspace.description) {
-      newWorkspace.description = newWorkspace.name;
+  async createOrUpdateWorkspace(ws: Workspace): Promise<any> {
+    if (!ws.description) {
+      ws.description = ws.name;
     }
-    const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(newWorkspace) };
+    if (!ws.id) {
+      return this.createWorkspace(ws);
+    }
+    return this.updateWorkspace(ws);
+  }
+
+  async createWorkspace(ws: Workspace): Promise<any> {
+    const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(ws) };
     const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
       return workspace;
     });
@@ -70,7 +77,8 @@ class WorkspaceService {
   }
 
   async updateWorkspace(workspace: Workspace) {
-    return this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
+    await this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined, id: undefined }) });
+    return workspace;
   }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
