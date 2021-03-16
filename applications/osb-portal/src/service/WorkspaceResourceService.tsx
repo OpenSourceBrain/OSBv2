@@ -43,6 +43,10 @@ class WorkspaceResourceService {
     });
   }
 
+  async deleteResource(resource: WorkspaceResource) {
+    WorkspaceService.workspacesApi.workspaceresourceIdDelete({ id: resource.id })
+  }
+
 
 }
 export function urlToName(url: string): string {
