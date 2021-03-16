@@ -4,6 +4,7 @@ import workspaceService from './WorkspaceService';
 
 import { UserInfo } from '../types/user';
 import { getBaseDomain } from '../utils';
+import { Workspace } from '../types/workspace';
 
 const keycloak = Keycloak('/keycloak.json');
 
@@ -90,4 +91,8 @@ export async function register() {
 
 const errorCallback = (error: any) => {
     initApis(null);
+}
+
+export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
+    return user && (user.isAdmin || workspace.owner.keycloakId === user.keycloakId)
 }

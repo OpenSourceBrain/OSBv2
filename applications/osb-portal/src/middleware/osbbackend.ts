@@ -1,9 +1,8 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as Workspaces from '../store/actions/workspaces'
-import { loadModelsActionType, fetchModelsActionType } from '../store/actions/models'
 import { userLogin, userLogout, userRegister } from '../store/actions/user'
 import { setError } from '../store/actions/error'
-import { CallApiAction } from './backend';
+
 
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
@@ -11,26 +10,13 @@ import workspaceResourceService from '../service/WorkspaceResourceService';
 import { ResourceStatus, Workspace } from "../types/workspace";
 
 
-const fetchModelsAction = (): CallApiAction => {
-  return ({
-    type: 'api/fetchModels',
-    payload: {
-      url: '/api-mocks/api/models',
-      successAction: loadModelsActionType,
-      errorAction: setError.toString()
-    },
-    meta: {
-      callApi: true
-    }
-  })
-}
 
 let refreshPending = false;
 
 /**
  * @private
  */
-const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyAction | CallApiAction) => {
+const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyAction) => {
 
   function refreshWorkspaces() {
     workspaceService.fetchWorkspaces(true).then((workspaces) => {
@@ -58,12 +44,10 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       }
       next(action);
       break;
-    case Workspaces.refreshWorkspacesActionType: {
+    case Workspaces.refreshWorkspaces.toString(): {
       refreshWorkspaces();
+      break;
     }
-    case fetchModelsActionType:
-      next(fetchModelsAction());
-      break
     case userLogin.toString(): {
       if (!action.payload) {
         UserService.login().then((user: any) => next({ ...action, payload: user }));
@@ -132,6 +116,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
         workspaceService.getWorkspace(workspaceId).then(workspace => next(Workspaces.updateWorkspace(workspace)));
 
       });
+      break;
     default:
       return next(action);
     //

@@ -9,18 +9,13 @@ import Typography from "@material-ui/core/Typography";
 import FolderIcon from "@material-ui/icons/Folder";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Popper from '@material-ui/core/Popper';
 import { IconButton } from "@material-ui/core";
 import NestedMenuItem from "material-ui-nested-menu-item";
-import { OSBApplication, OSBApplications, Workspace } from "../../types/workspace";
+import { OSBApplications, Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import * as Icons from "../icons";
 import { UserInfo } from "../../types/user";
-
+import { canEditWorkspace } from '../../service/UserService';
 
 interface Props {
   workspace: Workspace;
@@ -117,7 +112,7 @@ export const WorkspaceCard = (props: Props) => {
 
   const defaultResource = workspace.lastOpen || workspace.resources[0];
 
-  const canEdit = props.user && (props.user.isAdmin || workspace.owner.keycloakId === props.user.keycloakId)
+  const canEdit = canEditWorkspace(props.user, workspace);
 
 
   return (

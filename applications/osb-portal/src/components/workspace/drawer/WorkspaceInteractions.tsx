@@ -21,6 +21,7 @@ import { ShareIcon } from "../../icons";
 import { ResourceStatus, Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
+import { canEditWorkspace } from '../../../service/UserService';
 
 const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
 
@@ -82,6 +83,7 @@ export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
+  const canEdit = canEditWorkspace(props.user, workspace);
 
   const showAddResource = () => {
     setAddResourceOpen(true);
@@ -92,9 +94,6 @@ export default (props: WorkspaceProps | any) => {
     props.refreshWorkspace();
   }
 
-
-
-
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
 
   const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
@@ -102,8 +101,6 @@ export default (props: WorkspaceProps | any) => {
       setExpanded(newExpanded ? panel : false);
     }
   };
-
-
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -132,7 +129,7 @@ export default (props: WorkspaceProps | any) => {
       open={addResourceOpen}
       closeAction={() => setAddResourceOpen(false)}
     >
-      <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} />
+      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} />}
     </OSBDialog>
     {props.open ? (
       <>
@@ -141,9 +138,12 @@ export default (props: WorkspaceProps | any) => {
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
             <Typography variant="h5" className={classes.flexCenter}>{workspace.name}</Typography>
-            <IconButton onMouseDown={handleShareClick}>
-              <ShareIcon />
-            </IconButton>
+            {
+              canEdit &&
+              <IconButton onMouseDown={handleShareClick}>
+                <ShareIcon />
+              </IconButton>
+            }
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
