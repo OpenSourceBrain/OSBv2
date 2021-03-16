@@ -523,7 +523,6 @@ class _WorkspaceResourceDictBase(typing_extensions.TypedDict, total=True):
 
     name: str
     location: str
-    resource_type: str
 
 
 class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
@@ -535,6 +534,7 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
+    resource_type: str
     workspace_id: typing.Optional[int]
 
 
@@ -583,13 +583,13 @@ class TWorkspaceResource(typing_extensions.Protocol):
         self,
         name: str,
         location: str,
-        resource_type: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        resource_type: str = "g",
         workspace_id: typing.Optional[int] = None,
     ) -> None:
         """
@@ -621,13 +621,13 @@ class TWorkspaceResource(typing_extensions.Protocol):
         cls,
         name: str,
         location: str,
-        resource_type: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        resource_type: str = "g",
         workspace_id: typing.Optional[int] = None,
     ) -> "TWorkspaceResource":
         """

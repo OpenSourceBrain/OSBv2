@@ -22,6 +22,13 @@ class WorkspaceResourceService {
       });
   }
 
+  async resourceAdded(workspaceResource: WorkspaceResource) {
+    return WorkspaceService.workspacesApi.workspaceresourcePost(
+      {
+        workspaceResource: mapPostAddedResource(workspaceResource)
+      });
+  }
+
   async getResource(id: number): Promise<WorkspaceResource> {
     const wsrigr: WorkspaceresourceIdGetRequest = { id };
     const result: ApiWorkspaceResource = await WorkspaceService.workspacesApi.workspaceresourceIdGet(wsrigr);
@@ -35,6 +42,8 @@ class WorkspaceResourceService {
       //
     });
   }
+
+
 }
 export function urlToName(url: string): string {
   return url.split('/').slice(-1).pop();
@@ -61,6 +70,9 @@ function mapResourceStatus(resource: ApiWorkspaceResource): ResourceStatus {
 }
 
 function mapResourceType(resource: WorkspaceResource) {
+  if (!resource.type) {
+    return ResourceType.NULL;
+  }
   switch (resource.type.application.subdomain) {
     case 'nwbexplorer':
       return ResourceType.E
@@ -71,10 +83,18 @@ function mapResourceType(resource: WorkspaceResource) {
   }
 }
 
-export function mapPostResource(resource: WorkspaceResource): ApiWorkspaceResource {
+export function mapPostUrlResource(resource: WorkspaceResource): ApiWorkspaceResource {
   return {
     ...resource,
     status: ApiResourceStatus.P,
+    resourceType: mapResourceType(resource)
+  }
+}
+
+export function mapPostAddedResource(resource: WorkspaceResource): ApiWorkspaceResource {
+  return {
+    ...resource,
+    status: ApiResourceStatus.A,
     resourceType: mapResourceType(resource)
   }
 }

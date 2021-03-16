@@ -7,6 +7,7 @@ import { CallApiAction } from './backend';
 
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
+import workspaceResourceService from '../service/WorkspaceResourceService';
 import { ResourceStatus, Workspace } from "../types/workspace";
 
 
@@ -81,10 +82,11 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
     case Workspaces.selectWorkspace.toString():
 
     case Workspaces.refreshWorkspace.toString():
+
       function refreshWorkspace(callback: (workspace: Workspace) => any) {
-        const workspaceId = action.payload || store.getState().workspaces.selectedWorkspace.id;
+        const selectedWorkspaceId = action.payload || store.getState().workspaces.selectedWorkspace.id;
         refreshPending = true;
-        workspaceService.getWorkspace(workspaceId).then(
+        workspaceService.getWorkspace(selectedWorkspaceId).then(
           (workspace: Workspace) => {
             callback(workspace);
             refreshPending = false;
@@ -114,11 +116,22 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       break;
 
     case Workspaces.updateWorkspace.toString():
-      workspaceService.updateWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
+      workspaceService.updateWorkspace(action.payload).then((workspace) => { next({ ...action, payload: workspace }); refreshWorkspaces() });
       break;
     case Workspaces.deleteWorkspace.toString():
       workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
       break;
+    case Workspaces.resourceAdded.toString():
+      const { path, name } = action.payload as { path: string, name: string };
+      const workspaceId = store.getState().workspaces.selectedWorkspace.id;
+      workspaceResourceService.resourceAdded({
+        location: path,
+        name,
+        workspaceId
+      }).then(resource => {
+        workspaceService.getWorkspace(workspaceId).then(workspace => next(Workspaces.updateWorkspace(workspace)));
+
+      });
     default:
       return next(action);
     //

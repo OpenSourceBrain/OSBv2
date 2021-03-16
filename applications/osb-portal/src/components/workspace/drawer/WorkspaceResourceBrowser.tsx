@@ -59,7 +59,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace } = props;
 
   const resources = workspace.resources;
-  const lastOpenResourceId = workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
+  const lastOpenResourceId = workspace.lastOpen ? workspace.lastOpen.id : -1;
 
   if (!resources) {
     return null;

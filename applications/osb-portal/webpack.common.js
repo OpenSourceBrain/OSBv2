@@ -15,7 +15,7 @@ module.exports = env => {
 
 
     return {
-        devtool: 'eval-source-map',
+        devtool: 'source-map',
         output: {
             path: path.resolve(__dirname, 'public'),
             filename: path.join('js', 'bundle.js')

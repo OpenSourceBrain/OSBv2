@@ -6,7 +6,7 @@ import { FeaturedType } from '../types//global';
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
 
-import WorkspaceResourceService, { mapResource, mapPostResource } from './WorkspaceResourceService';
+import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 
 const workspacesApiUri = '/api/workspaces/api';
 
@@ -62,7 +62,7 @@ class WorkspaceService {
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
-    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostResource) };
+    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
   }
 
   async deleteWorkspace(workspaceId: number) {
@@ -70,7 +70,7 @@ class WorkspaceService {
   }
 
   async updateWorkspace(workspace: Workspace) {
-    this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
+    return this.workspacesApi.workspaceIdPut({ id: workspace.id, workspace: this.mapWorkspaceToApi({ ...workspace, resources: undefined }) });
   }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {

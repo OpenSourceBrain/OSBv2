@@ -12,7 +12,7 @@ from ..utils import get_keycloak_data
 from .base_model_repository import BaseModelRepository
 from .database import db
 from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, \
-    WorkspaceImage, WorkspaceResource
+    WorkspaceImage, WorkspaceResource, TWorkspaceResource
 from ..service.kubernetes import create_persistent_volume_claim
 
 
@@ -136,26 +136,39 @@ class WorkspaceImageRepository(BaseModelRepository):
 class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResource
 
-    def pre_commit(self, workspace_resource):
+    @staticmethod
+    def guess_resurce_type(resource_path):
+        resource_path = resource_path.split('?')[0]
+        if resource_path[-3:] == "nwb":
+            return "e"
+        elif resource_path[-3:] == "np":
+            return 'g'
+        return 'g'
+
+
+
+    def pre_commit(self, workspace_resource: TWorkspaceResource):
         # Check if we can determine the resource type
         logger.debug(
             f'Pre Commit for workspace resource id: {workspace_resource.id}')
-        if workspace_resource.location[-3:] == "nwb":
-            logger.debug(
-                f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
-            workspace_resource.resource_type = "e"
+        if not workspace_resource.resource_type or workspace_resource.resource_type == 'u':
+            workspace_resource.resource_type = self.guess_resurce_type(workspace_resource.location)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
         return workspace_resource
 
-    def post_commit(self, workspace_resource):
+    def post_commit(self, workspace_resource: TWorkspaceResource):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f'Post Commit for workspace resource id: {workspace_resource.id}')
         workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+            logger.debug(
+                f'Pre Commit for workspace resource id: {workspace_resource.id} setting type from file name')
             workspace_resource.folder = workspace_resource.name
-        if workspace is not None:
+
+        if workspace is not None and workspace_resource.status == 'p' and 'http' == workspace_resource.location[0:4]:
+            logger.debug('Starting resource ETL from %s', workspace_resource.location)
             try:
                 from ..service.workflow import create_operation
                 create_operation(workspace, workspace_resource)

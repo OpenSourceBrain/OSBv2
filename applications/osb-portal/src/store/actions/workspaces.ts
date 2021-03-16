@@ -1,7 +1,7 @@
 
 import { WorkspaceActions } from '../reducers/workspaces'
 
-export const { loadPublicWorkspaces: loadPublicWorkspaces, loadUserWorkspaces, selectWorkspace, refreshWorkspace, showPublicWorkspaces, showUserWorkspaces, deleteWorkspace, updateWorkspace } = WorkspaceActions;
+export const { loadPublicWorkspaces: loadPublicWorkspaces, loadUserWorkspaces, selectWorkspace, refreshWorkspace, showPublicWorkspaces, showUserWorkspaces, deleteWorkspace, updateWorkspace, resourceAdded } = WorkspaceActions;
 
 export const postWorkspacesActionType = 'workspaces/postWorkspace';
 export const refreshWorkspacesActionType = 'workspaces/refreshWorkspace';

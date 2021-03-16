@@ -19,7 +19,7 @@ export interface WorkspaceResource {
     name: string,
     location: string,
     folder?: string,
-    type: ResourceType,
+    type?: ResourceType,
     status?: ResourceStatus,
     timestampUpdated?: Date,
     timestampCreated?: Date

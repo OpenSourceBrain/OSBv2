@@ -857,11 +857,13 @@ components:
          * e - Experimental
          * m - Model
          * g - Generic
+         * u - Unknown (to be defined)
       type: string
       enum:
         - e
         - m
         - g
+        - u
       default: g
       example: g
     ResourceStatus:
