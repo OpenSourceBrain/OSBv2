@@ -47,7 +47,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
     }, [workspace]);
 
 
-    const applicationSubdomain = app ? OSBApplications[app].subdomain : workspace.lastOpen.type.application.subdomain
+    const applicationSubdomain = app ? OSBApplications[app].subdomain : (workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain)
     const domain = getBaseDomain()
 
     const userParam = (user == null) ? '' : `${user.id}`;

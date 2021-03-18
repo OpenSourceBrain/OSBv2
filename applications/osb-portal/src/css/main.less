@@ -62,11 +62,19 @@
 
     >.MuiTreeItem-label {
       &:hover {
-        background-color: @bgDarker;
+
+        .delete-button {
+          display: block;
+        }
       }
 
-      padding: 0.2em 1em;
+      .delete-button {
+        display: none;
+      }
+
+      padding: 0;
     }
+
   }
 
 }

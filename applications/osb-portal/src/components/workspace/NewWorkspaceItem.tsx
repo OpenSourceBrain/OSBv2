@@ -46,7 +46,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
   },
   [WorkspaceTemplateType.playground]: {
     resources: [{
-      name: "notebook.ipynb",
+      name: "notebook",
       type: SampleResourceTypes.g,
       location: window.location.origin + "/workspace-data/notebook.ipynb",
       workspaceId: -1

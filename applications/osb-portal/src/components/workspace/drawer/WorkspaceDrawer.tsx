@@ -17,7 +17,7 @@ import { UserInfo } from "../../../types/user";
 const useStyles = makeStyles((theme) => ({
 
   drawerContent: {
-    maxWidth: 400,
+    width: 400,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -112,7 +112,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           }),
         }}
       >
-        <div className={classes.drawerContent}>
+        <div className={open ? classes.drawerContent : ''}>
           <WorkspaceInteractions workspace={workspace} open={open} />
         </div>
         <div>
@@ -122,8 +122,8 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
               {open ? (
                 <ArrowLeft style={{ fontSize: "1rem" }} />
               ) : (
-                  <ArrowRight style={{ fontSize: "1rem" }} />
-                )}
+                <ArrowRight style={{ fontSize: "1rem" }} />
+              )}
             </IconButton>
           </div>
         </div>

@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(-180deg)",
   },
   treePadding: {
-    paddingLeft: 43
+    paddingLeft: theme.spacing(2)
   }
 }));
 
@@ -87,6 +87,10 @@ export default (props: WorkspaceProps | any) => {
 
   const showAddResource = () => {
     setAddResourceOpen(true);
+  }
+
+  const setAddResourceClosed = () => {
+    setAddResourceOpen(false);
   }
 
   const handleResourceAdded = () => {
@@ -129,7 +133,7 @@ export default (props: WorkspaceProps | any) => {
       open={addResourceOpen}
       closeAction={() => setAddResourceOpen(false)}
     >
-      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} />}
+      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
     </OSBDialog>
     {props.open ? (
       <>

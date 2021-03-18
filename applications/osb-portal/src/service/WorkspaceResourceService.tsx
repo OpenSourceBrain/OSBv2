@@ -44,7 +44,7 @@ class WorkspaceResourceService {
   }
 
   async deleteResource(resource: WorkspaceResource) {
-    WorkspaceService.workspacesApi.workspaceresourceIdDelete({ id: resource.id })
+    return WorkspaceService.workspacesApi.workspaceresourceIdDelete({ id: resource.id })
   }
 
 

@@ -1,17 +1,16 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
 import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService'
 import { Workspace } from '../../types/workspace';
-import { ForumTwoTone } from "@material-ui/icons";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface WorkspaceEditProps {
   workspace: Workspace;
   onResourceAdded: () => void;
+  onSubmit: () => void;
 }
 
 function isValidHttpUrl(s: string) {
@@ -39,6 +38,8 @@ export default (props: WorkspaceEditProps) => {
 
   const [urlError, setUrlError] = React.useState<string>(null);
 
+  const [waiting, setWaiting] = React.useState(false);
+
   const handleSetUrl = (e: any) => {
     setUrl(e.target.value);
     setName(urlToName(e.target.value));
@@ -48,6 +49,7 @@ export default (props: WorkspaceEditProps) => {
 
   const handleAddResource = () => {
     let error = false;
+
     for (const resource of workspace.resources) {
       if (resource.name === name) {
         error = true;
@@ -60,6 +62,7 @@ export default (props: WorkspaceEditProps) => {
       setUrlError("Insert a valid public http url")
     }
     if (!error) {
+      setWaiting(true);
       workspaceResourceService.addResource(workspace, url, name).then(onResourceAdded, () => alert('An error occurred while adding the resource'));
     }
 
@@ -94,9 +97,20 @@ export default (props: WorkspaceEditProps) => {
           />
         </Grid>
         <Grid item={true} alignItems="flex-end">
-          <Button variant="contained" onClick={handleAddResource}>
+          <Button variant="contained" onClick={handleAddResource} disabled={waiting}>
             Upload
               </Button>
+          {waiting &&
+            <CircularProgress
+              size={24}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: -12,
+                marginLeft: -12,
+              }}
+            />}
         </Grid>
       </Grid>
     </>
