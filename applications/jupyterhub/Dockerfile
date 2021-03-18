@@ -38,4 +38,6 @@ RUN chown jovyan /opt/workspace
 RUN mkdir -p .jupyter/lab
 RUN ln -s /opt/workspace .jupyter/lab/workspaces
 
+COPY conf/ .jupyter/lab/user-settings/@jupyterlab
+RUN chmod 777 .jupyter -R
 WORKDIR /opt/workspace

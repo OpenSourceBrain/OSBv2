@@ -6,8 +6,24 @@ from kubespawner.spawner import KubeSpawner
 
 from cloudharness.auth import AuthClient
 from cloudharness import log
-from pprint import pprint
 
+def affinity_spec(key, value):
+    return {
+                'weight': 100,
+                'podAffinityTerm': {
+                    'labelSelector':
+                        {
+                            'matchExpressions': [
+                                {
+                                    'key': str(key),
+                                    'operator': 'In',
+                                    'values': [str(value)]
+                                },
+                            ]
+                        },
+                    'topologyKey': 'kubernetes.io/hostname'
+                }
+            }
 
 def change_pod_manifest(self: KubeSpawner):
     """
@@ -48,44 +64,30 @@ def change_pod_manifest(self: KubeSpawner):
             }
         }
 
-        self.extra_labels['workspace'] = str(workspace_id)
+
 
         # add the volume to the pod
         self.volumes.append(ws_pvc)
 
         workspace_owner = get_from_cookie('workspaceOwner')
 
-        # mount the workspace volume in the pod
+        # Add labels to use for affinity
+        self.extra_labels['workspace'] = str(workspace_id)
+        self.extra_labels['user'] = self.user.name
+
+        self.pod_affinity_preferred.append(affinity_spec('user', self.user.name))
         write_access = has_user_write_access(
             workspace_id, self.user, workspace_owner)
-
         if write_access:
             # Pods with write access must be on the same node
-            affinity_spec = {
-                'weight': 100,
-                'podAffinityTerm': {
-                    'labelSelector':
-                        {
-                            'matchExpressions': [
-                                {
-                                    'key': 'workspace',
-                                    'operator': 'In',
-                                    'values': [str(workspace_id)]
-                                },
-                            ]
-                        },
-                    'topologyKey': 'kubernetes.io/hostname'
-                }
-            }
-
-            self.pod_affinity_preferred.append(affinity_spec)
+            self.pod_affinity_preferred.append(affinity_spec('workspace', workspace_id))
 
         self.volume_mounts.append({
             'name': volume_name,
             'mountPath': '/opt/workspace',
             'readOnly': not write_access
         })
-        print(self.__dict__)
+        # print(self.__dict__)
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
 
