@@ -50,7 +50,8 @@ const ItemCover = ({ children, className }: { children: any, className: string }
   pl={2}
   pr={2}
   className={className}
-  style={coverAbsolute}>
+  style={coverAbsolute}
+>
   {children}
 </Box>
 
