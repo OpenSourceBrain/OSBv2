@@ -130,7 +130,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           .map((resource: WorkspaceResource, idx: number) => (
             <TreeItem
               icon={undefined}
-              key={resource.name}
+              key={idx + ''}
               nodeId={idx + ''}
               className="first-level"
               label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} />}

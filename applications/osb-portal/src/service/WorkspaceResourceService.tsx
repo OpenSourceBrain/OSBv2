@@ -16,7 +16,7 @@ class WorkspaceResourceService {
         {
           name: name ? name : urlToName(url),
           location: url,
-          resourceType: ResourceType.G,
+          resourceType: ResourceType.NULL,
           workspaceId: workspace.id,
         }
       });
