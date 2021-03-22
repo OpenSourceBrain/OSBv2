@@ -34,7 +34,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       type: SampleResourceTypes.m,
       location: "https://github.com/Neurosim-lab/netpyne_workspace/archive/master.zip",
       workspaceId: -1
-    }, notebook],
+    }],
     volume: null,
     shareType: null,
     name: null,
@@ -46,7 +46,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       type: SampleResourceTypes.e,
       location: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/FergusonEtAl2015/FergusonEtAl2015.nwb",
       workspaceId: -1
-    }, notebook],
+    }],
     volume: null,
     shareType: null,
     name: null,

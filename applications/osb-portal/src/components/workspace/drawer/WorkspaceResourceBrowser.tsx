@@ -114,7 +114,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const resources = workspace.resources;
   const lastOpenResourceId = workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
 
-  if (!resources) {
+  if (!resources || resources.length === 0) {
     return null;
   }
   return (<Box mt={1} mb={1}>
