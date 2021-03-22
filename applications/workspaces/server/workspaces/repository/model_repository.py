@@ -163,9 +163,9 @@ class WorkspaceResourceRepository(BaseModelRepository):
         logger.debug(
             f'Post Commit for workspace resource id: {workspace_resource.id}')
         workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
-        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+        if workspace_resource.folder is None:
             logger.debug(
-                f'Pre Commit for workspace resource id: {workspace_resource.id} setting type from file name')
+                f'Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name')
             workspace_resource.folder = workspace_resource.name
 
         if workspace is not None and workspace_resource.status == 'p' and 'http' == workspace_resource.location[0:4]:

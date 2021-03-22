@@ -6,6 +6,7 @@ import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
 import { refreshWorkspace } from '../../store/actions/workspaces';
 import { AnyAction, Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -26,7 +27,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
 
     React.useEffect(() => {
         if (!app && iframeReady && (workspace.resources != null) && (workspace.resources.length > 0)) {
-            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
+            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[workspace.resources.length - 1];
             openResource(workspaceResource);
         }
         const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
@@ -37,7 +38,11 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
             if (!message.origin.includes(applicationSubdomain)) {
                 return;
             }
-            const action = message.data as AnyAction;
+
+            if (!message.data?.type) {
+                return;
+            }
+            const action = message.data as PayloadAction;
             dispatch(action)
         };
 

@@ -126,7 +126,7 @@ export const WorkspaceCard = (props: Props) => {
   }
 
 
-  const defaultResource = workspace.lastOpen || workspace.resources[0];
+  const defaultResource = workspace.lastOpen || workspace.resources[workspace.resources.length - 1];
 
   const canEdit = canEditWorkspace(props.user, workspace);
 

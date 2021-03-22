@@ -40,9 +40,6 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
       showUserWorkspaces()
     }
   };
-  if (!workspaces) {
-    return null;
-  }
 
   return (
     <React.Fragment>
@@ -68,10 +65,13 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
 
       <Box className="verticalFit card-container">
         <Box pt={1} pb={1} className="scrollbar">
-          <Grid container={true} spacing={1}>
-            {workspaceList ? workspaceList : <CircularProgress />}
-          </Grid>
+          {workspaceList ?
+            <Grid container={true} spacing={1}>
+              {workspaceList}
+            </Grid> : <Box mt={1}><CircularProgress /></Box>
+          }
         </Box>
+
       </Box>
     </React.Fragment>
   );

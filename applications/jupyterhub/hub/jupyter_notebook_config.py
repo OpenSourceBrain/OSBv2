@@ -16,6 +16,7 @@ c.NotebookApp.open_browser = False
 c.FileContentsManager.delete_to_trash = False
 
 print('*'*80)
+import notebook
 print(c.NotebookApp.tornado_settings)
 c.NotebookApp.tornado_settings = {
     'headers': {
