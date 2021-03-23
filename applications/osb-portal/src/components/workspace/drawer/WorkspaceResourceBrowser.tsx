@@ -8,6 +8,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import ArrowDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
 import workspaceResourceService from "../../../service/WorkspaceResourceService";
@@ -19,10 +20,12 @@ import {
 import { CSSProperties } from "@material-ui/styles";
 
 
-
+function getResourcePath(resource: WorkspaceResource) {
+  return resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+}
 
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
-  const fileName = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+  const fileName = "/opt/workspace/" + getResourcePath(resource);
   const r = workspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
     const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
     iFrame.contentWindow.postMessage(fileName, '*');
@@ -82,8 +85,9 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
       onClick={canOpenFile ? openFileResource(resource, refreshWorkspace) : undefined}
     >
       {resource.type.application === null ? <FolderIcon /> : ""}
-      <Typography color={resource.status === ResourceStatus.error ? "error" : "initial"} style={style}>{resource.name}</Typography>
-
+      <Tooltip title={getResourcePath(resource)}>
+        <Typography color={resource.status === ResourceStatus.error ? "error" : "initial"} style={style}>{resource.name}</Typography>
+      </Tooltip>
       <Box display="flex" alignItems="center" >
         {resource.status === ResourceStatus.pending ? <LoadingIcon /> : null}
         <IconButton size="small" disabled={waiting} style={{ color: "#989898" }} title="Delete resource" onClick={handleDeleteResource} >
