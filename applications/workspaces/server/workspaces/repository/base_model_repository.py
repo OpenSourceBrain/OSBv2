@@ -37,11 +37,7 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            sqs = self._get_qs([(self.model.id, '=', id)])
-            obj = sqs.first()
-            if obj:
-                obj = self._post_get(obj)
-                return obj
+            return self.model.query.get(id)
         return None
 
     def _calculated_fields_populate(self, obj):

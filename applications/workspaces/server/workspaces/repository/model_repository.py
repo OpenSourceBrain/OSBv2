@@ -14,7 +14,7 @@ from ..utils import get_keycloak_data
 from .base_model_repository import BaseModelRepository
 from .database import db
 from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, \
-    WorkspaceImage, WorkspaceResource, TWorkspaceResource
+    WorkspaceImage, WorkspaceResource, TWorkspaceResource, TWorkspace
 from ..service.kubernetes import create_persistent_volume_claim
 
 
@@ -28,6 +28,12 @@ class WorkspaceRepository(BaseModelRepository):
 
     def get_pvc_name(self, workspace_id):
         return f'workspace-{workspace_id}'
+
+    def get(self, id):
+        workspace: TWorkspace = self.model.query.get(id)
+        if workspace.publicable or (workspace.owner and workspace.owner.keycloak_id == self.keycloak_id):
+            return workspace
+        return None
 
     def search_qs(self, filter=None):
 
