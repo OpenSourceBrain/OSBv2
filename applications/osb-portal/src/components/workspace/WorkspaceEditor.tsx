@@ -15,22 +15,23 @@ import { radius, gutter } from '../../theme';
 import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 
+const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
 interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean) => void;
 }
 
-const dropAreaStyle = {
+const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: 'flex',
   alignItems: 'center',
   borderWidth: 1,
   borderRadius: radius,
   padding: gutter,
-  borderColor: fade('#ffffff', 0.42),
+  borderColor: error ? "red" : fade('#ffffff', 0.42),
   borderStyle: 'dashed',
-};
+});
 
 async function readFile(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -60,13 +61,13 @@ export default (props: WorkspaceEditProps) => {
 
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
-
+  const [thumbnailError, setThumbnailError] = React.useState<any>(null);
 
   const handleCreateWorkspace = async () => {
     setLoading(true)
     workspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
       async (returnedWorkspace) => {
-        if (thumbnail) {
+        if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
           workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
             .then(() => props.onLoadWorkspace(true),
@@ -90,6 +91,22 @@ export default (props: WorkspaceEditProps) => {
 
 
   const previewFile = (file: Blob) => {
+    if (!file) {
+      setThumbnailError(null);
+      setThumbnailPreview(null);
+      return;
+    }
+
+    if (!file.type.includes("image")) {
+      setThumbnailError("Not an image file");
+      return;
+    }
+    if (file.size > MAX_ALLOWED_THUMBNAIL_SIZE) {
+      setThumbnailError("File exceeds allowed size (1MB)");
+      return;
+    }
+
+    setThumbnailError(null)
 
     const fileReader: FileReader = new FileReader();
 
@@ -162,8 +179,8 @@ export default (props: WorkspaceEditProps) => {
         <Grid item={true} xs={6} alignItems="stretch" >
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
-                <div {...getRootProps({ style: dropAreaStyle })}>
+              <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
+                <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
                     <Grid item={true}>
@@ -188,6 +205,14 @@ export default (props: WorkspaceEditProps) => {
                             null
                           }
                         </Typography>
+                        {
+                          thumbnailError &&
+                          <Typography color="error" variant="subtitle2" component="p">
+                            {
+                              thumbnailError
+                            }
+                          </Typography>
+                        }
                       </Box>
                     </Grid>
                   </Grid>

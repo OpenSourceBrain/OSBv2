@@ -4,7 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
-import LockIcon from "@material-ui/icons/Lock";
+import ReadOnlyIcon from "@material-ui/icons/Lock";
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -144,7 +144,7 @@ export default (props: WorkspaceProps | any) => {
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <Typography variant="h5" className={classes.flexCenter}>{workspace.name} {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><LockIcon fontSize="small" /></Tooltip>}</Typography>
+            <Typography variant="h5" className={classes.flexCenter}>{workspace.name} {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}</Typography>
             {
               canEdit &&
               <IconButton onMouseDown={handleShareClick}>

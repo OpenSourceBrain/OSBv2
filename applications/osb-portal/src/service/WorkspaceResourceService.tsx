@@ -47,6 +47,9 @@ class WorkspaceResourceService {
     return WorkspaceService.workspacesApi.workspaceresourceIdDelete({ id: resource.id })
   }
 
+  getResourcePath(resource: WorkspaceResource) {
+    return (resource.folder ? resource.folder + "/" : "") + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+  }
 
 }
 export function urlToName(url: string): string {

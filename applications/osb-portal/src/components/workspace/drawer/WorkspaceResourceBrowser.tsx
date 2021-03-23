@@ -20,12 +20,10 @@ import {
 import { CSSProperties } from "@material-ui/styles";
 
 
-function getResourcePath(resource: WorkspaceResource) {
-  return resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
-}
+
 
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
-  const fileName = "/opt/workspace/" + getResourcePath(resource);
+  const fileName = "/opt/workspace/" + workspaceResourceService.getResourcePath(resource);
   const r = workspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
     const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
     iFrame.contentWindow.postMessage(fileName, '*');
@@ -85,7 +83,7 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
       onClick={canOpenFile ? openFileResource(resource, refreshWorkspace) : undefined}
     >
       {resource.type.application === null ? <FolderIcon /> : ""}
-      <Tooltip title={getResourcePath(resource)}>
+      <Tooltip title={workspaceResourceService.getResourcePath(resource)}>
         <Typography color={resource.status === ResourceStatus.error ? "error" : "initial"} style={style}>{resource.name}</Typography>
       </Tooltip>
       <Box display="flex" alignItems="center" >

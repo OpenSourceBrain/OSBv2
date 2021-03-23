@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { AnyAction, Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
-import { refreshWorkspace } from '../../store/actions/workspaces';
-import { AnyAction, Dispatch } from 'redux';
-import { PayloadAction } from '@reduxjs/toolkit';
+import workspaceResourceService from "../../service/WorkspaceResourceService";
+
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -70,7 +72,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
         const resource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[workspace.resources.length - 1];
         const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
         if (resource.status === ResourceStatus.available) {
-            const fileName: string = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+            const fileName: string = "/opt/workspace/" + workspaceResourceService.getResourcePath(resource);
             WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
                 iFrame.contentWindow.postMessage(fileName, '*');
             }).catch(() => {
