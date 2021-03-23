@@ -34,6 +34,12 @@ RUN pip install neuron
 RUN pip install netpyne
 RUN pip install pynwb
 
+RUN apt-get update
+RUN apt-get install python-lxml -y
+RUN apt-get install graphviz -y
+RUN apt-get install openjdk-11-jdk -y
+RUN pip install pyneuroml
+
 RUN chown jovyan /opt
 
 USER jovyan
