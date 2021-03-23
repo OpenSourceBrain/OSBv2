@@ -50,7 +50,6 @@ class WorkspaceRepository(BaseModelRepository):
                 q1 = q_base.filter_by(keycloakuser_id=owner_id)
                 q1 = q1.union(q_base.filter(
                     Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
-                q1 = q1.union(q_base.filter_by(publicable=True))
             else:
                 q1 = q_base
         else:
