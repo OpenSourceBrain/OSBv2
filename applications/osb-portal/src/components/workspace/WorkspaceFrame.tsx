@@ -21,14 +21,14 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
     if (!workspace) {
         return null;
     }
-    let iframeReady = false;
+
 
 
 
     React.useEffect(() => {
-        if (!app && iframeReady && (workspace.resources != null) && (workspace.resources.length > 0)) {
-            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[workspace.resources.length - 1];
-            openResource(workspaceResource);
+        if (!app && (workspace.resources != null) && (workspace.resources.length > 0)) {
+
+            openResource();
         }
         const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
         const messageListener = (message: MessageEvent) => {
@@ -66,7 +66,8 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
 
 
 
-    const openResource = async (resource: WorkspaceResource) => {
+    const openResource = async () => {
+        const resource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[workspace.resources.length - 1];
         const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
         if (resource.status === ResourceStatus.available) {
             const fileName: string = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
@@ -79,8 +80,9 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
     }
 
     const onloadIframe = (e: any) => {
-        iframeReady = true;
-        refreshWorkspace();
+        if (!app && (workspace.resources != null) && (workspace.resources.length > 0)) {
+            openResource();
+        }
     }
 
     return (
