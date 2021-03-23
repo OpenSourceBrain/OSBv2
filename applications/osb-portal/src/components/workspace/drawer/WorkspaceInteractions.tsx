@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
+import LockIcon from "@material-ui/icons/Lock";
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -13,6 +14,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
@@ -141,7 +144,7 @@ export default (props: WorkspaceProps | any) => {
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <Typography variant="h5" className={classes.flexCenter}>{workspace.name}</Typography>
+            <Typography variant="h5" className={classes.flexCenter}>{workspace.name} {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><LockIcon fontSize="small" /></Tooltip>}</Typography>
             {
               canEdit &&
               <IconButton onMouseDown={handleShareClick}>
@@ -163,12 +166,12 @@ export default (props: WorkspaceProps | any) => {
 
           <ExpansionPanelDetails>
             <Divider />
-            <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
+            {canEdit && <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
               <ListItemIcon style={{ paddingLeft: 0 }}>
                 <AddIcon style={{ fontSize: "1.3rem" }} />
               </ListItemIcon>
               <ListItemText primary={"Add resource"} />
-            </ListItem>
+            </ListItem>}
             <Divider />
             <WorkspaceResourceBrowser
               workspace={workspace}
@@ -196,17 +199,19 @@ export default (props: WorkspaceProps | any) => {
       </>) :
       <>
         <div className={classes.closedText}>
-          <IconButton onClick={showAddResource}>
+          {canEdit && <IconButton onClick={showAddResource}>
             <AddIcon style={{ fontSize: "1.3rem" }} />
-          </IconButton>
+          </IconButton>}
           {props.workspace.name}
 
-          <IconButton onClick={showAddResource}>
-            <ShareIcon
-              className={[classes.svgIcon, classes.rotate180].join(" ")}
-              style={{ fontSize: "1rem" }}
-            />
-          </IconButton>
+          {canEdit &&
+            <IconButton onClick={handleShareClick}>
+              <ShareIcon
+                className={[classes.svgIcon, classes.rotate180].join(" ")}
+                style={{ fontSize: "1rem" }}
+              />
+            </IconButton>
+          }
         </div>
       </>
     }
