@@ -7,7 +7,6 @@ import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '.
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
-import workspaceResourceService from "../../service/WorkspaceResourceService";
 
 
 const useStyles = makeStyles((theme) => ({
