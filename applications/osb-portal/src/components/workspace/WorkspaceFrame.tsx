@@ -71,7 +71,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
         const resource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[workspace.resources.length - 1];
         const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
         if (resource.status === ResourceStatus.available) {
-            const fileName: string = "/opt/workspace/" + workspaceResourceService.getResourcePath(resource);
+            const fileName: string = "/opt/workspace/" + WorkspaceResourceService.getResourcePath(resource);
             WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
                 iFrame.contentWindow.postMessage(fileName, '*');
             }).catch(() => {
