@@ -117,8 +117,8 @@ class BaseModelRepository:
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        logger.debug('Search for workspace filter: %s %s %s',
-                     field.key, comparator, value)
+        logger.debug('Search for %s filter: %s %s %s',
+                     self.model, field, comparator, value)
         if comparator == '==':
             return field == value
         elif comparator in ('!', 'not'):

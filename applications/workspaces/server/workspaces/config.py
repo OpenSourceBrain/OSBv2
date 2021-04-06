@@ -16,14 +16,14 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'postgresql://workspace:secret@workspaces-postgres-host:5432/workspaces'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_ECHO = True
     BASE_DIR = os.path.dirname(__file__)
     STATIC_DIR = os.path.join(BASE_DIR, "static")
     TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
     WORKSPACES_DIR = "workspaces"
     OPENAPI_DIR = os.path.join(BASE_DIR, "openapi")
     OPENAPI_FILE = "openapi.yaml"
-    LOG_LEVEL = logging.INFO
+    LOG_LEVEL = logging.DEBUG
     APP_NAME = "workspaces"
     WSMGR_HOSTNAME = socket.gethostname()
     WSMGR_IPADDRESS = socket.gethostbyname(WSMGR_HOSTNAME)

@@ -120,9 +120,42 @@ class OSBRepositoryRepository(BaseModelRepository):
 class GITRepositoryRepository(BaseModelRepository):
     model = GITRepository
 
+    def pre_commit(self, repository):
+        logger.debug(f'Pre Commit for GIT repository id: {repository.id}')
+        if not repository.id:
+            repository.repository_type = "g"
+        return repository
 
+class RepositoryRepository(BaseModelRepository):
+    import types
+    model = types.SimpleNamespace()
+    model.__tablename__ = "repositorie"
+    model.id = "id"
+
+    def search_qs(self, filter=None):
+        query_list = [GITRepository, FigshareRepository]
+
+        q = None
+        for repository in query_list:
+            if filter is not None:
+                x = {}
+                for f in filter:
+                    x.update({f[0]:f[2]})
+                query = repository.query.filter_by(**x)
+            if not q:
+                q = query
+            else:
+                q = q.union(query)
+
+        return q.order_by(desc(GITRepository.id))
 class FigshareRepositoryRepository(BaseModelRepository):
     model = FigshareRepository
+
+    def pre_commit(self, repository):
+        logger.debug(f'Pre Commit for FigShare repository id: {repository.id}')
+        if not repository.id:
+            repository.repository_type = "f"
+        return repository
 
 
 class VolumeStorageRepository(BaseModelRepository):

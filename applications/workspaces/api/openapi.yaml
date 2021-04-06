@@ -23,8 +23,6 @@ paths:
       tags:
         - rest
       summary: Used to list all available workspaces.
-      security:
-        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -93,8 +91,6 @@ paths:
         required: true
     get:
       summary: Used to retrieve a workspace from the repository.
-      security:
-        - bearerAuth: []
       responses:
         200:
           description: The workspace.
@@ -448,6 +444,8 @@ paths:
       tags:
         - rest
       summary: Used to list all available repositories.
+      # security:
+      #   - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -481,16 +479,40 @@ paths:
                 properties:
                   pagination:
                     $ref: "#/components/schemas/Pagination"
-                  repositories:
+                  gitrepositories:
                     type: array
                     items:
                       $ref: "#/components/schemas/Repository"
+  /repository/{id}/context:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Used to retrieve a repository context.
+      # security:
+      #   - bearerAuth: []
+      operationId: workspaces.controller.repository.context
+      responses:
+        200:
+          description: The repository context.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GITRepository"
+        404:
+          description: The repository was not found.
+      tags:
+        - rest
+  /gitrepository:
     post:
       tags:
         - rest                  
       summary: Used to save a GITRepository to the repository. The owner will be automatically filled with the current user
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       requestBody:
         description: The GITRepository to save.
         required: true
@@ -857,18 +879,18 @@ components:
       default: g
       example: g
     ResourceStatus:
-      description: >
-        Resource status:
-          * a - Available
-          * e - Error, not available
-          * p - Pending
-      type: string
-      enum:
-        - a
-        - e
-        - p
-      default: p
-      example: p
+        description: >
+          Resource status:
+           * a - Available
+           * e - Error, not available
+           * p - Pending
+        type: string
+        enum:
+          - a
+          - e
+          - p
+        default: p
+        example: p
     ImageType:
       type: string
     User:
@@ -958,6 +980,7 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/User"
+              - x-secondary: workspace_collaborator
         resources:
           description: Resources of the workspace
           type: array
@@ -1011,7 +1034,7 @@ components:
         location:
           description: WorkspaceResource location original location of the resource
           type: string
-          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb  
+          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
         folder:
           description: WorkspaceResource folder where the resource will stored in the pvc
           type: string
@@ -1038,13 +1061,13 @@ components:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
         workspace_id:
-          description: The id of the Workspace this Workspace Resource belongs to
+          description: workspace_id
           type: integer
+          x-foreign-key: workspace.id
       required:
         - name
         - resource_type
         - location
-        - workspace_id
     VolumeStorage:
       description: Volume which can be connected to a workspace
       type: object
@@ -1083,6 +1106,7 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/WorkspaceResource"
+              - x-secondary: osbrepository_resources
       required:
         - uuid
         - name
@@ -1091,6 +1115,9 @@ components:
       description: Repository
       type: object
       properties:
+        id:
+          description: Unique identifier of the repository
+          $ref: "#/components/schemas/PrimaryKey"        
         name:
           description: Repository name.
           type: string
@@ -1116,14 +1143,11 @@ components:
           example: true
     GITRepository:
       allOf:
-        - $ref: "#components/schema/Repository"
+        - $ref: "#/components/schemas/Repository"
         - description: GIT repository
           type: object
           x-tablename: gitrepository
           properties:
-            id:
-              description: Unique identifier of the git repository
-              $ref: "#/components/schemas/PrimaryKey"        
             url:
               description: URL of the git repository
               type: string
@@ -1131,19 +1155,18 @@ components:
           required:
             - url
     FigshareRepository:
-      description: Figshare repository
-      type: object
-      x-tablename: figsharerepository
-      properties:
-        id:
-          description: Unique identifier of the figshare repository
-          $ref: "#/components/schemas/PrimaryKey"
-        url:
-          description: URL of the figshare repository
-          type: string
-          example: https://figshare.com/articles/Screenshot_of_OSB/6034208
-      required:
-        - url
+      allOf:
+        - $ref: "#/components/schemas/Repository"
+        - description: Figshare repository
+          type: object
+          x-tablename: figsharerepository
+          properties:
+            url:
+              description: URL of the figshare repository
+              type: string
+              example: https://figshare.com/articles/Screenshot_of_OSB/6034208
+          required:
+            - url
     RepositoryContextNode:
       description: Context node (files/folders) of a RepositoryContext
       type: object
@@ -1163,7 +1186,7 @@ components:
         children:
           type: array
           items:
-            $ref: "#components/schemas/RepositoryContextNode"
+            $ref: "#/components/schemas/RepositoryContextNode"
       example:
         name: /
         context_node_type: f
