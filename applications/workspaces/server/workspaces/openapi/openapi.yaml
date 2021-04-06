@@ -23,6 +23,8 @@ paths:
       tags:
         - rest
       summary: Used to list all available workspaces.
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -91,6 +93,8 @@ paths:
         required: true
     get:
       summary: Used to retrieve a workspace from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The workspace.
@@ -439,11 +443,11 @@ paths:
       tags:
         - rest 
                   
-  /gitrepository:
+  /repository:
     get:
       tags:
         - rest
-      summary: Used to list all available gitrepositories.
+      summary: Used to list all available repositories.
       parameters:
         - in: query
           name: page
@@ -469,7 +473,7 @@ paths:
           description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
       responses:
         200:
-          description: Return all available gitrepositories
+          description: Return all available repositories
           content:
             application/json:
               schema:
@@ -477,10 +481,10 @@ paths:
                 properties:
                   pagination:
                     $ref: "#/components/schemas/Pagination"
-                  gitrepositories:
+                  repositories:
                     type: array
                     items:
-                      $ref: "#/components/schemas/GITRepository"
+                      $ref: "#/components/schemas/Repository"
     post:
       tags:
         - rest                  
@@ -819,6 +823,26 @@ components:
       type: integer
       x-primary-key: true
       x-autoincrement: true
+    RepositoryContentType:
+      description: >
+        Repository Content type:
+          * e - Experimental data
+          * m - Modeling
+      type: string
+      enum:
+        - e
+        - m
+    RepositoryType:
+      description: >
+        Repository type:
+          * d - DANDI repository
+          * f - FigShare repository
+          * g - Git repository
+      type: string
+      enum:
+        - d
+        - f
+        - g
     ResourceType:
       description: >
         Resource type:
@@ -833,18 +857,18 @@ components:
       default: g
       example: g
     ResourceStatus:
-        description: >
-          Resource status:
-           * a - Available
-           * e - Error, not available
-           * p - Pending
-        type: string
-        enum:
-          - a
-          - e
-          - p
-        default: p
-        example: p
+      description: >
+        Resource status:
+          * a - Available
+          * e - Error, not available
+          * p - Pending
+      type: string
+      enum:
+        - a
+        - e
+        - p
+      default: p
+      example: p
     ImageType:
       type: string
     User:
@@ -934,7 +958,6 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/User"
-              - x-secondary: workspace_collaborator
         resources:
           description: Resources of the workspace
           type: array
@@ -988,7 +1011,7 @@ components:
         location:
           description: WorkspaceResource location original location of the resource
           type: string
-          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
+          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb  
         folder:
           description: WorkspaceResource folder where the resource will stored in the pvc
           type: string
@@ -1015,13 +1038,13 @@ components:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
         workspace_id:
-          description: workspace_id
+          description: The id of the Workspace this Workspace Resource belongs to
           type: integer
-          x-foreign-key: workspace.id
       required:
         - name
         - resource_type
         - location
+        - workspace_id
     VolumeStorage:
       description: Volume which can be connected to a workspace
       type: object
@@ -1060,47 +1083,53 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/WorkspaceResource"
-              - x-secondary: osbrepository_resources
       required:
         - uuid
         - name
         - storage
-    GITRepository:
-      description: GIT repository
+    Repository:
+      description: Repository
       type: object
-      x-tablename: gitrepository
       properties:
-        id:
-          description: Unique identifier of the git repository
-          $ref: "#/components/schemas/PrimaryKey"        
-        public_key:
-          description: Public key of the git repository
+        name:
+          description: Repository name.
           type: string
-          example: >
-            ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSU
-            GPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3
-            Pbv7kOdJ/MTyBlWXFCR+HAo3FXRitBqxiX1nKhXpHAZsMciLq8V6RjsNAQwdsdMFvSlVK/7XA
-            t3FaoJoAsncM1Q9x5+3V0Ww68/eIFmb1zuUFljQJKprrX88XypNDvjYNby6vw/Pb0rwert/En
-            mZ+AW4OZPnTPI89ZPmVMLuayrD2cE86Z/il8b+gw3r3+1nKatmIkjn2so1d01QraTlMqVSsbx
-            NrRFi9wrf+M7Q== johndoe@mylaptop.local
-        private_key:
-          description: Public key of the git repository
+          example: Repo One
+        description:
+          description: Repository description.
           type: string
-          example: >
-            -----BEGIN OPENSSH PRIVATE KEY-----
-            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
-            V2VJ4iZzZN0pyzBU5JobynN8U54sjxvGakAsNfoGzzSFyVkLaRHLYluuDNsZ4PVj5V/boF
-            Fa34xPq1dsfsSuFmiy004cYlhBMBkIpKLZrQe7zY9+CdgzfTEFaeBM9Gxy2Sw/WxlCdh5T
-            W87/Q4YI3k0AAAASenNpbm5lbWFAZ21haWwuY29tAQ==
-            -----END OPENSSH PRIVATE KEY-----
-        url:
-          description: URL of the git repository
+          example: Repo One description
+        default_branch:
+          description: The default branch to show for this repository
           type: string
-          example: https://github.com/OpenSourceBrain/OSBv2
-      required:
-        - public_key
-        - private_key
-        - url
+          example: develop
+        repository_type:
+          description: Repository type
+          $ref: "#/components/schemas/RepositoryType"
+        repository_content_type:
+          description: Repository content type
+          $ref: "#/components/schemas/RepositoryContentType"
+        auto_sync:
+          description: Auto sync of the resources
+          type: boolean
+          default: true
+          example: true
+    GITRepository:
+      allOf:
+        - $ref: "#components/schema/Repository"
+        - description: GIT repository
+          type: object
+          x-tablename: gitrepository
+          properties:
+            id:
+              description: Unique identifier of the git repository
+              $ref: "#/components/schemas/PrimaryKey"        
+            url:
+              description: URL of the git repository
+              type: string
+              example: https://github.com/OpenSourceBrain/OSBv2
+          required:
+            - url
     FigshareRepository:
       description: Figshare repository
       type: object
@@ -1115,3 +1144,37 @@ components:
           example: https://figshare.com/articles/Screenshot_of_OSB/6034208
       required:
         - url
+    RepositoryContextNode:
+      description: Context node (files/folders) of a RepositoryContext
+      type: object
+      properties:
+        name:
+          type: string
+          description: folder/file name
+        context_node_type:
+          type: string
+          description: >
+            Repository Context Node type:
+              * p - Plain file
+              * f - Folder
+          enum:
+            - p
+            - f
+        children:
+          type: array
+          items:
+            $ref: "#components/schemas/RepositoryContextNode"
+      example:
+        name: /
+        context_node_type: f
+        children:
+          - name: README.md
+            context_node_type: p
+          - name: applications
+            context_node_type: f
+            children:
+              - name: accounts
+                context_node_type: f
+                children:
+                  - name: Dockerfile
+                    context_node_type: p
