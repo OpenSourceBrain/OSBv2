@@ -10,7 +10,7 @@ import workspaceResourceService from '../service/WorkspaceResourceService';
 import { ResourceStatus, Workspace } from "../types/workspace";
 
 
-
+const AUTO_REFRESH_PERIOD = 5000;
 let refreshPending = false;
 
 /**
@@ -74,9 +74,9 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
           (workspace: Workspace) => {
             callback(workspace);
             refreshPending = false;
-            if (!refreshPending && workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
-              setTimeout(() => {
 
+            setTimeout(() => {
+              if (!refreshPending && workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
                 refreshWorkspace(
                   (workspaceUpdated) => {
 
@@ -88,8 +88,9 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
 
                   }
                 );
-              }, 15000);
-            }
+              }
+            }, AUTO_REFRESH_PERIOD);
+
 
           },
           () => next(setError("Workspace not found or not accessible"))
