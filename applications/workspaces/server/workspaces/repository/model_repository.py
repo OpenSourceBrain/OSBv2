@@ -1,5 +1,5 @@
 from flask import request, current_app
-from sqlalchemy import desc
+from sqlalchemy import asc
 from sqlalchemy.sql import func
 
 from cloudharness import log as logger
@@ -142,7 +142,7 @@ class RepositoryRepository(BaseModelRepository):
                 rs = query
             else:
                 rs = rs.union(query)
-        return rs.order_by(desc(GITRepository.id))
+        return rs.order_by(asc(GITRepository.name))
 
 class FigshareRepositoryRepository(BaseModelRepository):
     model = FigshareRepository
