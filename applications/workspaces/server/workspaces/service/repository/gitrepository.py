@@ -11,7 +11,7 @@ def tree(): return defaultdict(tree)
 class GitRepository:
     def __init__(self, repository):
         self.repository = repository
-        self.repo_url = repository.url.replace("https://github.com/"," https://api.github.com/repos/")
+        self.repo_url = repository.uri.replace("https://github.com/"," https://api.github.com/repos/")
 
     def get_branches(self):
         branches = requests.get(self.repo_url + "/" + "branches").json()

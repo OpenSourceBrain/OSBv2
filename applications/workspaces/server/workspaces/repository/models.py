@@ -912,19 +912,19 @@ OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
 class _GITRepositoryDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
-    url: str
+    name: str
+    description: str
+    repository_type: str
+    repository_content_type: str
+    auto_sync: bool
+    uri: str
+    default_branch: str
 
 
 class GITRepositoryDict(_GITRepositoryDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    name: typing.Optional[str]
-    description: typing.Optional[str]
-    default_branch: typing.Optional[str]
-    repository_type: typing.Optional[str]
-    repository_content_type: typing.Optional[str]
-    auto_sync: bool
 
 
 class TGITRepository(typing_extensions.Protocol):
@@ -937,13 +937,13 @@ class TGITRepository(typing_extensions.Protocol):
         id: The id of the GITRepository.
         name: Repository name.
         description: Repository description.
-        default_branch: The default branch to show for this repository
         repository_type: Repository type:   * d - DANDI repository   * f -
             FigShare repository   * g - Git repository
         repository_content_type: Repository Content type:   * e - Experimental
             data   * m - Modeling
         auto_sync: Auto sync of the resources
-        url: URL of the git repository
+        uri: URI of the repository
+        default_branch: The default branch to show for this repository
 
     """
 
@@ -954,24 +954,24 @@ class TGITRepository(typing_extensions.Protocol):
 
     # Model properties
     id: int
-    name: typing.Optional[str]
-    description: typing.Optional[str]
-    default_branch: typing.Optional[str]
-    repository_type: typing.Optional[str]
-    repository_content_type: typing.Optional[str]
+    name: str
+    description: str
+    repository_type: str
+    repository_content_type: str
     auto_sync: bool
-    url: str
+    uri: str
+    default_branch: str
 
     def __init__(
         self,
-        url: str,
+        name: str,
+        description: str,
+        repository_type: str,
+        repository_content_type: str,
+        auto_sync: bool,
+        uri: str,
+        default_branch: str,
         id: typing.Optional[int] = None,
-        name: typing.Optional[str] = None,
-        description: typing.Optional[str] = None,
-        default_branch: typing.Optional[str] = None,
-        repository_type: typing.Optional[str] = None,
-        repository_content_type: typing.Optional[str] = None,
-        auto_sync: bool = True,
     ) -> None:
         """
         Construct.
@@ -980,13 +980,13 @@ class TGITRepository(typing_extensions.Protocol):
             id: The id of the GITRepository.
             name: Repository name.
             description: Repository description.
-            default_branch: The default branch to show for this repository
             repository_type: Repository type:   * d - DANDI repository   * f -
                 FigShare repository   * g - Git repository
             repository_content_type: Repository Content type:   * e -
                 Experimental data   * m - Modeling
             auto_sync: Auto sync of the resources
-            url: URL of the git repository
+            uri: URI of the repository
+            default_branch: The default branch to show for this repository
 
         """
         ...
@@ -994,14 +994,14 @@ class TGITRepository(typing_extensions.Protocol):
     @classmethod
     def from_dict(
         cls,
-        url: str,
+        name: str,
+        description: str,
+        repository_type: str,
+        repository_content_type: str,
+        auto_sync: bool,
+        uri: str,
+        default_branch: str,
         id: typing.Optional[int] = None,
-        name: typing.Optional[str] = None,
-        description: typing.Optional[str] = None,
-        default_branch: typing.Optional[str] = None,
-        repository_type: typing.Optional[str] = None,
-        repository_content_type: typing.Optional[str] = None,
-        auto_sync: bool = True,
     ) -> "TGITRepository":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -1010,13 +1010,13 @@ class TGITRepository(typing_extensions.Protocol):
             id: The id of the GITRepository.
             name: Repository name.
             description: Repository description.
-            default_branch: The default branch to show for this repository
             repository_type: Repository type:   * d - DANDI repository   * f -
                 FigShare repository   * g - Git repository
             repository_content_type: Repository Content type:   * e -
                 Experimental data   * m - Modeling
             auto_sync: Auto sync of the resources
-            url: URL of the git repository
+            uri: URI of the repository
+            default_branch: The default branch to show for this repository
 
         Returns:
             Model instance based on the dictionary.
@@ -1062,6 +1062,12 @@ GITRepository: TGITRepository = models.GITRepository  # type: ignore
 class _FigshareRepositoryDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
+    name: str
+    description: str
+    repository_type: str
+    repository_content_type: str
+    auto_sync: bool
+    uri: str
     url: str
 
 
@@ -1069,12 +1075,6 @@ class FigshareRepositoryDict(_FigshareRepositoryDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    name: typing.Optional[str]
-    description: typing.Optional[str]
-    default_branch: typing.Optional[str]
-    repository_type: typing.Optional[str]
-    repository_content_type: typing.Optional[str]
-    auto_sync: bool
 
 
 class TFigshareRepository(typing_extensions.Protocol):
@@ -1087,12 +1087,12 @@ class TFigshareRepository(typing_extensions.Protocol):
         id: The id of the FigshareRepository.
         name: Repository name.
         description: Repository description.
-        default_branch: The default branch to show for this repository
         repository_type: Repository type:   * d - DANDI repository   * f -
             FigShare repository   * g - Git repository
         repository_content_type: Repository Content type:   * e - Experimental
             data   * m - Modeling
         auto_sync: Auto sync of the resources
+        uri: URI of the repository
         url: URL of the figshare repository
 
     """
@@ -1104,24 +1104,24 @@ class TFigshareRepository(typing_extensions.Protocol):
 
     # Model properties
     id: int
-    name: typing.Optional[str]
-    description: typing.Optional[str]
-    default_branch: typing.Optional[str]
-    repository_type: typing.Optional[str]
-    repository_content_type: typing.Optional[str]
+    name: str
+    description: str
+    repository_type: str
+    repository_content_type: str
     auto_sync: bool
+    uri: str
     url: str
 
     def __init__(
         self,
+        name: str,
+        description: str,
+        repository_type: str,
+        repository_content_type: str,
+        auto_sync: bool,
+        uri: str,
         url: str,
         id: typing.Optional[int] = None,
-        name: typing.Optional[str] = None,
-        description: typing.Optional[str] = None,
-        default_branch: typing.Optional[str] = None,
-        repository_type: typing.Optional[str] = None,
-        repository_content_type: typing.Optional[str] = None,
-        auto_sync: bool = True,
     ) -> None:
         """
         Construct.
@@ -1130,12 +1130,12 @@ class TFigshareRepository(typing_extensions.Protocol):
             id: The id of the FigshareRepository.
             name: Repository name.
             description: Repository description.
-            default_branch: The default branch to show for this repository
             repository_type: Repository type:   * d - DANDI repository   * f -
                 FigShare repository   * g - Git repository
             repository_content_type: Repository Content type:   * e -
                 Experimental data   * m - Modeling
             auto_sync: Auto sync of the resources
+            uri: URI of the repository
             url: URL of the figshare repository
 
         """
@@ -1144,14 +1144,14 @@ class TFigshareRepository(typing_extensions.Protocol):
     @classmethod
     def from_dict(
         cls,
+        name: str,
+        description: str,
+        repository_type: str,
+        repository_content_type: str,
+        auto_sync: bool,
+        uri: str,
         url: str,
         id: typing.Optional[int] = None,
-        name: typing.Optional[str] = None,
-        description: typing.Optional[str] = None,
-        default_branch: typing.Optional[str] = None,
-        repository_type: typing.Optional[str] = None,
-        repository_content_type: typing.Optional[str] = None,
-        auto_sync: bool = True,
     ) -> "TFigshareRepository":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -1160,12 +1160,12 @@ class TFigshareRepository(typing_extensions.Protocol):
             id: The id of the FigshareRepository.
             name: Repository name.
             description: Repository description.
-            default_branch: The default branch to show for this repository
             repository_type: Repository type:   * d - DANDI repository   * f -
                 FigShare repository   * g - Git repository
             repository_content_type: Repository Content type:   * e -
                 Experimental data   * m - Modeling
             auto_sync: Auto sync of the resources
+            uri: URI of the repository
             url: URL of the figshare repository
 
         Returns:

@@ -16,7 +16,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'postgresql://workspace:secret@workspaces-postgres-host:5432/workspaces'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
     BASE_DIR = os.path.dirname(__file__)
     STATIC_DIR = os.path.join(BASE_DIR, "static")
     TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")

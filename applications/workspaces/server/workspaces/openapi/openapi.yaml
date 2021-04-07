@@ -1151,10 +1151,6 @@ components:
           description: Repository description.
           type: string
           example: Repo One description
-        default_branch:
-          description: The default branch to show for this repository
-          type: string
-          example: develop
         repository_type:
           description: Repository type
           $ref: "#/components/schemas/RepositoryType"
@@ -1166,6 +1162,17 @@ components:
           type: boolean
           default: true
           example: true
+        uri:
+          description: URI of the repository
+          type: string
+          example: https://github.com/OpenSourceBrain/OSBv2
+      required:
+        - name
+        - description
+        - repository_type
+        - repository_content_type
+        - auto_sync
+        - uri
     GITRepository:
       allOf:
         - $ref: "#/components/schemas/Repository"
@@ -1173,12 +1180,12 @@ components:
           type: object
           x-tablename: gitrepository
           properties:
-            url:
-              description: URL of the git repository
+            default_branch:
+              description: The default branch to show for this repository
               type: string
-              example: https://github.com/OpenSourceBrain/OSBv2
+              example: develop
           required:
-            - url
+            - default_branch
     FigshareRepository:
       allOf:
         - $ref: "#/components/schemas/Repository"

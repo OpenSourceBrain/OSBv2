@@ -128,7 +128,7 @@ class BaseModelRepository:
         else:
             return field == value
 
-    def _get_qs(self, filter=None):
+    def _get_qs(self, filter=None, q=None):
         """
         Helper function to get the queryset
 
@@ -143,8 +143,26 @@ class BaseModelRepository:
             if isinstance(self.search_qs, str):
                 sqs = eval(self.search_qs)
             else:
-                sqs = self.search_qs(filter)
+                sqs = self.search_qs(filter, q)
         return sqs
+
+    def filters(self, q=None):
+        filters = []
+        for arg in q.strip().split('+'):
+            field_comparator, value = arg.strip().split('=')
+            field_comparator = field_comparator.split('__')
+            field = field_comparator[0]
+            if len(field_comparator) > 1:
+                comparator = field_comparator[1]
+            else:
+                comparator = '='
+            attr = getattr(self.model, field)
+            if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
+                value = value.upper() in ('TRUE', '1', 'T')
+            logger.debug("Filter attr: %s comparator: %s value: %s",
+                            attr.key, comparator, value)
+            filters.append((attr, comparator, value))
+        return filters
 
     def search(self, page=1, per_page=20, q=None, *args, **kwargs):
         """
@@ -161,22 +179,8 @@ class BaseModelRepository:
         """Get all objects from the repository."""
         if q and q != 'None':
             logger.info("Query %s", q)
-            filters = []
-            for arg in q.strip().split('+'):
-                field_comparator, value = arg.strip().split('=')
-                field_comparator = field_comparator.split('__')
-                field = field_comparator[0]
-                if len(field_comparator) > 1:
-                    comparator = field_comparator[1]
-                else:
-                    comparator = '='
-                attr = getattr(self.model, field)
-                if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
-                    value = value.upper() in ('TRUE', '1', 'T')
-                logger.debug("Filter attr: %s comparator: %s value: %s",
-                             attr.key, comparator, value)
-                filters.append((attr, comparator, value))
-            sqs = self._get_qs(filters)
+            filters = self.filters(q)
+            sqs = self._get_qs(filters, q)
         else:
             sqs = self._get_qs()
         objects = sqs.paginate(page, per_page, True)

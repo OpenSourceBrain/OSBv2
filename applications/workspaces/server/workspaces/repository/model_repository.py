@@ -27,7 +27,7 @@ class WorkspaceRepository(BaseModelRepository):
     def get_pvc_name(self, workspace):
         return f'workspace-{workspace.id}'
 
-    def search_qs(self, filter=None):
+    def search_qs(self, filter=None, q=None):
 
         q_base = self.model.query
 
@@ -127,29 +127,23 @@ class GITRepositoryRepository(BaseModelRepository):
         return repository
 
 class RepositoryRepository(BaseModelRepository):
-    import types
-    model = types.SimpleNamespace()
-    model.__tablename__ = "repositorie"
-    model.id = "id"
+    model = GITRepository
 
-    def search_qs(self, filter=None):
-        query_list = [GITRepository, FigshareRepository]
+    def search_qs(self, filter=None, q=None):
+        query_list = [GITRepositoryRepository(), FigshareRepositoryRepository()]
 
-        q = None
+        rs = None
         for repository in query_list:
-            if filter is not None:
-                x = {}
-                for f in filter:
-                    x.update({f[0]:f[2]})
-                query = repository.query.filter_by(**x)
+            if q is not None:
+                query = repository._get_qs(repository.filters(q))
             else:
-                query = repository.query
-            if not q:
-                q = query
+                query = repository._get_qs()
+            if not rs:
+                rs = query
             else:
-                q = q.union(query)
+                rs = rs.union(query)
+        return rs.order_by(desc(GITRepository.id))
 
-        return q.order_by(desc(GITRepository.id))
 class FigshareRepositoryRepository(BaseModelRepository):
     model = FigshareRepository
 
