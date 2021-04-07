@@ -142,6 +142,8 @@ class RepositoryRepository(BaseModelRepository):
                 for f in filter:
                     x.update({f[0]:f[2]})
                 query = repository.query.filter_by(**x)
+            else:
+                query = repository.query
             if not q:
                 q = query
             else:
