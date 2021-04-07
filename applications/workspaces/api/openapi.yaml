@@ -483,6 +483,31 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Repository"
+  /repository/{id}/branches:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Used to retrieve the "branches" from a repository.
+      # security:
+      #   - bearerAuth: []
+      operationId: workspaces.controller.repository.get_branches
+      responses:
+        200:
+          description: The list of branches.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        404:
+          description: The repository was not found.
+      tags:
+        - rest
   /repository/{id}/context:
     parameters:
       - in: path
@@ -494,14 +519,14 @@ paths:
       summary: Used to retrieve a repository context.
       # security:
       #   - bearerAuth: []
-      operationId: workspaces.controller.repository.context
+      operationId: workspaces.controller.repository.get_context
       responses:
         200:
           description: The repository context.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GITRepository"
+                $ref: "#/components/schemas/RepositoryContextNode"
         404:
           description: The repository was not found.
       tags:
@@ -581,8 +606,8 @@ paths:
         404:
           description: The gitrepository was not found.
       tags:
-        - rest 
-                   
+        - rest
+
   /figsharerepository:
     get:
       tags:
@@ -1174,30 +1199,16 @@ components:
         name:
           type: string
           description: folder/file name
-        context_node_type:
-          type: string
-          description: >
-            Repository Context Node type:
-              * p - Plain file
-              * f - Folder
-          enum:
-            - p
-            - f
         children:
           type: array
           items:
             $ref: "#/components/schemas/RepositoryContextNode"
       example:
         name: /
-        context_node_type: f
         children:
           - name: README.md
-            context_node_type: p
           - name: applications
-            context_node_type: f
             children:
               - name: accounts
-                context_node_type: f
                 children:
                   - name: Dockerfile
-                    context_node_type: p
