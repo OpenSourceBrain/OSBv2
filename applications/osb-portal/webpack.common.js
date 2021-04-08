@@ -1,5 +1,5 @@
 const CopyPlugin = require('copy-webpack-plugin');
-const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var path = require('path');
 var contentbase = path.join(__dirname, 'public')
@@ -15,7 +15,7 @@ module.exports = env => {
 
 
     return {
-        devtool: 'eval-source-map',
+        devtool: 'source-map',
         output: {
             path: path.resolve(__dirname, 'public'),
             filename: path.join('js', 'bundle.js')
@@ -71,6 +71,7 @@ module.exports = env => {
 
         plugins: [
             new CleanWebpackPlugin(),
+            new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN, 'NAMESPACE': env.NAMESPACE }),
             new CopyPlugin([
                 {
                     from: './src/assets-parametrized', contentbase,

@@ -11,7 +11,7 @@ import {
 // import { Workspace } from "../../types/workspace";
 
 export default (props: any) => {
-  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const { workspaceId, app } = useParams<{ workspaceId: string, app: string }>();
 
   props.selectWorkspace(workspaceId);
 
@@ -19,7 +19,7 @@ export default (props: any) => {
     <>
       <Divider variant="fullWidth" />
       <WorkspaceDrawer>
-        <WorkspaceFrame />
+        <WorkspaceFrame app={app} />
       </WorkspaceDrawer>
     </>
   );

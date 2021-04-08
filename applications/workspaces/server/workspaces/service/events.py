@@ -64,3 +64,10 @@ def stop_kafka_consumers():
     for t in _consumer_clients:
         t.close()
         log.info(f'Stopped Kafka consumer thread: {t}')
+
+def test_kafka_running():
+    try:
+        EventClient("mnp-workspaces-testing")._get_consumer()
+    except:
+        return False
+    return True

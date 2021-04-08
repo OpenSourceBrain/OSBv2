@@ -1,8 +1,8 @@
 """Model base class"""
+from flask.views import MethodView
 import logging
 from ..config import Config
 logger = logging.getLogger(Config.APP_NAME)
-from flask.views import MethodView
 
 
 class BaseModelView(MethodView):
@@ -31,17 +31,15 @@ class BaseModelView(MethodView):
                                                             **kwargs)
         obj_dicts = map(lambda obj: obj.to_dict(), objects.items)
         return {"pagination": {
-                    "current_page": page,
-                    "number_of_pages": total_pages,
-                    },
-                f"{self.repository.model.__tablename__}s": list(obj_dicts)}
+            "current_page": page,
+            "number_of_pages": total_pages,
+        },
+            f"{self.repository.model.__tablename__}s": list(obj_dicts)}
 
     def post(self, body):
         """Save an object to the repository."""
-        obj, result_code = self.repository.post(body)
-        if result_code == 201:
-            obj = obj.to_dict()
-        return obj, result_code
+        obj = self.repository.post(body)
+        return obj.to_dict()
 
     def get(self, id_):
         """Get an object from the repository."""

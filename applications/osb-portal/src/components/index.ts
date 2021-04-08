@@ -15,11 +15,11 @@ import workspacePage from "../pages/WorkspacePage";
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
-import { fetchModelsAction } from '../store/actions/models';
 import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
+import { AnyAction, Dispatch } from 'redux';
 
 
 const mapWorkspacesStateToProps = (state: RootState) => {
@@ -78,7 +78,8 @@ export const WorkspaceInteractions = connect(mapUserStateToProps, dispatchWorksp
 
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
-export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, dispatchUserProps)(workspaceFrame)
+const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
+export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
 export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
 export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)

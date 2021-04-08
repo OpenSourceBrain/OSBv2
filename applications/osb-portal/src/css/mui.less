@@ -1,16 +1,16 @@
+@import "variables";
+
 body {
     .MuiToolbar-root {
         min-height: auto;
     }
-    
-    .MuiButton-root {
-       
-        .MuiButton-label {
-        
-        }
-    }
-    .MuiTypography-gutterBottom {
 
+
+    .MuiTreeItem-label:hover {
+        background-color: @bgDarker;
+    }
+
+    .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
+        background-color: @bgRegular  !important;
     }
 }
-

@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
+import ReadOnlyIcon from "@material-ui/icons/Lock";
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -13,6 +14,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
@@ -21,6 +24,7 @@ import { ShareIcon } from "../../icons";
 import { ResourceStatus, Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
+import { canEditWorkspace } from '../../../service/UserService';
 
 const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
 
@@ -61,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(-180deg)",
   },
   treePadding: {
-    paddingLeft: 43
+    paddingLeft: theme.spacing(2)
   }
 }));
 
@@ -82,20 +86,20 @@ export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
+  const canEdit = canEditWorkspace(props.user, workspace);
 
   const showAddResource = () => {
     setAddResourceOpen(true);
+  }
+
+  const setAddResourceClosed = () => {
+    setAddResourceOpen(false);
   }
 
   const handleResourceAdded = () => {
     setAddResourceOpen(false);
     props.refreshWorkspace();
   }
-
-  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
-    setTimeout(props.refreshWorkspace, 15000);
-  }
-
 
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
 
@@ -104,8 +108,6 @@ export default (props: WorkspaceProps | any) => {
       setExpanded(newExpanded ? panel : false);
     }
   };
-
-
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -134,7 +136,7 @@ export default (props: WorkspaceProps | any) => {
       open={addResourceOpen}
       closeAction={() => setAddResourceOpen(false)}
     >
-      <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} />
+      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
     </OSBDialog>
     {props.open ? (
       <>
@@ -142,10 +144,13 @@ export default (props: WorkspaceProps | any) => {
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <Typography variant="h5" className={classes.flexCenter}>{workspace.name}</Typography>
-            <IconButton onMouseDown={handleShareClick}>
-              <ShareIcon />
-            </IconButton>
+            <Typography variant="h5" className={classes.flexCenter}>{workspace.name} {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}</Typography>
+            {
+              canEdit &&
+              <IconButton onMouseDown={handleShareClick}>
+                <ShareIcon />
+              </IconButton>
+            }
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -161,12 +166,12 @@ export default (props: WorkspaceProps | any) => {
 
           <ExpansionPanelDetails>
             <Divider />
-            <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
+            {canEdit && <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
               <ListItemIcon style={{ paddingLeft: 0 }}>
                 <AddIcon style={{ fontSize: "1.3rem" }} />
               </ListItemIcon>
               <ListItemText primary={"Add resource"} />
-            </ListItem>
+            </ListItem>}
             <Divider />
             <WorkspaceResourceBrowser
               workspace={workspace}
@@ -194,17 +199,19 @@ export default (props: WorkspaceProps | any) => {
       </>) :
       <>
         <div className={classes.closedText}>
-          <IconButton onClick={showAddResource}>
+          {canEdit && <IconButton onClick={showAddResource}>
             <AddIcon style={{ fontSize: "1.3rem" }} />
-          </IconButton>
+          </IconButton>}
           {props.workspace.name}
 
-          <IconButton onClick={showAddResource}>
-            <ShareIcon
-              className={[classes.svgIcon, classes.rotate180].join(" ")}
-              style={{ fontSize: "1rem" }}
-            />
-          </IconButton>
+          {canEdit &&
+            <IconButton onClick={handleShareClick}>
+              <ShareIcon
+                className={[classes.svgIcon, classes.rotate180].join(" ")}
+                style={{ fontSize: "1rem" }}
+              />
+            </IconButton>
+          }
         </div>
       </>
     }

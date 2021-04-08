@@ -1,3 +1,5 @@
+import os
+
 from flask import request, current_app
 from sqlalchemy import desc
 from sqlalchemy.sql import func
@@ -12,7 +14,7 @@ from ..utils import get_keycloak_data
 from .base_model_repository import BaseModelRepository
 from .database import db
 from .models import Workspace, User, OSBRepository, GITRepository, FigshareRepository, VolumeStorage, \
-    WorkspaceImage, WorkspaceResource
+    WorkspaceImage, WorkspaceResource, TWorkspaceResource, TWorkspace
 from ..service.kubernetes import create_persistent_volume_claim
 
 
@@ -24,8 +26,14 @@ class WorkspaceRepository(BaseModelRepository):
         super().__init__(*args, **kwargs)
         self.auth_client = AuthClient()
 
-    def get_pvc_name(self, workspace):
-        return f'workspace-{workspace.id}'
+    def get_pvc_name(self, workspace_id):
+        return f'workspace-{workspace_id}'
+
+    def get(self, id):
+        workspace: TWorkspace = self.model.query.get(id)
+        if workspace.publicable or (workspace.owner and workspace.owner.keycloak_id == self.keycloak_id):
+            return workspace
+        return None
 
     def search_qs(self, filter=None):
 
@@ -48,7 +56,6 @@ class WorkspaceRepository(BaseModelRepository):
                 q1 = q_base.filter_by(keycloakuser_id=owner_id)
                 q1 = q1.union(q_base.filter(
                     Workspace.collaborators.any(keycloak_id=self.keycloak_id)))
-                q1 = q1.union(q_base.filter_by(publicable=True))
             else:
                 q1 = q_base
         else:
@@ -103,7 +110,7 @@ class WorkspaceRepository(BaseModelRepository):
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f'Post Commit for workspace id: {workspace.id}')
         create_persistent_volume_claim(name=self.get_pvc_name(
-            workspace), size='2Gi', logger=logger)
+            workspace.id), size='2Gi', logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
@@ -136,33 +143,46 @@ class WorkspaceImageRepository(BaseModelRepository):
 class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResource
 
-    def pre_commit(self, workspace_resource):
+    @staticmethod
+    def guess_resurce_type(resource_path):
+        resource_path = resource_path.split('?')[0]
+        if resource_path[-3:] == "nwb":
+            return "e"
+        elif resource_path[-3:] == "np":
+            return 'g'
+        return 'g'
+
+    def pre_commit(self, workspace_resource: TWorkspaceResource):
         # Check if we can determine the resource type
         logger.debug(
             f'Pre Commit for workspace resource id: {workspace_resource.id}')
-        if workspace_resource.location[-3:] == "nwb":
-            logger.debug(
-                f'Pre Commit for workspace resource id: {workspace_resource.id} setting type to e')
-            workspace_resource.resource_type = "e"
+        if not workspace_resource.resource_type or workspace_resource.resource_type == 'u':
+            workspace_resource.resource_type = self.guess_resurce_type(
+                workspace_resource.location)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
         return workspace_resource
 
-    def post_commit(self, workspace_resource):
+    def post_commit(self, workspace_resource: TWorkspaceResource):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f'Post Commit for workspace resource id: {workspace_resource.id}')
         workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
-        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+        if workspace_resource.folder is None:
+            logger.debug(
+                f'Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name')
             workspace_resource.folder = workspace_resource.name
-        if workspace is not None:
+
+        if workspace is not None and workspace_resource.status == 'p' and 'http' == workspace_resource.location[0:4]:
+            logger.debug('Starting resource ETL from %s',
+                         workspace_resource.location)
             try:
-                from ..service.workflow import create_operation
-                create_operation(workspace, workspace_resource)
+                from ..service.workflow import add_resource
+                add_resource(workspace, workspace_resource)
             except Exception as e:
                 logger.error(
                     "An error occurred while adding the default resource to the workspace", exc_info=True)
-                return None
+                return workspace_resource
         return workspace_resource
 
     def post_get(self, workspace_resource):
@@ -184,3 +204,16 @@ class WorkspaceResourceRepository(BaseModelRepository):
         db.session.commit()
 
         return "Saved", 200
+
+    def delete(self, id):
+        """Delete an object from the repository."""
+        resource: TWorkspaceResource = self.get(id)
+        super().delete(id)
+
+        try:
+            from ..service.workflow import delete_resource
+            delete_resource(resource.workspace_id, resource.folder)
+        except Exception as e:
+            logger.error(
+                "An error occurred while deleting resource from the workspace", exc_info=True)
+            return None

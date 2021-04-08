@@ -2,11 +2,11 @@ import { applyMiddleware, createStore, Action } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import loggerMiddleware from "redux-logger";
 import rootReducer, { RootState } from "./rootReducer";
-import callOSBAPIMiddleware from "../middleware/osbbackend";
-import callAPIMiddleware from "../middleware/backend";
+import osbMiddleware from "../middleware/osbbackend";
+
 
 export default function configureStore() {
-  const middlewares = [loggerMiddleware, callOSBAPIMiddleware, callAPIMiddleware];
+  const middlewares = [loggerMiddleware, osbMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
   const composedEnhancers = composeWithDevTools(middlewareEnhancer);
 

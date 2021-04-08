@@ -1,4 +1,5 @@
 harness:
+  sentry: false
   dependencies:
     soft:
       - accounts

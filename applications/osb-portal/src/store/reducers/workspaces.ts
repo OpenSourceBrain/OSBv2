@@ -44,7 +44,10 @@ const workspaceSlice = createSlice({
       return state; // everything goes in the middleware
     },
     updateWorkspace(state, action: PayloadAction<Workspace>) {
-      return state; // everything goes in the middleware
+      return { ...state, selectedWorkspace: action.payload };
+    },
+    resourceAdded(state, action: PayloadAction<Workspace>) {
+      return state;
     }
   }
 });

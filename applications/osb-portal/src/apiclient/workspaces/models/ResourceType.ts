@@ -23,7 +23,8 @@
 export enum ResourceType {
     E = 'e',
     M = 'm',
-    G = 'g'
+    G = 'g',
+    NULL = 'u'
 }
 
 export function ResourceTypeFromJSON(json: any): ResourceType {

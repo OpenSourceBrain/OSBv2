@@ -19,6 +19,14 @@ export enum WorkspaceTemplateType {
   playground = "playground"
 }
 
+const notebook = {
+  name: "notebook",
+  folder: '',
+  type: SampleResourceTypes.g,
+  location: window.location.origin + "/workspace-data/notebook.ipynb",
+  workspaceId: -1
+};
+
 const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
   [WorkspaceTemplateType.network]: {
     resources: [{
@@ -46,7 +54,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
   },
   [WorkspaceTemplateType.playground]: {
     resources: [{
-      name: "notebook.ipynb",
+      name: "notebook",
       type: SampleResourceTypes.g,
       location: window.location.origin + "/workspace-data/notebook.ipynb",
       workspaceId: -1

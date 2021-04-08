@@ -5,8 +5,7 @@ import { App } from './components/index';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import { userLogin } from './store/actions/user';
-import * as WorkspacesActions from './store/actions/workspaces';
-import * as ModelsActions from './store/actions/models'
+
 import { CONFIGURATION } from "./config";
 import { initErrorHandler } from './service/ErrorHandleService';
 import { initUser } from './service/UserService';
@@ -42,11 +41,6 @@ timeout(10000, initUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   }
-  store.dispatch(WorkspacesActions.refreshWorkspaces());
-  store.dispatch(ModelsActions.fetchModelsAction());
-}, () => {
-  store.dispatch(WorkspacesActions.refreshWorkspaces());
-  store.dispatch(ModelsActions.fetchModelsAction());
 }).finally(renderMain);
 
 initErrorHandler(appName);

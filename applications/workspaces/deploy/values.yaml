@@ -7,6 +7,14 @@ harness:
      name: workspaces
   secured: false
   sentry: true
+  livenessProbe:
+    path: /api/live
+    initialDelaySeconds: 30
+    periodSeconds: 20
+  readinessProbe:
+    path: /api/ready
+    initialDelaySeconds: 30
+    periodSeconds: 20
   deployment:
     auto: true
     port: 8080

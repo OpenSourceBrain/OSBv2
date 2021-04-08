@@ -18,13 +18,43 @@ tags:
 - description: Client
   name: Client
 paths:
+  /live:
+    get:
+      summary: Test if application is healthy
+      security: []
+      operationId: live
+      tags:
+        - k8s
+      responses:
+        "500":
+          description: Application is not healthy
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                type: string
+  /ready:
+    get:
+      summary: Test if application is ready to take requests
+      security: []
+      operationId: ready
+      tags:
+        - k8s
+      responses:
+        "500":
+          description: Application is not ready yet
+        "200":
+          description: Ready
+          content:
+            application/json:
+              schema:
+                type: string
   /workspace:
     get:
       tags:
         - rest
       summary: Used to list all available workspaces.
-      security:
-        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -93,8 +123,6 @@ paths:
         required: true
     get:
       summary: Used to retrieve a workspace from the repository.
-      security:
-        - bearerAuth: []
       responses:
         200:
           description: The workspace.
@@ -149,7 +177,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Sets the thumbnail of the workspace.
-      operationId: workspaces.controller.workspace.setthumbnail
+      operationId: setthumbnail
       security:
         - bearerAuth: []
       requestBody:
@@ -167,7 +195,7 @@ paths:
         404:
           description: The workspace was not found or the thumbnail was not specified         
       tags:
-        - rest
+        - workspace
   /workspace/{id}/gallery:
     parameters:
       - in: path
@@ -178,7 +206,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Adds and image to the workspace.
-      operationId: workspaces.controller.workspace.addimage
+      operationId: addimage
       security:
         - bearerAuth: []
       requestBody:
@@ -196,7 +224,7 @@ paths:
         404:
           description: The workspace was not found or the image was not specified         
       tags:
-        - rest
+        - workspace
   /workspace/{id}/gallery/{image_id}:
     parameters:
       - in: path
@@ -213,7 +241,7 @@ paths:
         description: Workspace Image Id to be deleted from the workspace
     delete:
       summary: Delete a Workspace Image from the workspace.
-      operationId: workspaces.controller.workspace.delimage
+      operationId: delimage
       security:
         - bearerAuth: []
       responses:
@@ -222,7 +250,7 @@ paths:
         404:
           description: The workspace was not found.
       tags:
-        - rest
+        - workspace
 
   /workspaceresource:
     post:
@@ -316,14 +344,14 @@ paths:
       summary: Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
       security:
         - bearerAuth: []
-      operationId: workspaces.controller.workspace_resource.open
+      operationId: open
       responses:
         200:
           description: The WorkspaceResource was updated.
         404:
           description: The WorkspaceResource was not found.
       tags:
-        - rest
+        - workspace_resource
 
   /osbrepository:
     get:
@@ -829,26 +857,28 @@ components:
          * e - Experimental
          * m - Model
          * g - Generic
+         * u - Unknown (to be defined)
       type: string
       enum:
         - e
         - m
         - g
+        - u
       default: g
       example: g
     ResourceStatus:
-      description: >
-        Resource status:
-          * a - Available
-          * e - Error, not available
-          * p - Pending
-      type: string
-      enum:
-        - a
-        - e
-        - p
-      default: p
-      example: p
+        description: >
+          Resource status:
+           * a - Available
+           * e - Error, not available
+           * p - Pending
+        type: string
+        enum:
+          - a
+          - e
+          - p
+        default: p
+        example: p
     ImageType:
       type: string
     User:
@@ -938,6 +968,7 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/User"
+              - x-secondary: workspace_collaborator
         resources:
           description: Resources of the workspace
           type: array
@@ -991,7 +1022,7 @@ components:
         location:
           description: WorkspaceResource location original location of the resource
           type: string
-          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb  
+          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
         folder:
           description: WorkspaceResource folder where the resource will stored in the pvc
           type: string
@@ -1018,13 +1049,13 @@ components:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
         workspace_id:
-          description: The id of the Workspace this Workspace Resource belongs to
+          description: workspace_id
           type: integer
+          x-foreign-key: workspace.id
       required:
         - name
         - resource_type
         - location
-        - workspace_id
     VolumeStorage:
       description: Volume which can be connected to a workspace
       type: object
@@ -1063,6 +1094,7 @@ components:
           items:
             allOf:
               - $ref: "#/components/schemas/WorkspaceResource"
+              - x-secondary: osbrepository_resources
       required:
         - uuid
         - name
