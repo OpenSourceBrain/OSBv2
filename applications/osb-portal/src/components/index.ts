@@ -21,6 +21,8 @@ import { setError } from '../store/actions/error';
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 import { AnyAction, Dispatch } from 'redux';
 
+export { RepositoryPage } from '../pages/RepositoryPage'
+export { RepositoriesPage } from '../pages/RepositoriesPage'
 
 const mapWorkspacesStateToProps = (state: RootState) => {
   console.log(state)

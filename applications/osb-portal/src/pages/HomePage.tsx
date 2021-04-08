@@ -30,10 +30,7 @@ export default (props: any) => {
   const classes = useStyles();
 
   return <>
-    {
-      false &&
-      <MainMenu /> // TODO menu back when we implement functionality
-    }
+
     <Box p={1} className="verticalFit">
       <Grid container={true}>
         <Grid item={true} xs={12} sm={12} md={6} container={true} className="leftContainer">
