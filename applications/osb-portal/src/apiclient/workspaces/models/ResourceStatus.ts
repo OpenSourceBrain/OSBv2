@@ -14,9 +14,9 @@
 
 /**
  * Resource status:
- *   * a - Available
- *   * e - Error, not available
- *   * p - Pending
+ *  * a - Available
+ *  * e - Error, not available
+ *  * p - Pending
  * @export
  * @enum {string}
  */

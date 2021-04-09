@@ -21,6 +21,9 @@ import {
     GITRepository,
     GITRepositoryFromJSON,
     GITRepositoryToJSON,
+    InlineObject2,
+    InlineObject2FromJSON,
+    InlineObject2ToJSON,
     InlineResponse200,
     InlineResponse200FromJSON,
     InlineResponse200ToJSON,
@@ -33,12 +36,15 @@ import {
     InlineResponse2003,
     InlineResponse2003FromJSON,
     InlineResponse2003ToJSON,
-    InlineResponse2004,
-    InlineResponse2004FromJSON,
-    InlineResponse2004ToJSON,
     OSBRepository,
     OSBRepositoryFromJSON,
     OSBRepositoryToJSON,
+    RepositoryResource,
+    RepositoryResourceFromJSON,
+    RepositoryResourceToJSON,
+    RepositoryType,
+    RepositoryTypeFromJSON,
+    RepositoryTypeToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageToJSON,
@@ -73,12 +79,6 @@ export interface FigsharerepositoryPostRequest {
     figshareRepository: FigshareRepository;
 }
 
-export interface GitrepositoryGetRequest {
-    page?: number;
-    perPage?: number;
-    q?: string;
-}
-
 export interface GitrepositoryIdDeleteRequest {
     id: number;
 }
@@ -102,21 +102,13 @@ export interface OsbrepositoryGetRequest {
     q?: string;
 }
 
-export interface OsbrepositoryIdDeleteRequest {
+export interface OsbrepositoryresourceIdDeleteRequest {
     id: number;
+    repositoryResource: RepositoryResource;
 }
 
-export interface OsbrepositoryIdGetRequest {
-    id: number;
-}
-
-export interface OsbrepositoryIdPutRequest {
-    id: number;
-    oSBRepository: OSBRepository;
-}
-
-export interface OsbrepositoryPostRequest {
-    oSBRepository: OSBRepository;
+export interface PostRequest {
+    inlineObject2: InlineObject2;
 }
 
 export interface VolumestorageGetRequest {
@@ -182,23 +174,14 @@ export interface WorkspaceresourcePostRequest {
     workspaceResource: WorkspaceResource;
 }
 
-export interface WorkspacesControllerWorkspaceAddimageRequest {
+export interface WorkspacesControllersOsbrepositoryControllerGetRequest {
     id: number;
-    image?: Blob;
+    context?: string;
 }
 
-export interface WorkspacesControllerWorkspaceDelimageRequest {
-    id: number;
-    imageId: number;
-}
-
-export interface WorkspacesControllerWorkspaceResourceOpenRequest {
-    id: number;
-}
-
-export interface WorkspacesControllerWorkspaceSetthumbnailRequest {
-    id: number;
-    thumbNail?: Blob;
+export interface WorkspacesControllersOsbrepositoryControllerGetContextsRequest {
+    uri: string;
+    repositoryType: RepositoryType;
 }
 
 /**
@@ -209,7 +192,7 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to list all available figsharerepositories.
      */
-    async figsharerepositoryGetRaw(requestParameters: FigsharerepositoryGetRequest): Promise<runtime.ApiResponse<InlineResponse2003>> {
+    async figsharerepositoryGetRaw(requestParameters: FigsharerepositoryGetRequest): Promise<runtime.ApiResponse<InlineResponse2002>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.page !== undefined) {
@@ -233,13 +216,13 @@ export class RestApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2003FromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2002FromJSON(jsonValue));
     }
 
     /**
      * Used to list all available figsharerepositories.
      */
-    async figsharerepositoryGet(requestParameters: FigsharerepositoryGetRequest): Promise<InlineResponse2003> {
+    async figsharerepositoryGet(requestParameters: FigsharerepositoryGetRequest): Promise<InlineResponse2002> {
         const response = await this.figsharerepositoryGetRaw(requestParameters);
         return await response.value();
     }
@@ -357,7 +340,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a FigshareRepository to the repository. The owner will be automatically filled with the current user
+     * Used to save a FigshareRepository to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async figsharerepositoryPostRaw(requestParameters: FigsharerepositoryPostRequest): Promise<runtime.ApiResponse<FigshareRepository>> {
         if (requestParameters.figshareRepository === null || requestParameters.figshareRepository === undefined) {
@@ -390,48 +373,10 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a FigshareRepository to the repository. The owner will be automatically filled with the current user
+     * Used to save a FigshareRepository to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async figsharerepositoryPost(requestParameters: FigsharerepositoryPostRequest): Promise<FigshareRepository> {
         const response = await this.figsharerepositoryPostRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Used to list all available gitrepositories.
-     */
-    async gitrepositoryGetRaw(requestParameters: GitrepositoryGetRequest): Promise<runtime.ApiResponse<InlineResponse2002>> {
-        const queryParameters: runtime.HTTPQuery = {};
-
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
-        }
-
-        if (requestParameters.perPage !== undefined) {
-            queryParameters['per_page'] = requestParameters.perPage;
-        }
-
-        if (requestParameters.q !== undefined) {
-            queryParameters['q'] = requestParameters.q;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/gitrepository`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2002FromJSON(jsonValue));
-    }
-
-    /**
-     * Used to list all available gitrepositories.
-     */
-    async gitrepositoryGet(requestParameters: GitrepositoryGetRequest): Promise<InlineResponse2002> {
-        const response = await this.gitrepositoryGetRaw(requestParameters);
         return await response.value();
     }
 
@@ -548,7 +493,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a GITRepository to the repository. The owner will be automatically filled with the current user
+     * Used to save a GITRepository to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async gitrepositoryPostRaw(requestParameters: GitrepositoryPostRequest): Promise<runtime.ApiResponse<GITRepository>> {
         if (requestParameters.gITRepository === null || requestParameters.gITRepository === undefined) {
@@ -561,14 +506,6 @@ export class RestApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
             path: `/gitrepository`,
             method: 'POST',
@@ -581,7 +518,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a GITRepository to the repository. The owner will be automatically filled with the current user
+     * Used to save a GITRepository to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async gitrepositoryPost(requestParameters: GitrepositoryPostRequest): Promise<GITRepository> {
         const response = await this.gitrepositoryPostRaw(requestParameters);
@@ -589,7 +526,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to list all available osbrepositories.
+     * Used to list all available repositories.
      */
     async osbrepositoryGetRaw(requestParameters: OsbrepositoryGetRequest): Promise<runtime.ApiResponse<InlineResponse2001>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -619,7 +556,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to list all available osbrepositories.
+     * Used to list all available repositories.
      */
     async osbrepositoryGet(requestParameters: OsbrepositoryGetRequest): Promise<InlineResponse2001> {
         const response = await this.osbrepositoryGetRaw(requestParameters);
@@ -627,82 +564,47 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete an osbrepository from the repository.
+     * Delete a resource from a context of the osb repository.
      */
-    async osbrepositoryIdDeleteRaw(requestParameters: OsbrepositoryIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async osbrepositoryresourceIdDeleteRaw(requestParameters: OsbrepositoryresourceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdDelete.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryresourceIdDelete.');
+        }
+
+        if (requestParameters.repositoryResource === null || requestParameters.repositoryResource === undefined) {
+            throw new runtime.RequiredError('repositoryResource','Required parameter requestParameters.repositoryResource was null or undefined when calling osbrepositoryresourceIdDelete.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+        headerParameters['Content-Type'] = 'application/json';
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
-            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/osbrepositoryresource/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
+            body: RepositoryResourceToJSON(requestParameters.repositoryResource),
         });
 
         return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Delete an osbrepository from the repository.
+     * Delete a resource from a context of the osb repository.
      */
-    async osbrepositoryIdDelete(requestParameters: OsbrepositoryIdDeleteRequest): Promise<void> {
-        await this.osbrepositoryIdDeleteRaw(requestParameters);
+    async osbrepositoryresourceIdDelete(requestParameters: OsbrepositoryresourceIdDeleteRequest): Promise<void> {
+        await this.osbrepositoryresourceIdDeleteRaw(requestParameters);
     }
 
     /**
-     * Used to retrieve an osbrepository from the repository.
+     * Used to save a resource to a context of the osb repository.
      */
-    async osbrepositoryIdGetRaw(requestParameters: OsbrepositoryIdGetRequest): Promise<runtime.ApiResponse<OSBRepository>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdGet.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
-    }
-
-    /**
-     * Used to retrieve an osbrepository from the repository.
-     */
-    async osbrepositoryIdGet(requestParameters: OsbrepositoryIdGetRequest): Promise<OSBRepository> {
-        const response = await this.osbrepositoryIdGetRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Update an osbrepository in the repository.
-     */
-    async osbrepositoryIdPutRaw(requestParameters: OsbrepositoryIdPutRequest): Promise<runtime.ApiResponse<OSBRepository>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdPut.');
-        }
-
-        if (requestParameters.oSBRepository === null || requestParameters.oSBRepository === undefined) {
-            throw new runtime.RequiredError('oSBRepository','Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryIdPut.');
+    async postRaw(requestParameters: PostRequest): Promise<runtime.ApiResponse<RepositoryResource>> {
+        if (requestParameters.inlineObject2 === null || requestParameters.inlineObject2 === undefined) {
+            throw new runtime.RequiredError('inlineObject2','Required parameter requestParameters.inlineObject2 was null or undefined when calling post.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -711,78 +613,29 @@ export class RestApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
-            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: OSBRepositoryToJSON(requestParameters.oSBRepository),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
-    }
-
-    /**
-     * Update an osbrepository in the repository.
-     */
-    async osbrepositoryIdPut(requestParameters: OsbrepositoryIdPutRequest): Promise<OSBRepository> {
-        const response = await this.osbrepositoryIdPutRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Used to save a OSBRepository to the repository. The owner will be automatically filled with the current user
-     */
-    async osbrepositoryPostRaw(requestParameters: OsbrepositoryPostRequest): Promise<runtime.ApiResponse<OSBRepository>> {
-        if (requestParameters.oSBRepository === null || requestParameters.oSBRepository === undefined) {
-            throw new runtime.RequiredError('oSBRepository','Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryPost.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/osbrepository`,
+            path: `/osbrepositoryresource`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: OSBRepositoryToJSON(requestParameters.oSBRepository),
+            body: InlineObject2ToJSON(requestParameters.inlineObject2),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => RepositoryResourceFromJSON(jsonValue));
     }
 
     /**
-     * Used to save a OSBRepository to the repository. The owner will be automatically filled with the current user
+     * Used to save a resource to a context of the osb repository.
      */
-    async osbrepositoryPost(requestParameters: OsbrepositoryPostRequest): Promise<OSBRepository> {
-        const response = await this.osbrepositoryPostRaw(requestParameters);
+    async post(requestParameters: PostRequest): Promise<RepositoryResource> {
+        const response = await this.postRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to list all available volumestorages.
      */
-    async volumestorageGetRaw(requestParameters: VolumestorageGetRequest): Promise<runtime.ApiResponse<InlineResponse2004>> {
+    async volumestorageGetRaw(requestParameters: VolumestorageGetRequest): Promise<runtime.ApiResponse<InlineResponse2003>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.page !== undefined) {
@@ -814,13 +667,13 @@ export class RestApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2004FromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2003FromJSON(jsonValue));
     }
 
     /**
      * Used to list all available volumestorages.
      */
-    async volumestorageGet(requestParameters: VolumestorageGetRequest): Promise<InlineResponse2004> {
+    async volumestorageGet(requestParameters: VolumestorageGetRequest): Promise<InlineResponse2003> {
         const response = await this.volumestorageGetRaw(requestParameters);
         return await response.value();
     }
@@ -938,7 +791,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a VolumeStorage to the repository. The owner will be automatically filled with the current user
+     * Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async volumestoragePostRaw(requestParameters: VolumestoragePostRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.volumeStorage === null || requestParameters.volumeStorage === undefined) {
@@ -971,7 +824,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a VolumeStorage to the repository. The owner will be automatically filled with the current user
+     * Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async volumestoragePost(requestParameters: VolumestoragePostRequest): Promise<VolumeStorage> {
         const response = await this.volumestoragePostRaw(requestParameters);
@@ -998,14 +851,6 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
             path: `/workspace`,
             method: 'GET',
@@ -1073,14 +918,6 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
             path: `/workspace/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
@@ -1145,7 +982,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a Workspace to the repository. The owner will be automatically filled with the current user
+     * Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async workspacePostRaw(requestParameters: WorkspacePostRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.workspace === null || requestParameters.workspace === undefined) {
@@ -1178,7 +1015,7 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Used to save a Workspace to the repository. The owner will be automatically filled with the current user
+     * Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
     async workspacePost(requestParameters: WorkspacePostRequest): Promise<Workspace> {
         const response = await this.workspacePostRaw(requestParameters);
@@ -1347,197 +1184,79 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
-     * Adds and image to the workspace.
+     * Used to retrieve a repository.
      */
-    async workspacesControllerWorkspaceAddimageRaw(requestParameters: WorkspacesControllerWorkspaceAddimageRequest): Promise<runtime.ApiResponse<void>> {
+    async workspacesControllersOsbrepositoryControllerGetRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllerWorkspaceAddimage.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerGet.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (requestParameters.context !== undefined) {
+            queryParameters['context'] = requestParameters.context;
         }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.image !== undefined) {
-            formParams.append('image', requestParameters.image as any);
-        }
-
-        const response = await this.request({
-            path: `/workspace/{id}/gallery`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        });
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Adds and image to the workspace.
-     */
-    async workspacesControllerWorkspaceAddimage(requestParameters: WorkspacesControllerWorkspaceAddimageRequest): Promise<void> {
-        await this.workspacesControllerWorkspaceAddimageRaw(requestParameters);
-    }
-
-    /**
-     * Delete a Workspace Image from the workspace.
-     */
-    async workspacesControllerWorkspaceDelimageRaw(requestParameters: WorkspacesControllerWorkspaceDelimageRequest): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllerWorkspaceDelimage.');
-        }
-
-        if (requestParameters.imageId === null || requestParameters.imageId === undefined) {
-            throw new runtime.RequiredError('imageId','Required parameter requestParameters.imageId was null or undefined when calling workspacesControllerWorkspaceDelimage.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
-            path: `/workspace/{id}/gallery/{image_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"image_id"}}`, encodeURIComponent(String(requestParameters.imageId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Delete a Workspace Image from the workspace.
-     */
-    async workspacesControllerWorkspaceDelimage(requestParameters: WorkspacesControllerWorkspaceDelimageRequest): Promise<void> {
-        await this.workspacesControllerWorkspaceDelimageRaw(requestParameters);
-    }
-
-    /**
-     * Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
-     */
-    async workspacesControllerWorkspaceResourceOpenRaw(requestParameters: WorkspacesControllerWorkspaceResourceOpenRequest): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllerWorkspaceResourceOpen.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/workspaceresource/{id}/open`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
     }
 
     /**
-     * Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
+     * Used to retrieve a repository.
      */
-    async workspacesControllerWorkspaceResourceOpen(requestParameters: WorkspacesControllerWorkspaceResourceOpenRequest): Promise<void> {
-        await this.workspacesControllerWorkspaceResourceOpenRaw(requestParameters);
+    async workspacesControllersOsbrepositoryControllerGet(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<OSBRepository> {
+        const response = await this.workspacesControllersOsbrepositoryControllerGetRaw(requestParameters);
+        return await response.value();
     }
 
     /**
-     * Sets the thumbnail of the workspace.
+     * Used to retrieve the contexts of a repository.
      */
-    async workspacesControllerWorkspaceSetthumbnailRaw(requestParameters: WorkspacesControllerWorkspaceSetthumbnailRequest): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllerWorkspaceSetthumbnail.');
+    async workspacesControllersOsbrepositoryControllerGetContextsRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetContextsRequest): Promise<runtime.ApiResponse<OSBRepository>> {
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
+        }
+
+        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
+            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
 
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
+        }
+
+        if (requestParameters.repositoryType !== undefined) {
+            queryParameters['repository_type'] = requestParameters.repositoryType;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.thumbNail !== undefined) {
-            formParams.append('thumbNail', requestParameters.thumbNail as any);
-        }
-
         const response = await this.request({
-            path: `/workspace/{id}/thumbnail`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'POST',
+            path: `/osbrepository/context`,
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-            body: formParams,
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
     }
 
     /**
-     * Sets the thumbnail of the workspace.
+     * Used to retrieve the contexts of a repository.
      */
-    async workspacesControllerWorkspaceSetthumbnail(requestParameters: WorkspacesControllerWorkspaceSetthumbnailRequest): Promise<void> {
-        await this.workspacesControllerWorkspaceSetthumbnailRaw(requestParameters);
+    async workspacesControllersOsbrepositoryControllerGetContexts(requestParameters: WorkspacesControllersOsbrepositoryControllerGetContextsRequest): Promise<OSBRepository> {
+        const response = await this.workspacesControllersOsbrepositoryControllerGetContextsRaw(requestParameters);
+        return await response.value();
     }
 
 }

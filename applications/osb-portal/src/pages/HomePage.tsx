@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Grid, Paper } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import MainMenu from "../components/menu/MainMenu";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Latest } from "../components/latest/Latest";
 

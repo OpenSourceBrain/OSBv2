@@ -43,13 +43,13 @@ export interface WorkspaceResource {
      */
     name: string;
     /**
-     * WorkspaceResource WorkspaceResource location original location of the resource
+     * WorkspaceResource location original location of the resource
      * @type {string}
      * @memberof WorkspaceResource
      */
     location: string;
     /**
-     * WorkspaceResource WorkspaceResource folder where the resource will stored in the pvc
+     * WorkspaceResource folder where the resource will stored in the pvc
      * @type {string}
      * @memberof WorkspaceResource
      */
@@ -85,11 +85,11 @@ export interface WorkspaceResource {
      */
     resourceType: ResourceType;
     /**
-     * The id of the Workspace this Workspace Resource belongs to
+     * workspace_id
      * @type {number}
      * @memberof WorkspaceResource
      */
-    workspaceId: number;
+    workspaceId?: number;
 }
 
 export function WorkspaceResourceFromJSON(json: any): WorkspaceResource {
@@ -105,13 +105,13 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
         'location': json['location'],
-        'folder': json['folder'],
+        'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
-        'workspaceId': json['workspace_id'],
+        'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
     };
 }
 

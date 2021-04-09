@@ -14,10 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    GITRepository,
-    GITRepositoryFromJSON,
-    GITRepositoryFromJSONTyped,
-    GITRepositoryToJSON,
+    FigshareRepository,
+    FigshareRepositoryFromJSON,
+    FigshareRepositoryFromJSONTyped,
+    FigshareRepositoryToJSON,
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
@@ -38,10 +38,10 @@ export interface InlineResponse2002 {
     pagination?: Pagination;
     /**
      * 
-     * @type {Array<GITRepository>}
+     * @type {Array<FigshareRepository>}
      * @memberof InlineResponse2002
      */
-    gitrepositories?: Array<GITRepository>;
+    figsharerepositories?: Array<FigshareRepository>;
 }
 
 export function InlineResponse2002FromJSON(json: any): InlineResponse2002 {
@@ -55,7 +55,7 @@ export function InlineResponse2002FromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
-        'gitrepositories': !exists(json, 'gitrepositories') ? undefined : ((json['gitrepositories'] as Array<any>).map(GITRepositoryFromJSON)),
+        'figsharerepositories': !exists(json, 'figsharerepositories') ? undefined : ((json['figsharerepositories'] as Array<any>).map(FigshareRepositoryFromJSON)),
     };
 }
 
@@ -69,7 +69,7 @@ export function InlineResponse2002ToJSON(value?: InlineResponse2002 | null): any
     return {
         
         'pagination': PaginationToJSON(value.pagination),
-        'gitrepositories': value.gitrepositories === undefined ? undefined : ((value.gitrepositories as Array<any>).map(GITRepositoryToJSON)),
+        'figsharerepositories': value.figsharerepositories === undefined ? undefined : ((value.figsharerepositories as Array<any>).map(FigshareRepositoryToJSON)),
     };
 }
 

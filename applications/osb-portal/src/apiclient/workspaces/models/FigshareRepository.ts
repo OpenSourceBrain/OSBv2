@@ -13,8 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    FigshareRepositoryAllOf,
+    FigshareRepositoryAllOfFromJSON,
+    FigshareRepositoryAllOfFromJSONTyped,
+    FigshareRepositoryAllOfToJSON,
+    OSBRepositoryContext,
+    OSBRepositoryContextFromJSON,
+    OSBRepositoryContextFromJSONTyped,
+    OSBRepositoryContextToJSON,
+    RepositoryBase,
+    RepositoryBaseFromJSON,
+    RepositoryBaseFromJSONTyped,
+    RepositoryBaseToJSON,
+    RepositoryType,
+    RepositoryTypeFromJSON,
+    RepositoryTypeFromJSONTyped,
+    RepositoryTypeToJSON,
+} from './';
+
 /**
- * Figshare repository
+ * 
  * @export
  * @interface FigshareRepository
  */
@@ -25,6 +44,48 @@ export interface FigshareRepository {
      * @memberof FigshareRepository
      */
     id?: number;
+    /**
+     * Repository name.
+     * @type {string}
+     * @memberof FigshareRepository
+     */
+    name: string;
+    /**
+     * 
+     * @type {RepositoryType}
+     * @memberof FigshareRepository
+     */
+    repositoryType: RepositoryType;
+    /**
+     * Comma separated set of Repository Content Types
+     * @type {string}
+     * @memberof FigshareRepository
+     */
+    repositoryContentTypes: string;
+    /**
+     * Auto sync of the resources
+     * @type {boolean}
+     * @memberof FigshareRepository
+     */
+    autoSync: boolean;
+    /**
+     * URI of the repository
+     * @type {string}
+     * @memberof FigshareRepository
+     */
+    uri: string;
+    /**
+     * Repository keycloak user id, will be automatically be set to the logged in user
+     * @type {string}
+     * @memberof FigshareRepository
+     */
+    userId?: string;
+    /**
+     * List of contexts with used/referenced resources in this repository
+     * @type {Array<OSBRepositoryContext>}
+     * @memberof FigshareRepository
+     */
+    usedContexts?: Array<OSBRepositoryContext>;
     /**
      * URL of the figshare repository
      * @type {string}
@@ -44,6 +105,13 @@ export function FigshareRepositoryFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': json['name'],
+        'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
+        'repositoryContentTypes': json['repository_content_types'],
+        'autoSync': json['auto_sync'],
+        'uri': json['uri'],
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'usedContexts': !exists(json, 'used_contexts') ? undefined : ((json['used_contexts'] as Array<any>).map(OSBRepositoryContextFromJSON)),
         'url': json['url'],
     };
 }
@@ -58,6 +126,13 @@ export function FigshareRepositoryToJSON(value?: FigshareRepository | null): any
     return {
         
         'id': value.id,
+        'name': value.name,
+        'repository_type': RepositoryTypeToJSON(value.repositoryType),
+        'repository_content_types': value.repositoryContentTypes,
+        'auto_sync': value.autoSync,
+        'uri': value.uri,
+        'user_id': value.userId,
+        'used_contexts': value.usedContexts === undefined ? undefined : ((value.usedContexts as Array<any>).map(OSBRepositoryContextToJSON)),
         'url': value.url,
     };
 }

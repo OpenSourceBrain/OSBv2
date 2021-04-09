@@ -14,14 +14,14 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    FigshareRepository,
-    FigshareRepositoryFromJSON,
-    FigshareRepositoryFromJSONTyped,
-    FigshareRepositoryToJSON,
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
     PaginationToJSON,
+    VolumeStorage,
+    VolumeStorageFromJSON,
+    VolumeStorageFromJSONTyped,
+    VolumeStorageToJSON,
 } from './';
 
 /**
@@ -38,10 +38,10 @@ export interface InlineResponse2003 {
     pagination?: Pagination;
     /**
      * 
-     * @type {Array<FigshareRepository>}
+     * @type {Array<VolumeStorage>}
      * @memberof InlineResponse2003
      */
-    figsharerepositories?: Array<FigshareRepository>;
+    volumestorages?: Array<VolumeStorage>;
 }
 
 export function InlineResponse2003FromJSON(json: any): InlineResponse2003 {
@@ -55,7 +55,7 @@ export function InlineResponse2003FromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
-        'figsharerepositories': !exists(json, 'figsharerepositories') ? undefined : ((json['figsharerepositories'] as Array<any>).map(FigshareRepositoryFromJSON)),
+        'volumestorages': !exists(json, 'volumestorages') ? undefined : ((json['volumestorages'] as Array<any>).map(VolumeStorageFromJSON)),
     };
 }
 
@@ -69,7 +69,7 @@ export function InlineResponse2003ToJSON(value?: InlineResponse2003 | null): any
     return {
         
         'pagination': PaginationToJSON(value.pagination),
-        'figsharerepositories': value.figsharerepositories === undefined ? undefined : ((value.figsharerepositories as Array<any>).map(FigshareRepositoryToJSON)),
+        'volumestorages': value.volumestorages === undefined ? undefined : ((value.volumestorages as Array<any>).map(VolumeStorageToJSON)),
     };
 }
 

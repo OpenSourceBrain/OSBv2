@@ -22,7 +22,7 @@ class RepositoryService {
   }
 
   async getRepositories(page: number): Promise<OSBRepository[]> {
-    return [];
+    return []; // TODO implement
   }
 
   async getRepository(id: number): Promise<OSBRepository> {

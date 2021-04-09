@@ -13,8 +13,27 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    GITRepositoryAllOf,
+    GITRepositoryAllOfFromJSON,
+    GITRepositoryAllOfFromJSONTyped,
+    GITRepositoryAllOfToJSON,
+    OSBRepositoryContext,
+    OSBRepositoryContextFromJSON,
+    OSBRepositoryContextFromJSONTyped,
+    OSBRepositoryContextToJSON,
+    RepositoryBase,
+    RepositoryBaseFromJSON,
+    RepositoryBaseFromJSONTyped,
+    RepositoryBaseToJSON,
+    RepositoryType,
+    RepositoryTypeFromJSON,
+    RepositoryTypeFromJSONTyped,
+    RepositoryTypeToJSON,
+} from './';
+
 /**
- * GIT repository
+ * 
  * @export
  * @interface GITRepository
  */
@@ -26,23 +45,53 @@ export interface GITRepository {
      */
     id?: number;
     /**
-     * Public key of the git repository
+     * Repository name.
      * @type {string}
      * @memberof GITRepository
      */
-    publicKey: string;
+    name: string;
     /**
-     * Public key of the git repository
-     * @type {string}
+     * 
+     * @type {RepositoryType}
      * @memberof GITRepository
      */
-    privateKey: string;
+    repositoryType: RepositoryType;
     /**
-     * URL of the git repository
+     * Comma separated set of Repository Content Types
      * @type {string}
      * @memberof GITRepository
      */
-    url: string;
+    repositoryContentTypes: string;
+    /**
+     * Auto sync of the resources
+     * @type {boolean}
+     * @memberof GITRepository
+     */
+    autoSync: boolean;
+    /**
+     * URI of the repository
+     * @type {string}
+     * @memberof GITRepository
+     */
+    uri: string;
+    /**
+     * Repository keycloak user id, will be automatically be set to the logged in user
+     * @type {string}
+     * @memberof GITRepository
+     */
+    userId?: string;
+    /**
+     * List of contexts with used/referenced resources in this repository
+     * @type {Array<OSBRepositoryContext>}
+     * @memberof GITRepository
+     */
+    usedContexts?: Array<OSBRepositoryContext>;
+    /**
+     * The default branch to show for this repository
+     * @type {string}
+     * @memberof GITRepository
+     */
+    defaultContext: string;
 }
 
 export function GITRepositoryFromJSON(json: any): GITRepository {
@@ -56,9 +105,14 @@ export function GITRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'publicKey': json['public_key'],
-        'privateKey': json['private_key'],
-        'url': json['url'],
+        'name': json['name'],
+        'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
+        'repositoryContentTypes': json['repository_content_types'],
+        'autoSync': json['auto_sync'],
+        'uri': json['uri'],
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'usedContexts': !exists(json, 'used_contexts') ? undefined : ((json['used_contexts'] as Array<any>).map(OSBRepositoryContextFromJSON)),
+        'defaultContext': json['default_context'],
     };
 }
 
@@ -72,9 +126,14 @@ export function GITRepositoryToJSON(value?: GITRepository | null): any {
     return {
         
         'id': value.id,
-        'public_key': value.publicKey,
-        'private_key': value.privateKey,
-        'url': value.url,
+        'name': value.name,
+        'repository_type': RepositoryTypeToJSON(value.repositoryType),
+        'repository_content_types': value.repositoryContentTypes,
+        'auto_sync': value.autoSync,
+        'uri': value.uri,
+        'user_id': value.userId,
+        'used_contexts': value.usedContexts === undefined ? undefined : ((value.usedContexts as Array<any>).map(OSBRepositoryContextToJSON)),
+        'default_context': value.defaultContext,
     };
 }
 
