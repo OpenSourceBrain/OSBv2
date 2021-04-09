@@ -25,15 +25,13 @@ class OSBRepository(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, description=None, repository_type=None, repository_content_types=None, auto_sync=True, uri=None, user_id=None, used_contexts=None, context_resources=None, all_contexts=None):  # noqa: E501
+    def __init__(self, id=None, name=None, repository_type=None, repository_content_types=None, auto_sync=True, uri=None, user_id=None, used_contexts=None, context_resources=None, all_contexts=None, description=None):  # noqa: E501
         """OSBRepository - a model defined in OpenAPI
 
         :param id: The id of this OSBRepository.  # noqa: E501
         :type id: int
         :param name: The name of this OSBRepository.  # noqa: E501
         :type name: str
-        :param description: The description of this OSBRepository.  # noqa: E501
-        :type description: str
         :param repository_type: The repository_type of this OSBRepository.  # noqa: E501
         :type repository_type: RepositoryType
         :param repository_content_types: The repository_content_types of this OSBRepository.  # noqa: E501
@@ -50,11 +48,12 @@ class OSBRepository(Model):
         :type context_resources: List[RepositoryResourceNode]
         :param all_contexts: The all_contexts of this OSBRepository.  # noqa: E501
         :type all_contexts: List[str]
+        :param description: The description of this OSBRepository.  # noqa: E501
+        :type description: str
         """
         self.openapi_types = {
             'id': int,
             'name': str,
-            'description': str,
             'repository_type': RepositoryType,
             'repository_content_types': str,
             'auto_sync': bool,
@@ -62,13 +61,13 @@ class OSBRepository(Model):
             'user_id': str,
             'used_contexts': List[OSBRepositoryContext],
             'context_resources': List[RepositoryResourceNode],
-            'all_contexts': List[str]
+            'all_contexts': List[str],
+            'description': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'name': 'name',
-            'description': 'description',
             'repository_type': 'repository_type',
             'repository_content_types': 'repository_content_types',
             'auto_sync': 'auto_sync',
@@ -76,12 +75,12 @@ class OSBRepository(Model):
             'user_id': 'user_id',
             'used_contexts': 'used_contexts',
             'context_resources': 'context_resources',
-            'all_contexts': 'all_contexts'
+            'all_contexts': 'all_contexts',
+            'description': 'description'
         }
 
         self._id = id
         self._name = name
-        self._description = description
         self._repository_type = repository_type
         self._repository_content_types = repository_content_types
         self._auto_sync = auto_sync
@@ -90,6 +89,7 @@ class OSBRepository(Model):
         self._used_contexts = used_contexts
         self._context_resources = context_resources
         self._all_contexts = all_contexts
+        self._description = description
 
     @classmethod
     def from_dict(cls, dikt) -> 'OSBRepository':
@@ -147,31 +147,6 @@ class OSBRepository(Model):
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
-
-    @property
-    def description(self):
-        """Gets the description of this OSBRepository.
-
-        Repository description  # noqa: E501
-
-        :return: The description of this OSBRepository.
-        :rtype: str
-        """
-        return self._description
-
-    @description.setter
-    def description(self, description):
-        """Sets the description of this OSBRepository.
-
-        Repository description  # noqa: E501
-
-        :param description: The description of this OSBRepository.
-        :type description: str
-        """
-        if description is None:
-            raise ValueError("Invalid value for `description`, must not be `None`")  # noqa: E501
-
-        self._description = description
 
     @property
     def repository_type(self):
@@ -362,3 +337,28 @@ class OSBRepository(Model):
         """
 
         self._all_contexts = all_contexts
+
+    @property
+    def description(self):
+        """Gets the description of this OSBRepository.
+
+        Repository description  # noqa: E501
+
+        :return: The description of this OSBRepository.
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        """Sets the description of this OSBRepository.
+
+        Repository description  # noqa: E501
+
+        :param description: The description of this OSBRepository.
+        :type description: str
+        """
+        if description is None:
+            raise ValueError("Invalid value for `description`, must not be `None`")  # noqa: E501
+
+        self._description = description

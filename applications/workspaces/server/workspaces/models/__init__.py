@@ -7,6 +7,7 @@ from workspaces.models.figshare_repository import FigshareRepository
 from workspaces.models.figshare_repository_all_of import FigshareRepositoryAllOf
 from workspaces.models.git_repository import GITRepository
 from workspaces.models.git_repository_all_of import GITRepositoryAllOf
+from workspaces.models.inline_object2 import InlineObject2
 from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002

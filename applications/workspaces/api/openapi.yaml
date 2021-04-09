@@ -1100,10 +1100,6 @@ components:
           description: Repository name.
           type: string
           example: Repo One
-        description:
-          description: Repository description.
-          type: string
-          example: Repo One description
         repository_type:
           description: Repository type
           $ref: "#/components/schemas/RepositoryType"
