@@ -1126,7 +1126,6 @@ components:
             $ref: "#/components/schemas/OSBRepositoryContext"
       required:
         - name
-        - description
         - repository_type
         - repository_content_types
         - auto_sync

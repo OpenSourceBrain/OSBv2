@@ -985,7 +985,6 @@ class _GITRepositoryDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
-    description: str
     repository_type: str
     repository_content_types: str
     auto_sync: bool
@@ -1010,7 +1009,6 @@ class TGITRepository(typing_extensions.Protocol):
     Attrs:
         id: The id of the GITRepository.
         name: Repository name.
-        description: Repository description.
         repository_type: Repository type:   * dandi - DANDI repository   *
             figshare - FigShare repository   * github - Github repository
         repository_content_types: Comma separated set of Repository Content
@@ -1033,7 +1031,6 @@ class TGITRepository(typing_extensions.Protocol):
     # Model properties
     id: int
     name: str
-    description: str
     repository_type: str
     repository_content_types: str
     auto_sync: bool
@@ -1045,7 +1042,6 @@ class TGITRepository(typing_extensions.Protocol):
     def __init__(
         self,
         name: str,
-        description: str,
         repository_type: str,
         repository_content_types: str,
         auto_sync: bool,
@@ -1061,7 +1057,6 @@ class TGITRepository(typing_extensions.Protocol):
         Args:
             id: The id of the GITRepository.
             name: Repository name.
-            description: Repository description.
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
             repository_content_types: Comma separated set of Repository Content
@@ -1081,7 +1076,6 @@ class TGITRepository(typing_extensions.Protocol):
     def from_dict(
         cls,
         name: str,
-        description: str,
         repository_type: str,
         repository_content_types: str,
         auto_sync: bool,
@@ -1099,7 +1093,6 @@ class TGITRepository(typing_extensions.Protocol):
         Args:
             id: The id of the GITRepository.
             name: Repository name.
-            description: Repository description.
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
             repository_content_types: Comma separated set of Repository Content
@@ -1157,7 +1150,6 @@ class _FigshareRepositoryDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
-    description: str
     repository_type: str
     repository_content_types: str
     auto_sync: bool
@@ -1182,7 +1174,6 @@ class TFigshareRepository(typing_extensions.Protocol):
     Attrs:
         id: The id of the FigshareRepository.
         name: Repository name.
-        description: Repository description.
         repository_type: Repository type:   * dandi - DANDI repository   *
             figshare - FigShare repository   * github - Github repository
         repository_content_types: Comma separated set of Repository Content
@@ -1205,7 +1196,6 @@ class TFigshareRepository(typing_extensions.Protocol):
     # Model properties
     id: int
     name: str
-    description: str
     repository_type: str
     repository_content_types: str
     auto_sync: bool
@@ -1217,7 +1207,6 @@ class TFigshareRepository(typing_extensions.Protocol):
     def __init__(
         self,
         name: str,
-        description: str,
         repository_type: str,
         repository_content_types: str,
         auto_sync: bool,
@@ -1233,7 +1222,6 @@ class TFigshareRepository(typing_extensions.Protocol):
         Args:
             id: The id of the FigshareRepository.
             name: Repository name.
-            description: Repository description.
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
             repository_content_types: Comma separated set of Repository Content
@@ -1253,7 +1241,6 @@ class TFigshareRepository(typing_extensions.Protocol):
     def from_dict(
         cls,
         name: str,
-        description: str,
         repository_type: str,
         repository_content_types: str,
         auto_sync: bool,
@@ -1271,7 +1258,6 @@ class TFigshareRepository(typing_extensions.Protocol):
         Args:
             id: The id of the FigshareRepository.
             name: Repository name.
-            description: Repository description.
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
             repository_content_types: Comma separated set of Repository Content
