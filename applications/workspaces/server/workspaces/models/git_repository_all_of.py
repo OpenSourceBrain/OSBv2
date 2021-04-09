@@ -15,21 +15,21 @@ class GITRepositoryAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, url=None):  # noqa: E501
+    def __init__(self, default_context=None):  # noqa: E501
         """GITRepositoryAllOf - a model defined in OpenAPI
 
-        :param url: The url of this GITRepositoryAllOf.  # noqa: E501
-        :type url: str
+        :param default_context: The default_context of this GITRepositoryAllOf.  # noqa: E501
+        :type default_context: str
         """
         self.openapi_types = {
-            'url': str
+            'default_context': str
         }
 
         self.attribute_map = {
-            'url': 'url'
+            'default_context': 'default_context'
         }
 
-        self._url = url
+        self._default_context = default_context
 
     @classmethod
     def from_dict(cls, dikt) -> 'GITRepositoryAllOf':
@@ -43,26 +43,26 @@ class GITRepositoryAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def url(self):
-        """Gets the url of this GITRepositoryAllOf.
+    def default_context(self):
+        """Gets the default_context of this GITRepositoryAllOf.
 
-        URL of the git repository  # noqa: E501
+        The default branch to show for this repository  # noqa: E501
 
-        :return: The url of this GITRepositoryAllOf.
+        :return: The default_context of this GITRepositoryAllOf.
         :rtype: str
         """
-        return self._url
+        return self._default_context
 
-    @url.setter
-    def url(self, url):
-        """Sets the url of this GITRepositoryAllOf.
+    @default_context.setter
+    def default_context(self, default_context):
+        """Sets the default_context of this GITRepositoryAllOf.
 
-        URL of the git repository  # noqa: E501
+        The default branch to show for this repository  # noqa: E501
 
-        :param url: The url of this GITRepositoryAllOf.
-        :type url: str
+        :param default_context: The default_context of this GITRepositoryAllOf.
+        :type default_context: str
         """
-        if url is None:
-            raise ValueError("Invalid value for `url`, must not be `None`")  # noqa: E501
+        if default_context is None:
+            raise ValueError("Invalid value for `default_context`, must not be `None`")  # noqa: E501
 
-        self._url = url
+        self._default_context = default_context

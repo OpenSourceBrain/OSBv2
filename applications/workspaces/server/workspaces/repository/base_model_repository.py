@@ -37,11 +37,7 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            sqs = self._get_qs([(self.model.id, '=', id)])
-            obj = sqs.first()
-            if obj:
-                obj = self._post_get(obj)
-                return obj
+            return self.model.query.get(id)
         return None
 
     def _calculated_fields_populate(self, obj):
@@ -218,7 +214,7 @@ class BaseModelRepository:
             return "{}".format(e.orig), 400
         else:
             obj = self.get(id=new_obj.id)
-            return new_obj, 201
+            return new_obj
 
     def get(self, id):
         """Get an object from the repository."""
@@ -231,7 +227,7 @@ class BaseModelRepository:
 
         self._pre_commit(obj)
         db.session.commit()
-        return "Saved", 200
+        return "Saved"
 
     def put(self, body, id):
         """Update an object in the repository."""
@@ -248,5 +244,5 @@ class BaseModelRepository:
         result = self.model.query.filter_by(id=id).delete()
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
-        db.session.commit()
-        return 200
+        return db.session.commit()
+

@@ -21,6 +21,7 @@ class ResourceType(Model):
     E = "e"
     M = "m"
     G = "g"
+    U = "u"
     def __init__(self):  # noqa: E501
         """ResourceType - a model defined in OpenAPI
 

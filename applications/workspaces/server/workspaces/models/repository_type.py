@@ -18,9 +18,9 @@ class RepositoryType(Model):
     """
     allowed enum values
     """
-    D = "d"
-    F = "f"
-    G = "g"
+    DANDI = "dandi"
+    FIGSHARE = "figshare"
+    GITHUB = "github"
     def __init__(self):  # noqa: E501
         """RepositoryType - a model defined in OpenAPI
 

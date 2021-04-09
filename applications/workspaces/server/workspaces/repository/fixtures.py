@@ -11,7 +11,7 @@ logger = logging.getLogger(Config.APP_NAME)
 
 
 def insert_base_fixtures(app):
-    logger.info(' * Inserting base fixtures...')
+    pass
 
 
 def generate_fake(app):

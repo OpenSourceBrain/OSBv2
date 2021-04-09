@@ -1,6 +1,7 @@
 from ..base_model_view import BaseModelView
 from workspaces.repository import WorkspaceRepository, OSBRepositoryRepository, GITRepositoryRepository, \
-    FigshareRepositoryRepository, VolumeStorageRepository, WorkspaceResourceRepository, RepositoryRepository
+    FigshareRepositoryRepository, VolumeStorageRepository, WorkspaceResourceRepository, \
+    OSBRepositoryResourceRepository
 
 
 class WorkspaceView(BaseModelView):
@@ -12,9 +13,6 @@ class OsbrepositoryView(BaseModelView):
 class GitrepositoryView(BaseModelView):
     repository = GITRepositoryRepository()
 
-class RepositoryView(BaseModelView):
-    repository = RepositoryRepository()
-
 class FigsharerepositoryView(BaseModelView):
     repository = FigshareRepositoryRepository()
 
@@ -23,3 +21,6 @@ class VolumestorageView(BaseModelView):
 
 class WorkspaceresourceView(BaseModelView):
     repository = WorkspaceResourceRepository()
+
+class OsbrepositoryresourceView(BaseModelView):
+    repository = OSBRepositoryResourceRepository()

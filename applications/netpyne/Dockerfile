@@ -1,8 +1,8 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
-ENV BRANCH_TAG=development
+ENV BRANCH_TAG=osb2
 ENV FOLDER=netpyne
-
+RUN echo "no-cache"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -47,23 +47,23 @@ RUN jupyter labextension disable @jupyterlab/hub-extension
 
 COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
-# sym link workspace pvc to $FOLDER
-RUN mkdir -p /opt/workspace
-RUN mkdir -p /opt/user
-RUN chown -R jovyan /opt/*
-RUN ln -s /opt/workspace ./workspace
-RUN ln -s /opt/user ./user
+COPY overrides/netpyne_ui/ netpyne_ui
 
 # ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
 # and thus removes the frame ancestor cors settings
 RUN rm -f ~/.jupyter/*.json
 
-COPY ./NETPYNE .
-RUN chmod +x NETPYNE
-RUN chown -R $NB_UID ..
+RUN chown $NB_UID .
+RUN chown $NB_UID netpyne_workspace
+RUN chown $NB_UID /opt
 USER $NB_UID
+
+# sym link workspace pvc to $FOLDER
+RUN mkdir -p /opt/workspace
+RUN mkdir -p /opt/user
+RUN ln -s /opt/workspace workspace
 
 EXPOSE 8888
 
 ENTRYPOINT ["tini", "-g", "--"]
-CMD ./NETPYNE
+CMD ./NetPyNE-UI

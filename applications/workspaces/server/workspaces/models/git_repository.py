@@ -7,14 +7,14 @@ from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
 from workspaces.models.git_repository_all_of import GITRepositoryAllOf
-from workspaces.models.repository import Repository
-from workspaces.models.repository_content_type import RepositoryContentType
+from workspaces.models.osb_repository_context import OSBRepositoryContext
+from workspaces.models.repository_base import RepositoryBase
 from workspaces.models.repository_type import RepositoryType
 from workspaces import util
 
 from workspaces.models.git_repository_all_of import GITRepositoryAllOf  # noqa: E501
-from workspaces.models.repository import Repository  # noqa: E501
-from workspaces.models.repository_content_type import RepositoryContentType  # noqa: E501
+from workspaces.models.osb_repository_context import OSBRepositoryContext  # noqa: E501
+from workspaces.models.repository_base import RepositoryBase  # noqa: E501
 from workspaces.models.repository_type import RepositoryType  # noqa: E501
 
 class GITRepository(Model):
@@ -23,7 +23,7 @@ class GITRepository(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, description=None, default_branch=None, repository_type=None, repository_content_type=None, auto_sync=True, url=None):  # noqa: E501
+    def __init__(self, id=None, name=None, description=None, repository_type=None, repository_content_types=None, auto_sync=True, uri=None, user_id=None, used_contexts=None, default_context=None):  # noqa: E501
         """GITRepository - a model defined in OpenAPI
 
         :param id: The id of this GITRepository.  # noqa: E501
@@ -32,47 +32,57 @@ class GITRepository(Model):
         :type name: str
         :param description: The description of this GITRepository.  # noqa: E501
         :type description: str
-        :param default_branch: The default_branch of this GITRepository.  # noqa: E501
-        :type default_branch: str
         :param repository_type: The repository_type of this GITRepository.  # noqa: E501
         :type repository_type: RepositoryType
-        :param repository_content_type: The repository_content_type of this GITRepository.  # noqa: E501
-        :type repository_content_type: RepositoryContentType
+        :param repository_content_types: The repository_content_types of this GITRepository.  # noqa: E501
+        :type repository_content_types: str
         :param auto_sync: The auto_sync of this GITRepository.  # noqa: E501
         :type auto_sync: bool
-        :param url: The url of this GITRepository.  # noqa: E501
-        :type url: str
+        :param uri: The uri of this GITRepository.  # noqa: E501
+        :type uri: str
+        :param user_id: The user_id of this GITRepository.  # noqa: E501
+        :type user_id: str
+        :param used_contexts: The used_contexts of this GITRepository.  # noqa: E501
+        :type used_contexts: List[OSBRepositoryContext]
+        :param default_context: The default_context of this GITRepository.  # noqa: E501
+        :type default_context: str
         """
         self.openapi_types = {
             'id': int,
             'name': str,
             'description': str,
-            'default_branch': str,
             'repository_type': RepositoryType,
-            'repository_content_type': RepositoryContentType,
+            'repository_content_types': str,
             'auto_sync': bool,
-            'url': str
+            'uri': str,
+            'user_id': str,
+            'used_contexts': List[OSBRepositoryContext],
+            'default_context': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'name': 'name',
             'description': 'description',
-            'default_branch': 'default_branch',
             'repository_type': 'repository_type',
-            'repository_content_type': 'repository_content_type',
+            'repository_content_types': 'repository_content_types',
             'auto_sync': 'auto_sync',
-            'url': 'url'
+            'uri': 'uri',
+            'user_id': 'user_id',
+            'used_contexts': 'used_contexts',
+            'default_context': 'default_context'
         }
 
         self._id = id
         self._name = name
         self._description = description
-        self._default_branch = default_branch
         self._repository_type = repository_type
-        self._repository_content_type = repository_content_type
+        self._repository_content_types = repository_content_types
         self._auto_sync = auto_sync
-        self._url = url
+        self._uri = uri
+        self._user_id = user_id
+        self._used_contexts = used_contexts
+        self._default_context = default_context
 
     @classmethod
     def from_dict(cls, dikt) -> 'GITRepository':
@@ -126,6 +136,8 @@ class GITRepository(Model):
         :param name: The name of this GITRepository.
         :type name: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -149,31 +161,10 @@ class GITRepository(Model):
         :param description: The description of this GITRepository.
         :type description: str
         """
+        if description is None:
+            raise ValueError("Invalid value for `description`, must not be `None`")  # noqa: E501
 
         self._description = description
-
-    @property
-    def default_branch(self):
-        """Gets the default_branch of this GITRepository.
-
-        The default branch to show for this repository  # noqa: E501
-
-        :return: The default_branch of this GITRepository.
-        :rtype: str
-        """
-        return self._default_branch
-
-    @default_branch.setter
-    def default_branch(self, default_branch):
-        """Sets the default_branch of this GITRepository.
-
-        The default branch to show for this repository  # noqa: E501
-
-        :param default_branch: The default_branch of this GITRepository.
-        :type default_branch: str
-        """
-
-        self._default_branch = default_branch
 
     @property
     def repository_type(self):
@@ -193,29 +184,35 @@ class GITRepository(Model):
         :param repository_type: The repository_type of this GITRepository.
         :type repository_type: RepositoryType
         """
+        if repository_type is None:
+            raise ValueError("Invalid value for `repository_type`, must not be `None`")  # noqa: E501
 
         self._repository_type = repository_type
 
     @property
-    def repository_content_type(self):
-        """Gets the repository_content_type of this GITRepository.
+    def repository_content_types(self):
+        """Gets the repository_content_types of this GITRepository.
 
+        Comma separated set of Repository Content Types  # noqa: E501
 
-        :return: The repository_content_type of this GITRepository.
-        :rtype: RepositoryContentType
+        :return: The repository_content_types of this GITRepository.
+        :rtype: str
         """
-        return self._repository_content_type
+        return self._repository_content_types
 
-    @repository_content_type.setter
-    def repository_content_type(self, repository_content_type):
-        """Sets the repository_content_type of this GITRepository.
+    @repository_content_types.setter
+    def repository_content_types(self, repository_content_types):
+        """Sets the repository_content_types of this GITRepository.
 
+        Comma separated set of Repository Content Types  # noqa: E501
 
-        :param repository_content_type: The repository_content_type of this GITRepository.
-        :type repository_content_type: RepositoryContentType
+        :param repository_content_types: The repository_content_types of this GITRepository.
+        :type repository_content_types: str
         """
+        if repository_content_types is None:
+            raise ValueError("Invalid value for `repository_content_types`, must not be `None`")  # noqa: E501
 
-        self._repository_content_type = repository_content_type
+        self._repository_content_types = repository_content_types
 
     @property
     def auto_sync(self):
@@ -237,30 +234,103 @@ class GITRepository(Model):
         :param auto_sync: The auto_sync of this GITRepository.
         :type auto_sync: bool
         """
+        if auto_sync is None:
+            raise ValueError("Invalid value for `auto_sync`, must not be `None`")  # noqa: E501
 
         self._auto_sync = auto_sync
 
     @property
-    def url(self):
-        """Gets the url of this GITRepository.
+    def uri(self):
+        """Gets the uri of this GITRepository.
 
-        URL of the git repository  # noqa: E501
+        URI of the repository  # noqa: E501
 
-        :return: The url of this GITRepository.
+        :return: The uri of this GITRepository.
         :rtype: str
         """
-        return self._url
+        return self._uri
 
-    @url.setter
-    def url(self, url):
-        """Sets the url of this GITRepository.
+    @uri.setter
+    def uri(self, uri):
+        """Sets the uri of this GITRepository.
 
-        URL of the git repository  # noqa: E501
+        URI of the repository  # noqa: E501
 
-        :param url: The url of this GITRepository.
-        :type url: str
+        :param uri: The uri of this GITRepository.
+        :type uri: str
         """
-        if url is None:
-            raise ValueError("Invalid value for `url`, must not be `None`")  # noqa: E501
+        if uri is None:
+            raise ValueError("Invalid value for `uri`, must not be `None`")  # noqa: E501
 
-        self._url = url
+        self._uri = uri
+
+    @property
+    def user_id(self):
+        """Gets the user_id of this GITRepository.
+
+        Repository keycloak user id, will be automatically be set to the logged in user  # noqa: E501
+
+        :return: The user_id of this GITRepository.
+        :rtype: str
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id):
+        """Sets the user_id of this GITRepository.
+
+        Repository keycloak user id, will be automatically be set to the logged in user  # noqa: E501
+
+        :param user_id: The user_id of this GITRepository.
+        :type user_id: str
+        """
+
+        self._user_id = user_id
+
+    @property
+    def used_contexts(self):
+        """Gets the used_contexts of this GITRepository.
+
+        List of contexts with used/referenced resources in this repository  # noqa: E501
+
+        :return: The used_contexts of this GITRepository.
+        :rtype: List[OSBRepositoryContext]
+        """
+        return self._used_contexts
+
+    @used_contexts.setter
+    def used_contexts(self, used_contexts):
+        """Sets the used_contexts of this GITRepository.
+
+        List of contexts with used/referenced resources in this repository  # noqa: E501
+
+        :param used_contexts: The used_contexts of this GITRepository.
+        :type used_contexts: List[OSBRepositoryContext]
+        """
+
+        self._used_contexts = used_contexts
+
+    @property
+    def default_context(self):
+        """Gets the default_context of this GITRepository.
+
+        The default branch to show for this repository  # noqa: E501
+
+        :return: The default_context of this GITRepository.
+        :rtype: str
+        """
+        return self._default_context
+
+    @default_context.setter
+    def default_context(self, default_context):
+        """Sets the default_context of this GITRepository.
+
+        The default branch to show for this repository  # noqa: E501
+
+        :param default_context: The default_context of this GITRepository.
+        :type default_context: str
+        """
+        if default_context is None:
+            raise ValueError("Invalid value for `default_context`, must not be `None`")  # noqa: E501
+
+        self._default_context = default_context

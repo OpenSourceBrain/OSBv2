@@ -16,5 +16,6 @@
         "url": "https://github.com/MetaCell/NetPyNE-UI",
         "icon": "https://d30y9cdsu7xlg0.cloudfront.net/png/38902-200.png",
         "image": "http://www.geppetto.org/images/logo.png"
-    }
+    },
+    "notebookName": "notebook.ipynb"
 }

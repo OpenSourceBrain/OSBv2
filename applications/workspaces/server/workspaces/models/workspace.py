@@ -6,15 +6,15 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.user import User
 from workspaces.models.volume_storage import VolumeStorage
+from workspaces.models.workspace_collaborator import WorkspaceCollaborator
 from workspaces.models.workspace_image import WorkspaceImage
 from workspaces.models.workspace_resource import WorkspaceResource
 from workspaces.models.workspace_tag import WorkspaceTag
 from workspaces import util
 
-from workspaces.models.user import User  # noqa: E501
 from workspaces.models.volume_storage import VolumeStorage  # noqa: E501
+from workspaces.models.workspace_collaborator import WorkspaceCollaborator  # noqa: E501
 from workspaces.models.workspace_image import WorkspaceImage  # noqa: E501
 from workspaces.models.workspace_resource import WorkspaceResource  # noqa: E501
 from workspaces.models.workspace_tag import WorkspaceTag  # noqa: E501
@@ -25,7 +25,7 @@ class Workspace(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, tags=None, last_opened_resource_id=None, thumbnail=None, gallery=None, owner=None, publicable=False, license=None, collaborators=None, resources=None, storage=None):  # noqa: E501
+    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, tags=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, license=None, collaborators=None, resources=None, storage=None):  # noqa: E501
         """Workspace - a model defined in OpenAPI
 
         :param id: The id of this Workspace.  # noqa: E501
@@ -46,14 +46,14 @@ class Workspace(Model):
         :type thumbnail: str
         :param gallery: The gallery of this Workspace.  # noqa: E501
         :type gallery: List[WorkspaceImage]
-        :param owner: The owner of this Workspace.  # noqa: E501
-        :type owner: User
+        :param user_id: The user_id of this Workspace.  # noqa: E501
+        :type user_id: str
         :param publicable: The publicable of this Workspace.  # noqa: E501
         :type publicable: bool
         :param license: The license of this Workspace.  # noqa: E501
         :type license: str
         :param collaborators: The collaborators of this Workspace.  # noqa: E501
-        :type collaborators: List[User]
+        :type collaborators: List[WorkspaceCollaborator]
         :param resources: The resources of this Workspace.  # noqa: E501
         :type resources: List[WorkspaceResource]
         :param storage: The storage of this Workspace.  # noqa: E501
@@ -69,10 +69,10 @@ class Workspace(Model):
             'last_opened_resource_id': int,
             'thumbnail': str,
             'gallery': List[WorkspaceImage],
-            'owner': User,
+            'user_id': str,
             'publicable': bool,
             'license': str,
-            'collaborators': List[User],
+            'collaborators': List[WorkspaceCollaborator],
             'resources': List[WorkspaceResource],
             'storage': VolumeStorage
         }
@@ -87,7 +87,7 @@ class Workspace(Model):
             'last_opened_resource_id': 'last_opened_resource_id',
             'thumbnail': 'thumbnail',
             'gallery': 'gallery',
-            'owner': 'owner',
+            'user_id': 'user_id',
             'publicable': 'publicable',
             'license': 'license',
             'collaborators': 'collaborators',
@@ -104,7 +104,7 @@ class Workspace(Model):
         self._last_opened_resource_id = last_opened_resource_id
         self._thumbnail = thumbnail
         self._gallery = gallery
-        self._owner = owner
+        self._user_id = user_id
         self._publicable = publicable
         self._license = license
         self._collaborators = collaborators
@@ -330,25 +330,27 @@ class Workspace(Model):
         self._gallery = gallery
 
     @property
-    def owner(self):
-        """Gets the owner of this Workspace.
+    def user_id(self):
+        """Gets the user_id of this Workspace.
 
+        Workspace keycloak user id, will be automatically be set to the logged in user  # noqa: E501
 
-        :return: The owner of this Workspace.
-        :rtype: User
+        :return: The user_id of this Workspace.
+        :rtype: str
         """
-        return self._owner
+        return self._user_id
 
-    @owner.setter
-    def owner(self, owner):
-        """Sets the owner of this Workspace.
+    @user_id.setter
+    def user_id(self, user_id):
+        """Sets the user_id of this Workspace.
 
+        Workspace keycloak user id, will be automatically be set to the logged in user  # noqa: E501
 
-        :param owner: The owner of this Workspace.
-        :type owner: User
+        :param user_id: The user_id of this Workspace.
+        :type user_id: str
         """
 
-        self._owner = owner
+        self._user_id = user_id
 
     @property
     def publicable(self):
@@ -403,7 +405,7 @@ class Workspace(Model):
         Collaborators who work on the workspace  # noqa: E501
 
         :return: The collaborators of this Workspace.
-        :rtype: List[User]
+        :rtype: List[WorkspaceCollaborator]
         """
         return self._collaborators
 
@@ -414,7 +416,7 @@ class Workspace(Model):
         Collaborators who work on the workspace  # noqa: E501
 
         :param collaborators: The collaborators of this Workspace.
-        :type collaborators: List[User]
+        :type collaborators: List[WorkspaceCollaborator]
         """
 
         self._collaborators = collaborators

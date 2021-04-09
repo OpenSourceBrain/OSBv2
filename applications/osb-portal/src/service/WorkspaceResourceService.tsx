@@ -16,9 +16,16 @@ class WorkspaceResourceService {
         {
           name: name ? name : urlToName(url),
           location: url,
-          resourceType: ResourceType.G,
+          resourceType: ResourceType.NULL,
           workspaceId: workspace.id,
         }
+      });
+  }
+
+  async resourceAdded(workspaceResource: WorkspaceResource) {
+    return WorkspaceService.workspacesApi.workspaceresourcePost(
+      {
+        workspaceResource: mapPostAddedResource(workspaceResource)
       });
   }
 
@@ -35,6 +42,15 @@ class WorkspaceResourceService {
       //
     });
   }
+
+  async deleteResource(resource: WorkspaceResource) {
+    return WorkspaceService.workspacesApi.workspaceresourceIdDelete({ id: resource.id })
+  }
+
+  getResourcePath(resource: WorkspaceResource) {
+    return (resource.folder ? resource.folder + "/" : "") + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+  }
+
 }
 export function urlToName(url: string): string {
   return url.split('/').slice(-1).pop();
@@ -61,6 +77,9 @@ function mapResourceStatus(resource: ApiWorkspaceResource): ResourceStatus {
 }
 
 function mapResourceType(resource: WorkspaceResource) {
+  if (!resource.type) {
+    return ResourceType.NULL;
+  }
   switch (resource.type.application.subdomain) {
     case 'nwbexplorer':
       return ResourceType.E
@@ -71,10 +90,18 @@ function mapResourceType(resource: WorkspaceResource) {
   }
 }
 
-export function mapPostResource(resource: WorkspaceResource): ApiWorkspaceResource {
+export function mapPostUrlResource(resource: WorkspaceResource): ApiWorkspaceResource {
   return {
     ...resource,
     status: ApiResourceStatus.P,
+    resourceType: mapResourceType(resource)
+  }
+}
+
+export function mapPostAddedResource(resource: WorkspaceResource): ApiWorkspaceResource {
+  return {
+    ...resource,
+    status: ApiResourceStatus.A,
     resourceType: mapResourceType(resource)
   }
 }

@@ -1,7 +1,8 @@
 FROM node:15 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-ENV BRANCH_TAG="development"
+ENV BRANCH_TAG="osb2"
 ENV FOLDER=nwb-explorer
+RUN echo "no-cache4"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -24,7 +25,6 @@ USER root
 
 #
 
-
 WORKDIR $FOLDER
 
 RUN rm -rf /var/lib/apt/lists
@@ -44,14 +44,15 @@ COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 # this removes the frame ancestor default cors settings
 RUN rm -f ~/.jupyter/*.json
 
+
+RUN chown $NB_UID /opt
+RUN chown $NB_UID .
+USER $NB_UID
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
-RUN chown -R $NB_UID /opt/*
-RUN ln -s /opt/workspace ./workspace
-RUN ln -s /opt/user ./user
+RUN ln -s /opt/workspace workspace
 
 
 
-USER $NB_UID
 CMD ./NWBE

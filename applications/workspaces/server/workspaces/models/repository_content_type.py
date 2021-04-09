@@ -18,8 +18,8 @@ class RepositoryContentType(Model):
     """
     allowed enum values
     """
-    E = "e"
-    M = "m"
+    EXPERIMENTAL = "experimental"
+    MODELING = "modeling"
     def __init__(self):  # noqa: E501
         """RepositoryContentType - a model defined in OpenAPI
 
