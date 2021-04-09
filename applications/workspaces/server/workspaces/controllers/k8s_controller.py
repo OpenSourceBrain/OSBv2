@@ -1,8 +1,6 @@
 from workspaces.service.events import test_kafka_running
 
 
-
-
 def live():  # noqa: E501
     """Test if application is healthy
      # noqa: E501

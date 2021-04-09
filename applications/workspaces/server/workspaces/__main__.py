@@ -3,7 +3,6 @@
 from flask.logging import default_handler
 import atexit
 import connexion
-import logging
 import os
 
 from pathlib import Path
@@ -21,6 +20,7 @@ from workspaces.service.events import start_kafka_consumers, stop_kafka_consumer
 logger = cloudharness.log
 
 skip_dependencies = os.getenv('WORKFLOWS_SKIP_DEPENDENCIES', False)
+skip_event_dependencies = os.getenv('EVENTS_SKIP_DEPENDENCIES', False)
 
 def mkdirs():
     Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(
@@ -51,12 +51,13 @@ def init_app(app):
             logger.error(
                 "Could not init database. Some application functionality won't be available.", exc_info=True)
 
-        try:
-            atexit.register(stop_kafka_consumers)
-            start_kafka_consumers()
-        except Exception as e:
-            log.error(
-                "Could not start kafka consumers. Some application functionality won't be available.", exc_info=True)
+        if not skip_event_dependencies:
+            try:
+                atexit.register(stop_kafka_consumers)
+                start_kafka_consumers()
+            except Exception as e:
+                logger.error(
+                    "Could not start kafka consumers. Some application functionality won't be available.", exc_info=True)
     mkdirs()
     setup_static_router(app)
 

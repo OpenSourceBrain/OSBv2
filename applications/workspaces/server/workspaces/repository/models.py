@@ -11,124 +11,6 @@ from sqlalchemy import orm
 from open_alchemy import models
 
 
-class UserDict(typing_extensions.TypedDict, total=False):
-    """TypedDict for properties that are not required."""
-
-    id: int
-    keycloak_id: typing.Optional[str]
-    firstname: typing.Optional[str]
-    lastname: typing.Optional[str]
-    email: typing.Optional[str]
-
-
-class TUser(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    key cloak User
-
-    Attrs:
-        id: The id of the User.
-        keycloak_id: Keycloak user id
-        firstname: First name of the user (derived from Keycload)
-        lastname: Last name of the user (derived from Keycload)
-        email: Email address of the user (derived from Keycloak)
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    id: int
-    keycloak_id: typing.Optional[str]
-    firstname: typing.Optional[str]
-    lastname: typing.Optional[str]
-    email: typing.Optional[str]
-
-    def __init__(
-        self,
-        id: typing.Optional[int] = None,
-        keycloak_id: typing.Optional[str] = None,
-        firstname: typing.Optional[str] = None,
-        lastname: typing.Optional[str] = None,
-        email: typing.Optional[str] = None,
-    ) -> None:
-        """
-        Construct.
-
-        Args:
-            id: The id of the User.
-            keycloak_id: Keycloak user id
-            firstname: First name of the user (derived from Keycload)
-            lastname: Last name of the user (derived from Keycload)
-            email: Email address of the user (derived from Keycloak)
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls,
-        id: typing.Optional[int] = None,
-        keycloak_id: typing.Optional[str] = None,
-        firstname: typing.Optional[str] = None,
-        lastname: typing.Optional[str] = None,
-        email: typing.Optional[str] = None,
-    ) -> "TUser":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            id: The id of the User.
-            keycloak_id: Keycloak user id
-            firstname: First name of the user (derived from Keycload)
-            lastname: Last name of the user (derived from Keycload)
-            email: Email address of the user (derived from Keycloak)
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TUser":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> UserDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-User: TUser = models.User  # type: ignore
-
-
 class _WorkspaceDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
@@ -146,10 +28,10 @@ class WorkspaceDict(_WorkspaceDictBase, total=False):
     last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
     gallery: typing.Sequence["WorkspaceImageDict"]
-    owner: typing.Optional["UserDict"]
+    user_id: typing.Optional[str]
     publicable: bool
     license: typing.Optional[str]
-    collaborators: typing.Sequence["UserDict"]
+    collaborators: typing.Sequence["WorkspaceCollaboratorDict"]
     resources: typing.Sequence["WorkspaceResourceDict"]
     storage: typing.Optional["VolumeStorageDict"]
 
@@ -171,7 +53,8 @@ class TWorkspace(typing_extensions.Protocol):
             opened last with
         thumbnail: The thumbnail of the Workspace.
         gallery: Gallery with images of the workspace
-        owner: The owner of the Workspace.
+        user_id: Workspace keycloak user id, will be automatically be set to
+            the logged in user
         publicable: Is the workspace available for non collaborators? Default
             false
         license: Workspace license
@@ -196,10 +79,10 @@ class TWorkspace(typing_extensions.Protocol):
     last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
     gallery: typing.Sequence["TWorkspaceImage"]
-    owner: typing.Optional["TUser"]
+    user_id: typing.Optional[str]
     publicable: bool
     license: typing.Optional[str]
-    collaborators: typing.Sequence["TUser"]
+    collaborators: typing.Sequence["TWorkspaceCollaborator"]
     resources: typing.Sequence["TWorkspaceResource"]
     storage: typing.Optional["TVolumeStorage"]
 
@@ -214,10 +97,12 @@ class TWorkspace(typing_extensions.Protocol):
         last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["TWorkspaceImage"]] = None,
-        owner: typing.Optional["TUser"] = None,
+        user_id: typing.Optional[str] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
-        collaborators: typing.Optional[typing.Sequence["TUser"]] = None,
+        collaborators: typing.Optional[
+            typing.Sequence["TWorkspaceCollaborator"]
+        ] = None,
         resources: typing.Optional[typing.Sequence["TWorkspaceResource"]] = None,
         storage: typing.Optional["TVolumeStorage"] = None,
     ) -> None:
@@ -235,7 +120,8 @@ class TWorkspace(typing_extensions.Protocol):
                 opened last with
             thumbnail: The thumbnail of the Workspace.
             gallery: Gallery with images of the workspace
-            owner: The owner of the Workspace.
+            user_id: Workspace keycloak user id, will be automatically be set
+                to the logged in user
             publicable: Is the workspace available for non collaborators?
                 Default false
             license: Workspace license
@@ -258,10 +144,12 @@ class TWorkspace(typing_extensions.Protocol):
         last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["WorkspaceImageDict"]] = None,
-        owner: typing.Optional["UserDict"] = None,
+        user_id: typing.Optional[str] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
-        collaborators: typing.Optional[typing.Sequence["UserDict"]] = None,
+        collaborators: typing.Optional[
+            typing.Sequence["WorkspaceCollaboratorDict"]
+        ] = None,
         resources: typing.Optional[typing.Sequence["WorkspaceResourceDict"]] = None,
         storage: typing.Optional["VolumeStorageDict"] = None,
     ) -> "TWorkspace":
@@ -279,7 +167,8 @@ class TWorkspace(typing_extensions.Protocol):
                 opened last with
             thumbnail: The thumbnail of the Workspace.
             gallery: Gallery with images of the workspace
-            owner: The owner of the Workspace.
+            user_id: Workspace keycloak user id, will be automatically be set
+                to the logged in user
             publicable: Is the workspace available for non collaborators?
                 Default false
             license: Workspace license
@@ -326,6 +215,102 @@ class TWorkspace(typing_extensions.Protocol):
 
 
 Workspace: TWorkspace = models.Workspace  # type: ignore
+
+
+class _WorkspaceCollaboratorDictBase(typing_extensions.TypedDict, total=True):
+    """TypedDict for properties that are required."""
+
+    user_id: str
+
+
+class WorkspaceCollaboratorDict(_WorkspaceCollaboratorDictBase, total=False):
+    """TypedDict for properties that are not required."""
+
+    id: int
+
+
+class TWorkspaceCollaborator(typing_extensions.Protocol):
+    """
+    SQLAlchemy model protocol.
+
+    Workspace Collaborator of a workspace
+
+    Attrs:
+        id: The id of the WorkspaceCollaborator.
+        user_id: Workspace Collaborator keycloak user id
+
+    """
+
+    # SQLAlchemy properties
+    __table__: sqlalchemy.Table
+    __tablename__: str
+    query: orm.Query
+
+    # Model properties
+    id: int
+    user_id: str
+
+    def __init__(self, user_id: str, id: typing.Optional[int] = None) -> None:
+        """
+        Construct.
+
+        Args:
+            id: The id of the WorkspaceCollaborator.
+            user_id: Workspace Collaborator keycloak user id
+
+        """
+        ...
+
+    @classmethod
+    def from_dict(
+        cls, user_id: str, id: typing.Optional[int] = None
+    ) -> "TWorkspaceCollaborator":
+        """
+        Construct from a dictionary (eg. a POST payload).
+
+        Args:
+            id: The id of the WorkspaceCollaborator.
+            user_id: Workspace Collaborator keycloak user id
+
+        Returns:
+            Model instance based on the dictionary.
+
+        """
+        ...
+
+    @classmethod
+    def from_str(cls, value: str) -> "TWorkspaceCollaborator":
+        """
+        Construct from a JSON string (eg. a POST payload).
+
+        Returns:
+            Model instance based on the JSON string.
+
+        """
+        ...
+
+    def to_dict(self) -> WorkspaceCollaboratorDict:
+        """
+        Convert to a dictionary (eg. to send back for a GET request).
+
+        Returns:
+            Dictionary based on the model instance.
+
+        """
+        ...
+
+    def to_str(self) -> str:
+        """
+        Convert to a JSON string (eg. to send back for a GET request).
+
+        Returns:
+            JSON string based on the model instance.
+
+        """
+        ...
+
+
+WorkspaceCollaborator: TWorkspaceCollaborator = models.WorkspaceCollaborator  # type: ignore
 
 
 class _WorkspaceImageDictBase(typing_extensions.TypedDict, total=True):
@@ -523,6 +508,7 @@ class _WorkspaceResourceDictBase(typing_extensions.TypedDict, total=True):
 
     name: str
     location: str
+    resource_type: str
 
 
 class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
@@ -534,7 +520,6 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
-    resource_type: str
     workspace_id: typing.Optional[int]
 
 
@@ -557,7 +542,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         timestamp_last_opened: Date/time of last opening of the
             WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
-            Generic
+            Generic  * u - Unknown (to be defined)
         workspace_id: workspace_id
 
     """
@@ -583,13 +568,13 @@ class TWorkspaceResource(typing_extensions.Protocol):
         self,
         name: str,
         location: str,
+        resource_type: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        resource_type: str = "g",
         workspace_id: typing.Optional[int] = None,
     ) -> None:
         """
@@ -610,7 +595,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
             timestamp_last_opened: Date/time of last opening of the
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
-                - Generic
+                - Generic  * u - Unknown (to be defined)
             workspace_id: workspace_id
 
         """
@@ -621,13 +606,13 @@ class TWorkspaceResource(typing_extensions.Protocol):
         cls,
         name: str,
         location: str,
+        resource_type: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        resource_type: str = "g",
         workspace_id: typing.Optional[int] = None,
     ) -> "TWorkspaceResource":
         """
@@ -648,7 +633,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
             timestamp_last_opened: Date/time of last opening of the
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
-                - Generic
+                - Generic  * u - Unknown (to be defined)
             workspace_id: workspace_id
 
         Returns:
@@ -786,33 +771,24 @@ class TVolumeStorage(typing_extensions.Protocol):
 VolumeStorage: TVolumeStorage = models.VolumeStorage  # type: ignore
 
 
-class _OSBRepositoryDictBase(typing_extensions.TypedDict, total=True):
-    """TypedDict for properties that are required."""
-
-    uuid: str
-    name: str
-    storage: "VolumeStorageDict"
-
-
-class OSBRepositoryDict(_OSBRepositoryDictBase, total=False):
+class OSBRepositoryContextDict(typing_extensions.TypedDict, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    resources: typing.Sequence["WorkspaceResourceDict"]
+    name: typing.Optional[str]
+    resources: typing.Sequence["OSBRepositoryResourceDict"]
 
 
-class TOSBRepository(typing_extensions.Protocol):
+class TOSBRepositoryContext(typing_extensions.Protocol):
     """
     SQLAlchemy model protocol.
 
-    Opensource brain repository
+    OSBRepository context
 
     Attrs:
-        id: The id of the OSBRepository.
-        uuid: Universally unique identifier of the OSB repository
-        name: OSB repository name
-        storage: The storage of the OSBRepository.
-        resources: The resources of the OSBRepository.
+        id: The id of the OSBRepositoryContext.
+        name: Name of the repository context
+        resources: List of used/referenced resources in this context
 
     """
 
@@ -823,28 +799,22 @@ class TOSBRepository(typing_extensions.Protocol):
 
     # Model properties
     id: int
-    uuid: str
-    name: str
-    storage: "TVolumeStorage"
-    resources: typing.Sequence["TWorkspaceResource"]
+    name: typing.Optional[str]
+    resources: typing.Sequence["TOSBRepositoryResource"]
 
     def __init__(
         self,
-        uuid: str,
-        name: str,
-        storage: "TVolumeStorage",
         id: typing.Optional[int] = None,
-        resources: typing.Optional[typing.Sequence["TWorkspaceResource"]] = None,
+        name: typing.Optional[str] = None,
+        resources: typing.Optional[typing.Sequence["TOSBRepositoryResource"]] = None,
     ) -> None:
         """
         Construct.
 
         Args:
-            id: The id of the OSBRepository.
-            uuid: Universally unique identifier of the OSB repository
-            name: OSB repository name
-            storage: The storage of the OSBRepository.
-            resources: The resources of the OSBRepository.
+            id: The id of the OSBRepositoryContext.
+            name: Name of the repository context
+            resources: List of used/referenced resources in this context
 
         """
         ...
@@ -852,21 +822,17 @@ class TOSBRepository(typing_extensions.Protocol):
     @classmethod
     def from_dict(
         cls,
-        uuid: str,
-        name: str,
-        storage: "VolumeStorageDict",
         id: typing.Optional[int] = None,
-        resources: typing.Optional[typing.Sequence["WorkspaceResourceDict"]] = None,
-    ) -> "TOSBRepository":
+        name: typing.Optional[str] = None,
+        resources: typing.Optional[typing.Sequence["OSBRepositoryResourceDict"]] = None,
+    ) -> "TOSBRepositoryContext":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
-            id: The id of the OSBRepository.
-            uuid: Universally unique identifier of the OSB repository
-            name: OSB repository name
-            storage: The storage of the OSBRepository.
-            resources: The resources of the OSBRepository.
+            id: The id of the OSBRepositoryContext.
+            name: Name of the repository context
+            resources: List of used/referenced resources in this context
 
         Returns:
             Model instance based on the dictionary.
@@ -875,7 +841,7 @@ class TOSBRepository(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_str(cls, value: str) -> "TOSBRepository":
+    def from_str(cls, value: str) -> "TOSBRepositoryContext":
         """
         Construct from a JSON string (eg. a POST payload).
 
@@ -885,7 +851,7 @@ class TOSBRepository(typing_extensions.Protocol):
         """
         ...
 
-    def to_dict(self) -> OSBRepositoryDict:
+    def to_dict(self) -> OSBRepositoryContextDict:
         """
         Convert to a dictionary (eg. to send back for a GET request).
 
@@ -906,21 +872,132 @@ class TOSBRepository(typing_extensions.Protocol):
         ...
 
 
-OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
+OSBRepositoryContext: TOSBRepositoryContext = models.OSBRepositoryContext  # type: ignore
+
+
+class OSBRepositoryResourceDict(typing_extensions.TypedDict, total=False):
+    """TypedDict for properties that are not required."""
+
+    name: typing.Optional[str]
+    uid: typing.Optional[str]
+    id: int
+
+
+class TOSBRepositoryResource(typing_extensions.Protocol):
+    """
+    SQLAlchemy model protocol.
+
+    OSB Repository Resource
+
+    Attrs:
+        name: folder/file name
+        uid: unique identifier for the resource in the (external) repository
+        id: The id of the OSBRepositoryResource.
+
+    """
+
+    # SQLAlchemy properties
+    __table__: sqlalchemy.Table
+    __tablename__: str
+    query: orm.Query
+
+    # Model properties
+    name: typing.Optional[str]
+    uid: typing.Optional[str]
+    id: int
+
+    def __init__(
+        self,
+        name: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
+        id: typing.Optional[int] = None,
+    ) -> None:
+        """
+        Construct.
+
+        Args:
+            name: folder/file name
+            uid: unique identifier for the resource in the (external)
+                repository
+            id: The id of the OSBRepositoryResource.
+
+        """
+        ...
+
+    @classmethod
+    def from_dict(
+        cls,
+        name: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
+        id: typing.Optional[int] = None,
+    ) -> "TOSBRepositoryResource":
+        """
+        Construct from a dictionary (eg. a POST payload).
+
+        Args:
+            name: folder/file name
+            uid: unique identifier for the resource in the (external)
+                repository
+            id: The id of the OSBRepositoryResource.
+
+        Returns:
+            Model instance based on the dictionary.
+
+        """
+        ...
+
+    @classmethod
+    def from_str(cls, value: str) -> "TOSBRepositoryResource":
+        """
+        Construct from a JSON string (eg. a POST payload).
+
+        Returns:
+            Model instance based on the JSON string.
+
+        """
+        ...
+
+    def to_dict(self) -> OSBRepositoryResourceDict:
+        """
+        Convert to a dictionary (eg. to send back for a GET request).
+
+        Returns:
+            Dictionary based on the model instance.
+
+        """
+        ...
+
+    def to_str(self) -> str:
+        """
+        Convert to a JSON string (eg. to send back for a GET request).
+
+        Returns:
+            JSON string based on the model instance.
+
+        """
+        ...
+
+
+OSBRepositoryResource: TOSBRepositoryResource = models.OSBRepositoryResource  # type: ignore
 
 
 class _GITRepositoryDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
-    public_key: str
-    private_key: str
-    url: str
+    name: str
+    repository_type: str
+    repository_content_types: str
+    auto_sync: bool
+    uri: str
+    default_context: str
 
 
 class GITRepositoryDict(_GITRepositoryDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
+    user_id: typing.Optional[str]
+    used_contexts: typing.Sequence["OSBRepositoryContextDict"]
 
 
 class TGITRepository(typing_extensions.Protocol):
@@ -931,9 +1008,18 @@ class TGITRepository(typing_extensions.Protocol):
 
     Attrs:
         id: The id of the GITRepository.
-        public_key: Public key of the git repository
-        private_key: Public key of the git repository
-        url: URL of the git repository
+        name: Repository name.
+        repository_type: Repository type:   * dandi - DANDI repository   *
+            figshare - FigShare repository   * github - Github repository
+        repository_content_types: Comma separated set of Repository Content
+            Types
+        auto_sync: Auto sync of the resources
+        uri: URI of the repository
+        user_id: Repository keycloak user id, will be automatically be set to
+            the logged in user
+        used_contexts: List of contexts with used/referenced resources in this
+            repository
+        default_context: The default branch to show for this repository
 
     """
 
@@ -944,25 +1030,44 @@ class TGITRepository(typing_extensions.Protocol):
 
     # Model properties
     id: int
-    public_key: str
-    private_key: str
-    url: str
+    name: str
+    repository_type: str
+    repository_content_types: str
+    auto_sync: bool
+    uri: str
+    user_id: typing.Optional[str]
+    used_contexts: typing.Sequence["TOSBRepositoryContext"]
+    default_context: str
 
     def __init__(
         self,
-        public_key: str,
-        private_key: str,
-        url: str,
+        name: str,
+        repository_type: str,
+        repository_content_types: str,
+        auto_sync: bool,
+        uri: str,
+        default_context: str,
         id: typing.Optional[int] = None,
+        user_id: typing.Optional[str] = None,
+        used_contexts: typing.Optional[typing.Sequence["TOSBRepositoryContext"]] = None,
     ) -> None:
         """
         Construct.
 
         Args:
             id: The id of the GITRepository.
-            public_key: Public key of the git repository
-            private_key: Public key of the git repository
-            url: URL of the git repository
+            name: Repository name.
+            repository_type: Repository type:   * dandi - DANDI repository   *
+                figshare - FigShare repository   * github - Github repository
+            repository_content_types: Comma separated set of Repository Content
+                Types
+            auto_sync: Auto sync of the resources
+            uri: URI of the repository
+            user_id: Repository keycloak user id, will be automatically be set
+                to the logged in user
+            used_contexts: List of contexts with used/referenced resources in
+                this repository
+            default_context: The default branch to show for this repository
 
         """
         ...
@@ -970,19 +1075,35 @@ class TGITRepository(typing_extensions.Protocol):
     @classmethod
     def from_dict(
         cls,
-        public_key: str,
-        private_key: str,
-        url: str,
+        name: str,
+        repository_type: str,
+        repository_content_types: str,
+        auto_sync: bool,
+        uri: str,
+        default_context: str,
         id: typing.Optional[int] = None,
+        user_id: typing.Optional[str] = None,
+        used_contexts: typing.Optional[
+            typing.Sequence["OSBRepositoryContextDict"]
+        ] = None,
     ) -> "TGITRepository":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
             id: The id of the GITRepository.
-            public_key: Public key of the git repository
-            private_key: Public key of the git repository
-            url: URL of the git repository
+            name: Repository name.
+            repository_type: Repository type:   * dandi - DANDI repository   *
+                figshare - FigShare repository   * github - Github repository
+            repository_content_types: Comma separated set of Repository Content
+                Types
+            auto_sync: Auto sync of the resources
+            uri: URI of the repository
+            user_id: Repository keycloak user id, will be automatically be set
+                to the logged in user
+            used_contexts: List of contexts with used/referenced resources in
+                this repository
+            default_context: The default branch to show for this repository
 
         Returns:
             Model instance based on the dictionary.
@@ -1028,6 +1149,11 @@ GITRepository: TGITRepository = models.GITRepository  # type: ignore
 class _FigshareRepositoryDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
+    name: str
+    repository_type: str
+    repository_content_types: str
+    auto_sync: bool
+    uri: str
     url: str
 
 
@@ -1035,6 +1161,8 @@ class FigshareRepositoryDict(_FigshareRepositoryDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
+    user_id: typing.Optional[str]
+    used_contexts: typing.Sequence["OSBRepositoryContextDict"]
 
 
 class TFigshareRepository(typing_extensions.Protocol):
@@ -1045,6 +1173,17 @@ class TFigshareRepository(typing_extensions.Protocol):
 
     Attrs:
         id: The id of the FigshareRepository.
+        name: Repository name.
+        repository_type: Repository type:   * dandi - DANDI repository   *
+            figshare - FigShare repository   * github - Github repository
+        repository_content_types: Comma separated set of Repository Content
+            Types
+        auto_sync: Auto sync of the resources
+        uri: URI of the repository
+        user_id: Repository keycloak user id, will be automatically be set to
+            the logged in user
+        used_contexts: List of contexts with used/referenced resources in this
+            repository
         url: URL of the figshare repository
 
     """
@@ -1056,14 +1195,43 @@ class TFigshareRepository(typing_extensions.Protocol):
 
     # Model properties
     id: int
+    name: str
+    repository_type: str
+    repository_content_types: str
+    auto_sync: bool
+    uri: str
+    user_id: typing.Optional[str]
+    used_contexts: typing.Sequence["TOSBRepositoryContext"]
     url: str
 
-    def __init__(self, url: str, id: typing.Optional[int] = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        repository_type: str,
+        repository_content_types: str,
+        auto_sync: bool,
+        uri: str,
+        url: str,
+        id: typing.Optional[int] = None,
+        user_id: typing.Optional[str] = None,
+        used_contexts: typing.Optional[typing.Sequence["TOSBRepositoryContext"]] = None,
+    ) -> None:
         """
         Construct.
 
         Args:
             id: The id of the FigshareRepository.
+            name: Repository name.
+            repository_type: Repository type:   * dandi - DANDI repository   *
+                figshare - FigShare repository   * github - Github repository
+            repository_content_types: Comma separated set of Repository Content
+                Types
+            auto_sync: Auto sync of the resources
+            uri: URI of the repository
+            user_id: Repository keycloak user id, will be automatically be set
+                to the logged in user
+            used_contexts: List of contexts with used/referenced resources in
+                this repository
             url: URL of the figshare repository
 
         """
@@ -1071,13 +1239,35 @@ class TFigshareRepository(typing_extensions.Protocol):
 
     @classmethod
     def from_dict(
-        cls, url: str, id: typing.Optional[int] = None
+        cls,
+        name: str,
+        repository_type: str,
+        repository_content_types: str,
+        auto_sync: bool,
+        uri: str,
+        url: str,
+        id: typing.Optional[int] = None,
+        user_id: typing.Optional[str] = None,
+        used_contexts: typing.Optional[
+            typing.Sequence["OSBRepositoryContextDict"]
+        ] = None,
     ) -> "TFigshareRepository":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
             id: The id of the FigshareRepository.
+            name: Repository name.
+            repository_type: Repository type:   * dandi - DANDI repository   *
+                figshare - FigShare repository   * github - Github repository
+            repository_content_types: Comma separated set of Repository Content
+                Types
+            auto_sync: Auto sync of the resources
+            uri: URI of the repository
+            user_id: Repository keycloak user id, will be automatically be set
+                to the logged in user
+            used_contexts: List of contexts with used/referenced resources in
+                this repository
             url: URL of the figshare repository
 
         Returns:
