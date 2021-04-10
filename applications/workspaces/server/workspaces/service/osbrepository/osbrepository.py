@@ -1,9 +1,13 @@
-from .gitrepository import GitRepository
+from .adapters import GitHubAdapter, DandiAdapter, FigShareAdapter
 
 
 def get_repository_service(repository_type, *args, **kwargs):
     if repository_type == "github":
-        return GitRepository(*args, **kwargs)
+        return GitHubAdapter(*args, **kwargs)
+    elif repository_type == "dandi":
+        return DandiAdapter(*args, **kwargs)
+    elif repository_type == "figshare":
+        return FigShareAdapter(*args, **kwargs)
     return None
 
 

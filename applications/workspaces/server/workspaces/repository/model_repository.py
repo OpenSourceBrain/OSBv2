@@ -13,9 +13,9 @@ from ..utils import get_keycloak_data
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import OSBRepositoryContext, Workspace, GITRepository, FigshareRepository, VolumeStorage, \
+from .models import Workspace, VolumeStorage, \
     WorkspaceImage, WorkspaceResource, TWorkspaceResource, TWorkspace, \
-    OSBRepositoryResource
+    OSBRepository
 from .utils import *
 from ..service.kubernetes import create_persistent_volume_claim
 
@@ -114,23 +114,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
-    model = GITRepository
-
-    def search_qs(self, filter=None, q=None):
-        # query all repository types, use union to get pagination also to work with filters
-        query_list = [GITRepositoryRepository(), FigshareRepositoryRepository()]
-
-        rs = None
-        for osb_repository in query_list:
-            if q is not None:
-                query = osb_repository._get_qs(osb_repository.filters(q))
-            else:
-                query = osb_repository._get_qs()
-            if not rs:
-                rs = query
-            else:
-                rs = rs.union(query)
-        return rs.order_by(asc(GITRepository.name))
+    model = OSBRepository
 
     def pre_commit(self, osb_repository):
         osb_repository = super().pre_commit(osb_repository)
@@ -139,80 +123,9 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
                 raise Exception("Invalid value in Repository Content Types")
         return osb_repository
 
-class OSBRepositoryResourceRepository(BaseModelRepository):
-    model = OSBRepositoryResource
-
-    def post(self, body, **kwargs):
-        repository_id = body["osbrepository_id"]
-        context_name = body["context_name"]
-        full_filename = body["full_filename"]
-        uid = body["uid"]
-
-        osbr = OSBRepositoryRepository().get(repository_id)
-
-        context = None
-        for c in osbr.used_contexts:
-            if c.name == context_name:
-                context = c
-                break
-        osbrr = OSBRepositoryResource(name=full_filename, uid=uid)
-        if not context:
-            context = OSBRepositoryContext(name=context_name)
-            osbr.used_contexts.append(context)
-        context.resources.append(osbrr)
-        OSBRepositoryRepository().save(osbr)
-
-
-class OSBRepositoryContextRepository(BaseModelRepository):
-    model = OSBRepositoryContext
-
 
 class VolumeStorageRepository(BaseModelRepository):
     model = VolumeStorage
-
-
-class GITRepositoryRepository(OSBRepositoryRepository):
-    model = GITRepository
-
-    def _get_qs(self, filter=None, q=None):
-        """
-        Helper function to get the queryset
-
-        Args:
-            filter: optional extra filter for the qs
-        """
-        sqs = self.model.query
-        if filter:
-            sqs = sqs.filter(*[self._create_filter(*f) for f in filter])
-        return sqs
-
-    def pre_commit(self, git_repository):
-        git_repository = super().pre_commit(git_repository)
-        logger.debug(f'Pre Commit for GIT repository id: {git_repository.id}')
-        git_repository.repository_type = "github"
-        return git_repository
-
-
-class FigshareRepositoryRepository(OSBRepositoryRepository):
-    model = FigshareRepository
-
-    def _get_qs(self, filter=None, q=None):
-        """
-        Helper function to get the queryset
-
-        Args:
-            filter: optional extra filter for the qs
-        """
-        sqs = self.model.query
-        if filter:
-            sqs = sqs.filter(*[self._create_filter(*f) for f in filter])
-        return sqs
-
-    def pre_commit(self, figshare_repository):
-        logger.debug(f'Pre Commit for FIG repository id: {figshare_repository.id}')
-        figshare_repository = super().pre_commit(figshare_repository)
-        figshare_repository.repository_type = "figshare"
-        return figshare_repository
 
 
 class VolumeStorageRepository(BaseModelRepository):

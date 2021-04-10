@@ -1,2 +1,2 @@
-from .rest_api_views import WorkspaceView, GitrepositoryView, FigsharerepositoryView, \
-    VolumestorageView, WorkspaceresourceView, OsbrepositoryView, OsbrepositoryresourceView
+from .rest_api_views import WorkspaceView, VolumestorageView, WorkspaceresourceView, \
+    OsbrepositoryView

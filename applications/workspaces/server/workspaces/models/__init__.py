@@ -3,22 +3,13 @@
 # flake8: noqa
 from __future__ import absolute_import
 # import models into model package
-from workspaces.models.figshare_repository import FigshareRepository
-from workspaces.models.figshare_repository_all_of import FigshareRepositoryAllOf
-from workspaces.models.git_repository import GITRepository
-from workspaces.models.git_repository_all_of import GITRepositoryAllOf
-from workspaces.models.inline_object2 import InlineObject2
 from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002
-from workspaces.models.inline_response2003 import InlineResponse2003
 from workspaces.models.osb_repository import OSBRepository
-from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
-from workspaces.models.osb_repository_context import OSBRepositoryContext
 from workspaces.models.osb_repository_resource import OSBRepositoryResource
 from workspaces.models.osb_repository_resource_all_of import OSBRepositoryResourceAllOf
 from workspaces.models.pagination import Pagination
-from workspaces.models.repository_base import RepositoryBase
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource import RepositoryResource
 from workspaces.models.repository_resource_node import RepositoryResourceNode

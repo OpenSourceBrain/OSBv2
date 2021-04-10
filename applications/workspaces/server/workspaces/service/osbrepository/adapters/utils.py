@@ -13,4 +13,4 @@ def add_to_tree(tree, path):
         except ValueError:
             node = RepositoryResourceNode(RepositoryResource(name=p), children=[])
             tree.children.append(node)
-            tree = node
+            tree = node 

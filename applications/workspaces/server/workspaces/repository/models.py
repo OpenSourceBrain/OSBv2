@@ -771,24 +771,42 @@ class TVolumeStorage(typing_extensions.Protocol):
 VolumeStorage: TVolumeStorage = models.VolumeStorage  # type: ignore
 
 
-class OSBRepositoryContextDict(typing_extensions.TypedDict, total=False):
+class _OSBRepositoryDictBase(typing_extensions.TypedDict, total=True):
+    """TypedDict for properties that are required."""
+
+    name: str
+    repository_type: str
+    repository_content_types: str
+    auto_sync: bool
+    uri: str
+
+
+class OSBRepositoryDict(_OSBRepositoryDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    name: typing.Optional[str]
-    resources: typing.Sequence["OSBRepositoryResourceDict"]
+    user_id: typing.Optional[str]
+    default_context: typing.Optional[str]
 
 
-class TOSBRepositoryContext(typing_extensions.Protocol):
+class TOSBRepository(typing_extensions.Protocol):
     """
     SQLAlchemy model protocol.
 
-    OSBRepository context
+    OSB Repository model
 
     Attrs:
-        id: The id of the OSBRepositoryContext.
-        name: Name of the repository context
-        resources: List of used/referenced resources in this context
+        id: The id of the OSBRepository.
+        name: Repository name.
+        repository_type: Repository type:   * dandi - DANDI repository   *
+            figshare - FigShare repository   * github - Github repository
+        repository_content_types: Comma separated set of Repository Content
+            Types
+        auto_sync: Auto sync of the resources
+        uri: URI of the repository
+        user_id: Repository keycloak user id, will be automatically be set to
+            the logged in user
+        default_context: The default branch to show for this repository
 
     """
 
@@ -799,22 +817,40 @@ class TOSBRepositoryContext(typing_extensions.Protocol):
 
     # Model properties
     id: int
-    name: typing.Optional[str]
-    resources: typing.Sequence["TOSBRepositoryResource"]
+    name: str
+    repository_type: str
+    repository_content_types: str
+    auto_sync: bool
+    uri: str
+    user_id: typing.Optional[str]
+    default_context: typing.Optional[str]
 
     def __init__(
         self,
+        name: str,
+        repository_type: str,
+        repository_content_types: str,
+        auto_sync: bool,
+        uri: str,
         id: typing.Optional[int] = None,
-        name: typing.Optional[str] = None,
-        resources: typing.Optional[typing.Sequence["TOSBRepositoryResource"]] = None,
+        user_id: typing.Optional[str] = None,
+        default_context: typing.Optional[str] = None,
     ) -> None:
         """
         Construct.
 
         Args:
-            id: The id of the OSBRepositoryContext.
-            name: Name of the repository context
-            resources: List of used/referenced resources in this context
+            id: The id of the OSBRepository.
+            name: Repository name.
+            repository_type: Repository type:   * dandi - DANDI repository   *
+                figshare - FigShare repository   * github - Github repository
+            repository_content_types: Comma separated set of Repository Content
+                Types
+            auto_sync: Auto sync of the resources
+            uri: URI of the repository
+            user_id: Repository keycloak user id, will be automatically be set
+                to the logged in user
+            default_context: The default branch to show for this repository
 
         """
         ...
@@ -822,17 +858,30 @@ class TOSBRepositoryContext(typing_extensions.Protocol):
     @classmethod
     def from_dict(
         cls,
+        name: str,
+        repository_type: str,
+        repository_content_types: str,
+        auto_sync: bool,
+        uri: str,
         id: typing.Optional[int] = None,
-        name: typing.Optional[str] = None,
-        resources: typing.Optional[typing.Sequence["OSBRepositoryResourceDict"]] = None,
-    ) -> "TOSBRepositoryContext":
+        user_id: typing.Optional[str] = None,
+        default_context: typing.Optional[str] = None,
+    ) -> "TOSBRepository":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
-            id: The id of the OSBRepositoryContext.
-            name: Name of the repository context
-            resources: List of used/referenced resources in this context
+            id: The id of the OSBRepository.
+            name: Repository name.
+            repository_type: Repository type:   * dandi - DANDI repository   *
+                figshare - FigShare repository   * github - Github repository
+            repository_content_types: Comma separated set of Repository Content
+                Types
+            auto_sync: Auto sync of the resources
+            uri: URI of the repository
+            user_id: Repository keycloak user id, will be automatically be set
+                to the logged in user
+            default_context: The default branch to show for this repository
 
         Returns:
             Model instance based on the dictionary.
@@ -841,7 +890,7 @@ class TOSBRepositoryContext(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_str(cls, value: str) -> "TOSBRepositoryContext":
+    def from_str(cls, value: str) -> "TOSBRepository":
         """
         Construct from a JSON string (eg. a POST payload).
 
@@ -851,7 +900,7 @@ class TOSBRepositoryContext(typing_extensions.Protocol):
         """
         ...
 
-    def to_dict(self) -> OSBRepositoryContextDict:
+    def to_dict(self) -> OSBRepositoryDict:
         """
         Convert to a dictionary (eg. to send back for a GET request).
 
@@ -872,7 +921,7 @@ class TOSBRepositoryContext(typing_extensions.Protocol):
         ...
 
 
-OSBRepositoryContext: TOSBRepositoryContext = models.OSBRepositoryContext  # type: ignore
+OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
 
 
 class OSBRepositoryResourceDict(typing_extensions.TypedDict, total=False):
@@ -979,333 +1028,3 @@ class TOSBRepositoryResource(typing_extensions.Protocol):
 
 
 OSBRepositoryResource: TOSBRepositoryResource = models.OSBRepositoryResource  # type: ignore
-
-
-class _GITRepositoryDictBase(typing_extensions.TypedDict, total=True):
-    """TypedDict for properties that are required."""
-
-    name: str
-    repository_type: str
-    repository_content_types: str
-    auto_sync: bool
-    uri: str
-    default_context: str
-
-
-class GITRepositoryDict(_GITRepositoryDictBase, total=False):
-    """TypedDict for properties that are not required."""
-
-    id: int
-    user_id: typing.Optional[str]
-    used_contexts: typing.Sequence["OSBRepositoryContextDict"]
-
-
-class TGITRepository(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    GIT repository
-
-    Attrs:
-        id: The id of the GITRepository.
-        name: Repository name.
-        repository_type: Repository type:   * dandi - DANDI repository   *
-            figshare - FigShare repository   * github - Github repository
-        repository_content_types: Comma separated set of Repository Content
-            Types
-        auto_sync: Auto sync of the resources
-        uri: URI of the repository
-        user_id: Repository keycloak user id, will be automatically be set to
-            the logged in user
-        used_contexts: List of contexts with used/referenced resources in this
-            repository
-        default_context: The default branch to show for this repository
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    id: int
-    name: str
-    repository_type: str
-    repository_content_types: str
-    auto_sync: bool
-    uri: str
-    user_id: typing.Optional[str]
-    used_contexts: typing.Sequence["TOSBRepositoryContext"]
-    default_context: str
-
-    def __init__(
-        self,
-        name: str,
-        repository_type: str,
-        repository_content_types: str,
-        auto_sync: bool,
-        uri: str,
-        default_context: str,
-        id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
-        used_contexts: typing.Optional[typing.Sequence["TOSBRepositoryContext"]] = None,
-    ) -> None:
-        """
-        Construct.
-
-        Args:
-            id: The id of the GITRepository.
-            name: Repository name.
-            repository_type: Repository type:   * dandi - DANDI repository   *
-                figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
-            auto_sync: Auto sync of the resources
-            uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
-            used_contexts: List of contexts with used/referenced resources in
-                this repository
-            default_context: The default branch to show for this repository
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls,
-        name: str,
-        repository_type: str,
-        repository_content_types: str,
-        auto_sync: bool,
-        uri: str,
-        default_context: str,
-        id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
-        used_contexts: typing.Optional[
-            typing.Sequence["OSBRepositoryContextDict"]
-        ] = None,
-    ) -> "TGITRepository":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            id: The id of the GITRepository.
-            name: Repository name.
-            repository_type: Repository type:   * dandi - DANDI repository   *
-                figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
-            auto_sync: Auto sync of the resources
-            uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
-            used_contexts: List of contexts with used/referenced resources in
-                this repository
-            default_context: The default branch to show for this repository
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TGITRepository":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> GITRepositoryDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-GITRepository: TGITRepository = models.GITRepository  # type: ignore
-
-
-class _FigshareRepositoryDictBase(typing_extensions.TypedDict, total=True):
-    """TypedDict for properties that are required."""
-
-    name: str
-    repository_type: str
-    repository_content_types: str
-    auto_sync: bool
-    uri: str
-    url: str
-
-
-class FigshareRepositoryDict(_FigshareRepositoryDictBase, total=False):
-    """TypedDict for properties that are not required."""
-
-    id: int
-    user_id: typing.Optional[str]
-    used_contexts: typing.Sequence["OSBRepositoryContextDict"]
-
-
-class TFigshareRepository(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    Figshare repository
-
-    Attrs:
-        id: The id of the FigshareRepository.
-        name: Repository name.
-        repository_type: Repository type:   * dandi - DANDI repository   *
-            figshare - FigShare repository   * github - Github repository
-        repository_content_types: Comma separated set of Repository Content
-            Types
-        auto_sync: Auto sync of the resources
-        uri: URI of the repository
-        user_id: Repository keycloak user id, will be automatically be set to
-            the logged in user
-        used_contexts: List of contexts with used/referenced resources in this
-            repository
-        url: URL of the figshare repository
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    id: int
-    name: str
-    repository_type: str
-    repository_content_types: str
-    auto_sync: bool
-    uri: str
-    user_id: typing.Optional[str]
-    used_contexts: typing.Sequence["TOSBRepositoryContext"]
-    url: str
-
-    def __init__(
-        self,
-        name: str,
-        repository_type: str,
-        repository_content_types: str,
-        auto_sync: bool,
-        uri: str,
-        url: str,
-        id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
-        used_contexts: typing.Optional[typing.Sequence["TOSBRepositoryContext"]] = None,
-    ) -> None:
-        """
-        Construct.
-
-        Args:
-            id: The id of the FigshareRepository.
-            name: Repository name.
-            repository_type: Repository type:   * dandi - DANDI repository   *
-                figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
-            auto_sync: Auto sync of the resources
-            uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
-            used_contexts: List of contexts with used/referenced resources in
-                this repository
-            url: URL of the figshare repository
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls,
-        name: str,
-        repository_type: str,
-        repository_content_types: str,
-        auto_sync: bool,
-        uri: str,
-        url: str,
-        id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
-        used_contexts: typing.Optional[
-            typing.Sequence["OSBRepositoryContextDict"]
-        ] = None,
-    ) -> "TFigshareRepository":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            id: The id of the FigshareRepository.
-            name: Repository name.
-            repository_type: Repository type:   * dandi - DANDI repository   *
-                figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
-            auto_sync: Auto sync of the resources
-            uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
-            used_contexts: List of contexts with used/referenced resources in
-                this repository
-            url: URL of the figshare repository
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TFigshareRepository":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> FigshareRepositoryDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-FigshareRepository: TFigshareRepository = models.FigshareRepository  # type: ignore
