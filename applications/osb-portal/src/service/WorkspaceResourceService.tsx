@@ -91,17 +91,24 @@ function mapResourceType(resource: WorkspaceResource) {
 
 export function mapPostUrlResource(resource: WorkspaceResource): ApiWorkspaceResource {
   return {
+    timestampCreated: null,
+    timestampUpdated: null,
+    workspaceId: null,
     ...resource,
     status: ApiResourceStatus.P,
-    resourceType: mapResourceType(resource)
+    resourceType: mapResourceType(resource),
+
   }
 }
 
 export function mapPostAddedResource(resource: WorkspaceResource): ApiWorkspaceResource {
   return {
+    timestampCreated: null,
+    timestampUpdated: null,
+    workspaceId: null,
     ...resource,
     status: ApiResourceStatus.A,
-    resourceType: mapResourceType(resource)
+    resourceType: mapResourceType(resource),
   }
 }
 

@@ -24,7 +24,7 @@ export class K8sApi extends runtime.BaseAPI {
      * Test if application is healthy
      */
     async liveRaw(): Promise<runtime.ApiResponse<string>> {
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -50,7 +50,7 @@ export class K8sApi extends runtime.BaseAPI {
      * Test if application is ready to take requests
      */
     async readyRaw(): Promise<runtime.ApiResponse<string>> {
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 

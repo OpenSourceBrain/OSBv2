@@ -27,9 +27,6 @@ import {
     OSBRepository,
     OSBRepositoryFromJSON,
     OSBRepositoryToJSON,
-    OSBRepository &amp; object,
-    OSBRepository &amp; objectFromJSON,
-    OSBRepository &amp; objectToJSON,
     RepositoryType,
     RepositoryTypeFromJSON,
     RepositoryTypeToJSON,
@@ -136,7 +133,7 @@ export class RestApi extends runtime.BaseAPI {
      * Used to list all available repositories.
      */
     async osbrepositoryGetRaw(requestParameters: OsbrepositoryGetRequest): Promise<runtime.ApiResponse<InlineResponse2001>> {
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
@@ -175,10 +172,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async osbrepositoryPostRaw(requestParameters: OsbrepositoryPostRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.oSBRepository === null || requestParameters.oSBRepository === undefined) {
-            throw new runtime.RequiredError('oSBRepository','Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryPost.');
+            throw new runtime.RequiredError('oSBRepository', 'Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryPost.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -207,7 +204,7 @@ export class RestApi extends runtime.BaseAPI {
      * Used to list all available volumestorages.
      */
     async volumestorageGetRaw(requestParameters: VolumestorageGetRequest): Promise<runtime.ApiResponse<InlineResponse2002>> {
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
@@ -254,10 +251,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestorageIdDeleteRaw(requestParameters: VolumestorageIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdDelete.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling volumestorageIdDelete.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -291,10 +288,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestorageIdGetRaw(requestParameters: VolumestorageIdGetRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdGet.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling volumestorageIdGet.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -321,14 +318,14 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestorageIdPutRaw(requestParameters: VolumestorageIdPutRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdPut.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling volumestorageIdPut.');
         }
 
         if (requestParameters.volumeStorage === null || requestParameters.volumeStorage === undefined) {
-            throw new runtime.RequiredError('volumeStorage','Required parameter requestParameters.volumeStorage was null or undefined when calling volumestorageIdPut.');
+            throw new runtime.RequiredError('volumeStorage', 'Required parameter requestParameters.volumeStorage was null or undefined when calling volumestorageIdPut.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -366,10 +363,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestoragePostRaw(requestParameters: VolumestoragePostRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.volumeStorage === null || requestParameters.volumeStorage === undefined) {
-            throw new runtime.RequiredError('volumeStorage','Required parameter requestParameters.volumeStorage was null or undefined when calling volumestoragePost.');
+            throw new runtime.RequiredError('volumeStorage', 'Required parameter requestParameters.volumeStorage was null or undefined when calling volumestoragePost.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -406,7 +403,7 @@ export class RestApi extends runtime.BaseAPI {
      * Used to list all available workspaces.
      */
     async workspaceGetRaw(requestParameters: WorkspaceGetRequest): Promise<runtime.ApiResponse<InlineResponse200>> {
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
@@ -445,10 +442,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceIdDeleteRaw(requestParameters: WorkspaceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdDelete.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceIdDelete.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -482,10 +479,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceIdGetRaw(requestParameters: WorkspaceIdGetRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdGet.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceIdGet.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -512,14 +509,14 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceIdPutRaw(requestParameters: WorkspaceIdPutRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdPut.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceIdPut.');
         }
 
         if (requestParameters.workspace === null || requestParameters.workspace === undefined) {
-            throw new runtime.RequiredError('workspace','Required parameter requestParameters.workspace was null or undefined when calling workspaceIdPut.');
+            throw new runtime.RequiredError('workspace', 'Required parameter requestParameters.workspace was null or undefined when calling workspaceIdPut.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -557,10 +554,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacePostRaw(requestParameters: WorkspacePostRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.workspace === null || requestParameters.workspace === undefined) {
-            throw new runtime.RequiredError('workspace','Required parameter requestParameters.workspace was null or undefined when calling workspacePost.');
+            throw new runtime.RequiredError('workspace', 'Required parameter requestParameters.workspace was null or undefined when calling workspacePost.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -598,10 +595,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourceIdDeleteRaw(requestParameters: WorkspaceresourceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdDelete.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdDelete.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -635,10 +632,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourceIdGetRaw(requestParameters: WorkspaceresourceIdGetRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdGet.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdGet.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -673,14 +670,14 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourceIdPutRaw(requestParameters: WorkspaceresourceIdPutRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdPut.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdPut.');
         }
 
         if (requestParameters.workspaceResource === null || requestParameters.workspaceResource === undefined) {
-            throw new runtime.RequiredError('workspaceResource','Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourceIdPut.');
+            throw new runtime.RequiredError('workspaceResource', 'Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourceIdPut.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -718,10 +715,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourcePostRaw(requestParameters: WorkspaceresourcePostRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.workspaceResource === null || requestParameters.workspaceResource === undefined) {
-            throw new runtime.RequiredError('workspaceResource','Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourcePost.');
+            throw new runtime.RequiredError('workspaceResource', 'Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourcePost.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -759,10 +756,10 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacesControllersOsbrepositoryControllerGetRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<runtime.ApiResponse<OSBRepository & object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerGet.');
+            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerGet.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         if (requestParameters.context !== undefined) {
             queryParameters['context'] = requestParameters.context;
@@ -777,7 +774,7 @@ export class RestApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepository &amp; objectFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
     }
 
     /**
@@ -793,14 +790,14 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacesControllersOsbrepositoryControllerGetContextsRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetContextsRequest): Promise<runtime.ApiResponse<Array<string>>> {
         if (requestParameters.uri === null || requestParameters.uri === undefined) {
-            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
+            throw new runtime.RequiredError('uri', 'Required parameter requestParameters.uri was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
         }
 
         if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
-            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
+            throw new runtime.RequiredError('repositoryType', 'Required parameter requestParameters.repositoryType was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
         }
 
-        const queryParameters: runtime.HTTPQuery = {};
+        const queryParameters: any = {};
 
         if (requestParameters.uri !== undefined) {
             queryParameters['uri'] = requestParameters.uri;
