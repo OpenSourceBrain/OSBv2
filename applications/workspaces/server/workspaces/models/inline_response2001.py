@@ -19,26 +19,26 @@ class InlineResponse2001(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, pagination=None, gitrepositories=None):  # noqa: E501
+    def __init__(self, pagination=None, osbrepositories=None):  # noqa: E501
         """InlineResponse2001 - a model defined in OpenAPI
 
         :param pagination: The pagination of this InlineResponse2001.  # noqa: E501
         :type pagination: Pagination
-        :param gitrepositories: The gitrepositories of this InlineResponse2001.  # noqa: E501
-        :type gitrepositories: List[OSBRepository]
+        :param osbrepositories: The osbrepositories of this InlineResponse2001.  # noqa: E501
+        :type osbrepositories: List[OSBRepository]
         """
         self.openapi_types = {
             'pagination': Pagination,
-            'gitrepositories': List[OSBRepository]
+            'osbrepositories': List[OSBRepository]
         }
 
         self.attribute_map = {
             'pagination': 'pagination',
-            'gitrepositories': 'gitrepositories'
+            'osbrepositories': 'osbrepositories'
         }
 
         self._pagination = pagination
-        self._gitrepositories = gitrepositories
+        self._osbrepositories = osbrepositories
 
     @classmethod
     def from_dict(cls, dikt) -> 'InlineResponse2001':
@@ -73,22 +73,22 @@ class InlineResponse2001(Model):
         self._pagination = pagination
 
     @property
-    def gitrepositories(self):
-        """Gets the gitrepositories of this InlineResponse2001.
+    def osbrepositories(self):
+        """Gets the osbrepositories of this InlineResponse2001.
 
 
-        :return: The gitrepositories of this InlineResponse2001.
+        :return: The osbrepositories of this InlineResponse2001.
         :rtype: List[OSBRepository]
         """
-        return self._gitrepositories
+        return self._osbrepositories
 
-    @gitrepositories.setter
-    def gitrepositories(self, gitrepositories):
-        """Sets the gitrepositories of this InlineResponse2001.
+    @osbrepositories.setter
+    def osbrepositories(self, osbrepositories):
+        """Sets the osbrepositories of this InlineResponse2001.
 
 
-        :param gitrepositories: The gitrepositories of this InlineResponse2001.
-        :type gitrepositories: List[OSBRepository]
+        :param osbrepositories: The osbrepositories of this InlineResponse2001.
+        :type osbrepositories: List[OSBRepository]
         """
 
-        self._gitrepositories = gitrepositories
+        self._osbrepositories = osbrepositories

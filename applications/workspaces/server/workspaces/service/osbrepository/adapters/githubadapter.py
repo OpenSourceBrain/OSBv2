@@ -1,12 +1,10 @@
-import json
 import requests
 
-from collections import defaultdict
 from workspaces.models import RepositoryResourceNode, RepositoryResource
 
 from .utils import add_to_tree
 
-class GitRepository:
+class GitHubAdapter:
     def __init__(self, uri):
         self.uri = uri.replace("https://github.com/","https://api.github.com/repos/")
 

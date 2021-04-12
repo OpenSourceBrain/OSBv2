@@ -6,17 +6,9 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
-from workspaces.models.osb_repository_context import OSBRepositoryContext
-from workspaces.models.repository_base import RepositoryBase
-from workspaces.models.repository_resource_node import RepositoryResourceNode
 from workspaces.models.repository_type import RepositoryType
 from workspaces import util
 
-from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf  # noqa: E501
-from workspaces.models.osb_repository_context import OSBRepositoryContext  # noqa: E501
-from workspaces.models.repository_base import RepositoryBase  # noqa: E501
-from workspaces.models.repository_resource_node import RepositoryResourceNode  # noqa: E501
 from workspaces.models.repository_type import RepositoryType  # noqa: E501
 
 class OSBRepository(Model):
@@ -25,7 +17,7 @@ class OSBRepository(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, repository_type=None, repository_content_types=None, auto_sync=True, uri=None, user_id=None, used_contexts=None, context_resources=None, all_contexts=None, description=None):  # noqa: E501
+    def __init__(self, id=None, name=None, repository_type=None, repository_content_types=None, auto_sync=True, uri=None, user_id=None, default_context=None):  # noqa: E501
         """OSBRepository - a model defined in OpenAPI
 
         :param id: The id of this OSBRepository.  # noqa: E501
@@ -42,14 +34,8 @@ class OSBRepository(Model):
         :type uri: str
         :param user_id: The user_id of this OSBRepository.  # noqa: E501
         :type user_id: str
-        :param used_contexts: The used_contexts of this OSBRepository.  # noqa: E501
-        :type used_contexts: List[OSBRepositoryContext]
-        :param context_resources: The context_resources of this OSBRepository.  # noqa: E501
-        :type context_resources: List[RepositoryResourceNode]
-        :param all_contexts: The all_contexts of this OSBRepository.  # noqa: E501
-        :type all_contexts: List[str]
-        :param description: The description of this OSBRepository.  # noqa: E501
-        :type description: str
+        :param default_context: The default_context of this OSBRepository.  # noqa: E501
+        :type default_context: str
         """
         self.openapi_types = {
             'id': int,
@@ -59,10 +45,7 @@ class OSBRepository(Model):
             'auto_sync': bool,
             'uri': str,
             'user_id': str,
-            'used_contexts': List[OSBRepositoryContext],
-            'context_resources': List[RepositoryResourceNode],
-            'all_contexts': List[str],
-            'description': str
+            'default_context': str
         }
 
         self.attribute_map = {
@@ -73,10 +56,7 @@ class OSBRepository(Model):
             'auto_sync': 'auto_sync',
             'uri': 'uri',
             'user_id': 'user_id',
-            'used_contexts': 'used_contexts',
-            'context_resources': 'context_resources',
-            'all_contexts': 'all_contexts',
-            'description': 'description'
+            'default_context': 'default_context'
         }
 
         self._id = id
@@ -86,10 +66,7 @@ class OSBRepository(Model):
         self._auto_sync = auto_sync
         self._uri = uri
         self._user_id = user_id
-        self._used_contexts = used_contexts
-        self._context_resources = context_resources
-        self._all_contexts = all_contexts
-        self._description = description
+        self._default_context = default_context
 
     @classmethod
     def from_dict(cls, dikt) -> 'OSBRepository':
@@ -270,93 +247,24 @@ class OSBRepository(Model):
         self._user_id = user_id
 
     @property
-    def used_contexts(self):
-        """Gets the used_contexts of this OSBRepository.
+    def default_context(self):
+        """Gets the default_context of this OSBRepository.
 
-        List of contexts with used/referenced resources in this repository  # noqa: E501
+        The default branch to show for this repository  # noqa: E501
 
-        :return: The used_contexts of this OSBRepository.
-        :rtype: List[OSBRepositoryContext]
-        """
-        return self._used_contexts
-
-    @used_contexts.setter
-    def used_contexts(self, used_contexts):
-        """Sets the used_contexts of this OSBRepository.
-
-        List of contexts with used/referenced resources in this repository  # noqa: E501
-
-        :param used_contexts: The used_contexts of this OSBRepository.
-        :type used_contexts: List[OSBRepositoryContext]
-        """
-
-        self._used_contexts = used_contexts
-
-    @property
-    def context_resources(self):
-        """Gets the context_resources of this OSBRepository.
-
-        List of repository resources  # noqa: E501
-
-        :return: The context_resources of this OSBRepository.
-        :rtype: List[RepositoryResourceNode]
-        """
-        return self._context_resources
-
-    @context_resources.setter
-    def context_resources(self, context_resources):
-        """Sets the context_resources of this OSBRepository.
-
-        List of repository resources  # noqa: E501
-
-        :param context_resources: The context_resources of this OSBRepository.
-        :type context_resources: List[RepositoryResourceNode]
-        """
-
-        self._context_resources = context_resources
-
-    @property
-    def all_contexts(self):
-        """Gets the all_contexts of this OSBRepository.
-
-        List of repository contexts  # noqa: E501
-
-        :return: The all_contexts of this OSBRepository.
-        :rtype: List[str]
-        """
-        return self._all_contexts
-
-    @all_contexts.setter
-    def all_contexts(self, all_contexts):
-        """Sets the all_contexts of this OSBRepository.
-
-        List of repository contexts  # noqa: E501
-
-        :param all_contexts: The all_contexts of this OSBRepository.
-        :type all_contexts: List[str]
-        """
-
-        self._all_contexts = all_contexts
-
-    @property
-    def description(self):
-        """Gets the description of this OSBRepository.
-
-        Repository description  # noqa: E501
-
-        :return: The description of this OSBRepository.
+        :return: The default_context of this OSBRepository.
         :rtype: str
         """
-        return self._description
+        return self._default_context
 
-    @description.setter
-    def description(self, description):
-        """Sets the description of this OSBRepository.
+    @default_context.setter
+    def default_context(self, default_context):
+        """Sets the default_context of this OSBRepository.
 
-        Repository description  # noqa: E501
+        The default branch to show for this repository  # noqa: E501
 
-        :param description: The description of this OSBRepository.
-        :type description: str
+        :param default_context: The default_context of this OSBRepository.
+        :type default_context: str
         """
 
-        self._description = description
+        self._default_context = default_context

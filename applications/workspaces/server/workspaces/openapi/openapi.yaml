@@ -399,10 +399,32 @@ paths:
                 properties:
                   pagination:
                     $ref: "#/components/schemas/Pagination"
-                  gitrepositories:
+                  osbrepositories:
                     type: array
                     items:
                       $ref: "#/components/schemas/OSBRepository"
+    post:
+      tags:
+        - rest                  
+      summary: Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
+      # security:
+      #   - bearerAuth: []
+      requestBody:
+        description: The OSB repository to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OSBRepository"
+      responses:
+        201:
+          description: Save successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OSBRepository"
+        400:
+          description: The OSB repository already exists.
   /osbrepository/context:
     parameters:
       - in: query
@@ -416,17 +438,19 @@ paths:
           $ref: "#/components/schemas/RepositoryType"
         required: true
     get:
-      summary: Used to retrieve the contexts of a repository.
+      summary: Used to retrieve a list of contexts of a repository.
       # security:
       #   - bearerAuth: []
       operationId: workspaces.controllers.osbrepository_controller.get_contexts
       responses:
         200:
-          description: The repository.
+          description: The list of repository contexts.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OSBRepository"
+                type: array
+                items:
+                  type: string
         404:
           description: The repository was not found.
       tags:
@@ -454,271 +478,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OSBRepository"
+                allOf:
+                  - $ref: "#/components/schemas/OSBRepository"
+                  - description: Repository
+                    type: object
+                    properties:
+                      context_resources:
+                        description: List of repository resources
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: "#/components/schemas/RepositoryResourceNode"
+                      contexts:
+                        description: List of repository contexts
+                        type: array
+                        items:
+                            type: string
+                      description:
+                        description: Repository description
+                        type: string
         404:
           description: The repository was not found.
       tags:
         - rest
-  /osbrepositoryresource:
-    post:
-      tags:
-        - rest                  
-      summary: Used to save a resource to a context of the osb repository.
-      # security:
-      #   - bearerAuth: []
-      operationId: post
-      x-openapi-router-controller: workspaces.controllers.osbrepository_resource_controller
-      requestBody:
-        description: The RepositoryResource to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                osbrepository_id:
-                  description: OSB Repository id
-                  type: integer
-                context_name:
-                  description: OSB Repository Context Name
-                  type: string
-                full_filename:
-                  type: string
-                  example: folder/file.ext
-                  description: folder/file name
-                uid:
-                  type: string
-                  description: unique identifier for the resource in the (external) repository
-                  example: Git SHA e.g. dae86e1950b1277e545cee180551750029cfe735
-      responses:
-        201:
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RepositoryResource"
-        400:
-          description: The RepositoryResource already exists.
-  /osbrepositoryresource/{id}:
-    parameters:
-      - in: path
-        name: id
-        description: osb repository context resource id
-        schema:
-          type: integer
-        required: true
-    delete:
-      tags:
-        - rest                  
-      summary: Delete a resource from a context of the osb repository.
-      # security:
-      #   - bearerAuth: []
-      requestBody:
-        description: The OSBRepositoryResource to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RepositoryResource"
-      responses:
-        200:
-          description: The OSBRepositoryResource was deleted.
-        400:
-          description: The OSBRepositoryResource was not found.
-  /gitrepository:
-    post:
-      tags:
-        - rest                  
-      summary: Used to save a GITRepository to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      # security:
-      #   - bearerAuth: []
-      requestBody:
-        description: The GITRepository to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GITRepository"
-      responses:
-        201:
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GITRepository"
-        400:
-          description: The GITRepository already exists.
-  /gitrepository/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-    get:
-      summary: Used to retrieve a gitrepository from the repository.
-      responses:
-        200:
-          description: The gitrepository.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GITRepository"
-        404:
-          description: The gitrepository was not found.
-      tags:
-        - rest
-    put:
-      summary: Update a gitrepository in the repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The gitrepository to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GITRepository"
-      responses:
-        200:
-          description: The gitrepository was updated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GITRepository"
-        404:
-          description: The gitrepository was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete a gitrepository from the repository.
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: The gitrepository was deleted.
-        404:
-          description: The gitrepository was not found.
-      tags:
-        - rest
-
-  /figsharerepository:
-    get:
-      tags:
-        - rest
-      summary: Used to list all available figsharerepositories.
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          required: false
-          description: The page number for starting to collect the result set.
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-            default: 20
-          required: false
-          description: The number of items to return.
-        - in: query
-          name: q
-          schema:
-            type: string
-            default: None
-            example: name__like=%reposi%
-          required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
-      responses:
-        200:
-          description: Return all available figsharerepositories
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-                  figsharerepositories:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/FigshareRepository"
-    post:
-      tags:
-        - rest                  
-      summary: Used to save a FigshareRepository to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The FigshareRepository to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/FigshareRepository"
-      responses:
-        201:
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FigshareRepository"
-        400:
-          description: The FigshareRepository already exists.
-  /figsharerepository/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-    get:
-      summary: Used to retrieve an figsharerepository from the repository.
-      responses:
-        200:
-          description: The figsharerepository.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FigshareRepository"
-        404:
-          description: The figsharerepository was not found.
-      tags:
-        - rest
-    put:
-      summary: Update an figsharerepository in the repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The figsharerepository to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/FigshareRepository"
-      responses:
-        200:
-          description: The figsharerepository was updated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FigshareRepository"
-        404:
-          description: The figsharerepository was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete an figsharerepository from the repository.
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: The figsharerepository was deleted.
-        404:
-          description: The figsharerepository was not found.
-      tags:
-        - rest     
 
   /volumestorage:
     get:
@@ -1089,9 +871,10 @@ components:
           example: Storage Volume One
       required:
         - name
-    RepositoryBase:
-      description: Repository Base model
+    OSBRepository:
+      description: OSB Repository model
       type: object
+      x-tablename: osbrepository
       properties:
         id:
           description: Unique identifier of the repository
@@ -1119,53 +902,16 @@ components:
         user_id:
           description: Repository keycloak user id, will be automatically be set to the logged in user
           type: string
-        used_contexts:
-          description: List of contexts with used/referenced resources in this repository
-          type: array
-          items:
-            $ref: "#/components/schemas/OSBRepositoryContext"
+        default_context:
+          description: The default branch to show for this repository
+          type: string
+          example: develop
       required:
         - name
         - repository_type
         - repository_content_types
         - auto_sync
         - uri
-    OSBRepository:
-      allOf:
-        - $ref: "#/components/schemas/RepositoryBase"
-        - description: Repository
-          type: object
-          properties:
-            context_resources:
-              description: List of repository resources
-              type: array
-              items:
-                allOf:
-                  - $ref: "#/components/schemas/RepositoryResourceNode"
-            all_contexts:
-              description: List of repository contexts
-              type: array
-              items:
-                  type: string
-            description:
-              description: Repository description
-              type: string
-    OSBRepositoryContext:
-      description: OSBRepository context
-      type: object
-      x-tablename: osbrepositorycontext
-      properties:
-        id:
-          description: Unique identifier of the OSBRepositoryContext
-          $ref: "#/components/schemas/PrimaryKey"        
-        name:
-          description: Name of the repository context
-          type: string
-        resources:
-          description: List of used/referenced resources in this context
-          type: array
-          items:
-            $ref: "#/components/schemas/OSBRepositoryResource"
     OSBRepositoryResource:
       allOf:
         - $ref: "#/components/schemas/RepositoryResource"
@@ -1176,32 +922,6 @@ components:
             id:
               description: Unique identifier of the OSBRepositoryResource
               $ref: "#/components/schemas/PrimaryKey"
-    GITRepository:
-      allOf:
-        - $ref: "#/components/schemas/RepositoryBase"
-        - description: GIT repository
-          type: object
-          x-tablename: gitrepository
-          properties:
-            default_context:
-              description: The default branch to show for this repository
-              type: string
-              example: develop
-          required:
-            - default_context
-    FigshareRepository:
-      allOf:
-        - $ref: "#/components/schemas/RepositoryBase"
-        - description: Figshare repository
-          type: object
-          x-tablename: figsharerepository
-          properties:
-            url:
-              description: URL of the figshare repository
-              type: string
-              example: https://figshare.com/articles/Screenshot_of_OSB/6034208
-          required:
-            - url
     RepositoryResource:
       description: Resource (files/folders) of a OSBRepository
       type: object
