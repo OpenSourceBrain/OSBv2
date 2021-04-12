@@ -41,7 +41,7 @@ export interface InlineResponse2001 {
      * @type {Array<OSBRepository>}
      * @memberof InlineResponse2001
      */
-    gitrepositories?: Array<OSBRepository>;
+    osbrepositories?: Array<OSBRepository>;
 }
 
 export function InlineResponse2001FromJSON(json: any): InlineResponse2001 {
@@ -55,7 +55,7 @@ export function InlineResponse2001FromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
-        'gitrepositories': !exists(json, 'gitrepositories') ? undefined : ((json['gitrepositories'] as Array<any>).map(OSBRepositoryFromJSON)),
+        'osbrepositories': !exists(json, 'osbrepositories') ? undefined : ((json['osbrepositories'] as Array<any>).map(OSBRepositoryFromJSON)),
     };
 }
 
@@ -69,7 +69,7 @@ export function InlineResponse2001ToJSON(value?: InlineResponse2001 | null): any
     return {
         
         'pagination': PaginationToJSON(value.pagination),
-        'gitrepositories': value.gitrepositories === undefined ? undefined : ((value.gitrepositories as Array<any>).map(OSBRepositoryToJSON)),
+        'osbrepositories': value.osbrepositories === undefined ? undefined : ((value.osbrepositories as Array<any>).map(OSBRepositoryToJSON)),
     };
 }
 
