@@ -98,8 +98,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       requestBody:
         description: The Workspace to save.
         required: true
@@ -262,8 +262,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a WorkspaceResource to the repository.
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       requestBody:
         description: The WorkspaceResource to save.
         required: true
@@ -849,10 +849,21 @@ components:
         resource_type:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
+        hash:
+          type: string
+          description: unique hash of this version of the resource
+          example: Git SHA e.g. dae86e1950b1277e545cee180551750029cfe735
+          x-index: true
         workspace_id:
           description: workspace_id
           type: integer
           x-foreign-key: workspace.id
+          x-index: true
+        osbrepository_id:
+          description: osbrepository_id
+          type: integer
+          x-foreign-key: osbrepository.id
+          x-index: true
       required:
         - name
         - resource_type
@@ -906,34 +917,29 @@ components:
           description: The default branch to show for this repository
           type: string
           example: develop
+        resources:
+          description: Resources linked to the Repository
+          type: array
+          items:
+              $ref: "#/components/schemas/WorkspaceResource"
       required:
         - name
         - repository_type
         - repository_content_types
         - auto_sync
         - uri
-    OSBRepositoryResource:
-      allOf:
-        - $ref: "#/components/schemas/RepositoryResource"
-        - description: OSB Repository Resource
-          type: object
-          x-tablename: osbrepositoryresource
-          properties:
-            id:
-              description: Unique identifier of the OSBRepositoryResource
-              $ref: "#/components/schemas/PrimaryKey"
     RepositoryResource:
       description: Resource (files/folders) of a OSBRepository
       type: object
       properties:
         name:
           type: string
-          example: folder/file.ext
-          description: folder/file name
-        uid:
+          example: file.ext
+          description: file name
+        download_url:
           type: string
-          description: unique identifier for the resource in the (external) repository
-          example: Git SHA e.g. dae86e1950b1277e545cee180551750029cfe735
+          example: https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/master/.gitignore
+          description: Download URL of the Repository Resource
     RepositoryResourceNode:
       description: Tree node (files/folders) of a Repository tree
       type: object

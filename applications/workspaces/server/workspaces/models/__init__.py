@@ -7,8 +7,6 @@ from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002
 from workspaces.models.osb_repository import OSBRepository
-from workspaces.models.osb_repository_resource import OSBRepositoryResource
-from workspaces.models.osb_repository_resource_all_of import OSBRepositoryResourceAllOf
 from workspaces.models.pagination import Pagination
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource import RepositoryResource

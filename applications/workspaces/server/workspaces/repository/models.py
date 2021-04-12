@@ -520,7 +520,9 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
+    hash: typing.Optional[str]
     workspace_id: typing.Optional[int]
+    osbrepository_id: typing.Optional[int]
 
 
 class TWorkspaceResource(typing_extensions.Protocol):
@@ -543,7 +545,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
             WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
             Generic  * u - Unknown (to be defined)
+        hash: unique hash of this version of the resource
         workspace_id: workspace_id
+        osbrepository_id: osbrepository_id
 
     """
 
@@ -562,7 +566,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
     resource_type: str
+    hash: typing.Optional[str]
     workspace_id: typing.Optional[int]
+    osbrepository_id: typing.Optional[int]
 
     def __init__(
         self,
@@ -575,7 +581,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        hash: typing.Optional[str] = None,
         workspace_id: typing.Optional[int] = None,
+        osbrepository_id: typing.Optional[int] = None,
     ) -> None:
         """
         Construct.
@@ -596,7 +604,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
+            hash: unique hash of this version of the resource
             workspace_id: workspace_id
+            osbrepository_id: osbrepository_id
 
         """
         ...
@@ -613,7 +623,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        hash: typing.Optional[str] = None,
         workspace_id: typing.Optional[int] = None,
+        osbrepository_id: typing.Optional[int] = None,
     ) -> "TWorkspaceResource":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -634,7 +646,9 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
+            hash: unique hash of this version of the resource
             workspace_id: workspace_id
+            osbrepository_id: osbrepository_id
 
         Returns:
             Model instance based on the dictionary.
@@ -787,6 +801,7 @@ class OSBRepositoryDict(_OSBRepositoryDictBase, total=False):
     id: int
     user_id: typing.Optional[str]
     default_context: typing.Optional[str]
+    resources: typing.Sequence["WorkspaceResourceDict"]
 
 
 class TOSBRepository(typing_extensions.Protocol):
@@ -807,6 +822,7 @@ class TOSBRepository(typing_extensions.Protocol):
         user_id: Repository keycloak user id, will be automatically be set to
             the logged in user
         default_context: The default branch to show for this repository
+        resources: Resources linked to the Repository
 
     """
 
@@ -824,6 +840,7 @@ class TOSBRepository(typing_extensions.Protocol):
     uri: str
     user_id: typing.Optional[str]
     default_context: typing.Optional[str]
+    resources: typing.Sequence["TWorkspaceResource"]
 
     def __init__(
         self,
@@ -835,6 +852,7 @@ class TOSBRepository(typing_extensions.Protocol):
         id: typing.Optional[int] = None,
         user_id: typing.Optional[str] = None,
         default_context: typing.Optional[str] = None,
+        resources: typing.Optional[typing.Sequence["TWorkspaceResource"]] = None,
     ) -> None:
         """
         Construct.
@@ -851,6 +869,7 @@ class TOSBRepository(typing_extensions.Protocol):
             user_id: Repository keycloak user id, will be automatically be set
                 to the logged in user
             default_context: The default branch to show for this repository
+            resources: Resources linked to the Repository
 
         """
         ...
@@ -866,6 +885,7 @@ class TOSBRepository(typing_extensions.Protocol):
         id: typing.Optional[int] = None,
         user_id: typing.Optional[str] = None,
         default_context: typing.Optional[str] = None,
+        resources: typing.Optional[typing.Sequence["WorkspaceResourceDict"]] = None,
     ) -> "TOSBRepository":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -882,6 +902,7 @@ class TOSBRepository(typing_extensions.Protocol):
             user_id: Repository keycloak user id, will be automatically be set
                 to the logged in user
             default_context: The default branch to show for this repository
+            resources: Resources linked to the Repository
 
         Returns:
             Model instance based on the dictionary.
@@ -922,109 +943,3 @@ class TOSBRepository(typing_extensions.Protocol):
 
 
 OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
-
-
-class OSBRepositoryResourceDict(typing_extensions.TypedDict, total=False):
-    """TypedDict for properties that are not required."""
-
-    name: typing.Optional[str]
-    uid: typing.Optional[str]
-    id: int
-
-
-class TOSBRepositoryResource(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    OSB Repository Resource
-
-    Attrs:
-        name: folder/file name
-        uid: unique identifier for the resource in the (external) repository
-        id: The id of the OSBRepositoryResource.
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    name: typing.Optional[str]
-    uid: typing.Optional[str]
-    id: int
-
-    def __init__(
-        self,
-        name: typing.Optional[str] = None,
-        uid: typing.Optional[str] = None,
-        id: typing.Optional[int] = None,
-    ) -> None:
-        """
-        Construct.
-
-        Args:
-            name: folder/file name
-            uid: unique identifier for the resource in the (external)
-                repository
-            id: The id of the OSBRepositoryResource.
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls,
-        name: typing.Optional[str] = None,
-        uid: typing.Optional[str] = None,
-        id: typing.Optional[int] = None,
-    ) -> "TOSBRepositoryResource":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            name: folder/file name
-            uid: unique identifier for the resource in the (external)
-                repository
-            id: The id of the OSBRepositoryResource.
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TOSBRepositoryResource":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> OSBRepositoryResourceDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-OSBRepositoryResource: TOSBRepositoryResource = models.OSBRepositoryResource  # type: ignore

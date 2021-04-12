@@ -15,26 +15,26 @@ class RepositoryResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, uid=None):  # noqa: E501
+    def __init__(self, name=None, download_url=None):  # noqa: E501
         """RepositoryResource - a model defined in OpenAPI
 
         :param name: The name of this RepositoryResource.  # noqa: E501
         :type name: str
-        :param uid: The uid of this RepositoryResource.  # noqa: E501
-        :type uid: str
+        :param download_url: The download_url of this RepositoryResource.  # noqa: E501
+        :type download_url: str
         """
         self.openapi_types = {
             'name': str,
-            'uid': str
+            'download_url': str
         }
 
         self.attribute_map = {
             'name': 'name',
-            'uid': 'uid'
+            'download_url': 'download_url'
         }
 
         self._name = name
-        self._uid = uid
+        self._download_url = download_url
 
     @classmethod
     def from_dict(cls, dikt) -> 'RepositoryResource':
@@ -51,7 +51,7 @@ class RepositoryResource(Model):
     def name(self):
         """Gets the name of this RepositoryResource.
 
-        folder/file name  # noqa: E501
+        file name  # noqa: E501
 
         :return: The name of this RepositoryResource.
         :rtype: str
@@ -62,7 +62,7 @@ class RepositoryResource(Model):
     def name(self, name):
         """Sets the name of this RepositoryResource.
 
-        folder/file name  # noqa: E501
+        file name  # noqa: E501
 
         :param name: The name of this RepositoryResource.
         :type name: str
@@ -71,24 +71,24 @@ class RepositoryResource(Model):
         self._name = name
 
     @property
-    def uid(self):
-        """Gets the uid of this RepositoryResource.
+    def download_url(self):
+        """Gets the download_url of this RepositoryResource.
 
-        unique identifier for the resource in the (external) repository  # noqa: E501
+        Download URL of the Repository Resource  # noqa: E501
 
-        :return: The uid of this RepositoryResource.
+        :return: The download_url of this RepositoryResource.
         :rtype: str
         """
-        return self._uid
+        return self._download_url
 
-    @uid.setter
-    def uid(self, uid):
-        """Sets the uid of this RepositoryResource.
+    @download_url.setter
+    def download_url(self, download_url):
+        """Sets the download_url of this RepositoryResource.
 
-        unique identifier for the resource in the (external) repository  # noqa: E501
+        Download URL of the Repository Resource  # noqa: E501
 
-        :param uid: The uid of this RepositoryResource.
-        :type uid: str
+        :param download_url: The download_url of this RepositoryResource.
+        :type download_url: str
         """
 
-        self._uid = uid
+        self._download_url = download_url

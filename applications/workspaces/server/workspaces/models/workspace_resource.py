@@ -19,7 +19,7 @@ class WorkspaceResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, location=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, workspace_id=None):  # noqa: E501
+    def __init__(self, id=None, name=None, location=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, hash=None, workspace_id=None, osbrepository_id=None):  # noqa: E501
         """WorkspaceResource - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceResource.  # noqa: E501
@@ -40,8 +40,12 @@ class WorkspaceResource(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResource.  # noqa: E501
         :type resource_type: ResourceType
+        :param hash: The hash of this WorkspaceResource.  # noqa: E501
+        :type hash: str
         :param workspace_id: The workspace_id of this WorkspaceResource.  # noqa: E501
         :type workspace_id: int
+        :param osbrepository_id: The osbrepository_id of this WorkspaceResource.  # noqa: E501
+        :type osbrepository_id: int
         """
         self.openapi_types = {
             'id': int,
@@ -53,7 +57,9 @@ class WorkspaceResource(Model):
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
             'resource_type': ResourceType,
-            'workspace_id': int
+            'hash': str,
+            'workspace_id': int,
+            'osbrepository_id': int
         }
 
         self.attribute_map = {
@@ -66,7 +72,9 @@ class WorkspaceResource(Model):
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
             'resource_type': 'resource_type',
-            'workspace_id': 'workspace_id'
+            'hash': 'hash',
+            'workspace_id': 'workspace_id',
+            'osbrepository_id': 'osbrepository_id'
         }
 
         self._id = id
@@ -78,7 +86,9 @@ class WorkspaceResource(Model):
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
+        self._hash = hash
         self._workspace_id = workspace_id
+        self._osbrepository_id = osbrepository_id
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResource':
@@ -299,6 +309,29 @@ class WorkspaceResource(Model):
         self._resource_type = resource_type
 
     @property
+    def hash(self):
+        """Gets the hash of this WorkspaceResource.
+
+        unique hash of this version of the resource  # noqa: E501
+
+        :return: The hash of this WorkspaceResource.
+        :rtype: str
+        """
+        return self._hash
+
+    @hash.setter
+    def hash(self, hash):
+        """Sets the hash of this WorkspaceResource.
+
+        unique hash of this version of the resource  # noqa: E501
+
+        :param hash: The hash of this WorkspaceResource.
+        :type hash: str
+        """
+
+        self._hash = hash
+
+    @property
     def workspace_id(self):
         """Gets the workspace_id of this WorkspaceResource.
 
@@ -320,3 +353,26 @@ class WorkspaceResource(Model):
         """
 
         self._workspace_id = workspace_id
+
+    @property
+    def osbrepository_id(self):
+        """Gets the osbrepository_id of this WorkspaceResource.
+
+        osbrepository_id  # noqa: E501
+
+        :return: The osbrepository_id of this WorkspaceResource.
+        :rtype: int
+        """
+        return self._osbrepository_id
+
+    @osbrepository_id.setter
+    def osbrepository_id(self, osbrepository_id):
+        """Sets the osbrepository_id of this WorkspaceResource.
+
+        osbrepository_id  # noqa: E501
+
+        :param osbrepository_id: The osbrepository_id of this WorkspaceResource.
+        :type osbrepository_id: int
+        """
+
+        self._osbrepository_id = osbrepository_id

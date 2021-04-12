@@ -6,6 +6,8 @@ from sqlalchemy.sql import func
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
+from workspaces import repository
+from workspaces.service.osbrepository.osbrepository import get_repository_service
 
 from ..auth import auth_client
 from ..config import Config
@@ -54,7 +56,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def get(self, id):
         workspace: TWorkspace = self.model.query.get(id)
-        if workspace.publicable or (workspace.owner and workspace.owner.keycloak_id == self.keycloak_user_id):
+        if workspace.publicable or (workspace.user_id and workspace.user_id == self.keycloak_user_id):
             return workspace
         return None
 
@@ -140,7 +142,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResource
 
     @staticmethod
-    def guess_resurce_type(resource_path):
+    def guess_resource_type(resource_path):
         resource_path = resource_path.split('?')[0]
         if resource_path[-3:] == "nwb":
             return "e"
@@ -153,10 +155,14 @@ class WorkspaceResourceRepository(BaseModelRepository):
         logger.debug(
             f'Pre Commit for workspace resource id: {workspace_resource.id}')
         if not workspace_resource.resource_type or workspace_resource.resource_type == 'u':
-            workspace_resource.resource_type = self.guess_resurce_type(
+            workspace_resource.resource_type = self.guess_resource_type(
                 workspace_resource.location)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
+        if workspace_resource.osbrepository_id > 0:
+            osbrepository = OSBRepositoryRepository().get(id=workspace_resource.osbrepository_id)
+            osbrepository_service = get_repository_service(osbrepository=osbrepository)
+            workspace_resource.hash = osbrepository_service.get_latest_hash(workspace_resource.location)
         return workspace_resource
 
     def post_commit(self, workspace_resource: TWorkspaceResource):

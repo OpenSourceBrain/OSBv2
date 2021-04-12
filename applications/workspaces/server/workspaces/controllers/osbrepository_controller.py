@@ -12,17 +12,21 @@ def get_contexts(uri=None, repository_type=None, **kwargs):
 def get(id_=None, context=None, **kwargs):
     # get the repository
     rr = OSBRepositoryRepository()
-    osb_repository = rr.get(id=id_)
-    if osb_repository is None:
+    osbrepository = rr.get(id=id_)
+    if osbrepository is None:
         return f"OSBRepository with id {id_} not found.", 404
 
-    repository = osb_repository.to_dict()
+    repository = osbrepository.to_dict()
     repository.update({"context_resources": repository_service.get_resources(
-        osb_repository,
-        context)  # use context to get the files
+        osbrepository=osbrepository,
+        context=context)  # use context to get the files
     })
     repository.update({"contexts": repository_service.get_contexts(
-        repository_type=osb_repository.repository_type,
-        uri=osb_repository.uri)
+        repository_type=osbrepository.repository_type,
+        uri=osbrepository.uri)
+    })
+    repository.update({"description": repository_service.get_description(
+        osbrepository=osbrepository,
+        context=context)  # use context to get the files
     })
     return repository, 200

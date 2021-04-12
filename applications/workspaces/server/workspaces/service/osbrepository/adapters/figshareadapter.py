@@ -19,3 +19,9 @@ class FigShareAdapter:
             add_to_tree(tree, git_obj["path"].split("/"))
 
         return tree
+
+    def get_latest_hash(self, download_url):
+        return 123
+
+    def get_description(self, context):
+        return "Description"
