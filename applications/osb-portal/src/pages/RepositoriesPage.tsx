@@ -161,6 +161,8 @@ const mockRepositoryData = [
 export const RepositoriesPage = () => {
   const classes = useStyles();
   const [repositories, setRepositories] = useState(mockRepositoryData);
+  const openRepoUrl = (uri: string) => window.open(uri, "_blank")
+
   // ToDo use OSBrepository once api starts working
   // const [page, setPage] = React.useState(0);
   //const [repositories, setRepositories] = React.useState<OSBRepository[]>();
@@ -215,7 +217,7 @@ export const RepositoriesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={2}>
                       <Box className="col" display="flex" flex={1} alignItems="center">
-                        <Button variant="outlined">
+                        <Button variant="outlined" onClick={() => openRepoUrl(repository.uri)}>
                           SEE ON {repository.repositoryType}
                         </Button>
                         <ChevronRightIcon />
