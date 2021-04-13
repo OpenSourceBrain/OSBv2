@@ -1,9 +1,13 @@
 import base64
 import requests
+import cloudharness
 
 from workspaces.models import RepositoryResourceNode, GITRepositoryResource
 
 from .utils import add_to_tree
+
+logger = cloudharness.log
+
 
 def _clean_url_and_end_with_slash(url):
     first_part = url[:7]  # https:/
@@ -61,3 +65,7 @@ class GitHubAdapter:
             return description
         except Exception as e:
             return e
+
+    def copy_resource(self, origin):
+        repository_resource = GITRepositoryResource(**origin)
+        logger.info("Processiong copy GIT Repository Resource %s", repository_resource)

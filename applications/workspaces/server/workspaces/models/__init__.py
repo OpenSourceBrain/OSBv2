@@ -17,8 +17,10 @@ from workspaces.models.pagination import Pagination
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource import RepositoryResource
 from workspaces.models.repository_resource_base import RepositoryResourceBase
+from workspaces.models.repository_resource_base_all_of import RepositoryResourceBaseAllOf
 from workspaces.models.repository_resource_node import RepositoryResourceNode
 from workspaces.models.repository_type import RepositoryType
+from workspaces.models.resource_base import ResourceBase
 from workspaces.models.resource_status import ResourceStatus
 from workspaces.models.resource_type import ResourceType
 from workspaces.models.user import User

@@ -7,13 +7,11 @@ from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
 from workspaces.models.dandi_repository_resource import DandiRepositoryResource
-from workspaces.models.download_resource import DownloadResource
 from workspaces.models.figshare_repository_resource import FigshareRepositoryResource
 from workspaces.models.git_repository_resource import GITRepositoryResource
 from workspaces import util
 
 from workspaces.models.dandi_repository_resource import DandiRepositoryResource  # noqa: E501
-from workspaces.models.download_resource import DownloadResource  # noqa: E501
 from workspaces.models.figshare_repository_resource import FigshareRepositoryResource  # noqa: E501
 from workspaces.models.git_repository_resource import GITRepositoryResource  # noqa: E501
 
@@ -23,39 +21,39 @@ class RepositoryResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, osbrepository_id=None, path=None, ref=None, sha=None):  # noqa: E501
+    def __init__(self, path=None, name=None, osbrepository_id=None, ref=None, sha=None):  # noqa: E501
         """RepositoryResource - a model defined in OpenAPI
 
+        :param path: The path of this RepositoryResource.  # noqa: E501
+        :type path: str
         :param name: The name of this RepositoryResource.  # noqa: E501
         :type name: str
         :param osbrepository_id: The osbrepository_id of this RepositoryResource.  # noqa: E501
         :type osbrepository_id: int
-        :param path: The path of this RepositoryResource.  # noqa: E501
-        :type path: str
         :param ref: The ref of this RepositoryResource.  # noqa: E501
         :type ref: str
         :param sha: The sha of this RepositoryResource.  # noqa: E501
         :type sha: str
         """
         self.openapi_types = {
+            'path': str,
             'name': str,
             'osbrepository_id': int,
-            'path': str,
             'ref': str,
             'sha': str
         }
 
         self.attribute_map = {
+            'path': 'path',
             'name': 'name',
             'osbrepository_id': 'osbrepository_id',
-            'path': 'path',
             'ref': 'ref',
             'sha': 'sha'
         }
 
+        self._path = path
         self._name = name
         self._osbrepository_id = osbrepository_id
-        self._path = path
         self._ref = ref
         self._sha = sha
 
@@ -69,6 +67,29 @@ class RepositoryResource(Model):
         :rtype: RepositoryResource
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def path(self):
+        """Gets the path of this RepositoryResource.
+
+        Download URL of the Resource  # noqa: E501
+
+        :return: The path of this RepositoryResource.
+        :rtype: str
+        """
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        """Sets the path of this RepositoryResource.
+
+        Download URL of the Resource  # noqa: E501
+
+        :param path: The path of this RepositoryResource.
+        :type path: str
+        """
+
+        self._path = path
 
     @property
     def name(self):
@@ -115,29 +136,6 @@ class RepositoryResource(Model):
         """
 
         self._osbrepository_id = osbrepository_id
-
-    @property
-    def path(self):
-        """Gets the path of this RepositoryResource.
-
-        Download URL of the Repository Resource  # noqa: E501
-
-        :return: The path of this RepositoryResource.
-        :rtype: str
-        """
-        return self._path
-
-    @path.setter
-    def path(self, path):
-        """Sets the path of this RepositoryResource.
-
-        Download URL of the Repository Resource  # noqa: E501
-
-        :param path: The path of this RepositoryResource.
-        :type path: str
-        """
-
-        self._path = path
 
     @property
     def ref(self):

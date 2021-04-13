@@ -13,6 +13,6 @@ while not keycloak_running:
     try:
         auth_client = AuthClient()
         keycloak_running = True
-    except:
+    except Exception as e:
         log.error(f"Keycloak not running? Going for a {nap_time} seconds power nap and will try again later")
         time.sleep(nap_time)  # sleep 30 seconds and try again

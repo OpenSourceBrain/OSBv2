@@ -1,8 +1,12 @@
+import cloudharness
 import requests
 
-from workspaces.models import RepositoryResourceNode, RepositoryResource
+from workspaces.models import RepositoryResourceNode, RepositoryResource, FigshareRepositoryResource
 
 from .utils import add_to_tree
+
+logger = cloudharness.log
+
 
 class FigShareAdapter:
     def __init__(self, uri):
@@ -25,3 +29,7 @@ class FigShareAdapter:
 
     def get_description(self, context):
         return "Description"
+
+    def copy_resource(self, origin):
+        repository_resource = FigshareRepositoryResource(**origin)
+        logger.info("Processiong copy GIT Repository Resource %s", repository_resource)

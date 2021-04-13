@@ -1,7 +1,7 @@
 from .adapters import GitHubAdapter, DandiAdapter, FigShareAdapter
 
 
-def get_repository_service(osbrepository=None, repository_type=None, uri=None, *args, **kwargs):
+def get_repository_adapter(osbrepository=None, repository_type=None, uri=None, *args, **kwargs):
     if osbrepository is not None:
         repository_type = osbrepository.repository_type
         uri = osbrepository.uri
@@ -15,20 +15,25 @@ def get_repository_service(osbrepository=None, repository_type=None, uri=None, *
 
 
 def get_contexts(uri, repository_type):
-    repository_service = get_repository_service(repository_type=repository_type, uri=uri)
+    repository_service = get_repository_adapter(repository_type=repository_type, uri=uri)
     return repository_service.get_contexts()
 
 
 def get_resources(osbrepository, context=None):
-    repository_service = get_repository_service(
+    repository_service = get_repository_adapter(
         osbrepository=osbrepository)
     if not context:
         context = osbrepository.default_context
     return repository_service.get_resources(context)
 
 def get_description(osbrepository, context=None):
-    repository_service = get_repository_service(
+    repository_service = get_repository_adapter(
         osbrepository=osbrepository)
     if not context:
         context = osbrepository.default_context
     return repository_service.get_description(context)
+
+def copy_resource(osbrepository, origin):
+    repository_adapter = get_repository_adapter(
+        osbrepository=osbrepository)
+    repository_adapter.copy_resource(origin)

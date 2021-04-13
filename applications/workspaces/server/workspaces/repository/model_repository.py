@@ -1,3 +1,4 @@
+import json
 import os
 
 from flask import request, current_app
@@ -7,7 +8,7 @@ from sqlalchemy.sql import func
 from cloudharness import log as logger
 from cloudharness.service import pvc
 from workspaces import repository
-from workspaces.service.osbrepository.osbrepository import get_repository_service
+from workspaces.service.osbrepository.osbrepository import copy_resource
 
 from ..auth import auth_client
 from ..config import Config
@@ -70,7 +71,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         if filter and any(field for field, condition, value in filter if field.key == 'publicable' and value):
             q1 = q_base
         elif keycloak_user_id is not None:
-            if not auth_client.current_user_has_realm_role('administrator'):
+            if not auth_client.user_has_realm_role(user_id=keycloak_user_id, role='administrator'):
                 logger.debug(
                     "searching workspaces on keycloak_user_id: %s", keycloak_user_id)
                 # non admin users can see only their own workspaces
@@ -181,9 +182,17 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 f'Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name')
             workspace_resource.folder = workspace_resource.name
 
-        if workspace is not None and workspace_resource.status == 'p' and 'http' == workspace_resource.location[0:4]:
+        if workspace is not None and workspace_resource.status == 'p' and workspace_resource.origin and len(workspace_resource.origin)>0:
+            origin = json.loads(workspace_resource.origin)
+            osbrepository_id = origin.get("osbrepository_id", None)
+            if osbrepository_id:
+                # repository resource based workspace resource
+                osbrepository = OSBRepositoryRepository().get(id=osbrepository_id)
+                repository_service = copy_resource(osbrepository=osbrepository, origin=origin)
+                pass
+            path = origin.get("path", "")
             logger.debug('Starting resource ETL from %s',
-                         workspace_resource.location)
+                         path)
             try:
                 from ..service.workflow import add_resource
                 add_resource(workspace, workspace_resource)

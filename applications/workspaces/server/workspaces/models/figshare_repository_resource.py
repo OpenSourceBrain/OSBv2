@@ -17,31 +17,31 @@ class FigshareRepositoryResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, osbrepository_id=None, path=None):  # noqa: E501
+    def __init__(self, path=None, name=None, osbrepository_id=None):  # noqa: E501
         """FigshareRepositoryResource - a model defined in OpenAPI
 
+        :param path: The path of this FigshareRepositoryResource.  # noqa: E501
+        :type path: str
         :param name: The name of this FigshareRepositoryResource.  # noqa: E501
         :type name: str
         :param osbrepository_id: The osbrepository_id of this FigshareRepositoryResource.  # noqa: E501
         :type osbrepository_id: int
-        :param path: The path of this FigshareRepositoryResource.  # noqa: E501
-        :type path: str
         """
         self.openapi_types = {
+            'path': str,
             'name': str,
-            'osbrepository_id': int,
-            'path': str
+            'osbrepository_id': int
         }
 
         self.attribute_map = {
+            'path': 'path',
             'name': 'name',
-            'osbrepository_id': 'osbrepository_id',
-            'path': 'path'
+            'osbrepository_id': 'osbrepository_id'
         }
 
+        self._path = path
         self._name = name
         self._osbrepository_id = osbrepository_id
-        self._path = path
 
     @classmethod
     def from_dict(cls, dikt) -> 'FigshareRepositoryResource':
@@ -53,6 +53,29 @@ class FigshareRepositoryResource(Model):
         :rtype: FigshareRepositoryResource
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def path(self):
+        """Gets the path of this FigshareRepositoryResource.
+
+        Download URL of the Resource  # noqa: E501
+
+        :return: The path of this FigshareRepositoryResource.
+        :rtype: str
+        """
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        """Sets the path of this FigshareRepositoryResource.
+
+        Download URL of the Resource  # noqa: E501
+
+        :param path: The path of this FigshareRepositoryResource.
+        :type path: str
+        """
+
+        self._path = path
 
     @property
     def name(self):
@@ -99,26 +122,3 @@ class FigshareRepositoryResource(Model):
         """
 
         self._osbrepository_id = osbrepository_id
-
-    @property
-    def path(self):
-        """Gets the path of this FigshareRepositoryResource.
-
-        Download URL of the Repository Resource  # noqa: E501
-
-        :return: The path of this FigshareRepositoryResource.
-        :rtype: str
-        """
-        return self._path
-
-    @path.setter
-    def path(self, path):
-        """Sets the path of this FigshareRepositoryResource.
-
-        Download URL of the Repository Resource  # noqa: E501
-
-        :param path: The path of this FigshareRepositoryResource.
-        :type path: str
-        """
-
-        self._path = path

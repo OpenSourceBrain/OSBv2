@@ -13,9 +13,10 @@ def open(id_=None, **kwargs):
 
     return wsrr.open(workspace_resource)
 
+
 def post(body):
-    wsr = WorkspaceResourceDTO(**body)
-    origin = json.dumps(body.get("origin", None))
-    wsr.origin = origin
-    wsr = wsr.to_dict()
-    WorkspaceResourceRepository().post(wsr)
+    # make origin a json string
+    body.update({
+        "origin": json.dumps(body.get("origin", None))
+    })
+    WorkspaceResourceRepository().post(body)
