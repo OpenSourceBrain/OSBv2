@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { OSBRepository } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import Box from '@material-ui/core/Box';
@@ -40,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
       color: linkColor,
     },
     '& .repository-data': {
+      overflow: 'auto',
+      maxHeight: '100vh',
       '& strong': {
         display: 'block',
         marginBottom: theme.spacing(1),
@@ -125,16 +127,46 @@ const useStyles = makeStyles((theme) => ({
     },
   }
 }));
-
-
+// ToDO : to be removed once api starts returning
+const mockRepositoryData = [
+  {
+    id: 1, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 2, name: 'HNN model', repositoryType: 'Dandi', repositoryContentTypes: 'Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Netpyne definition of the hnn model from Dura-Bernal lab at State University of New York.', userId: 'Salvador Dura-Bernal'
+  },
+  {
+    id: 3, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'FigShare', repositoryContentTypes: 'Experimental Data', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'The nanoscale topographical arrangement of voltage-gated calcium channels (VGCC) and synaptic vesicles (SVs) determines synaptic strength and plasticity, but whether distinct spatial distributions underpin diversity of synaptic function is unknown. We performed single bouton Ca2+ imaging, Ca2+ chelator competition, immunogold electron microscopic (EM) localization of VGCC', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 4, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 5, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 6, name: 'HNN model', repositoryType: 'Dandi', repositoryContentTypes: 'Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Netpyne definition of the hnn model from Dura-Bernal lab at State University of New York.', userId: 'Salvador Dura-Bernal'
+  },
+  {
+    id: 7, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'FigShare', repositoryContentTypes: 'Experimental Data', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'The nanoscale topographical arrangement of voltage-gated calcium channels (VGCC) and synaptic vesicles (SVs) determines synaptic strength and plasticity, but whether distinct spatial distributions underpin diversity of synaptic function is unknown. We performed single bouton Ca2+ imaging, Ca2+ chelator competition, immunogold electron microscopic (EM) localization of VGCC', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 8, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 9, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
+  }
+]
 
 export const RepositoriesPage = () => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [repositories, setRepositories] = React.useState<OSBRepository[]>();
-  React.useEffect(() => {
-    RepositoryService.getRepositories(page).then(repos => setRepositories(repos));
-  }, [page])
+  const [repositories, setRepositories] = useState(mockRepositoryData);
+  // ToDo use OSBrepository once api starts working
+  // const [page, setPage] = React.useState(0);
+  //const [repositories, setRepositories] = React.useState<OSBRepository[]>();
+  // React.useEffect(() => {
+  //   RepositoryService.getRepositories(page).then(repos => setRepositories(repos));
+  // }, [page])
 
   return (
     <>
@@ -150,176 +182,48 @@ export const RepositoriesPage = () => {
             </Box>
 
             <Box className="repository-data">
-              <Grid container spacing={0} alignItems="center" className="row">
-                <Grid item xs={12} sm={4}>
-                  <Box className="col">
-                    <Typography component="strong">
-                      NWB Showcase
-                    </Typography>
-                    <Typography>
-                      Sample Neurophysiology experimental data from UCL labs.
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col">
-                    <Typography>
-                      Padraig Gleeson
-                    </Typography>
-                  </Box>
+              {
+                mockRepositoryData.map((repository) =>
+                  <Grid container spacing={0} alignItems="center" className="row" key={repository.id}>
+                    <Grid item xs={12} sm={4}>
+                      <Box className="col">
+                        <Typography component="strong">
+                          {repository.name}
+                        </Typography>
+                        <Typography>
+                          {repository.description}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={2}>
+                      <Box className="col">
+                        <Typography>
+                          {repository.userId}
+                        </Typography>
+                      </Box>
 
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1}>
-                      <FiberManualRecordIcon color="primary" />
-                      Experimental Data
-                    </Box>
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1}>
-                      <FiberManualRecordIcon color="secondary" />
-                      Modeling
-                    </Box>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col" display="flex" flex={1} alignItems="center">
-                    <Button variant="outlined">
-                      SEE ON GITHUB
-                    </Button>
-                    <ChevronRightIcon />
-                  </Box>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={0} alignItems="center" className="row">
-                <Grid item xs={12} sm={4}>
-                  <Box className="col">
-                    <Typography component="strong">
-                      NWB Showcase
-                    </Typography>
-                    <Typography>
-                      Sample Neurophysiology experimental data from UCL labs.
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col">
-                    <Typography>
-                      Padraig Gleeson
-                    </Typography>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1}>
-                      <FiberManualRecordIcon color="primary" />
-                      Experimental Data
-                    </Box>
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1}>
-                      <FiberManualRecordIcon color="secondary" />
-                      Modeling
-                    </Box>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col" display="flex" flex={1} alignItems="center">
-                    <Button variant="outlined">
-                      SEE ON GITHUB
-                    </Button>
-                    <ChevronRightIcon />
-                  </Box>
-                </Grid>
-              </Grid>
-
-
-              <Grid container spacing={0} alignItems="center" className="row">
-                <Grid item xs={12} sm={4}>
-                  <Box className="col">
-                    <Typography component="strong">
-                      NWB Showcase
-                    </Typography>
-                    <Typography>
-                      Sample Neurophysiology experimental data from UCL labs.
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col">
-                    <Typography>
-                      Padraig Gleeson
-                    </Typography>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1}>
-                      <FiberManualRecordIcon color="primary" />
-                      Experimental Data
-                    </Box>
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1}>
-                      <FiberManualRecordIcon color="secondary" />
-                      Modeling
-                    </Box>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col" display="flex" flex={1} alignItems="center">
-                    <Button variant="outlined">
-                      SEE ON GITHUB
-                    </Button>
-                    <ChevronRightIcon />
-                  </Box>
-                </Grid>
-              </Grid>
-
-
-              <Grid container spacing={0} alignItems="center" className="row">
-                <Grid item xs={12} sm={4}>
-                  <Box className="col">
-                    <Typography component="strong">
-                      NWB Showcase
-                    </Typography>
-                    <Typography>
-                      Sample Neurophysiology experimental data from UCL labs.
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col">
-                    <Typography>
-                      Padraig Gleeson
-                    </Typography>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1}>
-                      <FiberManualRecordIcon color="primary" />
-                      Experimental Data
-                    </Box>
-                    <Box className="tag" display="flex" alignItems="center" paddingX={1}>
-                      <FiberManualRecordIcon color="secondary" />
-                      Modeling
-                    </Box>
-                  </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Box className="col" display="flex" flex={1} alignItems="center">
-                    <Button variant="outlined">
-                      SEE ON GITHUB
-                    </Button>
-                    <ChevronRightIcon />
-                  </Box>
-                </Grid>
-              </Grid>
-
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
+                       { repository.repositoryContentTypes.split(',').map((type, index) =>
+                          <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1} key={type}>
+                            <FiberManualRecordIcon color={ index%2 === 0 ? "primary" : "secondary"} />
+                            {type}
+                          </Box>
+                        )}
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={2}>
+                      <Box className="col" display="flex" flex={1} alignItems="center">
+                        <Button variant="outlined">
+                          SEE ON {repository.repositoryType}
+                        </Button>
+                        <ChevronRightIcon />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                )
+              }
             </Box>
           </Box>
         )
