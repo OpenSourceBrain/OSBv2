@@ -1,7 +1,7 @@
 import base64
 import requests
 
-from workspaces.models import RepositoryResourceNode, RepositoryResource
+from workspaces.models import RepositoryResourceNode, GITRepositoryResource
 
 from .utils import add_to_tree
 
@@ -27,10 +27,16 @@ class GitHubAdapter:
         repo_files = self.api_url + "git" + "/" + "trees" + "/" + context + "?recursive=1"
         contents = requests.get(repo_files).json()
 
-        tree = RepositoryResourceNode(RepositoryResource(name="/"), children=[])
+        tree = RepositoryResourceNode(resource=GITRepositoryResource(name="/"), children=[])
         for git_obj in contents["tree"]:
             download_url = f"{self.download_base_url}{context}/{git_obj['path']}"
-            add_to_tree(tree=tree, download_url=download_url, path=git_obj["path"].split("/"))
+            add_to_tree(
+                tree=tree,
+                tree_path=git_obj["path"].split("/"),
+                path=download_url,
+                sha=git_obj["sha"],
+                ref=context
+            )
 
         return tree
 

@@ -507,8 +507,8 @@ class _WorkspaceResourceDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
-    location: str
     resource_type: str
+    origin: str
 
 
 class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
@@ -520,9 +520,7 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
-    hash: typing.Optional[str]
     workspace_id: typing.Optional[int]
-    osbrepository_id: typing.Optional[int]
 
 
 class TWorkspaceResource(typing_extensions.Protocol):
@@ -534,7 +532,6 @@ class TWorkspaceResource(typing_extensions.Protocol):
     Attrs:
         id: The id of the WorkspaceResource.
         name: WorkspaceResource name
-        location: WorkspaceResource location original location of the resource
         folder: WorkspaceResource folder where the resource will stored in the
             pvc
         status: Resource status:  * a - Available  * e - Error, not available
@@ -545,9 +542,8 @@ class TWorkspaceResource(typing_extensions.Protocol):
             WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
             Generic  * u - Unknown (to be defined)
-        hash: unique hash of this version of the resource
         workspace_id: workspace_id
-        osbrepository_id: osbrepository_id
+        origin: Origin data JSON formatted of the WorkspaceResource
 
     """
 
@@ -559,31 +555,27 @@ class TWorkspaceResource(typing_extensions.Protocol):
     # Model properties
     id: int
     name: str
-    location: str
     folder: typing.Optional[str]
     status: str
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
     resource_type: str
-    hash: typing.Optional[str]
     workspace_id: typing.Optional[int]
-    osbrepository_id: typing.Optional[int]
+    origin: str
 
     def __init__(
         self,
         name: str,
-        location: str,
         resource_type: str,
+        origin: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        hash: typing.Optional[str] = None,
         workspace_id: typing.Optional[int] = None,
-        osbrepository_id: typing.Optional[int] = None,
     ) -> None:
         """
         Construct.
@@ -591,8 +583,6 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
-            location: WorkspaceResource location original location of the
-                resource
             folder: WorkspaceResource folder where the resource will stored in
                 the pvc
             status: Resource status:  * a - Available  * e - Error, not
@@ -604,9 +594,8 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
-            hash: unique hash of this version of the resource
             workspace_id: workspace_id
-            osbrepository_id: osbrepository_id
+            origin: Origin data JSON formatted of the WorkspaceResource
 
         """
         ...
@@ -615,17 +604,15 @@ class TWorkspaceResource(typing_extensions.Protocol):
     def from_dict(
         cls,
         name: str,
-        location: str,
         resource_type: str,
+        origin: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
         status: str = "p",
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        hash: typing.Optional[str] = None,
         workspace_id: typing.Optional[int] = None,
-        osbrepository_id: typing.Optional[int] = None,
     ) -> "TWorkspaceResource":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -633,8 +620,6 @@ class TWorkspaceResource(typing_extensions.Protocol):
         Args:
             id: The id of the WorkspaceResource.
             name: WorkspaceResource name
-            location: WorkspaceResource location original location of the
-                resource
             folder: WorkspaceResource folder where the resource will stored in
                 the pvc
             status: Resource status:  * a - Available  * e - Error, not
@@ -646,9 +631,8 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
-            hash: unique hash of this version of the resource
             workspace_id: workspace_id
-            osbrepository_id: osbrepository_id
+            origin: Origin data JSON formatted of the WorkspaceResource
 
         Returns:
             Model instance based on the dictionary.
@@ -790,7 +774,7 @@ class _OSBRepositoryDictBase(typing_extensions.TypedDict, total=True):
 
     name: str
     repository_type: str
-    repository_content_types: str
+    content_types: str
     auto_sync: bool
     uri: str
 
@@ -799,9 +783,9 @@ class OSBRepositoryDict(_OSBRepositoryDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    user_id: typing.Optional[str]
+    summary: typing.Optional[str]
     default_context: typing.Optional[str]
-    resources: typing.Sequence["WorkspaceResourceDict"]
+    user_id: typing.Optional[str]
 
 
 class TOSBRepository(typing_extensions.Protocol):
@@ -813,16 +797,15 @@ class TOSBRepository(typing_extensions.Protocol):
     Attrs:
         id: The id of the OSBRepository.
         name: Repository name.
+        summary: Summary describing the OSB Repository
         repository_type: Repository type:   * dandi - DANDI repository   *
             figshare - FigShare repository   * github - Github repository
-        repository_content_types: Comma separated set of Repository Content
-            Types
+        content_types: List of Repository Content Types
         auto_sync: Auto sync of the resources
         uri: URI of the repository
-        user_id: Repository keycloak user id, will be automatically be set to
-            the logged in user
         default_context: The default branch to show for this repository
-        resources: Resources linked to the Repository
+        user_id: OSBRepository keycloak user id, will be automatically be set
+            to the logged in user
 
     """
 
@@ -834,25 +817,25 @@ class TOSBRepository(typing_extensions.Protocol):
     # Model properties
     id: int
     name: str
+    summary: typing.Optional[str]
     repository_type: str
-    repository_content_types: str
+    content_types: str
     auto_sync: bool
     uri: str
-    user_id: typing.Optional[str]
     default_context: typing.Optional[str]
-    resources: typing.Sequence["TWorkspaceResource"]
+    user_id: typing.Optional[str]
 
     def __init__(
         self,
         name: str,
         repository_type: str,
-        repository_content_types: str,
+        content_types: str,
         auto_sync: bool,
         uri: str,
         id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
+        summary: typing.Optional[str] = None,
         default_context: typing.Optional[str] = None,
-        resources: typing.Optional[typing.Sequence["TWorkspaceResource"]] = None,
+        user_id: typing.Optional[str] = None,
     ) -> None:
         """
         Construct.
@@ -860,16 +843,15 @@ class TOSBRepository(typing_extensions.Protocol):
         Args:
             id: The id of the OSBRepository.
             name: Repository name.
+            summary: Summary describing the OSB Repository
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
+            content_types: List of Repository Content Types
             auto_sync: Auto sync of the resources
             uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
             default_context: The default branch to show for this repository
-            resources: Resources linked to the Repository
+            user_id: OSBRepository keycloak user id, will be automatically be
+                set to the logged in user
 
         """
         ...
@@ -879,13 +861,13 @@ class TOSBRepository(typing_extensions.Protocol):
         cls,
         name: str,
         repository_type: str,
-        repository_content_types: str,
+        content_types: str,
         auto_sync: bool,
         uri: str,
         id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
+        summary: typing.Optional[str] = None,
         default_context: typing.Optional[str] = None,
-        resources: typing.Optional[typing.Sequence["WorkspaceResourceDict"]] = None,
+        user_id: typing.Optional[str] = None,
     ) -> "TOSBRepository":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -893,16 +875,15 @@ class TOSBRepository(typing_extensions.Protocol):
         Args:
             id: The id of the OSBRepository.
             name: Repository name.
+            summary: Summary describing the OSB Repository
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
+            content_types: List of Repository Content Types
             auto_sync: Auto sync of the resources
             uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
             default_context: The default branch to show for this repository
-            resources: Resources linked to the Repository
+            user_id: OSBRepository keycloak user id, will be automatically be
+                set to the logged in user
 
         Returns:
             Model instance based on the dictionary.

@@ -19,15 +19,13 @@ class WorkspaceResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, location=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, hash=None, workspace_id=None, osbrepository_id=None):  # noqa: E501
+    def __init__(self, id=None, name=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, workspace_id=None, origin=None):  # noqa: E501
         """WorkspaceResource - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceResource.  # noqa: E501
         :type id: int
         :param name: The name of this WorkspaceResource.  # noqa: E501
         :type name: str
-        :param location: The location of this WorkspaceResource.  # noqa: E501
-        :type location: str
         :param folder: The folder of this WorkspaceResource.  # noqa: E501
         :type folder: str
         :param status: The status of this WorkspaceResource.  # noqa: E501
@@ -40,55 +38,47 @@ class WorkspaceResource(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResource.  # noqa: E501
         :type resource_type: ResourceType
-        :param hash: The hash of this WorkspaceResource.  # noqa: E501
-        :type hash: str
         :param workspace_id: The workspace_id of this WorkspaceResource.  # noqa: E501
         :type workspace_id: int
-        :param osbrepository_id: The osbrepository_id of this WorkspaceResource.  # noqa: E501
-        :type osbrepository_id: int
+        :param origin: The origin of this WorkspaceResource.  # noqa: E501
+        :type origin: str
         """
         self.openapi_types = {
             'id': int,
             'name': str,
-            'location': str,
             'folder': str,
             'status': ResourceStatus,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
             'resource_type': ResourceType,
-            'hash': str,
             'workspace_id': int,
-            'osbrepository_id': int
+            'origin': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'name': 'name',
-            'location': 'location',
             'folder': 'folder',
             'status': 'status',
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
             'resource_type': 'resource_type',
-            'hash': 'hash',
             'workspace_id': 'workspace_id',
-            'osbrepository_id': 'osbrepository_id'
+            'origin': 'origin'
         }
 
         self._id = id
         self._name = name
-        self._location = location
         self._folder = folder
         self._status = status
         self._timestamp_created = timestamp_created
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
-        self._hash = hash
         self._workspace_id = workspace_id
-        self._osbrepository_id = osbrepository_id
+        self._origin = origin
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResource':
@@ -146,31 +136,6 @@ class WorkspaceResource(Model):
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
-
-    @property
-    def location(self):
-        """Gets the location of this WorkspaceResource.
-
-        WorkspaceResource location original location of the resource  # noqa: E501
-
-        :return: The location of this WorkspaceResource.
-        :rtype: str
-        """
-        return self._location
-
-    @location.setter
-    def location(self, location):
-        """Sets the location of this WorkspaceResource.
-
-        WorkspaceResource location original location of the resource  # noqa: E501
-
-        :param location: The location of this WorkspaceResource.
-        :type location: str
-        """
-        if location is None:
-            raise ValueError("Invalid value for `location`, must not be `None`")  # noqa: E501
-
-        self._location = location
 
     @property
     def folder(self):
@@ -309,29 +274,6 @@ class WorkspaceResource(Model):
         self._resource_type = resource_type
 
     @property
-    def hash(self):
-        """Gets the hash of this WorkspaceResource.
-
-        unique hash of this version of the resource  # noqa: E501
-
-        :return: The hash of this WorkspaceResource.
-        :rtype: str
-        """
-        return self._hash
-
-    @hash.setter
-    def hash(self, hash):
-        """Sets the hash of this WorkspaceResource.
-
-        unique hash of this version of the resource  # noqa: E501
-
-        :param hash: The hash of this WorkspaceResource.
-        :type hash: str
-        """
-
-        self._hash = hash
-
-    @property
     def workspace_id(self):
         """Gets the workspace_id of this WorkspaceResource.
 
@@ -355,24 +297,26 @@ class WorkspaceResource(Model):
         self._workspace_id = workspace_id
 
     @property
-    def osbrepository_id(self):
-        """Gets the osbrepository_id of this WorkspaceResource.
+    def origin(self):
+        """Gets the origin of this WorkspaceResource.
 
-        osbrepository_id  # noqa: E501
+        Origin data JSON formatted of the WorkspaceResource  # noqa: E501
 
-        :return: The osbrepository_id of this WorkspaceResource.
-        :rtype: int
+        :return: The origin of this WorkspaceResource.
+        :rtype: str
         """
-        return self._osbrepository_id
+        return self._origin
 
-    @osbrepository_id.setter
-    def osbrepository_id(self, osbrepository_id):
-        """Sets the osbrepository_id of this WorkspaceResource.
+    @origin.setter
+    def origin(self, origin):
+        """Sets the origin of this WorkspaceResource.
 
-        osbrepository_id  # noqa: E501
+        Origin data JSON formatted of the WorkspaceResource  # noqa: E501
 
-        :param osbrepository_id: The osbrepository_id of this WorkspaceResource.
-        :type osbrepository_id: int
+        :param origin: The origin of this WorkspaceResource.
+        :type origin: str
         """
+        if origin is None:
+            raise ValueError("Invalid value for `origin`, must not be `None`")  # noqa: E501
 
-        self._osbrepository_id = osbrepository_id
+        self._origin = origin

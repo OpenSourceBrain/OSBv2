@@ -1,6 +1,16 @@
+from workspaces.models.user import User
 import workspaces.service.osbrepository.osbrepository as repository_service
 from workspaces.repository.model_repository import OSBRepositoryRepository
-from workspaces.models.osb_repository import OSBRepository
+from workspaces.auth import auth_client
+
+
+def post(body):
+    content_types = ""
+    for ct in body["content_types_list"]:
+        content_types += f",{ct}"
+    body.update({"content_types": content_types.strip(",")})
+    del body["content_types_list"]
+    OSBRepositoryRepository().post(body)
 
 
 def get_contexts(uri=None, repository_type=None, **kwargs):
@@ -29,4 +39,5 @@ def get(id_=None, context=None, **kwargs):
         osbrepository=osbrepository,
         context=context)  # use context to get the files
     })
+    repository.update({"user": osbrepository.user})
     return repository, 200

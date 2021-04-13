@@ -5,6 +5,12 @@ from ..config import Config
 logger = logging.getLogger(Config.APP_NAME)
 
 
+def row2dict(row):
+    d = row.__dict__
+    d.pop('_sa_instance_state', None)
+    return d
+
+
 class BaseModelView(MethodView):
     """Generic base class for handling REST API endpoints."""
 
@@ -29,7 +35,7 @@ class BaseModelView(MethodView):
                                                             per_page=per_page,
                                                             *args,
                                                             **kwargs)
-        obj_dicts = map(lambda obj: obj.to_dict(), objects.items)
+        obj_dicts = map(lambda obj: row2dict(obj), objects.items)
         return {"pagination": {
             "current_page": page,
             "number_of_pages": total_pages,

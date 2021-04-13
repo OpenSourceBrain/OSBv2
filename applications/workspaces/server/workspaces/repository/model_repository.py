@@ -21,7 +21,7 @@ from .models import Workspace, VolumeStorage, \
 from .utils import *
 from ..service.kubernetes import create_persistent_volume_claim
 
-from workspaces.models.repository_content_type import RepositoryContentType
+from workspaces.models import RepositoryContentType, User
 
 
 repository_content_type_enum = get_class_attr_val(RepositoryContentType())
@@ -35,7 +35,7 @@ class OwnerModel():
             return auth_client.get_current_user().get('id', None)
         except:
             # TODO: for debugging purpose remove this and return "-1"
-            return "80a361f1-221e-4b4d-8440-0ba0b6ec32ef"
+            return auth_client.get_users()[0]["id"]
 
     def pre_commit(self, obj):
         logger.debug(f'Pre Commit for {obj} id: {obj.id}')
@@ -117,13 +117,23 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepository
+    calculated_fields = ["user", "content_types_list"]
 
-    def pre_commit(self, osb_repository):
-        osb_repository = super().pre_commit(osb_repository)
-        for value in osb_repository.repository_content_types.split(","):
-            if value not in repository_content_type_enum.values():
-                raise Exception("Invalid value in Repository Content Types")
-        return osb_repository
+    def user(self, repository):
+        try:
+            user = auth_client.get_user(repository.user_id)
+            return User(
+                id=user.get("id",""),
+                first_name=user.get("firstName",""),
+                last_name=user.get("lastName",""),
+                username=user.get("username",""),
+                email=user.get("email","")
+            )
+        except:
+            return User()
+
+    def content_types_list(self, repository):
+        return repository.content_types.split(",")
 
 
 class VolumeStorageRepository(BaseModelRepository):
@@ -159,10 +169,6 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 workspace_resource.location)
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
-        if workspace_resource.osbrepository_id > 0:
-            osbrepository = OSBRepositoryRepository().get(id=workspace_resource.osbrepository_id)
-            osbrepository_service = get_repository_service(osbrepository=osbrepository)
-            workspace_resource.hash = osbrepository_service.get_latest_hash(workspace_resource.location)
         return workspace_resource
 
     def post_commit(self, workspace_resource: TWorkspaceResource):

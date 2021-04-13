@@ -1,8 +1,7 @@
-from flask import current_app
-from sqlalchemy.sql import func
-from ..repository.model_repository import WorkspaceRepository, WorkspaceResourceRepository
-from ..repository.database import db
-from ..repository.models import WorkspaceResource
+import json
+from workspaces.repository.model_repository import WorkspaceRepository, WorkspaceResourceRepository
+from workspaces.repository.models import WorkspaceResource
+from workspaces.models import WorkspaceResource as WorkspaceResourceDTO
 
 
 def open(id_=None, **kwargs):
@@ -13,3 +12,10 @@ def open(id_=None, **kwargs):
         return f"WorkspaceResource with id {id_} not found.", 404
 
     return wsrr.open(workspace_resource)
+
+def post(body):
+    wsr = WorkspaceResourceDTO(**body)
+    origin = json.dumps(body.get("origin", None))
+    wsr.origin = origin
+    wsr = wsr.to_dict()
+    WorkspaceResourceRepository().post(wsr)
