@@ -10,7 +10,7 @@ export const vars = lessToJs(require('!!raw-loader!./css/variables.less'), { res
 vars.gutter = vars.gutter.replace('px', '') * 1;
 
 export const {
-  primaryColor, secondaryColor, font, fontColor,
+  primaryColor, secondaryColor, font, fontColor, linkColor, teal, purple, bgLightest, paragraph, bgLightestShade,
   bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius
 } = vars;
 
