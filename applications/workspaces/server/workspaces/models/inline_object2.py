@@ -6,11 +6,11 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.one_of_repository_resource_download_resource import OneOfRepositoryResourceDownloadResource
+from workspaces.models.resource_origin import ResourceOrigin
 from workspaces.models.resource_type import ResourceType
 from workspaces import util
 
-from workspaces.models.one_of_repository_resource_download_resource import OneOfRepositoryResourceDownloadResource  # noqa: E501
+from workspaces.models.resource_origin import ResourceOrigin  # noqa: E501
 from workspaces.models.resource_type import ResourceType  # noqa: E501
 
 class InlineObject2(Model):
@@ -31,14 +31,14 @@ class InlineObject2(Model):
         :param workspace_id: The workspace_id of this InlineObject2.  # noqa: E501
         :type workspace_id: int
         :param origin: The origin of this InlineObject2.  # noqa: E501
-        :type origin: OneOfRepositoryResourceDownloadResource
+        :type origin: ResourceOrigin
         """
         self.openapi_types = {
             'name': str,
             'folder': str,
             'resource_type': ResourceType,
             'workspace_id': int,
-            'origin': OneOfRepositoryResourceDownloadResource
+            'origin': ResourceOrigin
         }
 
         self.attribute_map = {
@@ -160,10 +160,9 @@ class InlineObject2(Model):
     def origin(self):
         """Gets the origin of this InlineObject2.
 
-        optional Resource where the WorkspaceResource is build from  # noqa: E501
 
         :return: The origin of this InlineObject2.
-        :rtype: OneOfRepositoryResourceDownloadResource
+        :rtype: ResourceOrigin
         """
         return self._origin
 
@@ -171,10 +170,9 @@ class InlineObject2(Model):
     def origin(self, origin):
         """Sets the origin of this InlineObject2.
 
-        optional Resource where the WorkspaceResource is build from  # noqa: E501
 
         :param origin: The origin of this InlineObject2.
-        :type origin: OneOfRepositoryResourceDownloadResource
+        :type origin: ResourceOrigin
         """
 
         self._origin = origin
