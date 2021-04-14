@@ -272,25 +272,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  description: WorkspaceResource name
-                  type: string
-                  example: Workspace Resource One
-                folder:
-                  description: WorkspaceResource folder where the resource will stored in the pvc
-                  type: string
-                  example: Workspace Resource One
-                resource_type:
-                  description: WorkspaceResource type
-                  $ref: "#/components/schemas/ResourceType"
-                workspace_id:
-                  description: workspace_id
-                  type: integer
-                origin:
-                  description: optional Resource where the WorkspaceResource is build from
-                  $ref: "#/components/schemas/ResourceOrigin"
+              $ref: "#/components/schemas/WorkspaceResourceExtended"
       responses:
         201:
           description: Save successful.
@@ -422,17 +404,7 @@ paths:
                   osbrepositories:
                     type: array
                     items:
-                      allOf:
-                        - $ref: "#/components/schemas/OSBRepository"
-                        - description: content Types
-                          type: object
-                          properties:
-                            content_types_list:
-                              type: array
-                              items:
-                                $ref: "#/components/schemas/RepositoryContentType"
-                            user:
-                              $ref: "#/components/schemas/User"
+                      $ref: "#/components/schemas/OSBRepositoryExtended"
     post:
       tags:
         - rest
@@ -446,15 +418,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/OSBRepository"
-                - description: content Types
-                  type: object
-                  properties:
-                    content_types_list:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/RepositoryContentType"
+              $ref: "#/components/schemas/OSBRepositoryExtended"
       responses:
         201:
           description: Save successful.
@@ -518,25 +482,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/OSBRepository"
-                  - description: Repository
-                    type: object
-                    properties:
-                      context_resources:
-                        description: List of repository resources
-                        type: array
-                        items:
-                          allOf:
-                            - $ref: "#/components/schemas/RepositoryResourceNode"
-                      contexts:
-                        description: List of repository contexts
-                        type: array
-                        items:
-                            type: string
-                      description:
-                        description: Repository description
-                        type: string
+                $ref: "#/components/schemas/OSBRepositoryExtended"
         404:
           description: The repository was not found.
       tags:
@@ -867,6 +813,26 @@ components:
           example: Workspace Tag One
       required:
         - tag
+    WorkspaceResourceExtended:
+      type: object
+      properties:
+        name:
+          description: WorkspaceResource name
+          type: string
+          example: Workspace Resource One
+        folder:
+          description: WorkspaceResource folder where the resource will stored in the pvc
+          type: string
+          example: Workspace Resource One
+        resource_type:
+          description: WorkspaceResource type
+          $ref: "#/components/schemas/ResourceType"
+        workspace_id:
+          description: workspace_id
+          type: integer
+        origin:
+          description: optional Resource where the WorkspaceResource is build from
+          $ref: "#/components/schemas/ResourceOrigin"      
     WorkspaceResource:
       description: Workspace Resource item of a Workspace
       type: object
@@ -930,14 +896,13 @@ components:
           example: Storage Volume One
       required:
         - name
-    OSBRepository:
-      description: OSB Repository model
+    OSBRepositoryBase:
+      description: OSB Repository Base model
       type: object
-      x-tablename: osbrepository
       properties:
         id:
           description: Unique identifier of the repository
-          $ref: "#/components/schemas/PrimaryKey"        
+          $ref: "#/components/schemas/PrimaryKey"
         name:
           description: Repository name.
           type: string
@@ -974,6 +939,40 @@ components:
         - content_types
         - auto_sync
         - uri
+    OSBRepository:
+      description: OSB Repository model
+      allOf:
+        - $ref: '#/components/schemas/OSBRepositoryBase'
+        - x-tablename: osbrepository
+    OSBRepositoryExtended:
+      description: OSBRepository extended
+      allOf:
+        - $ref: "#/components/schemas/OSBRepositoryBase"
+        - description: extra attributes
+          type: object
+          properties:
+            context_resources:
+              type: array
+              items:
+                $ref: "#/components/schemas/RepositoryResourceNode"
+            contexts:
+              type: array
+              items:
+                type: string
+            user:
+              $ref: "#/components/schemas/User"
+            content_types_list:
+              type: array
+              items:
+                $ref: "#/components/schemas/RepositoryContentType"
+            description:
+              description: Repository description
+              type: string
+            timestamp_modified:
+              description: Date/time the OSBReposity is last modified
+              type: string
+              format: 'date-time'
+              example: 2019-11-23T01:23:45Z        
     ResourceBase:
       description: Resource Base
       type: object

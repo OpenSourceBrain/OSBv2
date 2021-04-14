@@ -792,7 +792,7 @@ class TOSBRepository(typing_extensions.Protocol):
     """
     SQLAlchemy model protocol.
 
-    OSB Repository model
+    OSB Repository Base model
 
     Attrs:
         id: The id of the OSBRepository.

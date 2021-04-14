@@ -1,8 +1,8 @@
-from workspaces.models.user import User
-import workspaces.service.osbrepository.osbrepository as repository_service
 from workspaces.repository.model_repository import OSBRepositoryRepository
-from workspaces.auth import auth_client
+from workspaces.repository.models import OSBRepository
+import workspaces.service.osbrepository.osbrepository as repository_service
 from workspaces.views.api.rest_api_views import OsbrepositoryView
+from workspaces.models import OSBRepositoryExtended
 
 
 def post(body):
@@ -22,23 +22,20 @@ def get_contexts(uri=None, repository_type=None, **kwargs):
 
 def get(id_=None, context=None, **kwargs):
     # get the repository
-    rr = OSBRepositoryRepository()
-    osbrepository = rr.get(id=id_)
-    if osbrepository is None:
+    osbrepository_ext = OsbrepositoryView().get(id_=id_)
+    if osbrepository_ext is None:
         return f"OSBRepository with id {id_} not found.", 404
 
-    repository = osbrepository.to_dict()
-    repository.update({"context_resources": repository_service.get_resources(
-        osbrepository=osbrepository,
+    osbrepository_ext.update({"context_resources": repository_service.get_resources(
+        osbrepository=osbrepository_ext,
         context=context)  # use context to get the files
     })
-    repository.update({"contexts": repository_service.get_contexts(
-        repository_type=osbrepository.repository_type,
-        uri=osbrepository.uri)
+    osbrepository_ext.update({"contexts": repository_service.get_contexts(
+        repository_type=osbrepository_ext.get("repository_type"),
+        uri=osbrepository_ext.get("uri"))
     })
-    repository.update({"description": repository_service.get_description(
-        osbrepository=osbrepository,
+    osbrepository_ext.update({"description": repository_service.get_description(
+        osbrepository=osbrepository_ext,
         context=context)  # use context to get the files
     })
-    repository.update({"user": osbrepository.user})
-    return repository, 200
+    return osbrepository_ext, 200
