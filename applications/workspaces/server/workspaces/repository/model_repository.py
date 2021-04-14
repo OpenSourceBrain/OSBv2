@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 from cloudharness import log as logger
 from cloudharness.service import pvc
 from workspaces import repository
-from workspaces.service.osbrepository.osbrepository import copy_resource
+from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 
 from ..auth import auth_client
 from ..config import Config
@@ -183,23 +183,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
             workspace_resource.folder = workspace_resource.name
 
         if workspace is not None and workspace_resource.status == 'p' and workspace_resource.origin and len(workspace_resource.origin)>0:
-            origin = json.loads(workspace_resource.origin)
-            osbrepository_id = origin.get("osbrepository_id", None)
-            if osbrepository_id:
-                # repository resource based workspace resource
-                osbrepository = OSBRepositoryRepository().get(id=osbrepository_id)
-                repository_service = copy_resource(osbrepository=osbrepository, origin=origin)
-                pass
-            path = origin.get("path", "")
-            logger.debug('Starting resource ETL from %s',
-                         path)
-            try:
-                from ..service.workflow import add_resource
-                add_resource(workspace, workspace_resource)
-            except Exception as e:
-                logger.error(
-                    "An error occurred while adding the default resource to the workspace", exc_info=True)
-                return workspace_resource
+            copy_workspace_resource(workspace_resource)
         return workspace_resource
 
     def post_get(self, workspace_resource):
@@ -224,13 +208,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def delete(self, id):
         """Delete an object from the repository."""
-        resource: TWorkspaceResource = self.get(id)
+        workspace_resource: TWorkspaceResource = self.get(id)
         super().delete(id)
 
-        try:
-            from ..service.workflow import delete_resource
-            delete_resource(resource.workspace_id, resource.folder)
-        except Exception as e:
-            logger.error(
-                "An error occurred while deleting resource from the workspace", exc_info=True)
-            return None
+        delete_workspace_resource(workspace_resource)

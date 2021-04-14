@@ -2,10 +2,10 @@ import mimetypes
 import os
 
 from pathlib import Path
-from flask import current_app
-from ..config import Config
-from ..repository.model_repository import WorkspaceRepository, WorkspaceImageRepository, db
-from ..repository.models import WorkspaceImage
+from cloudharness import log as logger
+from workspaces.config import Config
+from workspaces.repository.model_repository import WorkspaceRepository, WorkspaceImageRepository, db
+from workspaces.repository.models import WorkspaceImage
 
 
 def _save_image(id_=None, image=None, filename_base=None):
@@ -83,6 +83,6 @@ def delimage(id_=None, image_id=None, **kwargs):
         filename = os.path.join(Config.STATIC_DIR, wsi.image)
         os.remove(filename)
     except Exception as e:
-        current_app.logger.info(
+        logger.info(
             f"Failed removing image {wsi.image} from filesystem.")
     return result

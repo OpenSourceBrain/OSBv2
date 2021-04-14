@@ -6,8 +6,7 @@ from .database import db
 
 from open_alchemy.models import Workspace
 from sqlalchemy.sql import func
-
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
 
 
 def insert_base_fixtures(app):

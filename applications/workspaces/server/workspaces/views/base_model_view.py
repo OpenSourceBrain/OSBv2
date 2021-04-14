@@ -1,8 +1,6 @@
 """Model base class"""
 from flask.views import MethodView
-import logging
-from ..config import Config
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
 
 
 def row2dict(row):

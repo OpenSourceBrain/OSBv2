@@ -1,10 +1,4 @@
-import logging
-import os
-
-from ..config import Config
-from ..repository.model_repository import WorkspaceRepository
-from ..repository.models import TWorkspace
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
 
 try:
     from cloudharness.workflows import operations, tasks
@@ -14,12 +8,11 @@ except Exception as e:
                  e)
 
 
-def delete_resource(workspace_id, resource_path: str):
+def delete_resource(workspace_resource, pvc_name, resource_path: str):
     resources = {'requests': {'memory': '25Mi', 'cpu': '10m'},
                  'limits': {'memory': '512Mi', 'cpu': '100m'}}
 
-    workspace_pvc_name = WorkspaceRepository().get_pvc_name(workspace_id)
-    shared_directory = f'{workspace_pvc_name}:/project_download'
+    shared_directory = f'{pvc_name}:/project_download'
 
     delete_task = tasks.CommandBasedTask(name='osb-delete-resource',
                                          command=['rm', '-Rf', "project_download/" + resource_path])
@@ -28,31 +21,30 @@ def delete_resource(workspace_id, resource_path: str):
                                       tasks=(delete_task,),
                                       shared_directory=shared_directory,
                                       pod_context=operations.PodExecutionContext(
-                                          'workspace', workspace_id),
+                                          'workspace', workspace_resource.workspace_id),
                                       )
     workflow = op.execute()
 
 
-def add_resource(workspace: TWorkspace, workspace_resource):
+def download_workspace_resource(workspace_resource, pvc_name, path, folder):
     resources = {'requests': {'memory': '256Mi', 'cpu': '10m'},
                  'limits': {'memory': '512Mi', 'cpu': '100m'}}
 
-    workspace_pvc_name = WorkspaceRepository().get_pvc_name(workspace.id)
-    shared_directory = f'{workspace_pvc_name}:/project_download'
+    shared_directory = f'{pvc_name}:/project_download'
 
     download_task = tasks.CustomTask(name='osb-download-file',
                                      image_name='workflows-extract-download',
-                                     url=workspace_resource.location,
+                                     url=path,
                                      shared_directory=shared_directory,
-                                     folder=workspace_resource.folder)
+                                     folder=folder)
 
     op = operations.PipelineOperation(basename=f'osb-download-file-job',
                                       tasks=(download_task,),
                                       shared_directory=shared_directory,
-                                      folder=workspace_resource.folder,
+                                      folder=folder,
                                       pod_context=operations.PodExecutionContext(
-                                          'workspace', workspace.id),
-                                      on_exit_notify={'queue': 'osb-download-file-queue',
-                                                      'payload': str(workspace_resource.id)}
+                                          'workspace', workspace_resource.workspace_id),
+                                      on_exit_notify={'queue': "osb-download-file-queue",
+                                                      'payload': workspace_resource.id}
                                       )
     workflow = op.execute()

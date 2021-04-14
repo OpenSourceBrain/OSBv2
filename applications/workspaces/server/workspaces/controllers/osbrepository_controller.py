@@ -2,6 +2,7 @@ from workspaces.models.user import User
 import workspaces.service.osbrepository.osbrepository as repository_service
 from workspaces.repository.model_repository import OSBRepositoryRepository
 from workspaces.auth import auth_client
+from workspaces.views.api.rest_api_views import OsbrepositoryView
 
 
 def post(body):
@@ -10,7 +11,7 @@ def post(body):
         content_types += f",{ct}"
     body.update({"content_types": content_types.strip(",")})
     del body["content_types_list"]
-    OSBRepositoryRepository().post(body)
+    return OsbrepositoryView().post(body)
 
 
 def get_contexts(uri=None, repository_type=None, **kwargs):

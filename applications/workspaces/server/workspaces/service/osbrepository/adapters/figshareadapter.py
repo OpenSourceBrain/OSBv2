@@ -1,11 +1,7 @@
-import cloudharness
-import requests
-
+from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, RepositoryResource, FigshareRepositoryResource
 
 from .utils import add_to_tree
-
-logger = cloudharness.log
 
 
 class FigShareAdapter:

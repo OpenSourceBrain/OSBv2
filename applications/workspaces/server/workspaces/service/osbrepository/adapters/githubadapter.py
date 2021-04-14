@@ -1,12 +1,10 @@
 import base64
 import requests
-import cloudharness
 
+from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, GITRepositoryResource
 
 from .utils import add_to_tree
-
-logger = cloudharness.log
 
 
 def _clean_url_and_end_with_slash(url):

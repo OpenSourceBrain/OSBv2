@@ -20,4 +20,4 @@ def post(body):
     body.update({
         "origin": json.dumps(body.get("origin", None))
     })
-    WorkspaceresourceView().post(body)
+    return WorkspaceresourceView().post(body)
