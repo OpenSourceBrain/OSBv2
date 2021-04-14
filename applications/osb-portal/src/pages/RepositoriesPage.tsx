@@ -21,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       height: '3.5rem',
       justifyContent: 'space-between',
-      '& .MuiButtonBase-root': {
+      '& .MuiButton-contained': {
+        minWidth: '11.5rem',
+        marginRight: '2.125rem',
         '&:hover': {
           '& .MuiButton-label': {
             color: primaryColor,
@@ -96,6 +98,10 @@ const useStyles = makeStyles((theme) => ({
         },
       },
       '& .row': {
+        '& .MuiButtonBase-root': {
+          minWidth: '11.5rem',
+          marginRight: theme.spacing(1),
+        },
         '&:hover': {
           backgroundColor: bgRegular,
           cursor: 'pointer',
@@ -160,6 +166,18 @@ const mockRepositoryData = [
   }
 ]
 
+const myRepositoryData = [
+  {
+    id: 1, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
+  },
+  {
+    id: 2, name: 'HNN model', repositoryType: 'Dandi', repositoryContentTypes: 'Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Netpyne definition of the hnn model from Dura-Bernal lab at State University of New York.', userId: 'Salvador Dura-Bernal'
+  },
+  {
+    id: 3, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'FigShare', repositoryContentTypes: 'Experimental Data', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'The nanoscale topographical arrangement of voltage-gated calcium channels (VGCC) and synaptic vesicles (SVs) determines synaptic strength and plasticity, but whether distinct spatial distributions underpin diversity of synaptic function is unknown. We performed single bouton Ca2+ imaging, Ca2+ chelator competition, immunogold electron microscopic (EM) localization of VGCC', userId: 'Padraig Gleeson'
+  },
+]
+
 export const RepositoriesPage = () => {
   const classes = useStyles();
   const [repositories, setRepositories] = useState(mockRepositoryData);
@@ -167,6 +185,7 @@ export const RepositoriesPage = () => {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event: any, newValue: number) => {
     setTabValue(newValue);
+    setRepositories(newValue === 1 ? myRepositoryData : mockRepositoryData);
   }
 
   // ToDo use OSBrepository once api starts working
@@ -182,24 +201,30 @@ export const RepositoriesPage = () => {
         repositories && (
           <Box className={classes.root}>
             <Box className="subheader" paddingX={3}>
-              <Tabs
-                value={tabValue}
-                textColor="primary"
-                indicatorColor="primary"
-                onChange={handleTabChange}
-              >
-                <Tab label={<Typography>All repositories</Typography>} />
-                <Tab label={<Typography>My repositories</Typography>} />
-              </Tabs>
-              <Button variant="contained" disableElevation color="primary">
-                <AddIcon />
-                ADD REPOSITORY
-              </Button>
+              <Grid container spacing={0} alignItems="center">
+                <Grid item xs={12} sm={6}>
+                  <Tabs
+                  value={tabValue}
+                  textColor="primary"
+                  indicatorColor="primary"
+                  onChange={handleTabChange}
+                >
+                  <Tab label="All repositories" />
+                  <Tab label="My repositories" />
+                </Tabs>
+                </Grid>
+                <Grid item xs={12} sm={6} justify="flex-end">
+                  <Button variant="contained" disableElevation color="primary">
+                    <AddIcon />
+                    ADD REPOSITORY
+                  </Button>
+                </Grid>
+              </Grid>
             </Box>
 
             <Box className="repository-data">
               {
-                mockRepositoryData.map((repository) =>
+                repositories.map((repository) =>
                   <Grid container spacing={0} alignItems="center" className="row" key={repository.id}>
                     <Grid item xs={12} sm={4}>
                       <Box className="col">
@@ -219,7 +244,7 @@ export const RepositoriesPage = () => {
                       </Box>
 
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={3}>
                       <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
                        { repository.repositoryContentTypes.split(',').map((type, index) =>
                           <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1} key={type}>
@@ -229,7 +254,7 @@ export const RepositoriesPage = () => {
                         )}
                       </Box>
                     </Grid>
-                    <Grid item xs={12} sm={2}>
+                    <Grid item xs={12} sm={3}>
                       <Box className="col" display="flex" flex={1} alignItems="center">
                         <Button variant="outlined" onClick={() => openRepoUrl(repository.uri)}>
                           SEE ON {repository.repositoryType}
