@@ -9,6 +9,8 @@ import AddIcon from '@material-ui/icons/Add';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Grid from '@material-ui/core/Grid';
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import { bgRegular, linkColor, primaryColor, teal, purple, bgLightest, fontColor, paragraph, bgLightestShade } from "../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -162,6 +164,10 @@ export const RepositoriesPage = () => {
   const classes = useStyles();
   const [repositories, setRepositories] = useState(mockRepositoryData);
   const openRepoUrl = (uri: string) => window.open(uri, "_blank")
+  const [tabValue, setTabValue] = useState(0);
+  const handleTabChange = (event: any, newValue: number) => {
+    setTabValue(newValue);
+  }
 
   // ToDo use OSBrepository once api starts working
   // const [page, setPage] = React.useState(0);
@@ -176,7 +182,15 @@ export const RepositoriesPage = () => {
         repositories && (
           <Box className={classes.root}>
             <Box className="subheader" paddingX={3}>
-              <Typography>All Repositories</Typography>
+              <Tabs
+                value={tabValue}
+                textColor="primary"
+                indicatorColor="primary"
+                onChange={handleTabChange}
+              >
+                <Tab label={<Typography>All repositories</Typography>} />
+                <Tab label={<Typography>My repositories</Typography>} />
+              </Tabs>
               <Button variant="contained" disableElevation color="primary">
                 <AddIcon />
                 ADD REPOSITORY
