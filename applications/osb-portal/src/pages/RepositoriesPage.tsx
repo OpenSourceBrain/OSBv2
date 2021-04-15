@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { bgRegular, linkColor, primaryColor, teal, purple, bgLightest, fontColor, paragraph, bgLightestShade } from "../theme";
+import { AddRepoDialog } from "../components/repository/AddRepoDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -187,7 +188,8 @@ export const RepositoriesPage = () => {
     setTabValue(newValue);
     setRepositories(newValue === 1 ? myRepositoryData : mockRepositoryData);
   }
-
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const openDialog = () => setDialogOpen(true)
   // ToDo use OSBrepository once api starts working
   // const [page, setPage] = React.useState(0);
   //const [repositories, setRepositories] = React.useState<OSBRepository[]>();
@@ -214,7 +216,7 @@ export const RepositoriesPage = () => {
                 </Tabs>
                 </Grid>
                 <Grid item xs={12} sm={6} justify="flex-end">
-                  <Button variant="contained" disableElevation color="primary">
+                  <Button variant="contained" disableElevation color="primary" onClick={openDialog}>
                     <AddIcon />
                     ADD REPOSITORY
                   </Button>
@@ -269,6 +271,7 @@ export const RepositoriesPage = () => {
           </Box>
         )
       }
+      <AddRepoDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
     </>
   );
 };
