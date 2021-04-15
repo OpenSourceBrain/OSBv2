@@ -14,41 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Figshare repository
+ * Workspace Collaborator of a workspace
  * @export
- * @interface FigshareRepository
+ * @interface WorkspaceCollaborator
  */
-export interface FigshareRepository {
+export interface WorkspaceCollaborator {
     /**
      * 
      * @type {number}
-     * @memberof FigshareRepository
+     * @memberof WorkspaceCollaborator
      */
     id?: number;
     /**
-     * URL of the figshare repository
+     * Workspace Collaborator keycloak user id
      * @type {string}
-     * @memberof FigshareRepository
+     * @memberof WorkspaceCollaborator
      */
-    url: string;
+    userId: string;
 }
 
-export function FigshareRepositoryFromJSON(json: any): FigshareRepository {
-    return FigshareRepositoryFromJSONTyped(json, false);
+export function WorkspaceCollaboratorFromJSON(json: any): WorkspaceCollaborator {
+    return WorkspaceCollaboratorFromJSONTyped(json, false);
 }
 
-export function FigshareRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boolean): FigshareRepository {
+export function WorkspaceCollaboratorFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceCollaborator {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'url': json['url'],
+        'userId': json['user_id'],
     };
 }
 
-export function FigshareRepositoryToJSON(value?: FigshareRepository | null): any {
+export function WorkspaceCollaboratorToJSON(value?: WorkspaceCollaborator | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +58,7 @@ export function FigshareRepositoryToJSON(value?: FigshareRepository | null): any
     return {
         
         'id': value.id,
-        'url': value.url,
+        'user_id': value.userId,
     };
 }
 

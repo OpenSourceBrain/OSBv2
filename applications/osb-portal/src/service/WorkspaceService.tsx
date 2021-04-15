@@ -82,8 +82,8 @@ class WorkspaceService {
   }
 
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
-    const wspr: workspaceApi.WorkspacesControllerWorkspaceSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };
-    await this.workspacesApi.workspacesControllerWorkspaceSetthumbnail(wspr);
+    const wspr: workspaceApi.WorkspacesControllersWorkspaceControllerSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };
+    await this.workspacesApi.workspacesControllersWorkspaceControllerSetthumbnail(wspr);
   };
 }
 
@@ -92,13 +92,13 @@ class WorkspaceService {
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
-  const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g, location: '' };
+  const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
 
   return {
     ...workspace,
     resources,
     lastOpen,
-    owner: workspace.owner,
+    userId: workspace.userId,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
   }

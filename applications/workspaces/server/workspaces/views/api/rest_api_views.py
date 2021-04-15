@@ -18,8 +18,13 @@ class WorkspaceView(BaseModelView):
 
     def get(self, id_):
         workspace = super().get(id_)
-        for r in workspace.get("resources", []):
-            r.update({"origin": json.loads(r.get("origin"))})
+        if len(workspace) > 2:
+            resources = workspace.get("resources")
+            if resources:
+                for r in resources:
+                    r.update({"origin": json.loads(r.get("origin"))})
+            else:
+                workspace.update({"resources": []})
         return workspace
 
 class OsbrepositoryView(BaseModelView):
@@ -46,5 +51,6 @@ class WorkspaceresourceView(BaseModelView):
 
     def get(self, id_):
         workspace_resource = super().get(id_)
-        workspace_resource.update({"origin": json.loads(workspace_resource.get("origin"))})
+        if len(workspace_resource) > 2:
+            workspace_resource.update({"origin": json.loads(workspace_resource.get("origin"))})
         return workspace_resource

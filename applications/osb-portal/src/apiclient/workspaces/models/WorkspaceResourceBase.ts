@@ -14,10 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    ResourceOrigin,
-    ResourceOriginFromJSON,
-    ResourceOriginFromJSONTyped,
-    ResourceOriginToJSON,
     ResourceStatus,
     ResourceStatusFromJSON,
     ResourceStatusFromJSONTyped,
@@ -26,89 +22,69 @@ import {
     ResourceTypeFromJSON,
     ResourceTypeFromJSONTyped,
     ResourceTypeToJSON,
-    WorkspaceResourceAllOf,
-    WorkspaceResourceAllOfFromJSON,
-    WorkspaceResourceAllOfFromJSONTyped,
-    WorkspaceResourceAllOfToJSON,
-    WorkspaceResourceBase,
-    WorkspaceResourceBaseFromJSON,
-    WorkspaceResourceBaseFromJSONTyped,
-    WorkspaceResourceBaseToJSON,
 } from './';
 
 /**
- * Workspace Resource item of a Workspace
+ * 
  * @export
- * @interface WorkspaceResource
+ * @interface WorkspaceResourceBase
  */
-export interface WorkspaceResource {
+export interface WorkspaceResourceBase {
     /**
      * 
      * @type {number}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     id?: number;
     /**
      * WorkspaceResource name
      * @type {string}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     name: string;
     /**
      * WorkspaceResource folder where the resource will stored in the pvc
      * @type {string}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     folder?: string;
     /**
      * 
      * @type {ResourceStatus}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     status?: ResourceStatus;
     /**
      * Date/time of creation of the WorkspaceResource
      * @type {Date}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     timestampCreated?: Date;
     /**
      * Date/time of last updating of the WorkspaceResource
      * @type {Date}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     timestampUpdated?: Date;
     /**
      * Date/time of last opening of the WorkspaceResource
      * @type {Date}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     timestampLastOpened?: Date;
     /**
      * 
      * @type {ResourceType}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceBase
      */
     resourceType: ResourceType;
-    /**
-     * workspace_id
-     * @type {number}
-     * @memberof WorkspaceResource
-     */
-    workspaceId?: number;
-    /**
-     * 
-     * @type {ResourceOrigin}
-     * @memberof WorkspaceResource
-     */
-    origin?: ResourceOrigin;
 }
 
-export function WorkspaceResourceFromJSON(json: any): WorkspaceResource {
-    return WorkspaceResourceFromJSONTyped(json, false);
+export function WorkspaceResourceBaseFromJSON(json: any): WorkspaceResourceBase {
+    return WorkspaceResourceBaseFromJSONTyped(json, false);
 }
 
-export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceResource {
+export function WorkspaceResourceBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceResourceBase {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -122,12 +98,10 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
-        'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
-        'origin': !exists(json, 'origin') ? undefined : ResourceOriginFromJSON(json['origin']),
     };
 }
 
-export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
+export function WorkspaceResourceBaseToJSON(value?: WorkspaceResourceBase | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -144,8 +118,6 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
-        'workspace_id': value.workspaceId,
-        'origin': ResourceOriginToJSON(value.origin),
     };
 }
 

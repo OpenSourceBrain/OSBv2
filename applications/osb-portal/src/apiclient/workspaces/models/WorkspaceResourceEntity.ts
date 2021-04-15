@@ -14,10 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    ResourceOrigin,
-    ResourceOriginFromJSON,
-    ResourceOriginFromJSONTyped,
-    ResourceOriginToJSON,
     ResourceStatus,
     ResourceStatusFromJSON,
     ResourceStatusFromJSONTyped,
@@ -26,89 +22,89 @@ import {
     ResourceTypeFromJSON,
     ResourceTypeFromJSONTyped,
     ResourceTypeToJSON,
-    WorkspaceResourceAllOf,
-    WorkspaceResourceAllOfFromJSON,
-    WorkspaceResourceAllOfFromJSONTyped,
-    WorkspaceResourceAllOfToJSON,
     WorkspaceResourceBase,
     WorkspaceResourceBaseFromJSON,
     WorkspaceResourceBaseFromJSONTyped,
     WorkspaceResourceBaseToJSON,
+    WorkspaceResourceEntityAllOf,
+    WorkspaceResourceEntityAllOfFromJSON,
+    WorkspaceResourceEntityAllOfFromJSONTyped,
+    WorkspaceResourceEntityAllOfToJSON,
 } from './';
 
 /**
  * Workspace Resource item of a Workspace
  * @export
- * @interface WorkspaceResource
+ * @interface WorkspaceResourceEntity
  */
-export interface WorkspaceResource {
+export interface WorkspaceResourceEntity {
     /**
      * 
      * @type {number}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     id?: number;
     /**
      * WorkspaceResource name
      * @type {string}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     name: string;
     /**
      * WorkspaceResource folder where the resource will stored in the pvc
      * @type {string}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     folder?: string;
     /**
      * 
      * @type {ResourceStatus}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     status?: ResourceStatus;
     /**
      * Date/time of creation of the WorkspaceResource
      * @type {Date}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     timestampCreated?: Date;
     /**
      * Date/time of last updating of the WorkspaceResource
      * @type {Date}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     timestampUpdated?: Date;
     /**
      * Date/time of last opening of the WorkspaceResource
      * @type {Date}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     timestampLastOpened?: Date;
     /**
      * 
      * @type {ResourceType}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     resourceType: ResourceType;
     /**
+     * Origin data JSON formatted of the WorkspaceResource
+     * @type {string}
+     * @memberof WorkspaceResourceEntity
+     */
+    origin?: string;
+    /**
      * workspace_id
      * @type {number}
-     * @memberof WorkspaceResource
+     * @memberof WorkspaceResourceEntity
      */
     workspaceId?: number;
-    /**
-     * 
-     * @type {ResourceOrigin}
-     * @memberof WorkspaceResource
-     */
-    origin?: ResourceOrigin;
 }
 
-export function WorkspaceResourceFromJSON(json: any): WorkspaceResource {
-    return WorkspaceResourceFromJSONTyped(json, false);
+export function WorkspaceResourceEntityFromJSON(json: any): WorkspaceResourceEntity {
+    return WorkspaceResourceEntityFromJSONTyped(json, false);
 }
 
-export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceResource {
+export function WorkspaceResourceEntityFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceResourceEntity {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -122,12 +118,12 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
+        'origin': !exists(json, 'origin') ? undefined : json['origin'],
         'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
-        'origin': !exists(json, 'origin') ? undefined : ResourceOriginFromJSON(json['origin']),
     };
 }
 
-export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
+export function WorkspaceResourceEntityToJSON(value?: WorkspaceResourceEntity | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -144,8 +140,8 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
+        'origin': value.origin,
         'workspace_id': value.workspaceId,
-        'origin': ResourceOriginToJSON(value.origin),
     };
 }
 

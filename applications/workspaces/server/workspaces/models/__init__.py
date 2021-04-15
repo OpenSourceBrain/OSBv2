@@ -37,6 +37,7 @@ from workspaces.models.workspace_entity import WorkspaceEntity
 from workspaces.models.workspace_entity_all_of import WorkspaceEntityAllOf
 from workspaces.models.workspace_image import WorkspaceImage
 from workspaces.models.workspace_resource import WorkspaceResource
+from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf

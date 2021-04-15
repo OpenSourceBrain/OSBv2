@@ -6,13 +6,17 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
+from workspaces.models.resource_origin import ResourceOrigin
 from workspaces.models.resource_status import ResourceStatus
 from workspaces.models.resource_type import ResourceType
+from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces import util
 
+from workspaces.models.resource_origin import ResourceOrigin  # noqa: E501
 from workspaces.models.resource_status import ResourceStatus  # noqa: E501
 from workspaces.models.resource_type import ResourceType  # noqa: E501
+from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf  # noqa: E501
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase  # noqa: E501
 
 class WorkspaceResource(Model):
@@ -21,7 +25,7 @@ class WorkspaceResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None):  # noqa: E501
+    def __init__(self, id=None, name=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, workspace_id=None, origin=None):  # noqa: E501
         """WorkspaceResource - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceResource.  # noqa: E501
@@ -40,6 +44,10 @@ class WorkspaceResource(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResource.  # noqa: E501
         :type resource_type: ResourceType
+        :param workspace_id: The workspace_id of this WorkspaceResource.  # noqa: E501
+        :type workspace_id: int
+        :param origin: The origin of this WorkspaceResource.  # noqa: E501
+        :type origin: ResourceOrigin
         """
         self.openapi_types = {
             'id': int,
@@ -49,7 +57,9 @@ class WorkspaceResource(Model):
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
-            'resource_type': ResourceType
+            'resource_type': ResourceType,
+            'workspace_id': int,
+            'origin': ResourceOrigin
         }
 
         self.attribute_map = {
@@ -60,7 +70,9 @@ class WorkspaceResource(Model):
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
-            'resource_type': 'resource_type'
+            'resource_type': 'resource_type',
+            'workspace_id': 'workspace_id',
+            'origin': 'origin'
         }
 
         self._id = id
@@ -71,6 +83,8 @@ class WorkspaceResource(Model):
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
+        self._workspace_id = workspace_id
+        self._origin = origin
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResource':
@@ -264,3 +278,47 @@ class WorkspaceResource(Model):
             raise ValueError("Invalid value for `resource_type`, must not be `None`")  # noqa: E501
 
         self._resource_type = resource_type
+
+    @property
+    def workspace_id(self):
+        """Gets the workspace_id of this WorkspaceResource.
+
+        workspace_id  # noqa: E501
+
+        :return: The workspace_id of this WorkspaceResource.
+        :rtype: int
+        """
+        return self._workspace_id
+
+    @workspace_id.setter
+    def workspace_id(self, workspace_id):
+        """Sets the workspace_id of this WorkspaceResource.
+
+        workspace_id  # noqa: E501
+
+        :param workspace_id: The workspace_id of this WorkspaceResource.
+        :type workspace_id: int
+        """
+
+        self._workspace_id = workspace_id
+
+    @property
+    def origin(self):
+        """Gets the origin of this WorkspaceResource.
+
+
+        :return: The origin of this WorkspaceResource.
+        :rtype: ResourceOrigin
+        """
+        return self._origin
+
+    @origin.setter
+    def origin(self, origin):
+        """Sets the origin of this WorkspaceResource.
+
+
+        :param origin: The origin of this WorkspaceResource.
+        :type origin: ResourceOrigin
+        """
+
+        self._origin = origin

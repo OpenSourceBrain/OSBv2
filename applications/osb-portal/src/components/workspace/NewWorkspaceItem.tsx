@@ -32,7 +32,9 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
     resources: [{
       name: "NetPyNE tutorials",
       type: SampleResourceTypes.m,
-      location: "https://github.com/Neurosim-lab/netpyne_workspace/archive/master.zip",
+      origin: {
+        path: "https://github.com/Neurosim-lab/netpyne_workspace/archive/master.zip"
+      },
       workspaceId: -1
     }],
     volume: null,
@@ -44,7 +46,9 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
     resources: [{
       name: "sample.nwb",
       type: SampleResourceTypes.e,
-      location: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/FergusonEtAl2015/FergusonEtAl2015.nwb",
+      origin: {
+        path: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/FergusonEtAl2015/FergusonEtAl2015.nwb"
+      },
       workspaceId: -1
     }],
     volume: null,
@@ -56,7 +60,9 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
     resources: [{
       name: "notebook",
       type: SampleResourceTypes.g,
-      location: window.location.origin + "/workspace-data/notebook.ipynb",
+      origin: {
+        path: window.location.origin + "/workspace-data/notebook.ipynb"
+      },
       workspaceId: -1
     }],
     volume: null,

@@ -98,8 +98,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         description: The Workspace to save.
         required: true
@@ -179,7 +179,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Sets the thumbnail of the workspace.
-      operationId: setthumbnail
+      operationId: workspaces.controllers.workspace_controller.setthumbnail
       security:
         - bearerAuth: []
       requestBody:
@@ -197,8 +197,7 @@ paths:
         404:
           description: The workspace was not found or the thumbnail was not specified         
       tags:
-        - workspace
-      x-openapi-router-controller: workspaces.controllers.workspace_controller
+        - rest
   /workspace/{id}/gallery:
     parameters:
       - in: path
@@ -209,7 +208,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Adds and image to the workspace.
-      operationId: addimage
+      operationId: workspaces.controllers.workspace_controller.addimage
       security:
         - bearerAuth: []
       requestBody:
@@ -227,8 +226,7 @@ paths:
         404:
           description: The workspace was not found or the image was not specified         
       tags:
-        - workspace
-      x-openapi-router-controller: workspaces.controllers.workspace_controller
+        - rest
   /workspace/{id}/gallery/{image_id}:
     parameters:
       - in: path
@@ -254,7 +252,7 @@ paths:
         404:
           description: The workspace was not found.
       tags:
-        - workspace
+        - rest
       x-openapi-router-controller: workspaces.controllers.workspace_controller
 
   /workspaceresource:
@@ -262,8 +260,8 @@ paths:
       tags:
         - rest
       summary: Used to save a WorkspaceResource to the repository.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         description: The WorkspaceResource to save.
         required: true
@@ -290,8 +288,8 @@ paths:
         required: true
     get:
       summary: Used to retrieve a WorkspaceResource.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The WorkspaceResource.
@@ -349,23 +347,22 @@ paths:
       summary: Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
       security:
         - bearerAuth: []
-      operationId: open
+      operationId: workspaces.controllers.workspace_resource_controller.open
       responses:
         200:
           description: The WorkspaceResource was updated.
         404:
           description: The WorkspaceResource was not found.
       tags:
-        - workspace_resource
-      x-openapi-router-controller: workspaces.controllers.workspace_resource_controller
+        - rest
                 
   /osbrepository:
     get:
       tags:
         - rest
       summary: Used to list all available repositories.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -407,8 +404,8 @@ paths:
       tags:
         - rest
       summary: Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         description: The OSB repository to save.
         required: true
@@ -439,8 +436,8 @@ paths:
         required: true
     get:
       summary: Used to retrieve a list of contexts of a repository.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       operationId: get_contexts
       x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       responses:
@@ -470,8 +467,8 @@ paths:
         description: the context for getting the resources, optional
     get:
       summary: Used to retrieve a repository.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       operationId: workspaces.controllers.osbrepository_controller.get
       responses:
         200:
@@ -533,8 +530,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         description: The VolumeStorage to save.
         required: true

@@ -18,14 +18,6 @@ import {
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
     VolumeStorageToJSON,
-    WorkspaceAllOf,
-    WorkspaceAllOfFromJSON,
-    WorkspaceAllOfFromJSONTyped,
-    WorkspaceAllOfToJSON,
-    WorkspaceBase,
-    WorkspaceBaseFromJSON,
-    WorkspaceBaseFromJSONTyped,
-    WorkspaceBaseToJSON,
     WorkspaceCollaborator,
     WorkspaceCollaboratorFromJSON,
     WorkspaceCollaboratorFromJSONTyped,
@@ -34,10 +26,6 @@ import {
     WorkspaceImageFromJSON,
     WorkspaceImageFromJSONTyped,
     WorkspaceImageToJSON,
-    WorkspaceResource,
-    WorkspaceResourceFromJSON,
-    WorkspaceResourceFromJSONTyped,
-    WorkspaceResourceToJSON,
     WorkspaceTag,
     WorkspaceTagFromJSON,
     WorkspaceTagFromJSONTyped,
@@ -45,108 +33,102 @@ import {
 } from './';
 
 /**
- * Workspace extended
+ * Workspace item
  * @export
- * @interface Workspace
+ * @interface WorkspaceBase
  */
-export interface Workspace {
+export interface WorkspaceBase {
     /**
      * 
      * @type {number}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     id?: number;
     /**
      * Workspace name.
      * @type {string}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     name: string;
     /**
      * Workspace description.
      * @type {string}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     description: string;
     /**
      * Date/time the Workspace is created
      * @type {Date}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     timestampCreated?: Date;
     /**
      * Date/time the Workspace is last updated
      * @type {Date}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     timestampUpdated?: Date;
     /**
      * Workspace tags
      * @type {Array<WorkspaceTag>}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     tags?: Array<WorkspaceTag>;
     /**
      * The workspace resource id the workspace is opened last with
      * @type {number}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     lastOpenedResourceId?: number;
     /**
      * 
      * @type {string}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     thumbnail?: string;
     /**
      * Gallery with images of the workspace
      * @type {Array<WorkspaceImage>}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     gallery?: Array<WorkspaceImage>;
     /**
      * Workspace keycloak user id, will be automatically be set to the logged in user
      * @type {string}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     userId?: string;
     /**
      * Is the workspace available for non collaborators? Default false
      * @type {boolean}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     publicable?: boolean;
     /**
      * Workspace license
      * @type {string}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     license?: string;
     /**
      * Collaborators who work on the workspace
      * @type {Array<WorkspaceCollaborator>}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     collaborators?: Array<WorkspaceCollaborator>;
     /**
      * 
      * @type {VolumeStorage}
-     * @memberof Workspace
+     * @memberof WorkspaceBase
      */
     storage?: VolumeStorage;
-    /**
-     * Resources of the workspace
-     * @type {Array<WorkspaceResource>}
-     * @memberof Workspace
-     */
-    resources?: Array<WorkspaceResource>;
 }
 
-export function WorkspaceFromJSON(json: any): Workspace {
-    return WorkspaceFromJSONTyped(json, false);
+export function WorkspaceBaseFromJSON(json: any): WorkspaceBase {
+    return WorkspaceBaseFromJSONTyped(json, false);
 }
 
-export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean): Workspace {
+export function WorkspaceBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceBase {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -166,11 +148,10 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'license': !exists(json, 'license') ? undefined : json['license'],
         'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(WorkspaceCollaboratorFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
-        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
     };
 }
 
-export function WorkspaceToJSON(value?: Workspace | null): any {
+export function WorkspaceBaseToJSON(value?: WorkspaceBase | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -193,7 +174,6 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'license': value.license,
         'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(WorkspaceCollaboratorToJSON)),
         'storage': VolumeStorageToJSON(value.storage),
-        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
     };
 }
 

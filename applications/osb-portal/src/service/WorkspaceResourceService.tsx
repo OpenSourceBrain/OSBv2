@@ -1,6 +1,5 @@
-import { WorkspaceresourceIdGetRequest, WorkspacesControllerWorkspaceResourceOpenRequest } from "../apiclient/workspaces/apis/RestApi";
+import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest } from "../apiclient/workspaces/apis";
 
-import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';
 import { WorkspaceResource, OSBApplications, SampleResourceTypes, Workspace, ResourceStatus } from "../types/workspace";
@@ -15,8 +14,10 @@ class WorkspaceResourceService {
         workspaceResource:
         {
           name: name ? name : urlToName(url),
-          location: url,
-          resourceType: ResourceType.NULL,
+          origin: {
+            path: url
+          },
+          resourceType: ResourceType.U,
           workspaceId: workspace.id,
         }
       });
@@ -37,8 +38,8 @@ class WorkspaceResourceService {
 
 
   async workspacesControllerWorkspaceResourceOpen(id: number): Promise<void> {
-    const wsrogr: WorkspacesControllerWorkspaceResourceOpenRequest = { id };
-    await WorkspaceService.workspacesApi.workspacesControllerWorkspaceResourceOpen(wsrogr).then(() => {
+    const wsrogr: WorkspacesControllersWorkspaceResourceControllerOpenRequest = { id };
+    await WorkspaceService.workspacesApi.workspacesControllersWorkspaceResourceControllerOpen(wsrogr).then(() => {
       //
     });
   }
@@ -48,7 +49,7 @@ class WorkspaceResourceService {
   }
 
   getResourcePath(resource: WorkspaceResource) {
-    return (resource.folder ? resource.folder + "/" : "") + resource.location.slice(resource.location.lastIndexOf("/") + 1);
+    return (resource.folder ? resource.folder + "/" : "") + resource.origin.path.slice(resource.origin.path.lastIndexOf("/") + 1);
   }
 
 }
@@ -78,7 +79,7 @@ function mapResourceStatus(resource: ApiWorkspaceResource): ResourceStatus {
 
 function mapResourceType(resource: WorkspaceResource) {
   if (!resource.type) {
-    return ResourceType.NULL;
+    return ResourceType.U;
   }
   switch (resource.type.application.subdomain) {
     case 'nwbexplorer':

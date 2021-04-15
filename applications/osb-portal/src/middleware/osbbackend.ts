@@ -110,7 +110,9 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       const { path, name } = action.payload as { path: string, name: string };
       const workspaceId = store.getState().workspaces.selectedWorkspace.id;
       workspaceResourceService.resourceAdded({
-        location: path,
+        origin: {
+          path
+        },
         name,
         workspaceId
       }).then(resource => {

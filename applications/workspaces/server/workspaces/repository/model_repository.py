@@ -28,13 +28,14 @@ class OwnerModel():
     @property
     def keycloak_user_id(self):
         try:
-            return auth_client.get_current_user().get('id', None)
+            u = auth_client.get_current_user()
+            return u.get('id', None)
         except:
             return None
 
     def pre_commit(self, obj):
-        logger.debug(f'Pre Commit for {obj} id: {obj.id}')
-        if not obj.id:
+        logger.info(f'Pre Commit for {obj} id: {obj.id}')
+        if not obj.user_id:
             obj.user_id = self.keycloak_user_id
         return obj
 
@@ -58,6 +59,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def search_qs(self, filter=None, q=None):
 
         q_base = self.model.query
+        logger.info(f"filter: {filter}")
 
         keycloak_user_id = self.keycloak_user_id
         if filter is not None:
@@ -76,6 +78,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 q1 = q_base
         else:
             q1 = q_base.filter_by(publicable=True)
+        logger.info(str(q1))
         return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
@@ -93,9 +96,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         logger.info("deleted volume %s", id)
 
     def pre_commit(self, workspace):
-        workspace = super().pre_commit(workspace)
-        wsrr = WorkspaceResourceRepository()
-        return workspace
+        return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
@@ -114,6 +115,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
     calculated_fields = ["user", "content_types_list"]
+
+    def pre_commit(self, osbrepository):
+        return super().pre_commit(osbrepository)
 
     def user(self, repository):
         try:
