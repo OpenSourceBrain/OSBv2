@@ -868,7 +868,7 @@ components:
       description: Workspace Resource item of a Workspace
       allOf:
         - $ref: '#/components/schemas/WorkspaceResourceBase'
-          properties:
+        - properties:
             workspace_id:
               description: workspace_id
               type: integer
