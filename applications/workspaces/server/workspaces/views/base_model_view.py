@@ -36,7 +36,7 @@ class BaseModelView(MethodView):
                                                             per_page=per_page,
                                                             *args,
                                                             **kwargs)
-        obj_dicts = map(lambda obj: row2dict(obj), objects.items)
+        obj_dicts = map(lambda obj: obj.to_dict(), objects.items)
         return {"pagination": {
             "current_page": page,
             "number_of_pages": total_pages,
