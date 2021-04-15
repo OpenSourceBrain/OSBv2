@@ -30,7 +30,7 @@ class OwnerModel():
         try:
             return auth_client.get_current_user().get('id', None)
         except:
-            return "-1"
+            return None
 
     def pre_commit(self, obj):
         logger.debug(f'Pre Commit for {obj} id: {obj.id}')
