@@ -50,3 +50,8 @@ def _decode_token(token):
     decoded = jwt.decode(token, KEY, algorithms='RS256', audience='account')
 
     return decoded
+
+def row2dict(row):
+    d = row.__dict__
+    d.pop('_sa_instance_state', None)
+    return d

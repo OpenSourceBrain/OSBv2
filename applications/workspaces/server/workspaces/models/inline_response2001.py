@@ -6,11 +6,11 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.osb_repository_extended import OSBRepositoryExtended
+from workspaces.models.osb_repository import OSBRepository
 from workspaces.models.pagination import Pagination
 from workspaces import util
 
-from workspaces.models.osb_repository_extended import OSBRepositoryExtended  # noqa: E501
+from workspaces.models.osb_repository import OSBRepository  # noqa: E501
 from workspaces.models.pagination import Pagination  # noqa: E501
 
 class InlineResponse2001(Model):
@@ -25,11 +25,11 @@ class InlineResponse2001(Model):
         :param pagination: The pagination of this InlineResponse2001.  # noqa: E501
         :type pagination: Pagination
         :param osbrepositories: The osbrepositories of this InlineResponse2001.  # noqa: E501
-        :type osbrepositories: List[OSBRepositoryExtended]
+        :type osbrepositories: List[OSBRepository]
         """
         self.openapi_types = {
             'pagination': Pagination,
-            'osbrepositories': List[OSBRepositoryExtended]
+            'osbrepositories': List[OSBRepository]
         }
 
         self.attribute_map = {
@@ -78,7 +78,7 @@ class InlineResponse2001(Model):
 
 
         :return: The osbrepositories of this InlineResponse2001.
-        :rtype: List[OSBRepositoryExtended]
+        :rtype: List[OSBRepository]
         """
         return self._osbrepositories
 
@@ -88,7 +88,7 @@ class InlineResponse2001(Model):
 
 
         :param osbrepositories: The osbrepositories of this InlineResponse2001.
-        :type osbrepositories: List[OSBRepositoryExtended]
+        :type osbrepositories: List[OSBRepository]
         """
 
         self._osbrepositories = osbrepositories

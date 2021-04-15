@@ -12,9 +12,9 @@ from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002
 from workspaces.models.osb_repository import OSBRepository
+from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
 from workspaces.models.osb_repository_base import OSBRepositoryBase
-from workspaces.models.osb_repository_extended import OSBRepositoryExtended
-from workspaces.models.osb_repository_extended_all_of import OSBRepositoryExtendedAllOf
+from workspaces.models.osb_repository_entity import OSBRepositoryEntity
 from workspaces.models.pagination import Pagination
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource import RepositoryResource
@@ -30,8 +30,14 @@ from workspaces.models.user import User
 from workspaces.models.valid import Valid
 from workspaces.models.volume_storage import VolumeStorage
 from workspaces.models.workspace import Workspace
+from workspaces.models.workspace_all_of import WorkspaceAllOf
+from workspaces.models.workspace_base import WorkspaceBase
 from workspaces.models.workspace_collaborator import WorkspaceCollaborator
+from workspaces.models.workspace_entity import WorkspaceEntity
+from workspaces.models.workspace_entity_all_of import WorkspaceEntityAllOf
 from workspaces.models.workspace_image import WorkspaceImage
 from workspaces.models.workspace_resource import WorkspaceResource
-from workspaces.models.workspace_resource_extended import WorkspaceResourceExtended
+from workspaces.models.workspace_resource_base import WorkspaceResourceBase
+from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
+from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
 from workspaces.models.workspace_tag import WorkspaceTag

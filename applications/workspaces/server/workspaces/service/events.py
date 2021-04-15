@@ -7,8 +7,7 @@ from cloudharness.workflows.operations import OperationStatus
 from ..config import Config
 
 from sqlalchemy.sql import func
-from ..repository.base_model_repository import BaseModelRepository
-from ..repository.models import WorkspaceResource
+from ..repository.model_repository import WorkspaceResourceRepository
 from .. import ResourceStatus
 
 
@@ -27,8 +26,8 @@ def set_resource_state(event_client, app, message):
     workspace_resource_id = message['payload']
     with app.app_context():
         status = message.get('status', OperationStatus.FAILED)
-        workspaceResourceRepository = BaseModelRepository(WorkspaceResource)
-        workspace_resource: WorkspaceResource = workspaceResourceRepository.get(
+        workspaceResourceRepository = WorkspaceResourceRepository()
+        workspace_resource = workspaceResourceRepository.get(
             id=workspace_resource_id)
         if status == OperationStatus.SUCCEEDED:
             workspace_resource.status = ResourceStatus.SUCCESS  # success

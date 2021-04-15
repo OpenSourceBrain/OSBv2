@@ -1,5 +1,6 @@
 import base64
 import requests
+import workspaces.service.etlservice as etlservice
 
 from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, GITRepositoryResource
@@ -64,6 +65,8 @@ class GitHubAdapter:
         except Exception as e:
             return e
 
-    def copy_resource(self, origin):
+    def copy_resource(self, workspace_resource, origin):
         repository_resource = GITRepositoryResource(**origin)
         logger.info("Processiong copy GIT Repository Resource %s", repository_resource)
+        # download the resource
+        return etlservice.download_workspace_resource(workspace_resource)

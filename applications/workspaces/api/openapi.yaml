@@ -261,8 +261,6 @@ paths:
     post:
       tags:
         - rest
-      operationId: post
-      x-openapi-router-controller: workspaces.controllers.workspace_resource_controller
       summary: Used to save a WorkspaceResource to the repository.
       # security:
       #   - bearerAuth: []
@@ -272,7 +270,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WorkspaceResourceExtended"
+              $ref: "#/components/schemas/WorkspaceResource"
       responses:
         201:
           description: Save successful.
@@ -292,8 +290,8 @@ paths:
         required: true
     get:
       summary: Used to retrieve a WorkspaceResource.
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       responses:
         200:
           description: The WorkspaceResource.
@@ -404,11 +402,10 @@ paths:
                   osbrepositories:
                     type: array
                     items:
-                      $ref: "#/components/schemas/OSBRepositoryExtended"
+                      $ref: "#/components/schemas/OSBRepository"
     post:
       tags:
         - rest
-      operationId: workspaces.controllers.osbrepository_controller.post
       summary: Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
       # security:
       #   - bearerAuth: []
@@ -418,7 +415,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OSBRepositoryExtended"
+              $ref: "#/components/schemas/OSBRepository"
       responses:
         201:
           description: Save successful.
@@ -482,7 +479,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OSBRepositoryExtended"
+                $ref: "#/components/schemas/OSBRepository"
         404:
           description: The repository was not found.
       tags:
@@ -536,8 +533,8 @@ paths:
       tags:
         - rest                  
       summary: Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []      
+      # security:
+      #   - bearerAuth: []
       requestBody:
         description: The VolumeStorage to save.
         required: true
@@ -701,10 +698,9 @@ components:
         email:
           description: Email address of the keycloak user
           type: string
-    Workspace:
+    WorkspaceBase:
       description: Workspace item
       type: object
-      x-tablename: workspace
       properties:
         id:
           description: Unique identifier of the Workspace
@@ -762,17 +758,35 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/WorkspaceCollaborator"
-        resources:
-          description: Resources of the workspace
-          type: array
-          items:
-              $ref: "#/components/schemas/WorkspaceResource"
         storage:
           description: Storage of the workspace
           $ref: "#/components/schemas/VolumeStorage"
       required:
         - name
         - description
+    WorkspaceEntity:
+      description: Workspace model
+      allOf:
+        - $ref: '#/components/schemas/WorkspaceBase'
+        - x-tablename: workspace
+          properties:
+            resources:
+              description: Resources of the workspace
+              type: array
+              items:
+                  $ref: "#/components/schemas/WorkspaceResourceEntity"
+    Workspace:
+      description: Workspace extended
+      allOf:
+        - $ref: "#/components/schemas/WorkspaceBase"
+        - description: extra attributes
+          type: object
+          properties:
+            resources:
+              description: Resources of the workspace
+              type: array
+              items:
+                  $ref: "#/components/schemas/WorkspaceResource"
     WorkspaceCollaborator:
       description: Workspace Collaborator of a workspace
       type: object
@@ -813,30 +827,8 @@ components:
           example: Workspace Tag One
       required:
         - tag
-    WorkspaceResourceExtended:
+    WorkspaceResourceBase:
       type: object
-      properties:
-        name:
-          description: WorkspaceResource name
-          type: string
-          example: Workspace Resource One
-        folder:
-          description: WorkspaceResource folder where the resource will stored in the pvc
-          type: string
-          example: Workspace Resource One
-        resource_type:
-          description: WorkspaceResource type
-          $ref: "#/components/schemas/ResourceType"
-        workspace_id:
-          description: workspace_id
-          type: integer
-        origin:
-          description: optional Resource where the WorkspaceResource is build from
-          $ref: "#/components/schemas/ResourceOrigin"      
-    WorkspaceResource:
-      description: Workspace Resource item of a Workspace
-      type: object
-      x-tablename: workspaceresource
       properties:
         id:
           description: Unique identifier of the WorkspaceResource
@@ -866,22 +858,36 @@ components:
           description: Date/time of last opening of the WorkspaceResource
           type: string
           format: 'date-time'
-          example: 2019-11-23T01:23:45Z  
         resource_type:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
-        workspace_id:
-          description: workspace_id
-          type: integer
-          x-foreign-key: workspace.id
-          x-index: true
-        origin:
-          description: Origin data JSON formatted of the WorkspaceResource
-          type: string
       required:
         - name
         - resource_type
-        - origin
+    WorkspaceResource:
+      description: Workspace Resource item of a Workspace
+      allOf:
+        - $ref: '#/components/schemas/WorkspaceResourceBase'
+          properties:
+            workspace_id:
+              description: workspace_id
+              type: integer
+            origin:
+              description: Origin Resource where the WorkspaceResource is build from
+              $ref: "#/components/schemas/ResourceOrigin"      
+    WorkspaceResourceEntity:
+      description: Workspace Resource item of a Workspace
+      allOf:
+        - $ref: '#/components/schemas/WorkspaceResourceBase'
+        - x-tablename: Workspaceresource
+          properties:
+            origin:
+              description: Origin data JSON formatted of the WorkspaceResource
+              type: string
+            workspace_id:
+              description: workspace_id
+              type: integer
+              x-foreign-key: workspace.id
     VolumeStorage:
       description: Volume which can be connected to a workspace
       type: object
@@ -939,13 +945,13 @@ components:
         - content_types
         - auto_sync
         - uri
-    OSBRepository:
+    OSBRepositoryEntity:
       description: OSB Repository model
       allOf:
         - $ref: '#/components/schemas/OSBRepositoryBase'
         - x-tablename: osbrepository
-    OSBRepositoryExtended:
-      description: OSBRepository extended
+    OSBRepository:
+      description: OSBRepository extended model
       allOf:
         - $ref: "#/components/schemas/OSBRepositoryBase"
         - description: extra attributes

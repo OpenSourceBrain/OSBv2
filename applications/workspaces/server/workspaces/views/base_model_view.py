@@ -1,12 +1,15 @@
 """Model base class"""
 from flask.views import MethodView
 from cloudharness import log as logger
+from workspaces.utils import row2dict
 
 
-def row2dict(row):
-    d = row.__dict__
-    d.pop('_sa_instance_state', None)
-    return d
+def rm_null_values(dikt):
+    tmp = {}
+    for k,v in dikt.items():  # remove null fields from dict
+        if v:
+            tmp.update({k:v})
+    return tmp
 
 
 class BaseModelView(MethodView):
@@ -42,6 +45,7 @@ class BaseModelView(MethodView):
 
     def post(self, body):
         """Save an object to the repository."""
+        body = rm_null_values(body)
         obj = self.repository.post(body)
         return obj.to_dict()
 
@@ -50,7 +54,7 @@ class BaseModelView(MethodView):
         obj = self.repository.get(id=id_)
         if obj is None:
             return f"{self.repository.model.__name__} with id {id_} not found.", 404
-        return row2dict(obj)
+        return obj.to_dict()
 
     def put(self, body, id_):
         """Update an object in the repository."""

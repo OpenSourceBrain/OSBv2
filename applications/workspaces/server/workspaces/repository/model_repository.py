@@ -1,26 +1,21 @@
-import json
-import os
-
-from flask import request, current_app
 from sqlalchemy import asc, desc
 from sqlalchemy.sql import func
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
 from workspaces import repository
-from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 
-from ..auth import auth_client
-from ..config import Config
-from ..utils import get_keycloak_data
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import Workspace, VolumeStorage, \
-    WorkspaceImage, WorkspaceResource, TWorkspaceResource, TWorkspace, \
-    OSBRepository
+from .models import WorkspaceEntity, VolumeStorage, \
+    WorkspaceImage, WorkspaceResourceEntity, OSBRepositoryEntity
 from .utils import *
-from ..service.kubernetes import create_persistent_volume_claim
+
+from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
+from workspaces.auth import auth_client
+from workspaces.utils import get_keycloak_data
+from workspaces.service.kubernetes import create_persistent_volume_claim
 
 from workspaces.models import RepositoryContentType, User
 
@@ -46,7 +41,7 @@ class OwnerModel():
 
 
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
-    model = Workspace
+    model = WorkspaceEntity
     defaults = {}
 
     def __init__(self, *args, **kwargs):
@@ -56,7 +51,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return f'workspace-{workspace_id}'
 
     def get(self, id):
-        workspace: TWorkspace = self.model.query.get(id)
+        workspace = self.model.query.get(id)
         if workspace.publicable or (workspace.user_id and workspace.user_id == self.keycloak_user_id):
             return workspace
         return None
@@ -77,12 +72,12 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 # non admin users can see only their own workspaces
                 q1 = q_base.filter_by(user_id=keycloak_user_id)
                 q1 = q1.union(q_base.filter(
-                    Workspace.collaborators.any(user_id=keycloak_user_id)))
+                    WorkspaceEntity.collaborators.any(user_id=keycloak_user_id)))
             else:
                 q1 = q_base
         else:
             q1 = q_base.filter_by(publicable=True)
-        return q1.order_by(desc(Workspace.timestamp_updated))
+        return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
@@ -100,6 +95,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def pre_commit(self, workspace):
         workspace = super().pre_commit(workspace)
+        wsrr = WorkspaceResourceRepository()
         return workspace
 
     def post_commit(self, workspace):
@@ -117,7 +113,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
-    model = OSBRepository
+    model = OSBRepositoryEntity
     calculated_fields = ["user", "content_types_list"]
 
     def user(self, repository):
@@ -150,7 +146,7 @@ class WorkspaceImageRepository(BaseModelRepository):
 
 
 class WorkspaceResourceRepository(BaseModelRepository):
-    model = WorkspaceResource
+    model = WorkspaceResourceEntity
 
     @staticmethod
     def guess_resource_type(resource_path):
@@ -161,7 +157,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
             return 'g'
         return 'g'
 
-    def pre_commit(self, workspace_resource: TWorkspaceResource):
+    def pre_commit(self, workspace_resource):
         # Check if we can determine the resource type
         logger.debug(
             f'Pre Commit for workspace resource id: {workspace_resource.id}')
@@ -172,7 +168,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
             workspace_resource.folder = workspace_resource.name
         return workspace_resource
 
-    def post_commit(self, workspace_resource: TWorkspaceResource):
+    def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f'Post Commit for workspace resource id: {workspace_resource.id}')
@@ -208,7 +204,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def delete(self, id):
         """Delete an object from the repository."""
-        workspace_resource: TWorkspaceResource = self.get(id)
+        workspace_resource = self.get(id)
         super().delete(id)
 
         delete_workspace_resource(workspace_resource)
