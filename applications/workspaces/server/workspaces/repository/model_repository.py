@@ -30,8 +30,7 @@ class OwnerModel():
         try:
             return auth_client.get_current_user().get('id', None)
         except:
-            # TODO: for debugging purpose remove this and return "-1"
-            return auth_client.get_users()[0]["id"]
+            return "-1"
 
     def pre_commit(self, obj):
         logger.debug(f'Pre Commit for {obj} id: {obj.id}')
@@ -52,7 +51,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def get(self, id):
         workspace = self.model.query.get(id)
-        if workspace.publicable or (workspace.user_id and workspace.user_id == self.keycloak_user_id):
+        if workspace and (workspace.publicable or (workspace.user_id and workspace.user_id == self.keycloak_user_id)):
             return workspace
         return None
 
