@@ -366,8 +366,6 @@ paths:
       tags:
         - rest
       summary: Used to list all available repositories.
-      security:
-        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -441,8 +439,6 @@ paths:
         required: true
     get:
       summary: Used to retrieve a list of contexts of a repository.
-      security:
-        - bearerAuth: []
       operationId: get_contexts
       x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       responses:
@@ -472,8 +468,6 @@ paths:
         description: the context for getting the resources, optional
     get:
       summary: Used to retrieve a repository.
-      security:
-        - bearerAuth: []
       operationId: workspaces.controllers.osbrepository_controller.get
       responses:
         200:
