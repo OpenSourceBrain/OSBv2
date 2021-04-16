@@ -1,3 +1,4 @@
+import json
 from sqlalchemy import asc, desc
 from sqlalchemy.sql import func
 
@@ -163,9 +164,11 @@ class WorkspaceResourceRepository(BaseModelRepository):
         # Check if we can determine the resource type
         logger.debug(
             f'Pre Commit for workspace resource id: {workspace_resource.id}')
+
         if not workspace_resource.resource_type or workspace_resource.resource_type == 'u':
+            origin = json.loads(workspace_resource.origin)            
             workspace_resource.resource_type = self.guess_resource_type(
-                workspace_resource.location)
+                origin.get("path"))
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
         return workspace_resource
