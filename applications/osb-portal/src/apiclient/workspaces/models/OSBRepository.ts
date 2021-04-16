@@ -14,14 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    OSBRepositoryAllOf,
+    OSBRepositoryAllOfFromJSON,
+    OSBRepositoryAllOfFromJSONTyped,
+    OSBRepositoryAllOfToJSON,
+    OSBRepositoryBase,
+    OSBRepositoryBaseFromJSON,
+    OSBRepositoryBaseFromJSONTyped,
+    OSBRepositoryBaseToJSON,
+    RepositoryContentType,
+    RepositoryContentTypeFromJSON,
+    RepositoryContentTypeFromJSONTyped,
+    RepositoryContentTypeToJSON,
+    RepositoryResourceNode,
+    RepositoryResourceNodeFromJSON,
+    RepositoryResourceNodeFromJSONTyped,
+    RepositoryResourceNodeToJSON,
     RepositoryType,
     RepositoryTypeFromJSON,
     RepositoryTypeFromJSONTyped,
     RepositoryTypeToJSON,
+    User,
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
 } from './';
 
 /**
- * OSB Repository model
+ * OSBRepository extended model
  * @export
  * @interface OSBRepository
  */
@@ -39,17 +59,23 @@ export interface OSBRepository {
      */
     name: string;
     /**
+     * Summary describing the OSB Repository
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    summary?: string;
+    /**
      * 
      * @type {RepositoryType}
      * @memberof OSBRepository
      */
     repositoryType: RepositoryType;
     /**
-     * Comma separated set of Repository Content Types
+     * List of Repository Content Types
      * @type {string}
      * @memberof OSBRepository
      */
-    repositoryContentTypes: string;
+    contentTypes: string;
     /**
      * Auto sync of the resources
      * @type {boolean}
@@ -63,17 +89,53 @@ export interface OSBRepository {
      */
     uri: string;
     /**
-     * Repository keycloak user id, will be automatically be set to the logged in user
-     * @type {string}
-     * @memberof OSBRepository
-     */
-    userId?: string;
-    /**
      * The default branch to show for this repository
      * @type {string}
      * @memberof OSBRepository
      */
     defaultContext?: string;
+    /**
+     * OSBRepository keycloak user id, will be automatically be set to the logged in user
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    userId?: string;
+    /**
+     * 
+     * @type {Array<RepositoryResourceNode>}
+     * @memberof OSBRepository
+     */
+    contextResources?: Array<RepositoryResourceNode>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OSBRepository
+     */
+    contexts?: Array<string>;
+    /**
+     * 
+     * @type {User}
+     * @memberof OSBRepository
+     */
+    user?: User;
+    /**
+     * 
+     * @type {Array<RepositoryContentType>}
+     * @memberof OSBRepository
+     */
+    contentTypesList?: Array<RepositoryContentType>;
+    /**
+     * Repository description
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    description?: string;
+    /**
+     * Date/time the OSBReposity is last modified
+     * @type {Date}
+     * @memberof OSBRepository
+     */
+    timestampModified?: Date;
 }
 
 export function OSBRepositoryFromJSON(json: any): OSBRepository {
@@ -88,12 +150,19 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
+        'summary': !exists(json, 'summary') ? undefined : json['summary'],
         'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
-        'repositoryContentTypes': json['repository_content_types'],
+        'contentTypes': json['content_types'],
         'autoSync': json['auto_sync'],
         'uri': json['uri'],
-        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'contextResources': !exists(json, 'context_resources') ? undefined : ((json['context_resources'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
+        'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
+        'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
+        'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
     };
 }
 
@@ -108,12 +177,19 @@ export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
         
         'id': value.id,
         'name': value.name,
+        'summary': value.summary,
         'repository_type': RepositoryTypeToJSON(value.repositoryType),
-        'repository_content_types': value.repositoryContentTypes,
+        'content_types': value.contentTypes,
         'auto_sync': value.autoSync,
         'uri': value.uri,
-        'user_id': value.userId,
         'default_context': value.defaultContext,
+        'user_id': value.userId,
+        'context_resources': value.contextResources === undefined ? undefined : ((value.contextResources as Array<any>).map(RepositoryResourceNodeToJSON)),
+        'contexts': value.contexts,
+        'user': UserToJSON(value.user),
+        'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),
+        'description': value.description,
+        'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
     };
 }
 

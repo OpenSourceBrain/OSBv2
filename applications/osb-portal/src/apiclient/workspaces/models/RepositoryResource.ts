@@ -12,26 +12,24 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import {
+    DandiRepositoryResource,
+    FigshareRepositoryResource,
+    GITRepositoryResource,
+    DandiRepositoryResourceFromJSONTyped,
+    DandiRepositoryResourceToJSON,
+    FigshareRepositoryResourceFromJSONTyped,
+    FigshareRepositoryResourceToJSON,
+    GITRepositoryResourceFromJSONTyped,
+    GITRepositoryResourceToJSON,
+} from './';
+
 /**
- * Resource (files/folders) of a OSBRepository
+ * @type RepositoryResource
+ * Repository resource
  * @export
- * @interface RepositoryResource
  */
-export interface RepositoryResource {
-    /**
-     * folder/file name
-     * @type {string}
-     * @memberof RepositoryResource
-     */
-    name?: string;
-    /**
-     * unique identifier for the resource in the (external) repository
-     * @type {string}
-     * @memberof RepositoryResource
-     */
-    uid?: string;
-}
+export type RepositoryResource = DandiRepositoryResource | FigshareRepositoryResource | GITRepositoryResource;
 
 export function RepositoryResourceFromJSON(json: any): RepositoryResource {
     return RepositoryResourceFromJSONTyped(json, false);
@@ -41,11 +39,7 @@ export function RepositoryResourceFromJSONTyped(json: any, ignoreDiscriminator: 
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return {
-        
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'uid': !exists(json, 'uid') ? undefined : json['uid'],
-    };
+    return { ...DandiRepositoryResourceFromJSONTyped(json, true), ...FigshareRepositoryResourceFromJSONTyped(json, true), ...GITRepositoryResourceFromJSONTyped(json, true) };
 }
 
 export function RepositoryResourceToJSON(value?: RepositoryResource | null): any {
@@ -55,11 +49,6 @@ export function RepositoryResourceToJSON(value?: RepositoryResource | null): any
     if (value === null) {
         return null;
     }
-    return {
-        
-        'name': value.name,
-        'uid': value.uid,
-    };
+    return { ...DandiRepositoryResourceToJSON(value), ...FigshareRepositoryResourceToJSON(value), ...GITRepositoryResourceToJSON(value) };
 }
-
 

@@ -57,6 +57,9 @@ paths:
       tags:
         - rest
       summary: Used to list all available workspaces.
+      security:
+        - {}
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -125,6 +128,9 @@ paths:
         required: true
     get:
       summary: Used to retrieve a workspace from the repository.
+      security:
+        - {}
+        - bearerAuth: []
       responses:
         200:
           description: The workspace.
@@ -179,7 +185,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Sets the thumbnail of the workspace.
-      operationId: setthumbnail
+      operationId: workspaces.controllers.workspace_controller.setthumbnail
       security:
         - bearerAuth: []
       requestBody:
@@ -197,8 +203,7 @@ paths:
         404:
           description: The workspace was not found or the thumbnail was not specified         
       tags:
-        - workspace
-      x-openapi-router-controller: workspaces.controllers.workspace_controller
+        - rest
   /workspace/{id}/gallery:
     parameters:
       - in: path
@@ -209,7 +214,7 @@ paths:
         description: Workspace ID of the workspace
     post:
       summary: Adds and image to the workspace.
-      operationId: addimage
+      operationId: workspaces.controllers.workspace_controller.addimage
       security:
         - bearerAuth: []
       requestBody:
@@ -227,8 +232,7 @@ paths:
         404:
           description: The workspace was not found or the image was not specified         
       tags:
-        - workspace
-      x-openapi-router-controller: workspaces.controllers.workspace_controller
+        - rest
   /workspace/{id}/gallery/{image_id}:
     parameters:
       - in: path
@@ -254,13 +258,13 @@ paths:
         404:
           description: The workspace was not found.
       tags:
-        - workspace
+        - rest
       x-openapi-router-controller: workspaces.controllers.workspace_controller
 
   /workspaceresource:
     post:
       tags:
-        - rest                  
+        - rest
       summary: Used to save a WorkspaceResource to the repository.
       security:
         - bearerAuth: []
@@ -349,23 +353,22 @@ paths:
       summary: Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
       security:
         - bearerAuth: []
-      operationId: open
+      operationId: workspaces.controllers.workspace_resource_controller.open
       responses:
         200:
           description: The WorkspaceResource was updated.
         404:
           description: The WorkspaceResource was not found.
       tags:
-        - workspace_resource
-      x-openapi-router-controller: workspaces.controllers.workspace_resource_controller
+        - rest
                 
   /osbrepository:
     get:
       tags:
         - rest
       summary: Used to list all available repositories.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -405,10 +408,10 @@ paths:
                       $ref: "#/components/schemas/OSBRepository"
     post:
       tags:
-        - rest                  
+        - rest
       summary: Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       requestBody:
         description: The OSB repository to save.
         required: true
@@ -439,9 +442,10 @@ paths:
         required: true
     get:
       summary: Used to retrieve a list of contexts of a repository.
-      # security:
-      #   - bearerAuth: []
-      operationId: workspaces.controllers.osbrepository_controller.get_contexts
+      security:
+        - bearerAuth: []
+      operationId: get_contexts
+      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       responses:
         200:
           description: The list of repository contexts.
@@ -469,8 +473,8 @@ paths:
         description: the context for getting the resources, optional
     get:
       summary: Used to retrieve a repository.
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       operationId: workspaces.controllers.osbrepository_controller.get
       responses:
         200:
@@ -478,25 +482,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/OSBRepository"
-                  - description: Repository
-                    type: object
-                    properties:
-                      context_resources:
-                        description: List of repository resources
-                        type: array
-                        items:
-                          allOf:
-                            - $ref: "#/components/schemas/RepositoryResourceNode"
-                      contexts:
-                        description: List of repository contexts
-                        type: array
-                        items:
-                            type: string
-                      description:
-                        description: Repository description
-                        type: string
+                $ref: "#/components/schemas/OSBRepository"
         404:
           description: The repository was not found.
       tags:
@@ -551,7 +537,7 @@ paths:
         - rest                  
       summary: Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
       security:
-        - bearerAuth: []      
+        - bearerAuth: []
       requestBody:
         description: The VolumeStorage to save.
         required: true
@@ -696,10 +682,28 @@ components:
         example: p
     ImageType:
       type: string
-    Workspace:
+    User:
+      description: Keycloak User
+      type: object
+      properties:
+        id:
+          description: Keycloak user id
+          type: string
+        first_name:
+          description: First Name of the keycloak user
+          type: string
+        last_name:
+          description: Last Name of the keycloak user
+          type: string
+        username:
+          description: Username of the keycloak user
+          type: string
+        email:
+          description: Email address of the keycloak user
+          type: string
+    WorkspaceBase:
       description: Workspace item
       type: object
-      x-tablename: workspace
       properties:
         id:
           description: Unique identifier of the Workspace
@@ -757,17 +761,35 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/WorkspaceCollaborator"
-        resources:
-          description: Resources of the workspace
-          type: array
-          items:
-              $ref: "#/components/schemas/WorkspaceResource"
         storage:
           description: Storage of the workspace
           $ref: "#/components/schemas/VolumeStorage"
       required:
         - name
         - description
+    WorkspaceEntity:
+      description: Workspace model
+      allOf:
+        - $ref: '#/components/schemas/WorkspaceBase'
+        - x-tablename: workspace
+          properties:
+            resources:
+              description: Resources of the workspace
+              type: array
+              items:
+                  $ref: "#/components/schemas/WorkspaceResourceEntity"
+    Workspace:
+      description: Workspace extended
+      allOf:
+        - $ref: "#/components/schemas/WorkspaceBase"
+        - description: extra attributes
+          type: object
+          properties:
+            resources:
+              description: Resources of the workspace
+              type: array
+              items:
+                  $ref: "#/components/schemas/WorkspaceResource"
     WorkspaceCollaborator:
       description: Workspace Collaborator of a workspace
       type: object
@@ -808,10 +830,8 @@ components:
           example: Workspace Tag One
       required:
         - tag
-    WorkspaceResource:
-      description: Workspace Resource item of a Workspace
+    WorkspaceResourceBase:
       type: object
-      x-tablename: workspaceresource
       properties:
         id:
           description: Unique identifier of the WorkspaceResource
@@ -820,10 +840,6 @@ components:
           description: WorkspaceResource name
           type: string
           example: Workspace Resource One
-        location:
-          description: WorkspaceResource location original location of the resource
-          type: string
-          example: https://github.com/OpenSourceBrain/NWBShowcase/raw/master/NWB/time_series_data.nwb
         folder:
           description: WorkspaceResource folder where the resource will stored in the pvc
           type: string
@@ -845,18 +861,36 @@ components:
           description: Date/time of last opening of the WorkspaceResource
           type: string
           format: 'date-time'
-          example: 2019-11-23T01:23:45Z  
         resource_type:
           description: WorkspaceResource type
           $ref: "#/components/schemas/ResourceType"
-        workspace_id:
-          description: workspace_id
-          type: integer
-          x-foreign-key: workspace.id
       required:
         - name
         - resource_type
-        - location
+    WorkspaceResource:
+      description: Workspace Resource item of a Workspace
+      allOf:
+        - $ref: '#/components/schemas/WorkspaceResourceBase'
+        - properties:
+            workspace_id:
+              description: workspace_id
+              type: integer
+            origin:
+              description: Origin Resource where the WorkspaceResource is build from
+              $ref: "#/components/schemas/ResourceOrigin"      
+    WorkspaceResourceEntity:
+      description: Workspace Resource item of a Workspace
+      allOf:
+        - $ref: '#/components/schemas/WorkspaceResourceBase'
+        - x-tablename: Workspaceresource
+          properties:
+            origin:
+              description: Origin data JSON formatted of the WorkspaceResource
+              type: string
+            workspace_id:
+              description: workspace_id
+              type: integer
+              x-foreign-key: workspace.id
     VolumeStorage:
       description: Volume which can be connected to a workspace
       type: object
@@ -871,25 +905,27 @@ components:
           example: Storage Volume One
       required:
         - name
-    OSBRepository:
-      description: OSB Repository model
+    OSBRepositoryBase:
+      description: OSB Repository Base model
       type: object
-      x-tablename: osbrepository
       properties:
         id:
           description: Unique identifier of the repository
-          $ref: "#/components/schemas/PrimaryKey"        
+          $ref: "#/components/schemas/PrimaryKey"
         name:
           description: Repository name.
           type: string
           example: Repo One
+        summary:
+          description: Summary describing the OSB Repository
+          type: string
+          example: Sample repository with experimental data
         repository_type:
           description: Repository type
           $ref: "#/components/schemas/RepositoryType"
-        repository_content_types:
-          description: Comma separated set of Repository Content Types
+        content_types:
+          description: List of Repository Content Types
           type: string
-          example: "experimental,modeling"
         auto_sync:
           description: Auto sync of the resources
           type: boolean
@@ -899,41 +935,113 @@ components:
           description: URI of the repository
           type: string
           example: https://github.com/OpenSourceBrain/OSBv2
-        user_id:
-          description: Repository keycloak user id, will be automatically be set to the logged in user
-          type: string
         default_context:
           description: The default branch to show for this repository
           type: string
           example: develop
+        user_id:
+          description: OSBRepository keycloak user id, will be automatically be set to the logged in user
+          type: string
       required:
         - name
         - repository_type
-        - repository_content_types
+        - content_types
         - auto_sync
         - uri
-    OSBRepositoryResource:
+    OSBRepositoryEntity:
+      description: OSB Repository model
       allOf:
-        - $ref: "#/components/schemas/RepositoryResource"
-        - description: OSB Repository Resource
+        - $ref: '#/components/schemas/OSBRepositoryBase'
+        - x-tablename: osbrepository
+    OSBRepository:
+      description: OSBRepository extended model
+      allOf:
+        - $ref: "#/components/schemas/OSBRepositoryBase"
+        - description: extra attributes
           type: object
-          x-tablename: osbrepositoryresource
           properties:
-            id:
-              description: Unique identifier of the OSBRepositoryResource
-              $ref: "#/components/schemas/PrimaryKey"
-    RepositoryResource:
-      description: Resource (files/folders) of a OSBRepository
+            context_resources:
+              type: array
+              items:
+                $ref: "#/components/schemas/RepositoryResourceNode"
+            contexts:
+              type: array
+              items:
+                type: string
+            user:
+              $ref: "#/components/schemas/User"
+            content_types_list:
+              type: array
+              items:
+                $ref: "#/components/schemas/RepositoryContentType"
+            description:
+              description: Repository description
+              type: string
+            timestamp_modified:
+              description: Date/time the OSBReposity is last modified
+              type: string
+              format: 'date-time'
+              example: 2019-11-23T01:23:45Z        
+    ResourceBase:
+      description: Resource Base
       type: object
       properties:
-        name:
+        path:
           type: string
-          example: folder/file.ext
-          description: folder/file name
-        uid:
-          type: string
-          description: unique identifier for the resource in the (external) repository
-          example: Git SHA e.g. dae86e1950b1277e545cee180551750029cfe735
+          example: https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/master/.gitignore
+          description: Download URL of the Resource
+    RepositoryResourceBase:
+      description: Resource (files/folders) of an OSBRepository
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+        - description: GIT hub specific attributes of the RepositoryResource
+          type: object
+          properties:
+            name:
+              type: string
+              example: file.ext
+              description: file name
+            osbrepository_id:
+              type: integer
+              description: OSB Repository id
+              example: 1
+    FigshareRepositoryResource:
+      description: figshare repository resource
+      allOf:
+        - $ref: "#/components/schemas/RepositoryResourceBase"
+    DandiRepositoryResource:
+      description: dandi repository resource
+      allOf:
+        - $ref: "#/components/schemas/RepositoryResourceBase"
+    GITRepositoryResource:
+      description: github repository resource
+      allOf:
+        - $ref: "#/components/schemas/RepositoryResourceBase"
+        - description: GIT hub specific attributes of the RepositoryResource
+          type: object
+          properties:
+            ref:
+              description: The GIT ref
+              type: string
+              example: develop
+            sha:
+              description: The GIT sha of the resource
+              type: string
+    DownloadResource:
+      description: Download Resource (files/folders)
+      allOf:
+        - $ref: "#/components/schemas/ResourceBase"
+    RepositoryResource:
+      description: Repository resource
+      oneOf:
+        - $ref: "#/components/schemas/FigshareRepositoryResource"
+        - $ref: "#/components/schemas/DandiRepositoryResource"
+        - $ref: "#/components/schemas/GITRepositoryResource"
+    ResourceOrigin:
+      description: optional Resource where the WorkspaceResource is build from
+      oneOf:
+        - $ref: "#/components/schemas/RepositoryResource"
+        - $ref: "#/components/schemas/DownloadResource"    
     RepositoryResourceNode:
       description: Tree node (files/folders) of a Repository tree
       type: object

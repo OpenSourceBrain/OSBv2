@@ -1,25 +1,24 @@
-import os
-
-from flask import request, current_app
+import json
 from sqlalchemy import asc, desc
 from sqlalchemy.sql import func
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
+from workspaces import repository
 
-from ..auth import auth_client
-from ..config import Config
-from ..utils import get_keycloak_data
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import Workspace, VolumeStorage, \
-    WorkspaceImage, WorkspaceResource, TWorkspaceResource, TWorkspace, \
-    OSBRepository
+from .models import WorkspaceEntity, VolumeStorage, \
+    WorkspaceImage, WorkspaceResourceEntity, OSBRepositoryEntity
 from .utils import *
-from ..service.kubernetes import create_persistent_volume_claim
 
-from workspaces.models.repository_content_type import RepositoryContentType
+from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
+from workspaces.auth import auth_client
+from workspaces.utils import get_keycloak_data
+from workspaces.service.kubernetes import create_persistent_volume_claim
+
+from workspaces.models import RepositoryContentType, User
 
 
 repository_content_type_enum = get_class_attr_val(RepositoryContentType())
@@ -31,19 +30,18 @@ class OwnerModel():
     def keycloak_user_id(self):
         try:
             return auth_client.get_current_user().get('id', None)
-        except:
-            # TODO: for debugging purpose remove this and return "-1"
-            return "80a361f1-221e-4b4d-8440-0ba0b6ec32ef"
+        except Exception as e:
+            return None
 
     def pre_commit(self, obj):
         logger.debug(f'Pre Commit for {obj} id: {obj.id}')
-        if not obj.id:
+        if not obj.user_id:
             obj.user_id = self.keycloak_user_id
         return obj
 
 
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
-    model = Workspace
+    model = WorkspaceEntity
     defaults = {}
 
     def __init__(self, *args, **kwargs):
@@ -53,14 +51,15 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return f'workspace-{workspace_id}'
 
     def get(self, id):
-        workspace: TWorkspace = self.model.query.get(id)
-        if workspace.publicable or (workspace.owner and workspace.owner.keycloak_id == self.keycloak_user_id):
+        workspace = self.model.query.get(id)
+        if workspace and (workspace.publicable or (workspace.user_id and workspace.user_id == self.keycloak_user_id)):
             return workspace
         return None
 
     def search_qs(self, filter=None, q=None):
 
         q_base = self.model.query
+        logger.debug(f"filter: {filter}")
 
         keycloak_user_id = self.keycloak_user_id
         if filter is not None:
@@ -68,18 +67,19 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         if filter and any(field for field, condition, value in filter if field.key == 'publicable' and value):
             q1 = q_base
         elif keycloak_user_id is not None:
-            if not auth_client.current_user_has_realm_role('administrator'):
+            if not auth_client.user_has_realm_role(user_id=keycloak_user_id, role='administrator'):
                 logger.debug(
                     "searching workspaces on keycloak_user_id: %s", keycloak_user_id)
                 # non admin users can see only their own workspaces
                 q1 = q_base.filter_by(user_id=keycloak_user_id)
                 q1 = q1.union(q_base.filter(
-                    Workspace.collaborators.any(user_id=keycloak_user_id)))
+                    WorkspaceEntity.collaborators.any(user_id=keycloak_user_id)))
             else:
                 q1 = q_base
         else:
             q1 = q_base.filter_by(publicable=True)
-        return q1.order_by(desc(Workspace.timestamp_updated))
+        logger.debug(str(q1))
+        return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
@@ -96,8 +96,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         logger.info("deleted volume %s", id)
 
     def pre_commit(self, workspace):
-        workspace = super().pre_commit(workspace)
-        return workspace
+        return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
@@ -114,14 +113,27 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
-    model = OSBRepository
+    model = OSBRepositoryEntity
+    calculated_fields = ["user", "content_types_list"]
 
-    def pre_commit(self, osb_repository):
-        osb_repository = super().pre_commit(osb_repository)
-        for value in osb_repository.repository_content_types.split(","):
-            if value not in repository_content_type_enum.values():
-                raise Exception("Invalid value in Repository Content Types")
-        return osb_repository
+    def pre_commit(self, osbrepository):
+        return super().pre_commit(osbrepository)
+
+    def user(self, repository):
+        try:
+            user = auth_client.get_user(repository.user_id)
+            return User(
+                id=user.get("id",""),
+                first_name=user.get("firstName",""),
+                last_name=user.get("lastName",""),
+                username=user.get("username",""),
+                email=user.get("email","")
+            )
+        except:
+            return User()
+
+    def content_types_list(self, repository):
+        return repository.content_types.split(",")
 
 
 class VolumeStorageRepository(BaseModelRepository):
@@ -137,10 +149,10 @@ class WorkspaceImageRepository(BaseModelRepository):
 
 
 class WorkspaceResourceRepository(BaseModelRepository):
-    model = WorkspaceResource
+    model = WorkspaceResourceEntity
 
     @staticmethod
-    def guess_resurce_type(resource_path):
+    def guess_resource_type(resource_path):
         resource_path = resource_path.split('?')[0]
         if resource_path[-3:] == "nwb":
             return "e"
@@ -148,18 +160,20 @@ class WorkspaceResourceRepository(BaseModelRepository):
             return 'g'
         return 'g'
 
-    def pre_commit(self, workspace_resource: TWorkspaceResource):
+    def pre_commit(self, workspace_resource):
         # Check if we can determine the resource type
         logger.debug(
             f'Pre Commit for workspace resource id: {workspace_resource.id}')
+
         if not workspace_resource.resource_type or workspace_resource.resource_type == 'u':
-            workspace_resource.resource_type = self.guess_resurce_type(
-                workspace_resource.location)
+            origin = json.loads(workspace_resource.origin)            
+            workspace_resource.resource_type = self.guess_resource_type(
+                origin.get("path"))
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
         return workspace_resource
 
-    def post_commit(self, workspace_resource: TWorkspaceResource):
+    def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f'Post Commit for workspace resource id: {workspace_resource.id}')
@@ -169,16 +183,8 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 f'Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name')
             workspace_resource.folder = workspace_resource.name
 
-        if workspace is not None and workspace_resource.status == 'p' and 'http' == workspace_resource.location[0:4]:
-            logger.debug('Starting resource ETL from %s',
-                         workspace_resource.location)
-            try:
-                from ..service.workflow import add_resource
-                add_resource(workspace, workspace_resource)
-            except Exception as e:
-                logger.error(
-                    "An error occurred while adding the default resource to the workspace", exc_info=True)
-                return workspace_resource
+        if workspace is not None and workspace_resource.status == 'p' and workspace_resource.origin and len(workspace_resource.origin)>0:
+            copy_workspace_resource(workspace_resource)
         return workspace_resource
 
     def post_get(self, workspace_resource):
@@ -203,13 +209,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def delete(self, id):
         """Delete an object from the repository."""
-        resource: TWorkspaceResource = self.get(id)
+        workspace_resource = self.get(id)
         super().delete(id)
 
-        try:
-            from ..service.workflow import delete_resource
-            delete_resource(resource.workspace_id, resource.folder)
-        except Exception as e:
-            logger.error(
-                "An error occurred while deleting resource from the workspace", exc_info=True)
-            return None
+        delete_workspace_resource(workspace_resource)

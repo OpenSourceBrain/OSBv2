@@ -1,8 +1,15 @@
 """Model base class"""
 from flask.views import MethodView
-import logging
-from ..config import Config
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
+from workspaces.utils import row2dict
+
+
+def rm_null_values(dikt):
+    tmp = {}
+    for k,v in dikt.items():  # remove null fields from dict
+        if v:
+            tmp.update({k:v})
+    return tmp
 
 
 class BaseModelView(MethodView):
@@ -38,6 +45,7 @@ class BaseModelView(MethodView):
 
     def post(self, body):
         """Save an object to the repository."""
+        body = rm_null_values(body)
         obj = self.repository.post(body)
         return obj.to_dict()
 

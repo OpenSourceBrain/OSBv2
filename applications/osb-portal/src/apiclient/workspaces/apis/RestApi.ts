@@ -41,6 +41,16 @@ import {
     WorkspaceResourceToJSON,
 } from '../models';
 
+export interface DelimageRequest {
+    id: number;
+    imageId: number;
+}
+
+export interface GetContextsRequest {
+    uri: string;
+    repositoryType: RepositoryType;
+}
+
 export interface OsbrepositoryGetRequest {
     page?: number;
     perPage?: number;
@@ -119,15 +129,115 @@ export interface WorkspacesControllersOsbrepositoryControllerGetRequest {
     context?: string;
 }
 
-export interface WorkspacesControllersOsbrepositoryControllerGetContextsRequest {
-    uri: string;
-    repositoryType: RepositoryType;
+export interface WorkspacesControllersWorkspaceControllerAddimageRequest {
+    id: number;
+    image?: Blob;
+}
+
+export interface WorkspacesControllersWorkspaceControllerSetthumbnailRequest {
+    id: number;
+    thumbNail?: Blob;
+}
+
+export interface WorkspacesControllersWorkspaceResourceControllerOpenRequest {
+    id: number;
 }
 
 /**
  * 
  */
 export class RestApi extends runtime.BaseAPI {
+
+    /**
+     * Delete a Workspace Image from the workspace.
+     */
+    async delimageRaw(requestParameters: DelimageRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling delimage.');
+        }
+
+        if (requestParameters.imageId === null || requestParameters.imageId === undefined) {
+            throw new runtime.RequiredError('imageId','Required parameter requestParameters.imageId was null or undefined when calling delimage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/workspace/{id}/gallery/{image_id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"image_id"}}`, encodeURIComponent(String(requestParameters.imageId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete a Workspace Image from the workspace.
+     */
+    async delimage(requestParameters: DelimageRequest): Promise<void> {
+        await this.delimageRaw(requestParameters);
+    }
+
+    /**
+     * Used to retrieve a list of contexts of a repository.
+     */
+    async getContextsRaw(requestParameters: GetContextsRequest): Promise<runtime.ApiResponse<Array<string>>> {
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling getContexts.');
+        }
+
+        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
+            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling getContexts.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
+        }
+
+        if (requestParameters.repositoryType !== undefined) {
+            queryParameters['repository_type'] = requestParameters.repositoryType;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/osbrepository/context`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Used to retrieve a list of contexts of a repository.
+     */
+    async getContexts(requestParameters: GetContextsRequest): Promise<Array<string>> {
+        const response = await this.getContextsRaw(requestParameters);
+        return await response.value();
+    }
 
     /**
      * Used to list all available repositories.
@@ -149,6 +259,14 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/osbrepository`,
             method: 'GET',
@@ -172,7 +290,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async osbrepositoryPostRaw(requestParameters: OsbrepositoryPostRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.oSBRepository === null || requestParameters.oSBRepository === undefined) {
-            throw new runtime.RequiredError('oSBRepository', 'Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryPost.');
+            throw new runtime.RequiredError('oSBRepository','Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryPost.');
         }
 
         const queryParameters: any = {};
@@ -181,6 +299,14 @@ export class RestApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/osbrepository`,
             method: 'POST',
@@ -251,7 +377,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestorageIdDeleteRaw(requestParameters: VolumestorageIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling volumestorageIdDelete.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdDelete.');
         }
 
         const queryParameters: any = {};
@@ -288,7 +414,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestorageIdGetRaw(requestParameters: VolumestorageIdGetRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling volumestorageIdGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdGet.');
         }
 
         const queryParameters: any = {};
@@ -318,11 +444,11 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestorageIdPutRaw(requestParameters: VolumestorageIdPutRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling volumestorageIdPut.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdPut.');
         }
 
         if (requestParameters.volumeStorage === null || requestParameters.volumeStorage === undefined) {
-            throw new runtime.RequiredError('volumeStorage', 'Required parameter requestParameters.volumeStorage was null or undefined when calling volumestorageIdPut.');
+            throw new runtime.RequiredError('volumeStorage','Required parameter requestParameters.volumeStorage was null or undefined when calling volumestorageIdPut.');
         }
 
         const queryParameters: any = {};
@@ -363,7 +489,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async volumestoragePostRaw(requestParameters: VolumestoragePostRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.volumeStorage === null || requestParameters.volumeStorage === undefined) {
-            throw new runtime.RequiredError('volumeStorage', 'Required parameter requestParameters.volumeStorage was null or undefined when calling volumestoragePost.');
+            throw new runtime.RequiredError('volumeStorage','Required parameter requestParameters.volumeStorage was null or undefined when calling volumestoragePost.');
         }
 
         const queryParameters: any = {};
@@ -419,6 +545,14 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/workspace`,
             method: 'GET',
@@ -442,7 +576,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceIdDeleteRaw(requestParameters: WorkspaceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceIdDelete.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdDelete.');
         }
 
         const queryParameters: any = {};
@@ -479,13 +613,21 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceIdGetRaw(requestParameters: WorkspaceIdGetRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceIdGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdGet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/workspace/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
@@ -509,11 +651,11 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceIdPutRaw(requestParameters: WorkspaceIdPutRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceIdPut.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdPut.');
         }
 
         if (requestParameters.workspace === null || requestParameters.workspace === undefined) {
-            throw new runtime.RequiredError('workspace', 'Required parameter requestParameters.workspace was null or undefined when calling workspaceIdPut.');
+            throw new runtime.RequiredError('workspace','Required parameter requestParameters.workspace was null or undefined when calling workspaceIdPut.');
         }
 
         const queryParameters: any = {};
@@ -554,7 +696,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacePostRaw(requestParameters: WorkspacePostRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.workspace === null || requestParameters.workspace === undefined) {
-            throw new runtime.RequiredError('workspace', 'Required parameter requestParameters.workspace was null or undefined when calling workspacePost.');
+            throw new runtime.RequiredError('workspace','Required parameter requestParameters.workspace was null or undefined when calling workspacePost.');
         }
 
         const queryParameters: any = {};
@@ -595,7 +737,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourceIdDeleteRaw(requestParameters: WorkspaceresourceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdDelete.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdDelete.');
         }
 
         const queryParameters: any = {};
@@ -632,7 +774,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourceIdGetRaw(requestParameters: WorkspaceresourceIdGetRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdGet.');
         }
 
         const queryParameters: any = {};
@@ -670,11 +812,11 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourceIdPutRaw(requestParameters: WorkspaceresourceIdPutRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdPut.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdPut.');
         }
 
         if (requestParameters.workspaceResource === null || requestParameters.workspaceResource === undefined) {
-            throw new runtime.RequiredError('workspaceResource', 'Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourceIdPut.');
+            throw new runtime.RequiredError('workspaceResource','Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourceIdPut.');
         }
 
         const queryParameters: any = {};
@@ -715,7 +857,7 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourcePostRaw(requestParameters: WorkspaceresourcePostRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.workspaceResource === null || requestParameters.workspaceResource === undefined) {
-            throw new runtime.RequiredError('workspaceResource', 'Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourcePost.');
+            throw new runtime.RequiredError('workspaceResource','Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourcePost.');
         }
 
         const queryParameters: any = {};
@@ -754,9 +896,9 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve a repository.
      */
-    async workspacesControllersOsbrepositoryControllerGetRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<runtime.ApiResponse<OSBRepository & object>> {
+    async workspacesControllersOsbrepositoryControllerGetRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id', 'Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerGet.');
         }
 
         const queryParameters: any = {};
@@ -767,6 +909,14 @@ export class RestApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
@@ -780,51 +930,162 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve a repository.
      */
-    async workspacesControllersOsbrepositoryControllerGet(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<OSBRepository & object> {
+    async workspacesControllersOsbrepositoryControllerGet(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<OSBRepository> {
         const response = await this.workspacesControllersOsbrepositoryControllerGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
-     * Used to retrieve a list of contexts of a repository.
+     * Adds and image to the workspace.
      */
-    async workspacesControllersOsbrepositoryControllerGetContextsRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetContextsRequest): Promise<runtime.ApiResponse<Array<string>>> {
-        if (requestParameters.uri === null || requestParameters.uri === undefined) {
-            throw new runtime.RequiredError('uri', 'Required parameter requestParameters.uri was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
-        }
-
-        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
-            throw new runtime.RequiredError('repositoryType', 'Required parameter requestParameters.repositoryType was null or undefined when calling workspacesControllersOsbrepositoryControllerGetContexts.');
+    async workspacesControllersWorkspaceControllerAddimageRaw(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerAddimage.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.uri !== undefined) {
-            queryParameters['uri'] = requestParameters.uri;
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
         }
 
-        if (requestParameters.repositoryType !== undefined) {
-            queryParameters['repository_type'] = requestParameters.repositoryType;
+        if (requestParameters.image !== undefined) {
+            formParams.append('image', requestParameters.image as any);
         }
+
+        const response = await this.request({
+            path: `/workspace/{id}/gallery`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: formParams,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Adds and image to the workspace.
+     */
+    async workspacesControllersWorkspaceControllerAddimage(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerAddimageRaw(requestParameters);
+    }
+
+    /**
+     * Sets the thumbnail of the workspace.
+     */
+    async workspacesControllersWorkspaceControllerSetthumbnailRaw(requestParameters: WorkspacesControllersWorkspaceControllerSetthumbnailRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerSetthumbnail.');
+        }
+
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters.thumbNail !== undefined) {
+            formParams.append('thumbNail', requestParameters.thumbNail as any);
+        }
+
         const response = await this.request({
-            path: `/osbrepository/context`,
+            path: `/workspace/{id}/thumbnail`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: formParams,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Sets the thumbnail of the workspace.
+     */
+    async workspacesControllersWorkspaceControllerSetthumbnail(requestParameters: WorkspacesControllersWorkspaceControllerSetthumbnailRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerSetthumbnailRaw(requestParameters);
+    }
+
+    /**
+     * Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
+     */
+    async workspacesControllersWorkspaceResourceControllerOpenRaw(requestParameters: WorkspacesControllersWorkspaceResourceControllerOpenRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceResourceControllerOpen.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/workspaceresource/{id}/open`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Used to retrieve a list of contexts of a repository.
+     * Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
      */
-    async workspacesControllersOsbrepositoryControllerGetContexts(requestParameters: WorkspacesControllersOsbrepositoryControllerGetContextsRequest): Promise<Array<string>> {
-        const response = await this.workspacesControllersOsbrepositoryControllerGetContextsRaw(requestParameters);
-        return await response.value();
+    async workspacesControllersWorkspaceResourceControllerOpen(requestParameters: WorkspacesControllersWorkspaceResourceControllerOpenRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceResourceControllerOpenRaw(requestParameters);
     }
 
 }

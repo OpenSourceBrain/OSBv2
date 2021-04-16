@@ -37,13 +37,14 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            return self.model.query.get(id)
+            obj = self.model.query.get(id)
+            return self._calculated_fields_populate(obj)
         return None
 
     def _calculated_fields_populate(self, obj):
         if self.calculated_fields:
             for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj.id))
+                setattr(obj, fld, getattr(self, fld)(obj))
         return obj
 
     def _post_get(self, new_obj):

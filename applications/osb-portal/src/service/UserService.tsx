@@ -22,9 +22,8 @@ export const initApis = (token: string) => {
 function mapKeycloakUser(userInfo: any): UserInfo {
     return {
         id: userInfo.sub,
-        firstname: userInfo.given_name,
-        lastname: userInfo.family_name,
-        username: userInfo.preferred_username || userInfo.given_name,
+        firstName: userInfo.given_name,
+        lastName: userInfo.family_name,
         email: userInfo.email,
         isAdmin: isUserAdmin()
     }
@@ -94,5 +93,5 @@ const errorCallback = (error: any) => {
 }
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
-    return user && (user.isAdmin || workspace.owner === user.id)
+    return user && (user.isAdmin || workspace.userId === user.id)
 }

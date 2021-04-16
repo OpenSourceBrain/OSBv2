@@ -7,6 +7,8 @@ from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
 from workspaces.models.volume_storage import VolumeStorage
+from workspaces.models.workspace_all_of import WorkspaceAllOf
+from workspaces.models.workspace_base import WorkspaceBase
 from workspaces.models.workspace_collaborator import WorkspaceCollaborator
 from workspaces.models.workspace_image import WorkspaceImage
 from workspaces.models.workspace_resource import WorkspaceResource
@@ -14,6 +16,8 @@ from workspaces.models.workspace_tag import WorkspaceTag
 from workspaces import util
 
 from workspaces.models.volume_storage import VolumeStorage  # noqa: E501
+from workspaces.models.workspace_all_of import WorkspaceAllOf  # noqa: E501
+from workspaces.models.workspace_base import WorkspaceBase  # noqa: E501
 from workspaces.models.workspace_collaborator import WorkspaceCollaborator  # noqa: E501
 from workspaces.models.workspace_image import WorkspaceImage  # noqa: E501
 from workspaces.models.workspace_resource import WorkspaceResource  # noqa: E501
@@ -25,7 +29,7 @@ class Workspace(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, tags=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, license=None, collaborators=None, resources=None, storage=None):  # noqa: E501
+    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, tags=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, license=None, collaborators=None, storage=None, resources=None):  # noqa: E501
         """Workspace - a model defined in OpenAPI
 
         :param id: The id of this Workspace.  # noqa: E501
@@ -54,10 +58,10 @@ class Workspace(Model):
         :type license: str
         :param collaborators: The collaborators of this Workspace.  # noqa: E501
         :type collaborators: List[WorkspaceCollaborator]
-        :param resources: The resources of this Workspace.  # noqa: E501
-        :type resources: List[WorkspaceResource]
         :param storage: The storage of this Workspace.  # noqa: E501
         :type storage: VolumeStorage
+        :param resources: The resources of this Workspace.  # noqa: E501
+        :type resources: List[WorkspaceResource]
         """
         self.openapi_types = {
             'id': int,
@@ -73,8 +77,8 @@ class Workspace(Model):
             'publicable': bool,
             'license': str,
             'collaborators': List[WorkspaceCollaborator],
-            'resources': List[WorkspaceResource],
-            'storage': VolumeStorage
+            'storage': VolumeStorage,
+            'resources': List[WorkspaceResource]
         }
 
         self.attribute_map = {
@@ -91,8 +95,8 @@ class Workspace(Model):
             'publicable': 'publicable',
             'license': 'license',
             'collaborators': 'collaborators',
-            'resources': 'resources',
-            'storage': 'storage'
+            'storage': 'storage',
+            'resources': 'resources'
         }
 
         self._id = id
@@ -108,8 +112,8 @@ class Workspace(Model):
         self._publicable = publicable
         self._license = license
         self._collaborators = collaborators
-        self._resources = resources
         self._storage = storage
+        self._resources = resources
 
     @classmethod
     def from_dict(cls, dikt) -> 'Workspace':
@@ -422,6 +426,27 @@ class Workspace(Model):
         self._collaborators = collaborators
 
     @property
+    def storage(self):
+        """Gets the storage of this Workspace.
+
+
+        :return: The storage of this Workspace.
+        :rtype: VolumeStorage
+        """
+        return self._storage
+
+    @storage.setter
+    def storage(self, storage):
+        """Sets the storage of this Workspace.
+
+
+        :param storage: The storage of this Workspace.
+        :type storage: VolumeStorage
+        """
+
+        self._storage = storage
+
+    @property
     def resources(self):
         """Gets the resources of this Workspace.
 
@@ -443,24 +468,3 @@ class Workspace(Model):
         """
 
         self._resources = resources
-
-    @property
-    def storage(self):
-        """Gets the storage of this Workspace.
-
-
-        :return: The storage of this Workspace.
-        :rtype: VolumeStorage
-        """
-        return self._storage
-
-    @storage.setter
-    def storage(self, storage):
-        """Sets the storage of this Workspace.
-
-
-        :param storage: The storage of this Workspace.
-        :type storage: VolumeStorage
-        """
-
-        self._storage = storage

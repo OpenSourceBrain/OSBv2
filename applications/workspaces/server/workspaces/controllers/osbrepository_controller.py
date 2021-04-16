@@ -1,6 +1,8 @@
 import workspaces.service.osbrepository.osbrepository as repository_service
+
+from workspaces.utils import row2dict
 from workspaces.repository.model_repository import OSBRepositoryRepository
-from workspaces.models.osb_repository import OSBRepository
+from workspaces.views.api.rest_api_views import OsbrepositoryView
 
 
 def get_contexts(uri=None, repository_type=None, **kwargs):
@@ -11,18 +13,17 @@ def get_contexts(uri=None, repository_type=None, **kwargs):
 
 def get(id_=None, context=None, **kwargs):
     # get the repository
-    rr = OSBRepositoryRepository()
-    osb_repository = rr.get(id=id_)
-    if osb_repository is None:
+    osbrepository_ext = OSBRepositoryRepository().get(id=id_)
+    if osbrepository_ext is None:
         return f"OSBRepository with id {id_} not found.", 404
 
-    repository = osb_repository.to_dict()
-    repository.update({"context_resources": repository_service.get_resources(
-        osb_repository,
-        context)  # use context to get the files
-    })
-    repository.update({"contexts": repository_service.get_contexts(
-        repository_type=osb_repository.repository_type,
-        uri=osb_repository.uri)
-    })
-    return repository, 200
+    osbrepository_ext.context_resources = repository_service.get_resources(
+        osbrepository=osbrepository_ext,
+        context=context)  # use context to get the files
+    osbrepository_ext.contexts = repository_service.get_contexts(
+        repository_type=osbrepository_ext.repository_type,
+        uri=osbrepository_ext.uri)
+    osbrepository_ext.description = repository_service.get_description(
+        osbrepository=osbrepository_ext,
+        context=context)  # use context to get the files
+    return row2dict(osbrepository_ext), 200

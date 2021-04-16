@@ -62,8 +62,8 @@ export class BaseAPI {
             url += '?' + this.configuration.queryParamsStringify(context.query);
         }
         const body = ((typeof FormData !== "undefined" && context.body instanceof FormData) || context.body instanceof URLSearchParams || isBlob(context.body))
-            ? context.body
-            : JSON.stringify(context.body);
+        ? context.body
+        : JSON.stringify(context.body);
 
         const headers = Object.assign({}, this.configuration.headers, context.headers);
         const init = {
@@ -141,7 +141,7 @@ export interface ConfigurationParameters {
 }
 
 export class Configuration {
-    constructor(private configuration: ConfigurationParameters = {}) { }
+    constructor(private configuration: ConfigurationParameters = {}) {}
 
     get basePath(): string {
         return this.configuration.basePath != null ? this.configuration.basePath : BASE_PATH;
@@ -227,6 +227,9 @@ export function querystring(params: HTTPQuery, prefix: string = ''): string {
                     .join(`&${encodeURIComponent(fullKey)}=`);
                 return `${encodeURIComponent(fullKey)}=${multiValue}`;
             }
+            if (value instanceof Date) {
+                return `${encodeURIComponent(fullKey)}=${encodeURIComponent(value.toISOString())}`;
+            }
             if (value instanceof Object) {
                 return querystring(value as HTTPQuery, fullKey);
             }
@@ -237,10 +240,10 @@ export function querystring(params: HTTPQuery, prefix: string = ''): string {
 }
 
 export function mapValues(data: any, fn: (item: any) => any) {
-    return Object.keys(data).reduce(
-        (acc, key) => ({ ...acc, [key]: fn(data[key]) }),
-        {}
-    );
+  return Object.keys(data).reduce(
+    (acc, key) => ({ ...acc, [key]: fn(data[key]) }),
+    {}
+  );
 }
 
 export function canConsumeForm(consumes: Consume[]): boolean {
@@ -284,7 +287,7 @@ export interface ResponseTransformer<T> {
 }
 
 export class JSONApiResponse<T> {
-    constructor(public raw: Response, private transformer: ResponseTransformer<T> = (jsonValue: any) => jsonValue) { }
+    constructor(public raw: Response, private transformer: ResponseTransformer<T> = (jsonValue: any) => jsonValue) {}
 
     async value(): Promise<T> {
         return this.transformer(await this.raw.json());
@@ -292,7 +295,7 @@ export class JSONApiResponse<T> {
 }
 
 export class VoidApiResponse {
-    constructor(public raw: Response) { }
+    constructor(public raw: Response) {}
 
     async value(): Promise<void> {
         return undefined;
@@ -300,7 +303,7 @@ export class VoidApiResponse {
 }
 
 export class BlobApiResponse {
-    constructor(public raw: Response) { }
+    constructor(public raw: Response) {}
 
     async value(): Promise<Blob> {
         return await this.raw.blob();
@@ -308,7 +311,7 @@ export class BlobApiResponse {
 }
 
 export class TextApiResponse {
-    constructor(public raw: Response) { }
+    constructor(public raw: Response) {}
 
     async value(): Promise<string> {
         return await this.raw.text();

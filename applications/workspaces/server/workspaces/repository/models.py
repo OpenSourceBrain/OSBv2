@@ -11,14 +11,14 @@ from sqlalchemy import orm
 from open_alchemy import models
 
 
-class _WorkspaceDictBase(typing_extensions.TypedDict, total=True):
+class _WorkspaceEntityDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
     description: str
 
 
-class WorkspaceDict(_WorkspaceDictBase, total=False):
+class WorkspaceEntityDict(_WorkspaceEntityDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
@@ -32,18 +32,18 @@ class WorkspaceDict(_WorkspaceDictBase, total=False):
     publicable: bool
     license: typing.Optional[str]
     collaborators: typing.Sequence["WorkspaceCollaboratorDict"]
-    resources: typing.Sequence["WorkspaceResourceDict"]
     storage: typing.Optional["VolumeStorageDict"]
+    resources: typing.Sequence["WorkspaceResourceEntityDict"]
 
 
-class TWorkspace(typing_extensions.Protocol):
+class TWorkspaceEntity(typing_extensions.Protocol):
     """
     SQLAlchemy model protocol.
 
     Workspace item
 
     Attrs:
-        id: The id of the Workspace.
+        id: The id of the WorkspaceEntity.
         name: Workspace name.
         description: Workspace description.
         timestamp_created: Date/time the Workspace is created
@@ -51,7 +51,7 @@ class TWorkspace(typing_extensions.Protocol):
         tags: Workspace tags
         last_opened_resource_id: The workspace resource id the workspace is
             opened last with
-        thumbnail: The thumbnail of the Workspace.
+        thumbnail: The thumbnail of the WorkspaceEntity.
         gallery: Gallery with images of the workspace
         user_id: Workspace keycloak user id, will be automatically be set to
             the logged in user
@@ -59,8 +59,8 @@ class TWorkspace(typing_extensions.Protocol):
             false
         license: Workspace license
         collaborators: Collaborators who work on the workspace
+        storage: The storage of the WorkspaceEntity.
         resources: Resources of the workspace
-        storage: The storage of the Workspace.
 
     """
 
@@ -83,8 +83,8 @@ class TWorkspace(typing_extensions.Protocol):
     publicable: bool
     license: typing.Optional[str]
     collaborators: typing.Sequence["TWorkspaceCollaborator"]
-    resources: typing.Sequence["TWorkspaceResource"]
     storage: typing.Optional["TVolumeStorage"]
+    resources: typing.Sequence["TWorkspaceResourceEntity"]
 
     def __init__(
         self,
@@ -103,14 +103,14 @@ class TWorkspace(typing_extensions.Protocol):
         collaborators: typing.Optional[
             typing.Sequence["TWorkspaceCollaborator"]
         ] = None,
-        resources: typing.Optional[typing.Sequence["TWorkspaceResource"]] = None,
         storage: typing.Optional["TVolumeStorage"] = None,
+        resources: typing.Optional[typing.Sequence["TWorkspaceResourceEntity"]] = None,
     ) -> None:
         """
         Construct.
 
         Args:
-            id: The id of the Workspace.
+            id: The id of the WorkspaceEntity.
             name: Workspace name.
             description: Workspace description.
             timestamp_created: Date/time the Workspace is created
@@ -118,7 +118,7 @@ class TWorkspace(typing_extensions.Protocol):
             tags: Workspace tags
             last_opened_resource_id: The workspace resource id the workspace is
                 opened last with
-            thumbnail: The thumbnail of the Workspace.
+            thumbnail: The thumbnail of the WorkspaceEntity.
             gallery: Gallery with images of the workspace
             user_id: Workspace keycloak user id, will be automatically be set
                 to the logged in user
@@ -126,8 +126,8 @@ class TWorkspace(typing_extensions.Protocol):
                 Default false
             license: Workspace license
             collaborators: Collaborators who work on the workspace
+            storage: The storage of the WorkspaceEntity.
             resources: Resources of the workspace
-            storage: The storage of the Workspace.
 
         """
         ...
@@ -150,14 +150,16 @@ class TWorkspace(typing_extensions.Protocol):
         collaborators: typing.Optional[
             typing.Sequence["WorkspaceCollaboratorDict"]
         ] = None,
-        resources: typing.Optional[typing.Sequence["WorkspaceResourceDict"]] = None,
         storage: typing.Optional["VolumeStorageDict"] = None,
-    ) -> "TWorkspace":
+        resources: typing.Optional[
+            typing.Sequence["WorkspaceResourceEntityDict"]
+        ] = None,
+    ) -> "TWorkspaceEntity":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
-            id: The id of the Workspace.
+            id: The id of the WorkspaceEntity.
             name: Workspace name.
             description: Workspace description.
             timestamp_created: Date/time the Workspace is created
@@ -165,7 +167,7 @@ class TWorkspace(typing_extensions.Protocol):
             tags: Workspace tags
             last_opened_resource_id: The workspace resource id the workspace is
                 opened last with
-            thumbnail: The thumbnail of the Workspace.
+            thumbnail: The thumbnail of the WorkspaceEntity.
             gallery: Gallery with images of the workspace
             user_id: Workspace keycloak user id, will be automatically be set
                 to the logged in user
@@ -173,8 +175,8 @@ class TWorkspace(typing_extensions.Protocol):
                 Default false
             license: Workspace license
             collaborators: Collaborators who work on the workspace
+            storage: The storage of the WorkspaceEntity.
             resources: Resources of the workspace
-            storage: The storage of the Workspace.
 
         Returns:
             Model instance based on the dictionary.
@@ -183,7 +185,7 @@ class TWorkspace(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_str(cls, value: str) -> "TWorkspace":
+    def from_str(cls, value: str) -> "TWorkspaceEntity":
         """
         Construct from a JSON string (eg. a POST payload).
 
@@ -193,7 +195,7 @@ class TWorkspace(typing_extensions.Protocol):
         """
         ...
 
-    def to_dict(self) -> WorkspaceDict:
+    def to_dict(self) -> WorkspaceEntityDict:
         """
         Convert to a dictionary (eg. to send back for a GET request).
 
@@ -214,7 +216,7 @@ class TWorkspace(typing_extensions.Protocol):
         ...
 
 
-Workspace: TWorkspace = models.Workspace  # type: ignore
+WorkspaceEntity: TWorkspaceEntity = models.WorkspaceEntity  # type: ignore
 
 
 class _WorkspaceCollaboratorDictBase(typing_extensions.TypedDict, total=True):
@@ -503,15 +505,14 @@ class TWorkspaceTag(typing_extensions.Protocol):
 WorkspaceTag: TWorkspaceTag = models.WorkspaceTag  # type: ignore
 
 
-class _WorkspaceResourceDictBase(typing_extensions.TypedDict, total=True):
+class _WorkspaceResourceEntityDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
-    location: str
     resource_type: str
 
 
-class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
+class WorkspaceResourceEntityDict(_WorkspaceResourceEntityDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
@@ -520,19 +521,17 @@ class WorkspaceResourceDict(_WorkspaceResourceDictBase, total=False):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
+    origin: typing.Optional[str]
     workspace_id: typing.Optional[int]
 
 
-class TWorkspaceResource(typing_extensions.Protocol):
+class TWorkspaceResourceEntity(typing_extensions.Protocol):
     """
     SQLAlchemy model protocol.
 
-    Workspace Resource item of a Workspace
-
     Attrs:
-        id: The id of the WorkspaceResource.
+        id: The id of the WorkspaceResourceEntity.
         name: WorkspaceResource name
-        location: WorkspaceResource location original location of the resource
         folder: WorkspaceResource folder where the resource will stored in the
             pvc
         status: Resource status:  * a - Available  * e - Error, not available
@@ -543,6 +542,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
             WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
             Generic  * u - Unknown (to be defined)
+        origin: Origin data JSON formatted of the WorkspaceResource
         workspace_id: workspace_id
 
     """
@@ -555,19 +555,18 @@ class TWorkspaceResource(typing_extensions.Protocol):
     # Model properties
     id: int
     name: str
-    location: str
     folder: typing.Optional[str]
     status: str
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
     resource_type: str
+    origin: typing.Optional[str]
     workspace_id: typing.Optional[int]
 
     def __init__(
         self,
         name: str,
-        location: str,
         resource_type: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
@@ -575,16 +574,15 @@ class TWorkspaceResource(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        origin: typing.Optional[str] = None,
         workspace_id: typing.Optional[int] = None,
     ) -> None:
         """
         Construct.
 
         Args:
-            id: The id of the WorkspaceResource.
+            id: The id of the WorkspaceResourceEntity.
             name: WorkspaceResource name
-            location: WorkspaceResource location original location of the
-                resource
             folder: WorkspaceResource folder where the resource will stored in
                 the pvc
             status: Resource status:  * a - Available  * e - Error, not
@@ -596,6 +594,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
+            origin: Origin data JSON formatted of the WorkspaceResource
             workspace_id: workspace_id
 
         """
@@ -605,7 +604,6 @@ class TWorkspaceResource(typing_extensions.Protocol):
     def from_dict(
         cls,
         name: str,
-        location: str,
         resource_type: str,
         id: typing.Optional[int] = None,
         folder: typing.Optional[str] = None,
@@ -613,16 +611,15 @@ class TWorkspaceResource(typing_extensions.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        origin: typing.Optional[str] = None,
         workspace_id: typing.Optional[int] = None,
-    ) -> "TWorkspaceResource":
+    ) -> "TWorkspaceResourceEntity":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
-            id: The id of the WorkspaceResource.
+            id: The id of the WorkspaceResourceEntity.
             name: WorkspaceResource name
-            location: WorkspaceResource location original location of the
-                resource
             folder: WorkspaceResource folder where the resource will stored in
                 the pvc
             status: Resource status:  * a - Available  * e - Error, not
@@ -634,6 +631,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
+            origin: Origin data JSON formatted of the WorkspaceResource
             workspace_id: workspace_id
 
         Returns:
@@ -643,7 +641,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_str(cls, value: str) -> "TWorkspaceResource":
+    def from_str(cls, value: str) -> "TWorkspaceResourceEntity":
         """
         Construct from a JSON string (eg. a POST payload).
 
@@ -653,7 +651,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         """
         ...
 
-    def to_dict(self) -> WorkspaceResourceDict:
+    def to_dict(self) -> WorkspaceResourceEntityDict:
         """
         Convert to a dictionary (eg. to send back for a GET request).
 
@@ -674,7 +672,7 @@ class TWorkspaceResource(typing_extensions.Protocol):
         ...
 
 
-WorkspaceResource: TWorkspaceResource = models.WorkspaceResource  # type: ignore
+WorkspaceResourceEntity: TWorkspaceResourceEntity = models.WorkspaceResourceEntity  # type: ignore
 
 
 class _VolumeStorageDictBase(typing_extensions.TypedDict, total=True):
@@ -771,42 +769,43 @@ class TVolumeStorage(typing_extensions.Protocol):
 VolumeStorage: TVolumeStorage = models.VolumeStorage  # type: ignore
 
 
-class _OSBRepositoryDictBase(typing_extensions.TypedDict, total=True):
+class _OSBRepositoryEntityDictBase(typing_extensions.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
     repository_type: str
-    repository_content_types: str
+    content_types: str
     auto_sync: bool
     uri: str
 
 
-class OSBRepositoryDict(_OSBRepositoryDictBase, total=False):
+class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
-    user_id: typing.Optional[str]
+    summary: typing.Optional[str]
     default_context: typing.Optional[str]
+    user_id: typing.Optional[str]
 
 
-class TOSBRepository(typing_extensions.Protocol):
+class TOSBRepositoryEntity(typing_extensions.Protocol):
     """
     SQLAlchemy model protocol.
 
-    OSB Repository model
+    OSB Repository Base model
 
     Attrs:
-        id: The id of the OSBRepository.
+        id: The id of the OSBRepositoryEntity.
         name: Repository name.
+        summary: Summary describing the OSB Repository
         repository_type: Repository type:   * dandi - DANDI repository   *
             figshare - FigShare repository   * github - Github repository
-        repository_content_types: Comma separated set of Repository Content
-            Types
+        content_types: List of Repository Content Types
         auto_sync: Auto sync of the resources
         uri: URI of the repository
-        user_id: Repository keycloak user id, will be automatically be set to
-            the logged in user
         default_context: The default branch to show for this repository
+        user_id: OSBRepository keycloak user id, will be automatically be set
+            to the logged in user
 
     """
 
@@ -818,39 +817,41 @@ class TOSBRepository(typing_extensions.Protocol):
     # Model properties
     id: int
     name: str
+    summary: typing.Optional[str]
     repository_type: str
-    repository_content_types: str
+    content_types: str
     auto_sync: bool
     uri: str
-    user_id: typing.Optional[str]
     default_context: typing.Optional[str]
+    user_id: typing.Optional[str]
 
     def __init__(
         self,
         name: str,
         repository_type: str,
-        repository_content_types: str,
+        content_types: str,
         auto_sync: bool,
         uri: str,
         id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
+        summary: typing.Optional[str] = None,
         default_context: typing.Optional[str] = None,
+        user_id: typing.Optional[str] = None,
     ) -> None:
         """
         Construct.
 
         Args:
-            id: The id of the OSBRepository.
+            id: The id of the OSBRepositoryEntity.
             name: Repository name.
+            summary: Summary describing the OSB Repository
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
+            content_types: List of Repository Content Types
             auto_sync: Auto sync of the resources
             uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
             default_context: The default branch to show for this repository
+            user_id: OSBRepository keycloak user id, will be automatically be
+                set to the logged in user
 
         """
         ...
@@ -860,28 +861,29 @@ class TOSBRepository(typing_extensions.Protocol):
         cls,
         name: str,
         repository_type: str,
-        repository_content_types: str,
+        content_types: str,
         auto_sync: bool,
         uri: str,
         id: typing.Optional[int] = None,
-        user_id: typing.Optional[str] = None,
+        summary: typing.Optional[str] = None,
         default_context: typing.Optional[str] = None,
-    ) -> "TOSBRepository":
+        user_id: typing.Optional[str] = None,
+    ) -> "TOSBRepositoryEntity":
         """
         Construct from a dictionary (eg. a POST payload).
 
         Args:
-            id: The id of the OSBRepository.
+            id: The id of the OSBRepositoryEntity.
             name: Repository name.
+            summary: Summary describing the OSB Repository
             repository_type: Repository type:   * dandi - DANDI repository   *
                 figshare - FigShare repository   * github - Github repository
-            repository_content_types: Comma separated set of Repository Content
-                Types
+            content_types: List of Repository Content Types
             auto_sync: Auto sync of the resources
             uri: URI of the repository
-            user_id: Repository keycloak user id, will be automatically be set
-                to the logged in user
             default_context: The default branch to show for this repository
+            user_id: OSBRepository keycloak user id, will be automatically be
+                set to the logged in user
 
         Returns:
             Model instance based on the dictionary.
@@ -890,7 +892,7 @@ class TOSBRepository(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_str(cls, value: str) -> "TOSBRepository":
+    def from_str(cls, value: str) -> "TOSBRepositoryEntity":
         """
         Construct from a JSON string (eg. a POST payload).
 
@@ -900,7 +902,7 @@ class TOSBRepository(typing_extensions.Protocol):
         """
         ...
 
-    def to_dict(self) -> OSBRepositoryDict:
+    def to_dict(self) -> OSBRepositoryEntityDict:
         """
         Convert to a dictionary (eg. to send back for a GET request).
 
@@ -921,110 +923,4 @@ class TOSBRepository(typing_extensions.Protocol):
         ...
 
 
-OSBRepository: TOSBRepository = models.OSBRepository  # type: ignore
-
-
-class OSBRepositoryResourceDict(typing_extensions.TypedDict, total=False):
-    """TypedDict for properties that are not required."""
-
-    name: typing.Optional[str]
-    uid: typing.Optional[str]
-    id: int
-
-
-class TOSBRepositoryResource(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    OSB Repository Resource
-
-    Attrs:
-        name: folder/file name
-        uid: unique identifier for the resource in the (external) repository
-        id: The id of the OSBRepositoryResource.
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    name: typing.Optional[str]
-    uid: typing.Optional[str]
-    id: int
-
-    def __init__(
-        self,
-        name: typing.Optional[str] = None,
-        uid: typing.Optional[str] = None,
-        id: typing.Optional[int] = None,
-    ) -> None:
-        """
-        Construct.
-
-        Args:
-            name: folder/file name
-            uid: unique identifier for the resource in the (external)
-                repository
-            id: The id of the OSBRepositoryResource.
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls,
-        name: typing.Optional[str] = None,
-        uid: typing.Optional[str] = None,
-        id: typing.Optional[int] = None,
-    ) -> "TOSBRepositoryResource":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            name: folder/file name
-            uid: unique identifier for the resource in the (external)
-                repository
-            id: The id of the OSBRepositoryResource.
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TOSBRepositoryResource":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> OSBRepositoryResourceDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-OSBRepositoryResource: TOSBRepositoryResource = models.OSBRepositoryResource  # type: ignore
+OSBRepositoryEntity: TOSBRepositoryEntity = models.OSBRepositoryEntity  # type: ignore

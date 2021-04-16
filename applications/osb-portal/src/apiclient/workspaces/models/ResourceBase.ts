@@ -14,34 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * OSB Repository Resource
+ * Resource Base
  * @export
- * @interface OSBRepositoryResourceAllOf
+ * @interface ResourceBase
  */
-export interface OSBRepositoryResourceAllOf {
+export interface ResourceBase {
     /**
-     * 
-     * @type {number}
-     * @memberof OSBRepositoryResourceAllOf
+     * Download URL of the Resource
+     * @type {string}
+     * @memberof ResourceBase
      */
-    id?: number;
+    path?: string;
 }
 
-export function OSBRepositoryResourceAllOfFromJSON(json: any): OSBRepositoryResourceAllOf {
-    return OSBRepositoryResourceAllOfFromJSONTyped(json, false);
+export function ResourceBaseFromJSON(json: any): ResourceBase {
+    return ResourceBaseFromJSONTyped(json, false);
 }
 
-export function OSBRepositoryResourceAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): OSBRepositoryResourceAllOf {
+export function ResourceBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResourceBase {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
 
-export function OSBRepositoryResourceAllOfToJSON(value?: OSBRepositoryResourceAllOf | null): any {
+export function ResourceBaseToJSON(value?: ResourceBase | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +50,7 @@ export function OSBRepositoryResourceAllOfToJSON(value?: OSBRepositoryResourceAl
     }
     return {
         
-        'id': value.id,
+        'path': value.path,
     };
 }
 

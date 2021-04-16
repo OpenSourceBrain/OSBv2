@@ -18,6 +18,14 @@ import {
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
     VolumeStorageToJSON,
+    WorkspaceAllOf,
+    WorkspaceAllOfFromJSON,
+    WorkspaceAllOfFromJSONTyped,
+    WorkspaceAllOfToJSON,
+    WorkspaceBase,
+    WorkspaceBaseFromJSON,
+    WorkspaceBaseFromJSONTyped,
+    WorkspaceBaseToJSON,
     WorkspaceCollaborator,
     WorkspaceCollaboratorFromJSON,
     WorkspaceCollaboratorFromJSONTyped,
@@ -37,7 +45,7 @@ import {
 } from './';
 
 /**
- * Workspace item
+ * Workspace extended
  * @export
  * @interface Workspace
  */
@@ -121,17 +129,17 @@ export interface Workspace {
      */
     collaborators?: Array<WorkspaceCollaborator>;
     /**
-     * Resources of the workspace
-     * @type {Array<WorkspaceResource>}
-     * @memberof Workspace
-     */
-    resources?: Array<WorkspaceResource>;
-    /**
      * 
      * @type {VolumeStorage}
      * @memberof Workspace
      */
     storage?: VolumeStorage;
+    /**
+     * Resources of the workspace
+     * @type {Array<WorkspaceResource>}
+     * @memberof Workspace
+     */
+    resources?: Array<WorkspaceResource>;
 }
 
 export function WorkspaceFromJSON(json: any): Workspace {
@@ -157,8 +165,8 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'publicable': !exists(json, 'publicable') ? undefined : json['publicable'],
         'license': !exists(json, 'license') ? undefined : json['license'],
         'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(WorkspaceCollaboratorFromJSON)),
-        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
+        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
     };
 }
 
@@ -184,8 +192,8 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'publicable': value.publicable,
         'license': value.license,
         'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(WorkspaceCollaboratorToJSON)),
-        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
         'storage': VolumeStorageToJSON(value.storage),
+        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
     };
 }
 
