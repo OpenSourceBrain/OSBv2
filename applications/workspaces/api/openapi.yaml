@@ -57,6 +57,9 @@ paths:
       tags:
         - rest
       summary: Used to list all available workspaces.
+      security:
+        - {}
+        - bearerAuth: []
       parameters:
         - in: query
           name: page
@@ -125,6 +128,8 @@ paths:
         required: true
     get:
       summary: Used to retrieve a workspace from the repository.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: The workspace.

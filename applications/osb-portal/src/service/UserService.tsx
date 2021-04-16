@@ -93,5 +93,5 @@ const errorCallback = (error: any) => {
 }
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
-    return user && (user.isAdmin || workspace.owner.id === user.id)
+    return user && (user.isAdmin || workspace.userId === user.id)
 }

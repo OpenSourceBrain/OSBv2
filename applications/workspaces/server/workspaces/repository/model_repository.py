@@ -28,13 +28,12 @@ class OwnerModel():
     @property
     def keycloak_user_id(self):
         try:
-            u = auth_client.get_current_user()
-            return u.get('id', None)
-        except:
+            return auth_client.get_current_user().get('id', None)
+        except Exception as e:
             return None
 
     def pre_commit(self, obj):
-        logger.info(f'Pre Commit for {obj} id: {obj.id}')
+        logger.debug(f'Pre Commit for {obj} id: {obj.id}')
         if not obj.user_id:
             obj.user_id = self.keycloak_user_id
         return obj
@@ -59,7 +58,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def search_qs(self, filter=None, q=None):
 
         q_base = self.model.query
-        logger.info(f"filter: {filter}")
+        logger.debug(f"filter: {filter}")
 
         keycloak_user_id = self.keycloak_user_id
         if filter is not None:
@@ -78,7 +77,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 q1 = q_base
         else:
             q1 = q_base.filter_by(publicable=True)
-        logger.info(str(q1))
+        logger.debug(str(q1))
         return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
