@@ -224,7 +224,7 @@ export const RepositoriesPage = () => {
               </Grid>
             </Box>
 
-            <Box className="repository-data">
+            <Box className="repository-data scrollbar">
               {
                 repositories.map((repository) =>
                   <Grid container spacing={0} alignItems="center" className="row" key={repository.id}>
