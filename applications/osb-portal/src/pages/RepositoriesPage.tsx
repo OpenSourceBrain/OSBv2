@@ -264,7 +264,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
           }}
         />
       }
-      { user && <EditRepoDialog user={user} title="Add repository" dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} onSubmit={updateList} />}
+      {user && <EditRepoDialog user={user} title="Add repository" dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} onSubmit={updateList} />}
     </>
   );
 };
