@@ -1,6 +1,7 @@
 import Keycloak from 'keycloak-js';
 
 import workspaceService from './WorkspaceService';
+import repositoryService from './RepositoryService';
 
 import { UserInfo } from '../types/user';
 import { getBaseDomain } from '../utils';
@@ -15,7 +16,7 @@ declare const window: any;
 
 export const initApis = (token: string) => {
     document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
-
+    repositoryService.initApis(token);
     workspaceService.initApis(token);
 }
 
@@ -25,7 +26,8 @@ function mapKeycloakUser(userInfo: any): UserInfo {
         firstName: userInfo.given_name,
         lastName: userInfo.family_name,
         email: userInfo.email,
-        isAdmin: isUserAdmin()
+        isAdmin: isUserAdmin(),
+        username: userInfo.preferred_username || userInfo.given_name
     }
 }
 

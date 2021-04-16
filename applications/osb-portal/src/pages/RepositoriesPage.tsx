@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { OSBRepository } from "../apiclient/workspaces";
+import { OSBRepository, RepositoryContentType } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import Box from '@material-ui/core/Box';
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,11 +11,18 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Grid from '@material-ui/core/Grid';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { bgRegular, linkColor, primaryColor, teal, purple, bgLightest, fontColor, paragraph, bgLightestShade } from "../theme";
-import { AddRepoDialog } from "../components/repository/AddRepoDialog";
+import { EditRepoDialog } from "../components/repository/EditRepoDialog";
+import { UserInfo } from "../types/user";
+
+enum RepositoriesTab {
+  all, my
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: 'relative',
     '& .subheader': {
       display: 'flex',
       background: bgLightest,
@@ -32,12 +39,12 @@ const useStyles = makeStyles((theme) => ({
         },
         '& .MuiButton-label': {
           color: fontColor,
-          },
         },
-        '& .MuiSvgIcon-root': {
-          marginRight: theme.spacing(1),
-        }
       },
+      '& .MuiSvgIcon-root': {
+        marginRight: theme.spacing(1),
+      }
+    },
     '& p': {
       fontSize: '1rem',
       lineHeight: 1,
@@ -136,130 +143,107 @@ const useStyles = makeStyles((theme) => ({
     },
   }
 }));
-// ToDO : to be removed once api starts returning
-const mockRepositoryData = [
-  {
-    id: 1, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 2, name: 'HNN model', repositoryType: 'Dandi', repositoryContentTypes: 'Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Netpyne definition of the hnn model from Dura-Bernal lab at State University of New York.', userId: 'Salvador Dura-Bernal'
-  },
-  {
-    id: 3, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'FigShare', repositoryContentTypes: 'Experimental Data', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'The nanoscale topographical arrangement of voltage-gated calcium channels (VGCC) and synaptic vesicles (SVs) determines synaptic strength and plasticity, but whether distinct spatial distributions underpin diversity of synaptic function is unknown. We performed single bouton Ca2+ imaging, Ca2+ chelator competition, immunogold electron microscopic (EM) localization of VGCC', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 4, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 5, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 6, name: 'HNN model', repositoryType: 'Dandi', repositoryContentTypes: 'Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Netpyne definition of the hnn model from Dura-Bernal lab at State University of New York.', userId: 'Salvador Dura-Bernal'
-  },
-  {
-    id: 7, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'FigShare', repositoryContentTypes: 'Experimental Data', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'The nanoscale topographical arrangement of voltage-gated calcium channels (VGCC) and synaptic vesicles (SVs) determines synaptic strength and plasticity, but whether distinct spatial distributions underpin diversity of synaptic function is unknown. We performed single bouton Ca2+ imaging, Ca2+ chelator competition, immunogold electron microscopic (EM) localization of VGCC', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 8, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 9, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
-  }
-]
 
-const myRepositoryData = [
-  {
-    id: 1, name: 'NWB Showcase', repositoryType: 'Github', repositoryContentTypes: 'Experimental Data, Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Sample Neurophysiology experimental data from UCL labs.', userId: 'Padraig Gleeson'
-  },
-  {
-    id: 2, name: 'HNN model', repositoryType: 'Dandi', repositoryContentTypes: 'Modelling', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'Netpyne definition of the hnn model from Dura-Bernal lab at State University of New York.', userId: 'Salvador Dura-Bernal'
-  },
-  {
-    id: 3, name: 'Distinct nanoscale calcium channel and synaptic vesicle topographies contribute to the diversity of synaptic function', repositoryType: 'FigShare', repositoryContentTypes: 'Experimental Data', uri: 'https://github.com/OpenSourceBrain/OSBv2', description: 'The nanoscale topographical arrangement of voltage-gated calcium channels (VGCC) and synaptic vesicles (SVs) determines synaptic strength and plasticity, but whether distinct spatial distributions underpin diversity of synaptic function is unknown. We performed single bouton Ca2+ imaging, Ca2+ chelator competition, immunogold electron microscopic (EM) localization of VGCC', userId: 'Padraig Gleeson'
-  },
-]
 
-export const RepositoriesPage = () => {
+export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const classes = useStyles();
-  const [repositories, setRepositories] = useState(mockRepositoryData);
+  const [repositories, setRepositories] = React.useState<OSBRepository[]>();
+
   const openRepoUrl = (uri: string) => window.open(uri, "_blank")
-  const [tabValue, setTabValue] = useState(0);
-  const handleTabChange = (event: any, newValue: number) => {
+  const [tabValue, setTabValue] = useState(RepositoriesTab.all);
+  const handleTabChange = (event: any, newValue: RepositoriesTab) => {
     setTabValue(newValue);
-    setRepositories(newValue === 1 ? myRepositoryData : mockRepositoryData);
+    updateList();
+
+  }
+
+  const updateList = () => {
+    switch (tabValue) {
+      case RepositoriesTab.all:
+        RepositoryService.getRepositories(page).then(repos => setRepositories(repos));
+        break;
+      case RepositoriesTab.my:
+        RepositoryService.getUserRepositories(user.id, page).then(repos => setRepositories(repos));
+        break;
+    }
   }
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true)
-  // ToDo use OSBrepository once api starts working
-  // const [page, setPage] = React.useState(0);
-  //const [repositories, setRepositories] = React.useState<OSBRepository[]>();
-  // React.useEffect(() => {
-  //   RepositoryService.getRepositories(page).then(repos => setRepositories(repos));
-  // }, [page])
+
+  const [page, setPage] = React.useState(1);
+
+  React.useEffect(() => {
+    RepositoryService.getRepositories(page).then(repos => setRepositories(repos));
+  }, [page])
 
   return (
     <>
       {
-        repositories && (
+        repositories ? (
           <Box className={classes.root}>
-            <Box className="subheader" paddingX={3}>
-              <Grid container spacing={0} alignItems="center">
-                <Grid item xs={12} sm={6}>
+
+            <Box className="subheader" paddingX={3} justifyContent="space-between">
+
+              <Box >
+                {user ?
                   <Tabs
-                  value={tabValue}
-                  textColor="primary"
-                  indicatorColor="primary"
-                  onChange={handleTabChange}
-                >
-                  <Tab label="All repositories" />
-                  <Tab label="My repositories" />
-                </Tabs>
-                </Grid>
-                <Grid item xs={12} sm={6} justify="flex-end">
-                  <Button variant="contained" disableElevation color="primary" onClick={openDialog}>
+                    value={tabValue}
+                    textColor="primary"
+                    indicatorColor="primary"
+                    onChange={handleTabChange}
+                  >
+                    <Tab label="All repositories" />
+                    {<Tab label="My repositories" />}
+                  </Tabs>
+                  : <Typography component="h1" color="primary" >All repositories</Typography>
+                }
+              </Box>
+              {user &&
+                <Box>
+                  <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
                     <AddIcon />
-                    ADD REPOSITORY
+                    Add repository
                   </Button>
-                </Grid>
-              </Grid>
+                </Box>
+              }
+
             </Box>
 
             <Box className="repository-data scrollbar">
               {
                 repositories.map((repository) =>
-                  <Grid container spacing={0} alignItems="center" className="row" key={repository.id}>
-                    <Grid item xs={12} sm={4}>
+                  <Grid container={true} spacing={0} alignItems="center" className="row" key={repository.id}>
+                    <Grid item={true} xs={12} sm={4}>
                       <Box className="col">
                         <Typography component="strong">
                           {repository.name}
                         </Typography>
                         <Typography>
-                          {repository.description}
+                          {repository.summary}
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={12} sm={2}>
+                    <Grid item={true} xs={12} sm={2}>
                       <Box className="col">
                         <Typography>
-                          {repository.userId}
+                          {repository?.user?.firstName} {repository?.user?.lastName}
                         </Typography>
                       </Box>
-
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item={true} xs={12} sm={3}>
                       <Box className="col" display="flex" alignItems="center" flexWrap="wrap">
-                       { repository.repositoryContentTypes.split(',').map((type, index) =>
+                        {repository.contentTypes.split(',').map((type, index) =>
                           <Box className="tag" display="flex" alignItems="center" paddingX={1} marginY={1} key={type}>
-                            <FiberManualRecordIcon color={ index%2 === 0 ? "primary" : "secondary"} />
+                            <FiberManualRecordIcon color={index % 2 === 0 ? "primary" : "secondary"} />
                             {type}
                           </Box>
                         )}
                       </Box>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item={true} xs={12} sm={3}>
                       <Box className="col" display="flex" flex={1} alignItems="center">
                         <Button variant="outlined" onClick={() => openRepoUrl(repository.uri)}>
-                          SEE ON {repository.repositoryType}
+                          See on {repository.repositoryType}
                         </Button>
                         <ChevronRightIcon />
                       </Box>
@@ -269,9 +253,18 @@ export const RepositoriesPage = () => {
               }
             </Box>
           </Box>
-        )
+        ) : <CircularProgress
+          size={48}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: -24,
+            marginLeft: -24,
+          }}
+        />
       }
-      <AddRepoDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+      { user && <EditRepoDialog user={user} title="Add repository" dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} onSubmit={updateList} />}
     </>
   );
 };
