@@ -129,7 +129,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
                 username=user.get("username",""),
                 email=user.get("email","")
             )
-        except:
+        except Exception as e:
             return User()
 
     def content_types_list(self, repository):
