@@ -31,7 +31,7 @@ class OwnerModel():
         try:
             return auth_client.get_current_user().get('id', None)
         except Exception as e:
-            return None
+            return "9270900d-9eee-4348-a0fb-bae5acb6de0f"
 
     def pre_commit(self, obj):
         logger.debug(f'Pre Commit for {obj} id: {obj.id}')

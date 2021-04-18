@@ -775,7 +775,6 @@ class _OSBRepositoryEntityDictBase(typing_extensions.TypedDict, total=True):
     name: str
     repository_type: str
     content_types: str
-    auto_sync: bool
     uri: str
 
 
@@ -784,6 +783,7 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
 
     id: int
     summary: typing.Optional[str]
+    auto_sync: bool
     default_context: typing.Optional[str]
     user_id: typing.Optional[str]
 
@@ -830,10 +830,10 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         name: str,
         repository_type: str,
         content_types: str,
-        auto_sync: bool,
         uri: str,
         id: typing.Optional[int] = None,
         summary: typing.Optional[str] = None,
+        auto_sync: bool = True,
         default_context: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
     ) -> None:
@@ -862,10 +862,10 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         name: str,
         repository_type: str,
         content_types: str,
-        auto_sync: bool,
         uri: str,
         id: typing.Optional[int] = None,
         summary: typing.Optional[str] = None,
+        auto_sync: bool = True,
         default_context: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
     ) -> "TOSBRepositoryEntity":

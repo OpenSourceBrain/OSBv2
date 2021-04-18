@@ -940,7 +940,6 @@ components:
         - name
         - repository_type
         - content_types
-        - auto_sync
         - uri
     OSBRepositoryEntity:
       description: OSB Repository model

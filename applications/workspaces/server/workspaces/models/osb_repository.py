@@ -261,8 +261,6 @@ class OSBRepository(Model):
         :param auto_sync: The auto_sync of this OSBRepository.
         :type auto_sync: bool
         """
-        if auto_sync is None:
-            raise ValueError("Invalid value for `auto_sync`, must not be `None`")  # noqa: E501
 
         self._auto_sync = auto_sync
 
