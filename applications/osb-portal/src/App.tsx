@@ -30,34 +30,31 @@ export const App = (props: any) => {
         <CssBaseline />
         <ErrorDialog />
         {!props.error &&
-          <>
+          <Router>
             <div className={classes.mainContainer}>
               <Header />
-              {
+              <MainMenu />
 
-                <MainMenu /> // TODO menu back when we implement functionality
-              }
-              <Router>
-                <Switch>
-                  <Route exact={true} path="/">
-                    <HomePage />
-                  </Route>
-                  <ProtectedRoute exact={true} path="/workspace/:workspaceId">
-                    <WorkspacePage />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact={true} path="/workspace/:workspaceId/:app">
-                    <WorkspacePage />
-                  </ProtectedRoute>
-                  <Route exact={true} path="/repositories">
-                    <RepositoriesPage />
-                  </Route>
-                  <Route exact={true} path="/repositories/:repositoryId">
-                    <RepositoryPage />
-                  </Route>
-                </Switch>
-              </Router>
+              <Switch>
+                <Route exact={true} path="/">
+                  <HomePage />
+                </Route>
+                <ProtectedRoute exact={true} path="/workspace/:workspaceId">
+                  <WorkspacePage />
+                </ProtectedRoute>
+                <ProtectedRoute exact={true} path="/workspace/:workspaceId/:app">
+                  <WorkspacePage />
+                </ProtectedRoute>
+                <Route exact={true} path="/repositories">
+                  <RepositoriesPage />
+                </Route>
+                <Route exact={true} path="/repositories/:repositoryId">
+                  <RepositoryPage />
+                </Route>
+              </Switch>
+
             </div>
-          </>
+          </Router>
         }
       </ThemeProvider>
     </SentryErrorBoundary>
