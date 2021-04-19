@@ -71,7 +71,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness base
-        candidate: '${{REGISTRY}}/cloudharness-base:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-base:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -80,7 +80,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness base debian
-        candidate: '${{REGISTRY}}/cloudharness-base-debian:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-base-debian:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -89,7 +89,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/cloudharness-frontend-build:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -98,7 +98,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness flask
-        candidate: '${{REGISTRY}}/cloudharness-flask:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -107,7 +107,7 @@ steps:
         stage: publish
         type: push
         title: Volumemanager
-        candidate: '${{REGISTRY}}/volumemanager:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/volumemanager:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -116,7 +116,7 @@ steps:
         stage: publish
         type: push
         title: Accounts
-        candidate: '${{REGISTRY}}/accounts:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/accounts:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -125,7 +125,7 @@ steps:
         stage: publish
         type: push
         title: Osb portal
-        candidate: '${{REGISTRY}}/osb-portal:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/osb-portal:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -134,7 +134,7 @@ steps:
         stage: publish
         type: push
         title: Events
-        candidate: '${{REGISTRY}}/events:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/events:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -143,7 +143,7 @@ steps:
         stage: publish
         type: push
         title: Common
-        candidate: '${{REGISTRY}}/common:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/common:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -152,7 +152,7 @@ steps:
         stage: publish
         type: push
         title: Netpyne
-        candidate: '${{REGISTRY}}/netpyne:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/netpyne:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -161,7 +161,7 @@ steps:
         stage: publish
         type: push
         title: Nwb explorer
-        candidate: '${{REGISTRY}}/nwb-explorer:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -170,16 +170,7 @@ steps:
         stage: publish
         type: push
         title: Jupyterhub
-        candidate: '${{REGISTRY}}/jupyterhub:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-extract-download:
-        stage: publish
-        type: push
-        title: Workspaces extract download
-        candidate: '${{REGISTRY}}/workspaces-extract-download:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/jupyterhub:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -188,7 +179,7 @@ steps:
         stage: publish
         type: push
         title: Workspaces
-        candidate: '${{REGISTRY}}/workspaces:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workspaces:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -197,7 +188,7 @@ steps:
         stage: publish
         type: push
         title: Workflows print file
-        candidate: '${{REGISTRY}}/workflows-print-file:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workflows-print-file:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -206,7 +197,7 @@ steps:
         stage: publish
         type: push
         title: Workflows extract download
-        candidate: '${{REGISTRY}}/workflows-extract-download:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -215,7 +206,7 @@ steps:
         stage: publish
         type: push
         title: Workflows send result event
-        candidate: '${{REGISTRY}}/workflows-send-result-event:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -224,7 +215,7 @@ steps:
         stage: publish
         type: push
         title: Workflows notify queue
-        candidate: '${{REGISTRY}}/workflows-notify-queue:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -233,7 +224,7 @@ steps:
         stage: publish
         type: push
         title: Workflows extract s3
-        candidate: '${{REGISTRY}}/workflows-extract-s3:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workflows-extract-s3:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -242,7 +233,7 @@ steps:
         stage: publish
         type: push
         title: Workflows
-        candidate: '${{REGISTRY}}/workflows:${{DEPLOYMENT_TAG}}'
+        candidate: '${{REGISTRY}}/osb/workflows:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
