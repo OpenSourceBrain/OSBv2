@@ -81,7 +81,7 @@ export interface OSBRepository {
      * @type {boolean}
      * @memberof OSBRepository
      */
-    autoSync: boolean;
+    autoSync?: boolean;
     /**
      * URI of the repository
      * @type {string}
@@ -153,7 +153,7 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
         'summary': !exists(json, 'summary') ? undefined : json['summary'],
         'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
         'contentTypes': json['content_types'],
-        'autoSync': json['auto_sync'],
+        'autoSync': !exists(json, 'auto_sync') ? undefined : json['auto_sync'],
         'uri': json['uri'],
         'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
