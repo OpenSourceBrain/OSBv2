@@ -14,34 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Resource Base
  * @export
- * @interface InlineObject
+ * @interface ResourceBase
  */
-export interface InlineObject {
+export interface ResourceBase {
     /**
-     * 
-     * @type {Blob}
-     * @memberof InlineObject
+     * Download URL of the Resource
+     * @type {string}
+     * @memberof ResourceBase
      */
-    thumbNail?: Blob;
+    path?: string;
 }
 
-export function InlineObjectFromJSON(json: any): InlineObject {
-    return InlineObjectFromJSONTyped(json, false);
+export function ResourceBaseFromJSON(json: any): ResourceBase {
+    return ResourceBaseFromJSONTyped(json, false);
 }
 
-export function InlineObjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): InlineObject {
+export function ResourceBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResourceBase {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'thumbNail': !exists(json, 'thumbNail') ? undefined : json['thumbNail'],
+        'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
 
-export function InlineObjectToJSON(value?: InlineObject | null): any {
+export function ResourceBaseToJSON(value?: ResourceBase | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +50,7 @@ export function InlineObjectToJSON(value?: InlineObject | null): any {
     }
     return {
         
-        'thumbNail': value.thumbNail,
+        'path': value.path,
     };
 }
 

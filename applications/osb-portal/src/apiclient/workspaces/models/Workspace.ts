@@ -14,14 +14,22 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    User,
-    UserFromJSON,
-    UserFromJSONTyped,
-    UserToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
     VolumeStorageToJSON,
+    WorkspaceAllOf,
+    WorkspaceAllOfFromJSON,
+    WorkspaceAllOfFromJSONTyped,
+    WorkspaceAllOfToJSON,
+    WorkspaceBase,
+    WorkspaceBaseFromJSON,
+    WorkspaceBaseFromJSONTyped,
+    WorkspaceBaseToJSON,
+    WorkspaceCollaborator,
+    WorkspaceCollaboratorFromJSON,
+    WorkspaceCollaboratorFromJSONTyped,
+    WorkspaceCollaboratorToJSON,
     WorkspaceImage,
     WorkspaceImageFromJSON,
     WorkspaceImageFromJSONTyped,
@@ -37,7 +45,7 @@ import {
 } from './';
 
 /**
- * Workspace item
+ * Workspace extended
  * @export
  * @interface Workspace
  */
@@ -97,11 +105,11 @@ export interface Workspace {
      */
     gallery?: Array<WorkspaceImage>;
     /**
-     * 
-     * @type {User}
+     * Workspace keycloak user id, will be automatically be set to the logged in user
+     * @type {string}
      * @memberof Workspace
      */
-    owner?: User;
+    userId?: string;
     /**
      * Is the workspace available for non collaborators? Default false
      * @type {boolean}
@@ -116,22 +124,22 @@ export interface Workspace {
     license?: string;
     /**
      * Collaborators who work on the workspace
-     * @type {Array<User>}
+     * @type {Array<WorkspaceCollaborator>}
      * @memberof Workspace
      */
-    collaborators?: Array<User>;
-    /**
-     * Resources of the workspace
-     * @type {Array<WorkspaceResource>}
-     * @memberof Workspace
-     */
-    resources?: Array<WorkspaceResource>;
+    collaborators?: Array<WorkspaceCollaborator>;
     /**
      * 
      * @type {VolumeStorage}
      * @memberof Workspace
      */
     storage?: VolumeStorage;
+    /**
+     * Resources of the workspace
+     * @type {Array<WorkspaceResource>}
+     * @memberof Workspace
+     */
+    resources?: Array<WorkspaceResource>;
 }
 
 export function WorkspaceFromJSON(json: any): Workspace {
@@ -153,12 +161,12 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'lastOpenedResourceId': !exists(json, 'last_opened_resource_id') ? undefined : json['last_opened_resource_id'],
         'thumbnail': !exists(json, 'thumbnail') ? undefined : json['thumbnail'],
         'gallery': !exists(json, 'gallery') ? undefined : ((json['gallery'] as Array<any>).map(WorkspaceImageFromJSON)),
-        'owner': !exists(json, 'owner') ? undefined : UserFromJSON(json['owner']),
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'publicable': !exists(json, 'publicable') ? undefined : json['publicable'],
         'license': !exists(json, 'license') ? undefined : json['license'],
-        'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(UserFromJSON)),
-        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
+        'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(WorkspaceCollaboratorFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
+        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
     };
 }
 
@@ -180,12 +188,12 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'last_opened_resource_id': value.lastOpenedResourceId,
         'thumbnail': value.thumbnail,
         'gallery': value.gallery === undefined ? undefined : ((value.gallery as Array<any>).map(WorkspaceImageToJSON)),
-        'owner': UserToJSON(value.owner),
+        'user_id': value.userId,
         'publicable': value.publicable,
         'license': value.license,
-        'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(UserToJSON)),
-        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
+        'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(WorkspaceCollaboratorToJSON)),
         'storage': VolumeStorageToJSON(value.storage),
+        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
     };
 }
 

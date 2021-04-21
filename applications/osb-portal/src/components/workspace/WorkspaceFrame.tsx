@@ -60,7 +60,7 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
 
     const type = applicationSubdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
-    document.cookie = `workspaceOwner=${workspace.owner.keycloakId};path=/;domain=${domain}`;
+    document.cookie = `workspaceOwner=${workspace.userId};path=/;domain=${domain}`;
     const frameUrl = `//${applicationSubdomain}.${domain}/hub/spawn/${userParam}/${workspace.id}${type}`;
 
 

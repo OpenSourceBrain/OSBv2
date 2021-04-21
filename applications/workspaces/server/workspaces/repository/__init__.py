@@ -1,2 +1,2 @@
-from .model_repository import WorkspaceRepository, OSBRepositoryRepository, GITRepositoryRepository, \
-    FigshareRepositoryRepository, VolumeStorageRepository, WorkspaceResourceRepository
+from .model_repository import WorkspaceRepository, OSBRepositoryRepository, \
+    VolumeStorageRepository, WorkspaceResourceRepository

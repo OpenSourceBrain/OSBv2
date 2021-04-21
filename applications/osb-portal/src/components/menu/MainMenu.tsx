@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Redirect, useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { MainMenuItem } from "./MainMenuItem";
@@ -19,18 +20,25 @@ const useStyles = makeStyles(() => ({
 
 export const MainMenu = () => {
   const classes = useStyles();
-
+  const history = useHistory();
   return (
     <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper">
+
       <MainMenuItem
         title="OSB"
         className={classes.button + " " + classes.firstButton}
-        items={[]}
+        items={[
+          { label: "Home", callback: () => history.push("/") },
+          { label: "About", callback: () => alert("Open Source Brain v2") }
+        ]}
       />
-      <MainMenuItem title="File" className={classes.button} items={[]} />
-      <MainMenuItem title="View" className={classes.button} items={[]} />
-      <MainMenuItem title="Model" className={classes.button} items={[]} />
-      <MainMenuItem title="Help" className={classes.button} items={[]} />
+      <MainMenuItem
+        title="View"
+        className={classes.button}
+        items={[
+          { label: "Repositories", callback: () => history.push("/repositories") }
+        ]}
+      />
     </Box>
   );
 };

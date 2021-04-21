@@ -1,8 +1,15 @@
 """Model base class"""
 from flask.views import MethodView
-import logging
-from ..config import Config
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
+from workspaces.utils import row2dict
+
+
+def rm_null_values(dikt):
+    tmp = {}
+    for k,v in dikt.items():  # remove null fields from dict
+        if v:
+            tmp.update({k:v})
+    return tmp
 
 
 class BaseModelView(MethodView):
@@ -29,15 +36,18 @@ class BaseModelView(MethodView):
                                                             per_page=per_page,
                                                             *args,
                                                             **kwargs)
-        obj_dicts = map(lambda obj: obj.to_dict(), objects.items)
+        obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
+        list_name = self.repository.model.__tablename__
+        list_name_plural = list_name[:-1] + list_name[-1:].replace("y","ie") + "s"
         return {"pagination": {
             "current_page": page,
             "number_of_pages": total_pages,
         },
-            f"{self.repository.model.__tablename__}s": list(obj_dicts)}
+            list_name_plural : obj_dicts}
 
     def post(self, body):
         """Save an object to the repository."""
+        body = rm_null_values(body)
         obj = self.repository.post(body)
         return obj.to_dict()
 

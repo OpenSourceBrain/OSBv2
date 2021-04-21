@@ -21,6 +21,8 @@ import { setError } from '../store/actions/error';
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 import { AnyAction, Dispatch } from 'redux';
 
+export { RepositoryPage } from '../pages/RepositoryPage'
+import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
 
 const mapWorkspacesStateToProps = (state: RootState) => {
   console.log(state)
@@ -80,6 +82,7 @@ export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(ap
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
-export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage)
+export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage);
+export const RepositoriesPage = connect(mapUserStateToProps, null)(repositoriesPage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
 export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)

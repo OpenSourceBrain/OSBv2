@@ -37,13 +37,14 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            return self.model.query.get(id)
+            obj = self.model.query.get(id)
+            return self._calculated_fields_populate(obj)
         return None
 
     def _calculated_fields_populate(self, obj):
         if self.calculated_fields:
             for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj.id))
+                setattr(obj, fld, getattr(self, fld)(obj))
         return obj
 
     def _post_get(self, new_obj):
@@ -113,8 +114,8 @@ class BaseModelRepository:
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        logger.debug('Search for workspace filter: %s %s %s',
-                     field.key, comparator, value)
+        logger.debug('Search for %s filter: %s %s %s',
+                     self.model, field, comparator, value)
         if comparator == '==':
             return field == value
         elif comparator in ('!', 'not'):
@@ -124,7 +125,7 @@ class BaseModelRepository:
         else:
             return field == value
 
-    def _get_qs(self, filter=None):
+    def _get_qs(self, filter=None, q=None):
         """
         Helper function to get the queryset
 
@@ -139,8 +140,26 @@ class BaseModelRepository:
             if isinstance(self.search_qs, str):
                 sqs = eval(self.search_qs)
             else:
-                sqs = self.search_qs(filter)
+                sqs = self.search_qs(filter, q)
         return sqs
+
+    def filters(self, q=None):
+        filters = []
+        for arg in q.strip().split('+'):
+            field_comparator, value = arg.strip().split('=')
+            field_comparator = field_comparator.split('__')
+            field = field_comparator[0]
+            if len(field_comparator) > 1:
+                comparator = field_comparator[1]
+            else:
+                comparator = '='
+            attr = getattr(self.model, field)
+            if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
+                value = value.upper() in ('TRUE', '1', 'T')
+            logger.debug("Filter attr: %s comparator: %s value: %s",
+                            attr.key, comparator, value)
+            filters.append((attr, comparator, value))
+        return filters
 
     def search(self, page=1, per_page=20, q=None, *args, **kwargs):
         """
@@ -157,30 +176,14 @@ class BaseModelRepository:
         """Get all objects from the repository."""
         if q and q != 'None':
             logger.info("Query %s", q)
-            filters = []
-            for arg in q.strip().split('+'):
-                field_comparator, value = arg.strip().split('=')
-                field_comparator = field_comparator.split('__')
-                field = field_comparator[0]
-                if len(field_comparator) > 1:
-                    comparator = field_comparator[1]
-                else:
-                    comparator = '='
-                attr = getattr(self.model, field)
-                if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
-                    value = value.upper() in ('TRUE', '1', 'T')
-                logger.debug("Filter attr: %s comparator: %s value: %s",
-                             attr.key, comparator, value)
-                filters.append((attr, comparator, value))
-            sqs = self._get_qs(filters)
+            filters = self.filters(q)
+            sqs = self._get_qs(filters, q)
         else:
             sqs = self._get_qs()
         objects = sqs.paginate(page, per_page, True)
-        # db.session.query(func.count(self.model.id)).scalar()
-        total_objects = len(sqs.all())
+        total_pages = objects.pages
         for obj in objects.items:
             self._calculated_fields_populate(obj)
-        total_pages = math.ceil(total_objects / per_page)
         return page, total_pages, objects
 
     def post(self, body):

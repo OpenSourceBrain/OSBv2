@@ -1,8 +1,7 @@
-from flask import current_app
-from sqlalchemy.sql import func
-from ..repository.model_repository import WorkspaceRepository, WorkspaceResourceRepository
-from ..repository.database import db
-from ..repository.models import WorkspaceResource
+import json
+from workspaces.repository.model_repository import WorkspaceRepository, WorkspaceResourceRepository
+from workspaces.models import WorkspaceResource as WorkspaceResourceDTO
+from workspaces.views.api.rest_api_views import WorkspaceresourceView
 
 
 def open(id_=None, **kwargs):

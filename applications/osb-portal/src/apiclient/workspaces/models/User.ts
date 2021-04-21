@@ -14,43 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * key cloak User
+ * Keycloak User
  * @export
  * @interface User
  */
 export interface User {
     /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
-    id?: number;
-    /**
      * Keycloak user id
      * @type {string}
      * @memberof User
      */
-    keycloakId?: string;
+    id?: string;
     /**
-     * First name of the user (derived from Keycload)
+     * First Name of the keycloak user
      * @type {string}
      * @memberof User
      */
-    firstname?: string;
+    firstName?: string;
     /**
-     * Last name of the user (derived from Keycload)
+     * Last Name of the keycloak user
      * @type {string}
      * @memberof User
      */
-    lastname?: string;
+    lastName?: string;
     /**
-     * Email address of the user (derived from Keycloak)
+     * Username of the keycloak user
+     * @type {string}
+     * @memberof User
+     */
+    username?: string;
+    /**
+     * Email address of the keycloak user
      * @type {string}
      * @memberof User
      */
     email?: string;
-
-
 }
 
 export function UserFromJSON(json: any): User {
@@ -62,11 +60,11 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         return json;
     }
     return {
-
+        
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'keycloakId': !exists(json, 'keycloak_id') ? undefined : json['keycloak_id'],
-        'firstname': !exists(json, 'firstname') ? undefined : json['firstname'],
-        'lastname': !exists(json, 'lastname') ? undefined : json['lastname'],
+        'firstName': !exists(json, 'first_name') ? undefined : json['first_name'],
+        'lastName': !exists(json, 'last_name') ? undefined : json['last_name'],
+        'username': !exists(json, 'username') ? undefined : json['username'],
         'email': !exists(json, 'email') ? undefined : json['email'],
     };
 }
@@ -79,11 +77,11 @@ export function UserToJSON(value?: User | null): any {
         return null;
     }
     return {
-
+        
         'id': value.id,
-        'keycloak_id': value.keycloakId,
-        'firstname': value.firstname,
-        'lastname': value.lastname,
+        'first_name': value.firstName,
+        'last_name': value.lastName,
+        'username': value.username,
         'email': value.email,
     };
 }

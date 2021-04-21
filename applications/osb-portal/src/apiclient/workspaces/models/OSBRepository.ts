@@ -14,18 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    VolumeStorage,
-    VolumeStorageFromJSON,
-    VolumeStorageFromJSONTyped,
-    VolumeStorageToJSON,
-    WorkspaceResource,
-    WorkspaceResourceFromJSON,
-    WorkspaceResourceFromJSONTyped,
-    WorkspaceResourceToJSON,
+    OSBRepositoryAllOf,
+    OSBRepositoryAllOfFromJSON,
+    OSBRepositoryAllOfFromJSONTyped,
+    OSBRepositoryAllOfToJSON,
+    OSBRepositoryBase,
+    OSBRepositoryBaseFromJSON,
+    OSBRepositoryBaseFromJSONTyped,
+    OSBRepositoryBaseToJSON,
+    RepositoryContentType,
+    RepositoryContentTypeFromJSON,
+    RepositoryContentTypeFromJSONTyped,
+    RepositoryContentTypeToJSON,
+    RepositoryResourceNode,
+    RepositoryResourceNodeFromJSON,
+    RepositoryResourceNodeFromJSONTyped,
+    RepositoryResourceNodeToJSON,
+    RepositoryType,
+    RepositoryTypeFromJSON,
+    RepositoryTypeFromJSONTyped,
+    RepositoryTypeToJSON,
+    User,
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
 } from './';
 
 /**
- * Opensource brain repository
+ * OSBRepository extended model
  * @export
  * @interface OSBRepository
  */
@@ -37,29 +53,89 @@ export interface OSBRepository {
      */
     id?: number;
     /**
-     * Universally unique identifier of the OSB repository
-     * @type {string}
-     * @memberof OSBRepository
-     */
-    uuid: string;
-    /**
-     * OSB repository name
+     * Repository name.
      * @type {string}
      * @memberof OSBRepository
      */
     name: string;
     /**
-     * 
-     * @type {VolumeStorage}
+     * Summary describing the OSB Repository
+     * @type {string}
      * @memberof OSBRepository
      */
-    storage: VolumeStorage;
+    summary?: string;
     /**
      * 
-     * @type {Array<WorkspaceResource>}
+     * @type {RepositoryType}
      * @memberof OSBRepository
      */
-    resources?: Array<WorkspaceResource>;
+    repositoryType: RepositoryType;
+    /**
+     * List of Repository Content Types
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    contentTypes: string;
+    /**
+     * Auto sync of the resources
+     * @type {boolean}
+     * @memberof OSBRepository
+     */
+    autoSync?: boolean;
+    /**
+     * URI of the repository
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    uri: string;
+    /**
+     * The default branch to show for this repository
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    defaultContext?: string;
+    /**
+     * OSBRepository keycloak user id, will be automatically be set to the logged in user
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    userId?: string;
+    /**
+     * 
+     * @type {Array<RepositoryResourceNode>}
+     * @memberof OSBRepository
+     */
+    contextResources?: Array<RepositoryResourceNode>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OSBRepository
+     */
+    contexts?: Array<string>;
+    /**
+     * 
+     * @type {User}
+     * @memberof OSBRepository
+     */
+    user?: User;
+    /**
+     * 
+     * @type {Array<RepositoryContentType>}
+     * @memberof OSBRepository
+     */
+    contentTypesList?: Array<RepositoryContentType>;
+    /**
+     * Repository description
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    description?: string;
+    /**
+     * Date/time the OSBReposity is last modified
+     * @type {Date}
+     * @memberof OSBRepository
+     */
+    timestampModified?: Date;
 }
 
 export function OSBRepositoryFromJSON(json: any): OSBRepository {
@@ -73,10 +149,20 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'uuid': json['uuid'],
         'name': json['name'],
-        'storage': VolumeStorageFromJSON(json['storage']),
-        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
+        'summary': !exists(json, 'summary') ? undefined : json['summary'],
+        'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
+        'contentTypes': json['content_types'],
+        'autoSync': !exists(json, 'auto_sync') ? undefined : json['auto_sync'],
+        'uri': json['uri'],
+        'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'contextResources': !exists(json, 'context_resources') ? undefined : ((json['context_resources'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
+        'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
+        'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
+        'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
     };
 }
 
@@ -90,10 +176,20 @@ export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
     return {
         
         'id': value.id,
-        'uuid': value.uuid,
         'name': value.name,
-        'storage': VolumeStorageToJSON(value.storage),
-        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
+        'summary': value.summary,
+        'repository_type': RepositoryTypeToJSON(value.repositoryType),
+        'content_types': value.contentTypes,
+        'auto_sync': value.autoSync,
+        'uri': value.uri,
+        'default_context': value.defaultContext,
+        'user_id': value.userId,
+        'context_resources': value.contextResources === undefined ? undefined : ((value.contextResources as Array<any>).map(RepositoryResourceNodeToJSON)),
+        'contexts': value.contexts,
+        'user': UserToJSON(value.user),
+        'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),
+        'description': value.description,
+        'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
     };
 }
 

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Grid, Paper } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import MainMenu from "../components/menu/MainMenu";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Latest } from "../components/latest/Latest";
 
@@ -30,10 +30,7 @@ export default (props: any) => {
   const classes = useStyles();
 
   return <>
-    {
-      false &&
-      <MainMenu /> // TODO menu back when we implement functionality
-    }
+
     <Box p={1} className="verticalFit">
       <Grid container={true}>
         <Grid item={true} xs={12} sm={12} md={6} container={true} className="leftContainer">
