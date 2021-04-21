@@ -44,7 +44,7 @@ class RepositoryService {
 
 
   async getRepository(id: number): Promise<OSBRepository> {
-    return null;
+    return this.workspacesApi.osbrepositoryIdGet({ id });
   }
 
   async addRepository(repository: OSBRepository) {

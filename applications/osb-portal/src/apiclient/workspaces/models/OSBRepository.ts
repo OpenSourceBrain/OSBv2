@@ -102,10 +102,10 @@ export interface OSBRepository {
     userId?: string;
     /**
      * 
-     * @type {Array<RepositoryResourceNode>}
+     * @type {RepositoryResourceNode}
      * @memberof OSBRepository
      */
-    contextResources?: Array<RepositoryResourceNode>;
+    contextResources?: RepositoryResourceNode;
     /**
      * 
      * @type {Array<string>}
@@ -157,7 +157,7 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
         'uri': json['uri'],
         'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
-        'contextResources': !exists(json, 'context_resources') ? undefined : ((json['context_resources'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
+        'contextResources': !exists(json, 'context_resources') ? undefined : RepositoryResourceNodeFromJSON(json['context_resources']),
         'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
         'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
         'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
@@ -184,7 +184,7 @@ export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
         'uri': value.uri,
         'default_context': value.defaultContext,
         'user_id': value.userId,
-        'context_resources': value.contextResources === undefined ? undefined : ((value.contextResources as Array<any>).map(RepositoryResourceNodeToJSON)),
+        'context_resources': RepositoryResourceNodeToJSON(value.contextResources),
         'contexts': value.contexts,
         'user': UserToJSON(value.user),
         'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),

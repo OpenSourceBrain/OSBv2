@@ -57,6 +57,11 @@ export interface OsbrepositoryGetRequest {
     q?: string;
 }
 
+export interface OsbrepositoryIdGetRequest {
+    id: number;
+    context?: string;
+}
+
 export interface OsbrepositoryPostRequest {
     oSBRepository: OSBRepository;
 }
@@ -122,11 +127,6 @@ export interface WorkspaceresourceIdPutRequest {
 
 export interface WorkspaceresourcePostRequest {
     workspaceResource: WorkspaceResource;
-}
-
-export interface WorkspacesControllersOsbrepositoryControllerGetRequest {
-    id: number;
-    context?: string;
 }
 
 export interface WorkspacesControllersWorkspaceControllerAddimageRequest {
@@ -266,6 +266,40 @@ export class RestApi extends runtime.BaseAPI {
      */
     async osbrepositoryGet(requestParameters: OsbrepositoryGetRequest): Promise<InlineResponse2001> {
         const response = await this.osbrepositoryGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Used to retrieve a repository.
+     */
+    async osbrepositoryIdGetRaw(requestParameters: OsbrepositoryIdGetRequest): Promise<runtime.ApiResponse<OSBRepository>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.context !== undefined) {
+            queryParameters['context'] = requestParameters.context;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
+    }
+
+    /**
+     * Used to retrieve a repository.
+     */
+    async osbrepositoryIdGet(requestParameters: OsbrepositoryIdGetRequest): Promise<OSBRepository> {
+        const response = await this.osbrepositoryIdGetRaw(requestParameters);
         return await response.value();
     }
 
@@ -874,40 +908,6 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspaceresourcePost(requestParameters: WorkspaceresourcePostRequest): Promise<WorkspaceResource> {
         const response = await this.workspaceresourcePostRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Used to retrieve a repository.
-     */
-    async workspacesControllersOsbrepositoryControllerGetRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<runtime.ApiResponse<OSBRepository>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerGet.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.context !== undefined) {
-            queryParameters['context'] = requestParameters.context;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
-    }
-
-    /**
-     * Used to retrieve a repository.
-     */
-    async workspacesControllersOsbrepositoryControllerGet(requestParameters: WorkspacesControllersOsbrepositoryControllerGetRequest): Promise<OSBRepository> {
-        const response = await this.workspacesControllersOsbrepositoryControllerGetRaw(requestParameters);
         return await response.value();
     }
 
