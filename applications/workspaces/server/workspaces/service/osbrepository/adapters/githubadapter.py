@@ -14,7 +14,7 @@ GITHUB_USER = GITHUB_USER if GITHUB_USER != "none" else None
 GITHUB_TOKEN = get_secret("workspaces", "github-token")
 GITHUB_TOKEN = GITHUB_TOKEN if GITHUB_TOKEN != "none" else None
 
-logger.info("GitHub user:%s, token:%s.", GITHUB_USER, GITHUB_TOKEN)
+logger.debug("GitHub user:%s, token:%s.", GITHUB_USER, GITHUB_TOKEN)
 
 
 def _clean_url_and_end_with_slash(url):
