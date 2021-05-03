@@ -48,3 +48,6 @@ harness:
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
 
+github:
+  user: null
+  token: null
