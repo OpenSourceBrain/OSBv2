@@ -11,9 +11,7 @@ from .utils import add_to_tree
 
 
 GITHUB_USER = get_secret("workspaces", "github-user")
-GITHUB_USER = GITHUB_USER if GITHUB_USER and GITHUB_USER != "none" else "osb-admin"
 GITHUB_TOKEN = get_secret("workspaces", "github-token")
-GITHUB_TOKEN = GITHUB_TOKEN if GITHUB_TOKEN and GITHUB_TOKEN != "none" else "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"
 
 logger.debug("GitHub user:%s, token:%s.", GITHUB_USER, GITHUB_TOKEN)
 
@@ -101,11 +99,15 @@ class GitHubAdapter:
         path = origin["path"]
         folder = self.osbrepository.name + path.replace(self.download_base_url+"branches", "")
         folder = folder[:folder.rfind("/")]
+        # username / password are optional and future usage, 
+        # e.g. for accessing non public repos
         return workflow.create_copy_task(
             image_name="workspaces-github-copy",
             workspace_id=workspace_id,
+            username="",
+            password="",
             origin={
                 "name": name,
                 "folder": folder,
-                "path": path
+                "path": path,
             })

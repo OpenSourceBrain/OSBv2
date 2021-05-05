@@ -66,7 +66,7 @@ def run_copy_tasks(workspace_id, tasks):
     workflow = op.execute()
 
 
-def create_copy_task(image_name="workflows-extract-download", workspace_id=None, origin=None):
+def create_copy_task(image_name="workflows-extract-download", workspace_id=None, origin=None, **kwargs):
     pvc_name = repos.WorkspaceRepository().get_pvc_name(workspace_id)
     shared_directory = f'{pvc_name}:/project_download'
     path = origin.get("path")
@@ -77,4 +77,5 @@ def create_copy_task(image_name="workflows-extract-download", workspace_id=None,
                             image_name=image_name,
                             shared_directory=shared_directory,
                             folder=folder,
-                            url=path)
+                            url=path,
+                            **kwargs)
