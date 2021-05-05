@@ -54,7 +54,7 @@ The dependency on these applications can be handled differently with the followi
 - `npm run start:minikube`: use local minikube deployment applications (osb.local)
 - `USE_MOCKS=true npm run start:dev`: uses workspace mock responses
 
-The webpack-dev-server will reroute the proxy /api/workspaces to the given backend instead of the workspace manager app.
+The webpack-dev-server will reroute the proxy /proxy/workspaces to the given backend instead of the workspace manager app.
 
 
 #### Rest client generate

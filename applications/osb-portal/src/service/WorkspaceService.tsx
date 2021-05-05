@@ -8,7 +8,7 @@ import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } 
 
 import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 
-const workspacesApiUri = '/api/workspaces/api';
+const workspacesApiUri = '/proxy/workspaces/api';
 
 class WorkspaceService {
 

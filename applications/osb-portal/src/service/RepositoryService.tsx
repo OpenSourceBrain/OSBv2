@@ -5,7 +5,7 @@ import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, O
 
 
 
-const workspacesApiUri = '/api/workspaces/api';
+const workspacesApiUri = '/proxy/workspaces/api';
 
 const PER_PAGE_DEFAULT = 10;
 

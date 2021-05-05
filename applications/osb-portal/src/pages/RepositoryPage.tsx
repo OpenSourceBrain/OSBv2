@@ -1,33 +1,19 @@
 import * as React from "react";
-import Divider from "@material-ui/core/Divider";
-import { useParams } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { useParams, useHistory } from "react-router-dom";
 
-import { OSBRepository } from "../apiclient/workspaces";
-import RepositoryService from "../service/RepositoryService";
-
-// import workspaceService from "../../service/WorkspaceService";
-// import { Workspace } from "../../types/workspace";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import Avatar from "@material-ui/core/Avatar";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Box from "@material-ui/core/Box";
-import Checkbox from "@material-ui/core/Checkbox";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import FolderIcon from "@material-ui/icons/Folder";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
+import RepositoryService from "../service/RepositoryService";
+
+import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 
 import {
   bgRegular,
@@ -36,17 +22,18 @@ import {
   bgLightest,
   fontColor,
   bgDarkest,
-  checkBox,
+  checkBoxColor,
   paragraph,
   bgLightestShade,
   bgInputs,
 } from "../theme";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: bgDarkest,
     "& .MuiCheckbox-colorSecondary": {
-      color: checkBox,
+      color: checkBoxColor,
       "&.Mui-checked": {
         color: linkColor,
       },
@@ -203,7 +190,6 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: "0 0 0 3px rgba(0, 0, 0, 0.25)",
         border: `1px solid ${paragraph}`,
         minHeight: "15rem",
-        backgroundColor: fontColor,
         overflow: "auto",
         [theme.breakpoints.up("sm")]: {
           height: "calc(100vh - 14.5rem)",
@@ -290,27 +276,17 @@ export const RepositoryPage = (props: any) => {
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>();
 
+
   RepositoryService.getRepository(+repositoryId).then((repo) =>
     setRepository(repo)
   );
 
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([0]);
 
-  const handleToggle = (value: any) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  let checked = [];
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-  function handleClick(event: any) {
-    event.preventDefault();
+  const setChecked = (newChecked: RepositoryResourceNode[]) => {
+    checked = newChecked;
   }
 
   return (
@@ -321,129 +297,58 @@ export const RepositoryPage = (props: any) => {
             <Box display="flex" alignItems="center">
               <ArrowBackIcon onClick={() => history.goBack()} />
               <Typography component="h1" color="primary">
-                <Typography component="span" onClick={() => history.goBack()}>All repositories</Typography>
-                <Typography component="span">NWB Showcase</Typography>
+                <Typography component="span" onClick={history.goBack}>All repositories</Typography>
+                {repository ? <Typography component="span">{repository.name}</Typography> : null}
               </Typography>
             </Box>
           </Box>
           <Box>
-            <Button variant="contained" disableElevation color="primary">
+            <Button variant="contained" disableElevation={true} color="primary">
               <AddIcon />
-              create new workspace
+              Create new workspace
             </Button>
           </Box>
         </Box>
 
         <Box className="main-content">
-          <Grid container className="row" spacing={5}>
-            <Grid item xs={12} md={6}>
-              <Box className="flex-grow-1">
-                <Typography component="h3" className="primary-heading">
-                  Preview
+          {repository ?
+            <Grid container={true} className="row" spacing={5}>
+              <Grid item={true} xs={12} md={6}>
+                <Box className="flex-grow-1">
+                  <Typography component="h3" className="primary-heading">
+                    Preview
                 </Typography>
 
-                <Box className="preview-box"></Box>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box className="flex-grow-1">
-                <Typography component="h3" className="primary-heading">
-                  Resources
-                </Typography>
+                  <Box className="preview-box">
+                    {repository.description}
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item={true} xs={12} md={6}>
+                <Box className="flex-grow-1">
+                  <Typography component="h3" className="primary-heading">
+                    Resources
+                  </Typography>
 
-                {/* {repository ?  */}
-                  <>
-                    <Breadcrumbs
-                      separator={<Avatar src="/images/separator.svg" />}
-                      aria-label="breadcrumb"
-                    >
-                      <Link color="inherit">
-                        OpenSourceBrain
-                      </Link>
-                      <Link
-                        color="inherit"
-                      >
-                        NWBShowcase
-                      </Link>
-                      <Typography color="textPrimary">FergusonEtAl2015</Typography>
-                    </Breadcrumbs>
-                    <TextField
-                      id="standard-start-adornment"
-                      fullWidth
-                      placeholder="Search"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <Box className="scrollbar">
-                      <List>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value, index) => {
-                          const labelId = `checkbox-list-label-${value}`;
-                          const classesForIcons = index%2 === 0 ? 'icon': 'icon file';
-                          return (
-                            <ListItem
-                              key={value}
-                              role={undefined}
-                              dense
-                              button
-                              onClick={handleToggle(value)}
-                            >
-                              <ListItemIcon>
-                                <Checkbox
-                                  edge="start"
-                                  checked={checked.indexOf(value) !== -1}
-                                  tabIndex={-1}
-                                  disableRipple
-                                  inputProps={{ "aria-labelledby": labelId }}
-                                />
-                              </ListItemIcon>
-                              <Box
-                                className="flex-grow-1"
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Box display="flex" alignItems="center">
-                                  {/* <Box className="icon">
-                                    <FolderIcon />
-                                  </Box> */}
-                                  <Box className={classesForIcons}>
-                                  {index%2 === 0 ? <FolderIcon /> : <InsertDriveFileIcon />}
-                                  </Box>
-                                  <Typography component="p">
-                                    FergusonEtAl2015
-                                    <Typography component="span">.nwb</Typography>
-                                  </Typography>
-                                </Box>
-                                <Typography component="strong">
-                                  6 months ago
-                                </Typography>
-                              </Box>
-                            </ListItem>
-                          );
-                        })}
-                      </List>
-                    </Box>
-                  </> 
-                  {/* : (
-                    <CircularProgress
-                      size={48}
-                      style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        marginTop: -24,
-                        marginLeft: -24,
-                      }}
-                    />
-                )} */}
-              </Box>
+
+                  <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked} />
+
+                </Box>
+              </Grid>
+
             </Grid>
-          </Grid>
+            : (
+              <CircularProgress
+                size={48}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: -24,
+                  marginLeft: -24,
+                }}
+              />
+            )}
         </Box>
       </Box>
     </>

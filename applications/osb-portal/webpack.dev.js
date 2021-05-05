@@ -1,4 +1,4 @@
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const CopyPlugin = require('copy-webpack-plugin');
 var path = require('path');
@@ -42,16 +42,11 @@ module.exports = env => {
         disableHostCheck: true,
         historyApiFallback: true,
         proxy: {
-          '/api/workspaces': {
+          '/proxy/workspaces': {
             target: replaceHost(proxyTarget, 'workspaces'),
             secure: false,
             changeOrigin: true,
-            pathRewrite: { '^/api/workspaces': '' }
-          },
-          '/workspaces/': {
-            target: replaceHost(proxyTarget, 'workspaces'),
-            secure: false,
-            changeOrigin: true,
+            pathRewrite: { '^/proxy/workspaces': '' }
           }
         },
         port: PORT,
@@ -59,18 +54,22 @@ module.exports = env => {
       },
 
       plugins: [
-        new CopyPlugin([
-          {
-            from: './src/assets-parametrized', contentbase,
-            transform(content, path) {
-              return setEnv(content);
-            }
-          },
-          {
-            from: './src/assets', contentbase,
-          },
+        new CopyPlugin({
+          patterns: [
+            {
+              from: './src/assets-parametrized',
+              to: contentbase,
+              transform(content, path) {
+                return setEnv(content);
+              }
+            },
+            {
+              from: './src/assets',
+              to: contentbase,
+            },
 
-        ]),
+          ]
+        }),
       ],
 
     }, common(env))

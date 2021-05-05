@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@material-ui/core/Box";
+import clsx from 'clsx';
 import { IconButton } from "@material-ui/core";
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
 import Typography from '@material-ui/core/Typography';
@@ -33,7 +34,7 @@ const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) =>
   });
 }
 
-const coverAbsolute: CSSProperties = {
+const coverAbsolute = {
   position: 'absolute',
   top: 0,
   left: 0,
@@ -47,14 +48,13 @@ const coverAbsolute: CSSProperties = {
   justifyContent: "center"
 };
 
-const ItemCover = ({ children, className }: { children: any, className: string }) => <Box
-  pl={2}
-  pr={2}
-  className={className}
-  style={coverAbsolute}
->
-  {children}
-</Box>
+const ItemCover = ({ children, className }: { children: any, className: string }) =>
+  <Box pl={2}
+    pr={2}
+    className={clsx(coverAbsolute, className)}>
+    {children}
+  </Box>
+
 
 const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => null }) => {
   const { resource, active, refreshWorkspace } = props;

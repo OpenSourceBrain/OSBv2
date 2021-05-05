@@ -1,5 +1,6 @@
 import base64
 import requests
+from functools import lru_cache
 import workspaces.service.etlservice as etlservice
 
 from cloudharness import log as logger
@@ -25,14 +26,21 @@ def _clean_url_and_end_with_slash(url):
     return first_part + second_part
 
 
+@lru_cache()
+def cached_github_request(uri):
+    return requests.get(uri, auth=(GITHUB_USER, GITHUB_TOKEN))
+
+
 class GitHubAdapter:
     def __init__(self, uri):
         self.url = uri
-        self.api_url = _clean_url_and_end_with_slash(uri.replace("https://github.com/","https://api.github.com/repos/"))
-        self.download_base_url = _clean_url_and_end_with_slash(uri.replace("https://github.com/","https://raw.githubusercontent.com/"))
+        self.api_url = _clean_url_and_end_with_slash(uri.replace(
+            "https://github.com/", "https://api.github.com/repos/"))
+        self.download_base_url = _clean_url_and_end_with_slash(
+            uri.replace("https://github.com/", "https://raw.githubusercontent.com/"))
 
     def get_json(self, uri):
-        r = requests.get(uri, auth=(GITHUB_USER, GITHUB_TOKEN))
+        r = cached_github_request(uri)
         if r.status_code == 200:
             return r.json()
         elif r.status_code == 403:
@@ -41,7 +49,8 @@ class GitHubAdapter:
             logger.info(error)
             raise Exception(f"GitHub adapter error: {error['message']}")
         else:
-            raise Exception(f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
+            raise Exception(
+                f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
 
     def get_contexts(self):
         branches = self.get_json(self.api_url + "branches")
@@ -49,9 +58,11 @@ class GitHubAdapter:
         return list([context["name"] for context in branches + tags])
 
     def get_resources(self, context):
-        contents = self.get_json(f"{self.api_url}git/trees/{context}?recursive=1")
+        contents = self.get_json(
+            f"{self.api_url}git/trees/{context}?recursive=1")
 
-        tree = RepositoryResourceNode(resource=GITRepositoryResource(name="/"), children=[])
+        tree = RepositoryResourceNode(
+            resource=GITRepositoryResource(name="/"), children=[])
         for git_obj in contents["tree"]:
             download_url = f"{self.download_base_url}{context}/{git_obj['path']}"
             add_to_tree(
@@ -87,7 +98,8 @@ class GitHubAdapter:
 
     def copy_resource(self, workspace_resource, origin):
         repository_resource = GITRepositoryResource(**origin)
-        logger.info("Processiong copy GIT Repository Resource %s", repository_resource)
+        logger.info("Processiong copy GIT Repository Resource %s",
+                    repository_resource)
         # download the resource
         return etlservice.download_workspace_resource(workspace_resource)
 
