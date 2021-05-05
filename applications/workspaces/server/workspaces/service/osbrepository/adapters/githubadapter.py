@@ -90,3 +90,8 @@ class GitHubAdapter:
         logger.info("Processiong copy GIT Repository Resource %s", repository_resource)
         # download the resource
         return etlservice.download_workspace_resource(workspace_resource)
+
+
+if __name__ == '__main__':
+    gha = GitHubAdapter('https://github.com/OpenSourceBrain/OSBv2')
+    print(gha.get_resources('develop'))
