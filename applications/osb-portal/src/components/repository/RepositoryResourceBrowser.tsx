@@ -20,7 +20,7 @@ import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspace
 export default ({ repository, checkedChanged }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any }) => {
   const handleToggle = (value: any) => () => '';
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
-  const [folder, setFolder] = React.useState<RepositoryResourceNode>(repository.contextResources);
+  const [currentPath, setCurrentPath] = React.useState<RepositoryResourceNode[]>([repository.contextResources]);
 
   const onCheck = (isChecked: boolean, value: RepositoryResourceNode) => {
     if (isChecked) {
@@ -32,8 +32,10 @@ export default ({ repository, checkedChanged }: { repository: OSBRepository, che
     checkedChanged(Object.values(checked));
   };
 
+  const addToCurrentPath = (n: RepositoryResourceNode) => {
+    setCurrentPath([...currentPath, n]);
+  }
 
-  const contextResources = folder.children;
 
   return <>
     <Breadcrumbs
@@ -41,12 +43,14 @@ export default ({ repository, checkedChanged }: { repository: OSBRepository, che
       aria-label="breadcrumb"
     >
       {
-        <Link
-          color="inherit"
-          onClick={() => setFolder(repository.contextResources)}
-        >
-          {repository.name}
-        </Link>
+        currentPath.map((element, i) =>
+          <Link
+            key={element.resource.name}
+            color="inherit"
+            onClick={() => setCurrentPath(currentPath.slice(0, i + 1))}
+          >
+            {i > 0 ? element.resource.name : repository.name}
+          </Link>)
       }
 
     </Breadcrumbs>
@@ -65,7 +69,7 @@ export default ({ repository, checkedChanged }: { repository: OSBRepository, che
 
     <Box className="scrollbar">
       <List>
-        {contextResources.map((value, index) => {
+        {currentPath.slice(-1)[0].children.map((value, index) => {
           const labelId = `checkbox-list-label-${value}`;
 
           const splitfilename = value.resource.name.split(".");
@@ -95,7 +99,7 @@ export default ({ repository, checkedChanged }: { repository: OSBRepository, che
                 display="flex"
                 alignItems="center"
                 justifyContent="space-between"
-                onClick={isFolder ? () => setFolder(value) : null}
+                onClick={isFolder ? () => addToCurrentPath(value) : null}
               >
                 <Box display="flex" alignItems="center">
                   <Box className={'icon' + (!isFolder ? '' : ' file')}>
