@@ -1,6 +1,7 @@
 import base64
 import requests
 import workspaces.service.etlservice as etlservice
+import workspaces.service.workflow as workflow
 
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
@@ -10,9 +11,9 @@ from .utils import add_to_tree
 
 
 GITHUB_USER = get_secret("workspaces", "github-user")
-GITHUB_USER = GITHUB_USER if GITHUB_USER != "none" else None
+GITHUB_USER = GITHUB_USER if GITHUB_USER and GITHUB_USER != "none" else "osb-admin"
 GITHUB_TOKEN = get_secret("workspaces", "github-token")
-GITHUB_TOKEN = GITHUB_TOKEN if GITHUB_TOKEN != "none" else None
+GITHUB_TOKEN = GITHUB_TOKEN if GITHUB_TOKEN and GITHUB_TOKEN != "none" else "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"
 
 logger.debug("GitHub user:%s, token:%s.", GITHUB_USER, GITHUB_TOKEN)
 
@@ -26,10 +27,11 @@ def _clean_url_and_end_with_slash(url):
 
 
 class GitHubAdapter:
-    def __init__(self, uri):
-        self.url = uri
-        self.api_url = _clean_url_and_end_with_slash(uri.replace("https://github.com/","https://api.github.com/repos/"))
-        self.download_base_url = _clean_url_and_end_with_slash(uri.replace("https://github.com/","https://raw.githubusercontent.com/"))
+    def __init__(self, osbrepository, uri=None):
+        self.osbrepository = osbrepository
+        self.uri = uri if uri else osbrepository.url
+        self.api_url = _clean_url_and_end_with_slash(self.uri.replace("https://github.com/","https://api.github.com/repos/"))
+        self.download_base_url = _clean_url_and_end_with_slash(self.uri)
 
     def get_json(self, uri):
         r = requests.get(uri, auth=(GITHUB_USER, GITHUB_TOKEN))
@@ -51,15 +53,23 @@ class GitHubAdapter:
     def get_resources(self, context):
         contents = self.get_json(f"{self.api_url}git/trees/{context}?recursive=1")
 
-        tree = RepositoryResourceNode(resource=GITRepositoryResource(name="/"), children=[])
+        tree = RepositoryResourceNode(
+            resource=GITRepositoryResource(
+                name="/",
+                path=f"{self.download_base_url}branches/{context}",
+                osbrepository_id=self.osbrepository.id,
+                ref=context),
+            children=[]
+        )
         for git_obj in contents["tree"]:
-            download_url = f"{self.download_base_url}{context}/{git_obj['path']}"
+            download_url = f"{self.download_base_url}branches/{context}/{git_obj['path']}"
             add_to_tree(
                 tree=tree,
                 tree_path=git_obj["path"].split("/"),
                 path=download_url,
                 sha=git_obj["sha"],
-                ref=context
+                ref=context,
+                osbrepository_id=self.osbrepository.id
             )
 
         return tree
@@ -85,8 +95,17 @@ class GitHubAdapter:
         except Exception as e:
             return e
 
-    def copy_resource(self, workspace_resource, origin):
-        repository_resource = GITRepositoryResource(**origin)
-        logger.info("Processiong copy GIT Repository Resource %s", repository_resource)
+    def create_copy_task(self, workspace_id, origin):
         # download the resource
-        return etlservice.download_workspace_resource(workspace_resource)
+        name = origin["name"] if origin["name"] != "/" else self.osbrepository.name
+        path = origin["path"]
+        folder = self.osbrepository.name + path.replace(self.download_base_url+"branches", "")
+        folder = folder[:folder.rfind("/")]
+        return workflow.create_copy_task(
+            image_name="workspaces-github-copy",
+            workspace_id=workspace_id,
+            origin={
+                "name": name,
+                "folder": folder,
+                "path": path
+            })

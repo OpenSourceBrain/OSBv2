@@ -46,6 +46,8 @@ _consumer_clients = []
 _consumer_queues = (
     {'group': 'workspaces', 'name': 'osb-download-file-queue',
         'handler': set_resource_state},
+    {'group': 'workspaces', 'name': 'osb-copy-tasks-queue',
+        'handler': set_resource_state},
 )
 
 

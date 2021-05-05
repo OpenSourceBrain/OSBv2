@@ -5,8 +5,9 @@ from .utils import add_to_tree
 
 
 class FigShareAdapter:
-    def __init__(self, uri):
-        self.uri = uri
+    def __init__(self, osbrepository):
+        self.osbrepository = osbrepository
+
 
     def get_contexts(self):
         return list([])
@@ -16,7 +17,7 @@ class FigShareAdapter:
 
         tree = RepositoryResourceNode(RepositoryResource(name="/"), children=[])
         for git_obj in contents["tree"]:
-            add_to_tree(tree, git_obj["path"].split("/"))
+            add_to_tree(tree, git_obj["path"].split("/"), osbrepository_id=self.osbrepository.id)
 
         return tree
 
@@ -26,6 +27,6 @@ class FigShareAdapter:
     def get_description(self, context):
         return "Description"
 
-    def copy_resource(self, origin):
+    def create_copy_task(self, origin):
         repository_resource = FigshareRepositoryResource(**origin)
         logger.info("Processiong copy GIT Repository Resource %s", repository_resource)

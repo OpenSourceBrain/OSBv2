@@ -1,9 +1,9 @@
 import json
 import workspaces.repository as repos
 import workspaces.service.workflow as workflow
+import workspaces.service.osbrepository.osbrepository as osbrepository_service #import copy_resource, create_copy_origin_task
 
 from cloudharness import log as logger
-from workspaces.service.osbrepository.osbrepository import copy_resource
 
 
 def copy_workspace_resource(workspace_resource):
@@ -13,11 +13,33 @@ def copy_workspace_resource(workspace_resource):
         osbrepository_id = origin.get("osbrepository_id", None)
         if osbrepository_id:
             # repository resource based workspace resource
-            return copy_resource(workspace_resource)
+            return osbrepository_service.copy_resource(workspace_resource)
         else:
             # download the resource
             return download_workspace_resource(workspace_resource)
     return workspace_resource
+
+
+def copy_origins(workspace_id, origins):
+    tasks = []
+    for origin in origins:
+        if origin.get("osbrepository_id"):
+            # osb repository origin
+            task = osbrepository_service.create_copy_task(
+                workspace_id=workspace_id,
+                origin=origin)
+            if type(task) is list:
+                tasks.extend(task)
+            else:
+                tasks.append(task)
+        else:
+            # download origin
+            tasks.append(workflow.create_copy_task(
+                workspace_id=workspace_id,
+                origin=origin))
+    workflow.run_copy_tasks(
+        workspace_id,
+        tasks)
 
 
 def download_workspace_resource(workspace_resource):

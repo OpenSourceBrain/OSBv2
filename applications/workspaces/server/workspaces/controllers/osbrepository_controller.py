@@ -23,7 +23,8 @@ def get(id_=None, context=None, **kwargs):
 
         osbrepository_ext.context_resources = repository_service.get_resources(
             osbrepository=osbrepository_ext,
-            context=context)  # use context to get the files
+            context=context,
+            osbrepository_id=id_)  # use context to get the files
         osbrepository_ext.contexts = repository_service.get_contexts(
             repository_type=osbrepository_ext.repository_type,
             uri=osbrepository_ext.uri)

@@ -1,3 +1,5 @@
+import uuid
+import workspaces.repository as repos
 from cloudharness import log as logger
 
 try:
@@ -48,3 +50,31 @@ def download_workspace_resource(workspace_resource, pvc_name, path, folder):
                                                       'payload': workspace_resource.id}
                                       )
     workflow = op.execute()
+
+
+def run_copy_tasks(workspace_id, tasks):
+    pvc_name = repos.WorkspaceRepository().get_pvc_name(workspace_id)
+    shared_directory = f'{pvc_name}:/project_download'
+    op = operations.ParallelOperation(basename=f'osb-copy-tasks-job',
+                                      tasks=(tasks),
+                                      shared_directory=shared_directory,
+                                      pod_context=operations.PodExecutionContext(
+                                          'workspace', workspace_id),
+                                      on_exit_notify={'queue': "osb-copy-tasks-queue",
+                                                      'payload': workspace_id}
+                                      )
+    workflow = op.execute()
+
+
+def create_copy_task(image_name="workflows-extract-download", workspace_id=None, origin=None):
+    pvc_name = repos.WorkspaceRepository().get_pvc_name(workspace_id)
+    shared_directory = f'{pvc_name}:/project_download'
+    path = origin.get("path")
+    folder = origin.get("folder")
+    if not folder:
+        folder = path[:path.rfind("/")]
+    return tasks.CustomTask(name='osb-download-file-'+str(uuid.uuid4())[:8],
+                            image_name=image_name,
+                            shared_directory=shared_directory,
+                            folder=folder,
+                            url=path)
