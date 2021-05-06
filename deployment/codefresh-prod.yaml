@@ -50,11 +50,14 @@ steps:
     - RELEASE_NAME=${{NAMESPACE}}
     - KUBE_CONTEXT=${{CLUSTER_NAME}}
     - NAMESPACE=${{NAMESPACE}}
-    - CHART_VERSION=${{DEPLOYMENT_TAG}}
+    - CHART_VERSION=${{DEPLOYMENT_PUBLISH_TAG}}
     - HELM_REPO_USE_HTTP=false
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
+    custom_values:
+    - app_workspaces_github_token=${{GITHUB_TOKEN}}
+    - app_workspaces_github_user=${{GITHUB_USER}}
   approval:
     type: pending-approval
     stage: publish
