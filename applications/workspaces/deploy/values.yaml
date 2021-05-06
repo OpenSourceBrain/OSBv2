@@ -49,5 +49,5 @@ harness:
     pgdata: /opt/data/pgdata
 
 github:
-  user: filippomc
-  token: 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
+  user:
+  token:
