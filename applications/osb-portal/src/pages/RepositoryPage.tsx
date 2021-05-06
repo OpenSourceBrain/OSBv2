@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useParams, useHistory } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import { render } from 'react-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -26,6 +28,7 @@ import {
   paragraph,
   bgLightestShade,
   bgInputs,
+  font,
 } from "../theme";
 
 
@@ -186,14 +189,25 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
       "& .preview-box": {
+        backgroundColor: "rgba(255, 255, 255)",
+        color: "rgba(0, 0, 0)",
+        paddingLeft: "2rem",
+        paddingRight: "2rem",
+        fontFamily: font,
         borderRadius: 2,
         boxShadow: "0 0 0 3px rgba(0, 0, 0, 0.25)",
-        border: `1px solid ${paragraph}`,
         minHeight: "15rem",
         overflow: "auto",
         [theme.breakpoints.up("sm")]: {
           height: "calc(100vh - 14.5rem)",
         },
+        "& a": {
+          color: 'rgb(8,104,214)',
+        },
+        "& pre": {
+          padding: '1rem',
+          backgroundColor: 'rgb(246,248,250)',
+        }
       },
       "& .primary-heading": {
         borderBottom: `3px solid ${bgInputs}`,
@@ -319,8 +333,10 @@ export const RepositoryPage = (props: any) => {
                     Preview
                 </Typography>
 
-                  <Box className="preview-box">
-                    {repository.description}
+                  <Box className="preview-box scrollbar">
+                    <ReactMarkdown skipHtml>
+                        {repository.description} 
+                      </ReactMarkdown>
                   </Box>
                 </Box>
               </Grid>
