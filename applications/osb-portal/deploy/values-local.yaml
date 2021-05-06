@@ -8,4 +8,3 @@ harness:
       - workspaces
       - workflows
       - jupyterhub
-      - netpyne

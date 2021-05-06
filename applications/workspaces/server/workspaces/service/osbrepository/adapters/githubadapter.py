@@ -10,12 +10,6 @@ from workspaces.models import RepositoryResourceNode, GITRepositoryResource
 from .utils import add_to_tree
 
 
-GITHUB_USER = get_secret("workspaces", "github-user")
-GITHUB_TOKEN = get_secret("workspaces", "github-token")
-
-logger.debug("GitHub user:%s, token:%s.", GITHUB_USER, GITHUB_TOKEN)
-
-
 def _clean_url_and_end_with_slash(url):
     first_part = url[:7]  # https:/
     second_part = url[7:] + "/"  # /host/path
