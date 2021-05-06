@@ -7,6 +7,7 @@ RUN apk add subversion
 ADD . /
 
 ENV shared_directory /
-ENV workspace_id 1
+ENV workspace_id 123
+ENV queue_name queue
 
-CMD source ./run.sh
+CMD python main.py ${shared_directory} ${workspace_id} ${queue_name}
