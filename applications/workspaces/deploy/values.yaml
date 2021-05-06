@@ -49,5 +49,5 @@ harness:
     pgdata: /opt/data/pgdata
 
 github:
-  user: ""
-  token: ""
+  user: "none"
+  token: "none"
