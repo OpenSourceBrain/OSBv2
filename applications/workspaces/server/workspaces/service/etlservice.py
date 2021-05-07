@@ -10,10 +10,15 @@ import workspaces.service.workflow as workflow
 def copy_origins(workspace_id, origins):
     tasks = []
     for origin in origins:
-        if origin.get("osbrepository_id"):
+        osbrepository_id = origin.get("osbrepository_id")
+        if osbrepository_id:
             # osb repository origin
             task = osbrepository_service.create_copy_task(
-                workspace_id=workspace_id, name=origin.get("name"), folder=origin.get("folder"), path=origin.get("path")
+                workspace_id=workspace_id,
+                osbrepository_id=osbrepository_id,
+                name=origin.get("name"),
+                folder=origin.get("folder"),
+                path=origin.get("path"),
             )
             if type(task) is list:
                 tasks.extend(task)
