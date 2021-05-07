@@ -189,7 +189,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
       "& .preview-box": {
-        backgroundColor: "transport",
+        backgroundColor: "transparent",
         fontFamily: font,
         overflow: "auto",
         flexGrow: 1,
