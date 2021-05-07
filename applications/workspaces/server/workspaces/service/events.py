@@ -1,8 +1,7 @@
 from cloudharness import log
-
+from cloudharness.events.client import EventClient
 from flask import current_app
 
-from cloudharness.events.client import EventClient
 # from cloudharness.workflows.operations import OperationStatus
 # from ..config import Config
 
@@ -11,8 +10,8 @@ from cloudharness.events.client import EventClient
 # from workspaces import ResourceStatus
 
 
-DOWNLOAD_FILE_QUEUE="osb-download-file-queue"
-UPDATE_WORKSPACES_RESOURCE_QUEUE="osb-update-workspace-resources"
+DOWNLOAD_FILE_QUEUE = "osb-download-file-queue"
+UPDATE_WORKSPACES_RESOURCE_QUEUE = "osb-update-workspace-resources"
 
 
 def _create_topic(name):
@@ -20,18 +19,20 @@ def _create_topic(name):
     try:
         client.create_topic()
     except:
-        log.info(f'Queue {name} already exists!')
+        log.info(f"Queue {name} already exists!")
         pass
     return client
 
 
 def update_workspace_resources(event_client, app, message):
-    log.info(f'Got message: {message}')
-    workspace_id = message['payload']
+    log.info(f"Got message: {message}")
+    workspace_id = message["workspace_id"]
+    resources = message["resources"]
+    # remove '/project_download/' from resource path!!!
 
 
 def set_resource_state(event_client, app, message):
-    log.info(f'Got message: {message}')
+    log.info(f"Got message: {message}")
     # workspace_resource_id = message['payload']
     # with app.app_context():
     #     status = message.get('status', OperationStatus.FAILED)
@@ -53,27 +54,25 @@ def set_resource_state(event_client, app, message):
 
 _consumer_clients = []
 _consumer_queues = (
-    {'group': 'workspaces', 'name': DOWNLOAD_FILE_QUEUE,
-        'handler': set_resource_state},
-    {'group': 'workspaces', 'name': UPDATE_WORKSPACES_RESOURCE_QUEUE,
-        'handler': update_workspace_resources},
+    {"group": "workspaces", "name": DOWNLOAD_FILE_QUEUE, "handler": set_resource_state},
+    {"group": "workspaces", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE, "handler": update_workspace_resources},
 )
 
 
 def start_kafka_consumers():
-    log.info('Starting Kafka consumer threads')
+    log.info("Starting Kafka consumer threads")
     for queue in _consumer_queues:
-        client = _create_topic(queue['name'])
-        client.async_consume(
-            app=current_app, group_id=queue['group'], handler=queue['handler'])
+        client = _create_topic(queue["name"])
+        client.async_consume(app=current_app, group_id=queue["group"], handler=queue["handler"])
         _consumer_clients.append(client)
 
 
 def stop_kafka_consumers():
-    log.info('Stopping Kafka consumer threads')
+    log.info("Stopping Kafka consumer threads")
     for t in _consumer_clients:
         t.close()
-        log.info(f'Stopped Kafka consumer thread: {t}')
+        log.info(f"Stopped Kafka consumer thread: {t}")
+
 
 def test_kafka_running():
     try:

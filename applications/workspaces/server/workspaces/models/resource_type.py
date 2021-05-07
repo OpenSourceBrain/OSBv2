@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
 from workspaces import util
+from workspaces.models.base_model_ import Model
 
 
 class ResourceType(Model):
@@ -22,18 +22,15 @@ class ResourceType(Model):
     M = "m"
     G = "g"
     U = "u"
+
     def __init__(self):  # noqa: E501
-        """ResourceType - a model defined in OpenAPI
+        """ResourceType - a model defined in OpenAPI"""
+        self.openapi_types = {}
 
-        """
-        self.openapi_types = {
-        }
-
-        self.attribute_map = {
-        }
+        self.attribute_map = {}
 
     @classmethod
-    def from_dict(cls, dikt) -> 'ResourceType':
+    def from_dict(cls, dikt) -> "ResourceType":
         """Returns the dict as a model
 
         :param dikt: A dict.

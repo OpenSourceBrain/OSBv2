@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
 from workspaces import util
+from workspaces.models.base_model_ import Model
 
 
 class WorkspaceTag(Model):
@@ -23,21 +23,15 @@ class WorkspaceTag(Model):
         :param tag: The tag of this WorkspaceTag.  # noqa: E501
         :type tag: str
         """
-        self.openapi_types = {
-            'id': int,
-            'tag': str
-        }
+        self.openapi_types = {"id": int, "tag": str}
 
-        self.attribute_map = {
-            'id': 'id',
-            'tag': 'tag'
-        }
+        self.attribute_map = {"id": "id", "tag": "tag"}
 
         self._id = id
         self._tag = tag
 
     @classmethod
-    def from_dict(cls, dikt) -> 'WorkspaceTag':
+    def from_dict(cls, dikt) -> "WorkspaceTag":
         """Returns the dict as a model
 
         :param dikt: A dict.

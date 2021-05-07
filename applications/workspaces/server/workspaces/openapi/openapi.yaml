@@ -186,8 +186,8 @@ paths:
     post:
       summary: Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
       operationId: workspaces.controllers.workspace_controller.import_resources
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -438,8 +438,8 @@ paths:
       tags:
         - rest
       summary: Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       requestBody:
         description: The OSB repository to save.
         required: true
