@@ -189,25 +189,16 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
       "& .preview-box": {
-        backgroundColor: "rgba(255, 255, 255)",
-        color: "rgba(0, 0, 0)",
-        paddingLeft: "2rem",
-        paddingRight: "2rem",
+        backgroundColor: "transport",
         fontFamily: font,
-        borderRadius: 2,
-        boxShadow: "0 0 0 3px rgba(0, 0, 0, 0.25)",
-        minHeight: "15rem",
         overflow: "auto",
+        flexGrow: 1,
         [theme.breakpoints.up("sm")]: {
           height: "calc(100vh - 14.5rem)",
         },
         "& a": {
-          color: 'rgb(8,104,214)',
-        },
-        "& pre": {
-          padding: '1rem',
-          backgroundColor: 'rgb(246,248,250)',
-        }
+          color: linkColor,
+        }, 
       },
       "& .primary-heading": {
         borderBottom: `3px solid ${bgInputs}`,
