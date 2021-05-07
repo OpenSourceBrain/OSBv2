@@ -51,7 +51,11 @@ def create_task(image_name, workspace_id, **kwargs):
     pvc_name = repos.WorkspaceRepository().get_pvc_name(workspace_id)
     shared_directory = f"{pvc_name}:/project_download"
     return tasks.CustomTask(
-        name=f"{image_name}-{str(uuid.uuid4())[:8]}", image_name=image_name, shared_directory=shared_directory, **kwargs
+        name=f"{image_name}-{str(uuid.uuid4())[:8]}",
+        image_name=image_name,
+        shared_directory=shared_directory,
+        workspace_id=workspace_id,
+        **kwargs,
     )
 
 

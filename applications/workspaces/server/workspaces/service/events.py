@@ -1,14 +1,10 @@
+import os
+
 from cloudharness import log
 from cloudharness.events.client import EventClient
 from flask import current_app
 
-# from cloudharness.workflows.operations import OperationStatus
-# from ..config import Config
-
-# from sqlalchemy.sql import func
-# from workspaces.repository.model_repository import WorkspaceResourceRepository
-# from workspaces import ResourceStatus
-
+import workspaces.repository.model_repository as repos
 
 DOWNLOAD_FILE_QUEUE = "osb-download-file-queue"
 UPDATE_WORKSPACES_RESOURCE_QUEUE = "osb-update-workspace-resources"
@@ -27,34 +23,14 @@ def _create_topic(name):
 def update_workspace_resources(event_client, app, message):
     log.info(f"Got message: {message}")
     workspace_id = message["workspace_id"]
-    resources = message["resources"]
-    # remove '/project_download/' from resource path!!!
-
-
-def set_resource_state(event_client, app, message):
-    log.info(f"Got message: {message}")
-    # workspace_resource_id = message['payload']
-    # with app.app_context():
-    #     status = message.get('status', OperationStatus.FAILED)
-    #     workspaceResourceRepository = WorkspaceResourceRepository()
-    #     workspace_resource = workspaceResourceRepository.get(
-    #         id=workspace_resource_id)
-    #     if status == OperationStatus.SUCCEEDED:
-    #         workspace_resource.status = ResourceStatus.SUCCESS  # success
-    #     else:
-    #         log.error(
-    #             f'WorkspaceResource {workspace_resource_id} ingestion errored.')
-    #         workspace_resource.status = ResourceStatus.ERROR
-
-    #     log.info('Updating WorkspaceResource %s', workspace_resource_id)
-    #     workspaceResourceRepository.save(obj=workspace_resource)
-    #     log.info(
-    #         f'Updated WorkspaceResource status to {workspace_resource.status}')
+    # remove /project_download/ (mount point of the pvc) from the path
+    resources = [resource.replace("/project_download/", "") for resource in message["resources"]]
+    with app.app_context():
+        repos.WorkspaceResourceRepository().update_workspace_resources(workspace_id, resources)
 
 
 _consumer_clients = []
 _consumer_queues = (
-    {"group": "workspaces", "name": DOWNLOAD_FILE_QUEUE, "handler": set_resource_state},
     {"group": "workspaces", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE, "handler": update_workspace_resources},
 )
 
