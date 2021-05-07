@@ -15,6 +15,7 @@ except Exception as e:
 
 
 def delete_resource(workspace_resource, pvc_name, resource_path: str):
+    logger.info(f"Delete workspace resource with id: {workspace_resource.id}, path: {resource_path}")
     shared_directory = f"{pvc_name}:/project_download"
 
     delete_task = tasks.CommandBasedTask(

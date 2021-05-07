@@ -165,6 +165,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
                     resource_type=self.guess_resource_type(filename),
                     workspace_id=workspace_id,
                 )
+                logger.info(f"Created new workspace resources {filename} {folder} {resource}")
             else:
                 found_wsr.append(wsr)  # add the wsr to the found list
 
@@ -176,6 +177,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
         for wsr in [wsr for wsr in all_wsr if wsr not in found_wsr]:
             # delete non existing workspace resources
+            logger.info(f"Deleting resource: {wsr.id} {wsr.name} {wsr.folder}")
             result = self.model.query.filter_by(id=wsr.id).delete()
             db.session.commit()
         logger.info(f"Workspace resources update done for workspace {workspace_id}")
