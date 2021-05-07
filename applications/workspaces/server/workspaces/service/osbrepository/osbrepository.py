@@ -49,4 +49,6 @@ def copy_resource(workspace_resource):
 def create_copy_task(workspace_id, osbrepository_id, name, folder, path):
     osbrepository = repos.OSBRepositoryRepository().get(id=osbrepository_id)
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
-    return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, folder=folder, path=path)
+    return repository_adapter.create_copy_task(
+        workspace_id=workspace_id, osbrepository_id=osbrepository_id, name=name, folder=folder, path=path
+    )
