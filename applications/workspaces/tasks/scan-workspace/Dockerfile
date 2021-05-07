@@ -8,6 +8,6 @@ ADD . /
 
 ENV shared_directory /
 ENV workspace_id 123
-ENV queue_name queue
+ENV queue queue
 
-CMD python main.py ${shared_directory} ${workspace_id} ${queue_name}
+CMD python main.py ${shared_directory} ${workspace_id} ${queue}

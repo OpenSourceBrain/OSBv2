@@ -18,6 +18,7 @@ for root, dirs, files in os.walk(folder):
         full_file_name = os.path.join(root, file)
         filename, file_extension = os.path.splitext(full_file_name)
         if file_extension.lower() in (".nwb", ".netpyne"):
+            logger.info(f"Found resource: {full_file_name}")
             resources.append(full_file_name)
 
 payload = {
@@ -25,5 +26,4 @@ payload = {
     "resources": resources
 }
 
-logger.info(f"Sending: {payload}")
-print(payload)
+notify_queue(queue, payload)
