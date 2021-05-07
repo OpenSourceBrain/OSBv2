@@ -96,10 +96,9 @@ class GitHubAdapter:
         except Exception as e:
             return e
 
-    def create_copy_task(self, workspace_id, origin):
+    def create_copy_task(self, workspace_id, name, folder, path):
         # download the resource
-        name = origin["name"] if origin["name"] != "/" else self.osbrepository.name
-        path = origin["path"]
+        name = name if name != "/" else self.osbrepository.name
         folder = self.osbrepository.name + path.replace(self.download_base_url + "branches", "")
         folder = folder[: folder.rfind("/")]
         # username / password are optional and future usage,

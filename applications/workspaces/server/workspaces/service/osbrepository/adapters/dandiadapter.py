@@ -27,6 +27,8 @@ class DandiAdapter:
     def get_description(self, context):
         return "Description"
 
-    def create_copy_task(self, origin):
-        repository_resource = DandiRepositoryResource(**origin)
-        logger.info("Processiong copy Dandi Repository Resource %s", repository_resource)
+    def create_copy_task(self, name, folder, path):
+        name = name if name != "/" else self.osbrepository.name
+        folder = self.osbrepository.name + path.replace(self.download_base_url + "branches", "")
+        folder = folder[: folder.rfind("/")]
+        # do something...
