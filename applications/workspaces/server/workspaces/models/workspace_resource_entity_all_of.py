@@ -23,21 +23,15 @@ class WorkspaceResourceEntityAllOf(Model):
         :param workspace_id: The workspace_id of this WorkspaceResourceEntityAllOf.  # noqa: E501
         :type workspace_id: int
         """
-        self.openapi_types = {
-            'origin': str,
-            'workspace_id': int
-        }
+        self.openapi_types = {"origin": str, "workspace_id": int}
 
-        self.attribute_map = {
-            'origin': 'origin',
-            'workspace_id': 'workspace_id'
-        }
+        self.attribute_map = {"origin": "origin", "workspace_id": "workspace_id"}
 
         self._origin = origin
         self._workspace_id = workspace_id
 
     @classmethod
-    def from_dict(cls, dikt) -> 'WorkspaceResourceEntityAllOf':
+    def from_dict(cls, dikt) -> "WorkspaceResourceEntityAllOf":
         """Returns the dict as a model
 
         :param dikt: A dict.

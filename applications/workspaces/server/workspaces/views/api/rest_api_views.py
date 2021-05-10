@@ -3,8 +3,12 @@ import json
 from workspaces.repository.models import WorkspaceEntity, WorkspaceResourceEntity
 
 from ..base_model_view import BaseModelView
-from workspaces.repository import WorkspaceRepository, OSBRepositoryRepository, \
-    VolumeStorageRepository, WorkspaceResourceRepository
+from workspaces.repository import (
+    WorkspaceRepository,
+    OSBRepositoryRepository,
+    VolumeStorageRepository,
+    WorkspaceResourceRepository,
+)
 from workspaces.models import OSBRepository, OSBRepository, OSBRepositoryEntity, Workspace
 
 
@@ -27,6 +31,7 @@ class WorkspaceView(BaseModelView):
                 workspace.update({"resources": []})
         return workspace
 
+
 class OsbrepositoryView(BaseModelView):
     repository = OSBRepositoryRepository()
 
@@ -39,8 +44,10 @@ class OsbrepositoryView(BaseModelView):
         body = OSBRepositoryEntity().from_dict(OSBRepository.from_dict(body).to_dict()).to_dict()
         return super().post(body)
 
+
 class VolumestorageView(BaseModelView):
     repository = VolumeStorageRepository()
+
 
 class WorkspaceresourceView(BaseModelView):
     repository = WorkspaceResourceRepository()

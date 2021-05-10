@@ -22,18 +22,15 @@ class ResourceType(Model):
     M = "m"
     G = "g"
     U = "u"
+
     def __init__(self):  # noqa: E501
-        """ResourceType - a model defined in OpenAPI
+        """ResourceType - a model defined in OpenAPI"""
+        self.openapi_types = {}
 
-        """
-        self.openapi_types = {
-        }
-
-        self.attribute_map = {
-        }
+        self.attribute_map = {}
 
     @classmethod
-    def from_dict(cls, dikt) -> 'ResourceType':
+    def from_dict(cls, dikt) -> "ResourceType":
         """Returns the dict as a model
 
         :param dikt: A dict.

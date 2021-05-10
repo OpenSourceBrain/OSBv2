@@ -21,18 +21,15 @@ class RepositoryType(Model):
     DANDI = "dandi"
     FIGSHARE = "figshare"
     GITHUB = "github"
+
     def __init__(self):  # noqa: E501
-        """RepositoryType - a model defined in OpenAPI
+        """RepositoryType - a model defined in OpenAPI"""
+        self.openapi_types = {}
 
-        """
-        self.openapi_types = {
-        }
-
-        self.attribute_map = {
-        }
+        self.attribute_map = {}
 
     @classmethod
-    def from_dict(cls, dikt) -> 'RepositoryType':
+    def from_dict(cls, dikt) -> "RepositoryType":
         """Returns the dict as a model
 
         :param dikt: A dict.

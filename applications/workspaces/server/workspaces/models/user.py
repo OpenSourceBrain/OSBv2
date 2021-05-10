@@ -29,20 +29,14 @@ class User(Model):
         :param email: The email of this User.  # noqa: E501
         :type email: str
         """
-        self.openapi_types = {
-            'id': str,
-            'first_name': str,
-            'last_name': str,
-            'username': str,
-            'email': str
-        }
+        self.openapi_types = {"id": str, "first_name": str, "last_name": str, "username": str, "email": str}
 
         self.attribute_map = {
-            'id': 'id',
-            'first_name': 'first_name',
-            'last_name': 'last_name',
-            'username': 'username',
-            'email': 'email'
+            "id": "id",
+            "first_name": "first_name",
+            "last_name": "last_name",
+            "username": "username",
+            "email": "email",
         }
 
         self._id = id
@@ -52,7 +46,7 @@ class User(Model):
         self._email = email
 
     @classmethod
-    def from_dict(cls, dikt) -> 'User':
+    def from_dict(cls, dikt) -> "User":
         """Returns the dict as a model
 
         :param dikt: A dict.

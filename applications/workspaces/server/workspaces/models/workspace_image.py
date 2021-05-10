@@ -23,21 +23,15 @@ class WorkspaceImage(Model):
         :param image: The image of this WorkspaceImage.  # noqa: E501
         :type image: str
         """
-        self.openapi_types = {
-            'id': int,
-            'image': str
-        }
+        self.openapi_types = {"id": int, "image": str}
 
-        self.attribute_map = {
-            'id': 'id',
-            'image': 'image'
-        }
+        self.attribute_map = {"id": "id", "image": "image"}
 
         self._id = id
         self._image = image
 
     @classmethod
-    def from_dict(cls, dikt) -> 'WorkspaceImage':
+    def from_dict(cls, dikt) -> "WorkspaceImage":
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -23,21 +23,15 @@ class GITRepositoryResourceAllOf(Model):
         :param sha: The sha of this GITRepositoryResourceAllOf.  # noqa: E501
         :type sha: str
         """
-        self.openapi_types = {
-            'ref': str,
-            'sha': str
-        }
+        self.openapi_types = {"ref": str, "sha": str}
 
-        self.attribute_map = {
-            'ref': 'ref',
-            'sha': 'sha'
-        }
+        self.attribute_map = {"ref": "ref", "sha": "sha"}
 
         self._ref = ref
         self._sha = sha
 
     @classmethod
-    def from_dict(cls, dikt) -> 'GITRepositoryResourceAllOf':
+    def from_dict(cls, dikt) -> "GITRepositoryResourceAllOf":
         """Returns the dict as a model
 
         :param dikt: A dict.

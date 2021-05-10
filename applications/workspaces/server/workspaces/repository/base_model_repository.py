@@ -84,8 +84,7 @@ class BaseModelRepository:
                 elif isinstance(getattr(cur_obj, key), db.Model):
                     # copy the object if the object exists then update else create
                     new_item = self._get_and_copy_item(getattr(new_obj, key))
-                    setattr(cur_obj, key, self._copy_attrs(
-                        getattr(cur_obj, key), new_item))
+                    setattr(cur_obj, key, self._copy_attrs(getattr(cur_obj, key), new_item))
                 else:
                     # just copy the value
                     setattr(cur_obj, key, getattr(new_obj, key))
@@ -96,7 +95,7 @@ class BaseModelRepository:
         Helper function for creating the criterion for SQL Alchemy
 
         Args:
-            field: the database field 
+            field: the database field
             comparator: the comparator
             value: the search value
 
@@ -107,21 +106,20 @@ class BaseModelRepository:
             = or ==     - equals
             ! or not    - not equals
             like        - text matches, wildcards: % match any n chars, ? match one char
-                            a % will be added at the start and the end of the match string 
+                            a % will be added at the start and the end of the match string
 
-        Usage examples: 
+        Usage examples:
             q=id=3 (id equals to 3)
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        logger.debug('Search for %s filter: %s %s %s',
-                     self.model, field, comparator, value)
-        if comparator == '==':
+        logger.debug("Search for %s filter: %s %s %s", self.model, field, comparator, value)
+        if comparator == "==":
             return field == value
-        elif comparator in ('!', 'not'):
+        elif comparator in ("!", "not"):
             return field != value
-        elif comparator == 'like':
-            return field.like('%'+value+'%')
+        elif comparator == "like":
+            return field.like("%" + value + "%")
         else:
             return field == value
 
@@ -145,19 +143,18 @@ class BaseModelRepository:
 
     def filters(self, q=None):
         filters = []
-        for arg in q.strip().split('+'):
-            field_comparator, value = arg.strip().split('=')
-            field_comparator = field_comparator.split('__')
+        for arg in q.strip().split("+"):
+            field_comparator, value = arg.strip().split("=")
+            field_comparator = field_comparator.split("__")
             field = field_comparator[0]
             if len(field_comparator) > 1:
                 comparator = field_comparator[1]
             else:
-                comparator = '='
+                comparator = "="
             attr = getattr(self.model, field)
             if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
-                value = value.upper() in ('TRUE', '1', 'T')
-            logger.debug("Filter attr: %s comparator: %s value: %s",
-                            attr.key, comparator, value)
+                value = value.upper() in ("TRUE", "1", "T")
+            logger.debug("Filter attr: %s comparator: %s value: %s", attr.key, comparator, value)
             filters.append((attr, comparator, value))
         return filters
 
@@ -174,7 +171,7 @@ class BaseModelRepository:
             page, total_pages, objects
         """
         """Get all objects from the repository."""
-        if q and q != 'None':
+        if q and q != "None":
             logger.info("Query %s", q)
             filters = self.filters(q)
             sqs = self._get_qs(filters, q)
@@ -246,4 +243,3 @@ class BaseModelRepository:
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
         return db.session.commit()
-

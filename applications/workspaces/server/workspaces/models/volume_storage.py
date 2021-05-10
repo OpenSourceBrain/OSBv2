@@ -23,21 +23,15 @@ class VolumeStorage(Model):
         :param name: The name of this VolumeStorage.  # noqa: E501
         :type name: str
         """
-        self.openapi_types = {
-            'id': int,
-            'name': str
-        }
+        self.openapi_types = {"id": int, "name": str}
 
-        self.attribute_map = {
-            'id': 'id',
-            'name': 'name'
-        }
+        self.attribute_map = {"id": "id", "name": "name"}
 
         self._id = id
         self._name = name
 
     @classmethod
-    def from_dict(cls, dikt) -> 'VolumeStorage':
+    def from_dict(cls, dikt) -> "VolumeStorage":
         """Returns the dict as a model
 
         :param dikt: A dict.

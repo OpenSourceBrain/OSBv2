@@ -21,18 +21,14 @@ class ResourceBase(Model):
         :param path: The path of this ResourceBase.  # noqa: E501
         :type path: str
         """
-        self.openapi_types = {
-            'path': str
-        }
+        self.openapi_types = {"path": str}
 
-        self.attribute_map = {
-            'path': 'path'
-        }
+        self.attribute_map = {"path": "path"}
 
         self._path = path
 
     @classmethod
-    def from_dict(cls, dikt) -> 'ResourceBase':
+    def from_dict(cls, dikt) -> "ResourceBase":
         """Returns the dict as a model
 
         :param dikt: A dict.

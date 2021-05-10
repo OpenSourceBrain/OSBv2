@@ -21,18 +21,15 @@ class ResourceStatus(Model):
     A = "a"
     E = "e"
     P = "p"
+
     def __init__(self):  # noqa: E501
-        """ResourceStatus - a model defined in OpenAPI
+        """ResourceStatus - a model defined in OpenAPI"""
+        self.openapi_types = {}
 
-        """
-        self.openapi_types = {
-        }
-
-        self.attribute_map = {
-        }
+        self.attribute_map = {}
 
     @classmethod
-    def from_dict(cls, dikt) -> 'ResourceStatus':
+    def from_dict(cls, dikt) -> "ResourceStatus":
         """Returns the dict as a model
 
         :param dikt: A dict.

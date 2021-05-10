@@ -23,21 +23,15 @@ class RepositoryResourceBaseAllOf(Model):
         :param osbrepository_id: The osbrepository_id of this RepositoryResourceBaseAllOf.  # noqa: E501
         :type osbrepository_id: int
         """
-        self.openapi_types = {
-            'name': str,
-            'osbrepository_id': int
-        }
+        self.openapi_types = {"name": str, "osbrepository_id": int}
 
-        self.attribute_map = {
-            'name': 'name',
-            'osbrepository_id': 'osbrepository_id'
-        }
+        self.attribute_map = {"name": "name", "osbrepository_id": "osbrepository_id"}
 
         self._name = name
         self._osbrepository_id = osbrepository_id
 
     @classmethod
-    def from_dict(cls, dikt) -> 'RepositoryResourceBaseAllOf':
+    def from_dict(cls, dikt) -> "RepositoryResourceBaseAllOf":
         """Returns the dict as a model
 
         :param dikt: A dict.

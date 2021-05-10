@@ -21,18 +21,14 @@ class Valid(Model):
         :param response: The response of this Valid.  # noqa: E501
         :type response: str
         """
-        self.openapi_types = {
-            'response': str
-        }
+        self.openapi_types = {"response": str}
 
-        self.attribute_map = {
-            'response': 'response'
-        }
+        self.attribute_map = {"response": "response"}
 
         self._response = response
 
     @classmethod
-    def from_dict(cls, dikt) -> 'Valid':
+    def from_dict(cls, dikt) -> "Valid":
         """Returns the dict as a model
 
         :param dikt: A dict.

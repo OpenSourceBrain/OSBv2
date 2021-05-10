@@ -13,7 +13,7 @@ class Config(object):
     # ...
     DATABASE_NAME = "wsmgr"
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://workspace:secret@workspaces-postgres-host:5432/workspaces'
+    SQLALCHEMY_DATABASE_URI = "postgresql://workspace:secret@workspaces-postgres-host:5432/workspaces"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
@@ -29,13 +29,13 @@ class Config(object):
     WSMGR_IPADDRESS = socket.gethostbyname(WSMGR_HOSTNAME)
 
     try:
-       CH_NAMESPACE = conf.get_configuration()['namespace']
+        CH_NAMESPACE = conf.get_configuration()["namespace"]
     except:
-       logging.warning('Cannot get cluster deployment configuration: assuming local deployment', exc_info=True)
-       SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, DATABASE_NAME + '.db')
-       CH_NAMESPACE = 'osb'
+        logging.warning("Cannot get cluster deployment configuration: assuming local deployment", exc_info=True)
+        SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, DATABASE_NAME + ".db")
+        CH_NAMESPACE = "osb"
 
     DEBUG = False
 
     # Keycloak
-    SECURITY_CONFIG_FILE_NAME = 'client_secrets.json'
+    SECURITY_CONFIG_FILE_NAME = "client_secrets.json"

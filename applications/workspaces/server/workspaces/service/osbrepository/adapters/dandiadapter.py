@@ -4,7 +4,6 @@ from workspaces.models import RepositoryResourceNode, RepositoryResource, DandiR
 from .utils import add_to_tree
 
 
-
 class DandiAdapter:
     def __init__(self, uri):
         self.uri = uri

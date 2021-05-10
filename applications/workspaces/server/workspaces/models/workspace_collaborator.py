@@ -23,21 +23,15 @@ class WorkspaceCollaborator(Model):
         :param user_id: The user_id of this WorkspaceCollaborator.  # noqa: E501
         :type user_id: str
         """
-        self.openapi_types = {
-            'id': int,
-            'user_id': str
-        }
+        self.openapi_types = {"id": int, "user_id": str}
 
-        self.attribute_map = {
-            'id': 'id',
-            'user_id': 'user_id'
-        }
+        self.attribute_map = {"id": "id", "user_id": "user_id"}
 
         self._id = id
         self._user_id = user_id
 
     @classmethod
-    def from_dict(cls, dikt) -> 'WorkspaceCollaborator':
+    def from_dict(cls, dikt) -> "WorkspaceCollaborator":
         """Returns the dict as a model
 
         :param dikt: A dict.
