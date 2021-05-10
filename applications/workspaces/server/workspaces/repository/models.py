@@ -100,9 +100,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
-        collaborators: typing.Optional[
-            typing.Sequence["TWorkspaceCollaborator"]
-        ] = None,
+        collaborators: typing.Optional[typing.Sequence["TWorkspaceCollaborator"]] = None,
         storage: typing.Optional["TVolumeStorage"] = None,
         resources: typing.Optional[typing.Sequence["TWorkspaceResourceEntity"]] = None,
     ) -> None:
@@ -147,13 +145,9 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
-        collaborators: typing.Optional[
-            typing.Sequence["WorkspaceCollaboratorDict"]
-        ] = None,
+        collaborators: typing.Optional[typing.Sequence["WorkspaceCollaboratorDict"]] = None,
         storage: typing.Optional["VolumeStorageDict"] = None,
-        resources: typing.Optional[
-            typing.Sequence["WorkspaceResourceEntityDict"]
-        ] = None,
+        resources: typing.Optional[typing.Sequence["WorkspaceResourceEntityDict"]] = None,
     ) -> "TWorkspaceEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -264,9 +258,7 @@ class TWorkspaceCollaborator(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_dict(
-        cls, user_id: str, id: typing.Optional[int] = None
-    ) -> "TWorkspaceCollaborator":
+    def from_dict(cls, user_id: str, id: typing.Optional[int] = None) -> "TWorkspaceCollaborator":
         """
         Construct from a dictionary (eg. a POST payload).
 
@@ -360,9 +352,7 @@ class TWorkspaceImage(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_dict(
-        cls, image: str, id: typing.Optional[int] = None
-    ) -> "TWorkspaceImage":
+    def from_dict(cls, image: str, id: typing.Optional[int] = None) -> "TWorkspaceImage":
         """
         Construct from a dictionary (eg. a POST payload).
 
