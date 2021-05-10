@@ -49,6 +49,7 @@ class WorkspaceView(BaseModelView):
                                 "workspace_id": workspace["id"],
                             }
                         )
+                    break
                 except Exception as e:
                     pass
         return workspace
