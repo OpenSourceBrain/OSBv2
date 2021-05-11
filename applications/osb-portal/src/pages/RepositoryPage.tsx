@@ -16,6 +16,8 @@ import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
+import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
+import { Workspace } from "../types/workspace";
 
 import {
   bgRegular,
@@ -276,11 +278,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+const defaultWorkspace : Workspace = {
+  resources: [],
+  volume: null,
+  shareType: null,
+  name: "",
+  description: null
+}
+
+
+
 export const RepositoryPage = (props: any) => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>();
+  const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
 
+  const openDialog = () => setShowWorkspaceEditor(showWorkspaceEditor => !showWorkspaceEditor);
 
   RepositoryService.getRepository(+repositoryId).then((repo) =>
     setRepository(repo)
@@ -308,7 +323,7 @@ export const RepositoryPage = (props: any) => {
             </Box>
           </Box>
           <Box>
-            <Button variant="contained" disableElevation={true} color="primary">
+            <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
               <AddIcon />
               Create new workspace
             </Button>
@@ -358,6 +373,7 @@ export const RepositoryPage = (props: any) => {
             )}
         </Box>
       </Box>
+      {showWorkspaceEditor && <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={openDialog} />}
     </>
   );
 };
