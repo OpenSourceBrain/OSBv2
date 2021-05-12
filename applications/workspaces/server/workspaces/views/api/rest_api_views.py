@@ -2,6 +2,7 @@ import json
 
 import cloudharness.workflows.argo as argo
 from cloudharness import log as logger
+
 from workspaces.models import OSBRepository, OSBRepositoryEntity
 from workspaces.repository import (
     OSBRepositoryRepository,
@@ -51,6 +52,7 @@ class WorkspaceView(BaseModelView):
                         )
                     break
                 except Exception as e:
+                    # probably not a workspace import workflow job --> skip it
                     pass
         return workspace
 

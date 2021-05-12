@@ -4,6 +4,7 @@ from workspaces.models import DandiRepositoryResource, RepositoryResource, Repos
 
 from .utils import add_to_tree
 
+
 class DandiAdapter:
     def __init__(self, osbrepository):
         self.osbrepository = osbrepository

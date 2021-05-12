@@ -94,7 +94,8 @@ class GitHubAdapter:
             description = base64.b64decode(result["content"]).decode("utf-8")
             return description
         except Exception as e:
-            return e
+            logger.debug("unable to get the description from github, %", str(e))
+            return ""
 
     def create_copy_task(self, workspace_id, name, folder, path):
         # download the resource
