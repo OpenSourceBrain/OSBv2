@@ -157,6 +157,14 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
+    "& .MuiBox-root": {
+      color: bgInputs,
+      "& button": {
+        margin: theme.spacing(1),
+        color: bgInputs,
+        borderColor: bgInputs,
+      },
+    }
   },
 }));
 
