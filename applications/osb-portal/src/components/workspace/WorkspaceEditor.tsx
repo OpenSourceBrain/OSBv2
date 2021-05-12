@@ -1,4 +1,5 @@
 import * as React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -19,6 +20,15 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { radius, gutter } from '../../theme';
 import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
+
+import {
+  bgLight,
+  primaryColor,
+  bgInputs,
+  fontColor,
+  paragraph,
+  bgLightestShade,
+} from "../../theme";
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
@@ -52,7 +62,103 @@ async function readFile(file: Blob) {
   })
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiOutlinedInput-root.Mui-focused": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        boxShadow: "0px 0px 0px 3px rgba(55, 171, 200, 0.12)",
+      },
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: bgLight,
+    },
+    "& .MuiSelect-selectMenu": {
+      backgroundColor: bgLight,
+    },
+    "& .MuiSvgIcon-root": {
+      color: paragraph,
+    },
+    "& .input-group": {
+      marginBottom: theme.spacing(2),
+      "& .wrap": {
+        [theme.breakpoints.up("sm")]: {
+          display: "flex",
+        },
+      },
+      "& .MuiTextField-root": {
+        "& .MuiOutlinedInput-root": {
+          borderRadius: 2,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        },
+      },
+      "& .MuiOutlinedInput-root": {
+        borderRadius: 2,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+      },
+      "& .MuiTypography-root": {
+        display: "block",
+        fontWeight: "bold",
+        fontSize: ".875rem",
+        marginBottom: theme.spacing(1),
+        color: bgInputs,
+      },
+      "& .MuiFormControl-root": {
+        "&:not(.MuiTextField-root)": {
+          width: "9rem",
+          flexShrink: 0,
+          [theme.breakpoints.down("sm")]: {
+            width: "100%",
+            marginBottom: ".5rem",
+          },
+        },
+      },
+    },
+    "& .MuiDialogContent-root": {
+      padding: theme.spacing(3),
+    },
+    "& .MuiDialogActions-root": {
+      padding: theme.spacing(3),
+      backgroundColor: bgLight,
+      "& .MuiButton-root": {
+        height: "2.13rem",
+        padding: "0 1rem",
+        "&.MuiButton-containedPrimary": {
+          color: fontColor,
+          "&:hover": {
+            color: primaryColor,
+          },
+        },
+      },
+    },
 
+    "& .MuiDialog-paper": {
+      backgroundColor: bgLightestShade,
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderColor: bgLight,
+      boxShadow: "0 10px 60px rgba(0, 0, 0, 0.5);",
+    },
+
+    "& .MuiDialogTitle-root": {
+      border: "none",
+      borderBottomWidth: 1,
+      borderBottomStyle: "solid",
+      borderBottomColor: bgLight,
+      padding: theme.spacing(3),
+      "& .MuiTypography-root": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        fontWeight: 700,
+        "& .MuiSvgIcon-root": {
+          cursor: "pointer",
+        },
+      },
+    },
+  },
+}));
 
 
 let thumbnail: Blob;
@@ -70,6 +176,8 @@ export default (props: WorkspaceEditProps) => {
 
   const [openDialog, setOpenDialog] = React.useState<boolean>(true);
   const handleCloseDialog = () => setOpenDialog(false);
+
+  const classes = useStyles();
 
   const handleCreateWorkspace = async () => {
     setLoading(true)
@@ -139,6 +247,7 @@ export default (props: WorkspaceEditProps) => {
     <Dialog
       open={openDialog}
       onClose={handleCloseDialog}
+      className={classes.root}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -148,7 +257,7 @@ export default (props: WorkspaceEditProps) => {
       </DialogTitle>
       <DialogContent>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
-        <Grid item={true} xs={6} >
+        <Grid item={true} xs={12} >
           <Grid container={true} spacing={2} direction="column">
             <Grid item={true}>
               <TextField
@@ -174,7 +283,7 @@ export default (props: WorkspaceEditProps) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item={true} xs={6} alignItems="stretch" >
+        <Grid item={true} xs={12} alignItems="stretch">
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
               <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
@@ -182,7 +291,7 @@ export default (props: WorkspaceEditProps) => {
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
                     <Grid item={true}>
-                      <IconButton><PublishIcon /></IconButton>
+                      {/* <IconButton><PublishIcon /></IconButton> */}
                       {acceptedFiles.length === 0 ? '' :
                         <IconButton
                           onClick={(e: any) => {
@@ -198,11 +307,14 @@ export default (props: WorkspaceEditProps) => {
                       <Box component="div" m={1}>
                         <Typography variant="subtitle2" component="p">
                           {acceptedFiles.length === 0 ?
-                            "Upload workspace preview image"
+                            "Drop file here to upload..."
                             :
                             null
                           }
                         </Typography>
+                        <Button variant="outlined">
+                          Browse files
+                        </Button>
                         {
                           thumbnailError &&
                           <Typography color="error" variant="subtitle2" component="p">
@@ -225,7 +337,7 @@ export default (props: WorkspaceEditProps) => {
         <Grid item={true}>
           <Grid container={true} spacing={2} justify="space-between">
             <Grid item={true}>
-            <Button variant="contained" disabled={loading} onClick={handleCloseDialog}>
+            <Button disabled={loading} onClick={handleCloseDialog} color="primary">
                 {"Cancel"}
               </Button>
               <Button variant="contained" disabled={loading} onClick={handleCreateWorkspace} color="primary">
