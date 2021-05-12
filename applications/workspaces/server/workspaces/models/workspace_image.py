@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
 from workspaces import util
+from workspaces.models.base_model_ import Model
 
 
 class WorkspaceImage(Model):
@@ -23,21 +23,15 @@ class WorkspaceImage(Model):
         :param image: The image of this WorkspaceImage.  # noqa: E501
         :type image: str
         """
-        self.openapi_types = {
-            'id': int,
-            'image': str
-        }
+        self.openapi_types = {"id": int, "image": str}
 
-        self.attribute_map = {
-            'id': 'id',
-            'image': 'image'
-        }
+        self.attribute_map = {"id": "id", "image": "image"}
 
         self._id = id
         self._image = image
 
     @classmethod
-    def from_dict(cls, dikt) -> 'WorkspaceImage':
+    def from_dict(cls, dikt) -> "WorkspaceImage":
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -1,8 +1,8 @@
 from cloudharness import log as logger
-from workspaces.models import RepositoryResourceNode, RepositoryResource, DandiRepositoryResource
+
+from workspaces.models import DandiRepositoryResource, RepositoryResource, RepositoryResourceNode
 
 from .utils import add_to_tree
-
 
 
 class DandiAdapter:

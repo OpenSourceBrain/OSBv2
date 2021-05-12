@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
 from workspaces import util
+from workspaces.models.base_model_ import Model
 
 
 class WorkspaceResourceEntityAllOf(Model):
@@ -23,21 +23,15 @@ class WorkspaceResourceEntityAllOf(Model):
         :param workspace_id: The workspace_id of this WorkspaceResourceEntityAllOf.  # noqa: E501
         :type workspace_id: int
         """
-        self.openapi_types = {
-            'origin': str,
-            'workspace_id': int
-        }
+        self.openapi_types = {"origin": str, "workspace_id": int}
 
-        self.attribute_map = {
-            'origin': 'origin',
-            'workspace_id': 'workspace_id'
-        }
+        self.attribute_map = {"origin": "origin", "workspace_id": "workspace_id"}
 
         self._origin = origin
         self._workspace_id = workspace_id
 
     @classmethod
-    def from_dict(cls, dikt) -> 'WorkspaceResourceEntityAllOf':
+    def from_dict(cls, dikt) -> "WorkspaceResourceEntityAllOf":
         """Returns the dict as a model
 
         :param dikt: A dict.
