@@ -1,16 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
-from workspaces.models.dandi_repository_resource import DandiRepositoryResource
-from workspaces.models.figshare_repository_resource import FigshareRepositoryResource
-from workspaces.models.git_repository_resource import GITRepositoryResource
 from workspaces import util
-
+from workspaces.models.base_model_ import Model
 from workspaces.models.dandi_repository_resource import DandiRepositoryResource  # noqa: E501
 from workspaces.models.figshare_repository_resource import FigshareRepositoryResource  # noqa: E501
 from workspaces.models.git_repository_resource import GITRepositoryResource  # noqa: E501

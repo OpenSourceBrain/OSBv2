@@ -1,12 +1,12 @@
 """Setup for the repository."""
 
-from cloudharness import log
 import os
 
+from cloudharness import log
 from flask_sqlalchemy import SQLAlchemy
-from ..config import Config
 from open_alchemy import init_yaml
 
+from ..config import Config
 
 # Construct models
 db = SQLAlchemy()

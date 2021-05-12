@@ -1,7 +1,7 @@
-from .database import db
-
-from sqlalchemy.sql import func
 from cloudharness import log as logger
+from sqlalchemy.sql import func
+
+from .database import db
 
 
 def insert_base_fixtures(app):

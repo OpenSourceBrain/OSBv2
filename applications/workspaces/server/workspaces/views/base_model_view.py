@@ -1,6 +1,7 @@
 """Model base class"""
-from flask.views import MethodView
 from cloudharness import log as logger
+from flask.views import MethodView
+
 from workspaces.utils import row2dict
 
 

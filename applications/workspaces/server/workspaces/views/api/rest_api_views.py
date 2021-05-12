@@ -1,15 +1,15 @@
 import json
 
+from workspaces.models import OSBRepository, OSBRepositoryEntity, Workspace
+from workspaces.repository import (
+    OSBRepositoryRepository,
+    VolumeStorageRepository,
+    WorkspaceRepository,
+    WorkspaceResourceRepository,
+)
 from workspaces.repository.models import WorkspaceEntity, WorkspaceResourceEntity
 
 from ..base_model_view import BaseModelView
-from workspaces.repository import (
-    WorkspaceRepository,
-    OSBRepositoryRepository,
-    VolumeStorageRepository,
-    WorkspaceResourceRepository,
-)
-from workspaces.models import OSBRepository, OSBRepository, OSBRepositoryEntity, Workspace
 
 
 class WorkspaceView(BaseModelView):

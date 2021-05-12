@@ -1,17 +1,17 @@
 """Model Repository class"""
 
+import logging
 import math
 
-from .database import db
-from .models import *
+from cloudharness import log as logger
+from open_alchemy import model_factory
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
-from open_alchemy import model_factory
 
-import logging
 from ..config import Config
-from cloudharness import log as logger
+from .database import db
+from .models import *
 
 
 class BaseModelRepository:

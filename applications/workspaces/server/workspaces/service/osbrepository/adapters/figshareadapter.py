@@ -1,5 +1,6 @@
 from cloudharness import log as logger
-from workspaces.models import RepositoryResourceNode, RepositoryResource, FigshareRepositoryResource
+
+from workspaces.models import FigshareRepositoryResource, RepositoryResource, RepositoryResourceNode
 
 from .utils import add_to_tree
 

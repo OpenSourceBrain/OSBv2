@@ -6,9 +6,8 @@ import typing
 
 import sqlalchemy
 import typing_extensions
-from sqlalchemy import orm
-
 from open_alchemy import models
+from sqlalchemy import orm
 
 
 class _WorkspaceEntityDictBase(typing_extensions.TypedDict, total=True):

@@ -1,1 +1,1 @@
-from .rest_api_views import WorkspaceView, VolumestorageView, WorkspaceresourceView, OsbrepositoryView
+from .rest_api_views import OsbrepositoryView, VolumestorageView, WorkspaceresourceView, WorkspaceView

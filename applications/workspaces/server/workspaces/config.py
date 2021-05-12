@@ -4,6 +4,7 @@ Configuration settings
 import logging
 import os
 import socket
+
 from cloudharness.utils.config import CloudharnessConfig as conf
 
 basedir = os.path.abspath(os.path.dirname(__file__))

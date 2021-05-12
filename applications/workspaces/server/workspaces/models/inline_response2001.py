@@ -1,15 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
-from workspaces.models.osb_repository import OSBRepository
-from workspaces.models.pagination import Pagination
 from workspaces import util
-
+from workspaces.models.base_model_ import Model
 from workspaces.models.osb_repository import OSBRepository  # noqa: E501
 from workspaces.models.pagination import Pagination  # noqa: E501
 

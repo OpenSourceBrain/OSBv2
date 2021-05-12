@@ -1,8 +1,10 @@
 import json
 
 from cloudharness import log as logger
+
 import workspaces.repository as repos
-from .adapters import GitHubAdapter, DandiAdapter, FigShareAdapter
+
+from .adapters import DandiAdapter, FigShareAdapter, GitHubAdapter
 
 
 def get_repository_adapter(osbrepository=None, repository_type=None, uri=None, *args, **kwargs):

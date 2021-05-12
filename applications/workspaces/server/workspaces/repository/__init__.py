@@ -1,6 +1,6 @@
 from .model_repository import (
-    WorkspaceRepository,
     OSBRepositoryRepository,
     VolumeStorageRepository,
+    WorkspaceRepository,
     WorkspaceResourceRepository,
 )

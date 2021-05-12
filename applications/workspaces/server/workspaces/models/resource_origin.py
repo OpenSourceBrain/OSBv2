@@ -1,15 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
-from workspaces.models.download_resource import DownloadResource
-from workspaces.models.repository_resource import RepositoryResource
 from workspaces import util
-
+from workspaces.models.base_model_ import Model
 from workspaces.models.download_resource import DownloadResource  # noqa: E501
 from workspaces.models.repository_resource import RepositoryResource  # noqa: E501
 

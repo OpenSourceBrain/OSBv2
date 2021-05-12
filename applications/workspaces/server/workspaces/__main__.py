@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 
-from flask.logging import default_handler
 import atexit
-import connexion
 import os
-
 from pathlib import Path
 
-from flask import send_from_directory, request
-from flask_cors import CORS
-
 import cloudharness
+import connexion
 from cloudharness.utils.server import init_flask, main
+from flask import request, send_from_directory
+from flask.logging import default_handler
+from flask_cors import CORS
 
 from workspaces.config import Config
 from workspaces.repository.database import db, setup_db

@@ -1,7 +1,6 @@
 import workspaces.service.osbrepository.osbrepository as repository_service
-
-from workspaces.utils import row2dict
 from workspaces.repository.model_repository import OSBRepositoryRepository
+from workspaces.utils import row2dict
 from workspaces.views.api.rest_api_views import OsbrepositoryView
 
 

@@ -1,24 +1,21 @@
 import json
-from sqlalchemy import asc, desc
-from sqlalchemy.sql import func
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from workspaces import repository
+from sqlalchemy import asc, desc
+from sqlalchemy.sql import func
 
+from workspaces import repository
+from workspaces.auth import auth_client
+from workspaces.models import RepositoryContentType, User
+from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
+from workspaces.service.kubernetes import create_persistent_volume_claim
+from workspaces.utils import get_keycloak_data
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import WorkspaceEntity, VolumeStorage, WorkspaceImage, WorkspaceResourceEntity, OSBRepositoryEntity
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity
 from .utils import *
-
-from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
-from workspaces.auth import auth_client
-from workspaces.utils import get_keycloak_data
-from workspaces.service.kubernetes import create_persistent_volume_claim
-
-from workspaces.models import RepositoryContentType, User
-
 
 repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 

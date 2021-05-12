@@ -1,14 +1,12 @@
 from cloudharness import log
-
-from flask import current_app
-
 from cloudharness.events.client import EventClient
 from cloudharness.workflows.operations import OperationStatus
-from ..config import Config
-
+from flask import current_app
 from sqlalchemy.sql import func
-from ..repository.model_repository import WorkspaceResourceRepository
+
 from .. import ResourceStatus
+from ..config import Config
+from ..repository.model_repository import WorkspaceResourceRepository
 
 
 def _create_topic(name):

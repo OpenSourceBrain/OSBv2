@@ -1,17 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
-from workspaces.models.resource_status import ResourceStatus
-from workspaces.models.resource_type import ResourceType
-from workspaces.models.workspace_resource_base import WorkspaceResourceBase
-from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
 from workspaces import util
-
+from workspaces.models.base_model_ import Model
 from workspaces.models.resource_status import ResourceStatus  # noqa: E501
 from workspaces.models.resource_type import ResourceType  # noqa: E501
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase  # noqa: E501

@@ -1,13 +1,13 @@
 import base64
-import requests
-import workspaces.service.etlservice as etlservice
 
+import requests
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
-from workspaces.models import RepositoryResourceNode, GITRepositoryResource
+
+import workspaces.service.etlservice as etlservice
+from workspaces.models import GITRepositoryResource, RepositoryResourceNode
 
 from .utils import add_to_tree
-
 
 GITHUB_USER = get_secret("workspaces", "github-user")
 GITHUB_USER = GITHUB_USER if GITHUB_USER != "none" else None

@@ -1,19 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
-from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
-from workspaces.models.osb_repository_base import OSBRepositoryBase
-from workspaces.models.repository_content_type import RepositoryContentType
-from workspaces.models.repository_resource_node import RepositoryResourceNode
-from workspaces.models.repository_type import RepositoryType
-from workspaces.models.user import User
 from workspaces import util
-
+from workspaces.models.base_model_ import Model
 from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf  # noqa: E501
 from workspaces.models.osb_repository_base import OSBRepositoryBase  # noqa: E501
 from workspaces.models.repository_content_type import RepositoryContentType  # noqa: E501

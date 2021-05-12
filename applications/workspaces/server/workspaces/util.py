@@ -1,7 +1,8 @@
 import datetime
+import typing
 
 import six
-import typing
+
 from workspaces import typing_utils
 
 

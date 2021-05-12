@@ -1,8 +1,9 @@
 import json
-import workspaces.repository as repos
-import workspaces.service.workflow as workflow
 
 from cloudharness import log as logger
+
+import workspaces.repository as repos
+import workspaces.service.workflow as workflow
 from workspaces.service.osbrepository.osbrepository import copy_resource
 
 
