@@ -1,5 +1,9 @@
 import * as React from "react";
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -8,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone'
 import PublishIcon from '@material-ui/icons/Publish';
+import ClearIcon from "@material-ui/icons/Clear";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
@@ -62,6 +67,9 @@ export default (props: WorkspaceEditProps) => {
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
+
+  const [openDialog, setOpenDialog] = React.useState<boolean>(true);
+  const handleCloseDialog = () => setOpenDialog(false);
 
   const handleCreateWorkspace = async () => {
     setLoading(true)
@@ -128,7 +136,17 @@ export default (props: WorkspaceEditProps) => {
   }
   const [loading, setLoading] = React.useState(false);
   return (
-    <>
+    <Dialog
+      open={openDialog}
+      onClose={handleCloseDialog}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle>
+      {workspace.id ? "" : "Create a new workspace"}
+        <ClearIcon onClick={handleCloseDialog}/>
+      </DialogTitle>
+      <DialogContent>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
         <Grid item={true} xs={6} >
           <Grid container={true} spacing={2} direction="column">
@@ -153,26 +171,6 @@ export default (props: WorkspaceEditProps) => {
                 variant="outlined"
                 defaultValue={workspace?.description}
               />
-            </Grid>
-            <Grid item={true}>
-              <Grid container={true} spacing={2} justify="space-between">
-                <Grid item={true}>
-                  <Button variant="contained" disabled={loading} onClick={handleCreateWorkspace}>
-                    {workspace.id ? "Save" : "Create"}
-                  </Button>
-                  {loading &&
-                    <CircularProgress
-                      size={24}
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: -12,
-                        marginLeft: -12,
-                      }}
-                    />}
-                </Grid>
-              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -222,6 +220,33 @@ export default (props: WorkspaceEditProps) => {
           </Dropzone>
         </Grid>
       </Grid>
-    </>
+      </DialogContent>
+      <DialogActions>
+        <Grid item={true}>
+          <Grid container={true} spacing={2} justify="space-between">
+            <Grid item={true}>
+            <Button variant="contained" disabled={loading} onClick={handleCloseDialog}>
+                {"Cancel"}
+              </Button>
+              <Button variant="contained" disabled={loading} onClick={handleCreateWorkspace} color="primary">
+                {workspace.id ? "Save" : "Create New Workspace"}
+              </Button>
+              {loading &&
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: -12,
+                    marginLeft: -12,
+                  }}
+                />}
+              </Grid>
+          </Grid>
+        </Grid>
+      </DialogActions>
+      
+    </Dialog>
   );
 };
