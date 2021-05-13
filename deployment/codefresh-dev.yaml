@@ -196,6 +196,34 @@ steps:
         image_name: osb/jupyterhub
         title: Jupyterhub
         working_directory: ./build/applications/jupyterhub
+      workspaces-scan-workspace:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/workspaces-scan-workspace
+        title: Workspaces scan workspace
+        working_directory: ./build/applications/workspaces/tasks/scan-workspace
+      workspaces-github-copy:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/workspaces-github-copy
+        title: Workspaces github copy
+        working_directory: ./build/applications/workspaces/tasks/github-copy
       workspaces:
         type: build
         stage: build
@@ -308,11 +336,8 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_app_workspaces_github_token=${{GITHUB_TOKEN}}
-    - CUSTOM_app_workspaces_github_user=${{GITHUB_USER}}
-    custom_values:
-    - app_workspaces_github_token=${{GITHUB_TOKEN}}
-    - app_workspaces_github_user=${{GITHUB_USER}}
+    - CUSTOM_apps_workspaces_github_token=${{GITHUB_TOKEN}}
+    - CUSTOM_apps_workspaces_github_user=${{GITHUB_USER}}
   publish:
     type: parallel
     stage: publish
@@ -394,6 +419,22 @@ steps:
         type: push
         title: Jupyterhub
         candidate: '${{REGISTRY}}/osb/jupyterhub:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-scan-workspace:
+        stage: publish
+        type: push
+        title: Workspaces scan workspace
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-github-copy:
+        stage: publish
+        type: push
+        title: Workspaces github copy
+        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
