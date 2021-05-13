@@ -1,12 +1,13 @@
+import os
+
 from cloudharness import log
 from cloudharness.events.client import EventClient
-from cloudharness.workflows.operations import OperationStatus
 from flask import current_app
-from sqlalchemy.sql import func
 
-from .. import ResourceStatus
-from ..config import Config
-from ..repository.model_repository import WorkspaceResourceRepository
+import workspaces.repository.model_repository as repos
+
+DOWNLOAD_FILE_QUEUE = "osb-download-file-queue"
+UPDATE_WORKSPACES_RESOURCE_QUEUE = "osb-update-workspace-resources"
 
 
 def _create_topic(name):
@@ -19,26 +20,19 @@ def _create_topic(name):
     return client
 
 
-def set_resource_state(event_client, app, message):
+def update_workspace_resources(event_client, app, message):
     log.info(f"Got message: {message}")
-    workspace_resource_id = message["payload"]
+    workspace_id = message["workspace_id"]
+    # remove /project_download/ (mount point of the pvc) from the path
+    resources = [resource.replace("/project_download/", "") for resource in message["resources"]]
     with app.app_context():
-        status = message.get("status", OperationStatus.FAILED)
-        workspaceResourceRepository = WorkspaceResourceRepository()
-        workspace_resource = workspaceResourceRepository.get(id=workspace_resource_id)
-        if status == OperationStatus.SUCCEEDED:
-            workspace_resource.status = ResourceStatus.SUCCESS  # success
-        else:
-            log.error(f"WorkspaceResource {workspace_resource_id} ingestion errored.")
-            workspace_resource.status = ResourceStatus.ERROR
-
-        log.info("Updating WorkspaceResource %s", workspace_resource_id)
-        workspaceResourceRepository.save(obj=workspace_resource)
-        log.info(f"Updated WorkspaceResource status to {workspace_resource.status}")
+        repos.WorkspaceResourceRepository().update_workspace_resources(workspace_id, resources)
 
 
 _consumer_clients = []
-_consumer_queues = ({"group": "workspaces", "name": "osb-download-file-queue", "handler": set_resource_state},)
+_consumer_queues = (
+    {"group": "workspaces", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE, "handler": update_workspace_resources},
+)
 
 
 def start_kafka_consumers():

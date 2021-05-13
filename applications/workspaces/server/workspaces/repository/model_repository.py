@@ -1,16 +1,15 @@
 import json
+import os
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
 from sqlalchemy import asc, desc
 from sqlalchemy.sql import func
 
-from workspaces import repository
 from workspaces.auth import auth_client
-from workspaces.models import RepositoryContentType, User
+from workspaces.models import RepositoryContentType, ResourceStatus, User
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
-from workspaces.utils import get_keycloak_data
 
 from .base_model_repository import BaseModelRepository
 from .database import db
@@ -142,6 +141,46 @@ class WorkspaceImageRepository(BaseModelRepository):
 
 class WorkspaceResourceRepository(BaseModelRepository):
     model = WorkspaceResourceEntity
+
+    def update_workspace_resources(self, workspace_id, resources):
+        # update the wsr based on found resources in the pvc
+
+        # select all existing workspace resources of the workspace
+        all_wsr = self.model.query.filter_by(workspace_id=workspace_id).all()
+        found_wsr = []  # array for storing found wsr, used for deletion detection
+        for resource in resources:
+            folder, filename = os.path.split(resource)
+            # try to find by folder and name match
+            wsr = next((wsr for wsr in all_wsr if wsr.folder == folder and wsr.name == filename), None)
+            if not wsr:
+                # not found, try by folder and "like" path
+                wsr = next((wsr for wsr in all_wsr if wsr.folder == folder and filename in wsr.origin), None)
+            if not wsr:
+                # not found --> create a new wsr
+                wsr = WorkspaceResourceEntity(
+                    name=filename,
+                    folder=folder,
+                    origin='{"path": "' + resource + '"}',
+                    status=ResourceStatus.P,  # default status
+                    resource_type=self.guess_resource_type(filename),
+                    workspace_id=workspace_id,
+                )
+                logger.info(f"Created new workspace resources {filename} {folder} {resource}")
+            else:
+                found_wsr.append(wsr)  # add the wsr to the found list
+
+            if wsr.status != ResourceStatus.A:
+                # set wsr to active and write to database
+                wsr.status = ResourceStatus.A
+                db.session.add(wsr)
+                db.session.commit()
+
+        for wsr in [wsr for wsr in all_wsr if wsr not in found_wsr]:
+            # delete non existing workspace resources
+            logger.info(f"Deleting resource: {wsr.id} {wsr.name} {wsr.folder}")
+            result = self.model.query.filter_by(id=wsr.id).delete()
+            db.session.commit()
+        logger.info(f"Workspace resources update done for workspace {workspace_id}")
 
     @staticmethod
     def guess_resource_type(resource_path):

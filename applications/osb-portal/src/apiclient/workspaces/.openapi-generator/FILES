@@ -7,6 +7,7 @@ models/DownloadResource.ts
 models/FigshareRepositoryResource.ts
 models/GITRepositoryResource.ts
 models/GITRepositoryResourceAllOf.ts
+models/InlineObject.ts
 models/InlineResponse200.ts
 models/InlineResponse2001.ts
 models/InlineResponse2002.ts

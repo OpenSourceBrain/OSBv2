@@ -7,6 +7,7 @@ from cloudharness import log as logger
 from workspaces.config import Config
 from workspaces.repository.model_repository import WorkspaceImageRepository, WorkspaceRepository, db
 from workspaces.repository.models import WorkspaceImage
+from workspaces.service.etlservice import copy_origins
 
 
 def _save_image(id_=None, image=None, filename_base=None):
@@ -84,3 +85,9 @@ def delimage(id_=None, image_id=None, **kwargs):
     except Exception as e:
         logger.info(f"Failed removing image {wsi.image} from filesystem.")
     return result
+
+
+def import_resources(id_, body, **kwargs):
+    resource_origins = body.get("resourceorigins", [])
+    copy_origins(id_, resource_origins)
+    return "Scheduled", 200
