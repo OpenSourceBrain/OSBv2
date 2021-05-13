@@ -1,3 +1,3 @@
 class ResourceStatus:
-    ERROR = 'e'
-    SUCCESS = 'a'
+    ERROR = "e"
+    SUCCESS = "a"

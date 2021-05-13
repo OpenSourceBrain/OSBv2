@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from workspaces.models.base_model_ import Model
 from workspaces import util
+from workspaces.models.base_model_ import Model
 
 
 class GITRepositoryResourceAllOf(Model):
@@ -23,21 +23,15 @@ class GITRepositoryResourceAllOf(Model):
         :param sha: The sha of this GITRepositoryResourceAllOf.  # noqa: E501
         :type sha: str
         """
-        self.openapi_types = {
-            'ref': str,
-            'sha': str
-        }
+        self.openapi_types = {"ref": str, "sha": str}
 
-        self.attribute_map = {
-            'ref': 'ref',
-            'sha': 'sha'
-        }
+        self.attribute_map = {"ref": "ref", "sha": "sha"}
 
         self._ref = ref
         self._sha = sha
 
     @classmethod
-    def from_dict(cls, dikt) -> 'GITRepositoryResourceAllOf':
+    def from_dict(cls, dikt) -> "GITRepositoryResourceAllOf":
         """Returns the dict as a model
 
         :param dikt: A dict.

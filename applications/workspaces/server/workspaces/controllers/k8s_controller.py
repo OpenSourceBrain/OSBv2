@@ -7,7 +7,8 @@ def live():  # noqa: E501
     :rtype: str
     """
 
-    return 'I\'m alive!'
+    return "I'm alive!"
+
 
 
 def ready():  # noqa: E501
@@ -16,6 +17,6 @@ def ready():  # noqa: E501
     :rtype: str
     """
     if test_kafka_running():
-        return 'I\'m ready!'
+        return "I'm ready!"
     else:
         raise Exception("Readiness check failed")

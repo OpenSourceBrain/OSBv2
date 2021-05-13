@@ -1,14 +1,15 @@
 """Model base class"""
-from flask.views import MethodView
 from cloudharness import log as logger
+from flask.views import MethodView
+
 from workspaces.utils import row2dict
 
 
 def rm_null_values(dikt):
     tmp = {}
-    for k,v in dikt.items():  # remove null fields from dict
+    for k, v in dikt.items():  # remove null fields from dict
         if v:
-            tmp.update({k:v})
+            tmp.update({k: v})
     return tmp
 
 
@@ -32,18 +33,17 @@ class BaseModelView(MethodView):
         """
         logger.debug("Search args %s", args)
         logger.debug("Search kwargs %s", kwargs)
-        page, total_pages, objects = self.repository.search(page=page,
-                                                            per_page=per_page,
-                                                            *args,
-                                                            **kwargs)
+        page, total_pages, objects = self.repository.search(page=page, per_page=per_page, *args, **kwargs)
         obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
         list_name = self.repository.model.__tablename__
-        list_name_plural = list_name[:-1] + list_name[-1:].replace("y","ie") + "s"
-        return {"pagination": {
-            "current_page": page,
-            "number_of_pages": total_pages,
-        },
-            list_name_plural : obj_dicts}
+        list_name_plural = list_name[:-1] + list_name[-1:].replace("y", "ie") + "s"
+        return {
+            "pagination": {
+                "current_page": page,
+                "number_of_pages": total_pages,
+            },
+            list_name_plural: obj_dicts,
+        }
 
     def post(self, body):
         """Save an object to the repository."""

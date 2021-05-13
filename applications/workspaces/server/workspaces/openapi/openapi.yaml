@@ -175,6 +175,36 @@ paths:
           description: The workspace was not found.
       tags:
         - rest
+  /workspace/{id}/import:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+    post:
+      summary: Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
+      operationId: workspaces.controllers.workspace_controller.import_resources
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceorigins:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ResourceOrigin"    
+      responses:
+        200:
+          description: The workspace was updated with the thumbnail.
+        404:
+          description: The workspace was not found or the thumbnail was not specified         
+      tags:
+        - rest
   /workspace/{id}/thumbnail:
     parameters:
       - in: path

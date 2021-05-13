@@ -1,7 +1,7 @@
 import time
 
-from cloudharness.auth import AuthClient
 from cloudharness import log
+from cloudharness.auth import AuthClient
 
 # Reuse AuthClient to benefit from valid token
 # AuthClient will try to refresh automatically once token expired
