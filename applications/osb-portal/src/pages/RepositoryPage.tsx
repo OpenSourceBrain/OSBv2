@@ -373,9 +373,7 @@ export const RepositoryPage = (props: any) => {
             )}
         </Box>
       </Box>
-      {showWorkspaceEditor && 
-      <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={setShowWorkspaceEditor}/>
-      }
+      {showWorkspaceEditor && <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={openDialog} />}
     </>
   );
 };
