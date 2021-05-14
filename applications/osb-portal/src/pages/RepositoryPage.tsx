@@ -198,7 +198,7 @@ const useStyles = makeStyles((theme) => ({
         },
         "& a": {
           color: linkColor,
-        }, 
+        },
       },
       "& .primary-heading": {
         borderBottom: `3px solid ${bgInputs}`,
@@ -325,8 +325,8 @@ export const RepositoryPage = (props: any) => {
                 </Typography>
 
                   <Box className="preview-box scrollbar">
-                    <ReactMarkdown skipHtml>
-                        {repository.description} 
+                    <ReactMarkdown skipHtml={true}>
+                        {repository.description}
                       </ReactMarkdown>
                   </Box>
                 </Box>
