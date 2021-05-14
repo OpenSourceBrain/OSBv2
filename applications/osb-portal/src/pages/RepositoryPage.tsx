@@ -303,7 +303,7 @@ export const RepositoryPage = (props: any) => {
 
   const classes = useStyles();
 
-  let checked = [];
+  let checked: any[] = [];
 
   const setChecked = (newChecked: RepositoryResourceNode[]) => {
     checked = newChecked;
@@ -374,7 +374,7 @@ export const RepositoryPage = (props: any) => {
         </Box>
       </Box>
       {showWorkspaceEditor && 
-      <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={setShowWorkspaceEditor} />
+      <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={setShowWorkspaceEditor} checkedItems={checked}/>
       }
     </>
   );
