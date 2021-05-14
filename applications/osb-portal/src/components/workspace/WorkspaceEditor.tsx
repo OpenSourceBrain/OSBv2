@@ -29,7 +29,7 @@ const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
 interface WorkspaceEditProps {
   workspace: Workspace;
-  onLoadWorkspace: (refresh?: boolean) => void;
+  onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -184,12 +184,12 @@ export default (props: WorkspaceEditProps) => {
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
           workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
-            .then(() => props.onLoadWorkspace(true),
+            .then(() => props.onLoadWorkspace(true, returnedWorkspace),
               e => console.error('Error uploading thumbnail', e)
             );
         } else {
           setLoading(true)
-          props.onLoadWorkspace(true)
+          props.onLoadWorkspace(true, returnedWorkspace)
         }
       }
       , (e) => {

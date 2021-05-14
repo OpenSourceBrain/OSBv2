@@ -34,6 +34,7 @@ import {
   bgInputs,
   font,
 } from "../theme";
+import WorkspaceService from "../service/WorkspaceService";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -382,9 +383,13 @@ export const RepositoryPage = (props: any) => {
       <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >        {
         checked.map( (chipItem) => 
         <Chip key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
-        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={
-          // add function
-        } />
+        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
+          WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
+            // resources should have been successfully added to the workspace
+          }).catch(() => {
+
+          });
+        }} />
       </OSBDialog>
     </>
   );
