@@ -11,11 +11,13 @@ import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Chip from "@material-ui/core/Chip";
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
+import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
 import { Workspace } from "../types/workspace";
 
@@ -287,7 +289,7 @@ const defaultWorkspace : Workspace = {
   description: null
 }
 
-
+let checked: any[] = [];
 
 export const RepositoryPage = (props: any) => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
@@ -303,10 +305,14 @@ export const RepositoryPage = (props: any) => {
 
   const classes = useStyles();
 
-  let checked: any[] = [];
-
   const setChecked = (newChecked: RepositoryResourceNode[]) => {
     checked = newChecked;
+    console.log(JSON.stringify(checked));
+  }
+
+  const handleChipDelete = (key: string) => {
+    let filteredArray = checked.filter(item => item.resource.sha !== key);
+    checked = filteredArray;
   }
 
   return (
@@ -373,7 +379,13 @@ export const RepositoryPage = (props: any) => {
             )}
         </Box>
       </Box>
-      {showWorkspaceEditor && <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={openDialog} />}
+      <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >        {
+        checked.map( (chipItem) => 
+        <Chip key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
+        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={
+          // add function
+        } />
+      </OSBDialog>
     </>
   );
 };
