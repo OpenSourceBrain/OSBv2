@@ -9,6 +9,7 @@ from workspaces.models.download_resource import DownloadResource
 from workspaces.models.figshare_repository_resource import FigshareRepositoryResource
 from workspaces.models.git_repository_resource import GITRepositoryResource
 from workspaces.models.git_repository_resource_all_of import GITRepositoryResourceAllOf
+from workspaces.models.inline_object import InlineObject
 from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002

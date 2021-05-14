@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    InlineObject,
+    InlineObjectFromJSON,
+    InlineObjectToJSON,
     InlineResponse200,
     InlineResponse200FromJSON,
     InlineResponse200ToJSON,
@@ -132,6 +135,11 @@ export interface WorkspaceresourcePostRequest {
 export interface WorkspacesControllersWorkspaceControllerAddimageRequest {
     id: number;
     image?: Blob;
+}
+
+export interface WorkspacesControllersWorkspaceControllerImportResourcesRequest {
+    id: number;
+    inlineObject?: InlineObject;
 }
 
 export interface WorkspacesControllersWorkspaceControllerSetthumbnailRequest {
@@ -967,6 +975,46 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacesControllersWorkspaceControllerAddimage(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest): Promise<void> {
         await this.workspacesControllersWorkspaceControllerAddimageRaw(requestParameters);
+    }
+
+    /**
+     * Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
+     */
+    async workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerImportResources.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/workspace/{id}/import`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: InlineObjectToJSON(requestParameters.inlineObject),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
+     */
+    async workspacesControllersWorkspaceControllerImportResources(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters);
     }
 
     /**

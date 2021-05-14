@@ -55,11 +55,8 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_app_workspaces_github_token=${{GITHUB_TOKEN}}
-    - CUSTOM_app_workspaces_github_user=${{GITHUB_USER}}
-    custom_values:
-    - app_workspaces_github_token=${{GITHUB_TOKEN}}
-    - app_workspaces_github_user=${{GITHUB_USER}}
+    - CUSTOM_apps_workspaces_github_token=${{GITHUB_TOKEN}}
+    - CUSTOM_apps_workspaces_github_user=${{GITHUB_USER}}
   approval:
     type: pending-approval
     stage: publish
@@ -158,6 +155,24 @@ steps:
         type: push
         title: Jupyterhub
         candidate: '${{REGISTRY}}/osb/jupyterhub:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-scan-workspace:
+        stage: publish
+        type: push
+        title: Workspaces scan workspace
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-github-copy:
+        stage: publish
+        type: push
+        title: Workspaces github copy
+        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
