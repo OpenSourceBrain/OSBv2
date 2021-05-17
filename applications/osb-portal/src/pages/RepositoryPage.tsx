@@ -34,6 +34,7 @@ import {
   bgInputs,
   font,
   bgLight,
+  bgDarker,
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 
@@ -54,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
+    backgroundColor: bgDarker,
   },
   root: {
     backgroundColor: bgDarkest,
@@ -399,13 +401,13 @@ export const RepositoryPage = (props: any) => {
       </Box>
       <Box className={classes.root}>
         <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >        
-          <Box className={classes.chipBox}>
+          {checked.length > 0 && <Box className={classes.chipBox}>
             <Typography component="h6" className="chip-box-text">
               Files selected
             </Typography>
-          {checked.map( (chipItem) => 
-            <Chip className={classes.chip} key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
-          </Box>
+            {checked.map( (chipItem) => 
+            <Chip className={classes.chip} key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
+          </Box>}
         
           <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
             WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
