@@ -23,7 +23,24 @@ import {
   fontColor,
   paragraph,
   bgLightestShade,
+  secondaryColor,
 } from "../../theme";
+
+const useStyles = makeStyles((theme) => ({
+  actionButton: {
+    color: secondaryColor,
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
+  actionBox: {
+    width: '100%',
+    display: 'flex', 
+    flexDirection: 'row-reverse',
+    backgroundColor: bgLight,
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+  },
+}));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
@@ -60,6 +77,8 @@ async function readFile(file: Blob) {
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
+
+  const classes = useStyles();
 
   const { workspace } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<
@@ -161,26 +180,6 @@ export default (props: WorkspaceEditProps) => {
                 defaultValue={workspace?.description}
               />
             </Grid>
-            <Grid item={true}>
-              <Grid container={true} spacing={2} justify="space-between">
-                <Grid item={true}>
-                  <Button variant="contained" disabled={loading} onClick={handleCreateWorkspace}>
-                    {workspace.id ? "Save" : "Create"}
-                  </Button>
-                  {loading &&
-                    <CircularProgress
-                      size={24}
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: -12,
-                        marginLeft: -12,
-                      }}
-                    />}
-                </Grid>
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
         <Grid item={true} xs={12} alignItems="stretch">
@@ -231,6 +230,31 @@ export default (props: WorkspaceEditProps) => {
             )}
           </Dropzone>
         </Grid>
+        <Box className={classes.actionBox}>
+          <Grid item={true}>
+              <Grid  container={true} spacing={2} justify="space-between">
+                <Grid item={true}>
+                <Button disabled={loading} color="primary">
+                    Cancel
+                  </Button>
+                  <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
+                    {workspace.id ? "Save" : "Create A New Workspace"}
+                  </Button>
+                  {loading &&
+                    <CircularProgress
+                      size={24}
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: -12,
+                        marginLeft: -12,
+                      }}
+                    />}
+                </Grid>
+              </Grid>
+            </Grid>
+        </Box>
       </Grid>
     </>
   );
