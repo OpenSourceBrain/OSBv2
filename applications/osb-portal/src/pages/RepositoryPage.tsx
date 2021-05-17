@@ -33,11 +33,28 @@ import {
   bgLightestShade,
   bgInputs,
   font,
+  bgLight,
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 
 
 const useStyles = makeStyles((theme) => ({
+  chipBox: {
+    backgroundColor: bgLight,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(3),
+    paddingLeft: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    "& .chip-box-text": {
+      color: bgInputs,
+      fontSize: '0.88rem',
+      marginBottom: theme.spacing(1),
+    }
+  },
+  chip: {
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+  },
   root: {
     backgroundColor: bgDarkest,
     "& .MuiCheckbox-colorSecondary": {
@@ -312,7 +329,7 @@ export const RepositoryPage = (props: any) => {
   }
 
   const handleChipDelete = (key: string) => {
-    let filteredArray = checked.filter(item => item.resource.sha !== key);
+    const filteredArray = checked.filter(item => item.resource.sha !== key);
     checked = filteredArray;
   }
 
@@ -380,17 +397,24 @@ export const RepositoryPage = (props: any) => {
             )}
         </Box>
       </Box>
-      <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >        {
-        checked.map( (chipItem) => 
-        <Chip key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
-        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
-          WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
-            // resources should have been successfully added to the workspace
-          }).catch(() => {
-
-          });
-        }} />
-      </OSBDialog>
+      <Box className={classes.root}>
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >        
+          <Box className={classes.chipBox}>
+            <Typography component="h6" className="chip-box-text">
+              Files selected
+            </Typography>
+          {checked.map( (chipItem) => 
+            <Chip className={classes.chip} key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
+          </Box>
+        
+          <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
+            WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
+              // resources should have been successfully added to the workspace
+            }).catch( );
+          }} />
+        </OSBDialog>
+      </Box>
+      
     </>
   );
 };
