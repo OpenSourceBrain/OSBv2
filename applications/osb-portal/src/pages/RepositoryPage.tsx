@@ -388,7 +388,7 @@ export const RepositoryPage = (props: any) => {
                 </Typography>
 
                   <Box className="preview-box scrollbar">
-                    <ReactMarkdown skipHtml={true}>
+                    <ReactMarkdown skipHtml>
                         {repository.description}
                       </ReactMarkdown>
                   </Box>
