@@ -43,19 +43,28 @@ const useStyles = makeStyles((theme) => ({
   chipBox: {
     backgroundColor: bgLight,
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(1),
     marginBottom: theme.spacing(2),
     "& .chip-box-text": {
       color: bgInputs,
       fontSize: '0.88rem',
       marginBottom: theme.spacing(1),
+      marginLeft: theme.spacing(1),
     }
   },
   chip: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
     backgroundColor: bgDarker,
+  },
+  chipList: {
+    display: 'flex',
+    overflow: 'auto',
+    "&::-webkit-scrollbar":{
+      width: 0,
+      backgroundColor: 'transparent',
+    },
   },
   root: {
     backgroundColor: bgDarkest,
@@ -405,8 +414,10 @@ export const RepositoryPage = (props: any) => {
             <Typography component="h6" className="chip-box-text">
               Files selected
             </Typography>
-            {checked.map( (chipItem) => 
-            <Chip className={classes.chip} key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
+            <Box className={classes.chipList}>
+              {checked.map( (chipItem) => 
+              <Chip className={classes.chip} key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
+            </Box>
           </Box>}
         
           <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
