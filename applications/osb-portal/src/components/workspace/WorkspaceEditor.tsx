@@ -37,8 +37,30 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex', 
     flexDirection: 'row-reverse',
     backgroundColor: bgLight,
-    paddingTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
+    paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(3),
+  },
+  dropZoneBox: {
+    color: bgInputs,
+    "& .MuiTypography-subtitle2": {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    "& .MuiButton-outlined": {
+      margin: '0 auto',
+      display: 'flex',
+      justifyContent: 'center',
+      color: bgInputs,
+      borderRadius: 0,
+      border: `3px dashed ${bgInputs}`,
+    },
+  },
+  workspaceThumbnailText: {
+    ...theme.typography.h6,
+    color: bgInputs,
+    fontSize: '0.7rem',
+    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -189,6 +211,9 @@ export default (props: WorkspaceEditProps) => {
             </Grid>
           </Grid>
         </Grid>
+        <Typography component="h6" className={classes.workspaceThumbnailText}>
+            Workspace thumbnail
+        </Typography>
         <Grid item={true} xs={12} alignItems="stretch">
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
@@ -196,7 +221,7 @@ export default (props: WorkspaceEditProps) => {
                 <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
-                    <Grid item={true}>
+                    {acceptedFiles.length !== 0 && <Grid item={true}>
                       {/* <IconButton><PublishIcon /></IconButton> */}
                       {acceptedFiles.length === 0 ? '' :
                         <IconButton
@@ -208,9 +233,10 @@ export default (props: WorkspaceEditProps) => {
                         >
                           <DeleteForeverIcon />
                         </IconButton>}
-                    </Grid>
+                      </Grid>
+                    }
                     <Grid item={true} >
-                      <Box component="div" m={1}>
+                      <Box component="div" m={1} className={classes.dropZoneBox}>
                         <Typography variant="subtitle2" component="p">
                           {acceptedFiles.length === 0 ?
                             "Drop file here to upload..."
