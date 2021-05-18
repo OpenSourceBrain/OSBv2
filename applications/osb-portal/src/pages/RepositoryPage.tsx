@@ -12,6 +12,7 @@ import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Chip from "@material-ui/core/Chip";
+import Dialog from "@material-ui/core/Dialog";
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -37,6 +38,8 @@ import {
   bgDarker,
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
+import { DialogContent, DialogTitle } from "@material-ui/core";
+import { DialogActions } from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -320,13 +323,23 @@ const defaultWorkspace : Workspace = {
 
 let checked: any[] = [];
 
+let confirmationDialogTitle = "";
+let confirmationDialogContent = "";
+
 export const RepositoryPage = (props: any) => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>();
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
 
   const openDialog = () => setShowWorkspaceEditor(showWorkspaceEditor => !showWorkspaceEditor);
+
+  const confirmWorkspaceCreation = (dialogTitle: string, dialogContent: string) => {
+    confirmationDialogTitle = dialogTitle;
+    confirmationDialogContent = dialogContent;
+    setShowConfirmationDialog(true);
+  }
 
   RepositoryService.getRepository(+repositoryId).then((repo) =>
     setRepository(repo)
@@ -422,11 +435,25 @@ export const RepositoryPage = (props: any) => {
         
           <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
             WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
-              // resources should have been successfully added to the workspace
-            }).catch( );
+              setShowWorkspaceEditor(false);
+              confirmWorkspaceCreation("Success", "New workspace created!");
+            }).catch((error) => {
+              setShowWorkspaceEditor(false);
+              confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
+            });
           }} closeHandler={openDialog}/>
         </OSBDialog>
       </Box>
+      
+      {/* Confirm to user if workspace creation was successful */}
+      {showConfirmationDialog && <Dialog open={showConfirmationDialog} 
+        onClose={() => setShowConfirmationDialog(false)}>
+          <DialogTitle>{confirmationDialogTitle}</DialogTitle>
+          <DialogContent>{confirmationDialogContent}</DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => {checked = [] , setShowConfirmationDialog(false)}}>OK</Button>
+          </DialogActions>
+        </Dialog>}
       
     </>
   );
