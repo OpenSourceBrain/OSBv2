@@ -70,6 +70,7 @@ interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
   closeHandler?: ()=> void;
+  workspaceName?: string;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -194,7 +195,7 @@ export default (props: WorkspaceEditProps) => {
                 fullWidth={true}
                 onChange={setNameField}
                 variant="outlined"
-                defaultValue={workspace?.name}
+                defaultValue={props.workspaceName ?  props.workspaceName : ''} 
               />
             </Grid>
             <Grid item={true}>

@@ -326,6 +326,8 @@ let checked: any[] = [];
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
+let workspaceName = "";
+
 export const RepositoryPage = (props: any) => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
@@ -349,12 +351,21 @@ export const RepositoryPage = (props: any) => {
 
   const setChecked = (newChecked: RepositoryResourceNode[]) => {
     checked = newChecked;
-    console.log(JSON.stringify(checked));
   }
 
   const handleChipDelete = (key: string) => {
     const filteredArray = checked.filter(item => item.resource.sha !== key);
     checked = filteredArray;
+  }
+
+  const prefillWorkspaceName = () => {
+    workspaceName = "";
+    if(checked.length === 1) {
+      workspaceName = checked[0].resource.name.substring(0, checked[0].resource.name.lastIndexOf('.')) || checked[0].resource.name;
+    }
+    else{
+      workspaceName = repository.name;
+    }
   }
 
   return (
@@ -371,7 +382,7 @@ export const RepositoryPage = (props: any) => {
             </Box>
           </Box>
           <Box>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
+            <Button variant="contained" disableElevation={true} color="primary" onClick={() => {openDialog(); prefillWorkspaceName();}}>
               <AddIcon />
               Create new workspace
             </Button>
@@ -441,7 +452,7 @@ export const RepositoryPage = (props: any) => {
               setShowWorkspaceEditor(false);
               confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
             });
-          }} closeHandler={openDialog}/>
+          }} closeHandler={openDialog} workspaceName={workspaceName}/>
         </OSBDialog>
       </Box>
       
