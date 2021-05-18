@@ -424,7 +424,7 @@ export const RepositoryPage = (props: any) => {
             WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
               // resources should have been successfully added to the workspace
             }).catch( );
-          }} />
+          }} closeHandler={openDialog}/>
         </OSBDialog>
       </Box>
       

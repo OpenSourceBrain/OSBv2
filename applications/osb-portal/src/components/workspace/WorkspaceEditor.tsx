@@ -47,6 +47,7 @@ const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
+  closeHandler?: ()=> void;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -84,6 +85,12 @@ export default (props: WorkspaceEditProps) => {
   const [workspaceForm, setWorkspaceForm] = React.useState<
     Workspace
   >({ ...props.workspace });
+
+  const closeWorkSpaceEditor = () => {
+    if(props.closeHandler){
+      props.closeHandler();
+    }
+  }
 
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
@@ -234,7 +241,7 @@ export default (props: WorkspaceEditProps) => {
           <Grid item={true}>
               <Grid  container={true} spacing={2} justify="space-between">
                 <Grid item={true}>
-                <Button disabled={loading} color="primary">
+                <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
                     Cancel
                   </Button>
                   <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
