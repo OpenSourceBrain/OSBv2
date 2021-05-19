@@ -61,13 +61,9 @@ class WorkspaceService {
     return this.updateWorkspace(ws);
   }
 
-  async createWorkspace(ws: Workspace): Promise<any> {
+  async createWorkspace(ws: Workspace): Promise<ApiWorkspace> {
     const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(ws) };
-    const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
-      return workspace;
-    });
-
-    return newCreatedWorkspace;
+    return this.workspacesApi.workspacePost(wspr);
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
@@ -93,7 +89,10 @@ class WorkspaceService {
       id: workspaceId,
       inlineObject: { resourceorigins: resources }
     }
+
     await this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(requestObject);
+
+
   }
 }
 
