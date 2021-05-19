@@ -1,4 +1,5 @@
 import * as React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
@@ -15,11 +16,61 @@ import { radius, gutter } from '../../theme';
 import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 
+import {
+  bgLight,
+  primaryColor,
+  bgInputs,
+  fontColor,
+  paragraph,
+  bgLightestShade,
+  secondaryColor,
+} from "../../theme";
+
+const useStyles = makeStyles((theme) => ({
+  actionButton: {
+    color: secondaryColor,
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
+  actionBox: {
+    width: '100%',
+    display: 'flex', 
+    flexDirection: 'row-reverse',
+    backgroundColor: bgLight,
+    marginTop: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(3),
+  },
+  dropZoneBox: {
+    color: bgInputs,
+    "& .MuiTypography-subtitle2": {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    "& .MuiButton-outlined": {
+      margin: '0 auto',
+      display: 'flex',
+      justifyContent: 'center',
+      color: bgInputs,
+      borderRadius: 0,
+      border: `3px dashed ${bgInputs}`,
+    },
+  },
+  workspaceThumbnailText: {
+    ...theme.typography.h6,
+    color: bgInputs,
+    fontSize: '0.7rem',
+    marginLeft: theme.spacing(1),
+  },
+}));
+
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
 interface WorkspaceEditProps {
   workspace: Workspace;
-  onLoadWorkspace: (refresh?: boolean) => void;
+  onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
+  closeHandler?: ()=> void;
+  workspaceName?: string;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -47,17 +98,22 @@ async function readFile(file: Blob) {
   })
 }
 
-
-
-
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
+
+  const classes = useStyles();
 
   const { workspace } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<
     Workspace
   >({ ...props.workspace });
+
+  const closeWorkSpaceEditor = () => {
+    if(props.closeHandler){
+      props.closeHandler();
+    }
+  }
 
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
@@ -70,12 +126,12 @@ export default (props: WorkspaceEditProps) => {
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
           workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
-            .then(() => props.onLoadWorkspace(true),
+            .then(() => props.onLoadWorkspace(true, returnedWorkspace),
               e => console.error('Error uploading thumbnail', e)
             );
         } else {
           setLoading(true)
-          props.onLoadWorkspace(true)
+          props.onLoadWorkspace(true, returnedWorkspace)
         }
       }
       , (e) => {
@@ -130,7 +186,7 @@ export default (props: WorkspaceEditProps) => {
   return (
     <>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
-        <Grid item={true} xs={6} >
+        <Grid item={true} xs={12} >
           <Grid container={true} spacing={2} direction="column">
             <Grid item={true}>
               <TextField
@@ -139,7 +195,7 @@ export default (props: WorkspaceEditProps) => {
                 fullWidth={true}
                 onChange={setNameField}
                 variant="outlined"
-                defaultValue={workspace?.name}
+                defaultValue={props.workspaceName ?  props.workspaceName : ''} 
               />
             </Grid>
             <Grid item={true}>
@@ -154,37 +210,20 @@ export default (props: WorkspaceEditProps) => {
                 defaultValue={workspace?.description}
               />
             </Grid>
-            <Grid item={true}>
-              <Grid container={true} spacing={2} justify="space-between">
-                <Grid item={true}>
-                  <Button variant="contained" disabled={loading} onClick={handleCreateWorkspace}>
-                    {workspace.id ? "Save" : "Create"}
-                  </Button>
-                  {loading &&
-                    <CircularProgress
-                      size={24}
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: -12,
-                        marginLeft: -12,
-                      }}
-                    />}
-                </Grid>
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
-        <Grid item={true} xs={6} alignItems="stretch" >
+        <Typography component="h6" className={classes.workspaceThumbnailText}>
+            Workspace thumbnail
+        </Typography>
+        <Grid item={true} xs={12} alignItems="stretch">
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
               <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
                 <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
-                    <Grid item={true}>
-                      <IconButton><PublishIcon /></IconButton>
+                    {acceptedFiles.length !== 0 && <Grid item={true}>
+                      {/* <IconButton><PublishIcon /></IconButton> */}
                       {acceptedFiles.length === 0 ? '' :
                         <IconButton
                           onClick={(e: any) => {
@@ -195,16 +234,20 @@ export default (props: WorkspaceEditProps) => {
                         >
                           <DeleteForeverIcon />
                         </IconButton>}
-                    </Grid>
+                      </Grid>
+                    }
                     <Grid item={true} >
-                      <Box component="div" m={1}>
+                      <Box component="div" m={1} className={classes.dropZoneBox}>
                         <Typography variant="subtitle2" component="p">
                           {acceptedFiles.length === 0 ?
-                            "Upload workspace preview image"
+                            "Drop file here to upload..."
                             :
                             null
                           }
                         </Typography>
+                        <Button variant="outlined">
+                          Browse files
+                        </Button>
                         {
                           thumbnailError &&
                           <Typography color="error" variant="subtitle2" component="p">
@@ -221,6 +264,31 @@ export default (props: WorkspaceEditProps) => {
             )}
           </Dropzone>
         </Grid>
+        <Box className={classes.actionBox}>
+          <Grid item={true}>
+              <Grid  container={true} spacing={2} justify="space-between">
+                <Grid item={true}>
+                <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
+                    Cancel
+                  </Button>
+                  <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
+                    {workspace.id ? "Save" : "Create A New Workspace"}
+                  </Button>
+                  {loading &&
+                    <CircularProgress
+                      size={24}
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: -12,
+                        marginLeft: -12,
+                      }}
+                    />}
+                </Grid>
+              </Grid>
+            </Grid>
+        </Box>
       </Grid>
     </>
   );
