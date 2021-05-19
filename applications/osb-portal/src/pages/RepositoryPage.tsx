@@ -37,6 +37,7 @@ import {
   font,
   bgLight,
   bgDarker,
+  radius,
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { DialogContent, DialogTitle } from "@material-ui/core";
@@ -247,7 +248,11 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
       "& .preview-box": {
-        backgroundColor: "transparent",
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        boxShadow: '0px 0px 0px 3px rgba(0, 0, 0, 0.25)',
+        borderRadius: radius,
         fontFamily: font,
         overflow: "auto",
         flexGrow: 1,
@@ -256,6 +261,33 @@ const useStyles = makeStyles((theme) => ({
         },
         "& a": {
           color: linkColor,
+        },
+        "& pre": {
+          padding: theme.spacing(2),
+          backgroundColor: bgLightestShade,
+          borderRadius: radius,
+        },
+        "& h1": {
+          fontWeight: 'normal',
+        },
+        "& h2": {
+          marginTop: theme.spacing(5),
+          fontWeight: '500',
+          paddingBottom: '5px',
+        },
+        "& h1, h2": {
+          borderBottom: `1px solid ${bgRegular}`,
+        },
+        "& p": {
+          color: 'rgba(255, 255, 255, 0.8)',
+          fontWeight: 'normal',
+          fontSize: '0.8rem',
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: 'transparent',
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: '#c4c4c4',
         },
       },
       "& .primary-heading": {
