@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { render } from 'react-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -13,6 +12,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -39,7 +39,7 @@ import {
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { DialogContent, DialogTitle } from "@material-ui/core";
-import { DialogActions } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   chipList: {
     display: 'flex',
     overflow: 'auto',
-    "&::-webkit-scrollbar":{
+    "&::-webkit-scrollbar": {
       width: 0,
       backgroundColor: 'transparent',
     },
@@ -85,14 +85,14 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     [theme.breakpoints.up("sm")]: {
-      height: "calc(100vh - 4.906rem)",
+      height: "calc(100vh)",
     },
     "& .main-content": {
       padding: theme.spacing(3),
       overflow: "auto",
 
       [theme.breakpoints.up("sm")]: {
-        height: "calc(100% - 4.063rem)",
+        height: "calc(100%)",
       },
       "& .MuiTextField-root": {
         borderRadius: 4,
@@ -313,7 +313,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const defaultWorkspace : Workspace = {
+const defaultWorkspace: Workspace = {
   resources: [],
   volume: null,
   shareType: null,
@@ -321,21 +321,26 @@ const defaultWorkspace : Workspace = {
   description: null
 }
 
-let checked: any[] = [];
+let checked: RepositoryResourceNode[] = [];
 
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
-let workspaceName = "";
 
-export const RepositoryPage = (props: any) => {
+
+export const RepositoryPage = () => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>();
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
+  React.useEffect(() => {
+    RepositoryService.getRepository(+repositoryId).then((repo) =>
+      setRepository(repo)
+    )
+  }, [])
 
-  const openDialog = () => setShowWorkspaceEditor(showWorkspaceEditor => !showWorkspaceEditor);
+  const openDialog = () => setShowWorkspaceEditor(!showWorkspaceEditor);
 
   const confirmWorkspaceCreation = (dialogTitle: string, dialogContent: string) => {
     confirmationDialogTitle = dialogTitle;
@@ -343,9 +348,7 @@ export const RepositoryPage = (props: any) => {
     setShowConfirmationDialog(true);
   }
 
-  RepositoryService.getRepository(+repositoryId).then((repo) =>
-    setRepository(repo)
-  );
+
 
   const classes = useStyles();
 
@@ -354,18 +357,26 @@ export const RepositoryPage = (props: any) => {
   }
 
   const handleChipDelete = (key: string) => {
-    const filteredArray = checked.filter(item => item.resource.sha !== key);
-    checked = filteredArray;
+    checked = checked.filter(item => item.resource.path !== key);
   }
 
-  const prefillWorkspaceName = () => {
-    workspaceName = "";
-    if(checked.length === 1) {
-      workspaceName = checked[0].resource.name.substring(0, checked[0].resource.name.lastIndexOf('.')) || checked[0].resource.name;
+  const getDefaultWorkspaceName = () => {
+    if (checked.length === 1) {
+      return checked[0].resource.name.substring(0, checked[0].resource.name.lastIndexOf('.')) || checked[0].resource.name;
     }
-    else{
-      workspaceName = repository.name;
+    else {
+      return repository?.name;
     }
+  }
+
+  const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
+    WorkspaceService.importResourcesToWorkspace(ws.id, checked.map(c => c.resource)).then(() => {
+      setShowWorkspaceEditor(false);
+      confirmWorkspaceCreation("Success", "New workspace created!");
+    }).catch((error) => {
+      setShowWorkspaceEditor(false);
+      confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
+    });
   }
 
   return (
@@ -382,7 +393,7 @@ export const RepositoryPage = (props: any) => {
             </Box>
           </Box>
           <Box>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={() => {openDialog(); prefillWorkspaceName();}}>
+            <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
               <AddIcon />
               Create new workspace
             </Button>
@@ -399,9 +410,9 @@ export const RepositoryPage = (props: any) => {
                 </Typography>
 
                   <Box className="preview-box scrollbar">
-                    <ReactMarkdown skipHtml>
-                        {repository.description}
-                      </ReactMarkdown>
+                    <ReactMarkdown skipHtml={true}>
+                      {repository.description}
+                    </ReactMarkdown>
                   </Box>
                 </Box>
               </Grid>
@@ -433,39 +444,33 @@ export const RepositoryPage = (props: any) => {
         </Box>
       </Box>
       <Box className={classes.root}>
-        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >        
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
           {checked.length > 0 && <Box className={classes.chipBox}>
             <Typography component="h6" className="chip-box-text">
               Files selected
             </Typography>
             <Box className={classes.chipList}>
-              {checked.map( (chipItem) => 
-              <Chip className={classes.chip} key={chipItem.resource.sha} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.sha)}/>)}
+              {checked.map((chipItem) =>
+                <Chip className={classes.chip} key={chipItem.resource.path} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />)}
             </Box>
           </Box>}
-        
-          <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={(reload, defaultWorkspace) => { 
-            WorkspaceService.importResourcesToWorkspace(defaultWorkspace.id, checked).then(() => { 
-              setShowWorkspaceEditor(false);
-              confirmWorkspaceCreation("Success", "New workspace created!");
-            }).catch((error) => {
-              setShowWorkspaceEditor(false);
-              confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
-            });
-          }} closeHandler={openDialog} workspaceName={workspaceName}/>
+
+          <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} />
         </OSBDialog>
       </Box>
-      
+
       {/* Confirm to user if workspace creation was successful */}
-      {showConfirmationDialog && <Dialog open={showConfirmationDialog} 
-        onClose={() => setShowConfirmationDialog(false)}>
+      {
+        showConfirmationDialog && <Dialog open={showConfirmationDialog}
+          onClose={() => setShowConfirmationDialog(false)}>
           <DialogTitle>{confirmationDialogTitle}</DialogTitle>
           <DialogContent>{confirmationDialogContent}</DialogContent>
           <DialogActions>
-            <Button color="primary" onClick={() => {checked = [] , setShowConfirmationDialog(false)}}>OK</Button>
+            <Button color="primary" onClick={() => { checked = []; setShowConfirmationDialog(false) }}>OK</Button>
           </DialogActions>
-        </Dialog>}
-      
+        </Dialog>
+      }
+
     </>
   );
 };

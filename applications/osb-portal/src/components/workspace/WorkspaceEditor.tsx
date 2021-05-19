@@ -12,17 +12,13 @@ import PublishIcon from '@material-ui/icons/Publish';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
-import { radius, gutter } from '../../theme';
 import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
 
 import {
   bgLight,
-  primaryColor,
+  radius, gutter,
   bgInputs,
-  fontColor,
-  paragraph,
-  bgLightestShade,
   secondaryColor,
 } from "../../theme";
 
@@ -34,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   actionBox: {
     width: '100%',
-    display: 'flex', 
+    display: 'flex',
     flexDirection: 'row-reverse',
     backgroundColor: bgLight,
     marginTop: theme.spacing(2),
@@ -69,8 +65,7 @@ const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
-  closeHandler?: ()=> void;
-  workspaceName?: string;
+  closeHandler?: () => void;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -110,7 +105,7 @@ export default (props: WorkspaceEditProps) => {
   >({ ...props.workspace });
 
   const closeWorkSpaceEditor = () => {
-    if(props.closeHandler){
+    if (props.closeHandler) {
       props.closeHandler();
     }
   }
@@ -195,7 +190,7 @@ export default (props: WorkspaceEditProps) => {
                 fullWidth={true}
                 onChange={setNameField}
                 variant="outlined"
-                defaultValue={props.workspaceName ?  props.workspaceName : ''} 
+                defaultValue={props.workspace.name}
               />
             </Grid>
             <Grid item={true}>
@@ -213,7 +208,7 @@ export default (props: WorkspaceEditProps) => {
           </Grid>
         </Grid>
         <Typography component="h6" className={classes.workspaceThumbnailText}>
-            Workspace thumbnail
+          Workspace thumbnail
         </Typography>
         <Grid item={true} xs={12} alignItems="stretch">
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
@@ -234,7 +229,7 @@ export default (props: WorkspaceEditProps) => {
                         >
                           <DeleteForeverIcon />
                         </IconButton>}
-                      </Grid>
+                    </Grid>
                     }
                     <Grid item={true} >
                       <Box component="div" m={1} className={classes.dropZoneBox}>
@@ -266,28 +261,28 @@ export default (props: WorkspaceEditProps) => {
         </Grid>
         <Box className={classes.actionBox}>
           <Grid item={true}>
-              <Grid  container={true} spacing={2} justify="space-between">
-                <Grid item={true}>
+            <Grid container={true} spacing={2} justify="space-between">
+              <Grid item={true}>
                 <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
-                    Cancel
+                  Cancel
                   </Button>
-                  <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
-                    {workspace.id ? "Save" : "Create A New Workspace"}
-                  </Button>
-                  {loading &&
-                    <CircularProgress
-                      size={24}
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: -12,
-                        marginLeft: -12,
-                      }}
-                    />}
-                </Grid>
+                <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
+                  {workspace.id ? "Save" : "Create A New Workspace"}
+                </Button>
+                {loading &&
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />}
               </Grid>
             </Grid>
+          </Grid>
         </Box>
       </Grid>
     </>

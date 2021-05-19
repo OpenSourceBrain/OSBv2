@@ -4,11 +4,11 @@ import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } fr
 import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 
-import { InlineObjectFromJSON } from '../apiclient/workspaces/models/InlineObject';
+import { InlineObject } from '../apiclient/workspaces/models/InlineObject';
 
 const workspacesApiUri = '/proxy/workspaces/api';
 
@@ -86,18 +86,16 @@ class WorkspaceService {
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
     const wspr: workspaceApi.WorkspacesControllersWorkspaceControllerSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };
     await this.workspacesApi.workspacesControllersWorkspaceControllerSetthumbnail(wspr);
-  };
+  }
 
-  async importResourcesToWorkspace(workspaceId: number, resources: any) : Promise<any>{
-    const requestObject = { 
+  async importResourcesToWorkspace(workspaceId: number, resources: ResourceOrigin[]): Promise<void> {
+    const requestObject = {
       id: workspaceId,
-      inlineObject: InlineObjectFromJSON(resources),
+      inlineObject: { resourceorigins: resources }
     }
     await this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(requestObject);
   }
 }
-
-
 
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
