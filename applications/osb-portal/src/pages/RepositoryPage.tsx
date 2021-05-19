@@ -13,6 +13,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
+import LinkIcon from '@material-ui/icons/Link';
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -67,6 +68,27 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar": {
       width: 0,
       backgroundColor: 'transparent',
+    },
+  },
+  gitHubLinkButton: {
+    position: 'relative',
+    float: 'right',
+    top: '-5px',
+    borderRadius: 0,
+    backgroundColor: 'black',
+    textTransform: 'none',
+    alignItems: 'center',
+    "& .MuiButton-label": {
+      color: 'white',
+      fontSize: '0.6rem',
+    },
+    "&:hover": {
+      "& .MuiButton-label": {
+        color: 'black',
+      },
+      "& .MuiButton-endIcon": {
+        color: 'black',
+      },
     },
   },
   root: {
@@ -405,10 +427,14 @@ export const RepositoryPage = () => {
             <Grid container={true} className="row" spacing={5}>
               <Grid item={true} xs={12} md={6}>
                 <Box className="flex-grow-1">
+                  <a href={repository.uri} target="_blank">
+                    <Button className={classes.gitHubLinkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                      See on GitHub
+                    </Button>
+                  </a>
                   <Typography component="h3" className="primary-heading">
                     Preview
-                </Typography>
-
+                  </Typography>
                   <Box className="preview-box scrollbar">
                     <ReactMarkdown skipHtml={true}>
                       {repository.description}
