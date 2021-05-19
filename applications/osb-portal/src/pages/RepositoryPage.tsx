@@ -459,7 +459,7 @@ export const RepositoryPage = () => {
             <Grid container={true} className="row" spacing={5}>
               <Grid item={true} xs={12} md={6}>
                 <Box className="flex-grow-1">
-                  <a href={repository.uri} target="_blank">
+                  <a href={repository.uri} target="_blank" rel="noreferrer">
                     <Button className={classes.gitHubLinkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
                       See on GitHub
                     </Button>
