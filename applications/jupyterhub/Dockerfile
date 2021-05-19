@@ -7,10 +7,10 @@ RUN echo $CLOUDHARNESS_BASE
 FROM jupyter/base-notebook:hub-1.1.0
 USER root
 
-#COPY --from=base libraries/cloudharness-common/requirements.txt /libraries/cloudharness-common/requirements.txt
-#RUN pip install -r /libraries/cloudharness-common/requirements.txt
-#COPY --from=base libraries/client/cloudharness_cli/requirements.txt /libraries/client/cloudharness_cli/requirements.txt
-#RUN pip install -r /libraries/client/cloudharness_cli/requirements.txt
+COPY --from=base libraries/cloudharness-common/requirements.txt /libraries/cloudharness-common/requirements.txt
+RUN pip install -r /libraries/cloudharness-common/requirements.txt
+COPY --from=base libraries/client/cloudharness_cli/requirements.txt /libraries/client/cloudharness_cli/requirements.txt
+RUN pip install -r /libraries/client/cloudharness_cli/requirements.txt
 
 COPY --from=base /libraries/cloudharness-common /libraries/cloudharness-common
 COPY --from=base /libraries/client/cloudharness_cli /libraries/client/cloudharness_cli
