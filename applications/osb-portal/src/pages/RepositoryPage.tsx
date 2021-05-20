@@ -13,6 +13,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
+import LinkIcon from '@material-ui/icons/Link';
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -36,6 +37,7 @@ import {
   font,
   bgLight,
   bgDarker,
+  radius,
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { DialogContent, DialogTitle } from "@material-ui/core";
@@ -67,6 +69,27 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar": {
       width: 0,
       backgroundColor: 'transparent',
+    },
+  },
+  gitHubLinkButton: {
+    position: 'relative',
+    float: 'right',
+    top: '-5px',
+    borderRadius: 0,
+    backgroundColor: 'black',
+    textTransform: 'none',
+    alignItems: 'center',
+    "& .MuiButton-label": {
+      color: 'white',
+      fontSize: '0.6rem',
+    },
+    "&:hover": {
+      "& .MuiButton-label": {
+        color: 'black',
+      },
+      "& .MuiButton-endIcon": {
+        color: 'black',
+      },
     },
   },
   root: {
@@ -225,7 +248,11 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
       "& .preview-box": {
-        backgroundColor: "transparent",
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        boxShadow: '0px 0px 0px 3px rgba(0, 0, 0, 0.25)',
+        borderRadius: radius,
         fontFamily: font,
         overflow: "auto",
         flexGrow: 1,
@@ -234,6 +261,33 @@ const useStyles = makeStyles((theme) => ({
         },
         "& a": {
           color: linkColor,
+        },
+        "& pre": {
+          padding: theme.spacing(2),
+          backgroundColor: bgLightestShade,
+          borderRadius: radius,
+        },
+        "& h1": {
+          fontWeight: 'normal',
+        },
+        "& h2": {
+          marginTop: theme.spacing(5),
+          fontWeight: '500',
+          paddingBottom: '5px',
+        },
+        "& h1, h2": {
+          borderBottom: `1px solid ${bgRegular}`,
+        },
+        "& p": {
+          color: 'rgba(255, 255, 255, 0.8)',
+          fontWeight: 'normal',
+          fontSize: '0.8rem',
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: 'transparent',
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: '#c4c4c4',
         },
       },
       "& .primary-heading": {
@@ -405,10 +459,14 @@ export const RepositoryPage = () => {
             <Grid container={true} className="row" spacing={5}>
               <Grid item={true} xs={12} md={6}>
                 <Box className="flex-grow-1">
+                  <a href={repository.uri} target="_blank" rel="noreferrer">
+                    <Button className={classes.gitHubLinkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                      See on GitHub
+                    </Button>
+                  </a>
                   <Typography component="h3" className="primary-heading">
                     Preview
-                </Typography>
-
+                  </Typography>
                   <Box className="preview-box scrollbar">
                     <ReactMarkdown skipHtml={true}>
                       {repository.description}
