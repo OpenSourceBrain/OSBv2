@@ -262,6 +262,10 @@ const useStyles = makeStyles((theme) => ({
         },
         "& a": {
           color: linkColor,
+          textDecoration: 'none',
+          "&:hover": {
+            textDecoration: 'underline',
+          },
         },
         "& pre": {
           padding: theme.spacing(2),
