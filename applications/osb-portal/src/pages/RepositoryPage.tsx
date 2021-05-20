@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
       marginTop: theme.spacing(2),
       [theme.breakpoints.up("sm")]: {
-        maxHeight: "calc(100vh - 19.5rem)",
+        maxHeight: "calc(100vh - 15.0rem)",
       },
     },
     [theme.breakpoints.up("sm")]: {
@@ -250,6 +250,7 @@ const useStyles = makeStyles((theme) => ({
       "& .preview-box": {
         paddingRight: theme.spacing(2),
         paddingLeft: theme.spacing(2),
+        marginTop: theme.spacing(2),
         backgroundColor: 'rgba(0, 0, 0, 0.25)',
         boxShadow: '0px 0px 0px 3px rgba(0, 0, 0, 0.25)',
         borderRadius: radius,
@@ -257,7 +258,7 @@ const useStyles = makeStyles((theme) => ({
         overflow: "auto",
         flexGrow: 1,
         [theme.breakpoints.up("sm")]: {
-          height: "calc(100vh - 14.5rem)",
+          height: "calc(100vh - 15.0rem)",
         },
         "& a": {
           color: linkColor,
