@@ -27,17 +27,17 @@ import {
  */
 export interface DandiRepositoryResource {
     /**
-     * Download URL of the Resource
-     * @type {string}
-     * @memberof DandiRepositoryResource
-     */
-    path?: string;
-    /**
      * file name
      * @type {string}
      * @memberof DandiRepositoryResource
      */
     name?: string;
+    /**
+     * Download URL of the Resource
+     * @type {string}
+     * @memberof DandiRepositoryResource
+     */
+    path?: string;
     /**
      * OSB Repository id
      * @type {number}
@@ -56,8 +56,8 @@ export function DandiRepositoryResourceFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'path': !exists(json, 'path') ? undefined : json['path'],
         'name': !exists(json, 'name') ? undefined : json['name'],
+        'path': !exists(json, 'path') ? undefined : json['path'],
         'osbrepositoryId': !exists(json, 'osbrepository_id') ? undefined : json['osbrepository_id'],
     };
 }
@@ -71,8 +71,8 @@ export function DandiRepositoryResourceToJSON(value?: DandiRepositoryResource | 
     }
     return {
         
-        'path': value.path,
         'name': value.name,
+        'path': value.path,
         'osbrepository_id': value.osbrepositoryId,
     };
 }

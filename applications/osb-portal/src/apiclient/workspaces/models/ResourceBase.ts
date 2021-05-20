@@ -20,6 +20,12 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ResourceBase {
     /**
+     * file name
+     * @type {string}
+     * @memberof ResourceBase
+     */
+    name?: string;
+    /**
      * Download URL of the Resource
      * @type {string}
      * @memberof ResourceBase
@@ -37,6 +43,7 @@ export function ResourceBaseFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
@@ -50,6 +57,7 @@ export function ResourceBaseToJSON(value?: ResourceBase | null): any {
     }
     return {
         
+        'name': value.name,
         'path': value.path,
     };
 }
