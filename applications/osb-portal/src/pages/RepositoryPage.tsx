@@ -294,6 +294,9 @@ const useStyles = makeStyles((theme) => ({
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: '#c4c4c4',
         },
+        "& p a img": {
+          maxWidth: '25vw',
+        },
       },
       "& .primary-heading": {
         borderBottom: `3px solid ${bgInputs}`,
@@ -355,11 +358,6 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
           },
         },
-        "&:hover": {
-          "& .MuiButton-label": {
-            color: primaryColor,
-          },
-        },
         "& .MuiButton-label": {
           color: fontColor,
           [theme.breakpoints.down("xs")]: {
@@ -394,9 +392,10 @@ export const RepositoryPage = () => {
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   React.useEffect(() => {
-    RepositoryService.getRepository(+repositoryId).then((repo) =>
-      setRepository(repo)
-    )
+    RepositoryService.getRepository(+repositoryId).then((repo) => {
+      setRepository(repo);
+      setRepository({...repo, description: convertImgInMarkdown(repo.description, repo.uri)});
+    })
   }, [])
 
   const openDialog = () => setShowWorkspaceEditor(!showWorkspaceEditor);
@@ -437,6 +436,33 @@ export const RepositoryPage = () => {
       confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
     });
   }
+
+  const getImages = (str: string) => {
+    const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
+    const imageTags = [];
+    const imagePaths = [];
+    let img;
+    while ((img = imgRex.exec(str))) {
+      imageTags.push(img[0]);
+      imagePaths.push(img[1]);
+
+    }
+    return [imageTags, imagePaths];
+  }
+
+  const convertImgInMarkdown = (markDown: string, repositoryUri: string) => {
+    let mark = markDown;
+    const [imageTags, imagePaths] = getImages(markDown);
+    const updatedImages : string[] = [];
+    imagePaths.map((image) => {
+      const y = `[![img](${repositoryUri.replace('https://github.com/', 'https://raw.githubusercontent.com/')}/master/${image})](${repositoryUri.replace('https://github.com/', 'https://raw.githubusercontent.com/')}/master/${image})?target=_blank`;
+      updatedImages.push(y);
+    });
+    for (let i = 0; i < updatedImages.length; i++) {
+      mark = mark.replace(imageTags[i], updatedImages[i]);
+    }
+    return mark;
+  };
 
   return (
     <>
