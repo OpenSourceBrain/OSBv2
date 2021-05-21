@@ -1,4 +1,5 @@
 import * as React from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -6,6 +7,10 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import BackupIcon from '@material-ui/icons/Backup';
+import LinkIcon from '@material-ui/icons/Link';
+import PublishIcon from '@material-ui/icons/Publish';
+import TabScrollButton from "@material-ui/core/TabScrollButton";
 
 import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService'
 import { Workspace } from '../../types/workspace';
@@ -61,7 +66,49 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
+
+
+const useStyles = makeStyles((theme) => ({
+  tabs: {
+    height: 'fit-content',
+    "& .MuiTabs-scroller": {
+      display: 'flex',
+      justifyContent: 'center',
+      width: '100%',
+      height: 'fit-content',
+      "& div button": {
+        border: 'none',
+        padding: 0,
+      },
+      "& .MuiTabs-scrollButtonAuto": {
+        display: 'none',
+        "& .Mui-diabled": {
+          width: 0,
+        },
+      },
+      "& .MuiTabs-scrollButton-root": {
+        display: 'none',
+        width: 0,
+      },
+      "& .Mui-diabled": {
+        width: 0,
+      },
+    },
+    "& .MuiTabs-scrollButton-root": {
+      display: 'none',
+      width: 0,
+    },
+  },
+  tab: {
+    border: 'none',
+  },
+  root: {
+    padding: theme.spacing(2),
+  },
+}))
 export default (props: WorkspaceEditProps) => {
+
+  const classes = useStyles();
 
   const { workspace, onResourceAdded } = props;
 
@@ -112,21 +159,13 @@ export default (props: WorkspaceEditProps) => {
   }
 
   return (
-    <>
-      <Tabs onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options">
-        <Tab label="URL" {...a11yProps(0)}/>
-        <Tab label="OSB" {...a11yProps(1)}/>
-        <Tab label="Computer" {...a11yProps(2)}/>
+    <Box className={classes.root}>
+      <Tabs className={classes.tabs} onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options">
+        <Tab className={classes.tab} label="By URL" {...a11yProps(0)} icon={<BackupIcon />}/>
+        <Tab label="From OSB repository" {...a11yProps(1)} icon={<LinkIcon />}/>
+        <Tab label="Upload from computer" {...a11yProps(2)} icon={<PublishIcon />}/>
       </Tabs>
       <TabPanel value={tabValue} index={0}>
-        Item 1
-      </TabPanel>
-      <TabPanel value={tabValue} index={1}>
-        Item 2
-      </TabPanel>
-      <TabPanel value={tabValue} index={2}>
-        Item 3
-      </TabPanel>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch" direction="column">
         <Grid item={true} style={{ flex: 1 }}>
           <TextField
@@ -140,7 +179,7 @@ export default (props: WorkspaceEditProps) => {
             variant="standard"
           />
         </Grid>
-        <Grid item={true} style={{ flex: 1 }}>
+        {/* <Grid item={true} style={{ flex: 1 }}>
           <TextField
 
             key={"namefor-" + url}
@@ -152,7 +191,7 @@ export default (props: WorkspaceEditProps) => {
             onChange={handleSetName}
             variant="standard"
           />
-        </Grid>
+        </Grid> */}
         <Grid item={true} alignItems="flex-end">
           <Button variant="contained" onClick={handleAddResource} disabled={waiting}>
             Upload
@@ -170,6 +209,13 @@ export default (props: WorkspaceEditProps) => {
             />}
         </Grid>
       </Grid>
-    </>
+      </TabPanel>
+      <TabPanel value={tabValue} index={1}>
+        Item 2
+      </TabPanel>
+      <TabPanel value={tabValue} index={2}>
+        Item 3
+      </TabPanel>
+    </Box>
   );
 };
