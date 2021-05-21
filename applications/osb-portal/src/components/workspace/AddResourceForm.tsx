@@ -2,15 +2,26 @@ import * as React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
 
 import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService'
 import { Workspace } from '../../types/workspace';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+
 interface WorkspaceEditProps {
   workspace: Workspace;
   onResourceAdded: () => void;
   onSubmit: () => void;
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
 }
 
 function isValidHttpUrl(s: string) {
@@ -25,7 +36,31 @@ function isValidHttpUrl(s: string) {
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
+function a11yProps(index: any) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
 
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>{children}</Box>
+      )}
+
+    </div>
+  );
+}
 export default (props: WorkspaceEditProps) => {
 
   const { workspace, onResourceAdded } = props;
@@ -39,6 +74,14 @@ export default (props: WorkspaceEditProps) => {
   const [urlError, setUrlError] = React.useState<string>(null);
 
   const [waiting, setWaiting] = React.useState(false);
+
+  const [tabValue, setTabValue] = React.useState(0);
+
+  
+
+  const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
+    setTabValue(newTabValue);
+  }
 
   const handleSetUrl = (e: any) => {
     setUrl(e.target.value);
@@ -70,6 +113,20 @@ export default (props: WorkspaceEditProps) => {
 
   return (
     <>
+      <Tabs onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options">
+        <Tab label="URL" {...a11yProps(0)}/>
+        <Tab label="OSB" {...a11yProps(1)}/>
+        <Tab label="Computer" {...a11yProps(2)}/>
+      </Tabs>
+      <TabPanel value={tabValue} index={0}>
+        Item 1
+      </TabPanel>
+      <TabPanel value={tabValue} index={1}>
+        Item 2
+      </TabPanel>
+      <TabPanel value={tabValue} index={2}>
+        Item 3
+      </TabPanel>
       <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch" direction="column">
         <Grid item={true} style={{ flex: 1 }}>
           <TextField
