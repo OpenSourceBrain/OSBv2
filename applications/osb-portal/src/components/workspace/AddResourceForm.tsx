@@ -16,6 +16,15 @@ import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspace
 import { Workspace } from '../../types/workspace';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RepositoryService from "../../service/RepositoryService";
+import { 
+  bgRegular,
+  bgLightest,
+  fontColor,
+  linkColor,
+  bgInputs,
+  paragraph,
+  bgLightestShade,
+} from "../../theme";
 
 
 interface WorkspaceEditProps {
@@ -134,7 +143,153 @@ const useStyles = makeStyles((theme) => ({
   tabPanel: {
     marginTop: theme.spacing(3),
   },
-}))
+  repositoryBrowserContainer: {
+    "& .scrollbar": {
+      "& .MuiList-root": {
+        padding: 0,
+        marginTop: theme.spacing(0),
+        "& .flex-grow-1": {
+          borderBottom: `1px solid ${bgRegular}`,
+          borderTop: `1px solid ${bgRegular}`,
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+          marginLeft: theme.spacing(2),
+          width: '100%',
+        },
+        "& p": {
+          fontSize: ".913rem",
+          display: "flex",
+          alignItems: "flex-end",
+          color: fontColor,
+          "& span": {
+            fontSize: ".913rem",
+            color: bgInputs,
+          },
+        },
+        "& strong": {
+          fontSize: ".793rem",
+          fontWeight: "bold",
+          color: bgInputs,
+        },
+        "& .icon": {
+          width: "2rem",
+          display: "flex",
+          "&.file": {
+            "& .MuiSvgIcon-root": {
+              color: bgInputs,
+            },
+          },
+          "& .MuiSvgIcon-root": {
+            color: linkColor,
+          },
+        },
+        "& .MuiAvatar-root": {
+          width: "1.5rem",
+          borderRadius: 0,
+          height: "auto",
+        },
+        "& .MuiIconButton-root": {
+          margin: 0,
+          padding: 0,
+        },
+        "& .MuiListItem-root": {
+          borderRadius: 4,
+          padding: 0,
+          paddingLeft: theme.spacing(2),
+          paddingRight: theme.spacing(2),
+          "&:first-child": {
+            "& .flex-grow-1": {
+              borderTop: 0,
+            },
+          },
+          "&:last-child": {
+            "& .flex-grow-1": {
+              borderBottomWidth: 2,
+            },
+          },
+          "&:hover": {
+            backgroundColor: bgLightest,
+          },
+        },
+      },
+      "& .MuiBreadcrumbs-ol": {
+        lineHeight: 1,
+        "& .MuiAvatar-root": {
+          width: "auto",
+          borderRadius: 0,
+          height: "auto",
+        },
+        "& .MuiBreadcrumbs-separator": {
+          fontSize: ".693rem",
+          lineHeight: 1,
+          color: paragraph,
+          fontWeight: "bold",
+        },
+        "& .MuiBreadcrumbs-li": {
+          lineHeight: 1,
+          "& .MuiTypography-root": {
+            fontSize: ".693rem",
+            fontWeight: "bold",
+            color: paragraph,
+            lineHeight: 1,
+          },
+          "& .MuiLink-root": {
+            fontSize: ".693rem",
+            lineHeight: 1,
+            fontWeight: "bold",
+            display: "block",
+            color: bgInputs,
+            cursor: "pointer",
+          },
+        },
+      },
+      "& .flex-grow-1": {
+        flexGrow: 1,
+      },
+    },
+    "& .MuiTextField-root": {
+      borderRadius: 4,
+      marginTop: theme.spacing(2),
+      backgroundColor: bgLightestShade,
+      padding: theme.spacing(2),
+      "& .MuiSvgIcon-root": {
+        width: "1.25rem",
+        borderRadius: 0,
+        color: paragraph,
+        height: "auto",
+      },
+      "& .MuiInput-root": {
+        "&:before": {
+          display: "none",
+        },
+        "&:after": {
+          display: "none",
+        },
+      },
+      "& .MuiInputBase-input": {
+        padding: theme.spacing(0),
+        fontSize: ".88rem",
+      },
+    },
+  },
+  circularProgress: {
+    height: '40px',
+    width: '40px',
+    position: 'relative',
+    left: '45%',
+  },
+  fromOSBTabPanel: {
+    maxHeight: '300px',
+    overflow: 'auto',
+    // backgroundColor: '#4a4a4a',
+    // "&::-webkit-scrollbar-track": {
+    //   backgroundColor: 'transparent',
+    // },
+    // "&::-webkit-scrollbar-thumb": {
+    //   backgroundColor: '#c4c4c4',
+    // },
+  },
+}));
 
 let checked = [];
 
@@ -256,7 +411,17 @@ export default (props: WorkspaceEditProps) => {
           </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked}/>
+          <Box className={classes.fromOSBTabPanel}>
+          {repository ? 
+            <Box 
+            className={classes.repositoryBrowserContainer}
+            >
+            <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked}/>
+            </Box>
+            :
+             <CircularProgress className={classes.circularProgress} />
+          } 
+          </Box>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
           Item 3
