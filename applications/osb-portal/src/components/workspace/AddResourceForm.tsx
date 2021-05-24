@@ -3,18 +3,20 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import BackupIcon from '@material-ui/icons/Backup';
 import LinkIcon from '@material-ui/icons/Link';
 import PublishIcon from '@material-ui/icons/Publish';
-import TabScrollButton from "@material-ui/core/TabScrollButton";
 
-import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService'
+import RepositoryResourceBrowser from '../repository/RepositoryResourceBrowser';
+import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService';
+import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspaces';
 import { Workspace } from '../../types/workspace';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import RepositoryService from "../../service/RepositoryService";
+import { useEffect } from "react";
 
 
 interface WorkspaceEditProps {
@@ -106,6 +108,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }))
+
+let checked = [];
+
+const setChecked = (newChecked: RepositoryResourceNode[]) => {
+  checked = newChecked;
+}
+
 export default (props: WorkspaceEditProps) => {
 
   const classes = useStyles();
@@ -124,7 +133,13 @@ export default (props: WorkspaceEditProps) => {
 
   const [tabValue, setTabValue] = React.useState(0);
 
-  
+  const [repository, setRepository] = React.useState<OSBRepository>();
+
+  useEffect(() => {
+    RepositoryService.getRepository(1).then((repo) =>
+    setRepository(repo)
+    );
+  }, []);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
     setTabValue(newTabValue);
@@ -160,7 +175,7 @@ export default (props: WorkspaceEditProps) => {
 
   return (
     <Box className={classes.root}>
-      <Tabs className={classes.tabs} onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options">
+      <Tabs className={classes.tabs} onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options" variant="fullWidth">
         <Tab className={classes.tab} label="By URL" {...a11yProps(0)} icon={<BackupIcon />}/>
         <Tab label="From OSB repository" {...a11yProps(1)} icon={<LinkIcon />}/>
         <Tab label="Upload from computer" {...a11yProps(2)} icon={<PublishIcon />}/>
@@ -173,7 +188,7 @@ export default (props: WorkspaceEditProps) => {
             key="input-resource-url"
             error={Boolean(urlError)}
             helperText={urlError}
-            label="Paste URL of resource"
+            placeholder="Paste URL of resource"
             fullWidth={true}
             onChange={handleSetUrl}
             variant="standard"
@@ -211,7 +226,7 @@ export default (props: WorkspaceEditProps) => {
       </Grid>
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        Item 2
+        <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked}/>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         Item 3
