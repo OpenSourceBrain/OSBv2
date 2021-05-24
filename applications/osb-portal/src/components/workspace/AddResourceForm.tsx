@@ -16,7 +16,6 @@ import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspace
 import { Workspace } from '../../types/workspace';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RepositoryService from "../../service/RepositoryService";
-import { useEffect } from "react";
 
 
 interface WorkspaceEditProps {
@@ -106,6 +105,34 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     padding: theme.spacing(2),
+    fontWeight: 'normal',
+  },
+  addByUploadForm: {
+    "& .MuiButton-root": {
+      marginLeft: theme.spacing(4),
+      height: 'fit-content',
+      borderRadius: '2px',
+      width: 'fit-content',
+      alignItems: 'center',
+    },
+    "& .MuiTextField-root": {
+      "& .MuiInput-root": {
+        fontWeight: 'normal',
+        "& input": {
+          "& ::placeholder": {
+            fontWeight: 'normal',
+          },
+        },
+      },
+      "& .MuiFormHelperText-root":{
+        fontWeight: 'normal',
+        fontSize: '0.7rem',
+        color: '#e0e0e0',
+      },
+    },
+  },
+  tabPanel: {
+    marginTop: theme.spacing(3),
   },
 }))
 
@@ -135,7 +162,7 @@ export default (props: WorkspaceEditProps) => {
 
   const [repository, setRepository] = React.useState<OSBRepository>();
 
-  useEffect(() => {
+  React.useEffect(() => {
     RepositoryService.getRepository(1).then((repo) =>
     setRepository(repo)
     );
@@ -180,57 +207,61 @@ export default (props: WorkspaceEditProps) => {
         <Tab label="From OSB repository" {...a11yProps(1)} icon={<LinkIcon />}/>
         <Tab label="Upload from computer" {...a11yProps(2)} icon={<PublishIcon />}/>
       </Tabs>
-      <TabPanel value={tabValue} index={0}>
-      <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch" direction="column">
-        <Grid item={true} style={{ flex: 1 }}>
-          <TextField
-            id="resource-url-input"
-            key="input-resource-url"
-            error={Boolean(urlError)}
-            helperText={urlError}
-            placeholder="Paste URL of resource"
-            fullWidth={true}
-            onChange={handleSetUrl}
-            variant="standard"
-          />
-        </Grid>
-        {/* <Grid item={true} style={{ flex: 1 }}>
-          <TextField
+      <Box className={classes.tabPanel}>
+        <TabPanel value={tabValue} index={0}>
+          <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch" direction="column">
+            <Grid item={true} className={classes.addByUploadForm}>
+              <TextField
+                id="resource-url-input"
+                key="input-resource-url"
+                error={Boolean(urlError)}
+                helperText={urlError ? urlError : "Only select files for which you have confirmed that you have the licence to use" }
+                placeholder="Paste URL of resource"
+                fullWidth={true}
+                onChange={handleSetUrl}
+                variant="standard"
+              />
 
-            key={"namefor-" + url}
-            error={Boolean(nameError)}
-            helperText={nameError}
-            label="Resource name"
-            fullWidth={true}
-            defaultValue={name}
-            onChange={handleSetName}
-            variant="standard"
-          />
-        </Grid> */}
-        <Grid item={true} alignItems="flex-end">
-          <Button variant="contained" onClick={handleAddResource} disabled={waiting}>
-            Upload
+              <Button variant="contained" onClick={handleAddResource} disabled={waiting}>
+                Upload
               </Button>
-          {waiting &&
-            <CircularProgress
-              size={24}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginTop: -12,
-                marginLeft: -12,
-              }}
-            />}
-        </Grid>
-      </Grid>
-      </TabPanel>
-      <TabPanel value={tabValue} index={1}>
-        <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked}/>
-      </TabPanel>
-      <TabPanel value={tabValue} index={2}>
-        Item 3
-      </TabPanel>
+              {waiting &&
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: -12,
+                    marginLeft: -12,
+                  }}
+                />}
+            </Grid>
+            {/* <Grid item={true} style={{ flex: 1 }}>
+              <TextField
+
+                key={"namefor-" + url}
+                error={Boolean(nameError)}
+                helperText={nameError}
+                label="Resource name"
+                fullWidth={true}
+                defaultValue={name}
+                onChange={handleSetName}
+                variant="standard"
+              />
+            </Grid> */}
+            {/* <Grid item={true} alignItems="flex-end">
+              
+            </Grid> */}
+          </Grid>
+        </TabPanel>
+        <TabPanel value={tabValue} index={1}>
+          <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked}/>
+        </TabPanel>
+        <TabPanel value={tabValue} index={2}>
+          Item 3
+        </TabPanel>
+      </Box>
     </Box>
   );
 };
