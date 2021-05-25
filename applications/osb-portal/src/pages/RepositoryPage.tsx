@@ -54,14 +54,18 @@ const useStyles = makeStyles((theme) => ({
     "& .chip-box-text": {
       color: bgInputs,
       fontSize: '0.88rem',
-      marginBottom: theme.spacing(1),
+      marginBottom: '5px',
       marginLeft: theme.spacing(1),
     }
   },
   chip: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(0.5),
     marginLeft: theme.spacing(1),
     backgroundColor: bgDarker,
+    border: 'none',
+    "& .MuiChip-deleteIcon": {
+     color: '#a6a6a6',
+    },
   },
   chipList: {
     display: 'flex',
@@ -378,6 +382,9 @@ const useStyles = makeStyles((theme) => ({
       height: 'fit-content',
     },
   },
+  fileExtension: {
+    color: bgInputs,
+  },
 }));
 
 
@@ -458,6 +465,26 @@ export const RepositoryPage = () => {
       setShowWorkspaceEditor(false);
       confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
     });
+  }
+
+  const createChipLabel = (chipItem: RepositoryResourceNode) => {
+    const splitfilename = chipItem.resource.name.split(".");
+    const extension = splitfilename.length > 1 ? splitfilename.pop() : null;
+    const filename = splitfilename.join('.');
+    const isFolder = chipItem.children && chipItem.children.length;
+
+    if(extension) {
+      return (
+        <>
+          <Typography component="span">{filename}</Typography><Typography component="span" className={classes.fileExtension}>.{extension}</Typography>
+        </>
+      );
+    }
+    else{
+      return(
+        <><Typography component="span">{filename}</Typography></>
+      );
+    }
   }
 
   const getImages = (str: string) => {
@@ -566,8 +593,14 @@ export const RepositoryPage = () => {
               Files selected
             </Typography>
             <Box className={classes.chipList}>
-              {checked.map((chipItem) =>
-                <Chip className={classes.chip} key={chipItem.resource.path} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />)}
+              {checked.map((chipItem) => 
+                
+
+                <Chip className={classes.chip} key={chipItem.resource.path} label={createChipLabel(chipItem)} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />
+              )
+
+               
+                }
             </Box>
           </Box>}
 
