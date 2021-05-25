@@ -436,8 +436,6 @@ export const RepositoryPage = () => {
     setShowConfirmationDialog(true);
   }
 
-
-
   const classes = useStyles();
 
   const setChecked = (newChecked: RepositoryResourceNode[]) => {
@@ -594,13 +592,8 @@ export const RepositoryPage = () => {
             </Typography>
             <Box className={classes.chipList}>
               {checked.map((chipItem) => 
-                
-
                 <Chip className={classes.chip} key={chipItem.resource.path} label={createChipLabel(chipItem)} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />
-              )
-
-               
-                }
+              )}
             </Box>
           </Box>}
 
