@@ -2,6 +2,7 @@ import * as React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -19,12 +20,15 @@ import RepositoryService from "../../service/RepositoryService";
 import { 
   bgRegular,
   bgLightest,
+  bgLighter,
   fontColor,
   linkColor,
   bgInputs,
   paragraph,
   bgLightestShade,
+  radius,
 } from "../../theme";
+
 
 
 interface WorkspaceEditProps {
@@ -82,13 +86,26 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     height: 'fit-content',
     "& .MuiTabs-scroller": {
-      display: 'flex',
+      display: 'block',
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
       justifyContent: 'center',
       width: '100%',
       height: 'fit-content',
+      "& .MuiTabs-flexContainer": {
+        "& .Mui-selected": {
+          backgroundColor: bgLighter,
+        },
+      },
       "& div button": {
-        border: 'none',
-        padding: 0,
+        border: '2px solid #616161',
+        borderRadius: radius,
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        marginLeft: theme.spacing(1),
+        flexWrap: "wrap",
+        height: '100%',
       },
       "& .MuiTabs-scrollButtonAuto": {
         display: 'none',
@@ -112,11 +129,18 @@ const useStyles = makeStyles((theme) => ({
   tab: {
     border: 'none',
   },
+  tabTitle: {
+    fontSize: '0.9rem',
+    marginBottom: '0.3rem',
+  },
   root: {
     padding: theme.spacing(2),
+    paddingTop: 0,
     fontWeight: 'normal',
   },
   addByUploadForm: {
+    paddingTop: 0,
+    marginBottom: theme.spacing(3),
     "& .MuiButton-root": {
       marginLeft: theme.spacing(4),
       height: 'fit-content',
@@ -281,13 +305,6 @@ const useStyles = makeStyles((theme) => ({
   fromOSBTabPanel: {
     maxHeight: '300px',
     overflow: 'auto',
-    // backgroundColor: '#4a4a4a',
-    // "&::-webkit-scrollbar-track": {
-    //   backgroundColor: 'transparent',
-    // },
-    // "&::-webkit-scrollbar-thumb": {
-    //   backgroundColor: '#c4c4c4',
-    // },
   },
 }));
 
@@ -358,9 +375,27 @@ export default (props: WorkspaceEditProps) => {
   return (
     <Box className={classes.root}>
       <Tabs className={classes.tabs} onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options" variant="fullWidth">
-        <Tab className={classes.tab} label="By URL" {...a11yProps(0)} icon={<BackupIcon />}/>
-        <Tab label="From OSB repository" {...a11yProps(1)} icon={<LinkIcon />}/>
-        <Tab label="Upload from computer" {...a11yProps(2)} icon={<PublishIcon />}/>
+        <Tab 
+          className={classes.tab}
+          label={<>
+            <Typography className={classes.tabTitle} component="span">By URL</Typography>
+            <BackupIcon />
+          </>} 
+        />
+        <Tab 
+          className={classes.tab}
+          label={<>
+            <Typography className={classes.tabTitle} component="span">From OSB Repository</Typography>
+            <LinkIcon />
+            </>}
+        />
+        <Tab
+          className={classes.tab}
+          label={<>
+            <Typography className={classes.tabTitle} component="span">Upload from computer</Typography>
+            <PublishIcon />
+          </>}
+        />
       </Tabs>
       <Box className={classes.tabPanel}>
         <TabPanel value={tabValue} index={0}>
