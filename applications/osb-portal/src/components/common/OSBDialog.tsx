@@ -18,13 +18,33 @@ import "react-markdown-editor-lite/lib/index.css";
 
 import * as Icons from "../icons";
 
+import {
+  checkBoxColor,
+} from "../../theme";
+
 interface DialogProps {
   open: boolean;
-  title: string;
+  title: string | React.ReactNode;
 
   actions?: React.ReactElement;
   closeAction: () => void;
 }
+
+const useStyles = makeStyles((theme) => ({
+  dialog: {
+    padding: 0,
+    "& .MuiDialogContent-root": {
+      padding: 0,
+      backgroundColor: '#3b3b3b',
+    },
+    "& .MuiDialogTitle-root": {
+      backgroundColor: '#3b3b3b',
+    },
+  },
+  closeIcon: {
+    color: checkBoxColor,
+  },
+}));
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   closeAction,
@@ -40,12 +60,15 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
       console.debug("closeAction not defined on OSBDialog");
     }
   };
+
+  const classes = useStyles();
+
   return (
-    <Dialog onClose={handleClose} open={open} fullWidth={true}>
+    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true}>
       <DialogTitle disableTypography={true}>
         <Box display="flex" justifyContent="space-between">
           {title}
-          <IconButton aria-label="close" onClick={handleClose} style={{padding: 0}} >
+          <IconButton className={classes.closeIcon} aria-label="close" onClick={handleClose} style={{padding: 0}} >
             <Icons.CloseIcon fontSize="small" />
           </IconButton>
         </Box>

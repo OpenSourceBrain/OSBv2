@@ -25,6 +25,7 @@ import { ResourceStatus, Workspace } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from '../../../service/UserService';
+import { primaryColor } from "../../../theme";
 
 const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
 
@@ -66,7 +67,10 @@ const useStyles = makeStyles((theme) => ({
   },
   treePadding: {
     paddingLeft: theme.spacing(2)
-  }
+  },
+  workspaceName: {
+    color: primaryColor,
+  },
 }));
 
 interface WorkspaceProps {
@@ -128,13 +132,22 @@ export default (props: WorkspaceProps | any) => {
     handleShareClose();
   }
 
+  const dialogTitle = (
+    <>
+      <span>
+        Add resources to Workspace <span className={classes.workspaceName}>{workspace.name}</span>
+      </span>
+    </>
+  )
+
 
 
   return (<>
     <OSBDialog
-      title={"Add resource to Workspace " + workspace.name}
+      title={dialogTitle}
       open={addResourceOpen}
-      closeAction={() => setAddResourceOpen(false)}
+      closeAction={() => setAddResourceOpen(false)
+    }
     >
       {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
     </OSBDialog>
