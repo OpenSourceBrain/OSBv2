@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
+    maxHeight: '100%',
     backgroundColor: bgDarkest,
     "& .MuiCheckbox-colorSecondary": {
       color: checkBoxColor,
@@ -364,7 +365,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   resourceBrowserContainer: {
-    height: '100%',
+    maxHeight: '100%',
     overflow: 'auto',
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: bgInputs,
@@ -372,8 +373,9 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-track": {
       backgroundColor: 'transparent',
     },
-    "& .scrollbar": {
-      overflow: 'hidden',
+    "& .MuiBox-root": {
+      overflow: 'initial',
+      height: 'fit-content',
     },
   },
 }));
@@ -392,7 +394,7 @@ let checked: RepositoryResourceNode[] = [];
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
-
+let images: {imagePath: string, imageName: string}[] = [];
 
 export const RepositoryPage = () => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
@@ -403,6 +405,18 @@ export const RepositoryPage = () => {
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
       setRepository(repo);
+      var i;
+      for(i = 0; i < repo.contextResources.children.length; i++){
+        if(repo.contextResources.children[i].resource.name === "images"){
+          var j;
+          for(j = 0; j < repo.contextResources.children[i].children.length; j++){
+            images.push({
+              imagePath: repo.contextResources.children[i].children[j].resource.path.toString(),
+              imageName: repo.contextResources.children[i].children[j].resource.name.toString(),
+            });
+          }
+        }
+      }
       setRepository({...repo, description: convertImgInMarkdown(repo.description, repo.uri)});
     })
   }, [])
@@ -448,12 +462,14 @@ export const RepositoryPage = () => {
 
   const getImages = (str: string) => {
     const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
-    const imageTags = [];
-    const imagePaths = [];
+    const imageTags: string[] = []
+    const imagePaths: string[] = [];
     let img;
     while ((img = imgRex.exec(str))) {
-      imageTags.push(img[0]);
-      imagePaths.push(img[1]);
+      if(!img[1].startsWith('http')){
+        imageTags.push(img[0]);
+        imagePaths.push(img[1]);
+      }
 
     }
     return [imageTags, imagePaths];
@@ -464,8 +480,9 @@ export const RepositoryPage = () => {
     const [imageTags, imagePaths] = getImages(markDown);
     const updatedImages : string[] = [];
     imagePaths.map((image) => {
-      const y = `[![img](${repositoryUri.replace('https://github.com/', 'https://raw.githubusercontent.com/')}/master/${image})](${repositoryUri.replace('https://github.com/', 'https://raw.githubusercontent.com/')}/master/${image})?target=_blank`;
-      updatedImages.push(y);
+      const imageFromGithub = images.find(githubPath => `images/${githubPath.imageName}` === image);
+      let y = `[![img](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})`;
+      updatedImages.push(y.replace('/branches', '').replace('/branches', ''));
     });
     for (let i = 0; i < updatedImages.length; i++) {
       mark = mark.replace(imageTags[i], updatedImages[i]);
@@ -508,7 +525,7 @@ export const RepositoryPage = () => {
                     Preview
                   </Typography>
                   <Box className="preview-box scrollbar">
-                    <ReactMarkdown skipHtml={true}>
+                    <ReactMarkdown>
                       {repository.description}
                     </ReactMarkdown>
                   </Box>
