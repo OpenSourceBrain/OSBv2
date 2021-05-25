@@ -103,19 +103,18 @@ const useStyles = makeStyles((theme) => ({
     "& .scrollbar": {
       paddingRight: 0,
       marginTop: theme.spacing(2),
-      [theme.breakpoints.up("sm")]: {
-        maxHeight: "calc(100vh - 15.0rem)",
-      },
-    },
-    [theme.breakpoints.up("sm")]: {
-      height: "calc(100vh)",
+      height: '100%',
     },
     "& .main-content": {
       padding: theme.spacing(3),
-      overflow: "auto",
-
-      [theme.breakpoints.up("sm")]: {
-        height: "calc(100%)",
+      height: '83vh',
+      alignItems: 'stretch',
+      "& .MuiGrid-container": {
+        height: '100%',
+        alignItems: 'stretch',
+        "& .MuiGrid-item": {
+          height: '100%',
+        },
       },
       "& .MuiTextField-root": {
         borderRadius: 4,
@@ -257,9 +256,6 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: font,
         overflow: "auto",
         flexGrow: 1,
-        [theme.breakpoints.up("sm")]: {
-          height: "calc(100vh - 15.0rem)",
-        },
         "& a": {
           color: linkColor,
           textDecoration: 'none',
@@ -365,6 +361,19 @@ const useStyles = makeStyles((theme) => ({
           },
         },
       },
+    },
+  },
+  resourceBrowserContainer: {
+    height: '100%',
+    overflow: 'auto',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: bgInputs,
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: 'transparent',
+    },
+    "& .scrollbar": {
+      overflow: 'hidden',
     },
   },
 }));
@@ -511,8 +520,9 @@ export const RepositoryPage = () => {
                     Resources
                   </Typography>
 
-
-                  <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked} />
+                  <Box className={`${classes.resourceBrowserContainer} scrollbar`}>
+                    <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked} />
+                  </Box>
 
                 </Box>
               </Grid>
