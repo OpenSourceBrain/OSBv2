@@ -27,7 +27,7 @@ import {
   paragraph,
   bgLightestShade,
   radius,
-  primaryColor,
+  checkBoxColor,
 } from "../../theme";
 
 
@@ -247,6 +247,12 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: bgLightest,
           },
           "& .MuiListItemIcon-root": {
+            "& .MuiCheckbox-colorSecondary": {
+              color: checkBoxColor,
+              "&.Mui-checked": {
+                color: linkColor,
+              },
+            },
             minWidth: 'fit-content',
           },
         },
@@ -335,11 +341,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let checked = [];
 
-const setChecked = (newChecked: RepositoryResourceNode[]) => {
-  checked = newChecked;
-}
 
 export default (props: WorkspaceEditProps) => {
 
@@ -359,6 +361,8 @@ export default (props: WorkspaceEditProps) => {
 
   const [tabValue, setTabValue] = React.useState(0);
 
+  const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
+
   const [repository, setRepository] = React.useState<OSBRepository>();
 
   React.useEffect(() => {
@@ -377,6 +381,10 @@ export default (props: WorkspaceEditProps) => {
   }
 
   const handleSetName = (e: any) => setName(e.target.value);
+
+  const setCheckedArray = (newChecked: RepositoryResourceNode[]) => {
+    setChecked(newChecked);
+  }
 
   const handleAddResource = () => {
     let error = false;
@@ -478,7 +486,7 @@ export default (props: WorkspaceEditProps) => {
             <Box 
             className={classes.repositoryBrowserContainer}
             >
-            <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked}/>
+            <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedArray}/>
             </Box>
             :
              <CircularProgress className={classes.circularProgress} />
