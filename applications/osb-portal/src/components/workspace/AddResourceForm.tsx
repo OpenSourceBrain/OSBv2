@@ -27,6 +27,7 @@ import {
   paragraph,
   bgLightestShade,
   radius,
+  primaryColor,
 } from "../../theme";
 
 
@@ -53,13 +54,6 @@ function isValidHttpUrl(s: string) {
   }
 
   return url.protocol === "http:" || url.protocol === "https:";
-}
-
-function a11yProps(index: any) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -166,27 +160,58 @@ const useStyles = makeStyles((theme) => ({
   },
   tabPanel: {
     marginTop: theme.spacing(3),
+    // maxHeight: '300px',
+    // overflow: 'auto',
+    miHeight: 'fit-content',
+    // maxHeight: '400px',
+    // overflow: 'auto',
+    // "&::-webkit-scrollbar-thumb": {
+    //   backgroundColor: bgInputs,
+    // },
+    // "&::-webkit-scrollbar-track": {
+    //   backgroundColor: 'transparent',
+    // },
+    // "& #tabpanel-1": {
+    //   miHeight: 'fit-content',
+    //   maxHeight: '400px',
+    //   overflow: 'auto',
+    //   "&::-webkit-scrollbar-thumb": {
+    //     backgroundColor: bgInputs,
+    //   },
+    //   "&::-webkit-scrollbar-track": {
+    //     backgroundColor: 'transparent',
+    //   },
+    // },
   },
   repositoryBrowserContainer: {
+    maxHeight: '400px',
+    overflow: 'auto',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: bgInputs,
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: 'transparent',
+    },
     "& .scrollbar": {
+      paddingRight: 0,
       "& .MuiList-root": {
         padding: 0,
-        marginTop: theme.spacing(0),
+        marginTop: theme.spacing(1),
         "& .flex-grow-1": {
           borderBottom: `1px solid ${bgRegular}`,
           borderTop: `1px solid ${bgRegular}`,
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
+          paddingTop: theme.spacing(1),
+          paddingBottom: theme.spacing(1),
           marginLeft: theme.spacing(2),
           width: '100%',
         },
         "& p": {
-          fontSize: ".913rem",
+          fontSize: ".8rem",
           display: "flex",
           alignItems: "flex-end",
           color: fontColor,
           "& span": {
-            fontSize: ".913rem",
+            fontSize: ".8rem",
             color: bgInputs,
           },
         },
@@ -200,11 +225,13 @@ const useStyles = makeStyles((theme) => ({
           display: "flex",
           "&.file": {
             "& .MuiSvgIcon-root": {
-              color: bgInputs,
+              color: linkColor,
+              height: '1rem',
             },
           },
           "& .MuiSvgIcon-root": {
-            color: linkColor,
+            color: bgInputs,
+            height: '1rem',
           },
         },
         "& .MuiAvatar-root": {
@@ -220,7 +247,6 @@ const useStyles = makeStyles((theme) => ({
           borderRadius: 4,
           padding: 0,
           paddingLeft: theme.spacing(2),
-          paddingRight: theme.spacing(2),
           "&:first-child": {
             "& .flex-grow-1": {
               borderTop: 0,
@@ -234,36 +260,8 @@ const useStyles = makeStyles((theme) => ({
           "&:hover": {
             backgroundColor: bgLightest,
           },
-        },
-      },
-      "& .MuiBreadcrumbs-ol": {
-        lineHeight: 1,
-        "& .MuiAvatar-root": {
-          width: "auto",
-          borderRadius: 0,
-          height: "auto",
-        },
-        "& .MuiBreadcrumbs-separator": {
-          fontSize: ".693rem",
-          lineHeight: 1,
-          color: paragraph,
-          fontWeight: "bold",
-        },
-        "& .MuiBreadcrumbs-li": {
-          lineHeight: 1,
-          "& .MuiTypography-root": {
-            fontSize: ".693rem",
-            fontWeight: "bold",
-            color: paragraph,
-            lineHeight: 1,
-          },
-          "& .MuiLink-root": {
-            fontSize: ".693rem",
-            lineHeight: 1,
-            fontWeight: "bold",
-            display: "block",
-            color: bgInputs,
-            cursor: "pointer",
+          "& .MuiListItemIcon-root": {
+            minWidth: 'fit-content',
           },
         },
       },
@@ -303,8 +301,25 @@ const useStyles = makeStyles((theme) => ({
     left: '45%',
   },
   fromOSBTabPanel: {
-    maxHeight: '300px',
-    overflow: 'auto',
+    // maxHeight: '400px',
+    // overflow: 'auto',
+    backgroundColor: bgLightest,
+    borderRadius: radius,
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
+    // "&::-webkit-scrollbar-thumb": {
+    //   backgroundColor: bgInputs,
+    // },
+    // "&::-webkit-scrollbar-track": {
+    //   backgroundColor: 'transparent',
+    // },
+    "& .MuiBreadcrumbs-root": {
+      display: 'none',
+    },
+    "& .MuiTextField-root": {
+      backgroundColor: '#3b3b3b',
+      borderRadius: '2px',
+    },
   },
 }));
 
