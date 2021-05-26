@@ -101,27 +101,11 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: "wrap",
         height: '100%',
       },
-      "& .MuiTabs-scrollButtonAuto": {
-        display: 'none',
-        "& .Mui-diabled": {
-          width: 0,
-        },
-      },
-      "& .MuiTabs-scrollButton-root": {
-        display: 'none',
-        width: 0,
-      },
-      "& .Mui-diabled": {
-        width: 0,
-      },
-    },
-    "& .MuiTabs-scrollButton-root": {
-      display: 'none',
-      width: 0,
     },
   },
   tab: {
     border: 'none',
+    alignText: 'center',
   },
   tabTitle: {
     fontSize: '0.9rem',
@@ -135,8 +119,10 @@ const useStyles = makeStyles((theme) => ({
   addByUploadForm: {
     paddingTop: 0,
     marginBottom: theme.spacing(3),
+    display: 'flex',
+    alignItems: 'flex-end',
     "& .MuiButton-root": {
-      marginLeft: theme.spacing(4),
+      marginLeft: theme.spacing(3),
       height: 'fit-content',
       borderRadius: '2px',
       width: 'fit-content',
@@ -160,42 +146,42 @@ const useStyles = makeStyles((theme) => ({
   },
   tabPanel: {
     marginTop: theme.spacing(3),
-    // maxHeight: '300px',
-    // overflow: 'auto',
     miHeight: 'fit-content',
-    // maxHeight: '400px',
-    // overflow: 'auto',
-    // "&::-webkit-scrollbar-thumb": {
-    //   backgroundColor: bgInputs,
-    // },
-    // "&::-webkit-scrollbar-track": {
-    //   backgroundColor: 'transparent',
-    // },
-    // "& #tabpanel-1": {
-    //   miHeight: 'fit-content',
-    //   maxHeight: '400px',
-    //   overflow: 'auto',
-    //   "&::-webkit-scrollbar-thumb": {
-    //     backgroundColor: bgInputs,
-    //   },
-    //   "&::-webkit-scrollbar-track": {
-    //     backgroundColor: 'transparent',
-    //   },
-    // },
+    "& #tabpanel-1": {
+      "& .MuiBox-root": {
+        "& .MuiGrid-container": {
+          justifyContent: 'space-between',
+          padding: theme.spacing(2),
+          display: 'flex',
+          alignItems: 'center',
+          "& .MuiGrid-item": {
+            "& .MuiTypography-root": {
+              fontSize: '0.75rem',
+              color: 'rgba(255, 255, 255, 0.5)',
+            },
+            "& .MuiButton-root": {
+              height: 'fit-content',
+              flex: 'auto',
+              borderRadius: '2px',
+            },
+          },
+        },
+      },
+    },
   },
   repositoryBrowserContainer: {
-    maxHeight: '400px',
-    overflow: 'auto',
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: bgInputs,
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: 'transparent',
-    },
     "& .scrollbar": {
+      maxHeight: '400px',
+      overflow: 'auto',
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: bgInputs,
+      },
+      "&::-webkit-scrollbar-track": {
+        backgroundColor: 'transparent',
+      },
       paddingRight: 0,
       "& .MuiList-root": {
-        padding: 0,
+        paddingRight: '1rem',
         marginTop: theme.spacing(1),
         "& .flex-grow-1": {
           borderBottom: `1px solid ${bgRegular}`,
@@ -271,9 +257,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiTextField-root": {
       borderRadius: 4,
-      marginTop: theme.spacing(2),
       backgroundColor: bgLightestShade,
-      padding: theme.spacing(2),
       "& .MuiSvgIcon-root": {
         width: "1.25rem",
         borderRadius: 0,
@@ -293,6 +277,40 @@ const useStyles = makeStyles((theme) => ({
         fontSize: ".88rem",
       },
     },
+    "& .MuiBreadcrumbs-root": {
+      padding: theme.spacing(1),
+      "& .MuiBreadcrumbs-ol": {
+        lineHeight: 1,
+        "& .MuiAvatar-root": {
+          width: "auto",
+          borderRadius: 0,
+          height: "auto",
+        },
+        "& .MuiBreadcrumbs-separator": {
+          fontSize: ".693rem",
+          lineHeight: 1,
+          color: paragraph,
+          fontWeight: "bold",
+        },
+        "& .MuiBreadcrumbs-li": {
+          lineHeight: 1,
+          "& .MuiTypography-root": {
+            fontSize: ".693rem",
+            fontWeight: "bold",
+            color: paragraph,
+            lineHeight: 1,
+          },
+          "& .MuiLink-root": {
+            fontSize: ".693rem",
+            lineHeight: 1,
+            fontWeight: "bold",
+            display: "block",
+            color: bgInputs,
+            cursor: "pointer",
+          },
+        },
+      },
+    },
   },
   circularProgress: {
     height: '40px',
@@ -301,24 +319,18 @@ const useStyles = makeStyles((theme) => ({
     left: '45%',
   },
   fromOSBTabPanel: {
-    // maxHeight: '400px',
-    // overflow: 'auto',
     backgroundColor: bgLightest,
     borderRadius: radius,
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
-    // "&::-webkit-scrollbar-thumb": {
-    //   backgroundColor: bgInputs,
-    // },
-    // "&::-webkit-scrollbar-track": {
-    //   backgroundColor: 'transparent',
-    // },
-    "& .MuiBreadcrumbs-root": {
-      display: 'none',
-    },
     "& .MuiTextField-root": {
-      backgroundColor: '#3b3b3b',
-      borderRadius: '2px',
+      width: '96%',
+      marginRight: '2%',
+      marginLeft: '2%',
+      "& .MuiInput-root": {
+        background: '#3b3b3b',
+        height: '2.5rem',
+        borderRadius: '2px',
+        paddingLeft: '0.5rem',
+      },
     },
   },
 }));
@@ -415,7 +427,7 @@ export default (props: WorkspaceEditProps) => {
       <Box className={classes.tabPanel}>
         <TabPanel value={tabValue} index={0}>
           <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch" direction="column">
-            <Grid item={true} className={classes.addByUploadForm}>
+            <Grid item={true}>
               <TextField
                 id="resource-url-input"
                 key="input-resource-url"
@@ -424,6 +436,18 @@ export default (props: WorkspaceEditProps) => {
                 placeholder="Paste URL of resource"
                 fullWidth={true}
                 onChange={handleSetUrl}
+                variant="standard"
+              />
+            </Grid>
+            <Grid item={true} style={{ flex: 1 }} className={classes.addByUploadForm}>
+              <TextField
+                key={"namefor-" + url}
+                error={Boolean(nameError)}
+                helperText={nameError}
+                label="Resource name"
+                fullWidth={true}
+                defaultValue={name}
+                onChange={handleSetName}
                 variant="standard"
               />
 
@@ -442,19 +466,7 @@ export default (props: WorkspaceEditProps) => {
                   }}
                 />}
             </Grid>
-            {/* <Grid item={true} style={{ flex: 1 }}>
-              <TextField
-
-                key={"namefor-" + url}
-                error={Boolean(nameError)}
-                helperText={nameError}
-                label="Resource name"
-                fullWidth={true}
-                defaultValue={name}
-                onChange={handleSetName}
-                variant="standard"
-              />
-            </Grid> */}
+            
             {/* <Grid item={true} alignItems="flex-end">
               
             </Grid> */}
@@ -472,9 +484,24 @@ export default (props: WorkspaceEditProps) => {
              <CircularProgress className={classes.circularProgress} />
           } 
           </Box>
+          <Grid container spacing={1}>
+            <Grid item xs={8}>
+              <Typography component="h6">
+                Copy will duplicate the resource inside your workspace and use your storage quota.
+                Link will add it as a reference and the resource inside your workspace will be updated
+                when the repository is.
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button variant="contained">Copy</Button>
+            </Grid>
+            {/* <Grid item>
+              <Button variant="contained">Link</Button>
+            </Grid> */}
+          </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          Item 3
+          Upload from computer - to be implemented
         </TabPanel>
       </Box>
     </Box>
