@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(-180deg)",
     margin: "auto",
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   rotate180: {
     transform: "rotate(-180deg)",
@@ -70,6 +70,10 @@ const useStyles = makeStyles((theme) => ({
   },
   workspaceName: {
     color: primaryColor,
+    fontWeight: 700,
+  },
+  dialogTitle: {
+    fontWeight: 'normal',
   },
 }));
 
@@ -134,8 +138,8 @@ export default (props: WorkspaceProps | any) => {
 
   const dialogTitle = (
     <>
-      <span>
-        Add resources to Workspace <span className={classes.workspaceName}>{workspace.name}</span>
+      <span className={classes.dialogTitle}>
+        Add resources to<span className={classes.workspaceName}> Workspace {workspace.name}</span>
       </span>
     </>
   )
