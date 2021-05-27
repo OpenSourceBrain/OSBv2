@@ -18,9 +18,9 @@ import FolderIcon from "@material-ui/icons/Folder";
 import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
 
 export default ({ repository, checkedChanged }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any }) => {
-  const handleToggle = (value: any) => () => '';
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
   const [currentPath, setCurrentPath] = React.useState<RepositoryResourceNode[]>([repository.contextResources]);
+  const handleToggle = (value: any) => () => '';
 
   const onCheck = (isChecked: boolean, value: RepositoryResourceNode) => {
     if (isChecked) {
@@ -28,7 +28,7 @@ export default ({ repository, checkedChanged }: { repository: OSBRepository, che
     } else {
       delete checked[value.resource.path];
     }
-    setChecked(checked);
+    setChecked({ ...checked });
     checkedChanged(Object.values(checked));
   };
 

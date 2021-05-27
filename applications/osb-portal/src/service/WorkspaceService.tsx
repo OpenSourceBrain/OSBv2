@@ -4,9 +4,11 @@ import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } fr
 import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
+
+import { InlineObject } from '../apiclient/workspaces/models/InlineObject';
 
 const workspacesApiUri = '/proxy/workspaces/api';
 
@@ -59,13 +61,9 @@ class WorkspaceService {
     return this.updateWorkspace(ws);
   }
 
-  async createWorkspace(ws: Workspace): Promise<any> {
+  async createWorkspace(ws: Workspace): Promise<ApiWorkspace> {
     const wspr: workspaceApi.WorkspacePostRequest = { workspace: this.mapWorkspaceToApi(ws) };
-    const newCreatedWorkspace = await this.workspacesApi.workspacePost(wspr).then((workspace) => {
-      return workspace;
-    });
-
-    return newCreatedWorkspace;
+    return this.workspacesApi.workspacePost(wspr);
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
@@ -84,10 +82,19 @@ class WorkspaceService {
   async updateWorkspaceThumbnail(workspaceId: number, thumbNailBlob: Blob): Promise<any> {
     const wspr: workspaceApi.WorkspacesControllersWorkspaceControllerSetthumbnailRequest = { id: workspaceId, thumbNail: thumbNailBlob };
     await this.workspacesApi.workspacesControllersWorkspaceControllerSetthumbnail(wspr);
-  };
+  }
+
+  async importResourcesToWorkspace(workspaceId: number, resources: ResourceOrigin[]): Promise<void> {
+    const requestObject = {
+      id: workspaceId,
+      inlineObject: { resourceorigins: resources }
+    }
+
+    await this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(requestObject);
+
+
+  }
 }
-
-
 
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;

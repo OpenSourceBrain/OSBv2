@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "webpack serve --progress --config webpack.dev.js --env DOMAIN=v2dev.opensourcebrain.org --env NAMESPACE=osb2dev",
+    "start:dev": "webpack serve --progress --config webpack.dev.js --env DOMAIN=v2dev.opensourcebrain.org --env NAMESPACE=osb2dev --env NODE_OPTIONS='--max-old-space-size=12048'",
     "start:test": "webpack serve --progress --config webpack.dev.js --env DOMAIN=v2.opensourcebrain.org --env NAMESPACE=osb2",
     "start:minikube": "webpack serve --progress --config webpack.dev.js --env DOMAIN=osb.local --env NAMESPACE=osblocal",
     "prebuild": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
