@@ -445,13 +445,13 @@ export default (props: WorkspaceEditProps) => {
             <LinkIcon />
             </>}
         />
-        <Tab
+        {/* <Tab
           className={classes.tab}
           label={<>
             <Typography className={classes.tabTitle} component="span">Upload from computer</Typography>
             <PublishIcon />
           </>}
-        />
+        /> */}
       </Tabs>
       <Box className={classes.tabPanel}>
         <TabPanel value={tabValue} index={0}>
@@ -533,9 +533,9 @@ export default (props: WorkspaceEditProps) => {
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        {/* <TabPanel value={tabValue} index={2}>
           Upload from computer - to be implemented
-        </TabPanel>
+        </TabPanel> */}
       </Box>
     </Box>
   );
