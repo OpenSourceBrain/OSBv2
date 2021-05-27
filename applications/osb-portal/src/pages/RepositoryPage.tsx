@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { render } from 'react-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -11,11 +10,18 @@ import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Chip from "@material-ui/core/Chip";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import LinkIcon from '@material-ui/icons/Link';
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
+import OSBDialog from '../components/common/OSBDialog';
+import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
+import { Workspace } from "../types/workspace";
 
 import {
   bgRegular,
@@ -29,10 +35,63 @@ import {
   bgLightestShade,
   bgInputs,
   font,
+  bgLight,
+  bgDarker,
+  radius,
 } from "../theme";
+import WorkspaceService from "../service/WorkspaceService";
+import { DialogContent, DialogTitle } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles((theme) => ({
+  chipBox: {
+    backgroundColor: bgLight,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    "& .chip-box-text": {
+      color: bgInputs,
+      fontSize: '0.88rem',
+      marginBottom: theme.spacing(1),
+      marginLeft: theme.spacing(1),
+    }
+  },
+  chip: {
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    backgroundColor: bgDarker,
+  },
+  chipList: {
+    display: 'flex',
+    overflow: 'auto',
+    "&::-webkit-scrollbar": {
+      width: 0,
+      backgroundColor: 'transparent',
+    },
+  },
+  gitHubLinkButton: {
+    position: 'relative',
+    float: 'right',
+    top: '-5px',
+    borderRadius: 0,
+    backgroundColor: 'black',
+    textTransform: 'none',
+    alignItems: 'center',
+    "& .MuiButton-label": {
+      color: 'white',
+      fontSize: '0.6rem',
+    },
+    "&:hover": {
+      "& .MuiButton-label": {
+        color: 'black',
+      },
+      "& .MuiButton-endIcon": {
+        color: 'black',
+      },
+    },
+  },
   root: {
     backgroundColor: bgDarkest,
     "& .MuiCheckbox-colorSecondary": {
@@ -49,14 +108,14 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     [theme.breakpoints.up("sm")]: {
-      height: "calc(100vh - 4.906rem)",
+      height: "calc(100vh)",
     },
     "& .main-content": {
       padding: theme.spacing(3),
       overflow: "auto",
 
       [theme.breakpoints.up("sm")]: {
-        height: "calc(100% - 4.063rem)",
+        height: "calc(100%)",
       },
       "& .MuiTextField-root": {
         borderRadius: 4,
@@ -189,7 +248,11 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
       "& .preview-box": {
-        backgroundColor: "transparent",
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        boxShadow: '0px 0px 0px 3px rgba(0, 0, 0, 0.25)',
+        borderRadius: radius,
         fontFamily: font,
         overflow: "auto",
         flexGrow: 1,
@@ -198,6 +261,33 @@ const useStyles = makeStyles((theme) => ({
         },
         "& a": {
           color: linkColor,
+        },
+        "& pre": {
+          padding: theme.spacing(2),
+          backgroundColor: bgLightestShade,
+          borderRadius: radius,
+        },
+        "& h1": {
+          fontWeight: 'normal',
+        },
+        "& h2": {
+          marginTop: theme.spacing(5),
+          fontWeight: '500',
+          paddingBottom: '5px',
+        },
+        "& h1, h2": {
+          borderBottom: `1px solid ${bgRegular}`,
+        },
+        "& p": {
+          color: 'rgba(255, 255, 255, 0.8)',
+          fontWeight: 'normal',
+          fontSize: '0.8rem',
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: 'transparent',
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: '#c4c4c4',
         },
       },
       "& .primary-heading": {
@@ -276,22 +366,71 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RepositoryPage = (props: any) => {
+
+const defaultWorkspace: Workspace = {
+  resources: [],
+  volume: null,
+  shareType: null,
+  name: "",
+  description: null
+}
+
+let checked: RepositoryResourceNode[] = [];
+
+let confirmationDialogTitle = "";
+let confirmationDialogContent = "";
+
+
+
+export const RepositoryPage = () => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>();
+  const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
+  React.useEffect(() => {
+    RepositoryService.getRepository(+repositoryId).then((repo) =>
+      setRepository(repo)
+    )
+  }, [])
+
+  const openDialog = () => setShowWorkspaceEditor(!showWorkspaceEditor);
+
+  const confirmWorkspaceCreation = (dialogTitle: string, dialogContent: string) => {
+    confirmationDialogTitle = dialogTitle;
+    confirmationDialogContent = dialogContent;
+    setShowConfirmationDialog(true);
+  }
 
 
-  RepositoryService.getRepository(+repositoryId).then((repo) =>
-    setRepository(repo)
-  );
 
   const classes = useStyles();
 
-  let checked = [];
-
   const setChecked = (newChecked: RepositoryResourceNode[]) => {
     checked = newChecked;
+  }
+
+  const handleChipDelete = (key: string) => {
+    checked = checked.filter(item => item.resource.path !== key);
+  }
+
+  const getDefaultWorkspaceName = () => {
+    if (checked.length === 1) {
+      return checked[0].resource.name.substring(0, checked[0].resource.name.lastIndexOf('.')) || checked[0].resource.name;
+    }
+    else {
+      return repository?.name;
+    }
+  }
+
+  const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
+    WorkspaceService.importResourcesToWorkspace(ws.id, checked.map(c => c.resource)).then(() => {
+      setShowWorkspaceEditor(false);
+      confirmWorkspaceCreation("Success", "New workspace created!");
+    }).catch((error) => {
+      setShowWorkspaceEditor(false);
+      confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
+    });
   }
 
   return (
@@ -308,7 +447,7 @@ export const RepositoryPage = (props: any) => {
             </Box>
           </Box>
           <Box>
-            <Button variant="contained" disableElevation={true} color="primary">
+            <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
               <AddIcon />
               Create new workspace
             </Button>
@@ -320,14 +459,18 @@ export const RepositoryPage = (props: any) => {
             <Grid container={true} className="row" spacing={5}>
               <Grid item={true} xs={12} md={6}>
                 <Box className="flex-grow-1">
+                  <a href={repository.uri} target="_blank" rel="noreferrer">
+                    <Button className={classes.gitHubLinkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                      See on GitHub
+                    </Button>
+                  </a>
                   <Typography component="h3" className="primary-heading">
                     Preview
-                </Typography>
-
+                  </Typography>
                   <Box className="preview-box scrollbar">
                     <ReactMarkdown skipHtml={true}>
-                        {repository.description}
-                      </ReactMarkdown>
+                      {repository.description}
+                    </ReactMarkdown>
                   </Box>
                 </Box>
               </Grid>
@@ -358,6 +501,34 @@ export const RepositoryPage = (props: any) => {
             )}
         </Box>
       </Box>
+      <Box className={classes.root}>
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
+          {checked.length > 0 && <Box className={classes.chipBox}>
+            <Typography component="h6" className="chip-box-text">
+              Files selected
+            </Typography>
+            <Box className={classes.chipList}>
+              {checked.map((chipItem) =>
+                <Chip className={classes.chip} key={chipItem.resource.path} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />)}
+            </Box>
+          </Box>}
+
+          <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} />
+        </OSBDialog>
+      </Box>
+
+      {/* Confirm to user if workspace creation was successful */}
+      {
+        showConfirmationDialog && <Dialog open={showConfirmationDialog}
+          onClose={() => setShowConfirmationDialog(false)}>
+          <DialogTitle>{confirmationDialogTitle}</DialogTitle>
+          <DialogContent>{confirmationDialogContent}</DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => { checked = []; setShowConfirmationDialog(false) }}>OK</Button>
+          </DialogActions>
+        </Dialog>
+      }
+
     </>
   );
 };
