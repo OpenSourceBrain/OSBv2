@@ -29,6 +29,7 @@ import {
   radius,
   checkBoxColor,
 } from "../../theme";
+import WorkspaceService from "../../service/WorkspaceService";
 
 
 
@@ -357,6 +358,8 @@ export default (props: WorkspaceEditProps) => {
 
   const [urlError, setUrlError] = React.useState<string>(null);
 
+  const [fromOSBRepositoryConfirmation, setFromOSBRepositoryConfirmation] = React.useState<string>(null);
+
   const [waiting, setWaiting] = React.useState(false);
 
   const [tabValue, setTabValue] = React.useState(0);
@@ -373,6 +376,8 @@ export default (props: WorkspaceEditProps) => {
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
     setTabValue(newTabValue);
+    setFromOSBRepositoryConfirmation(null);
+    setChecked([]);
   }
 
   const handleSetUrl = (e: any) => {
@@ -405,6 +410,22 @@ export default (props: WorkspaceEditProps) => {
       workspaceResourceService.addResource(workspace, url, name).then(onResourceAdded, () => alert('An error occurred while adding the resource'));
     }
 
+  }
+
+  const handleCopy = () => {
+    if(checked.length === 0){
+      setFromOSBRepositoryConfirmation("Please select a resource to add to your workspace.");
+      return;
+    }
+    setWaiting(true);
+    WorkspaceService.importResourcesToWorkspace(workspace.id, checked.map(c => c.resource)).then(() => {
+      setFromOSBRepositoryConfirmation("Resources successfully imported to workspace.");
+      setChecked([]);
+      setWaiting(false);
+    }).catch(() => {
+      setFromOSBRepositoryConfirmation("An error occured while adding the resource(s)");
+      setWaiting(false);
+    });
   }
 
   return (
@@ -474,10 +495,6 @@ export default (props: WorkspaceEditProps) => {
                   }}
                 />}
             </Grid>
-            
-            {/* <Grid item={true} alignItems="flex-end">
-              
-            </Grid> */}
           </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
@@ -494,18 +511,26 @@ export default (props: WorkspaceEditProps) => {
           </Box>
           <Grid container spacing={1}>
             <Grid item xs={8}>
-              <Typography component="h6">
-                Copy will duplicate the resource inside your workspace and use your storage quota.
-                Link will add it as a reference and the resource inside your workspace will be updated
-                when the repository is.
-              </Typography>
+              {
+                waiting ? <CircularProgress size={25}/> :
+
+                fromOSBRepositoryConfirmation ? 
+
+                  <Typography component="h5">
+                    {fromOSBRepositoryConfirmation}
+                  </Typography> :
+
+                  <Typography component="h6">
+                  Copy will duplicate the resource inside your workspace and use your storage quota.
+                  Link will add it as a reference and the resource inside your workspace will be updated
+                  when the repository is.
+                  </Typography>
+              }
+              
             </Grid>
             <Grid item>
-              <Button variant="contained">Copy</Button>
+              <Button variant="contained" onClick={handleCopy} disabled={waiting}>Copy</Button>
             </Grid>
-            {/* <Grid item>
-              <Button variant="contained">Link</Button>
-            </Grid> */}
           </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
