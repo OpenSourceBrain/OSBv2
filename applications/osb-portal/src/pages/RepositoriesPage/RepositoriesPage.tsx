@@ -12,6 +12,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Avatar from "@material-ui/core/Avatar";
+import Pagination from '@material-ui/lab/Pagination';
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
 import { OSBRepository } from "../../apiclient/workspaces";
@@ -32,6 +33,14 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const openDialog = () => setDialogOpen(true);
+
+  const [page, setPage] = React.useState(1);
+
+  const [totalPages, setTotalPages] = React.useState(0);
+
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
     setTabValue(newValue);
     updateList(newValue);
@@ -41,26 +50,29 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setRepositories(null);
     switch (newTabValue) {
       case RepositoriesTab.all:
-        RepositoryService.getRepositories(page).then((repos) =>
-          setRepositories(repos)
-        );
+        RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+          setRepositories(reposDetails.osbrepositories);
+          setTotalPages(reposDetails.pagination.numberOfPages);
+        });
         break;
       case RepositoriesTab.my:
-        RepositoryService.getUserRepositories(user.id, page).then((repos) =>
-          setRepositories(repos)
-        );
+        RepositoryService.getUserRepositoriesDetails(user.id, page).then((reposDetails) => {
+          setRepositories(reposDetails.osbrepositories);
+          setTotalPages(reposDetails.pagination.numberOfPages);
+        });
         break;
     }
   };
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const openDialog = () => setDialogOpen(true);
 
-  const [page, setPage] = React.useState(1);
+  const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
+    setPage(pageNumber);
+  }
 
   React.useEffect(() => {
-    RepositoryService.getRepositories(page).then((repos) =>
-      setRepositories(repos)
-    );
+    RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+      setRepositories(reposDetails.osbrepositories);
+      setTotalPages(reposDetails.pagination.numberOfPages);
+    });
   }, [page]);
 
   return (
@@ -105,71 +117,79 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="repository-data scrollbar">
-            {repositories.map((repository) => (
-              <Grid
-                container={true}
-                className="row"
-                spacing={0}
-                key={repository.id}
-                onClick={() => history.push(`/repositories/${repository.id}`)}
-              >
-                <Grid item={true} xs={12} sm={4} md={4}>
-                  <Box className="col">
-                    <Typography component="strong">
-                      {repository.name}
-                    </Typography>
-                    <Typography>{repository.summary}</Typography>
-                  </Box>
-                </Grid>
-                <Grid item={true} xs={12} sm={4} md={2}>
-                  <Box className="col">
-                    <Typography>
-                      {repository?.user?.firstName} {repository?.user?.lastName}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item={true} xs={12} sm={4} md={3}>
-                  <Box
-                    className="col"
-                    display="flex"
-                    alignItems="center"
-                    flexWrap="wrap"
-                  >
-                    {repository.contentTypes.split(",").map((type, index) => (
-                      <Box
-                        className="tag"
-                        display="flex"
-                        alignItems="center"
-                        paddingX={1}
-                        marginY={1}
-                        key={type}
-                      >
-                        <FiberManualRecordIcon
-                          color={index % 2 === 0 ? "primary" : "secondary"}
-                        />
-                        {type}
-                      </Box>
-                    ))}
-                  </Box>
-                </Grid>
-                <Grid item={true} xs={12} sm={12} md={3}>
-                  <Box
-                    className="col"
-                    display="flex"
-                    flex={1}
-                    alignItems="center"
-                  >
-                    <Button
-                      variant="outlined"
-                      onClick={() => openRepoUrl(repository.uri)}
+            <Box className="repository-data-items">
+              {repositories.map((repository) => (
+                <Grid
+                  container={true}
+                  className="row"
+                  spacing={0}
+                  key={repository.id}
+                  onClick={() => history.push(`/repositories/${repository.id}`)}
+                >
+                  <Grid item={true} xs={12} sm={4} md={4}>
+                    <Box className="col">
+                      <Typography component="strong">
+                        {repository.name}
+                      </Typography>
+                      <Typography>{repository.summary}</Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item={true} xs={12} sm={4} md={2}>
+                    <Box className="col">
+                      <Typography>
+                        {repository?.user?.firstName} {repository?.user?.lastName}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item={true} xs={12} sm={4} md={3}>
+                    <Box
+                      className="col"
+                      display="flex"
+                      alignItems="center"
+                      flexWrap="wrap"
                     >
-                      See on {repository.repositoryType}
-                    </Button>
-                    <Avatar src="/images/arrow_right.svg" />
-                  </Box>
+                      {repository.contentTypes.split(",").map((type, index) => (
+                        <Box
+                          className="tag"
+                          display="flex"
+                          alignItems="center"
+                          paddingX={1}
+                          marginY={1}
+                          key={type}
+                        >
+                          <FiberManualRecordIcon
+                            color={index % 2 === 0 ? "primary" : "secondary"}
+                          />
+                          {type}
+                        </Box>
+                      ))}
+                    </Box>
+                  </Grid>
+                  <Grid item={true} xs={12} sm={12} md={3}>
+                    <Box
+                      className="col"
+                      display="flex"
+                      flex={1}
+                      alignItems="center"
+                    >
+                      <Button
+                        variant="outlined"
+                        onClick={() => openRepoUrl(repository.uri)}
+                      >
+                        See on {repository.repositoryType}
+                      </Button>
+                      <Avatar src="/images/arrow_right.svg" />
+                    </Box>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ))}
+              ))}
+            </Box>
+            
+            {totalPages > 1 ?
+              <Box className={classes.paginationBar}>
+              <Pagination count={totalPages} color="primary" showFirstButton showLastButton onChange={handlePageChange} />
+              </Box> : null
+            }
           </Box>
           : (
             <CircularProgress
