@@ -1,7 +1,7 @@
 
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, OSBRepository, RepositoryContentType, RepositoryType } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, OSBRepository, RepositoryContentType, RepositoryType, InlineResponse2001 } from '../apiclient/workspaces';
 
 
 
@@ -38,10 +38,17 @@ class RepositoryService {
     return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size })).osbrepositories;
   }
 
+  async getRepositoriesDetails(page: number, size = PER_PAGE_DEFAULT): Promise<InlineResponse2001> {
+    return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size }));
+  }
+
   async getUserRepositories(userId: string, page: number, size = PER_PAGE_DEFAULT): Promise<OSBRepository[]> {
     return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size, q: `user_id=${userId}` })).osbrepositories;
   }
 
+  async getUserRepositoriesDetails(userId: string, page: number, size = PER_PAGE_DEFAULT): Promise<InlineResponse2001> {
+    return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size, q: `user_id=${userId}` }));
+  }
 
   async getRepository(id: number): Promise<OSBRepository> {
     return this.workspacesApi.osbrepositoryIdGet({ id });
