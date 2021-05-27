@@ -84,38 +84,26 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
-      justifyContent: 'center',
-      width: '100%',
       height: 'fit-content',
       "& .MuiTabs-flexContainer": {
         "& .Mui-selected": {
           backgroundColor: bgLighter,
         },
-      },
-      "& div button": {
-        border: '2px solid #616161',
-        borderRadius: radius,
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        marginLeft: theme.spacing(1),
-        flexWrap: "wrap",
-        height: '100%',
+        "& .MuiTab-root": {
+          border: `2px solid ${bgLighter}`,
+          borderRadius: radius,
+          paddingTop: theme.spacing(1),
+          paddingBottom: theme.spacing(1),
+          marginRight: theme.spacing(1),
+          marginLeft: theme.spacing(1),
+          height: '100%',
+        },
       },
     },
-  },
-  tab: {
-    border: 'none',
-    alignText: 'center',
-  },
-  tabTitle: {
-    fontSize: '0.9rem',
-    marginBottom: '0.3rem',
   },
   root: {
     padding: theme.spacing(2),
     paddingTop: 0,
-    fontWeight: 'normal',
   },
   addByUploadForm: {
     paddingTop: 0,
@@ -126,22 +114,11 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(3),
       height: 'fit-content',
       borderRadius: '2px',
-      width: 'fit-content',
-      alignItems: 'center',
     },
     "& .MuiTextField-root": {
-      "& .MuiInput-root": {
-        fontWeight: 'normal',
-        "& input": {
-          "& ::placeholder": {
-            fontWeight: 'normal',
-          },
-        },
-      },
       "& .MuiFormHelperText-root":{
-        fontWeight: 'normal',
         fontSize: '0.7rem',
-        color: '#e0e0e0',
+        color: fontColor,
       },
     },
   },
@@ -151,18 +128,16 @@ const useStyles = makeStyles((theme) => ({
     "& #tabpanel-1": {
       "& .MuiBox-root": {
         "& .MuiGrid-container": {
-          justifyContent: 'space-between',
-          padding: theme.spacing(2),
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
+          padding: theme.spacing(2),
           "& .MuiGrid-item": {
             "& .MuiTypography-root": {
               fontSize: '0.75rem',
-              color: 'rgba(255, 255, 255, 0.5)',
             },
             "& .MuiButton-root": {
               height: 'fit-content',
-              flex: 'auto',
               borderRadius: '2px',
             },
           },
@@ -194,18 +169,11 @@ const useStyles = makeStyles((theme) => ({
         },
         "& p": {
           fontSize: ".8rem",
-          display: "flex",
-          alignItems: "flex-end",
           color: fontColor,
           "& span": {
             fontSize: ".8rem",
             color: bgInputs,
           },
-        },
-        "& strong": {
-          fontSize: ".793rem",
-          fontWeight: "bold",
-          color: bgInputs,
         },
         "& .icon": {
           width: "2rem",
@@ -221,17 +189,11 @@ const useStyles = makeStyles((theme) => ({
             height: '1rem',
           },
         },
-        "& .MuiAvatar-root": {
-          width: "1.5rem",
-          borderRadius: 0,
-          height: "auto",
-        },
         "& .MuiIconButton-root": {
           margin: 0,
           padding: 0,
         },
         "& .MuiListItem-root": {
-          borderRadius: 4,
           padding: 0,
           paddingLeft: theme.spacing(2),
           "&:first-child": {
@@ -244,9 +206,6 @@ const useStyles = makeStyles((theme) => ({
               borderBottomWidth: 2,
             },
           },
-          "&:hover": {
-            backgroundColor: bgLightest,
-          },
           "& .MuiListItemIcon-root": {
             "& .MuiCheckbox-colorSecondary": {
               color: checkBoxColor,
@@ -258,31 +217,6 @@ const useStyles = makeStyles((theme) => ({
           },
         },
       },
-      "& .flex-grow-1": {
-        flexGrow: 1,
-      },
-    },
-    "& .MuiTextField-root": {
-      borderRadius: 4,
-      backgroundColor: bgLightestShade,
-      "& .MuiSvgIcon-root": {
-        width: "1.25rem",
-        borderRadius: 0,
-        color: paragraph,
-        height: "auto",
-      },
-      "& .MuiInput-root": {
-        "&:before": {
-          display: "none",
-        },
-        "&:after": {
-          display: "none",
-        },
-      },
-      "& .MuiInputBase-input": {
-        padding: theme.spacing(0),
-        fontSize: ".88rem",
-      },
     },
     "& .MuiBreadcrumbs-root": {
       padding: theme.spacing(1),
@@ -293,37 +227,16 @@ const useStyles = makeStyles((theme) => ({
           borderRadius: 0,
           height: "auto",
         },
-        "& .MuiBreadcrumbs-separator": {
-          fontSize: ".693rem",
-          lineHeight: 1,
-          color: paragraph,
-          fontWeight: "bold",
-        },
         "& .MuiBreadcrumbs-li": {
-          lineHeight: 1,
           "& .MuiTypography-root": {
-            fontSize: ".693rem",
-            fontWeight: "bold",
-            color: paragraph,
-            lineHeight: 1,
-          },
-          "& .MuiLink-root": {
+            fontWeight: 'bold',
             fontSize: ".693rem",
             lineHeight: 1,
-            fontWeight: "bold",
-            display: "block",
-            color: bgInputs,
-            cursor: "pointer",
+            cursor: 'pointer',
           },
         },
       },
     },
-  },
-  circularProgress: {
-    height: '40px',
-    width: '40px',
-    position: 'relative',
-    left: '45%',
   },
   fromOSBTabPanel: {
     backgroundColor: bgLightest,
@@ -337,6 +250,12 @@ const useStyles = makeStyles((theme) => ({
         height: '2.5rem',
         borderRadius: '2px',
         paddingLeft: '0.5rem',
+        "&:before": {
+            display: "none",
+          },
+          "&:after": {
+            display: "none",
+          },
       },
     },
   },
@@ -432,16 +351,14 @@ export default (props: WorkspaceEditProps) => {
     <Box className={classes.root}>
       <Tabs className={classes.tabs} onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options" variant="fullWidth">
         <Tab 
-          className={classes.tab}
           label={<>
-            <Typography className={classes.tabTitle} component="span">By URL</Typography>
+            <Typography component="span">By URL</Typography>
             <BackupIcon />
           </>} 
         />
-        <Tab 
-          className={classes.tab}
+        <Tab
           label={<>
-            <Typography className={classes.tabTitle} component="span">From OSB Repository</Typography>
+            <Typography component="span">From OSB Repository</Typography>
             <LinkIcon />
             </>}
         />
@@ -506,7 +423,12 @@ export default (props: WorkspaceEditProps) => {
             <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedArray}/>
             </Box>
             :
-             <CircularProgress className={classes.circularProgress} />
+             <CircularProgress size={40} 
+             style={{
+                position: 'relative',
+                left: '50%',
+              }} 
+             />
           } 
           </Box>
           <Grid container spacing={1}>
