@@ -112,6 +112,20 @@ steps:
     type: parallel
     stage: build
     steps:
+      sentry:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/sentry
+        title: Sentry
+        working_directory: ./build/applications/sentry
       common:
         type: build
         stage: build
@@ -224,6 +238,34 @@ steps:
         image_name: osb/volumemanager
         title: Volumemanager
         working_directory: ./build/applications/volumemanager/server
+      samples:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/samples
+        title: Samples
+        working_directory: ./build/applications/samples
+      samples-sum:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/samples-sum
+        title: Samples sum
+        working_directory: ./build/applications/samples/tasks/sum
       netpyne:
         type: build
         stage: build
@@ -364,8 +406,11 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_apps_workspaces_secrets_github-user=${{GITHUB-USER}}
-    - CUSTOM_apps_workspaces_secrets_github-token=${{GITHUB-TOKEN}}
+    - CUSTOM_apps_sentry_harness_secrets_email-server=${{EMAIL-SERVER}}
+    - CUSTOM_apps_sentry_harness_secrets_email-user=${{EMAIL-USER}}
+    - CUSTOM_apps_sentry_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+    - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+    - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
   publish:
     type: parallel
     stage: publish
@@ -399,6 +444,14 @@ steps:
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_sentry:
+        stage: publish
+        type: push
+        title: Sentry
+        candidate: '${{REGISTRY}}/osb/sentry:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -463,6 +516,22 @@ steps:
         type: push
         title: Volumemanager
         candidate: '${{REGISTRY}}/osb/volumemanager:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_samples:
+        stage: publish
+        type: push
+        title: Samples
+        candidate: '${{REGISTRY}}/osb/samples:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_samples-sum:
+        stage: publish
+        type: push
+        title: Samples sum
+        candidate: '${{REGISTRY}}/osb/samples-sum:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
