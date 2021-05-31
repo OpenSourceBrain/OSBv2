@@ -21,5 +21,3 @@ steps:
       - HELM_REPO_CONTEXT_PATH=
       - TIMEOUT=600s
       - VALUESFILE_values=./deployment/helm/values.yaml
-      - CUSTOM_apps_workspaces_github_token=${{GITHUB_TOKEN}}
-      - CUSTOM_apps_workspaces_github_user=${{GITHUB_USER}}

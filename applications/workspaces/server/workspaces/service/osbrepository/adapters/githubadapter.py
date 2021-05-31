@@ -1,5 +1,3 @@
-import base64
-
 import requests
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
@@ -9,11 +7,6 @@ import workspaces.service.workflow as workflow
 from workspaces.models import GITRepositoryResource, RepositoryResourceNode
 
 from .utils import add_to_tree
-
-GITHUB_USER = get_secret("workspaces", "github-user")
-GITHUB_TOKEN = get_secret("workspaces", "github-token")
-
-logger.debug("GitHub user:%s, token:%s.", GITHUB_USER, GITHUB_TOKEN)
 
 
 def _clean_url_and_end_with_slash(url):
@@ -34,7 +27,11 @@ class GitHubAdapter:
         self.download_base_url = _clean_url_and_end_with_slash(self.uri)
 
     def get_json(self, uri):
-        r = requests.get(uri, auth=(GITHUB_USER, GITHUB_TOKEN))
+        r = requests.get(
+            uri,
+            auth=(get_secret("github-user"),
+                  get_secret("github-token"))
+        )
         if r.status_code == 200:
             return r.json()
         elif r.status_code == 403:

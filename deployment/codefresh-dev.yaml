@@ -47,6 +47,20 @@ steps:
     type: parallel
     stage: build
     steps:
+      cloudharness-frontend-build:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-frontend-build
+        title: Cloudharness frontend build
+        working_directory: ./build
       cloudharness-base:
         type: build
         stage: build
@@ -75,20 +89,6 @@ steps:
         image_name: osb/cloudharness-base-debian
         title: Cloudharness base debian
         working_directory: ./build
-      cloudharness-frontend-build:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/cloudharness-frontend-build
-        title: Cloudharness frontend build
-        working_directory: ./build
   build_static_images:
     title: Build static images
     type: parallel
@@ -112,62 +112,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      volumemanager:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/volumemanager
-        title: Volumemanager
-        working_directory: ./build/applications/volumemanager/server
-      accounts:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/accounts
-        title: Accounts
-        working_directory: ./build/applications/accounts
-      osb-portal:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/osb-portal
-        title: Osb portal
-        working_directory: ./build/applications/osb-portal
-      events:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/events
-        title: Events
-        working_directory: ./build/applications/events
       common:
         type: build
         stage: build
@@ -196,7 +140,7 @@ steps:
         image_name: osb/jupyterhub
         title: Jupyterhub
         working_directory: ./build/applications/jupyterhub
-      workspaces-scan-workspace:
+      osb-portal:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
@@ -207,23 +151,9 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/workspaces-scan-workspace
-        title: Workspaces scan workspace
-        working_directory: ./build/applications/workspaces/tasks/scan-workspace
-      workspaces-github-copy:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/workspaces-github-copy
-        title: Workspaces github copy
-        working_directory: ./build/applications/workspaces/tasks/github-copy
+        image_name: osb/osb-portal
+        title: Osb portal
+        working_directory: ./build/applications/osb-portal
       workspaces:
         type: build
         stage: build
@@ -238,7 +168,7 @@ steps:
         image_name: osb/workspaces
         title: Workspaces
         working_directory: ./build/applications/workspaces/server
-      workflows-print-file:
+      workspaces-github-copy:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
@@ -249,10 +179,10 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/workflows-print-file
-        title: Workflows print file
-        working_directory: ./build/applications/workflows/tasks/print-file
-      workflows-extract-download:
+        image_name: osb/workspaces-github-copy
+        title: Workspaces github copy
+        working_directory: ./build/applications/workspaces/tasks/github-copy
+      workspaces-scan-workspace:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
@@ -263,9 +193,107 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/workflows-extract-download
-        title: Workflows extract download
-        working_directory: ./build/applications/workflows/tasks/extract-download
+        image_name: osb/workspaces-scan-workspace
+        title: Workspaces scan workspace
+        working_directory: ./build/applications/workspaces/tasks/scan-workspace
+      nwb-explorer:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/nwb-explorer
+        title: Nwb explorer
+        working_directory: ./build/applications/nwb-explorer
+      volumemanager:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/volumemanager
+        title: Volumemanager
+        working_directory: ./build/applications/volumemanager/server
+      netpyne:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/netpyne
+        title: Netpyne
+        working_directory: ./build/applications/netpyne
+      accounts:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/accounts
+        title: Accounts
+        working_directory: ./build/applications/accounts
+      events:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/events
+        title: Events
+        working_directory: ./build/applications/events
+      workflows:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/workflows
+        title: Workflows
+        working_directory: ./build/applications/workflows/server
+      workflows-extract-s3:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/workflows-extract-s3
+        title: Workflows extract s3
+        working_directory: ./build/applications/workflows/tasks/extract-s3
       workflows-send-result-event:
         type: build
         stage: build
@@ -294,7 +322,7 @@ steps:
         image_name: osb/workflows-notify-queue
         title: Workflows notify queue
         working_directory: ./build/applications/workflows/tasks/notify-queue
-      workflows-extract-s3:
+      workflows-print-file:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
@@ -305,10 +333,10 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/workflows-extract-s3
-        title: Workflows extract s3
-        working_directory: ./build/applications/workflows/tasks/extract-s3
-      workflows:
+        image_name: osb/workflows-print-file
+        title: Workflows print file
+        working_directory: ./build/applications/workflows/tasks/print-file
+      workflows-extract-download:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
@@ -319,9 +347,9 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/workflows
-        title: Workflows
-        working_directory: ./build/applications/workflows/server
+        image_name: osb/workflows-extract-download
+        title: Workflows extract download
+        working_directory: ./build/applications/workflows/tasks/extract-download
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.4.1
@@ -336,12 +364,20 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_apps_workspaces_github_token=${{GITHUB_TOKEN}}
-    - CUSTOM_apps_workspaces_github_user=${{GITHUB_USER}}
+    - CUSTOM_apps_workspaces_secrets_github-user=${{GITHUB-USER}}
+    - CUSTOM_apps_workspaces_secrets_github-token=${{GITHUB-TOKEN}}
   publish:
     type: parallel
     stage: publish
     steps:
+      publish_cloudharness-frontend-build:
+        stage: publish
+        type: push
+        title: Cloudharness frontend build
+        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_cloudharness-base:
         stage: publish
         type: push
@@ -358,51 +394,11 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-frontend-build:
-        stage: publish
-        type: push
-        title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_cloudharness-flask:
         stage: publish
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_volumemanager:
-        stage: publish
-        type: push
-        title: Volumemanager
-        candidate: '${{REGISTRY}}/osb/volumemanager:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts:
-        stage: publish
-        type: push
-        title: Accounts
-        candidate: '${{REGISTRY}}/osb/accounts:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_osb-portal:
-        stage: publish
-        type: push
-        title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_events:
-        stage: publish
-        type: push
-        title: Events
-        candidate: '${{REGISTRY}}/osb/events:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -422,19 +418,11 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-scan-workspace:
+      publish_osb-portal:
         stage: publish
         type: push
-        title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-github-copy:
-        stage: publish
-        type: push
-        title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}'
+        title: Osb portal
+        candidate: '${{REGISTRY}}/osb/osb-portal:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -446,19 +434,75 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-print-file:
+      publish_workspaces-github-copy:
         stage: publish
         type: push
-        title: Workflows print file
-        candidate: '${{REGISTRY}}/osb/workflows-print-file:${{CF_BUILD_ID}}'
+        title: Workspaces github copy
+        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-download:
+      publish_workspaces-scan-workspace:
         stage: publish
         type: push
-        title: Workflows extract download
-        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}'
+        title: Workspaces scan workspace
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nwb-explorer:
+        stage: publish
+        type: push
+        title: Nwb explorer
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_volumemanager:
+        stage: publish
+        type: push
+        title: Volumemanager
+        candidate: '${{REGISTRY}}/osb/volumemanager:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_netpyne:
+        stage: publish
+        type: push
+        title: Netpyne
+        candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_accounts:
+        stage: publish
+        type: push
+        title: Accounts
+        candidate: '${{REGISTRY}}/osb/accounts:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_events:
+        stage: publish
+        type: push
+        title: Events
+        candidate: '${{REGISTRY}}/osb/events:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workflows:
+        stage: publish
+        type: push
+        title: Workflows
+        candidate: '${{REGISTRY}}/osb/workflows:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workflows-extract-s3:
+        stage: publish
+        type: push
+        title: Workflows extract s3
+        candidate: '${{REGISTRY}}/osb/workflows-extract-s3:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -478,19 +522,19 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-s3:
+      publish_workflows-print-file:
         stage: publish
         type: push
-        title: Workflows extract s3
-        candidate: '${{REGISTRY}}/osb/workflows-extract-s3:${{CF_BUILD_ID}}'
+        title: Workflows print file
+        candidate: '${{REGISTRY}}/osb/workflows-print-file:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows:
+      publish_workflows-extract-download:
         stage: publish
         type: push
-        title: Workflows
-        candidate: '${{REGISTRY}}/osb/workflows:${{CF_BUILD_ID}}'
+        title: Workflows extract download
+        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
