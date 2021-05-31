@@ -23,10 +23,8 @@ harness:
       size: 4G
       mountpath: /usr/src/app/workspaces/static/workspaces
   secrets:
-    - name: workspaces
-      key: github-user
-    - name: workspaces
-      key: github-token
+    github-user:
+    github-token:
   dependencies:
     build:
       - cloudharness-base
