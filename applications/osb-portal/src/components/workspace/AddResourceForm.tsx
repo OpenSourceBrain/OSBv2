@@ -7,9 +7,11 @@ import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import Avatar from "@material-ui/core/Avatar";
 import BackupIcon from '@material-ui/icons/Backup';
 import LinkIcon from '@material-ui/icons/Link';
 import PublishIcon from '@material-ui/icons/Publish';
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 import RepositoryResourceBrowser from '../repository/RepositoryResourceBrowser';
 import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService';
@@ -285,17 +287,35 @@ export default (props: WorkspaceEditProps) => {
 
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
-  const [repository, setRepository] = React.useState<OSBRepository>();
+  const [repository, setRepository] = React.useState<OSBRepository>(null);
+
+  const [repositoryLoading, setRepositoryLoading] = React.useState(false);
+
+  const [repositories, setRepositories] = React.useState<OSBRepository[]>(null);
 
   React.useEffect(() => {
-    RepositoryService.getRepository(1).then((repo) =>
-    setRepository(repo)
+    RepositoryService.getRepositories(1).then((repos) =>
+    setRepositories(repos)
     );
   }, []);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
     setTabValue(newTabValue);
     setFromOSBRepositoryConfirmation(null);
+    setChecked([]);
+  }
+
+  const loadRepository = (repositoryId: number) => {
+    setRepositoryLoading(true);
+    RepositoryService.getRepository(repositoryId).then((repo) => {
+      setRepository(repo);
+    });
+  }
+
+  const handleBackAction = () => {
+    setRepositoryLoading(false);
+    setRepository(null);
+    console.log(repositories);
     setChecked([]);
   }
 
@@ -416,20 +436,87 @@ export default (props: WorkspaceEditProps) => {
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
           <Box className={classes.fromOSBTabPanel}>
-          {repository ? 
-            <Box 
-            className={classes.repositoryBrowserContainer}
-            >
-            <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedArray}/>
-            </Box>
+            {repositoryLoading ?
+              repository ?
+              <Box 
+              className={classes.repositoryBrowserContainer}
+              >
+              <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
+              </Box> :
+              <CircularProgress size={40} 
+                style={{
+                    position: 'relative',
+                    left: '45%',
+                  }} 
+              /> 
+              
             :
-             <CircularProgress size={40} 
-             style={{
-                position: 'relative',
-                left: '50%',
-              }} 
-             />
-          } 
+            repositories ?
+            <Box className={classes.repositoryBrowserContainer}>
+            {repositories.map((repository) => (
+              <Grid
+                container={true}
+                className="row"
+                spacing={0}
+                key={repository.id}
+              >
+                <Grid item={true} xs={12} sm={4} md={6}>
+                  <Box className="col">
+                    <Typography component="strong">
+                      {repository.name}
+                    </Typography>
+                    <Typography>{repository.summary}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item={true} xs={12} sm={4} md={5}>
+                  <Box
+                    className="col"
+                    display="flex"
+                    alignItems="center"
+                    flexWrap="wrap"
+                  >
+                    {repository.contentTypes.split(",").map((type, index) => (
+                      <Box
+                        className="tag"
+                        display="flex"
+                        alignItems="center"
+                        paddingX={1}
+                        marginY={1}
+                        key={type}
+                      >
+                        <FiberManualRecordIcon
+                          color={index % 2 === 0 ? "primary" : "secondary"}
+                        />
+                        {type}
+                      </Box>
+                    ))}
+                  </Box>
+                </Grid>
+                <Grid item={true} xs={12} sm={12} md={1}>
+                  <Box
+                    className="col"
+                    display="flex"
+                    flex={1}
+                    alignItems="center"
+                  >
+                    <Button onClick={ () => loadRepository(repository.id) }>
+                      <Avatar src="/images/arrow_right.svg" />
+                    </Button>
+                    
+                  </Box>
+                </Grid>
+              </Grid>
+            ))}
+          </Box> :
+          (
+            <CircularProgress size={40} 
+              style={{
+                  position: 'relative',
+                  left: '45%',
+                }} 
+            /> 
+          )}
+
           </Box>
           <Grid container spacing={1}>
             <Grid item xs={8}>
