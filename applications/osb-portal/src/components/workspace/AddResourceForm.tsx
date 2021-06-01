@@ -154,6 +154,11 @@ const useStyles = makeStyles((theme) => ({
   repositoryBrowserContainer: {
     backgroundColor: bgLightest,
     borderRadius: radius,
+    "& .MuiButton-root": {
+      display: 'flex',
+      minWidth: 'fit-content',
+      marginLeft: theme.spacing(1),
+    },
     "& .MuiTextField-root": {
       width: '96%',
       marginRight: '2%',
@@ -298,10 +303,9 @@ const useStyles = makeStyles((theme) => ({
         },
         "& .MuiBreadcrumbs-li": {
           "& .MuiTypography-root": {
-            fontWeight: 'bold',
-            fontSize: ".693rem",
             lineHeight: 1,
             cursor: 'pointer',
+            color: fontColor,
           },
         },
       },
@@ -361,7 +365,6 @@ export default (props: WorkspaceEditProps) => {
   const handleBackAction = () => {
     setRepositoryLoading(false);
     setRepository(null);
-    console.log(repositories);
     setChecked([]);
   }
 
@@ -583,7 +586,7 @@ export default (props: WorkspaceEditProps) => {
               
             </Grid>
             <Grid item>
-              <Button variant="contained" onClick={handleCopy} disabled={waiting}>Copy</Button>
+              <Button variant="contained" onClick={handleCopy} disabled={waiting || repository == null}>Copy</Button>
             </Grid>
           </Grid>
         </TabPanel>
