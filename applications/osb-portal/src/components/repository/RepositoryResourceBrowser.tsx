@@ -15,9 +15,12 @@ import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import FolderIcon from "@material-ui/icons/Folder";
-import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-export default ({ repository, checkedChanged }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any }) => {
+import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
+import Button from "@material-ui/core/Button";
+
+export default ({ repository, checkedChanged, backAction }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void }) => {
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
   const [currentPath, setCurrentPath] = React.useState<RepositoryResourceNode[]>([repository.contextResources]);
   const handleToggle = (value: any) => () => '';
@@ -42,6 +45,9 @@ export default ({ repository, checkedChanged }: { repository: OSBRepository, che
       separator={<Avatar src="/images/separator.svg" />}
       aria-label="breadcrumb"
     >
+      <Button onClick={() => backAction()}>
+        <ArrowBackIosIcon fontSize="small"/>
+      </Button>
       {
         currentPath.map((element, i) =>
           <Link
