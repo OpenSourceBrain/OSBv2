@@ -20,6 +20,7 @@ import * as Icons from "../icons";
 
 import {
   checkBoxColor,
+  bgDarker,
 } from "../../theme";
 
 interface DialogProps {
@@ -35,10 +36,10 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     "& .MuiDialogContent-root": {
       padding: 0,
-      backgroundColor: '#3b3b3b',
+      backgroundColor: bgDarker,
     },
     "& .MuiDialogTitle-root": {
-      backgroundColor: '#3b3b3b',
+      backgroundColor: bgDarker,
     },
   },
   closeIcon: {
