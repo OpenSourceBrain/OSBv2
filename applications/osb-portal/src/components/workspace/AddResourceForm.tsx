@@ -29,7 +29,11 @@ import {
   paragraph,
   bgLightestShade,
   radius,
+  bgLight,
+  bgDarker,
   checkBoxColor,
+  teal,
+  purple,
 } from "../../theme";
 import WorkspaceService from "../../service/WorkspaceService";
 
@@ -148,16 +152,79 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   repositoryBrowserContainer: {
+    backgroundColor: bgLightest,
+    borderRadius: radius,
+    "& .MuiTextField-root": {
+      width: '96%',
+      marginRight: '2%',
+      marginLeft: '2%',
+      "& .MuiInput-root": {
+        background: bgLightestShade,
+        height: '2.5rem',
+        borderRadius: '2px',
+        paddingLeft: '0.5rem',
+        "&:before": {
+            display: "none",
+          },
+          "&:after": {
+            display: "none",
+          },
+      },
+    },
     "& .scrollbar": {
       maxHeight: '400px',
       overflow: 'auto',
+      paddingLeft: '10px',
+      "& .MuiGrid-container": {
+        "&:hover": {
+          backgroundColor: bgLightestShade,
+        },
+        borderBottom: `0.01rem solid ${bgLightestShade}`,
+        "& .MuiGrid-grid-md-6": {
+          justifyContent: 'center',
+        },
+        "& .MuiGrid-item": {
+          "& .MuiBox-root": {
+            "& p": {
+              color: paragraph,
+            },
+            "& .tag": {
+              background: bgLightestShade,
+              textTransform: 'capitalize',
+              borderRadius: '1rem',
+              color: paragraph,
+              height: '1.9rem',
+              fontSize: "0.75rem",
+              margin: "0.5rem",
+              "& .MuiSvgIcon-root": {
+                width: ".63rem",
+                height: ".63rem",
+                marginRight: theme.spacing(1),
+                "&.MuiSvgIcon-colorPrimary": {
+                  color: teal,
+                },
+                "&.MuiSvgIcon-colorSecondary": {
+                  color: purple,
+                },
+              },
+            },
+            "& .MuiButton-root": {
+              "& .MuiButton-label": {
+                "& .MuiAvatar-root": {
+                  width: ".5rem",
+                  height: "auto",
+                },
+              },
+            },
+          },
+        },
+      },
       "&::-webkit-scrollbar-thumb": {
         backgroundColor: bgInputs,
       },
       "&::-webkit-scrollbar-track": {
         backgroundColor: 'transparent',
       },
-      paddingRight: 0,
       "& .MuiList-root": {
         paddingRight: '1rem',
         marginTop: theme.spacing(1),
@@ -237,27 +304,6 @@ const useStyles = makeStyles((theme) => ({
             cursor: 'pointer',
           },
         },
-      },
-    },
-  },
-  fromOSBTabPanel: {
-    backgroundColor: bgLightest,
-    borderRadius: radius,
-    "& .MuiTextField-root": {
-      width: '96%',
-      marginRight: '2%',
-      marginLeft: '2%',
-      "& .MuiInput-root": {
-        background: '#3b3b3b',
-        height: '2.5rem',
-        borderRadius: '2px',
-        paddingLeft: '0.5rem',
-        "&:before": {
-            display: "none",
-          },
-          "&:after": {
-            display: "none",
-          },
       },
     },
   },
@@ -435,14 +481,14 @@ export default (props: WorkspaceEditProps) => {
           </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <Box className={classes.fromOSBTabPanel}>
+          <Box 
+            className={classes.repositoryBrowserContainer}
+          >
             {repositoryLoading ?
               repository ?
-              <Box 
-              className={classes.repositoryBrowserContainer}
-              >
+              
               <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
-              </Box> :
+            :
               <CircularProgress size={40} 
                 style={{
                     position: 'relative',
@@ -452,7 +498,7 @@ export default (props: WorkspaceEditProps) => {
               
             :
             repositories ?
-            <Box className={classes.repositoryBrowserContainer}>
+            <Box className="scrollbar">
             {repositories.map((repository) => (
               <Grid
                 container={true}
@@ -460,7 +506,7 @@ export default (props: WorkspaceEditProps) => {
                 spacing={0}
                 key={repository.id}
               >
-                <Grid item={true} xs={12} sm={4} md={6}>
+                <Grid item={true} xs={12} sm={4} md={5}>
                   <Box className="col">
                     <Typography component="strong">
                       {repository.name}
@@ -468,7 +514,7 @@ export default (props: WorkspaceEditProps) => {
                     <Typography>{repository.summary}</Typography>
                   </Box>
                 </Grid>
-                <Grid item={true} xs={12} sm={4} md={5}>
+                <Grid item={true} xs={12} sm={4} md={6}>
                   <Box
                     className="col"
                     display="flex"
@@ -516,8 +562,7 @@ export default (props: WorkspaceEditProps) => {
                 }} 
             /> 
           )}
-
-          </Box>
+          </Box> 
           <Grid container spacing={1}>
             <Grid item xs={8}>
               {
