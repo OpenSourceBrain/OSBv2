@@ -411,7 +411,6 @@ export const RepositoryPage = () => {
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
-      setRepository(repo);
       var i;
       for(i = 0; i < repo.contextResources.children.length; i++){
         if(repo.contextResources.children[i].resource.name === "images"){
