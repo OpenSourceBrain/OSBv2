@@ -21,6 +21,7 @@ import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
+import { ExistingWorkspaceEditor } from "../components/workspace/ExistingWorkspaceEditor";
 import { Workspace } from "../types/workspace";
 
 import {
@@ -409,6 +410,7 @@ export const RepositoryPage = () => {
   const [repository, setRepository] = React.useState<OSBRepository>();
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
+  const [showExisitngWorkspaceEditor, setShowExisitngWorkspaceEditor] = React.useState(false);
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
       let i;
@@ -428,6 +430,8 @@ export const RepositoryPage = () => {
   }, [])
 
   const openDialog = () => setShowWorkspaceEditor(!showWorkspaceEditor);
+
+  const openExisitngWorkspaceDialog = () => setShowExisitngWorkspaceEditor(!showExisitngWorkspaceEditor);
 
   const confirmWorkspaceCreation = (dialogTitle: string, dialogContent: string) => {
     confirmationDialogTitle = dialogTitle;
@@ -528,6 +532,9 @@ export const RepositoryPage = () => {
             </Box>
           </Box>
           <Box>
+            <Button variant="outlined" disableElevation={true} color="secondary" style={{borderColor: 'white'}} onClick={openExisitngWorkspaceDialog}>
+              Add to existing workspace
+            </Button>
             <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
               <AddIcon />
               Create new workspace
@@ -546,7 +553,7 @@ export const RepositoryPage = () => {
                     </Button>
                   </a>
                   <Typography component="h3" className="primary-heading">
-                    Preview
+                    README
                   </Typography>
                   <Box className="preview-box scrollbar">
                     <ReactMarkdown>
@@ -611,7 +618,9 @@ export const RepositoryPage = () => {
           </DialogActions>
         </Dialog>
       }
-
+      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog}>
+        <ExistingWorkspaceEditor />
+      </OSBDialog>
     </>
   );
 };
