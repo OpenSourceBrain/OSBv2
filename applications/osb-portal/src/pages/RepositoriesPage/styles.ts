@@ -117,7 +117,7 @@ export default makeStyles((theme) => ({
             marginBottom: theme.spacing(1),
           },
         },
-  
+
         "& .tag": {
           background: bgLightestShade,
           textTransform: "capitalize",
@@ -138,7 +138,7 @@ export default makeStyles((theme) => ({
             },
           },
         },
-  
+
         "& .col": {
           borderWidth: 0,
           "& .MuiSvgIcon-root": {

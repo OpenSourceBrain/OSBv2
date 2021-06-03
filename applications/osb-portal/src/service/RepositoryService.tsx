@@ -39,7 +39,7 @@ class RepositoryService {
   }
 
   async getRepositoriesDetails(page: number, size = PER_PAGE_DEFAULT): Promise<InlineResponse2001> {
-    return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size }));
+    return (this.workspacesApi.osbrepositoryGet({ page, perPage: size }));
   }
 
   async getUserRepositories(userId: string, page: number, size = PER_PAGE_DEFAULT): Promise<OSBRepository[]> {
@@ -47,7 +47,7 @@ class RepositoryService {
   }
 
   async getUserRepositoriesDetails(userId: string, page: number, size = PER_PAGE_DEFAULT): Promise<InlineResponse2001> {
-    return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size, q: `user_id=${userId}` }));
+    return (this.workspacesApi.osbrepositoryGet({ page, perPage: size, q: `user_id=${userId}` }));
   }
 
   async getRepository(id: number): Promise<OSBRepository> {

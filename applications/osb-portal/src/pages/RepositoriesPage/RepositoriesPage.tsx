@@ -184,10 +184,10 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 </Grid>
               ))}
             </Box>
-            
+
             {totalPages > 1 ?
               <Box className={classes.paginationBar}>
-              <Pagination count={totalPages} color="primary" showFirstButton showLastButton onChange={handlePageChange} />
+              <Pagination count={totalPages} color="primary" showFirstButton={true} showLastButton={true} onChange={handlePageChange} />
               </Box> : null
             }
           </Box>

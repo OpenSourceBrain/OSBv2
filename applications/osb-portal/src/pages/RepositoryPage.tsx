@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: bgDarker,
     border: 'none',
     "& .MuiChip-deleteIcon": {
-     color: '#a6a6a6',
+      color: '#a6a6a6',
     },
   },
   chipList: {
@@ -401,7 +401,7 @@ let checked: RepositoryResourceNode[] = [];
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
-let images: {imagePath: string, imageName: string}[] = [];
+const images: { imagePath: string, imageName: string }[] = [];
 
 export const RepositoryPage = () => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
@@ -411,11 +411,11 @@ export const RepositoryPage = () => {
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
-      var i;
-      for(i = 0; i < repo.contextResources.children.length; i++){
-        if(repo.contextResources.children[i].resource.name === "images"){
-          var j;
-          for(j = 0; j < repo.contextResources.children[i].children.length; j++){
+      let i;
+      for (i = 0; i < repo.contextResources.children.length; i++) {
+        if (repo.contextResources.children[i].resource.name === "images") {
+          let j;
+          for (j = 0; j < repo.contextResources.children[i].children.length; j++) {
             images.push({
               imagePath: repo.contextResources.children[i].children[j].resource.path.toString(),
               imageName: repo.contextResources.children[i].children[j].resource.name.toString(),
@@ -423,7 +423,7 @@ export const RepositoryPage = () => {
           }
         }
       }
-      setRepository({...repo, description: convertImgInMarkdown(repo.description, repo.uri)});
+      setRepository({ ...repo, description: convertImgInMarkdown(repo.description, repo.uri) });
     })
   }, [])
 
@@ -470,15 +470,15 @@ export const RepositoryPage = () => {
     const filename = splitfilename.join('.');
     const isFolder = chipItem.children && chipItem.children.length;
 
-    if(extension) {
+    if (extension) {
       return (
         <>
           <Typography component="span">{filename}</Typography><Typography component="span" className={classes.fileExtension}>.{extension}</Typography>
         </>
       );
     }
-    else{
-      return(
+    else {
+      return (
         <><Typography component="span">{filename}</Typography></>
       );
     }
@@ -488,9 +488,9 @@ export const RepositoryPage = () => {
     const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
     const imageTags: string[] = []
     const imagePaths: string[] = [];
-    let img;
-    while ((img = imgRex.exec(str))) {
-      if(!img[1].startsWith('http')){
+
+    for (const img of imgRex.exec(str)) {
+      if (!img[1].startsWith('http')) {
         imageTags.push(img[0]);
         imagePaths.push(img[1]);
       }
@@ -502,10 +502,10 @@ export const RepositoryPage = () => {
   const convertImgInMarkdown = (markDown: string, repositoryUri: string) => {
     let mark = markDown;
     const [imageTags, imagePaths] = getImages(markDown);
-    const updatedImages : string[] = [];
+    const updatedImages: string[] = [];
     imagePaths.map((image) => {
       const imageFromGithub = images.find(githubPath => `images/${githubPath.imageName}` === image);
-      let y = `[![img](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})`;
+      const y = `[![img](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})`;
       updatedImages.push(y.replace('/branches', '').replace('/branches', ''));
     });
     for (let i = 0; i < updatedImages.length; i++) {
@@ -590,7 +590,7 @@ export const RepositoryPage = () => {
               Files selected
             </Typography>
             <Box className={classes.chipList}>
-              {checked.map((chipItem) => 
+              {checked.map((chipItem) =>
                 <Chip className={classes.chip} key={chipItem.resource.path} label={createChipLabel(chipItem)} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />
               )}
             </Box>

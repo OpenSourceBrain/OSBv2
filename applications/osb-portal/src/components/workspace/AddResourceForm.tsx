@@ -19,7 +19,7 @@ import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspace
 import { Workspace } from '../../types/workspace';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RepositoryService from "../../service/RepositoryService";
-import { 
+import {
   bgRegular,
   bgLightest,
   bgLighter,
@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: '2px',
     },
     "& .MuiTextField-root": {
-      "& .MuiFormHelperText-root":{
+      "& .MuiFormHelperText-root": {
         fontSize: '0.7rem',
         color: fontColor,
       },
@@ -169,11 +169,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '2px',
         paddingLeft: '0.5rem',
         "&:before": {
-            display: "none",
-          },
-          "&:after": {
-            display: "none",
-          },
+          display: "none",
+        },
+        "&:after": {
+          display: "none",
+        },
       },
     },
     "& .scrollbar": {
@@ -337,7 +337,7 @@ export default (props: WorkspaceEditProps) => {
 
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
-  const [repository, setRepository] = React.useState<OSBRepository>(null);
+  const [selectedRepository, setRepository] = React.useState<OSBRepository>(null);
 
   const [repositoryLoading, setRepositoryLoading] = React.useState(false);
 
@@ -345,7 +345,7 @@ export default (props: WorkspaceEditProps) => {
 
   React.useEffect(() => {
     RepositoryService.getRepositories(1).then((repos) =>
-    setRepositories(repos)
+      setRepositories(repos)
     );
   }, []);
 
@@ -401,7 +401,7 @@ export default (props: WorkspaceEditProps) => {
   }
 
   const handleCopy = () => {
-    if(checked.length === 0){
+    if (checked.length === 0) {
       setFromOSBRepositoryConfirmation("Please select a resource to add to your workspace.");
       return;
     }
@@ -419,17 +419,17 @@ export default (props: WorkspaceEditProps) => {
   return (
     <Box className={classes.root}>
       <Tabs className={classes.tabs} onChange={handleTabChange} value={tabValue} aria-label="add-resourse-to-workspace-options" variant="fullWidth">
-        <Tab 
+        <Tab
           label={<>
             <Typography component="span">By URL</Typography>
             <BackupIcon />
-          </>} 
+          </>}
         />
         <Tab
           label={<>
             <Typography component="span">From OSB Repository</Typography>
             <LinkIcon />
-            </>}
+          </>}
         />
         {/* <Tab
           className={classes.tab}
@@ -447,7 +447,7 @@ export default (props: WorkspaceEditProps) => {
                 id="resource-url-input"
                 key="input-resource-url"
                 error={Boolean(urlError)}
-                helperText={urlError ? urlError : "Only select files for which you have confirmed that you have the licence to use" }
+                helperText={urlError ? urlError : "Only select files for which you have confirmed that you have the licence to use"}
                 placeholder="Paste URL of resource"
                 fullWidth={true}
                 onChange={handleSetUrl}
@@ -484,109 +484,109 @@ export default (props: WorkspaceEditProps) => {
           </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <Box 
+          <Box
             className={classes.repositoryBrowserContainer}
           >
             {repositoryLoading ?
-              repository ?
-              
-              <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
-            :
-              <CircularProgress size={40} 
-                style={{
+              selectedRepository ?
+
+                <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction} />
+                :
+                <CircularProgress size={40}
+                  style={{
                     position: 'relative',
                     left: '45%',
-                  }} 
-              /> 
-              
-            :
-            repositories ?
-            <Box className="scrollbar">
-            {repositories.map((repository) => (
-              <Grid
-                container={true}
-                className="row"
-                spacing={0}
-                key={repository.id}
-              >
-                <Grid item={true} xs={12} sm={4} md={5}>
-                  <Box className="col">
-                    <Typography component="strong">
-                      {repository.name}
-                    </Typography>
-                    <Typography>{repository.summary}</Typography>
-                  </Box>
-                </Grid>
-                <Grid item={true} xs={12} sm={4} md={6}>
-                  <Box
-                    className="col"
-                    display="flex"
-                    alignItems="center"
-                    flexWrap="wrap"
-                  >
-                    {repository.contentTypes.split(",").map((type, index) => (
-                      <Box
-                        className="tag"
-                        display="flex"
-                        alignItems="center"
-                        paddingX={1}
-                        marginY={1}
-                        key={type}
-                      >
-                        <FiberManualRecordIcon
-                          color={index % 2 === 0 ? "primary" : "secondary"}
-                        />
-                        {type}
-                      </Box>
-                    ))}
-                  </Box>
-                </Grid>
-                <Grid item={true} xs={12} sm={12} md={1}>
-                  <Box
-                    className="col"
-                    display="flex"
-                    flex={1}
-                    alignItems="center"
-                  >
-                    <Button onClick={ () => loadRepository(repository.id) }>
-                      <Avatar src="/images/arrow_right.svg" />
-                    </Button>
-                    
-                  </Box>
-                </Grid>
-              </Grid>
-            ))}
-          </Box> :
-          (
-            <CircularProgress size={40} 
-              style={{
-                  position: 'relative',
-                  left: '45%',
-                }} 
-            /> 
-          )}
-          </Box> 
-          <Grid container spacing={1}>
-            <Grid item xs={8}>
+                  }}
+                />
+
+              :
+              repositories ?
+                <Box className="scrollbar">
+                  {repositories.map((repository) => (
+                    <Grid
+                      container={true}
+                      className="row"
+                      spacing={0}
+                      key={repository.id}
+                    >
+                      <Grid item={true} xs={12} sm={4} md={5}>
+                        <Box className="col">
+                          <Typography component="strong">
+                            {repository.name}
+                          </Typography>
+                          <Typography>{repository.summary}</Typography>
+                        </Box>
+                      </Grid>
+                      <Grid item={true} xs={12} sm={4} md={6}>
+                        <Box
+                          className="col"
+                          display="flex"
+                          alignItems="center"
+                          flexWrap="wrap"
+                        >
+                          {repository.contentTypes.split(",").map((type, index) => (
+                            <Box
+                              className="tag"
+                              display="flex"
+                              alignItems="center"
+                              paddingX={1}
+                              marginY={1}
+                              key={type}
+                            >
+                              <FiberManualRecordIcon
+                                color={index % 2 === 0 ? "primary" : "secondary"}
+                              />
+                              {type}
+                            </Box>
+                          ))}
+                        </Box>
+                      </Grid>
+                      <Grid item={true} xs={12} sm={12} md={1}>
+                        <Box
+                          className="col"
+                          display="flex"
+                          flex={1}
+                          alignItems="center"
+                        >
+                          <Button onClick={() => loadRepository(repository.id)}>
+                            <Avatar src="/images/arrow_right.svg" />
+                          </Button>
+
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  ))}
+                </Box> :
+                (
+                  <CircularProgress size={40}
+                    style={{
+                      position: 'relative',
+                      left: '45%',
+                    }}
+                  />
+                )}
+          </Box>
+          <Grid container={true} spacing={1}>
+            <Grid item={true} xs={8}>
               {
-                waiting ? <CircularProgress size={25}/> :
+                waiting ? <CircularProgress size={25} /> :
 
-                fromOSBRepositoryConfirmation ? 
+                  fromOSBRepositoryConfirmation ?
 
-                  <Typography component="h5">
-                    {fromOSBRepositoryConfirmation}
-                  </Typography> :
+                    <Typography component="h5">
+                      {fromOSBRepositoryConfirmation}
+                    </Typography> :
 
-                  <Typography component="h6">
-                  Copy will duplicate the resource inside your workspace and use your storage quota.
-                  Link will add it as a reference and the resource inside your workspace will be updated
-                  when the repository is.
+                    <Typography component="h6">
+                      Copy will duplicate the resource inside your workspace and use your storage quota.
+                      Link will add it as a reference and the resource inside your workspace will be updated
+                      when the repository is.
                   </Typography>
               }
-              
+
             </Grid>
-            <Grid item>
-              <Button variant="contained" onClick={handleCopy} disabled={waiting || repository == null}>Copy</Button>
+            <Grid item={true}>
+              <Button variant="contained" onClick={handleCopy} disabled={waiting || selectedRepository == null}>Copy</Button>
             </Grid>
           </Grid>
         </TabPanel>

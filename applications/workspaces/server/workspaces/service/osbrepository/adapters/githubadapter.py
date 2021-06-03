@@ -22,7 +22,8 @@ class GitHubAdapter:
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.url
         self.api_url = _clean_url_and_end_with_slash(
-            self.uri.replace("https://github.com/", "https://api.github.com/repos/")
+            self.uri.replace("https://github.com/",
+                             "https://api.github.com/repos/")
         )
         self.download_base_url = _clean_url_and_end_with_slash(self.uri)
 
@@ -40,15 +41,17 @@ class GitHubAdapter:
             logger.info(error)
             raise Exception(f"GitHub adapter error: {error['message']}")
         else:
-            raise Exception(f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
+            raise Exception(
+                f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
 
     def get_contexts(self):
         branches = self.get_json(self.api_url + "branches")
         tags = self.get_json(self.api_url + "tags")
-        return list([context["name"] for context in branches + tags])
+        return [context["name"] for context in branches + tags]
 
     def get_resources(self, context):
-        contents = self.get_json(f"{self.api_url}git/trees/{context}?recursive=1")
+        contents = self.get_json(
+            f"{self.api_url}git/trees/{context}?recursive=1")
 
         tree = RepositoryResourceNode(
             resource=GITRepositoryResource(
@@ -91,13 +94,15 @@ class GitHubAdapter:
             description = base64.b64decode(result["content"]).decode("utf-8")
             return description
         except Exception as e:
-            logger.debug("unable to get the description from github, %", str(e))
+            logger.debug(
+                "unable to get the description from github, %", str(e))
             return ""
 
     def create_copy_task(self, workspace_id, name, folder, path):
         # download the resource
         name = name if name != "/" else self.osbrepository.name
-        folder = self.osbrepository.name + path.replace(self.download_base_url + "branches", "")
+        folder = self.osbrepository.name + \
+            path.replace(self.download_base_url + "branches", "")
         folder = folder[: folder.rfind("/")]
         # username / password are optional and future usage,
         # e.g. for accessing non public repos
