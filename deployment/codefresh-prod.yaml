@@ -55,8 +55,8 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
-    - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
+    - CUSTOM_apps_workspaces_secrets_github-user=${{GITHUB-USER}}
+    - CUSTOM_apps_workspaces_secrets_github-token=${{GITHUB-TOKEN}}
   approval:
     type: pending-approval
     stage: publish

@@ -47,20 +47,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      cloudharness-frontend-build:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/cloudharness-frontend-build
-        title: Cloudharness frontend build
-        working_directory: ./build
       cloudharness-base:
         type: build
         stage: build
@@ -88,6 +74,20 @@ steps:
         - REGISTRY=${{REGISTRY}}/osb/
         image_name: osb/cloudharness-base-debian
         title: Cloudharness base debian
+        working_directory: ./build
+      cloudharness-frontend-build:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-frontend-build
+        title: Cloudharness frontend build
         working_directory: ./build
   build_static_images:
     title: Build static images
@@ -364,8 +364,8 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
-    - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
+    - CUSTOM_apps_workspaces_secrets_github-user=${{GITHUB-USER}}
+    - CUSTOM_apps_workspaces_secrets_github-token=${{GITHUB-TOKEN}}
   publish:
     type: parallel
     stage: publish
