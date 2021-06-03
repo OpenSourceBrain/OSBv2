@@ -1010,6 +1010,10 @@ components:
       description: Resource Base
       type: object
       properties:
+        name:
+          type: string
+          example: file.ext
+          description: file name
         path:
           type: string
           example: https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/master/.gitignore
@@ -1021,10 +1025,6 @@ components:
         - description: GIT hub specific attributes of the RepositoryResource
           type: object
           properties:
-            name:
-              type: string
-              example: file.ext
-              description: file name
             osbrepository_id:
               type: integer
               description: OSB Repository id

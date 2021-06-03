@@ -27,17 +27,17 @@ import {
  */
 export interface FigshareRepositoryResource {
     /**
-     * Download URL of the Resource
-     * @type {string}
-     * @memberof FigshareRepositoryResource
-     */
-    path?: string;
-    /**
      * file name
      * @type {string}
      * @memberof FigshareRepositoryResource
      */
     name?: string;
+    /**
+     * Download URL of the Resource
+     * @type {string}
+     * @memberof FigshareRepositoryResource
+     */
+    path?: string;
     /**
      * OSB Repository id
      * @type {number}
@@ -56,8 +56,8 @@ export function FigshareRepositoryResourceFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'path': !exists(json, 'path') ? undefined : json['path'],
         'name': !exists(json, 'name') ? undefined : json['name'],
+        'path': !exists(json, 'path') ? undefined : json['path'],
         'osbrepositoryId': !exists(json, 'osbrepository_id') ? undefined : json['osbrepository_id'],
     };
 }
@@ -71,8 +71,8 @@ export function FigshareRepositoryResourceToJSON(value?: FigshareRepositoryResou
     }
     return {
         
-        'path': value.path,
         'name': value.name,
+        'path': value.path,
         'osbrepository_id': value.osbrepositoryId,
     };
 }
