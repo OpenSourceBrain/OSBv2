@@ -54,14 +54,18 @@ const useStyles = makeStyles((theme) => ({
     "& .chip-box-text": {
       color: bgInputs,
       fontSize: '0.88rem',
-      marginBottom: theme.spacing(1),
+      marginBottom: '5px',
       marginLeft: theme.spacing(1),
     }
   },
   chip: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(0.5),
     marginLeft: theme.spacing(1),
     backgroundColor: bgDarker,
+    border: 'none',
+    "& .MuiChip-deleteIcon": {
+     color: '#a6a6a6',
+    },
   },
   chipList: {
     display: 'flex',
@@ -93,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
+    maxHeight: '100%',
     backgroundColor: bgDarkest,
     "& .MuiCheckbox-colorSecondary": {
       color: checkBoxColor,
@@ -103,19 +108,18 @@ const useStyles = makeStyles((theme) => ({
     "& .scrollbar": {
       paddingRight: 0,
       marginTop: theme.spacing(2),
-      [theme.breakpoints.up("sm")]: {
-        maxHeight: "calc(100vh - 19.5rem)",
-      },
-    },
-    [theme.breakpoints.up("sm")]: {
-      height: "calc(100vh)",
+      height: '100%',
     },
     "& .main-content": {
       padding: theme.spacing(3),
-      overflow: "auto",
-
-      [theme.breakpoints.up("sm")]: {
-        height: "calc(100%)",
+      height: '83vh',
+      alignItems: 'stretch',
+      "& .MuiGrid-container": {
+        height: '100%',
+        alignItems: 'stretch',
+        "& .MuiGrid-item": {
+          height: '100%',
+        },
       },
       "& .MuiTextField-root": {
         borderRadius: 4,
@@ -250,17 +254,19 @@ const useStyles = makeStyles((theme) => ({
       "& .preview-box": {
         paddingRight: theme.spacing(2),
         paddingLeft: theme.spacing(2),
+        marginTop: theme.spacing(2),
         backgroundColor: 'rgba(0, 0, 0, 0.25)',
         boxShadow: '0px 0px 0px 3px rgba(0, 0, 0, 0.25)',
         borderRadius: radius,
         fontFamily: font,
         overflow: "auto",
         flexGrow: 1,
-        [theme.breakpoints.up("sm")]: {
-          height: "calc(100vh - 14.5rem)",
-        },
         "& a": {
           color: linkColor,
+          textDecoration: 'none',
+          "&:hover": {
+            textDecoration: 'underline',
+          },
         },
         "& pre": {
           padding: theme.spacing(2),
@@ -288,6 +294,9 @@ const useStyles = makeStyles((theme) => ({
         },
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: '#c4c4c4',
+        },
+        "& p a img": {
+          maxWidth: '25vw',
         },
       },
       "& .primary-heading": {
@@ -350,11 +359,6 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
           },
         },
-        "&:hover": {
-          "& .MuiButton-label": {
-            color: primaryColor,
-          },
-        },
         "& .MuiButton-label": {
           color: fontColor,
           [theme.breakpoints.down("xs")]: {
@@ -363,6 +367,23 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
+  },
+  resourceBrowserContainer: {
+    maxHeight: '100%',
+    overflow: 'auto',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: bgInputs,
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: 'transparent',
+    },
+    "& .MuiBox-root": {
+      overflow: 'initial',
+      height: 'fit-content',
+    },
+  },
+  fileExtension: {
+    color: bgInputs,
   },
 }));
 
@@ -380,7 +401,7 @@ let checked: RepositoryResourceNode[] = [];
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
-
+let images: {imagePath: string, imageName: string}[] = [];
 
 export const RepositoryPage = () => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
@@ -389,9 +410,21 @@ export const RepositoryPage = () => {
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   React.useEffect(() => {
-    RepositoryService.getRepository(+repositoryId).then((repo) =>
-      setRepository(repo)
-    )
+    RepositoryService.getRepository(+repositoryId).then((repo) => {
+      var i;
+      for(i = 0; i < repo.contextResources.children.length; i++){
+        if(repo.contextResources.children[i].resource.name === "images"){
+          var j;
+          for(j = 0; j < repo.contextResources.children[i].children.length; j++){
+            images.push({
+              imagePath: repo.contextResources.children[i].children[j].resource.path.toString(),
+              imageName: repo.contextResources.children[i].children[j].resource.name.toString(),
+            });
+          }
+        }
+      }
+      setRepository({...repo, description: convertImgInMarkdown(repo.description, repo.uri)});
+    })
   }, [])
 
   const openDialog = () => setShowWorkspaceEditor(!showWorkspaceEditor);
@@ -401,8 +434,6 @@ export const RepositoryPage = () => {
     confirmationDialogContent = dialogContent;
     setShowConfirmationDialog(true);
   }
-
-
 
   const classes = useStyles();
 
@@ -432,6 +463,56 @@ export const RepositoryPage = () => {
       confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
     });
   }
+
+  const createChipLabel = (chipItem: RepositoryResourceNode) => {
+    const splitfilename = chipItem.resource.name.split(".");
+    const extension = splitfilename.length > 1 ? splitfilename.pop() : null;
+    const filename = splitfilename.join('.');
+    const isFolder = chipItem.children && chipItem.children.length;
+
+    if(extension) {
+      return (
+        <>
+          <Typography component="span">{filename}</Typography><Typography component="span" className={classes.fileExtension}>.{extension}</Typography>
+        </>
+      );
+    }
+    else{
+      return(
+        <><Typography component="span">{filename}</Typography></>
+      );
+    }
+  }
+
+  const getImages = (str: string) => {
+    const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
+    const imageTags: string[] = []
+    const imagePaths: string[] = [];
+    let img;
+    while ((img = imgRex.exec(str))) {
+      if(!img[1].startsWith('http')){
+        imageTags.push(img[0]);
+        imagePaths.push(img[1]);
+      }
+
+    }
+    return [imageTags, imagePaths];
+  }
+
+  const convertImgInMarkdown = (markDown: string, repositoryUri: string) => {
+    let mark = markDown;
+    const [imageTags, imagePaths] = getImages(markDown);
+    const updatedImages : string[] = [];
+    imagePaths.map((image) => {
+      const imageFromGithub = images.find(githubPath => `images/${githubPath.imageName}` === image);
+      let y = `[![img](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})`;
+      updatedImages.push(y.replace('/branches', '').replace('/branches', ''));
+    });
+    for (let i = 0; i < updatedImages.length; i++) {
+      mark = mark.replace(imageTags[i], updatedImages[i]);
+    }
+    return mark;
+  };
 
   return (
     <>
@@ -468,7 +549,7 @@ export const RepositoryPage = () => {
                     Preview
                   </Typography>
                   <Box className="preview-box scrollbar">
-                    <ReactMarkdown skipHtml={true}>
+                    <ReactMarkdown>
                       {repository.description}
                     </ReactMarkdown>
                   </Box>
@@ -480,8 +561,9 @@ export const RepositoryPage = () => {
                     Resources
                   </Typography>
 
-
-                  <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked} />
+                  <Box className={`${classes.resourceBrowserContainer} scrollbar`}>
+                    <RepositoryResourceBrowser repository={repository} checkedChanged={setChecked} />
+                  </Box>
 
                 </Box>
               </Grid>
@@ -508,8 +590,9 @@ export const RepositoryPage = () => {
               Files selected
             </Typography>
             <Box className={classes.chipList}>
-              {checked.map((chipItem) =>
-                <Chip className={classes.chip} key={chipItem.resource.path} label={chipItem.resource.name} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />)}
+              {checked.map((chipItem) => 
+                <Chip className={classes.chip} key={chipItem.resource.path} label={createChipLabel(chipItem)} variant="outlined" size="medium" onDelete={() => handleChipDelete(chipItem.resource.path)} />
+              )}
             </Box>
           </Box>}
 
