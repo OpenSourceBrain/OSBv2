@@ -1,3 +1,4 @@
+import base64
 import requests
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
@@ -28,10 +29,17 @@ class GitHubAdapter:
         self.download_base_url = _clean_url_and_end_with_slash(self.uri)
 
     def get_json(self, uri):
+        try:
+            gh_user = get_secret("github-user")
+        except:
+            gh_user = None
+        try:
+            gh_token = get_secret("github-token")
+        except:
+            gh_token = None
         r = requests.get(
             uri,
-            auth=(get_secret("github-user"),
-                  get_secret("github-token"))
+            auth=(gh_user, gh_token)
         )
         if r.status_code == 200:
             return r.json()
