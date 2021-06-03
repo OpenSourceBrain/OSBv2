@@ -27,6 +27,12 @@ import {
  */
 export interface DownloadResource {
     /**
+     * file name
+     * @type {string}
+     * @memberof DownloadResource
+     */
+    name?: string;
+    /**
      * Download URL of the Resource
      * @type {string}
      * @memberof DownloadResource
@@ -44,6 +50,7 @@ export function DownloadResourceFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
@@ -57,6 +64,7 @@ export function DownloadResourceToJSON(value?: DownloadResource | null): any {
     }
     return {
         
+        'name': value.name,
         'path': value.path,
     };
 }

@@ -20,12 +20,6 @@ import { exists, mapValues } from '../runtime';
  */
 export interface RepositoryResourceBaseAllOf {
     /**
-     * file name
-     * @type {string}
-     * @memberof RepositoryResourceBaseAllOf
-     */
-    name?: string;
-    /**
      * OSB Repository id
      * @type {number}
      * @memberof RepositoryResourceBaseAllOf
@@ -43,7 +37,6 @@ export function RepositoryResourceBaseAllOfFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
         'osbrepositoryId': !exists(json, 'osbrepository_id') ? undefined : json['osbrepository_id'],
     };
 }
@@ -57,7 +50,6 @@ export function RepositoryResourceBaseAllOfToJSON(value?: RepositoryResourceBase
     }
     return {
         
-        'name': value.name,
         'osbrepository_id': value.osbrepositoryId,
     };
 }
