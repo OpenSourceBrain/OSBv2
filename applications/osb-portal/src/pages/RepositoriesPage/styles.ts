@@ -92,122 +92,141 @@ export default makeStyles((theme) => ({
       marginBottom: 0,
     },
     "& .repository-data": {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
       paddingRight: 0,
       overflow: "auto",
       backgroundColor: bgDarkest,
       height: "calc(100vh - 8.8rem)",
-      "& strong": {
-        display: "block",
-        marginBottom: theme.spacing(1),
-        fontSize: ".88rem",
-        letterSpacing: "0.02rem",
-        fontWeight: "500",
-        lineHeight: 1.5,
-      },
-      "& p": {
-        lineHeight: 1.5,
-        fontSize: ".88rem",
-        letterSpacing: "0.01rem",
-        color: paragraph,
-        [theme.breakpoints.down("xs")]: {
+      "& .repository-data-items": {
+        "& strong": {
+          display: "block",
           marginBottom: theme.spacing(1),
+          fontSize: ".88rem",
+          letterSpacing: "0.02rem",
+          fontWeight: "500",
+          lineHeight: 1.5,
         },
-      },
-
-      "& .tag": {
-        background: bgLightestShade,
-        textTransform: "capitalize",
-        borderRadius: "1rem",
-        fontSize: ".88rem",
-        color: paragraph,
-        height: "1.9rem",
-        margin: ".5rem .5rem .5rem 0",
-        "& .MuiSvgIcon-root": {
-          width: ".63rem",
-          height: ".63rem",
-          marginRight: theme.spacing(1),
-          "&.MuiSvgIcon-colorPrimary": {
-            color: teal,
-          },
-          "&.MuiSvgIcon-colorSecondary": {
-            color: purple,
-          },
-        },
-      },
-
-      "& .col": {
-        borderWidth: 0,
-        "& .MuiSvgIcon-root": {
+        "& p": {
+          lineHeight: 1.5,
+          fontSize: ".88rem",
+          letterSpacing: "0.01rem",
           color: paragraph,
-        },
-        "& .MuiAvatar-root": {
-          width: ".5rem",
-          height: "auto",
-        },
-        [theme.breakpoints.down("xs")]: {
-          paddingTop: theme.spacing(0),
-          paddingBottom: theme.spacing(0),
-        },
-        [theme.breakpoints.up("sm")]: {
-          padding: theme.spacing(3),
-        },
-        [theme.breakpoints.up("md")]: {
-          borderWidth: `1px 0 1px 0`,
-          borderStyle: "solid",
-          borderColor: bgRegular,
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "center",
-        },
-      },
-      "& .row": {
-        paddingLeft: theme.spacing(3),
-        paddingRight: theme.spacing(3),
-        "& .MuiButtonBase-root": {
-          minWidth: "11.5rem",
-          marginRight: "1.312rem",
-        },
-        "&:hover": {
-          backgroundColor: bgRegular,
-          cursor: "pointer",
-          "& strong": {
-            textDecoration: "underline",
+          [theme.breakpoints.down("xs")]: {
+            marginBottom: theme.spacing(1),
           },
         },
-        "& .MuiGrid-root": {
-          "&:first-child": {
-            "& .col": {
-              paddingLeft: 0,
+  
+        "& .tag": {
+          background: bgLightestShade,
+          textTransform: "capitalize",
+          borderRadius: "1rem",
+          fontSize: ".88rem",
+          color: paragraph,
+          height: "1.9rem",
+          margin: ".5rem .5rem .5rem 0",
+          "& .MuiSvgIcon-root": {
+            width: ".63rem",
+            height: ".63rem",
+            marginRight: theme.spacing(1),
+            "&.MuiSvgIcon-colorPrimary": {
+              color: teal,
+            },
+            "&.MuiSvgIcon-colorSecondary": {
+              color: purple,
             },
           },
-          "&:last-child": {
-            "& .col": {
-              paddingRight: 0,
-              justifyContent: "flex-end",
-              flexDirection: "row",
-              alignItems: "center",
-              [theme.breakpoints.down("md")]: {
+        },
+  
+        "& .col": {
+          borderWidth: 0,
+          "& .MuiSvgIcon-root": {
+            color: paragraph,
+          },
+          "& .MuiAvatar-root": {
+            width: ".5rem",
+            height: "auto",
+          },
+          [theme.breakpoints.down("xs")]: {
+            paddingTop: theme.spacing(0),
+            paddingBottom: theme.spacing(0),
+          },
+          [theme.breakpoints.up("sm")]: {
+            padding: theme.spacing(3),
+          },
+          [theme.breakpoints.up("md")]: {
+            borderWidth: `1px 0 1px 0`,
+            borderStyle: "solid",
+            borderColor: bgRegular,
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+          },
+        },
+        "& .row": {
+          paddingLeft: theme.spacing(3),
+          paddingRight: theme.spacing(3),
+          "& .MuiButtonBase-root": {
+            minWidth: "11.5rem",
+            marginRight: "1.312rem",
+          },
+          "&:hover": {
+            backgroundColor: bgRegular,
+            cursor: "pointer",
+            "& strong": {
+              textDecoration: "underline",
+            },
+          },
+          "& .MuiGrid-root": {
+            "&:first-child": {
+              "& .col": {
                 paddingLeft: 0,
               },
-              [theme.breakpoints.down("xs")]: {
-                marginTop: theme.spacing(2),
-              },
-              [theme.breakpoints.down("sm")]: {
-                "& .MuiButton-outlined": {
-                  flexGrow: 1,
+            },
+            "&:last-child": {
+              "& .col": {
+                paddingRight: 0,
+                justifyContent: "flex-end",
+                flexDirection: "row",
+                alignItems: "center",
+                [theme.breakpoints.down("md")]: {
+                  paddingLeft: 0,
+                },
+                [theme.breakpoints.down("xs")]: {
+                  marginTop: theme.spacing(2),
+                },
+                [theme.breakpoints.down("sm")]: {
+                  "& .MuiButton-outlined": {
+                    flexGrow: 1,
+                  },
                 },
               },
             },
           },
+          [theme.breakpoints.down("sm")]: {
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
+            borderWidth: `1px 0 1px 0`,
+            borderStyle: "solid",
+            borderColor: bgRegular,
+          },
         },
-        [theme.breakpoints.down("sm")]: {
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          borderWidth: `1px 0 1px 0`,
-          borderStyle: "solid",
-          borderColor: bgRegular,
+      },
+    },
+  },
+  paginationBar: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+    "& .MuiPagination-root": {
+      "& .MuiPagination-ul": {
+        "& li": {
+          "& .MuiPaginationItem-root": {
+            color: 'white',
+          },
         },
       },
     },
