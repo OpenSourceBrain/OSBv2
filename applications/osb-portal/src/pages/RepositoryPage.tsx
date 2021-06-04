@@ -46,19 +46,6 @@ import { DialogContent, DialogTitle } from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) => ({
-  chipBox: {
-    backgroundColor: bgLight,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    paddingLeft: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    "& .chip-box-text": {
-      color: bgInputs,
-      fontSize: '0.88rem',
-      marginBottom: '5px',
-      marginLeft: theme.spacing(1),
-    }
-  },
   gitHubLinkButton: {
     position: 'relative',
     float: 'right',
