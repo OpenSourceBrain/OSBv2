@@ -410,6 +410,7 @@ export const RepositoryPage = () => {
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   const [showExisitngWorkspaceEditor, setShowExisitngWorkspaceEditor] = React.useState(false);
+  const [selectedWorkspace, setSelectedWorkspace] = React.useState<Workspace>();
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
 
@@ -478,6 +479,10 @@ export const RepositoryPage = () => {
   }
 
 
+  const setWorkspace = (ws: Workspace) => {
+    console.log('selectedWorkspace', ws);
+    setSelectedWorkspace(ws);
+  }
 
 
   return (
@@ -580,8 +585,8 @@ export const RepositoryPage = () => {
           </DialogActions>
         </Dialog>
       }
-      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions />}>
-        <ExistingWorkspaceEditor />
+      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={selectedWorkspace.name === ""} />}>
+        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)}/>
       </OSBDialog>
     </>
   );

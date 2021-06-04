@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ExistingWorkspaceEditorProps {
+    setWorkspace: (ws: Workspace) => void,
 
 }
 
@@ -27,7 +28,7 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
     }, []);
 
     return(
-        <Box className="scrollbar" p={3}>
+        <Box className="" p={3}>
             <Grid container={true} spacing={1}>
                 {
                     workspaces && workspaces.map((workspace, index) => {
@@ -43,8 +44,11 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
     );
 }
 
+interface ExistingWorkspaceEditorActionsProps {
+    disabled: boolean,
+}
 
-export const ExistingWorkspaceEditorActions = () => {
+export const ExistingWorkspaceEditorActions = (props: ExistingWorkspaceEditorActionsProps) => {
     return(
         <Box>
             <Grid container={true}>
@@ -54,7 +58,7 @@ export const ExistingWorkspaceEditorActions = () => {
                     </Button>
                 </Grid>
                 <Grid item={true}>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" disabled={props.disabled}>
                         Add to workspace
                     </Button>
                 </Grid>
