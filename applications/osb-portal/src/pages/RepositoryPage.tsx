@@ -10,7 +10,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import LinkIcon from '@material-ui/icons/Link';
@@ -391,6 +390,7 @@ export const RepositoryPage = () => {
   const [selectedWorkspace, setSelectedWorkspace] = React.useState<Workspace>();
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
   const [refresh, setRefresh] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState(false);
 
   const classes = useStyles();
 
@@ -417,7 +417,7 @@ export const RepositoryPage = () => {
     }
   }
 
-  const confirmWorkspaceCreation = (dialogTitle: string, dialogContent: string) => {
+  const confirmAction = (dialogTitle: string, dialogContent: string) => {
     confirmationDialogTitle = dialogTitle;
     confirmationDialogContent = dialogContent;
     setShowConfirmationDialog(true);
@@ -446,11 +446,13 @@ export const RepositoryPage = () => {
     const toImport = checked.length ? checked : [repository.contextResources];
     WorkspaceService.importResourcesToWorkspace(ws.id, toImport.map(c => c.resource)).then(() => {
       setShowWorkspaceEditor(false);
-      confirmWorkspaceCreation("Success", "New workspace created!");
+      confirmAction("Success", "New workspace created!");
     }).catch((error) => {
       setShowWorkspaceEditor(false);
-      confirmWorkspaceCreation("Error", "There was an error creating the new workspace.");
+      confirmAction("Error", "There was an error creating the new workspace.");
     });
+    setRefresh(!refresh);
+    setChecked([]);
   }
 
   const setWorkspace = (ws: Workspace) => {
@@ -458,6 +460,22 @@ export const RepositoryPage = () => {
     setSelectedWorkspace(ws);
   }
 
+  const addToExistingWorkspace = () => {
+    setLoading(true);
+    const toImport = checked.length ? checked : [repository.contextResources];
+    WorkspaceService.importResourcesToWorkspace(selectedWorkspace.id, toImport.map(c => c.resource)).then(() => {
+      setSelectedWorkspace(null);
+      confirmAction("Success", "Resources added to workspace!");
+      setLoading(false);
+      setShowExisitngWorkspaceEditor(false);
+    }).catch((error) => {
+      confirmAction("Error", "There was an error adding the resources to the workspace");
+      setLoading(false);
+      setShowExisitngWorkspaceEditor(false);
+    });
+    setRefresh(!refresh);
+    setChecked([]);
+  }
 
   return (
     <>
@@ -550,11 +568,11 @@ export const RepositoryPage = () => {
           </DialogActions>
         </Dialog>
       }
-      <OSBDialog title="Add to exisitng workspace" open={showExistingWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace} closeAction={openExisitngWorkspaceDialog}/>}>
+      <OSBDialog title="Add to exisitng workspace" open={showExistingWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExisitngWorkspaceDialog} onAddClick={addToExistingWorkspace}/>}>
         {checked.length > 0 && 
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
-        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)}/>
+        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
       </OSBDialog>
     </>
   );
