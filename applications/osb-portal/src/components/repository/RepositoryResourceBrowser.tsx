@@ -16,16 +16,18 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import FolderIcon from "@material-ui/icons/Folder";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
 import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
 
-
-export default ({ repository, checkedChanged, backAction }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void }) => {
+export default ({ repository, checkedChanged, backAction, refresh }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void, refresh?: boolean }) => {
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
   const [currentPath, setCurrentPath] = React.useState<RepositoryResourceNode[]>([repository.contextResources]);
   const handleToggle = (value: any) => () => '';
+
+  React.useEffect(() => {
+    setChecked({});
+  }, [refresh])
 
   const onCheck = (isChecked: boolean, value: RepositoryResourceNode) => {
     if (isChecked) {
