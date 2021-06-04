@@ -21,7 +21,7 @@ import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
-import { ExistingWorkspaceEditor } from "../components/workspace/ExistingWorkspaceEditor";
+import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceEditor";
 import { Workspace } from "../types/workspace";
 
 import {
@@ -618,7 +618,7 @@ export const RepositoryPage = () => {
           </DialogActions>
         </Dialog>
       }
-      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog}>
+      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions />}>
         <ExistingWorkspaceEditor />
       </OSBDialog>
     </>
