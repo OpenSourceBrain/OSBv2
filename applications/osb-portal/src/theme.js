@@ -34,11 +34,13 @@ const theme = {
         type: 'dark',
         primary: {
             main: primaryColor,
-            dark: secondaryColor
+            dark: secondaryColor,
+            contrastText: '#ffffff'
         },
         secondary: {
             main: secondaryColor,
-            dark: primaryColor
+            dark: primaryColor,
+            
         },
         background: {
             default: bgDarker,

@@ -16,9 +16,11 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import FolderIcon from "@material-ui/icons/Folder";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 
 import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
-import Button from "@material-ui/core/Button";
+
 
 export default ({ repository, checkedChanged, backAction }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void }) => {
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
@@ -41,13 +43,14 @@ export default ({ repository, checkedChanged, backAction }: { repository: OSBRep
 
 
   return <>
+
     <Breadcrumbs
       separator={<Avatar src="/images/separator.svg" />}
       aria-label="breadcrumb"
     >
-      <Button onClick={() => backAction()}>
-        <ArrowBackIosIcon fontSize="small"/>
-      </Button>
+    {   backAction && <IconButton onClick={() => backAction()}>
+      <ArrowBackIosIcon fontSize="small" />
+    </IconButton>}
       {
         currentPath.map((element, i) =>
           <Link

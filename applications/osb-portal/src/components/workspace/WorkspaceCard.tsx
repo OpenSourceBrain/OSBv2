@@ -190,7 +190,7 @@ export const WorkspaceCard = (props: Props) => {
               <FolderIcon className={classes.imageIcon} />
             ) : (
               <img
-                src={workspace.thumbnail + "?v=" + workspace.timestampUpdated.getMilliseconds()}
+                src={'proxy/workspaces/' + workspace.thumbnail + "?v=" + workspace.timestampUpdated.getMilliseconds()}
                 className={classes.image}
                 title={openTitle}
                 alt={openTitle}

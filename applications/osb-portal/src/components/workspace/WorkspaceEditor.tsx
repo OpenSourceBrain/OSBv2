@@ -24,18 +24,10 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   actionButton: {
-    color: secondaryColor,
-    marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
   },
   actionBox: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row-reverse',
     backgroundColor: bgLight,
-    marginTop: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(3),
   },
   dropZoneBox: {
     color: bgInputs,
@@ -56,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.h6,
     color: bgInputs,
     fontSize: '0.7rem',
-    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -180,37 +171,36 @@ export default (props: WorkspaceEditProps) => {
   const [loading, setLoading] = React.useState(false);
   return (
     <>
-      <Grid container={true} spacing={2} justify="flex-start" alignItems="stretch">
-        <Grid item={true} xs={12} >
-          <Grid container={true} spacing={2} direction="column">
-            <Grid item={true}>
-              <TextField
-                id="workspaceName"
-                label="Name"
-                fullWidth={true}
-                onChange={setNameField}
-                variant="outlined"
-                defaultValue={props.workspace.name}
-              />
-            </Grid>
-            <Grid item={true}>
-              <TextField
-                id="workspaceDescription"
-                label="Description"
-                multiline={true}
-                rows={5}
-                fullWidth={true}
-                onChange={setDescriptionField}
-                variant="outlined"
-                defaultValue={workspace?.description}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Typography component="h6" className={classes.workspaceThumbnailText}>
-          Workspace thumbnail
+
+      <Box p={2}>
+        <Box>
+          <TextField
+            id="workspaceName"
+            label="Name"
+            fullWidth={true}
+            onChange={setNameField}
+            variant="outlined"
+            defaultValue={props.workspace.name}
+          />
+        </Box>
+        <Box mt={2}>
+          <TextField
+            id="workspaceDescription"
+            label="Description"
+            multiline={true}
+            rows={5}
+            fullWidth={true}
+            onChange={setDescriptionField}
+            variant="outlined"
+            defaultValue={workspace?.description}
+          />
+
+        </Box>
+        <Box mt={2} alignItems="stretch" >
+          <Typography component="h6" className={classes.workspaceThumbnailText}>
+            Workspace thumbnail
         </Typography>
-        <Grid item={true} xs={12} alignItems="stretch">
+
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
               <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
@@ -258,33 +248,30 @@ export default (props: WorkspaceEditProps) => {
               </section>
             )}
           </Dropzone>
-        </Grid>
-        <Box className={classes.actionBox}>
-          <Grid item={true}>
-            <Grid container={true} spacing={2} justify="space-between">
-              <Grid item={true}>
-                <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
-                  Cancel
-                  </Button>
-                <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
-                  {workspace.id ? "Save" : "Create A New Workspace"}
-                </Button>
-                {loading &&
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />}
-              </Grid>
-            </Grid>
-          </Grid>
         </Box>
-      </Grid>
+      </Box>
+      <Box mt={2} p={2} className={classes.actionBox} textAlign="right">
+
+        <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
+          Cancel
+                  </Button>
+        <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
+          {workspace.id ? "Save" : "Create A New Workspace"}
+        </Button>
+        {loading &&
+          <CircularProgress
+            size={24}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: -12,
+              marginLeft: -12,
+            }}
+          />}
+
+      </Box>
+
     </>
   );
 };

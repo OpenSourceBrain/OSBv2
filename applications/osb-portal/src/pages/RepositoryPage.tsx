@@ -401,7 +401,6 @@ let checked: RepositoryResourceNode[] = [];
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
-const images: { imagePath: string, imageName: string }[] = [];
 
 export const RepositoryPage = () => {
   const { repositoryId } = useParams<{ repositoryId: string }>();
@@ -411,19 +410,8 @@ export const RepositoryPage = () => {
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
-      let i;
-      for (i = 0; i < repo.contextResources.children.length; i++) {
-        if (repo.contextResources.children[i].resource.name === "images") {
-          let j;
-          for (j = 0; j < repo.contextResources.children[i].children.length; j++) {
-            images.push({
-              imagePath: repo.contextResources.children[i].children[j].resource.path.toString(),
-              imageName: repo.contextResources.children[i].children[j].resource.name.toString(),
-            });
-          }
-        }
-      }
-      setRepository({ ...repo, description: convertImgInMarkdown(repo.description, repo.uri) });
+
+      setRepository(repo);
     })
   }, [])
 
@@ -455,7 +443,8 @@ export const RepositoryPage = () => {
   }
 
   const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
-    WorkspaceService.importResourcesToWorkspace(ws.id, checked.map(c => c.resource)).then(() => {
+    const toImport = checked.length ? checked : [repository.contextResources];
+    WorkspaceService.importResourcesToWorkspace(ws.id, toImport.map(c => c.resource)).then(() => {
       setShowWorkspaceEditor(false);
       confirmWorkspaceCreation("Success", "New workspace created!");
     }).catch((error) => {
@@ -484,35 +473,8 @@ export const RepositoryPage = () => {
     }
   }
 
-  const getImages = (str: string) => {
-    const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
-    const imageTags: string[] = []
-    const imagePaths: string[] = [];
 
-    for (const img of imgRex.exec(str)) {
-      if (!img[1].startsWith('http')) {
-        imageTags.push(img[0]);
-        imagePaths.push(img[1]);
-      }
 
-    }
-    return [imageTags, imagePaths];
-  }
-
-  const convertImgInMarkdown = (markDown: string, repositoryUri: string) => {
-    let mark = markDown;
-    const [imageTags, imagePaths] = getImages(markDown);
-    const updatedImages: string[] = [];
-    imagePaths.map((image) => {
-      const imageFromGithub = images.find(githubPath => `images/${githubPath.imageName}` === image);
-      const y = `[![img](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})](${imageFromGithub.imagePath.replace('https://github.com/', 'https://raw.githubusercontent.com/')})`;
-      updatedImages.push(y.replace('/branches', '').replace('/branches', ''));
-    });
-    for (let i = 0; i < updatedImages.length; i++) {
-      mark = mark.replace(imageTags[i], updatedImages[i]);
-    }
-    return mark;
-  };
 
   return (
     <>
@@ -549,7 +511,7 @@ export const RepositoryPage = () => {
                     Preview
                   </Typography>
                   <Box className="preview-box scrollbar">
-                    <ReactMarkdown>
+                    <ReactMarkdown skipHtml={true}>
                       {repository.description}
                     </ReactMarkdown>
                   </Box>
