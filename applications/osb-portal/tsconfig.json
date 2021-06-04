@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
-        "target": "es2017",
-        "jsx": "react",
-        "esModuleInterop": true,
-        "allowJs": true
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es2020",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
