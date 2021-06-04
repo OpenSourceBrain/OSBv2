@@ -46,6 +46,7 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
 
 interface ExistingWorkspaceEditorActionsProps {
     disabled: boolean,
+    closeAction: () => void,
 }
 
 export const ExistingWorkspaceEditorActions = (props: ExistingWorkspaceEditorActionsProps) => {
@@ -53,7 +54,7 @@ export const ExistingWorkspaceEditorActions = (props: ExistingWorkspaceEditorAct
         <Box>
             <Grid container={true}>
                 <Grid item={true}>
-                    <Button color="primary">
+                    <Button color="primary" onClick={props.closeAction}>
                         Cancel
                     </Button>
                 </Grid>

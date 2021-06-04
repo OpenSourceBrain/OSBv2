@@ -585,7 +585,7 @@ export const RepositoryPage = () => {
           </DialogActions>
         </Dialog>
       }
-      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={selectedWorkspace.name === ""} />}>
+      <OSBDialog title="Add to exisitng workspace" open={showExisitngWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace} closeAction={openExisitngWorkspaceDialog}/>}>
         <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)}/>
       </OSBDialog>
     </>
