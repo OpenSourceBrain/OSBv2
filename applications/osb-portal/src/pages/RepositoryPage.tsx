@@ -556,7 +556,7 @@ export const RepositoryPage = () => {
         </Dialog>
       }
       <OSBDialog title="Add to exisitng workspace" open={showExistingWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExisitngWorkspaceDialog} onAddClick={addToExistingWorkspace}/>}>
-        {checked.length > 0 && 
+        {checked.length > 0 &&
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
         <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
