@@ -58,6 +58,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/cloudharness-base
         title: Cloudharness base
         working_directory: ./build
@@ -72,6 +83,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/cloudharness-base-debian
         title: Cloudharness base debian
         working_directory: ./build
@@ -86,6 +108,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/cloudharness-frontend-build
         title: Cloudharness frontend build
         working_directory: ./build
@@ -105,6 +138,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/cloudharness-flask
         title: Cloudharness flask
         working_directory: ./build/infrastructure/common-images/cloudharness-flask
@@ -123,6 +167,7 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
         image_name: osb/volumemanager
         title: Volumemanager
         working_directory: ./build/applications/volumemanager/server
@@ -179,6 +224,7 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
         image_name: osb/common
         title: Common
         working_directory: ./build/applications/common/server
@@ -193,6 +239,7 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
         image_name: osb/jupyterhub
         title: Jupyterhub
         working_directory: ./build/applications/jupyterhub
@@ -207,6 +254,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workspaces-scan-workspace
         title: Workspaces scan workspace
         working_directory: ./build/applications/workspaces/tasks/scan-workspace
@@ -221,6 +279,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workspaces-github-copy
         title: Workspaces github copy
         working_directory: ./build/applications/workspaces/tasks/github-copy
@@ -235,6 +304,8 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
         image_name: osb/workspaces
         title: Workspaces
         working_directory: ./build/applications/workspaces/server
@@ -249,6 +320,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workflows-print-file
         title: Workflows print file
         working_directory: ./build/applications/workflows/tasks/print-file
@@ -263,6 +345,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workflows-extract-download
         title: Workflows extract download
         working_directory: ./build/applications/workflows/tasks/extract-download
@@ -277,6 +370,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workflows-send-result-event
         title: Workflows send result event
         working_directory: ./build/applications/workflows/tasks/send-result-event
@@ -291,6 +395,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workflows-notify-queue
         title: Workflows notify queue
         working_directory: ./build/applications/workflows/tasks/notify-queue
@@ -305,6 +420,17 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base
+        - CLOUDHARNESS_BASE_DEBIAN=${{REGISTRY}}/osb/cloudharness-base-debian
+        - CLOUDHARNESS_FRONTEND_BUILD=${{REGISTRY}}/osb/cloudharness-frontend-build
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy
+        - WORKFLOWS_PRINT_FILE=${{REGISTRY}}/osb/workflows-print-file
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue
+        - WORKFLOWS_EXTRACT_S3=${{REGISTRY}}/osb/workflows-extract-s3
         image_name: osb/workflows-extract-s3
         title: Workflows extract s3
         working_directory: ./build/applications/workflows/tasks/extract-s3
@@ -319,6 +445,7 @@ steps:
         - NAMESPACE=${{NAMESPACE}}
         - DOMAIN=${{DOMAIN}}
         - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask
         image_name: osb/workflows
         title: Workflows
         working_directory: ./build/applications/workflows/server

@@ -1,6 +1,5 @@
-ARG REGISTRY
-ARG TAG=latest
-FROM ${REGISTRY}cloudharness-base:${TAG}
+ARG CLOUDHARNESS_BASE
+FROM $CLOUDHARNESS_BASE
 
 RUN apk add subversion
 

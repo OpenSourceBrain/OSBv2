@@ -46,6 +46,3 @@ harness:
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
 
-github:
-  user: "none"
-  token: "none"
