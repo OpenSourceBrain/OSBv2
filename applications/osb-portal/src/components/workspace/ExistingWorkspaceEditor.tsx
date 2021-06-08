@@ -10,10 +10,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import workspaceService from '../../service/WorkspaceService';
 import WorkspaceCard from "../workspace/WorkspaceCard";
 import { Workspace } from '../../types/workspace';
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Radio from "@material-ui/core/Radio";
-import { RadioGroup } from "@material-ui/core";
 import { linkColor } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
                 "& .active-button": {
                     border: `3px solid ${linkColor}`,
                 },
-
             },
         },
         "&::-webkit-scrollbar-track": {
@@ -46,23 +41,23 @@ const useStyles = makeStyles((theme) => ({
                         "& .MuiSvgIcon-root": {
                             padding: '0.5rem',
                         },
-                    }, 
+                    },
                 },
                 "& .MuiCardContent-root": {
                     "& .MuiLink-root": {
                         "& .MuiTypography-h5": {
                             fontSize: '1rem',
-                        },  
+                        },
                     },
                     "& .MuiTypography-caption": {
                         fontSize: '0.6rem',
                     },
                 },
-            }
+            },
         },
         "& a": {
             pointerEvents: 'none',
-        }
+        },
     },
     checkMarkIcon: {
         position: 'absolute',
@@ -73,16 +68,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 interface ExistingWorkspaceEditorProps {
     setWorkspace: (ws: Workspace) => void,
     loading: boolean,
 }
 
-
 export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => {
     const classes = useStyles();
 
-    let classNames: string[] = [];
     const [activeCardClassNames, setActiveCardClassNames] = React.useState<string[]>([]);
     const [workspaces, setWorkspaces] = React.useState<Workspace[]>(null);
 
@@ -90,21 +84,22 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
         workspaceService.fetchWorkspaces().then((retrievedWorkspaces) => {
             setWorkspaces(retrievedWorkspaces);
             setActiveCardClassNames(Array(retrievedWorkspaces.length).fill('not-active'));
-            console.log("Retrieved workspaces: ", retrievedWorkspaces);
         });
     }, []);
 
     const handleWorkspaceSelection = (index: number) => {
-        console.log('Inside click event', index);
-        let placeHolderArray = Array(workspaces.length).fill('not-active');
+        const placeHolderArray = Array(workspaces.length).fill('not-active');
         placeHolderArray[index] = 'active';
         setActiveCardClassNames(placeHolderArray);
+        props.setWorkspace(workspaces[index]);
     }
 
     return(
         <>
             <Box p={3} className={`${classes.workspacesBox} scrollbar`} >
-                <Grid container={true} spacing={1}>
+                {
+                    workspaces ?
+                    <Grid container={true} spacing={1}>
                     {
                         workspaces && workspaces.map((workspace, index) => {
                             return (
@@ -118,7 +113,9 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
                             );
                         })
                     }
-                </Grid>
+                    </Grid> :
+                    <CircularProgress size={40} style={{position: 'relative', left: '50%'}} />
+                }
             </Box>
             {
                 props.loading &&
@@ -131,11 +128,12 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
                         marginTop: -12,
                         marginLeft: -12,
                     }}
-                    />
+                />
             }
         </>
     );
 }
+
 
 interface ExistingWorkspaceEditorActionsProps {
     disabled: boolean,
@@ -145,14 +143,16 @@ interface ExistingWorkspaceEditorActionsProps {
 
 export const ExistingWorkspaceEditorActions = (props: ExistingWorkspaceEditorActionsProps) => {
     return(
-        <Box>
+        <Box p={1}>
             <Grid container={true}>
                 <Grid item={true}>
                     <Button color="primary" onClick={props.closeAction}>
                         Cancel
                     </Button>
                 </Grid>
-                <Grid item={true}>
+                <Grid item={true} style={{
+                    marginLeft: '1rem',
+                }}>
                     <Button variant="contained" color="primary" disabled={props.disabled} onClick={props.onAddClick}>
                         Add to workspace
                     </Button>
