@@ -243,6 +243,16 @@ const useStyles = makeStyles((theme) => ({
           padding: theme.spacing(2),
           backgroundColor: bgLightestShade,
           borderRadius: radius,
+          overflowX: 'auto',
+          "&::-webkit-scrollbar": {
+            height: '5px',
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: bgInputs,
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: 'transparent',
+          },
         },
         "& h1": {
           fontWeight: 'normal',
@@ -266,8 +276,11 @@ const useStyles = makeStyles((theme) => ({
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: '#c4c4c4',
         },
-        "& p a img": {
-          maxWidth: '25vw',
+        "& p img": {
+          maxWidth: '30vw',
+          [theme.breakpoints.down("sm")]: {
+            maxWidth: '75vw',
+          },
         },
       },
       "& .primary-heading": {
@@ -443,7 +456,6 @@ export const RepositoryPage = () => {
   }
 
   const setWorkspace = (ws: Workspace) => {
-    console.log('selectedWorkspace', ws);
     setSelectedWorkspace(ws);
   }
 
@@ -492,7 +504,7 @@ export const RepositoryPage = () => {
           {repository ?
             <Grid container={true} className="row" spacing={5}>
               <Grid item={true} xs={12} md={6}>
-                <Box className="flex-grow-1">
+                <Box className="flex-grow-1" maxWidth="100%">
                   <a href={repository.uri} target="_blank" rel="noreferrer">
                     <Button className={classes.gitHubLinkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
                       See on GitHub
@@ -536,15 +548,21 @@ export const RepositoryPage = () => {
             )}
         </Box>
       </Box>
-      <Box className={classes.root}>
-        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
-          {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
-          <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} />
-        </OSBDialog>
-      </Box>
+      <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
+        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
-      {/* Confirm to user if workspace creation was successful */}
+        <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} />
+      </OSBDialog>
+
+      <OSBDialog title="Add to exisitng workspace" open={showExistingWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading } closeAction={openExisitngWorkspaceDialog} onAddClick={addToExistingWorkspace}/>}>
+        {checked.length > 0 &&
+          <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
+        }
+        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
+      </OSBDialog>
+      
+      {/* Confirm to user if workspace creation/modification was successful */}
       {
         showConfirmationDialog && <Dialog open={showConfirmationDialog}
           onClose={() => setShowConfirmationDialog(false)}>
@@ -555,12 +573,6 @@ export const RepositoryPage = () => {
           </DialogActions>
         </Dialog>
       }
-      <OSBDialog title="Add to exisitng workspace" open={showExistingWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExisitngWorkspaceDialog} onAddClick={addToExistingWorkspace}/>}>
-        {checked.length > 0 &&
-          <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
-        }
-        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
-      </OSBDialog>
     </>
   );
 };
