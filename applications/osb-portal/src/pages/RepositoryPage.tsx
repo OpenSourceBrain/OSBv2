@@ -42,6 +42,7 @@ import {
 } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { DialogContent, DialogTitle } from "@material-ui/core";
+import { UserInfo } from "../types/user";
 
 
 
@@ -380,7 +381,9 @@ const defaultWorkspace: Workspace = {
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
 
-export const RepositoryPage = () => {
+export const RepositoryPage = (props: any) => {
+  const user: UserInfo = props.user;
+
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>();
@@ -489,7 +492,7 @@ export const RepositoryPage = () => {
               </Typography>
             </Box>
           </Box>
-          <Box>
+          {user && <Box>
             <Button variant="outlined" disableElevation={true} color="secondary" style={{borderColor: 'white'}} onClick={openExisitngWorkspaceDialog}>
               Add to existing workspace
             </Button>
@@ -497,7 +500,7 @@ export const RepositoryPage = () => {
               <AddIcon />
               Create new workspace
             </Button>
-          </Box>
+          </Box>}
         </Box>
 
         <Box className="main-content">
@@ -561,7 +564,7 @@ export const RepositoryPage = () => {
         }
         <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
       </OSBDialog>
-      
+
       {/* Confirm to user if workspace creation/modification was successful */}
       {
         showConfirmationDialog && <Dialog open={showConfirmationDialog}
