@@ -19,7 +19,7 @@ export const {
 
 const theme = {
     darkMode: true,
-    spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 30, 40, 50, 100, 150, 200, 300],
+    spacing: [0, gutter / 2, gutter * 2 / 3, gutter, 24, 40, 50, 100, 150, 200, 300],
     typography: {
         useNextVariants: true,
         htmlFontSize: 12,
