@@ -47,10 +47,12 @@ const useStyles = makeStyles((theme) => ({
                     "& .MuiLink-root": {
                         "& .MuiTypography-h5": {
                             fontSize: '1rem',
+                            textTransform: 'capitalize',
                         },
                     },
                     "& .MuiTypography-caption": {
                         fontSize: '0.6rem',
+                        textTransform: 'capitalize',
                     },
                 },
             },
