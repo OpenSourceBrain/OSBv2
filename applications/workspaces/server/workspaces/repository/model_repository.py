@@ -110,6 +110,11 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     def pre_commit(self, osbrepository):
         return super().pre_commit(osbrepository)
 
+    def search_qs(self, filter=None, q=None):
+
+        q_base = self.model.query
+        return q_base.order_by(desc(WorkspaceEntity.timestamp_updated))
+
     def user(self, repository):
         try:
             user = auth_client.get_user(repository.user_id)
