@@ -22,7 +22,7 @@ import RepositoryResourceBrowser from "../components/repository/RepositoryResour
 import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
 import OSBChipList from "../components/common/OSBChipList";
-import NewWorkspaceAskUser from "../components/workspace/NewWorkspaceAskUser";
+import { NewWorkspaceAskUser } from "../components";
 import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceEditor";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
