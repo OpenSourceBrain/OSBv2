@@ -22,6 +22,7 @@ import RepositoryResourceBrowser from "../components/repository/RepositoryResour
 import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
 import OSBChipList from "../components/common/OSBChipList";
+import NewWorkspaceAskUser from "../components/workspace/NewWorkspaceAskUser";
 import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceEditor";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
@@ -390,6 +391,7 @@ export const RepositoryPage = (props: any) => {
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] = React.useState(false);
   const [selectedWorkspace, setSelectedWorkspace] = React.useState<Workspace>();
+  const [showUserNotLoggedInAlert, setShowUserNotLoggedInAlert] = React.useState(false);
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
@@ -493,16 +495,16 @@ export const RepositoryPage = (props: any) => {
               </Typography>
             </Box>
           </Box>
-          {user && <Box>
-            <Button variant="outlined" disableElevation={true} color="secondary" style={{borderColor: 'white'}} onClick={openExisitngWorkspaceDialog}>
+          <Box>
+            <Button variant="outlined" disableElevation={true} color="secondary" style={{borderColor: 'white'}} onClick={() => {user ? openExisitngWorkspaceDialog() : setShowUserNotLoggedInAlert(true)}}>
               <AddIcon />
               Add to existing workspace
             </Button>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
+            <Button variant="contained" disableElevation={true} color="primary" onClick={() => {user ? openDialog() : setShowUserNotLoggedInAlert(true)}}>
               <AddIcon />
               Create new workspace
             </Button>
-          </Box>}
+          </Box>
         </Box>
 
         <Box className="main-content">
@@ -565,6 +567,10 @@ export const RepositoryPage = (props: any) => {
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
         <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
+      </OSBDialog>
+
+      <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
+        <NewWorkspaceAskUser />
       </OSBDialog>
 
       {/* Confirm to user if workspace creation/modification was successful */}
