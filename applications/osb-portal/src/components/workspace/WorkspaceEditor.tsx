@@ -6,9 +6,12 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";;
 import Dropzone from 'react-dropzone'
-import PublishIcon from '@material-ui/icons/Publish';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
@@ -19,7 +22,6 @@ import {
   bgLight,
   radius, gutter,
   bgInputs,
-  secondaryColor,
 } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +59,7 @@ interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
   closeHandler?: () => void;
+  filesSelected?: boolean;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -104,6 +107,18 @@ export default (props: WorkspaceEditProps) => {
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
+  const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+
+  const handleCreateWorkspaceButtonClick = () => {
+    if (typeof props.filesSelected != 'undefined') {
+      props.filesSelected ? handleCreateWorkspace():
+      setShowNoFilesSelectedDialog(!showNoFilesSelectedDialog);
+      
+    }
+    else{
+      handleCreateWorkspace();
+    }
+  }
 
   const handleCreateWorkspace = async () => {
     setLoading(true)
@@ -255,7 +270,7 @@ export default (props: WorkspaceEditProps) => {
         <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
           Cancel
                   </Button>
-        <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
+        <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspaceButtonClick}>
           {workspace.id ? "Save" : "Create A New Workspace"}
         </Button>
         {loading &&
@@ -271,6 +286,24 @@ export default (props: WorkspaceEditProps) => {
           />}
 
       </Box>
+      {
+        showNoFilesSelectedDialog && <Dialog open={showNoFilesSelectedDialog}
+          onClose={() => setShowNoFilesSelectedDialog(false)}>
+          <DialogTitle>No files selected</DialogTitle>
+          <DialogContent>{
+            loading ? <CircularProgress size={20} style={{
+              position: 'relative',
+              top: '50%',
+              left: '50%',
+            }} /> :
+            "No files from this repository have been selected, and so all the files in the repository will be added in the workspace. Press OK to proceed, or press Cancel and go back and select some."
+          }</DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => setShowNoFilesSelectedDialog(false)}>Cancel</Button>
+            <Button variant="contained" color="primary" onClick={handleCreateWorkspace} disabled={loading}>OK</Button>
+          </DialogActions>
+        </Dialog>
+      }
 
     </>
   );
