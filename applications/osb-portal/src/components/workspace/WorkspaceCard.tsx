@@ -21,10 +21,11 @@ import OSBDialog from "../common/OSBDialog";
 
 interface Props {
   workspace: Workspace;
-  updateWorkspace: (ws: Workspace) => null,
-  deleteWorkspace: (wsId: number) => null,
-  user: UserInfo,
-  refreshWorkspaces: () => null
+  updateWorkspace?: (ws: Workspace) => null,
+  deleteWorkspace?: (wsId: number) => null,
+  user?: UserInfo,
+  refreshWorkspaces?: () => null,
+  hideMenu?: boolean,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -134,46 +135,48 @@ export const WorkspaceCard = (props: Props) => {
   return (
     <>
       <Card className={classes.card} elevation={0}>
-        <CardActions className={classes.actions}>
-          <IconButton size="small" onClick={handleClick}>
-            <Icons.Dots className={classes.icon} />
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted={true}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-          >
-            {canEdit && <MenuItem onClick={handleEditWorkspace}>Edit</MenuItem>}
-            {canEdit && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
-            {canEdit && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
-            {canEdit && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
-            <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
-            <NestedMenuItem
-              label="Open with..."
-              parentMenuOpen={true}
-
+        { !props.hideMenu &&
+          <CardActions className={classes.actions}>
+            <IconButton size="small" onClick={handleClick}>
+              <Icons.Dots className={classes.icon} />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted={true}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMenu}
             >
-              {
-                Object.keys(OSBApplications).map(item =>
-                  <MenuItem
-                    key={item}
-                    onClick={
-                      (e) => {
-                        handleOpenWorkspaceWithApp(item);
+              {canEdit && <MenuItem onClick={handleEditWorkspace}>Edit</MenuItem>}
+              {canEdit && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
+              {canEdit && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
+              {canEdit && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
+              <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+              <NestedMenuItem
+                label="Open with..."
+                parentMenuOpen={true}
+
+              >
+                {
+                  Object.keys(OSBApplications).map(item =>
+                    <MenuItem
+                      key={item}
+                      onClick={
+                        (e) => {
+                          handleOpenWorkspaceWithApp(item);
+                        }
                       }
-                    }
-                  >
-                    {OSBApplications[item].name}
-                  </MenuItem>
-                )
-              }
+                    >
+                      {OSBApplications[item].name}
+                    </MenuItem>
+                  )
+                }
 
 
-            </NestedMenuItem>
-          </Menu>
+              </NestedMenuItem>
+            </Menu>
         </CardActions>
+        }
 
         <Box
           className={classes.imageContainer}
@@ -190,7 +193,7 @@ export const WorkspaceCard = (props: Props) => {
               <FolderIcon className={classes.imageIcon} />
             ) : (
               <img
-                src={'proxy/workspaces/' + workspace.thumbnail + "?v=" + workspace.timestampUpdated.getMilliseconds()}
+                src={'/proxy/workspaces/' + workspace.thumbnail + "?v=" + workspace.timestampUpdated.getMilliseconds()}
                 className={classes.image}
                 title={openTitle}
                 alt={openTitle}
