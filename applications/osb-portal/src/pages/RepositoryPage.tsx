@@ -330,7 +330,7 @@ const useStyles = makeStyles((theme) => ({
           },
         },
       },
-      "& .MuiButton-contained": {
+      "& .MuiButton-root": {
         [theme.breakpoints.down("xs")]: {
           paddingLeft: 0,
           paddingRight: 0,
@@ -494,6 +494,7 @@ export const RepositoryPage = (props: any) => {
           </Box>
           {user && <Box>
             <Button variant="outlined" disableElevation={true} color="secondary" style={{borderColor: 'white'}} onClick={openExisitngWorkspaceDialog}>
+              <AddIcon />
               Add to existing workspace
             </Button>
             <Button variant="contained" disableElevation={true} color="primary" onClick={openDialog}>
