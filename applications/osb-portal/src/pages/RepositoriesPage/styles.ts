@@ -66,11 +66,6 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.up("md")]: {
           marginRight: "2rem",
         },
-        "&:hover": {
-          "& .MuiButton-label": {
-            color: primaryColor,
-          },
-        },
         "& .MuiButton-label": {
           color: fontColor,
           [theme.breakpoints.down("xs")]: {
