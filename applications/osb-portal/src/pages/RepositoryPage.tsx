@@ -468,7 +468,6 @@ export const RepositoryPage = (props: any) => {
     const toImport = checked.length ? checked : [repository.contextResources];
     WorkspaceService.importResourcesToWorkspace(selectedWorkspace.id, toImport.map(c => c.resource)).then(() => {
       setSelectedWorkspace(null);
-      setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
       confirmAction("Success", "Resources added to workspace!");
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
