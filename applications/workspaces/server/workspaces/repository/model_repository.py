@@ -10,11 +10,12 @@ from sqlalchemy.sql import func
 from workspaces.models import RepositoryContentType, ResourceStatus, User
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
-
+from workspaces.service.auth import get_auth_client
 from .base_model_repository import BaseModelRepository
 from .database import db
 from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity
 from .utils import *
+
 
 repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 
@@ -22,10 +23,11 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 class OwnerModel:
     @property
     def keycloak_user_id(self):
-        from workspaces.service.auth import auth_client
+
         try:
-            return auth_client.get_current_user().get("id", None)
+            return get_auth_client().get_current_user().get("id", None)
         except Exception as e:
+            logger.error("Auth client error", exc_info=True)
             return None
 
     def pre_commit(self, obj):
@@ -52,7 +54,6 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return None
 
     def search_qs(self, filter=None, q=None):
-        from workspaces.service.auth import auth_client
         q_base = self.model.query
         logger.debug(f"filter: {filter}")
 
@@ -62,11 +63,13 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
             q1 = q_base
         elif keycloak_user_id is not None:
-            if not auth_client.user_has_realm_role(user_id=keycloak_user_id, role="administrator"):
-                logger.debug("searching workspaces on keycloak_user_id: %s", keycloak_user_id)
+            if not get_auth_client().user_has_realm_role(user_id=keycloak_user_id, role="administrator"):
+                logger.debug(
+                    "searching workspaces on keycloak_user_id: %s", keycloak_user_id)
                 # non admin users can see only their own workspaces
                 q1 = q_base.filter_by(user_id=keycloak_user_id)
-                q1 = q1.union(q_base.filter(WorkspaceEntity.collaborators.any(user_id=keycloak_user_id)))
+                q1 = q1.union(q_base.filter(
+                    WorkspaceEntity.collaborators.any(user_id=keycloak_user_id)))
             else:
                 q1 = q_base
         else:
@@ -94,7 +97,8 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
-        create_persistent_volume_claim(name=self.get_pvc_name(workspace.id), size="2Gi", logger=logger)
+        create_persistent_volume_claim(name=self.get_pvc_name(
+            workspace.id), size="2Gi", logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
@@ -117,9 +121,9 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):
-        from workspaces.service.auth import auth_client
+
         try:
-            user = auth_client.get_user(repository.user_id)
+            user = get_auth_client().get_user(repository.user_id)
             return User(
                 id=user.get("id", ""),
                 first_name=user.get("firstName", ""),
@@ -158,10 +162,12 @@ class WorkspaceResourceRepository(BaseModelRepository):
         for resource in resources:
             folder, filename = os.path.split(resource)
             # try to find by folder and name match
-            wsr = next((wsr for wsr in all_wsr if wsr.folder == folder and wsr.name == filename), None)
+            wsr = next((wsr for wsr in all_wsr if wsr.folder ==
+                        folder and wsr.name == filename), None)
             if not wsr:
                 # not found, try by folder and "like" path
-                wsr = next((wsr for wsr in all_wsr if wsr.folder == folder and filename in wsr.origin), None)
+                wsr = next((wsr for wsr in all_wsr if wsr.folder ==
+                            folder and filename in wsr.origin), None)
             if not wsr:
                 # not found --> create a new wsr
                 wsr = WorkspaceResourceEntity(
@@ -172,7 +178,8 @@ class WorkspaceResourceRepository(BaseModelRepository):
                     resource_type=self.guess_resource_type(filename),
                     workspace_id=workspace_id,
                 )
-                logger.info(f"Created new workspace resources {filename} {folder} {resource}")
+                logger.info(
+                    f"Created new workspace resources {filename} {folder} {resource}")
             else:
                 found_wsr.append(wsr)  # add the wsr to the found list
 
@@ -187,7 +194,8 @@ class WorkspaceResourceRepository(BaseModelRepository):
             logger.info(f"Deleting resource: {wsr.id} {wsr.name} {wsr.folder}")
             result = self.model.query.filter_by(id=wsr.id).delete()
             db.session.commit()
-        logger.info(f"Workspace resources update done for workspace {workspace_id}")
+        logger.info(
+            f"Workspace resources update done for workspace {workspace_id}")
 
     @staticmethod
     def guess_resource_type(resource_path):
@@ -200,21 +208,25 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def pre_commit(self, workspace_resource):
         # Check if we can determine the resource type
-        logger.debug(f"Pre Commit for workspace resource id: {workspace_resource.id}")
+        logger.debug(
+            f"Pre Commit for workspace resource id: {workspace_resource.id}")
 
         if not workspace_resource.resource_type or workspace_resource.resource_type == "u":
             origin = json.loads(workspace_resource.origin)
-            workspace_resource.resource_type = self.guess_resource_type(origin.get("path"))
+            workspace_resource.resource_type = self.guess_resource_type(
+                origin.get("path"))
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
             workspace_resource.folder = workspace_resource.name
         return workspace_resource
 
     def post_commit(self, workspace_resource):
         # Create a load WorkspaceResource workflow task
-        logger.debug(f"Post Commit for workspace resource id: {workspace_resource.id}")
+        logger.debug(
+            f"Post Commit for workspace resource id: {workspace_resource.id}")
         workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
         if workspace_resource.folder is None:
-            logger.debug(f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
+            logger.debug(
+                f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
             workspace_resource.folder = workspace_resource.name
 
         if (
