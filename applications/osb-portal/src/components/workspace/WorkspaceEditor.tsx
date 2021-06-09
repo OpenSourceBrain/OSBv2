@@ -6,9 +6,12 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 import Dropzone from 'react-dropzone'
-import PublishIcon from '@material-ui/icons/Publish';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
@@ -19,7 +22,6 @@ import {
   bgLight,
   radius, gutter,
   bgInputs,
-  secondaryColor,
 } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,21 +35,23 @@ const useStyles = makeStyles((theme) => ({
     color: bgInputs,
     "& .MuiTypography-subtitle2": {
       marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(2),
     },
     "& .MuiButton-outlined": {
       margin: '0 auto',
       display: 'flex',
       justifyContent: 'center',
       color: bgInputs,
-      borderRadius: 0,
-      border: `3px dashed ${bgInputs}`,
+      borderRadius: radius,
+      border: `2px solid ${bgInputs}`,
     },
   },
   workspaceThumbnailText: {
     ...theme.typography.h6,
     color: bgInputs,
     fontSize: '0.7rem',
+    marginBottom: '0.3rem',
+    fontWeight: 'bold',
   },
 }));
 
@@ -57,17 +61,17 @@ interface WorkspaceEditProps {
   workspace: Workspace;
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
   closeHandler?: () => void;
+  filesSelected?: boolean;
 }
 
 const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: 'flex',
   alignItems: 'center',
-  borderWidth: 1,
+  border: `2px dashed ${bgInputs}`,
   borderRadius: radius,
   padding: gutter,
-  borderColor: error ? "red" : fade('#ffffff', 0.42),
-  borderStyle: 'dashed',
+  borderColor: error ? "red" : fade(bgInputs, 1),
 });
 
 async function readFile(file: Blob) {
@@ -104,6 +108,17 @@ export default (props: WorkspaceEditProps) => {
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
+  const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+
+  const handleCreateWorkspaceButtonClick = () => {
+    if (typeof props.filesSelected !== 'undefined') {
+      props.filesSelected ? handleCreateWorkspace() :
+      setShowNoFilesSelectedDialog(!showNoFilesSelectedDialog);
+    }
+    else{
+      handleCreateWorkspace();
+    }
+  }
 
   const handleCreateWorkspace = async () => {
     setLoading(true)
@@ -176,7 +191,7 @@ export default (props: WorkspaceEditProps) => {
         <Box>
           <TextField
             id="workspaceName"
-            label="Name"
+            placeholder="Name"
             fullWidth={true}
             onChange={setNameField}
             variant="outlined"
@@ -186,7 +201,7 @@ export default (props: WorkspaceEditProps) => {
         <Box mt={2}>
           <TextField
             id="workspaceDescription"
-            label="Description"
+            placeholder="Description"
             multiline={true}
             rows={5}
             fullWidth={true}
@@ -196,10 +211,10 @@ export default (props: WorkspaceEditProps) => {
           />
 
         </Box>
-        <Box mt={2} alignItems="stretch" >
+        <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>
           <Typography component="h6" className={classes.workspaceThumbnailText}>
             Workspace thumbnail
-        </Typography>
+          </Typography>
 
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
@@ -222,7 +237,7 @@ export default (props: WorkspaceEditProps) => {
                     </Grid>
                     }
                     <Grid item={true} >
-                      <Box component="div" m={1} className={classes.dropZoneBox}>
+                      <Box component="div" m={1} >
                         <Typography variant="subtitle2" component="p">
                           {acceptedFiles.length === 0 ?
                             "Drop file here to upload..."
@@ -255,7 +270,7 @@ export default (props: WorkspaceEditProps) => {
         <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
           Cancel
                   </Button>
-        <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspace}>
+        <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspaceButtonClick}>
           {workspace.id ? "Save" : "Create A New Workspace"}
         </Button>
         {loading &&
@@ -271,6 +286,19 @@ export default (props: WorkspaceEditProps) => {
           />}
 
       </Box>
+      {
+        showNoFilesSelectedDialog && <Dialog open={showNoFilesSelectedDialog}
+          onClose={() => setShowNoFilesSelectedDialog(false)}>
+          <DialogTitle>No files selected</DialogTitle>
+          <DialogContent>{
+            "No files from this repository have been selected, and so all the files in the repository will be added in the workspace. Press OK to proceed, or press Cancel and go back and select some."
+          }</DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => setShowNoFilesSelectedDialog(false)}>Cancel</Button>
+            <Button variant="contained" color="primary" onClick={() => {handleCreateWorkspace(); setShowNoFilesSelectedDialog(false)}} disabled={loading}>OK</Button>
+          </DialogActions>
+        </Dialog>
+      }
 
     </>
   );
