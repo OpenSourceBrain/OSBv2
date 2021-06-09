@@ -110,9 +110,6 @@ const useStyles = makeStyles((theme) => ({
         padding: "0 1rem",
         "&.MuiButton-containedPrimary": {
           color: fontColor,
-          "&:hover": {
-            color: primaryColor,
-          },
         },
       },
     },
