@@ -291,16 +291,11 @@ export default (props: WorkspaceEditProps) => {
           onClose={() => setShowNoFilesSelectedDialog(false)}>
           <DialogTitle>No files selected</DialogTitle>
           <DialogContent>{
-            loading ? <CircularProgress size={20} style={{
-              position: 'relative',
-              top: '50%',
-              left: '50%',
-            }} /> :
             "No files from this repository have been selected, and so all the files in the repository will be added in the workspace. Press OK to proceed, or press Cancel and go back and select some."
           }</DialogContent>
           <DialogActions>
             <Button color="primary" onClick={() => setShowNoFilesSelectedDialog(false)}>Cancel</Button>
-            <Button variant="contained" color="primary" onClick={handleCreateWorkspace} disabled={loading}>OK</Button>
+            <Button variant="contained" color="primary" onClick={() => {handleCreateWorkspace(); setShowNoFilesSelectedDialog(false)}} disabled={loading}>OK</Button>
           </DialogActions>
         </Dialog>
       }

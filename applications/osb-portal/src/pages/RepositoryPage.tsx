@@ -13,16 +13,19 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import LinkIcon from '@material-ui/icons/Link';
+import Link from "@material-ui/core/Link";
+import { DialogContent, DialogTitle } from "@material-ui/core";
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
-
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
 import OSBChipList from "../components/common/OSBChipList";
 import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceEditor";
 import { Workspace } from "../types/workspace";
+import WorkspaceService from "../service/WorkspaceService";
+import { UserInfo } from "../types/user";
 
 import {
   bgRegular,
@@ -40,10 +43,6 @@ import {
   bgDarker,
   radius,
 } from "../theme";
-import WorkspaceService from "../service/WorkspaceService";
-import { DialogContent, DialogTitle } from "@material-ui/core";
-import { UserInfo } from "../types/user";
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -394,6 +393,7 @@ export const RepositoryPage = (props: any) => {
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
+  const [workspaceLink, setWorkspaceLink] = React.useState(null);
 
   const classes = useStyles();
 
@@ -449,6 +449,7 @@ export const RepositoryPage = (props: any) => {
     const toImport = checked.length ? checked : [repository.contextResources];
     WorkspaceService.importResourcesToWorkspace(ws.id, toImport.map(c => c.resource)).then(() => {
       setShowWorkspaceEditor(false);
+      setWorkspaceLink(`/workspace/${ws.id}`);
       confirmAction("Success", "New workspace created!");
     }).catch((error) => {
       setShowWorkspaceEditor(false);
@@ -467,6 +468,7 @@ export const RepositoryPage = (props: any) => {
     const toImport = checked.length ? checked : [repository.contextResources];
     WorkspaceService.importResourcesToWorkspace(selectedWorkspace.id, toImport.map(c => c.resource)).then(() => {
       setSelectedWorkspace(null);
+      setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
       confirmAction("Success", "Resources added to workspace!");
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
@@ -573,7 +575,12 @@ export const RepositoryPage = (props: any) => {
           <DialogTitle>{confirmationDialogTitle}</DialogTitle>
           <DialogContent>{confirmationDialogContent}</DialogContent>
           <DialogActions>
-            <Button color="primary" onClick={() => { setChecked([]); setShowConfirmationDialog(false) }}>OK</Button>
+            <Button color="primary" onClick={() => { setChecked([]); setShowConfirmationDialog(false) }}>Close</Button>
+            {workspaceLink && <Button color="primary" variant="contained">
+              <Link href={workspaceLink} target="_blank" color="secondary" underline="none">
+                Go to workspace
+              </Link>
+            </Button>}
           </DialogActions>
         </Dialog>
       }
