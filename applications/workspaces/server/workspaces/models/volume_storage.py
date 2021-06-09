@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-
 from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
 
-from workspaces import util
+from typing import List, Dict  # noqa: F401
+
 from workspaces.models.base_model_ import Model
+from workspaces import util
 
 
 class VolumeStorage(Model):
@@ -23,15 +23,21 @@ class VolumeStorage(Model):
         :param name: The name of this VolumeStorage.  # noqa: E501
         :type name: str
         """
-        self.openapi_types = {"id": int, "name": str}
+        self.openapi_types = {
+            'id': int,
+            'name': str
+        }
 
-        self.attribute_map = {"id": "id", "name": "name"}
+        self.attribute_map = {
+            'id': 'id',
+            'name': 'name'
+        }
 
         self._id = id
         self._name = name
 
     @classmethod
-    def from_dict(cls, dikt) -> "VolumeStorage":
+    def from_dict(cls, dikt) -> 'VolumeStorage':
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -2,7 +2,7 @@
 
 ## Backend:
 ```
-openapi-generator-cli generate -i openapi.yaml -g python-flask -o backend -c config.json
+openapi-generator-cli generate -i openapi.yaml -g python-flask -o ../server -c config.json
 ```
 
 ## Frontend:

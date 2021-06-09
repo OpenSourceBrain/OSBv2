@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-
 from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
 
-from workspaces import util
+from typing import List, Dict  # noqa: F401
+
 from workspaces.models.base_model_ import Model
+from workspaces import util
 
 
 class Pagination(Model):
@@ -23,15 +23,21 @@ class Pagination(Model):
         :param number_of_pages: The number_of_pages of this Pagination.  # noqa: E501
         :type number_of_pages: int
         """
-        self.openapi_types = {"current_page": int, "number_of_pages": int}
+        self.openapi_types = {
+            'current_page': int,
+            'number_of_pages': int
+        }
 
-        self.attribute_map = {"current_page": "current_page", "number_of_pages": "number_of_pages"}
+        self.attribute_map = {
+            'current_page': 'current_page',
+            'number_of_pages': 'number_of_pages'
+        }
 
         self._current_page = current_page
         self._number_of_pages = number_of_pages
 
     @classmethod
-    def from_dict(cls, dikt) -> "Pagination":
+    def from_dict(cls, dikt) -> 'Pagination':
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-
 from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
 
-from workspaces import util
+from typing import List, Dict  # noqa: F401
+
 from workspaces.models.base_model_ import Model
+from workspaces import util
 
 
 class ResourceBase(Model):
@@ -15,20 +15,29 @@ class ResourceBase(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, path=None):  # noqa: E501
+    def __init__(self, name=None, path=None):  # noqa: E501
         """ResourceBase - a model defined in OpenAPI
 
+        :param name: The name of this ResourceBase.  # noqa: E501
+        :type name: str
         :param path: The path of this ResourceBase.  # noqa: E501
         :type path: str
         """
-        self.openapi_types = {"path": str}
+        self.openapi_types = {
+            'name': str,
+            'path': str
+        }
 
-        self.attribute_map = {"path": "path"}
+        self.attribute_map = {
+            'name': 'name',
+            'path': 'path'
+        }
 
+        self._name = name
         self._path = path
 
     @classmethod
-    def from_dict(cls, dikt) -> "ResourceBase":
+    def from_dict(cls, dikt) -> 'ResourceBase':
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -37,6 +46,29 @@ class ResourceBase(Model):
         :rtype: ResourceBase
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def name(self):
+        """Gets the name of this ResourceBase.
+
+        file name  # noqa: E501
+
+        :return: The name of this ResourceBase.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Sets the name of this ResourceBase.
+
+        file name  # noqa: E501
+
+        :param name: The name of this ResourceBase.
+        :type name: str
+        """
+
+        self._name = name
 
     @property
     def path(self):

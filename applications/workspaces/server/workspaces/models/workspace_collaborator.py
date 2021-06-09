@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-
 from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
 
-from workspaces import util
+from typing import List, Dict  # noqa: F401
+
 from workspaces.models.base_model_ import Model
+from workspaces import util
 
 
 class WorkspaceCollaborator(Model):
@@ -23,15 +23,21 @@ class WorkspaceCollaborator(Model):
         :param user_id: The user_id of this WorkspaceCollaborator.  # noqa: E501
         :type user_id: str
         """
-        self.openapi_types = {"id": int, "user_id": str}
+        self.openapi_types = {
+            'id': int,
+            'user_id': str
+        }
 
-        self.attribute_map = {"id": "id", "user_id": "user_id"}
+        self.attribute_map = {
+            'id': 'id',
+            'user_id': 'user_id'
+        }
 
         self._id = id
         self._user_id = user_id
 
     @classmethod
-    def from_dict(cls, dikt) -> "WorkspaceCollaborator":
+    def from_dict(cls, dikt) -> 'WorkspaceCollaborator':
         """Returns the dict as a model
 
         :param dikt: A dict.

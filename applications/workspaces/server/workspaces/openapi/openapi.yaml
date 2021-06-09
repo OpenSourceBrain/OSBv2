@@ -967,6 +967,16 @@ components:
         user_id:
           description: OSBRepository keycloak user id, will be automatically be set to the logged in user
           type: string
+        timestamp_created:
+          description: Date/time the Workspace is created
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z
+        timestamp_updated:
+          description: Date/time the Workspace is last updated
+          type: string
+          format: 'date-time'
+          example: 2019-11-23T01:23:45Z
       required:
         - name
         - repository_type

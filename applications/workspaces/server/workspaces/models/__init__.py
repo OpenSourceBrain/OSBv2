@@ -2,7 +2,6 @@
 
 # flake8: noqa
 from __future__ import absolute_import
-
 # import models into model package
 from workspaces.models.dandi_repository_resource import DandiRepositoryResource
 from workspaces.models.download_resource import DownloadResource

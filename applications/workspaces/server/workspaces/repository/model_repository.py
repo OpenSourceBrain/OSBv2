@@ -3,10 +3,10 @@ import os
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from sqlalchemy import asc, desc
+from sqlalchemy import desc
 from sqlalchemy.sql import func
 
-from workspaces.auth import auth_client
+
 from workspaces.models import RepositoryContentType, ResourceStatus, User
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
@@ -22,6 +22,7 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 class OwnerModel:
     @property
     def keycloak_user_id(self):
+        from workspaces.service.auth import auth_client
         try:
             return auth_client.get_current_user().get("id", None)
         except Exception as e:
@@ -51,7 +52,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return None
 
     def search_qs(self, filter=None, q=None):
-
+        from workspaces.service.auth import auth_client
         q_base = self.model.query
         logger.debug(f"filter: {filter}")
 
@@ -113,9 +114,10 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     def search_qs(self, filter=None, q=None):
 
         q_base = self.model.query
-        return q_base.order_by(desc(WorkspaceEntity.timestamp_updated))
+        return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):
+        from workspaces.service.auth import auth_client
         try:
             user = auth_client.get_user(repository.user_id)
             return User(

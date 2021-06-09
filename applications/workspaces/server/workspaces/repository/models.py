@@ -6,8 +6,9 @@ import typing
 
 import sqlalchemy
 import typing_extensions
-from open_alchemy import models
 from sqlalchemy import orm
+
+from open_alchemy import models
 
 
 class _WorkspaceEntityDictBase(typing_extensions.TypedDict, total=True):
@@ -99,7 +100,9 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
-        collaborators: typing.Optional[typing.Sequence["TWorkspaceCollaborator"]] = None,
+        collaborators: typing.Optional[
+            typing.Sequence["TWorkspaceCollaborator"]
+        ] = None,
         storage: typing.Optional["TVolumeStorage"] = None,
         resources: typing.Optional[typing.Sequence["TWorkspaceResourceEntity"]] = None,
     ) -> None:
@@ -144,9 +147,13 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         publicable: bool = False,
         license: typing.Optional[str] = None,
-        collaborators: typing.Optional[typing.Sequence["WorkspaceCollaboratorDict"]] = None,
+        collaborators: typing.Optional[
+            typing.Sequence["WorkspaceCollaboratorDict"]
+        ] = None,
         storage: typing.Optional["VolumeStorageDict"] = None,
-        resources: typing.Optional[typing.Sequence["WorkspaceResourceEntityDict"]] = None,
+        resources: typing.Optional[
+            typing.Sequence["WorkspaceResourceEntityDict"]
+        ] = None,
     ) -> "TWorkspaceEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -257,7 +264,9 @@ class TWorkspaceCollaborator(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_dict(cls, user_id: str, id: typing.Optional[int] = None) -> "TWorkspaceCollaborator":
+    def from_dict(
+        cls, user_id: str, id: typing.Optional[int] = None
+    ) -> "TWorkspaceCollaborator":
         """
         Construct from a dictionary (eg. a POST payload).
 
@@ -351,7 +360,9 @@ class TWorkspaceImage(typing_extensions.Protocol):
         ...
 
     @classmethod
-    def from_dict(cls, image: str, id: typing.Optional[int] = None) -> "TWorkspaceImage":
+    def from_dict(
+        cls, image: str, id: typing.Optional[int] = None
+    ) -> "TWorkspaceImage":
         """
         Construct from a dictionary (eg. a POST payload).
 
@@ -775,6 +786,8 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     auto_sync: bool
     default_context: typing.Optional[str]
     user_id: typing.Optional[str]
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
 
 
 class TOSBRepositoryEntity(typing_extensions.Protocol):
@@ -795,6 +808,8 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         default_context: The default branch to show for this repository
         user_id: OSBRepository keycloak user id, will be automatically be set
             to the logged in user
+        timestamp_created: Date/time the Workspace is created
+        timestamp_updated: Date/time the Workspace is last updated
 
     """
 
@@ -813,6 +828,8 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
     uri: str
     default_context: typing.Optional[str]
     user_id: typing.Optional[str]
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
 
     def __init__(
         self,
@@ -825,6 +842,8 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         auto_sync: bool = True,
         default_context: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
+        timestamp_created: typing.Optional[datetime.datetime] = None,
+        timestamp_updated: typing.Optional[datetime.datetime] = None,
     ) -> None:
         """
         Construct.
@@ -841,6 +860,8 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
             default_context: The default branch to show for this repository
             user_id: OSBRepository keycloak user id, will be automatically be
                 set to the logged in user
+            timestamp_created: Date/time the Workspace is created
+            timestamp_updated: Date/time the Workspace is last updated
 
         """
         ...
@@ -857,6 +878,8 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         auto_sync: bool = True,
         default_context: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
+        timestamp_created: typing.Optional[datetime.datetime] = None,
+        timestamp_updated: typing.Optional[datetime.datetime] = None,
     ) -> "TOSBRepositoryEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -873,6 +896,8 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
             default_context: The default branch to show for this repository
             user_id: OSBRepository keycloak user id, will be automatically be
                 set to the logged in user
+            timestamp_created: Date/time the Workspace is created
+            timestamp_updated: Date/time the Workspace is last updated
 
         Returns:
             Model instance based on the dictionary.
