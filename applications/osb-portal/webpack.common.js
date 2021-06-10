@@ -71,9 +71,6 @@ module.exports = env => {
       new CopyPlugin({
         patterns: [
           {
-            from: './src/assets-parametrized', to: contentbase,
-          },
-          {
             from: './src/assets', to: contentbase,
           },
 

@@ -1,4 +1,5 @@
 const { merge } = require('webpack-merge');
+const webpack = require('webpack');
 const common = require('./webpack.common.js');
 const CopyPlugin = require('copy-webpack-plugin');
 var path = require('path');
@@ -55,6 +56,7 @@ module.exports = env => {
       },
 
       plugins: [
+        new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org', 'NAMESPACE': env.NAMESPACE || 'osb2' }),
         new CopyPlugin({
           patterns: [
             {

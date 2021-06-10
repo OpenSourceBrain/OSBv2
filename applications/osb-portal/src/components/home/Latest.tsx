@@ -10,7 +10,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   partners: {
-    color: theme.palette.grey[50]
+    color: 'grey',
+    fontSize: "0.9em",
+    marginBottom: "0.5em"
   }
 }));
 
@@ -39,11 +41,12 @@ export const Latest = () => {
 
       </Box>
 
-      <Box alignSelf="flex-end" justifySelf="flex-end" alignItems="center">
+      <Box alignSelf="flex-end" justifySelf="flex-end" alignItems="center" textAlign="right">
         <Typography className={classes.partners}>
 
-          Powered by <Link href="https://wellcome.org"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" /></Link>
+          Powered by
         </Typography>
+        <Link href="https://wellcome.org"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" /></Link>
       </Box>
       {/* <Typography component="h2" variant="h6" gutterBottom={true}>
         Latest
