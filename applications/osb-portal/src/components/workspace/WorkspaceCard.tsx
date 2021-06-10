@@ -18,6 +18,7 @@ import { UserInfo } from "../../types/user";
 import { canEditWorkspace } from '../../service/UserService';
 import WorkspaceEdit from "./WorkspaceEditor";
 import OSBDialog from "../common/OSBDialog";
+import WorkspaceActionsMenu from "./WorkspaceActionsMenu";
 
 interface Props {
   workspace: Workspace;
@@ -140,7 +141,9 @@ export const WorkspaceCard = (props: Props) => {
             <IconButton size="small" onClick={handleClick}>
               <Icons.Dots className={classes.icon} />
             </IconButton>
-            <Menu
+            <WorkspaceActionsMenu canEdit={canEdit} workspace={workspace} anchorEl={anchorEl} handleCloseMenu={handleCloseMenu}
+            updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
+            {/* <Menu
               id="simple-menu"
               anchorEl={anchorEl}
               keepMounted={true}
@@ -174,7 +177,7 @@ export const WorkspaceCard = (props: Props) => {
 
 
               </NestedMenuItem>
-            </Menu>
+            </Menu> */}
         </CardActions>
         }
 
