@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useParams, useHistory } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -28,23 +27,14 @@ import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../comp
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
+import MarkdownViewer from "../components/common/MarkdownViewer"
 
 import {
-  bgRegular,
   linkColor,
-  primaryColor,
   bgLightest,
   fontColor,
   bgDarkest,
   checkBoxColor,
-  paragraph,
-  bgLightestShade,
-  bgInputs,
-  font,
-  bgLight,
-  bgDarker,
-  bgDark,
-  radius,
 } from "../theme";
 
 
@@ -84,64 +74,6 @@ const useStyles = makeStyles((theme) => ({
       "& .flex-grow-1": {
         flexGrow: 1,
       },
-      "& .preview-box": {
-        padding: theme.spacing(3),
-        border: `3px solid #1e1e1e`,
-        backgroundColor: "#191919",
-
-        flexGrow: 1,
-        "& a": {
-          color: linkColor,
-          textDecoration: 'none',
-          "&:hover": {
-            textDecoration: 'underline',
-          },
-        },
-        "& pre": {
-          padding: theme.spacing(2),
-          backgroundColor: bgLightestShade,
-          borderRadius: radius,
-          overflowX: 'auto',
-          "&::-webkit-scrollbar": {
-            height: '5px',
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: bgInputs,
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: 'transparent',
-          },
-        },
-        "& h1": {
-          marginTop: 0,
-          fontWeight: 'normal',
-        },
-        "& h2": {
-          marginTop: theme.spacing(5),
-          fontWeight: '500',
-          paddingBottom: '5px',
-        },
-        "& h1, h2": {
-          borderBottom: `1px solid ${bgRegular}`,
-        },
-        "& p": {
-          color: 'rgba(255, 255, 255, 0.8)',
-          fontWeight: 'normal',
-          fontSize: '0.8rem',
-        },
-        "&::-webkit-scrollbar-track": {
-          backgroundColor: 'transparent',
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: '#c4c4c4',
-        },
-        "& p img": {
-          maxWidth: '30vw',
-          [theme.breakpoints.down("sm")]: {
-            maxWidth: '75vw',
-          },
-        },
-      }
     },
     "& .subheader": {
       display: "flex",
@@ -357,11 +289,7 @@ export const RepositoryPage = (props: any) => {
                       Overview
                     </Typography>
                   </Box>
-                  <Paper className="verticalFit">
-                    <ReactMarkdown skipHtml={true} className="preview-box scrollbar">
-                      {repository.description}
-                    </ReactMarkdown>
-                  </Paper>
+                  <MarkdownViewer text={repository.description} />
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
