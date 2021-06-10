@@ -167,6 +167,7 @@ const useStyles = makeStyles((theme) => ({
 export default ({ repository, checkedChanged, backAction, refresh }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void, refresh?: boolean }) => {
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
   const [currentPath, setCurrentPath] = React.useState<RepositoryResourceNode[]>([repository.contextResources]);
+  const [filter, setFilter] = React.useState<string>();
   const handleToggle = (value: any) => () => '';
   const classes = useStyles();
   React.useEffect(() => {
@@ -186,6 +187,7 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
   const addToCurrentPath = (n: RepositoryResourceNode) => {
     setCurrentPath([...currentPath, n]);
   }
+
 
 
   return <>
@@ -215,6 +217,8 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
       fullWidth={true}
       placeholder="Search"
       className={classes.textField}
+      onChange={(e) => setFilter(e.target.value.toLowerCase())}
+
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -224,9 +228,9 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
       }}
     />
 
-    <Box className="scrollbar">
+    <Box mt={1} className="scrollbar">
       <List className={classes.list}>
-        {currentPath.slice(-1)[0].children.map((value, index) => {
+        {currentPath.slice(-1)[0].children.filter(e => !filter || e.resource.name.toLowerCase().includes(filter)).map((value, index) => {
           const labelId = `checkbox-list-label-${value}`;
 
           const splitfilename = value.resource.name.split(".");

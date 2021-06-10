@@ -33,7 +33,7 @@ module.exports = env => {
     common(env),
     {
       mode: 'development',
-      devtool: null,
+      devtool: 'eval-source-map',
       devServer: {
         contentBase: path.resolve(__dirname, 'public'),
         publicPath: '/',

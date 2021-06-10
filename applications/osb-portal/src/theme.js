@@ -144,7 +144,7 @@ const theme = {
       outlined: {
         borderWidth: 2,
         borderColor: fontColor,
-        marginRight: gutter * 3 / 2,
+        marginRight: gutter / 2,
         '&:last-child': {
           marginRight: 0
         }
