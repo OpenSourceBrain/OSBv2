@@ -34,10 +34,13 @@ module.exports = env => {
       rules: [
         {
           test: /\.ts(x?)$/,
-          exclude: /node_modules/,
+          include: path.resolve(__dirname, 'src'),
           use: [
             {
-              loader: "ts-loader"
+              loader: "ts-loader",
+              options: {
+                transpileOnly: true,
+              },
             }
           ]
         },
@@ -59,13 +62,6 @@ module.exports = env => {
           test: /\.css$/i,
           use: ['style-loader', 'css-loader'],
         },
-        // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-        {
-          enforce: "pre",
-          test: /\.js$/,
-          loader: "source-map-loader"
-        },
-
       ]
     },
 
@@ -84,14 +80,5 @@ module.exports = env => {
         ]
       }),
     ],
-
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
-    externals: {
-      "react": "React",
-      "react-dom": "ReactDOM"
-    }
   }
 };

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "webpack serve --progress --config webpack.dev.js --env DOMAIN=v2dev.opensourcebrain.org --env NAMESPACE=osb2dev --env NODE_OPTIONS='--max-old-space-size=12048'",
-    "start:test": "webpack serve --progress --config webpack.dev.js --env DOMAIN=v2.opensourcebrain.org --env NAMESPACE=osb2",
-    "start:minikube": "webpack serve --progress --config webpack.dev.js --env DOMAIN=osb.local --env NAMESPACE=osblocal",
+    "start:test": "webpack serve --progress --config webpack.dev.js --env DOMAIN=v2.opensourcebrain.org --env NAMESPACE=osb2 --env NODE_OPTIONS='--max-old-space-size=12048'",
+    "start:minikube": "webpack serve --progress --config webpack.dev.js --env DOMAIN=osb.local --env NAMESPACE=osblocal --env NODE_OPTIONS='--max-old-space-size=12048'",
     "prebuild": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "build": "webpack --mode=production --config webpack.prod.js --devtool source-map",
     "prebuild-dev": "tslint --fix -c tslint.json 'src/**/*.{ts,tsx}'",

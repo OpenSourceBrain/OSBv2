@@ -7,20 +7,47 @@
 }
 
 .verticalFit {
-  overflow: hidden;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  min-width: 100%;
+  @media screen and (min-width:960px) {
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 
-  &.card-container {
-    @media screen and (min-width:960px) {
-      max-height: calc(100vh - 80px);
-      padding-bottom: 8vh;
+    &.card-container,
+    .scrollbar {
+      overflow: auto;
+      max-height: calc(100%);
     }
   }
 }
+
+@media screen and (min-width:960px) {
+  .verticalFill {
+
+    height: calc(100%);
+    overflow: hidden;
+
+    .scrollbar {
+      max-height: calc(100%);
+
+    }
+  }
+
+  .scrollbar {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 @gutter / 4;
+    padding-right: @gutter / 2;
+    .scrollbarStyle;
+
+    * {
+      .scrollbarStyle;
+    }
+  }
+}
+
+
 
 .scrollbarStyle {
 
@@ -43,16 +70,9 @@
   }
 }
 
-.scrollbar {
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: @gutter / 2;
-  .scrollbarStyle;
 
-  * {
-    .scrollbarStyle;
-  }
-}
+
+
 
 .MuiTreeItem-root.first-level {
   >.MuiTreeItem-content {

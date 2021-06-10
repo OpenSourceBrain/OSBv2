@@ -30,9 +30,10 @@ module.exports = env => {
   }
 
   return merge(
+    common(env),
     {
       mode: 'development',
-      devtool: 'eval-source-map',
+      devtool: null,
       devServer: {
         contentBase: path.resolve(__dirname, 'public'),
         publicPath: '/',
@@ -72,5 +73,5 @@ module.exports = env => {
         }),
       ],
 
-    }, common(env))
+    })
 };

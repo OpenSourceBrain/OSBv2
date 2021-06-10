@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -23,7 +24,7 @@ import OSBDialog from '../components/common/OSBDialog';
 import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
-import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceEditor";
+import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
@@ -42,22 +43,20 @@ import {
   font,
   bgLight,
   bgDarker,
+  bgDark,
   radius,
 } from "../theme";
 
 
 const useStyles = makeStyles((theme) => ({
-  gitHubLinkButton: {
-    position: 'relative',
-    float: 'right',
-    top: '-5px',
-    borderRadius: 0,
+  linkButton: {
+    position: 'absolute',
+    right: 0,
     backgroundColor: 'black',
     textTransform: 'none',
-    alignItems: 'center',
+
     "& .MuiButton-label": {
       color: 'white',
-      fontSize: '0.6rem',
     },
     "&:hover": {
       "& .MuiButton-label": {
@@ -77,161 +76,19 @@ const useStyles = makeStyles((theme) => ({
         color: linkColor,
       },
     },
-    "& .scrollbar": {
-      paddingRight: 0,
-      marginTop: theme.spacing(2),
-      height: '100%',
-    },
     "& .main-content": {
       padding: theme.spacing(3),
-      height: '83vh',
-      alignItems: 'stretch',
       "& .MuiGrid-container": {
-        height: '100%',
-        alignItems: 'stretch',
-        "& .MuiGrid-item": {
-          height: '100%',
-        },
-      },
-      "& .MuiTextField-root": {
-        borderRadius: 4,
-        marginTop: theme.spacing(2),
-        backgroundColor: bgLightestShade,
-        padding: theme.spacing(2),
-        "& .MuiSvgIcon-root": {
-          width: "1.25rem",
-          borderRadius: 0,
-          color: paragraph,
-          height: "auto",
-        },
-        "& .MuiInput-root": {
-          "&:before": {
-            display: "none",
-          },
-          "&:after": {
-            display: "none",
-          },
-        },
-        "& .MuiInputBase-input": {
-          padding: theme.spacing(0),
-          fontSize: ".88rem",
-        },
-      },
-      "& .MuiListItemIcon-root": {
-        minWidth: 1,
-      },
-      "& .MuiListItemText-root": {
-        margin: 0,
-      },
-      "& .MuiList-root": {
-        padding: 0,
-        marginTop: theme.spacing(0),
-        "& .flex-grow-1": {
-          borderBottom: `1px solid ${bgRegular}`,
-          borderTop: `1px solid ${bgRegular}`,
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          marginLeft: theme.spacing(2),
-        },
-        "& p": {
-          fontSize: ".913rem",
-          display: "flex",
-          alignItems: "flex-end",
-          color: fontColor,
-          "& span": {
-            fontSize: ".913rem",
-            color: bgInputs,
-          },
-        },
-        "& strong": {
-          fontSize: ".793rem",
-          fontWeight: "bold",
-          color: bgInputs,
-        },
-        "& .icon": {
-          width: "2rem",
-          display: "flex",
-          "&.file": {
-            "& .MuiSvgIcon-root": {
-              color: bgInputs,
-            },
-          },
-          "& .MuiSvgIcon-root": {
-            color: linkColor,
-          },
-        },
-        "& .MuiAvatar-root": {
-          width: "1.5rem",
-          borderRadius: 0,
-          height: "auto",
-        },
-        "& .MuiIconButton-root": {
-          margin: 0,
-          padding: 0,
-        },
-        "& .MuiListItem-root": {
-          borderRadius: 4,
-          padding: 0,
-          paddingLeft: theme.spacing(2),
-          paddingRight: theme.spacing(2),
-          "&:first-child": {
-            "& .flex-grow-1": {
-              borderTop: 0,
-            },
-          },
-          "&:last-child": {
-            "& .flex-grow-1": {
-              borderBottomWidth: 2,
-            },
-          },
-          "&:hover": {
-            backgroundColor: bgLightest,
-          },
-        },
-      },
-      "& .MuiBreadcrumbs-ol": {
-        lineHeight: 1,
-        "& .MuiAvatar-root": {
-          width: "auto",
-          borderRadius: 0,
-          height: "auto",
-        },
-        "& .MuiBreadcrumbs-separator": {
-          fontSize: ".693rem",
-          lineHeight: 1,
-          color: paragraph,
-          fontWeight: "bold",
-        },
-        "& .MuiBreadcrumbs-li": {
-          lineHeight: 1,
-          "& .MuiTypography-root": {
-            fontSize: ".693rem",
-            fontWeight: "bold",
-            color: paragraph,
-            lineHeight: 1,
-          },
-          "& .MuiLink-root": {
-            fontSize: ".693rem",
-            lineHeight: 1,
-            fontWeight: "bold",
-            display: "block",
-            color: bgInputs,
-            cursor: "pointer",
-          },
-        },
+        height: `calc(100% + ${theme.spacing(5)}px)`
       },
       "& .flex-grow-1": {
         flexGrow: 1,
       },
       "& .preview-box": {
-        paddingRight: theme.spacing(2),
-        paddingLeft: theme.spacing(2),
-        marginTop: theme.spacing(2),
-        backgroundColor: 'rgba(0, 0, 0, 0.25)',
-        boxShadow: '0px 0px 0px 3px rgba(0, 0, 0, 0.25)',
-        borderRadius: radius,
-        fontFamily: font,
-        overflow: "auto",
+        padding: theme.spacing(3),
+        border: `3px solid #1e1e1e`,
+        backgroundColor: "#191919",
+
         flexGrow: 1,
         "& a": {
           color: linkColor,
@@ -256,6 +113,7 @@ const useStyles = makeStyles((theme) => ({
           },
         },
         "& h1": {
+          marginTop: 0,
           fontWeight: 'normal',
         },
         "& h2": {
@@ -283,15 +141,7 @@ const useStyles = makeStyles((theme) => ({
             maxWidth: '75vw',
           },
         },
-      },
-      "& .primary-heading": {
-        borderBottom: `3px solid ${bgInputs}`,
-        fontSize: ".88rem",
-        fontWeight: "bold",
-        marginBottom: theme.spacing(2),
-        lineHeight: "1.25rem",
-        paddingBottom: theme.spacing(1),
-      },
+      }
     },
     "& .subheader": {
       display: "flex",
@@ -352,21 +202,7 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  },
-  resourceBrowserContainer: {
-    maxHeight: '100%',
-    overflow: 'auto',
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: bgInputs,
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: 'transparent',
-    },
-    "& .MuiBox-root": {
-      overflow: 'initial',
-      height: 'fit-content',
-    },
-  },
+  }
 }));
 
 
@@ -408,15 +244,15 @@ export const RepositoryPage = (props: any) => {
 
   const openDialog = () => {
     setShowWorkspaceEditor(!showWorkspaceEditor);
-    if (showWorkspaceEditor){
+    if (showWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
     }
   }
 
-  const openExisitngWorkspaceDialog = () => {
+  const openExistingWorkspaceDialog = () => {
     setShowExisitngWorkspaceEditor(!showExistingWorkspaceEditor);
-    if (showExistingWorkspaceEditor){
+    if (showExistingWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
     }
@@ -484,8 +320,8 @@ export const RepositoryPage = (props: any) => {
 
   return (
     <>
-      <Box className={classes.root}>
-        <Box className="subheader" paddingX={3} justifyContent="space-between">
+      <Box className={`${classes.root} verticalFit`}>
+        <Box className="subheader" paddingX={3} justifyContent="space-between"  >
           <Box>
             <Box display="flex" alignItems="center">
               <ArrowBackIcon onClick={() => history.goBack()} />
@@ -496,47 +332,48 @@ export const RepositoryPage = (props: any) => {
             </Box>
           </Box>
           <Box>
-            <Button variant="outlined" disableElevation={true} color="secondary" style={{borderColor: 'white'}} onClick={() => {user ? openExisitngWorkspaceDialog() : setShowUserNotLoggedInAlert(true)}}>
+            <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
               <AddIcon />
               Add to existing workspace
             </Button>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={() => {user ? openDialog() : setShowUserNotLoggedInAlert(true)}}>
+            <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
               <AddIcon />
               Create new workspace
             </Button>
           </Box>
         </Box>
 
-        <Box className="main-content">
+        <Box className="main-content verticalFit">
           {repository ?
-            <Grid container={true} className="row" spacing={5}>
-              <Grid item={true} xs={12} md={6}>
-                <Box className="flex-grow-1" maxWidth="100%">
-                  <a href={repository.uri} target="_blank" rel="noreferrer">
-                    <Button className={classes.gitHubLinkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
-                      See on GitHub
+            <Grid container={true} spacing={5} className="verticalFill">
+              <Grid item={true} xs={12} md={6} className="verticalFill">
+                <Box className="flex-grow-1 verticalFit" maxWidth="100%" position="relative">
+                  <Box>
+
+                    <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                      See on {repository.repositoryType}
                     </Button>
-                  </a>
-                  <Typography component="h3" className="primary-heading">
-                    README
-                  </Typography>
-                  <Box className="preview-box scrollbar">
-                    <ReactMarkdown skipHtml={true}>
+                    <Typography component="h2" variant="h2" className="primary-heading">
+                      Overview
+                    </Typography>
+                  </Box>
+                  <Paper className="verticalFit">
+                    <ReactMarkdown skipHtml={true} className="preview-box scrollbar">
                       {repository.description}
                     </ReactMarkdown>
-                  </Box>
+                  </Paper>
                 </Box>
               </Grid>
-              <Grid item={true} xs={12} md={6}>
-                <Box className="flex-grow-1">
-                  <Typography component="h3" className="primary-heading">
+              <Grid item={true} xs={12} md={6} className="verticalFill">
+                <Box className="verticalFit">
+                  <Typography component="h2" variant="h2">
                     Resources
                   </Typography>
-
-                  <Box className={`${classes.resourceBrowserContainer} scrollbar`}>
-                    <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh}/>
+                  <Box className="verticalFit">
+                    <Box className={`${classes.resourceBrowserContainer} verticalFit`}>
+                      <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
+                    </Box>
                   </Box>
-
                 </Box>
               </Grid>
 
@@ -559,14 +396,14 @@ export const RepositoryPage = (props: any) => {
       <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
-        <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0}/>
+        <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
       </OSBDialog>
 
-      <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExisitngWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading } closeAction={openExisitngWorkspaceDialog} onAddClick={addToExistingWorkspace}/>}>
+      <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
         {checked.length > 0 &&
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
-        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading}/>
+        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
       </OSBDialog>
 
       <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>

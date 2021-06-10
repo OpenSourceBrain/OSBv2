@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     [theme.breakpoints.up("md")]: {
-      maxHeight: "100vh",
+      height: "100vh",
       overflow: "hidden",
     }
   },

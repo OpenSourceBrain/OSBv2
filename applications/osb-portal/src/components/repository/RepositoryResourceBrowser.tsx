@@ -17,14 +17,158 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import FolderIcon from "@material-ui/icons/Folder";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
+import {
+  bgRegular,
+  linkColor,
+  bgLightest,
+  fontColor,
+  bgDarkest,
+  checkBoxColor,
+  paragraph,
+  bgLightestShade,
+  bgInputs,
+} from "../../theme";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    borderRadius: 4,
+    marginTop: theme.spacing(2),
+    backgroundColor: bgLightestShade,
+    padding: theme.spacing(2),
+    "& .MuiSvgIcon-root": {
+      width: "1.25rem",
+      borderRadius: 0,
+      color: paragraph,
+      height: "auto",
+    },
+    "& .MuiInput-root": {
+      "&:before": {
+        display: "none",
+      },
+      "&:after": {
+        display: "none",
+      },
+    },
+    "& .MuiInputBase-input": {
+      padding: theme.spacing(0),
+      fontSize: ".88rem",
+    },
+  },
+  list: {
+
+    "& .MuiCheckbox-colorSecondary": {
+      color: checkBoxColor,
+      "&.Mui-checked": {
+        color: linkColor,
+      },
+    },
+
+    "& .flex-grow-1": {
+      borderBottom: `1px solid ${bgRegular}`,
+      borderTop: `1px solid ${bgRegular}`,
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
+      marginLeft: theme.spacing(2),
+    },
+    "& .MuiListItemIcon-root": {
+      minWidth: 1,
+    },
+    "& .MuiListItemText-root": {
+      margin: 0,
+    },
+    "& p": {
+      fontSize: ".913rem",
+      display: "flex",
+      alignItems: "flex-end",
+      color: fontColor,
+      "& span": {
+        fontSize: ".913rem",
+        color: bgInputs,
+      },
+    },
+    "& strong": {
+      fontSize: ".793rem",
+      fontWeight: "bold",
+      color: bgInputs,
+    },
+
+    "& .MuiAvatar-root": {
+      width: "1.5rem",
+      borderRadius: 0,
+      height: "auto",
+    },
+    "& .MuiIconButton-root": {
+      margin: 0,
+      padding: 0,
+    },
+    "& .MuiListItem-root": {
+      borderRadius: 4,
+      padding: 0,
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      "&:first-child": {
+        "& .flex-grow-1": {
+          borderTop: 0,
+        },
+      },
+      "&:last-child": {
+        "& .flex-grow-1": {
+          borderBottomWidth: 2,
+        },
+      },
+      "&:hover": {
+        backgroundColor: bgLightest,
+      },
+    },
+
+
+
+
+  },
+  breadcrumbs: {
+
+    lineHeight: 1,
+    "& .MuiAvatar-root": {
+      width: "auto",
+      borderRadius: 0,
+      height: "auto",
+    },
+    "& .MuiBreadcrumbs-separator": {
+      fontSize: ".693rem",
+      lineHeight: 1,
+      color: paragraph,
+      fontWeight: "bold",
+    },
+    "& .MuiBreadcrumbs-li": {
+      lineHeight: 1,
+      "& .MuiTypography-root": {
+        fontSize: ".693rem",
+        fontWeight: "bold",
+        color: paragraph,
+        lineHeight: 1,
+      },
+      "& .MuiLink-root": {
+        fontSize: ".693rem",
+        lineHeight: 1,
+        fontWeight: "bold",
+        display: "block",
+        color: bgInputs,
+        cursor: "pointer",
+      },
+    },
+  }
+
+
+}));
 
 export default ({ repository, checkedChanged, backAction, refresh }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void, refresh?: boolean }) => {
   const [checked, setChecked] = React.useState<{ [id: string]: RepositoryResourceNode }>({});
   const [currentPath, setCurrentPath] = React.useState<RepositoryResourceNode[]>([repository.contextResources]);
   const handleToggle = (value: any) => () => '';
-
+  const classes = useStyles();
   React.useEffect(() => {
     setChecked({});
   }, [refresh])
@@ -49,10 +193,11 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
     <Breadcrumbs
       separator={<Avatar src="/images/separator.svg" />}
       aria-label="breadcrumb"
+      className={classes.breadcrumbs}
     >
-    {   backAction && <IconButton onClick={() => backAction()}>
-      <ArrowBackIosIcon fontSize="small" />
-    </IconButton>}
+      {backAction && <IconButton onClick={() => backAction()}>
+        <ArrowBackIosIcon fontSize="small" />
+      </IconButton>}
       {
         currentPath.map((element, i) =>
           <Link
@@ -69,6 +214,7 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
       id="standard-start-adornment"
       fullWidth={true}
       placeholder="Search"
+      className={classes.textField}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -79,7 +225,7 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
     />
 
     <Box className="scrollbar">
-      <List>
+      <List className={classes.list}>
         {currentPath.slice(-1)[0].children.map((value, index) => {
           const labelId = `checkbox-list-label-${value}`;
 
@@ -113,8 +259,8 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
                 onClick={isFolder ? () => addToCurrentPath(value) : null}
               >
                 <Box display="flex" alignItems="center">
-                  <Box className={'icon' + (!isFolder ? '' : ' file')}>
-                    {isFolder ? <FolderIcon /> : <InsertDriveFileIcon />}
+                  <Box pr={1} className={'icon' + (!isFolder ? '' : ' file')}>
+                    {isFolder ? <FolderIcon color="primary" /> : <InsertDriveFileIcon color="disabled" />}
                   </Box>
                   <Typography component="p">
                     {filename}
