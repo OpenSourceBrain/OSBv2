@@ -65,7 +65,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         props.refreshWorkspaces();
     }
 
-    /**
+    /*
     *
     * @param applicatonType OSBApplication key
     */
