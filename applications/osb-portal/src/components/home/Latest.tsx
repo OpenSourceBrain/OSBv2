@@ -9,29 +9,40 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     textAlign: "left",
   },
+  partners: {
+    color: theme.palette.grey[50]
+  }
 }));
 
 export const Latest = () => {
   const classes = useStyles();
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" className="verticalFill">
       <Typography component="h2" variant="h6" gutterBottom={true}>
         Disclaimer
      </Typography>
-      <Box mt={3}>
+      <Box mt={3} flexGrow="1"  >
         <Typography>
           This is a beta release of version 2.0 of the Open Source Brain platform, which is under active development and testing.
         </Typography>
-        <br/>
+        <br />
         <Typography>
           <strong>User accounts, data and workspaces are subject to change without notice.</strong>
         </Typography>
-        <br/>
+        <br />
         <Typography>
           For now please use the live <Link href="http://opensourcebrain.org">OSBv1 platform</Link>, <Link href="http://nwbexplorer.opensourcebrain.org">NWB Explorer</Link> or <Link href="http://netpyne.opensourcebrain.org">NetPyNE</Link>.
 
           Please <Link href="http://opensourcebrain.org/docs#How_To_Contact_Us">get in contact</Link> if you would like to help with user testing.
+        </Typography>
+
+      </Box>
+
+      <Box alignSelf="flex-end" justifySelf="flex-end" alignItems="center">
+        <Typography className={classes.partners}>
+
+          Powered by <Link href="https://wellcome.org"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" /></Link>
         </Typography>
       </Box>
       {/* <Typography component="h2" variant="h6" gutterBottom={true}>
@@ -44,6 +55,6 @@ export const Latest = () => {
         <Typography>20/03/2023 - NeuroML 6 released</Typography>
         <Typography>20/03/2041 - C. elegans fully simulated!</Typography>
       </Box> */}
-    </>
+    </Box>
   );
 };

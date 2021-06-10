@@ -4,7 +4,7 @@ import { Grid, Paper } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Latest } from "../components/latest/Latest";
+import { Latest } from "../components/home/Latest";
 
 import {
   Header,
@@ -17,12 +17,9 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginBottom: theme.spacing(2),
     overflow: "hidden",
   },
-  moreMargin: {
-    marginBottom: theme.spacing(4),
-  },
+
 }));
 
 
@@ -33,28 +30,28 @@ export default (props: any) => {
 
     <Box p={1} className="verticalFit">
       <Grid container={true}>
-        <Grid item={true} xs={12} sm={12} md={6} container={true} className="leftContainer">
-          <Grid item={true} xs={12}>
+        <Grid item={true} xs={12} sm={12} md={6} direction="column" className="verticalFill">
+          <Box display="flex" >
             <Paper className={classes.paper} elevation={0}>
               <Banner />
             </Paper>
-          </Grid>
-          <Grid item={true} xs={12}>
+          </Box>
+          <Box mt={2} display="flex">
             <Paper className={classes.paper} elevation={0}>
               <Box p={3} >
                 <WorkspaceToolBox />
               </Box>
             </Paper>
-          </Grid>
-          <Grid item={true} xs={12} className="verticalFit">
-            <Paper className={classes.moreMargin} elevation={0}>
-              <Box p={3} height="36vh">
+          </Box>
+          <Box mt={2} display="flex" flexGrow="1">
+            <Paper elevation={0} className="verticalFill">
+              <Box p={3} className="verticalFill">
                 <Latest />
               </Box>
             </Paper>
-          </Grid>
+          </Box>
         </Grid>
-        <Grid item={true} xs={12} sm={12} md={6} container={true} alignItems="stretch">
+        <Grid item={true} xs={12} sm={12} md={6} alignItems="stretch">
           <Box pl={2} width={1}>
             <Workspaces />
           </Box>

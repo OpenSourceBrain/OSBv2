@@ -83,7 +83,6 @@ const theme = {
     },
     h6: {
       fontSize: '1rem',
-      flex: 1,
       lineHeight: 1,
       fontWeight: 400,
     },
@@ -118,6 +117,9 @@ const theme = {
     MuiGrid: {
       root: {
         display: 'flex'
+      },
+      container: {
+        flex: 1
       }
     },
     MuiCard: { root: { flex: 1 } },
