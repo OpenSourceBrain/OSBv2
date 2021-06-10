@@ -28,15 +28,15 @@ export const MainMenu = () => {
         title="OSB"
         className={classes.button + " " + classes.firstButton}
         items={[
-          { label: "Home", callback: () => history.push("/") },
-          { label: "About", callback: () => alert("Open Source Brain v2") }
+          { label: "About", callback: () => alert("Open Source Brain v2") },
         ]}
       />
       <MainMenuItem
         title="View"
         className={classes.button}
         items={[
-          { label: "Repositories", callback: () => history.push("/repositories") }
+          { label: "Repositories", callback: () => history.push("/repositories") },
+          { label: "Workspaces", callback: () => history.push("/workspaces") },
         ]}
       />
     </Box>
