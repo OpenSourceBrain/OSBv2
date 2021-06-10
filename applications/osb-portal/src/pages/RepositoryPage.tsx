@@ -370,9 +370,7 @@ export const RepositoryPage = (props: any) => {
                     Resources
                   </Typography>
                   <Box className="verticalFit">
-                    <Box className={`${classes.resourceBrowserContainer} verticalFit`}>
-                      <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
-                    </Box>
+                    <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
                   </Box>
                 </Box>
               </Grid>
