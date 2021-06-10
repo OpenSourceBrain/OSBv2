@@ -26,6 +26,8 @@ import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from '../../../service/UserService';
 import { primaryColor } from "../../../theme";
+import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
+import { UserInfo } from "../../../types/user";
 
 const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
 
@@ -83,7 +85,7 @@ interface WorkspaceProps {
   refreshWorkspace?: () => any;
   updateWorkspace: (ws: Workspace) => null,
   deleteWorkspace: (wsId: number) => null,
-  user: any,
+  user: UserInfo,
   [propName: string]: any;
 }
 
@@ -168,6 +170,9 @@ export default (props: WorkspaceProps | any) => {
                 <ShareIcon />
               </IconButton>
             }
+            <IconButton>
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace}/>
+            </IconButton>
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -178,7 +183,6 @@ export default (props: WorkspaceProps | any) => {
               {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
               {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
             </Menu>
-
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
