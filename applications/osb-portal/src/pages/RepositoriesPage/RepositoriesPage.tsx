@@ -26,6 +26,7 @@ enum RepositoriesTab {
 
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const classes = useStyles();
+  const history = useHistory();
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
 
@@ -35,6 +36,10 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const [page, setPage] = React.useState(1);
 
   const [totalPages, setTotalPages] = React.useState(0);
+
+  const openRepoUrl = (repositoryId: number) => {
+    history.push(`/repositories/${repositoryId}`);
+  }
 
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
     setTabValue(newValue);
@@ -112,7 +117,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Repositories repositories={repositories}/>
+            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)}/>
             {totalPages > 1 ?
               <Box className={classes.paginationBar}>
               <Pagination count={totalPages} color="primary" showFirstButton={true} showLastButton={true} onChange={handlePageChange} />

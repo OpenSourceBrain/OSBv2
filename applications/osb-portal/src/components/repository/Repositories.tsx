@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -7,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Avatar from "@material-ui/core/Avatar";
 
 import { OSBRepository } from "../../apiclient/workspaces";
@@ -25,6 +23,7 @@ interface RepositoriesProps {
     showRepositoryOwner?: boolean;
     circularProgressSize?: number;
     showLinkButton?: boolean;
+    handleRepositoryClick: (repositoryId: number) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
       overflow: "auto",
       backgroundColor: bgDarkest,
-    //   height: "calc(100vh - 8.8rem)",
       "& strong": {
         display: "block",
         marginBottom: theme.spacing(1),
@@ -154,7 +152,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default (props: RepositoriesProps) => {
     const classes = useStyles();
-    const history = useHistory();
 
     const openRepoUrl = (uri: string) => window.open(uri, "_blank");
     const showRepositoryOwner = typeof props.showRepositoryOwner === 'undefined' ? true : props.showRepositoryOwner;
@@ -164,13 +161,13 @@ export default (props: RepositoriesProps) => {
 
     return (
         <Box className={`${classes.repositoryData} scrollbar virticalFill`}>
-            {props.repositories ? props.repositories.map((repository) => (
+            {props.repositories.map((repository) => (
                 <Grid
                   container={true}
                   className="row"
                   spacing={0}
                   key={repository.id}
-                  onClick={() => history.push(`/repositories/${repository.id}`)}
+                  onClick={() => props.handleRepositoryClick(repository.id)}
                 >
                     <Grid item={true} xs={12} sm={4} md={2}>
                         <Box className="col">
@@ -228,18 +225,7 @@ export default (props: RepositoriesProps) => {
                         </Box>
                     </Grid>
                 </Grid>
-            )) :
-                <CircularProgress
-                    size={circularProgressSize}
-                    style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -24,
-                    marginLeft: -24,
-                  }}
-                />
-            }
+            ))}
         </Box>
     )
 }
