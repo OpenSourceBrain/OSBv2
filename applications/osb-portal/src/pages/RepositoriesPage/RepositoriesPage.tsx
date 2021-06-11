@@ -6,12 +6,9 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Avatar from "@material-ui/core/Avatar";
 import Pagination from '@material-ui/lab/Pagination';
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
@@ -19,6 +16,7 @@ import { OSBRepository } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
+import Repositories from "../../components/repository/Repositories";
 
 enum RepositoriesTab {
   all,
@@ -28,10 +26,7 @@ enum RepositoriesTab {
 
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
-
-  const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -77,7 +72,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
   return (
     <>
-      <Box className={classes.root}>
+      <Box className={`${classes.root} verticalFit`}>
         <Box
           className="subheader"
           paddingX={3}
@@ -116,83 +111,17 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         </Box>
 
         {repositories ?
-          <Box className="repository-data scrollbar">
-            <Box className="repository-data-items">
-              {repositories.map((repository) => (
-                <Grid
-                  container={true}
-                  className="row"
-                  spacing={0}
-                  key={repository.id}
-                  onClick={() => history.push(`/repositories/${repository.id}`)}
-                >
-                  <Grid item={true} xs={12} sm={4} md={4}>
-                    <Box className="col">
-                      <Typography component="strong">
-                        {repository.name}
-                      </Typography>
-                      <Typography>{repository.summary}</Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item={true} xs={12} sm={4} md={2}>
-                    <Box className="col">
-                      <Typography>
-                        {repository?.user?.firstName} {repository?.user?.lastName}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item={true} xs={12} sm={4} md={3}>
-                    <Box
-                      className="col"
-                      display="flex"
-                      alignItems="center"
-                      flexWrap="wrap"
-                    >
-                      {repository.contentTypes.split(",").map((type, index) => (
-                        <Box
-                          className="tag"
-                          display="flex"
-                          alignItems="center"
-                          paddingX={1}
-                          marginY={1}
-                          key={type}
-                        >
-                          <FiberManualRecordIcon
-                            color={index % 2 === 0 ? "primary" : "secondary"}
-                          />
-                          {type}
-                        </Box>
-                      ))}
-                    </Box>
-                  </Grid>
-                  <Grid item={true} xs={12} sm={12} md={3}>
-                    <Box
-                      className="col"
-                      display="flex"
-                      flex={1}
-                      alignItems="center"
-                    >
-                      <Button
-                        variant="outlined"
-                        onClick={() => openRepoUrl(repository.uri)}
-                      >
-                        See on {repository.repositoryType}
-                      </Button>
-                      <Avatar src="/images/arrow_right.svg" />
-                    </Box>
-                  </Grid>
-                </Grid>
-              ))}
-            </Box>
-
+          <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Repositories repositories={repositories}/>
             {totalPages > 1 ?
               <Box className={classes.paginationBar}>
               <Pagination count={totalPages} color="primary" showFirstButton={true} showLastButton={true} onChange={handlePageChange} />
-              </Box> : null
+              </Box>
+              : null
             }
           </Box>
-          : (
-            <CircularProgress
+          :
+          <CircularProgress
               size={48}
               style={{
                 position: "absolute",
@@ -202,7 +131,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 marginLeft: -24,
               }}
             />
-          )}
+          }
       </Box>
 
       {user && (
