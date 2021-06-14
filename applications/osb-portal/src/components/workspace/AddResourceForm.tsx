@@ -7,11 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
 import BackupIcon from '@material-ui/icons/Backup';
 import LinkIcon from '@material-ui/icons/Link';
-import PublishIcon from '@material-ui/icons/Publish';
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 import RepositoryResourceBrowser from '../repository/RepositoryResourceBrowser';
 import workspaceResourceService, { urlToName } from '../../service/WorkspaceResourceService';
@@ -20,22 +17,15 @@ import { Workspace } from '../../types/workspace';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RepositoryService from "../../service/RepositoryService";
 import {
-  bgRegular,
-  bgLightest,
   bgLighter,
   fontColor,
-  linkColor,
   bgInputs,
-  paragraph,
-  bgLightestShade,
   radius,
   bgLight,
   bgDarker,
-  checkBoxColor,
-  teal,
-  purple,
 } from "../../theme";
 import WorkspaceService from "../../service/WorkspaceService";
+import Repositories from "../repository/Repositories";
 
 
 
@@ -133,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     miHeight: 'fit-content',
     "& #tabpanel-1": {
       "& .MuiBox-root": {
-        "& .MuiGrid-container": {
+        "& .copy-info": {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -152,160 +142,53 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   repositoryBrowserContainer: {
-    backgroundColor: bgLightest,
+    backgroundColor: bgLight,
     borderRadius: radius,
-    "& .MuiButton-root": {
-      display: 'flex',
-      minWidth: 'fit-content',
-      marginLeft: theme.spacing(1),
-    },
-    "& .MuiTextField-root": {
-      width: '96%',
-      marginRight: '2%',
-      marginLeft: '2%',
-      "& .MuiInput-root": {
-        background: bgLightestShade,
-        height: '2.5rem',
-        borderRadius: '2px',
-        paddingLeft: '0.5rem',
-        "&:before": {
-          display: "none",
-        },
-        "&:after": {
-          display: "none",
-        },
-      },
-    },
-    "& .scrollbar": {
-      maxHeight: '400px',
-      overflow: 'auto',
-      paddingLeft: '10px',
-      "& .MuiGrid-container": {
-        "&:hover": {
-          backgroundColor: bgLightestShade,
-        },
-        borderBottom: `0.01rem solid ${bgLightestShade}`,
-        "& .MuiGrid-grid-md-6": {
-          justifyContent: 'center',
-        },
-        "& .MuiGrid-item": {
-          "& .MuiBox-root": {
-            "& p": {
-              color: paragraph,
-            },
-            "& .tag": {
-              background: bgLightestShade,
-              textTransform: 'capitalize',
-              borderRadius: '1rem',
-              color: paragraph,
-              height: '1.9rem',
-              fontSize: "0.75rem",
-              margin: "0.5rem",
-              "& .MuiSvgIcon-root": {
-                width: ".63rem",
-                height: ".63rem",
-                marginRight: theme.spacing(1),
-                "&.MuiSvgIcon-colorPrimary": {
-                  color: teal,
-                },
-                "&.MuiSvgIcon-colorSecondary": {
-                  color: purple,
-                },
-              },
-            },
-            "& .MuiButton-root": {
-              "& .MuiButton-label": {
-                "& .MuiAvatar-root": {
-                  width: ".5rem",
-                  height: "auto",
-                },
-              },
-            },
-          },
-        },
-      },
-      "&::-webkit-scrollbar-thumb": {
-        backgroundColor: bgInputs,
-      },
-      "&::-webkit-scrollbar-track": {
-        backgroundColor: 'transparent',
-      },
-      "& .MuiList-root": {
-        paddingRight: '1rem',
-        marginTop: theme.spacing(1),
-        "& .flex-grow-1": {
-          borderBottom: `1px solid ${bgRegular}`,
-          borderTop: `1px solid ${bgRegular}`,
-          paddingTop: theme.spacing(1),
-          paddingBottom: theme.spacing(1),
-          marginLeft: theme.spacing(2),
-          width: '100%',
-        },
-        "& p": {
-          fontSize: ".8rem",
-          color: fontColor,
-          "& span": {
-            fontSize: ".8rem",
-            color: bgInputs,
-          },
-        },
-        "& .icon": {
-          width: "2rem",
-          display: "flex",
-          "&.file": {
-            "& .MuiSvgIcon-root": {
-              color: linkColor,
-              height: '1rem',
-            },
-          },
-          "& .MuiSvgIcon-root": {
-            color: bgInputs,
-            height: '1rem',
-          },
-        },
-        "& .MuiIconButton-root": {
-          margin: 0,
-          padding: 0,
-        },
-        "& .MuiListItem-root": {
-          padding: 0,
-          paddingLeft: theme.spacing(2),
-          "&:first-child": {
-            "& .flex-grow-1": {
-              borderTop: 0,
-            },
-          },
-          "&:last-child": {
-            "& .flex-grow-1": {
-              borderBottomWidth: 2,
-            },
-          },
-          "& .MuiListItemIcon-root": {
-            "& .MuiCheckbox-colorSecondary": {
-              color: checkBoxColor,
-              "&.Mui-checked": {
-                color: linkColor,
-              },
-            },
-            minWidth: 'fit-content',
+    "& .repositories-list": {
+      "& .MuiBox-root": {
+        maxHeight: '400px',
+        borderRadius: radius,
+        "& .MuiGrid-container": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          backgroundColor: bgLight,
+          "&:hover": {
+            backgroundColor: bgDarker,
           },
         },
       },
     },
-    "& .MuiBreadcrumbs-root": {
-      padding: theme.spacing(1),
-      "& .MuiBreadcrumbs-ol": {
-        lineHeight: 1,
-        "& .MuiAvatar-root": {
-          width: "auto",
-          borderRadius: 0,
-          height: "auto",
+    "& .resource-browser": {
+      overflow: 'hidden',
+      "& .scrollbar": {
+        maxHeight: '400px',
+        overflow: 'auto',
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: bgInputs,
         },
-        "& .MuiBreadcrumbs-li": {
-          "& .MuiTypography-root": {
-            lineHeight: 1,
-            cursor: 'pointer',
-            color: fontColor,
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: 'transparent',
+        },
+      },
+      "& .flex-grow-1": {
+        width: '100%',
+      },
+      "& .MuiTextField-root": {
+        width: '96%',
+        marginRight: '2%',
+        marginLeft: '2%',
+      },
+      "& .MuiBreadcrumbs-root": {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(0),
+        "& .MuiBreadcrumbs-ol": {
+          lineHeight: 1,
+          "& .MuiBreadcrumbs-li": {
+            "& .MuiLink-root": {
+              fontSize: '1rem',
+              color: fontColor,
+              cursor: 'pointer',
+            },
           },
         },
       },
@@ -489,8 +372,9 @@ export default (props: WorkspaceEditProps) => {
           >
             {repositoryLoading ?
               selectedRepository ?
-
-                <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction} />
+                <Box className="resource-browser">
+                  <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction} />
+                </Box>
                 :
                 <CircularProgress size={40}
                   style={{
@@ -501,75 +385,16 @@ export default (props: WorkspaceEditProps) => {
 
               :
               repositories ?
-                <Box className="scrollbar">
-                  {repositories.map((repository) => (
-                    <Grid
-                      container={true}
-                      className="row"
-                      spacing={0}
-                      key={repository.id}
-                    >
-                      <Grid item={true} xs={12} sm={4} md={5}>
-                        <Box className="col">
-                          <Typography component="strong">
-                            {repository.name}
-                          </Typography>
-                          <Typography>{repository.summary}</Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item={true} xs={12} sm={4} md={6}>
-                        <Box
-                          className="col"
-                          display="flex"
-                          alignItems="center"
-                          flexWrap="wrap"
-                        >
-                          {repository.contentTypes.split(",").map((type, index) => (
-                            <Box
-                              className="tag"
-                              display="flex"
-                              alignItems="center"
-                              paddingX={1}
-                              marginY={1}
-                              key={type}
-                            >
-                              <FiberManualRecordIcon
-                                color={index % 2 === 0 ? "primary" : "secondary"}
-                              />
-                              {type}
-                            </Box>
-                          ))}
-                        </Box>
-                      </Grid>
-                      <Grid item={true} xs={12} sm={12} md={1}>
-                        <Box
-                          className="col"
-                          display="flex"
-                          flex={1}
-                          alignItems="center"
-                        >
-                          <Button onClick={() => loadRepository(repository.id)}>
-                            <Avatar src="/images/arrow_right.svg" />
-                          </Button>
-
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  ))}
-                </Box> :
-                (
-                  <CircularProgress size={40}
-                    style={{
-                      position: 'relative',
-                      left: '45%',
-                    }}
-                  />
-                )}
+                  <Box className="repositories-list">
+                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true}/>
+                  </Box>
+                  : null
+              }
           </Box>
-          <Grid container={true} spacing={1}>
+          <Grid container={true} spacing={1} className="copy-info">
             <Grid item={true} xs={8}>
               {
-                waiting ? <CircularProgress size={25} /> :
+                waiting ? <CircularProgress size={25}/> :
 
                   fromOSBRepositoryConfirmation ?
 
