@@ -163,6 +163,33 @@ const useStyles = makeStyles((theme) => ({
       "& .scrollbar": {
         maxHeight: '400px',
         overflow: 'auto',
+        marginTop: 0,
+        "& .MuiList-root": {
+          paddingRight: '1rem',
+          marginTop: 0,
+          "& .MuiListItem-root": {
+            alignItems: 'baseline',
+            "& .flex-grow-1": {
+              paddingTop: '0.4rem',
+              paddingBottom: '0.4rem',
+            },
+          },
+          "& p": {
+            fontSize: '0.8rem',
+            color: fontColor,
+            "& span": {
+              fontSize: '0.8rem',
+              color: bgInputs,
+            },
+            "& .icon": {
+              width: '2rem',
+              display: 'flex',
+              "& .MuiSvgIcon-root": {
+                height: '1rem',
+              },
+            },
+          },
+        },
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: bgInputs,
         },
@@ -177,6 +204,7 @@ const useStyles = makeStyles((theme) => ({
         width: '96%',
         marginRight: '2%',
         marginLeft: '2%',
+        padding: '0.6rem',
       },
       "& .MuiBreadcrumbs-root": {
         paddingTop: theme.spacing(1),
@@ -185,7 +213,7 @@ const useStyles = makeStyles((theme) => ({
           lineHeight: 1,
           "& .MuiBreadcrumbs-li": {
             "& .MuiLink-root": {
-              fontSize: '1rem',
+              fontSize: '0.8rem',
               color: fontColor,
               cursor: 'pointer',
             },
