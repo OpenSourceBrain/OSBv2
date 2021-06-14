@@ -1,5 +1,6 @@
 import * as React from "react";
 import Divider from "@material-ui/core/Divider";
+import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
 
 import {
@@ -16,11 +17,11 @@ export default (props: any) => {
   props.selectWorkspace(workspaceId);
 
   return (
-    <>
+    <Box className="verticalFill">
       <Divider variant="fullWidth" />
       <WorkspaceDrawer>
         <WorkspaceFrame app={app} />
       </WorkspaceDrawer>
-    </>
+    </Box>
   );
 };

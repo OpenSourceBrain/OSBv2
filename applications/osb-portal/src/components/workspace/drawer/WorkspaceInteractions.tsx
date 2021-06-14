@@ -35,6 +35,22 @@ const useStyles = makeStyles((theme) => ({
   drawerContent: {
     maxWidth: 400,
   },
+  expansionPanel: {
+    display: 'flex',
+    flexDirection: 'column',
+    "& .MuiCollapse-container": {
+      height: '100%',
+      "& .MuiCollapse-wrapper": {
+        height: 'inherit',
+        "& .MuiCollapse-wrapperInner": {
+          height: 'inherit',
+          "& div[role=region]": {
+            height: 'inherit',
+          },
+        },
+      },
+    },
+  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
@@ -159,7 +175,7 @@ export default (props: WorkspaceProps | any) => {
     </OSBDialog>
     {props.open ? (
       <>
-        <ExpansionPanel elevation={0} expanded={expanded === 'workspace'} onChange={handleChange('workspace')}>
+        <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace'} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
@@ -185,7 +201,7 @@ export default (props: WorkspaceProps | any) => {
             </Menu>
           </ExpansionPanelSummary>
 
-          <ExpansionPanelDetails>
+          <ExpansionPanelDetails className="verticalFill">
             <Divider />
             {canEdit && <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
               <ListItemIcon style={{ paddingLeft: 0 }}>

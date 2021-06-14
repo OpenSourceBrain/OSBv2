@@ -95,7 +95,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
 
 
   return user && workspace && (
-    <Box display="flex" alignItems="stretch" flex="1">
+    <Box display="flex" alignItems="stretch" flex="1" className="verticalFill">
       <Drawer
         variant="permanent"
         anchor="left"
@@ -112,7 +112,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           }),
         }}
       >
-        <div className={open ? classes.drawerContent : ''}>
+        <div className={`${open ? classes.drawerContent : ''} verticalFill`}>
           <WorkspaceInteractions workspace={workspace} open={open} />
         </div>
         <div>

@@ -119,7 +119,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   if (!resources || resources.length === 0) {
     return null;
   }
-  return (<Box mt={1} mb={1}>
+  return (<Box className="verticalFill scrollbar">
     <TreeView
       defaultCollapseIcon={<ArrowDownIcon />}
       defaultExpandIcon={<ArrowUpIcon />}
