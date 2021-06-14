@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  repositoryResourceBrowserBox: {
+    width: '100%',
+  },
   root: {
     maxHeight: '100%',
     backgroundColor: bgDarkest,
@@ -293,7 +296,7 @@ export const RepositoryPage = (props: any) => {
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box className="verticalFit" style={{ width: '100%' }}>
+                <Box className={`"verticalFit" ${classes.repositoryResourceBrowserBox}`}>
                   <Typography component="h2" variant="h2">
                     Resources
                   </Typography>
