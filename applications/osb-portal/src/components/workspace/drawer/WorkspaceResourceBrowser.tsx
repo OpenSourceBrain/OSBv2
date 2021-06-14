@@ -83,7 +83,8 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
       onClick={canOpenFile ? openFileResource(resource, refreshWorkspace) : undefined}
     >
       {resource.type.application === null ? <FolderIcon /> : ""}
-      <Tooltip title={workspaceResourceService.getResourcePath(resource)}>
+      <Tooltip title={`${workspaceResourceService.getResourcePath(resource)}
+      Click on this resource to open with ${resource.type.application.name}.`}>
         <Typography color={resource.status === ResourceStatus.error ? "error" : "initial"} style={style}>{resource.name}</Typography>
       </Tooltip>
       <Box display="flex" alignItems="center" >
