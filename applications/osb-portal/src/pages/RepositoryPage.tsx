@@ -293,7 +293,7 @@ export const RepositoryPage = (props: any) => {
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box className="verticalFit">
+                <Box className="verticalFit" style={{ width: '100%' }}>
                   <Typography component="h2" variant="h2">
                     Resources
                   </Typography>

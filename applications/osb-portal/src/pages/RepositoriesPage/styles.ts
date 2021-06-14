@@ -74,13 +74,6 @@ export default makeStyles((theme) => ({
         },
       },
     },
-    "& p": {
-      fontSize: "1rem",
-      lineHeight: 1,
-      letterSpacing: ".02rem",
-      color: linkColor,
-      marginBottom: 0,
-    },
   },
   paginationBar: {
     padding: theme.spacing(2),

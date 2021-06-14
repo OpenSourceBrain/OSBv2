@@ -10,20 +10,18 @@ import Avatar from "@material-ui/core/Avatar";
 
 import { OSBRepository } from "../../apiclient/workspaces";
 import {
-    bgRegular,
-    bgDarkest,
-    paragraph,
-    bgLightestShade,
-    teal,
-    purple,
+  bgRegular,
+  bgDarkest,
+  paragraph,
+  bgLightestShade,
+  teal,
+  purple,
 } from "../../theme";
 
 interface RepositoriesProps {
-    repositories: OSBRepository[];
-    showRepositoryOwner?: boolean;
-    circularProgressSize?: number;
-    showLinkButton?: boolean;
-    handleRepositoryClick: (repositoryId: number) => void;
+  repositories: OSBRepository[];
+  showSimpleVersion?: boolean;
+  handleRepositoryClick: (repositoryId: number) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -86,12 +84,9 @@ const useStyles = makeStyles((theme) => ({
           paddingBottom: theme.spacing(0),
         },
         [theme.breakpoints.up("sm")]: {
-          padding: theme.spacing(3),
+          padding: theme.spacing(1),
         },
         [theme.breakpoints.up("md")]: {
-          borderWidth: `1px 0 1px 0`,
-          borderStyle: "solid",
-          borderColor: bgRegular,
           width: "100%",
           display: "flex",
           flexDirection: "column",
@@ -100,6 +95,9 @@ const useStyles = makeStyles((theme) => ({
         },
       },
       "& .row": {
+        borderWidth: `1px 0 1px 0`,
+        borderStyle: "solid",
+        borderColor: bgRegular,
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         "& .MuiButtonBase-root": {
@@ -140,11 +138,8 @@ const useStyles = makeStyles((theme) => ({
           },
         },
         [theme.breakpoints.down("sm")]: {
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          borderWidth: `1px 0 1px 0`,
-          borderStyle: "solid",
-          borderColor: bgRegular,
+          paddingTop: theme.spacing(1),
+          paddingBottom: theme.spacing(1),
         },
       },
     },
@@ -154,9 +149,7 @@ export default (props: RepositoriesProps) => {
     const classes = useStyles();
 
     const openRepoUrl = (uri: string) => window.open(uri, "_blank");
-    const showRepositoryOwner = typeof props.showRepositoryOwner === 'undefined' ? true : props.showRepositoryOwner;
-    const circularProgressSize = typeof props.circularProgressSize === 'undefined' ? 48 : props.circularProgressSize;
-    const showLinkButton = typeof props.showLinkButton === 'undefined' ? true : props.showLinkButton;
+    const showSimpleVersion = typeof props.showSimpleVersion === 'undefined' ? false : props.showSimpleVersion;
 
 
     return (
@@ -169,7 +162,7 @@ export default (props: RepositoriesProps) => {
                   key={repository.id}
                   onClick={() => props.handleRepositoryClick(repository.id)}
                 >
-                    <Grid item={true} xs={12} sm={4} md={2}>
+                    <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}>
                         <Box className="col">
                             <Typography component="strong">
                                 {repository.name}
@@ -178,7 +171,7 @@ export default (props: RepositoriesProps) => {
                         </Box>
                     </Grid>
 
-                    {showRepositoryOwner && <Grid item={true} xs={12} sm={4} md={4}>
+                    {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4}>
                         <Box className="col">
                             <Typography>
                                 {repository?.user?.firstName} {repository?.user?.lastName}
@@ -186,7 +179,7 @@ export default (props: RepositoriesProps) => {
                         </Box>
                     </Grid>}
 
-                    <Grid item={true} xs={12} sm={4} md={3}>
+                    <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}>
                         <Box
                           className="col"
                           display="flex"
@@ -208,14 +201,14 @@ export default (props: RepositoriesProps) => {
                             ))}
                         </Box>
                     </Grid>
-                    <Grid item={true} xs={12} sm={12} md={3}>
+                    <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3}>
                         <Box
                           className="col"
                           display="flex"
                           flex={1}
                           alignItems="center"
                         >
-                            {showLinkButton && <Button
+                            {!showSimpleVersion && <Button
                                 variant="outlined"
                                 onClick={() => openRepoUrl(repository.uri)}
                             >
