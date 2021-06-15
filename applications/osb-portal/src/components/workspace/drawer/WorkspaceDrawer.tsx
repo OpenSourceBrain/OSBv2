@@ -11,6 +11,7 @@ import { Workspace } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
+import WorkspaceService from "../../../service/WorkspaceService";
 
 
 
@@ -89,10 +90,19 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
+  const [currentWorkspace, setCurrentWorkspace] = React.useState<Workspace>(workspace);
 
   const handleToggleDrawer = () => setOpen(!open);
 
-
+  const refreshWorkspace = () => {
+    console.log('Inside refreshWorkspace');
+    WorkspaceService.getWorkspace(workspace.id).then((refreshedWorkspace) => {
+      console.log('refreshedWorkspace', refreshedWorkspace);
+      setCurrentWorkspace(refreshedWorkspace);
+    }).then((error) => {
+      console.log("Error refreshing the workspace");
+    });
+  }
 
   return user && workspace && (
     <Box display="flex" alignItems="stretch" flex="1">
@@ -113,7 +123,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         }}
       >
         <div className={open ? classes.drawerContent : ''}>
-          <WorkspaceInteractions workspace={workspace} open={open} />
+          <WorkspaceInteractions workspace={currentWorkspace} open={open} refreshWorkspace={refreshWorkspace}/>
         </div>
         <div>
           <Divider />

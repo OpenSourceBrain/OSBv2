@@ -306,7 +306,11 @@ export default (props: WorkspaceEditProps) => {
     }
     if (!error) {
       setWaiting(true);
-      workspaceResourceService.addResource(workspace, url, name).then(onResourceAdded, () => alert('An error occurred while adding the resource'));
+      workspaceResourceService.addResource(workspace, url, name).then(() => {
+        onResourceAdded();
+      }).catch(() => {
+        alert('An error occurred while adding the resource')
+      });
     }
 
   }
@@ -321,6 +325,7 @@ export default (props: WorkspaceEditProps) => {
       setFromOSBRepositoryConfirmation("Resources successfully imported to workspace.");
       setChecked([]);
       setWaiting(false);
+      onResourceAdded();
     }).catch(() => {
       setFromOSBRepositoryConfirmation("An error occured while adding the resource(s)");
       setWaiting(false);

@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
-  refreshWorkspace?: () => any;
+  refreshWorkspace?: () => void;
   updateWorkspace: (ws: Workspace) => null,
   deleteWorkspace: (wsId: number) => null,
   user: any,
@@ -143,8 +143,6 @@ export default (props: WorkspaceProps | any) => {
       </span>
     </>
   )
-
-
 
   return (<>
     <OSBDialog

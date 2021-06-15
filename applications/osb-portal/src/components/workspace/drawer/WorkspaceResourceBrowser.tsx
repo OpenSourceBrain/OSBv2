@@ -56,7 +56,7 @@ const ItemCover = ({ children, className }: { children: any, className: string }
   </Box>
 
 
-const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => null }) => {
+const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => void }) => {
   const { resource, active, refreshWorkspace } = props;
   const canOpenFile: boolean = resource.status === ResourceStatus.available;
   const [waiting, setWaiting] = React.useState(false);
@@ -67,7 +67,11 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
 
   const handleDeleteResource = () => {
     setWaiting(true)
-    workspaceResourceService.deleteResource(resource).then(() => refreshWorkspace(), () => console.error("could not update resource"));
+    workspaceResourceService.deleteResource(resource).then(() => {
+      refreshWorkspace();
+      console.log('successfully deleted resource');
+      setWaiting(false);
+    }).catch(() => console.error("could not update resource"));
   }
   return (
     <Box
@@ -107,7 +111,7 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
 
 interface WorkspaceProps {
   workspace: Workspace;
-  refreshWorkspace: any;
+  refreshWorkspace: () => void;
 }
 
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
