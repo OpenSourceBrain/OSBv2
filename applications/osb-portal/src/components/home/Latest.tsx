@@ -10,9 +10,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   partners: {
-    color: 'grey',
+
     fontSize: "0.9em",
-    marginBottom: "0.5em"
+    marginBottom: "0.5em",
   }
 }));
 
@@ -46,7 +46,7 @@ export const Latest = () => {
 
           Supported by
         </Typography>
-        <Link href="https://wellcome.org" target="_blank"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" /></Link>
+        <Link href="https://wellcome.org" target="_blank"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" width="50" /></Link>
       </Box>
       {/* <Typography component="h2" variant="h6" gutterBottom={true}>
         Latest
