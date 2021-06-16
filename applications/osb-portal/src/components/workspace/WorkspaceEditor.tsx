@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '0.3rem',
     fontWeight: 'bold',
   },
+  imagePreview: {
+    display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
+  }
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -106,16 +109,16 @@ export default (props: WorkspaceEditProps) => {
   }
 
 
-  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail);
+  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== 'undefined') {
       props.filesSelected ? handleCreateWorkspace() :
-      setShowNoFilesSelectedDialog(!showNoFilesSelectedDialog);
+        setShowNoFilesSelectedDialog(!showNoFilesSelectedDialog);
     }
-    else{
+    else {
       handleCreateWorkspace();
     }
   }
@@ -218,7 +221,7 @@ export default (props: WorkspaceEditProps) => {
 
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section style={{ display: 'flex', alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundSize: 'cover', flex: 1 }}>
+              <section className={classes.imagePreview} style={{ display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundPosition: "center", backgroundSize: 'cover', flex: 1 }}>
                 <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
@@ -295,7 +298,7 @@ export default (props: WorkspaceEditProps) => {
           }</DialogContent>
           <DialogActions>
             <Button color="primary" onClick={() => setShowNoFilesSelectedDialog(false)}>Cancel</Button>
-            <Button variant="contained" color="primary" onClick={() => {handleCreateWorkspace(); setShowNoFilesSelectedDialog(false)}} disabled={loading}>OK</Button>
+            <Button variant="contained" color="primary" onClick={() => { handleCreateWorkspace(); setShowNoFilesSelectedDialog(false) }} disabled={loading}>OK</Button>
           </DialogActions>
         </Dialog>
       }

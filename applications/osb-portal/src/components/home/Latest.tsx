@@ -44,9 +44,9 @@ export const Latest = () => {
       <Box alignSelf="flex-end" justifySelf="flex-end" alignItems="center" textAlign="right">
         <Typography className={classes.partners}>
 
-          Powered by
+          Supported by
         </Typography>
-        <Link href="https://wellcome.org"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" /></Link>
+        <Link href="https://wellcome.org" target="_blank"><img alt="Wellcome" title="Wellcome" src="/images/wellcome.png" /></Link>
       </Box>
       {/* <Typography component="h2" variant="h6" gutterBottom={true}>
         Latest

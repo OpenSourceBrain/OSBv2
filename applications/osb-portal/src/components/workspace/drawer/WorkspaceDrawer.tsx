@@ -11,8 +11,6 @@ import { Workspace } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
-import WorkspaceService from "../../../service/WorkspaceService";
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,7 +87,7 @@ interface WorkspaceDrawerProps {
 
 }
 
-export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, user, children, refreshWorkspace }) => {
+export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ user, children, workspace }) => {
   if (!workspace) {
     return <></>;
   }
@@ -119,7 +117,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         }}
       >
         <div className={`${open ? classes.drawerContent : ''} verticalFit`}>
-          <WorkspaceInteractions workspace={workspace} open={open} refreshWorkspace={refreshWorkspace} />
+          <WorkspaceInteractions open={open} />
         </div>
         <div>
           <Divider />
