@@ -51,7 +51,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
           onChange={handleChange}
         >
           <Tab value={false} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
-          <Tab value={true} label="Featured workspaces" />
+          <Tab value={true} label="Public workspaces" />
         </Tabs>
       }
       {
