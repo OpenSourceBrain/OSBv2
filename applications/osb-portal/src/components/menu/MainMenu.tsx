@@ -36,7 +36,7 @@ export const MainMenu = () => {
         className={classes.button}
         items={[
           { label: "Repositories", callback: () => history.push("/repositories") },
-          { label: "Workspaces", callback: () => history.push("/workspaces") },
+          { label: "Workspaces", callback: () => history.push("/") },
         ]}
       />
     </Box>

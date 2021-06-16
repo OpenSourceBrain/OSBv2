@@ -8,12 +8,13 @@ import ReadOnlyIcon from "@material-ui/icons/Lock";
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanel from "@material-ui/core/Accordion";
+import ExpansionPanelSummary from "@material-ui/core/AccordionSummary";
+import ExpansionPanelDetails from "@material-ui/core/AccordionDetails";
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
@@ -26,12 +27,29 @@ import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from '../../../service/UserService';
 import { primaryColor } from "../../../theme";
+import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
+import { UserInfo } from "../../../types/user";
 
-const MAX_RESOURCE_WAIT_TIME = 1000 * 60 * 10;
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
     maxWidth: 400,
+  },
+  expansionPanel: {
+    display: 'flex',
+    flexDirection: 'column',
+    "& .MuiCollapse-container": {
+      height: '100%',
+      "& .MuiCollapse-wrapper": {
+        height: 'inherit',
+        "& .MuiCollapse-wrapperInner": {
+          height: 'inherit',
+          "& div[role=region]": {
+            height: 'inherit',
+          },
+        },
+      },
+    },
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -83,7 +101,7 @@ interface WorkspaceProps {
   refreshWorkspace?: () => void;
   updateWorkspace: (ws: Workspace) => null,
   deleteWorkspace: (wsId: number) => null,
-  user: any,
+  user: UserInfo,
   [propName: string]: any;
 }
 
@@ -145,27 +163,23 @@ export default (props: WorkspaceProps | any) => {
   )
 
   return (<>
-    <OSBDialog
-      title={dialogTitle}
-      open={addResourceOpen}
-      closeAction={() => setAddResourceOpen(false)
-    }
-    >
-      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
-    </OSBDialog>
+
     {props.open ? (
       <>
-        <ExpansionPanel elevation={0} expanded={expanded === 'workspace'} onChange={handleChange('workspace')}>
+        <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace' || true} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
             expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <Typography variant="h5" className={classes.flexCenter}>{workspace.name} {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}</Typography>
-            {
-              canEdit &&
-              <IconButton onMouseDown={handleShareClick}>
-                <ShareIcon />
-              </IconButton>
-            }
+            <Typography
+              variant="h5"
+              className={classes.flexCenter}>
+              {workspace.name}
+              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}
+            </Typography>
+
+            <Box p={2}>
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+            </Box>
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -176,10 +190,9 @@ export default (props: WorkspaceProps | any) => {
               {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
               {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
             </Menu>
-
           </ExpansionPanelSummary>
 
-          <ExpansionPanelDetails>
+          <ExpansionPanelDetails className="verticalFit">
             <Divider />
             {canEdit && <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
               <ListItemIcon style={{ paddingLeft: 0 }}>
@@ -230,6 +243,14 @@ export default (props: WorkspaceProps | any) => {
         </div>
       </>
     }
+    <OSBDialog
+      title={dialogTitle}
+      open={addResourceOpen}
+      closeAction={() => setAddResourceOpen(false)
+      }
+    >
+      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
+    </OSBDialog>
   </>);
 
 };

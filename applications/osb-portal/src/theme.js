@@ -4,6 +4,7 @@ import lessToJs from 'less-vars-to-js';
 
 import './css/mui.less';
 import './css/main.less';
+import { Hidden } from '@material-ui/core';
 
 // Read the less file in as string: using the raw-loader to override the default loader
 const lessFile = require('!!raw-loader!./css/variables.less').default;
@@ -15,6 +16,11 @@ export const {
   primaryColor, secondaryColor, font, fontColor, linkColor, teal, purple, bgLightest, paragraph, bgLightestShade,
   bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius, checkBoxColor, bgLighter, textColor
 } = vars;
+
+const verticalFill = {
+  height: 'calc(100%)',
+  overflow: 'hidden'
+}
 
 const spacing = [0, gutter / 2, gutter * 2 / 3, gutter, 24, 40, 50, 100, 150, 200, 300];
 
@@ -180,7 +186,7 @@ const theme = {
       wrapper: { padding: "0px!important" }
     },
     MuiIcon: { fontSizeLarge: { fontSize: '1.75rem' } },
-    MuiExpansionPanelSummary: {
+    MuiAccordionSummary: {
       root: {
         padding: '0px!important', margin: 0, minHeight: 'unset!important', display: "flex",
         flexDirection: "row-reverse"
@@ -188,13 +194,25 @@ const theme = {
       content: { margin: '0px!important', cursor: 'auto' },
       expandIcon: { marginRight: 0 }
     },
-    MuiExpansionPanelDetails: { root: { padding: 0, margin: 0, minHeight: 'unset!important', flexDirection: 'column' } },
-    MuiExpansionPanel: { root: { padding: 0, margin: '0px!important', minHeight: 'unset' } },
+    MuiAccordionDetails: { root: { padding: 0, margin: 0, minHeight: 'unset!important', flexDirection: 'column' } },
+    MuiAccordion: { root: { padding: 0, margin: '0px!important', minHeight: 'unset' } },
     MuiAutocomplete: { popupIndicator: { marginRight: 0 } },
     MuiCardContent: {
       root: {
         '&:last-child': {
           paddingBottom: 16
+        }
+      }
+    },
+    MuiDrawer: {
+      root: {
+        ...verticalFill
+
+      },
+      paper: {
+        ...verticalFill,
+        'div:only-child': {
+          ...verticalFill,
         }
       }
     },

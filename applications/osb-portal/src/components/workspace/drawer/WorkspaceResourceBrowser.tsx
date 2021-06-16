@@ -15,17 +15,16 @@ import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/wor
 import workspaceResourceService from "../../../service/WorkspaceResourceService";
 
 import {
-  LoadingIcon,
   FolderIcon,
 } from "../../icons";
-import { CSSProperties } from "@material-ui/styles";
+
 
 
 
 
 const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
   const fileName = "/opt/workspace/" + workspaceResourceService.getResourcePath(resource);
-  const r = workspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
+  return workspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
     const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
     iFrame.contentWindow.postMessage(fileName, '*');
     refreshWorkspace();
@@ -34,35 +33,17 @@ const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) =>
   });
 }
 
-const coverAbsolute = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: 'rgba(0,0,0,0.6)',
-  textAlign: "right",
-  zIndex: 10,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center"
-};
-
-const ItemCover = ({ children, className }: { children: any, className: string }) =>
-  <Box pl={2}
-    pr={2}
-    className={clsx(coverAbsolute, className)}>
-    {children}
-  </Box>
-
 
 const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => void }) => {
   const { resource, active, refreshWorkspace } = props;
   const canOpenFile: boolean = resource.status === ResourceStatus.available;
-  const [waiting, setWaiting] = React.useState(false);
+  const [waiting, setWaiting] = React.useState(resource.status === ResourceStatus.pending);
   const style: any = {
     fontWeight: active ? "bold" : "normal",
-    opacity: resource.status === ResourceStatus.pending ? 0.3 : 1
+    opacity: resource.status === ResourceStatus.pending ? 0.3 : 1,
+    maxWidth: "100%",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   };
 
   const handleDeleteResource = () => {
@@ -87,23 +68,17 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
       onClick={canOpenFile ? openFileResource(resource, refreshWorkspace) : undefined}
     >
       {resource.type.application === null ? <FolderIcon /> : ""}
-      <Tooltip title={workspaceResourceService.getResourcePath(resource)}>
+      <Tooltip title={`${workspaceResourceService.getResourcePath(resource)}
+      Click on this resource to open with ${resource.type.application.name}.`}>
         <Typography color={resource.status === ResourceStatus.error ? "error" : "initial"} style={style}>{resource.name}</Typography>
       </Tooltip>
-      <Box display="flex" alignItems="center" >
-        {resource.status === ResourceStatus.pending ? <LoadingIcon /> : null}
-        <IconButton size="small" disabled={waiting} style={{ color: "#989898" }} title="Delete resource" onClick={handleDeleteResource} >
+      <Box ml={2}>
+        {waiting && <CircularProgress color="secondary" size="small" style={{ color: "#989898", width: "1em" }} />}
+        {!waiting && <IconButton size="small" style={{ color: "#989898", padding: 0 }} title="Delete resource" onClick={handleDeleteResource} >
           <DeleteIcon fontSize="small" color="inherit" />
-        </IconButton>
+        </IconButton>}
       </Box>
 
-      {
-        waiting && <ItemCover className="">
-          <CircularProgress
-            size={24}
-          />
-        </ItemCover>
-      }
     </Box>
   );
 };
@@ -123,7 +98,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   if (!resources || resources.length === 0) {
     return null;
   }
-  return (<Box mt={1} mb={1}>
+  return (<Box className=" verticalFit scrollbar">
     <TreeView
       defaultCollapseIcon={<ArrowDownIcon />}
       defaultExpandIcon={<ArrowUpIcon />}

@@ -45,7 +45,12 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
+
     width: "auto",
+
+    "& .verticalFit": {
+      display: 'block',
+    }
   },
   drawerPaper: {
     position: "static",
@@ -80,32 +85,23 @@ const useStyles = makeStyles((theme) => ({
 interface WorkspaceDrawerProps {
   workspace: Workspace;
   user: UserInfo;
+  refreshWorkspace: () => any
 
 }
 
-export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, user, children }) => {
+export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, user, children, refreshWorkspace }) => {
   if (!workspace) {
     return <></>;
   }
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
-  const [currentWorkspace, setCurrentWorkspace] = React.useState<Workspace>(workspace);
 
   const handleToggleDrawer = () => setOpen(!open);
 
-  const refreshWorkspace = () => {
-    console.log('Inside refreshWorkspace');
-    WorkspaceService.getWorkspace(workspace.id).then((refreshedWorkspace) => {
-      console.log('refreshedWorkspace', refreshedWorkspace);
-      setCurrentWorkspace(refreshedWorkspace);
-    }).then((error) => {
-      console.log("Error refreshing the workspace");
-    });
-  }
 
   return user && workspace && (
-    <Box display="flex" alignItems="stretch" flex="1">
+    <Box display="flex" alignItems="stretch" flex="1" className="verticalFill">
       <Drawer
         variant="permanent"
         anchor="left"
@@ -122,8 +118,8 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           }),
         }}
       >
-        <div className={open ? classes.drawerContent : ''}>
-          <WorkspaceInteractions workspace={currentWorkspace} open={open} refreshWorkspace={refreshWorkspace}/>
+        <div className={`${open ? classes.drawerContent : ''} verticalFit`}>
+          <WorkspaceInteractions workspace={workspace} open={open} refreshWorkspace={refreshWorkspace} />
         </div>
         <div>
           <Divider />

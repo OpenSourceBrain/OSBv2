@@ -21,7 +21,7 @@ import { setError } from '../store/actions/error';
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 import { AnyAction, Dispatch } from 'redux';
 
-import { RepositoryPage as repositoryPage} from '../pages/RepositoryPage'
+import { RepositoryPage as repositoryPage } from '../pages/RepositoryPage'
 import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
 
 const mapWorkspacesStateToProps = (state: RootState) => {
@@ -36,6 +36,7 @@ const mapWorkspacesStateToProps = (state: RootState) => {
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   workspace: state.workspaces?.selectedWorkspace,
   user: state.user,
+
 });
 
 const dispatchWorkspaceProps = {
@@ -59,7 +60,8 @@ const mapDrawerStateToProps = (state: RootState) => ({
 });
 
 const dispatchDrawerProps = {
-  onToggleDrawer: toggleDrawer
+  onToggleDrawer: toggleDrawer,
+  ...WorkspacesActions
 };
 
 const mapErrorStateToProps = (state: RootState) => ({

@@ -9,27 +9,21 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    max-height: calc(100%);
 
     &.card-container,
     .scrollbar {
       overflow: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       max-height: calc(100%);
     }
+
   }
 }
 
 @media screen and (min-width:960px) {
-  .verticalFill {
-
-    height: calc(100%);
-    overflow: hidden;
-
-    .scrollbar {
-      max-height: calc(100%);
-
-    }
-  }
-
   .scrollbar {
     overflow-y: auto;
     overflow-x: hidden;
@@ -41,6 +35,25 @@
       .scrollbarStyle;
     }
   }
+
+  .verticalFill {
+
+    height: calc(100%);
+    overflow: hidden;
+
+    .scrollbar {
+      max-height: calc(100%);
+
+    }
+
+
+
+    .scrollbar {
+      .scrollbar
+    }
+  }
+
+
 }
 
 
