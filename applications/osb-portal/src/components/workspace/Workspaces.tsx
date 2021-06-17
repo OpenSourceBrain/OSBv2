@@ -1,4 +1,5 @@
 import * as React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -9,11 +10,16 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 
-
+const useStyles = makeStyles((theme) => ({
+  cardContainer: {
+    maxHeight: 'calc(100% - 55px) !important',
+  },
+}))
 
 // TODO handle user's vs public workspaces
 export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
 
+  const classes = useStyles();
 
   React.useEffect(() => {
     refreshWorkspaces();
@@ -42,7 +48,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
   };
 
   return (
-    <React.Fragment>
+    <>
       {
         Boolean(user) && <Tabs
           value={showPublic}
@@ -63,7 +69,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
         </Box>
       }
 
-      <Box className="verticalFit card-container">
+      <Box className={`verticalFit card-container ${classes.cardContainer}`} >
         <Box pt={1} pb={1} className="scrollbar">
           {workspaceList ?
             <Grid container={true} spacing={1}>
@@ -73,7 +79,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
         </Box>
 
       </Box>
-    </React.Fragment>
+    </>
   );
 };
 
