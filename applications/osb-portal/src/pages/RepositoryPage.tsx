@@ -242,6 +242,7 @@ export const RepositoryPage = (props: any) => {
     WorkspaceService.importResourcesToWorkspace(selectedWorkspace.id, toImport.map(c => c.resource)).then(() => {
       setSelectedWorkspace(null);
       confirmAction("Success", "Resources added to workspace!");
+      setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
     }).catch((error) => {
