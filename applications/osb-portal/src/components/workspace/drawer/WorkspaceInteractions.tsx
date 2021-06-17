@@ -50,6 +50,13 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
+    "& .MuiAccordionSummary-root": {
+      "& .MuiAccordionSummary-content": {
+        "& .MuiTypography-root": {
+          paddingLeft: theme.spacing(1),
+        },
+      },
+    },
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -168,7 +175,7 @@ export default (props: WorkspaceProps | any) => {
       <>
         <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace' || true} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
+            // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
             <Typography
               variant="h5"
