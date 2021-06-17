@@ -14,6 +14,13 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     maxHeight: 'calc(100% - 55px) !important',
   },
+  tab: {
+    minWidth: 'fit-content !important',
+    "& .MuiTab-wrapper": {
+      maxWidth: 'fit-content',
+      display: 'contents',
+    },
+  },
 }))
 
 // TODO handle user's vs public workspaces
@@ -56,8 +63,8 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
           indicatorColor="primary"
           onChange={handleChange}
         >
-          <Tab value={false} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
-          <Tab value={true} label="Public workspaces" />
+          <Tab className={classes.tab} value={false} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
+          <Tab className={classes.tab} value={true} label="Public workspaces" />
         </Tabs>
       }
       {
