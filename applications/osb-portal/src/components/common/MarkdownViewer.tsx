@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3),
       border: `3px solid #1e1e1e`,
       backgroundColor: "#191919",
-
+      overflowWrap: 'anywhere',
       flexGrow: 1,
       "& a": {
         color: linkColor,
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         backgroundColor: bgLightestShade,
         borderRadius: radius,
-        overflowX: 'auto',
         "&::-webkit-scrollbar": {
           height: '5px',
         },
