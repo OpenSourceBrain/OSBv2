@@ -44,17 +44,12 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     backgroundColor: 'black',
     textTransform: 'none',
-
     "& .MuiButton-label": {
       color: 'white',
+      fontSize: '0.7rem',
     },
     "&:hover": {
-      "& .MuiButton-label": {
-        color: 'black',
-      },
-      "& .MuiButton-endIcon": {
-        color: 'black',
-      },
+      backgroundColor: 'black',
     },
   },
   repositoryResourceBrowserBox: {
