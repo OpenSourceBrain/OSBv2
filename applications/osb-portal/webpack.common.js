@@ -67,7 +67,7 @@ module.exports = env => {
 
     plugins: [
       new CleanWebpackPlugin(),
-      new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org', 'NAMESPACE': env.NAMESPACE || 'osb2' }),
+      new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN || null, 'NAMESPACE': env.NAMESPACE || null }),
       new CopyPlugin({
         patterns: [
           {

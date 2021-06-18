@@ -6,7 +6,7 @@ import workspaces.repository as repos
 import workspaces.service.osbrepository.osbrepository as osbrepository_service  # import copy_resource, create_copy_origin_task
 import workspaces.service.workflow as workflow
 from workspaces.service.osbrepository.osbrepository import copy_resource
-
+from workspaces.models.resource_status import ResourceStatus
 
 def copy_origins(workspace_id, origins):
     tasks = []
@@ -39,7 +39,7 @@ def copy_origins(workspace_id, origins):
 
 
 def copy_workspace_resource(workspace_resource):
-    if workspace_resource.status == "p" and workspace_resource.origin and len(workspace_resource.origin) > 0:
+    if workspace_resource.status == ResourceStatus.E and workspace_resource.origin and len(workspace_resource.origin) > 0:
         origin = json.loads(workspace_resource.origin)
         origin.update({"name": workspace_resource.name, "folder": workspace_resource.folder})
         copy_origins(workspace_resource.workspace_id, (origin,))
