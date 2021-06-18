@@ -47,7 +47,6 @@ RUN jupyter labextension disable @jupyterlab/hub-extension
 
 COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
-COPY overrides/netpyne_ui/ netpyne_ui
 
 # ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
 # and thus removes the frame ancestor cors settings
