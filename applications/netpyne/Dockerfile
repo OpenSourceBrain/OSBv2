@@ -2,7 +2,7 @@ FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
 ENV BRANCH_TAG=osb2
 ENV FOLDER=netpyne
-RUN echo "no-cache"
+RUN echo "no-cache3"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -42,7 +42,7 @@ RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN python utilities/install.py --npm-skip
+RUN python utilities/install.py --npm-skip --workspace=
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
 COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
@@ -54,7 +54,6 @@ COPY overrides/netpyne_ui/ netpyne_ui
 RUN rm -f ~/.jupyter/*.json
 
 RUN chown $NB_UID .
-RUN chown $NB_UID netpyne_workspace
 RUN chown $NB_UID /opt
 USER $NB_UID
 
