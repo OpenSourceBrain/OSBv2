@@ -239,14 +239,9 @@ export default (props: WorkspaceProps | any) => {
           </IconButton>}
           {props.workspace.name}
 
-          {canEdit &&
-            <IconButton onClick={handleShareClick}>
-              <ShareIcon
-                className={[classes.svgIcon, classes.rotate180].join(" ")}
-                style={{ fontSize: "1rem" }}
-              />
-            </IconButton>
-          }
+          <IconButton>
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+          </IconButton>
         </div>
       </>
     }
