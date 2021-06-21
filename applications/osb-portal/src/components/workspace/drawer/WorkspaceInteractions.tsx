@@ -50,6 +50,13 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
+    "& .MuiAccordionSummary-root": {
+      "& .MuiAccordionSummary-content": {
+        "& .MuiTypography-root": {
+          paddingLeft: theme.spacing(1),
+        },
+      },
+    },
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -168,7 +175,7 @@ export default (props: WorkspaceProps | any) => {
       <>
         <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace' || true} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
+            // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
             <Typography
               variant="h5"
@@ -232,14 +239,9 @@ export default (props: WorkspaceProps | any) => {
           </IconButton>}
           {props.workspace.name}
 
-          {canEdit &&
-            <IconButton onClick={handleShareClick}>
-              <ShareIcon
-                className={[classes.svgIcon, classes.rotate180].join(" ")}
-                style={{ fontSize: "1rem" }}
-              />
-            </IconButton>
-          }
+          <IconButton>
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+          </IconButton>
         </div>
       </>
     }

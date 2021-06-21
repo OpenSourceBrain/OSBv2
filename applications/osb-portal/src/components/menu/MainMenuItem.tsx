@@ -11,7 +11,7 @@ import Popper from '@material-ui/core/Popper';
 
 const useStyles = makeStyles((theme) => ({
   popper: {
-    zIndex: 2,
+    zIndex: 10000,
   }
 }));
 

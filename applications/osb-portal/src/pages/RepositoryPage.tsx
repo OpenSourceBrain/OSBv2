@@ -44,17 +44,12 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     backgroundColor: 'black',
     textTransform: 'none',
-
     "& .MuiButton-label": {
       color: 'white',
+      fontSize: '0.7rem',
     },
     "&:hover": {
-      "& .MuiButton-label": {
-        color: 'black',
-      },
-      "& .MuiButton-endIcon": {
-        color: 'black',
-      },
+      backgroundColor: 'black',
     },
   },
   repositoryResourceBrowserBox: {
@@ -242,6 +237,7 @@ export const RepositoryPage = (props: any) => {
     WorkspaceService.importResourcesToWorkspace(selectedWorkspace.id, toImport.map(c => c.resource)).then(() => {
       setSelectedWorkspace(null);
       confirmAction("Success", "Resources added to workspace!");
+      setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
     }).catch((error) => {
@@ -296,7 +292,7 @@ export const RepositoryPage = (props: any) => {
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box className={`"verticalFit" ${classes.repositoryResourceBrowserBox}`}>
+                <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
                   <Typography component="h2" variant="h2">
                     Resources
                   </Typography>
