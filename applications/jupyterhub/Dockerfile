@@ -36,9 +36,14 @@ RUN apt-get update
 RUN apt-get install python-lxml -y
 RUN apt-get install graphviz -y
 RUN apt-get install openjdk-11-jdk -y
+
+RUN apt-get install git vim htop -y      # git and general utilities
+RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
 RUN pip install pyneuroml
 
 RUN chown jovyan /opt
+RUN chown -R jovyan /opt/conda  # give user permission to update existing packages 
+
 
 USER jovyan
 # sym link workspace pvc to $FOLDER
