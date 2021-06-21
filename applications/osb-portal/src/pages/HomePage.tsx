@@ -52,7 +52,7 @@ export default (props: any) => {
           </Box>
         </Grid>
         <Grid item={true} xs={12} sm={12} md={6} alignItems="stretch" className="verticalFill">
-          <Box pl={2} width={1} className="verticalFill" >
+          <Box pl={2} width={1} className="verticalFit" >
             <Workspaces />
           </Box>
         </Grid>
