@@ -8,6 +8,7 @@ import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
 
+let firstVisitToThisPage = true;
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -52,8 +53,16 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
         return () => window.removeEventListener('message', messageListener);
     }, [workspace]);
 
+    let applicationSubdomain: string;
 
-    const applicationSubdomain = app ? OSBApplications[app].subdomain : (workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain)
+    if (firstVisitToThisPage){
+        applicationSubdomain = app ? OSBApplications[app].subdomain : (workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain);
+        firstVisitToThisPage = false;
+    }
+    else{
+        applicationSubdomain = workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain;
+    }
+
     const domain = getBaseDomain()
 
     const userParam = (user == null) ? '' : `${user.id}`;
