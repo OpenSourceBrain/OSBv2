@@ -21,9 +21,10 @@ export interface MenuItem {
 }
 
 export type MenuItemProps = {
-  title: string,
+  title: string | React.ReactNode,
   className: string,
-  items: MenuItem[]
+  items: MenuItem[],
+  popperPlacement?: any,
 }
 
 
@@ -74,7 +75,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
         >
           {props.title}
         </Button>
-        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper} placement="bottom-start">
+        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper} placement={typeof props.popperPlacement === "undefined" ? "bottom-start" : props.popperPlacement}>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
