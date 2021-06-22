@@ -6,7 +6,6 @@ def live():  # noqa: E501
      # noqa: E501
     :rtype: str
     """
-
     return "I'm alive!"
 
 

@@ -49,7 +49,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def get(self, id):
         workspace = self.model.query.get(id)
-        if workspace and (workspace.publicable or (workspace.user_id and workspace.user_id == self.keycloak_user_id)):
+        if workspace and (workspace.publicable or
+                          (workspace.user_id and workspace.user_id == self.keycloak_user_id) or
+                          (get_auth_client().user_has_realm_role(user_id=self.keycloak_user_id, role="administrator"))):
             return workspace
         return None
 
