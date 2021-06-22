@@ -28,6 +28,7 @@ import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
 import MarkdownViewer from "../components/common/MarkdownViewer"
+import MainMenu from "../components/menu/MainMenu";
 
 import {
   linkColor,
@@ -251,6 +252,7 @@ export const RepositoryPage = (props: any) => {
 
   return (
     <>
+      <MainMenu />
       <Box className={`${classes.root} verticalFit`}>
         <Box className="subheader" paddingX={3} justifyContent="space-between"  >
           <Box>

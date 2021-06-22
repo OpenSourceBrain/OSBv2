@@ -17,6 +17,7 @@ import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
 import Repositories from "../../components/repository/Repositories";
+import MainMenu from "../../components/menu/MainMenu";
 
 enum RepositoriesTab {
   all,
@@ -77,6 +78,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
   return (
     <>
+      <MainMenu />
       <Box className={`${classes.root} verticalFit`}>
         <Box
           className="subheader"
@@ -109,7 +111,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 onClick={openDialog}
               >
                 <AddIcon />
-                  Add repository
+                Add repository
               </Button>
             </Box>
           )}
@@ -117,26 +119,26 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)}/>
+            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} />
             {totalPages > 1 ?
               <Box className={classes.paginationBar}>
-              <Pagination count={totalPages} color="primary" showFirstButton={true} showLastButton={true} onChange={handlePageChange} />
+                <Pagination count={totalPages} color="primary" showFirstButton={true} showLastButton={true} onChange={handlePageChange} />
               </Box>
               : null
             }
           </Box>
           :
           <CircularProgress
-              size={48}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginTop: -24,
-                marginLeft: -24,
-              }}
-            />
-          }
+            size={48}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              marginTop: -24,
+              marginLeft: -24,
+            }}
+          />
+        }
       </Box>
 
       {user && (

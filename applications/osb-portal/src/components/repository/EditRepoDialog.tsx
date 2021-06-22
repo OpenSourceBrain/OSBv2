@@ -8,6 +8,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ClearIcon from "@material-ui/icons/Clear";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import {
   bgLight,
   primaryColor,
@@ -31,6 +34,7 @@ import {
   RepositoryContentType,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -162,11 +166,14 @@ export const EditRepoDialog = ({
     ...repository,
     userId: user.id,
   });
+
+
+  const [contexts, setContexts] = useState<string[]>();
   const [error, setError] = useState({
-    uri: false,
-    defaultContext: false,
-    contentTypesList: false,
-    name: false,
+    uri: '',
+    defaultContext: '',
+    contentTypesList: '',
+    name: '',
   });
   const [loading, setLoading] = React.useState(false);
   const handleClose = () => {
@@ -176,17 +183,31 @@ export const EditRepoDialog = ({
   const handleInput = (event: any, key: any) => {
     const value = event.target.value;
     setFormValues({ ...formValues, [key]: value });
-    setError({ ...error, [key]: !Boolean(value) });
+    setError({ ...error, [key]: !value });
   };
+
+  const handleInputUri = (event: any) => {
+    const uri = event.target.value;
+
+    handleInput(event, 'uri');
+    RepositoryService.getRepositoryContext(uri, repository.repositoryType).then(
+      (ctxs) => {
+
+        setContexts(ctxs);
+      },
+      () => setError({ ...error, uri: "Invalid url" })
+    )
+
+  }
 
   const addRepository = () => {
     const errors = {
-      name: formValues.name === "",
-      uri: formValues.uri === "",
-      defaultContext: formValues.defaultContext === "",
+      name: !formValues.name ? 'Name must be set' : '',
+      uri: !formValues.uri ? 'URL must be set' : '',
+      defaultContext: !formValues.defaultContext ? 'Please select one value from the list' : '',
       contentTypesList:
         Boolean(formValues.contentTypesList) &&
-        formValues.contentTypesList.length === 0,
+          formValues.contentTypesList.length === 0 ? 'Please select at least one value' : '',
     };
     setError(errors);
     if (!Object.values(errors).find((e) => e)) {
@@ -241,50 +262,68 @@ export const EditRepoDialog = ({
               fullWidth={true}
               placeholder="Repository URL"
               variant="outlined"
-              error={error.uri}
-              onChange={(e) => handleInput(e, "uri")}
+              error={Boolean(error.uri)}
+              onChange={handleInputUri}
               value={formValues.uri}
             />
+
           </Box>
+          <FormHelperText error={Boolean(error.uri)}>{error.uri}</FormHelperText>
         </Box>
         <Box className="form-group">
           <Typography component="label">Name</Typography>
           <TextField
             fullWidth={true}
             variant="outlined"
-            error={error.name}
+            error={Boolean(error.name)}
             onChange={(e) => handleInput(e, "name")}
             value={formValues.name}
           />
+          <FormHelperText error={Boolean(error.name)}>{error.name}</FormHelperText>
         </Box>
-        <Box className="form-group">
+        {contexts && <Box className="form-group">
+
           <Typography component="label">Default Branch</Typography>
-          <TextField
-            fullWidth={true}
-            variant="outlined"
-            error={error.defaultContext}
-            onChange={(e) => handleInput(e, "defaultContext")}
-            value={formValues.defaultContext}
-          />
+          <FormControl variant="outlined" fullWidth={true} error={Boolean(error.defaultContext)}>
+            <Select
+              value={formValues.defaultContext}
+              defaultValue={'master'}
+              onChange={(e) => handleInput(e, "defaultContext")}
+              IconComponent={KeyboardArrowDownIcon}
+
+            >
+              {
+                contexts.map((c) => <MenuItem key={c} value={c}>
+                  {c}
+                </MenuItem>
+                )
+              }
+            </Select>
+            <FormHelperText>{error.defaultContext}</FormHelperText>
+          </FormControl>
         </Box>
+        }
 
         <Box className="form-group">
           <Typography component="label">Type</Typography>
-          <FormControl variant="outlined" fullWidth={true}>
+          <FormControl variant="outlined" fullWidth={true} error={Boolean(error.contentTypesList)}>
             <Select
               value={formValues.contentTypesList}
               multiple={true}
               onChange={(e) => handleInput(e, "contentTypesList")}
               IconComponent={KeyboardArrowDownIcon}
-              error={error.contentTypesList}
+              renderValue={(selected) => (selected as string[]).join(', ')}
             >
               <MenuItem value={RepositoryContentType.Experimental}>
-                NWB Experimental Data
+                <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Experimental)} />
+                <ListItemText primary="NWB Experimental Data" />
               </MenuItem>
               <MenuItem value={RepositoryContentType.Modeling}>
-                Modeling
+                <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Modeling)} />
+                <ListItemText primary="Modeling" />
               </MenuItem>
             </Select>
+            <FormHelperText>{error.contentTypesList}</FormHelperText>
           </FormControl>
         </Box>
 
@@ -309,6 +348,7 @@ export const EditRepoDialog = ({
         <Button
           variant="contained"
           disableElevation={true}
+          disabled={Object.values(error).filter(e => e).length !== 0}
           onClick={addRepository}
           color="primary"
         >

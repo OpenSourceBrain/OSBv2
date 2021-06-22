@@ -5,7 +5,7 @@ import { CssBaseline, makeStyles } from "@material-ui/core";
 import SentryErrorBoundary from "./components/sentry/SentryErrorBoundary";
 import HomePage from "./pages/HomePage";
 import theme from "./theme";
-import MainMenu from "./components/menu/MainMenu";
+
 import { Header, ErrorDialog, WorkspacePage, ProtectedRoute, RepositoriesPage, RepositoryPage } from "./components/index";
 
 const useStyles = makeStyles(() => ({
@@ -33,7 +33,7 @@ export const App = (props: any) => {
           <Router>
             <div className={classes.mainContainer}>
               <Header />
-              <MainMenu />
+
 
               <Switch>
                 <Route exact={true} path="/">

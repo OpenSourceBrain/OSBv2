@@ -5,6 +5,7 @@ import Box from "@material-ui/core/Box";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Latest } from "../components/home/Latest";
+import MainMenu from "../components/menu/MainMenu";
 
 import {
   Header,
@@ -27,7 +28,7 @@ export default (props: any) => {
   const classes = useStyles();
 
   return <>
-
+    <MainMenu />
     <Box p={1} className="verticalFit">
       <Grid container={true} className="verticalFill">
         <Grid item={true} xs={12} sm={12} md={6} direction="column" className="verticalFill">
