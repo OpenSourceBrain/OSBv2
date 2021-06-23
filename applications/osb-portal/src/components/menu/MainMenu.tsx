@@ -28,6 +28,7 @@ export const MainMenu = () => {
         title="OSB"
         className={classes.button + " " + classes.firstButton}
         items={[
+          { label: "Documentation", callback: () => window.open("https://docs.opensourcebrain.org/intro.html") },
           { label: "About", callback: () => alert("Open Source Brain v2") },
         ]}
       />
