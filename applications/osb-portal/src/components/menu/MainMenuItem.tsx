@@ -8,22 +8,29 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles((theme) => ({
   popper: {
     zIndex: 10000,
+  },
+  checkIcon: {
+    paddingRight: theme.spacing(1),
+    marginLeft: "-1em"
   }
 }));
 
 export interface MenuItem {
   label: string;
   callback: (e: any) => void;
+  checked?: boolean;
 }
 
 export type MenuItemProps = {
-  title: string,
+  title: string | React.ReactNode,
   className: string,
-  items: MenuItem[]
+  items: MenuItem[],
+  popperPlacement?: any,
 }
 
 
@@ -74,7 +81,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
         >
           {props.title}
         </Button>
-        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper} placement="bottom-start">
+        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper} placement={typeof props.popperPlacement === "undefined" ? "bottom-start" : props.popperPlacement}>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
@@ -93,6 +100,9 @@ export const MainMenuItem = (props: MenuItemProps) => {
                             }
                           }
                         >
+                          {
+                            item.checked !== undefined && <CheckIcon className={classes.checkIcon} color={item.checked ? "primary" : "disabled"} />
+                          }
                           {item.label}
                         </MenuItem>
                       )
