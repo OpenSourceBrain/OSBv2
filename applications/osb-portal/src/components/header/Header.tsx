@@ -90,8 +90,8 @@ export const Header = (props: any) => {
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
               <MenuList autoFocusItem={menuOpen} id="user-menu">
-                <MenuItem>My account</MenuItem>
-                <MenuItem>Settings</MenuItem>
+                {/* <MenuItem>My account</MenuItem>
+                <MenuItem>Settings</MenuItem> */}
                 <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
             </ClickAwayListener>
