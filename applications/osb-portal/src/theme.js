@@ -157,15 +157,18 @@ const theme = {
           marginRight: 0
         }
       },
+      contained: {
+        "&:hover": {
+          opacity: 0.9,
+        },
+      },
       text: {
         padding: gutter / 2
       },
       containedPrimary: {
-        '&:first-child': {
           '&:hover': {
-            color: textColor,
+            backgroundColor: primaryColor,
           },
-        },
       },
     },
     MuiMenuItem: {

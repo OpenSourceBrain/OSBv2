@@ -26,7 +26,7 @@ import {
 } from "../../theme";
 import WorkspaceService from "../../service/WorkspaceService";
 import Repositories from "../repository/Repositories";
-
+import OSBPagination from "../common/OSBPagination";
 
 
 interface WorkspaceEditProps {
@@ -254,11 +254,20 @@ export default (props: WorkspaceEditProps) => {
 
   const [repositories, setRepositories] = React.useState<OSBRepository[]>(null);
 
+  const [page, setPage] = React.useState(1);
+
+  const [totalPages, setTotalPages] = React.useState(0);
+
   React.useEffect(() => {
-    RepositoryService.getRepositories(1).then((repos) =>
-      setRepositories(repos)
-    );
-  }, []);
+    RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+      setRepositories(reposDetails.osbrepositories);
+      setTotalPages(reposDetails.pagination.numberOfPages);
+    });
+  }, [page]);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
+    setPage(pageNumber);
+  }
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
     setTabValue(newTabValue);
@@ -418,9 +427,16 @@ export default (props: WorkspaceEditProps) => {
 
               :
               repositories ?
-                  <Box className="repositories-list">
-                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true}/>
-                  </Box>
+                  <>
+                    <Box className="repositories-list">
+                      <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true}/>
+                    </Box>
+                    {
+                      totalPages > 1 ?
+                      <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
+                      null
+                    }
+                  </>
                   : null
               }
           </Box>

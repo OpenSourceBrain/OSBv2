@@ -20,6 +20,7 @@ logger = cloudharness.log
 skip_dependencies = os.getenv("WORKFLOWS_SKIP_DEPENDENCIES", False)
 skip_event_dependencies = os.getenv("EVENTS_SKIP_DEPENDENCIES", False)
 
+cloudharness.set_debug() # Remove when not needed
 
 def mkdirs():
     Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
