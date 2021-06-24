@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
@@ -7,6 +8,7 @@ from sqlalchemy import desc
 from sqlalchemy.sql import func
 
 
+from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
@@ -85,13 +87,17 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
         for resource in workspace.resources:
             logger.debug("deleting resource %s", resource.id)
-            resource_repository.delete(resource.id)
+            resource_repository.delete(resource.id, delete_file_from_pvc=False)
         logger.info("deleting workspace %s", id)
         super().delete(id)
         logger.info("deleted workspace %s", id)
         logger.info("deleting volume %s", id)
         pvc.delete_persistent_volume_claim(f"workspace-{id}")
         logger.info("deleted volume %s", id)
+        logger.info("deleting workspace files")
+        folder = os.path.join(Config.WORKSPACES_DIR, f"{id}")
+        shutil.rmtree(os.path.join(Config.STATIC_DIR, folder))
+        logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
         return super().pre_commit(workspace)
@@ -263,9 +269,10 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
         return "Saved", 200
 
-    def delete(self, id):
+    def delete(self, id, delete_file_from_pvc=True):
         """Delete an object from the repository."""
         workspace_resource = self.get(id)
         super().delete(id)
 
-        delete_workspace_resource(workspace_resource)
+        if delete_file_from_pvc:
+            delete_workspace_resource(workspace_resource)
