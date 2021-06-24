@@ -9,7 +9,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Pagination from '@material-ui/lab/Pagination';
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
 import { OSBRepository } from "../../apiclient/workspaces";
@@ -18,6 +17,7 @@ import { UserInfo } from "../../types/user";
 import useStyles from './styles';
 import Repositories from "../../components/repository/Repositories";
 import MainMenu from "../../components/menu/MainMenu";
+import OSBPagination from "../../components/common/OSBPagination";
 
 enum RepositoriesTab {
   all,
@@ -120,10 +120,9 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} />
-            {totalPages > 1 ?
-              <Box className={classes.paginationBar}>
-                <Pagination count={totalPages} color="primary" showFirstButton={true} showLastButton={true} onChange={handlePageChange} />
-              </Box>
+            {
+              totalPages > 1 ?
+              <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true}/>
               : null
             }
           </Box>
