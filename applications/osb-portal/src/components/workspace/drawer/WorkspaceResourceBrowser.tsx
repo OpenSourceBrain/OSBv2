@@ -92,7 +92,7 @@ interface WorkspaceProps {
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace } = props;
 
-  const resources = workspace.resources;
+  const resources = workspace.resources.filter(resource => resource.id !== undefined);
   const lastOpenResourceId = workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
 
   if (!resources || resources.length === 0) {
@@ -111,7 +111,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           .map((resource: WorkspaceResource, idx: number) => (
             <TreeItem
               icon={undefined}
-              key={`${idx}-${resource.name}`}
+              key={resource.id}
               nodeId={idx + ''}
               className="first-level"
               label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} />}
