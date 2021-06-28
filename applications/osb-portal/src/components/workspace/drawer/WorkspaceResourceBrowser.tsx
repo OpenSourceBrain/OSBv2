@@ -50,7 +50,6 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
     setWaiting(true)
     workspaceResourceService.deleteResource(resource).then(() => {
       refreshWorkspace();
-      console.log('successfully deleted resource');
       setWaiting(false);
     }).catch(() => console.error("could not update resource"));
   }
@@ -92,8 +91,15 @@ interface WorkspaceProps {
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace } = props;
 
-  const resources = workspace.resources;
   const lastOpenResourceId = workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
+  const resources = workspace.resources.filter(resource => resource.id !== undefined);
+
+  resources.sort((elementA, elementB) => {
+    return elementA.id === -1 ? -1
+    : elementA.name.toLowerCase() < elementB.name.toLowerCase() ? -1
+    : elementA.name.toLowerCase() > elementB.name.toLowerCase() ? 1
+    : 0;
+  });
 
   if (!resources || resources.length === 0) {
     return null;
@@ -111,7 +117,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           .map((resource: WorkspaceResource, idx: number) => (
             <TreeItem
               icon={undefined}
-              key={idx + ''}
+              key={resource.id}
               nodeId={idx + ''}
               className="first-level"
               label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} />}
