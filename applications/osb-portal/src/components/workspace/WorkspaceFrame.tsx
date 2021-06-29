@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useHistory } from 'react-router-dom';
 import { AnyAction, Dispatch } from 'redux';
 import { PayloadAction } from '@reduxjs/toolkit';
 
@@ -9,6 +10,7 @@ import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
 
 let firstVisitToThisPage = true;
+let previousWorkspaceLength = 0;
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -18,12 +20,27 @@ const useStyles = makeStyles((theme) => ({
 
 export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, app: string, dispatch: Dispatch }) => {
     const classes = useStyles();
+    let history = useHistory();
 
     const { user, workspace, app, dispatch } = props;
     if (!workspace) {
         return null;
     }
 
+    const getApplicationSubdomain = () => {
+        if(history.location.pathname.includes('jupyter')){
+            return 'notebooks';
+        }
+        else if(history.location.pathname.includes('nwbexplorer')){
+            return 'nwbexplorer';
+        }
+        else if(history.location.pathname.includes('netpyne')){
+            return 'netpyne';
+        }
+        else{
+            return '';
+        }
+    }
 
 
 
@@ -56,11 +73,21 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
     let applicationSubdomain: string;
 
     if (firstVisitToThisPage){
+        previousWorkspaceLength = workspace.resources ? workspace.resources.length : 0;
         applicationSubdomain = app ? OSBApplications[app].subdomain : (workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain);
         firstVisitToThisPage = false;
     }
     else{
-        applicationSubdomain = workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain;
+        if(workspace.resources && (workspace.resources.length !== previousWorkspaceLength || workspace.resources[workspace.resources.length - 1].id === -1)){
+            applicationSubdomain = getApplicationSubdomain();
+            if(applicationSubdomain === ''){
+                applicationSubdomain = workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain;
+            }
+        }
+        else{
+            applicationSubdomain = workspace.lastOpen ? workspace.lastOpen.type.application.subdomain : OSBApplications.jupyter.subdomain;
+        }
+        previousWorkspaceLength = workspace.resources.length;
     }
 
     const domain = getBaseDomain()
