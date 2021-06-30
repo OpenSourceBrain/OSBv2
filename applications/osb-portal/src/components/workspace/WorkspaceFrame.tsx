@@ -9,7 +9,7 @@ import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
 
-let firstVisitToThisPage = true;
+const firstVisitToThisPage = true;
 
 const useStyles = makeStyles((theme) => ({
   iframe: {
