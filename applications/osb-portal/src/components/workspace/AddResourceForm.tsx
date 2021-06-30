@@ -206,20 +206,6 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '2%',
         padding: '0.6rem',
       },
-      "& .MuiBreadcrumbs-root": {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(0),
-        "& .MuiBreadcrumbs-ol": {
-          lineHeight: 1,
-          "& .MuiBreadcrumbs-li": {
-            "& .MuiLink-root": {
-              fontSize: '0.8rem',
-              color: fontColor,
-              cursor: 'pointer',
-            },
-          },
-        },
-      },
     },
   },
 }));
