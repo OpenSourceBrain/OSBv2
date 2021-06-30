@@ -5,6 +5,20 @@ RUN echo $CLOUDHARNESS_BASE
 FROM jupyter/base-notebook:hub-1.1.0
 USER root
 
+RUN apt-get update
+RUN apt-get install python-lxml -y
+RUN apt-get install graphviz -y
+RUN apt-get install openjdk-11-jdk -y
+
+RUN apt-get install git vim htop -y      # git and general utilities
+RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
+
+RUN pip install neuron
+RUN pip install netpyne
+RUN pip install pynwb
+RUN pip install pyneuroml
+
+
 COPY --from=base libraries/cloudharness-common/requirements.txt /libraries/cloudharness-common/requirements.txt
 RUN pip install -r /libraries/cloudharness-common/requirements.txt
 COPY --from=base libraries/client/cloudharness_cli/requirements.txt /libraries/client/cloudharness_cli/requirements.txt
@@ -28,18 +42,7 @@ COPY --chown=1000:1000 theming/spawn_pending.html /opt/conda/share/jupyterhub/te
 COPY --chown=1000:1000 theming/hot_fix_for_eventsource.js /opt/conda/share/jupyterhub/static/hot_fix_for_eventsource.js
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-RUN pip install neuron
-RUN pip install netpyne
-RUN pip install pynwb
 
-RUN apt-get update
-RUN apt-get install python-lxml -y
-RUN apt-get install graphviz -y
-RUN apt-get install openjdk-11-jdk -y
-
-RUN apt-get install git vim htop -y      # git and general utilities
-RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
-RUN pip install pyneuroml
 
 RUN chown jovyan /opt
 RUN chown -R jovyan /opt/conda  # give user permission to update existing packages 
