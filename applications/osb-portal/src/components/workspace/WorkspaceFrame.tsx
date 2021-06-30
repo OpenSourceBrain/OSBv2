@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useHistory } from 'react-router-dom';
 import { AnyAction, Dispatch } from 'redux';
 import { PayloadAction } from '@reduxjs/toolkit';
 
@@ -9,7 +10,6 @@ import WorkspaceResourceService from '../../service/WorkspaceResourceService';
 import { getBaseDomain } from '../../utils';
 
 let firstVisitToThisPage = true;
-let lastOpenResourceId: any;
 
 const useStyles = makeStyles((theme) => ({
     iframe: {
@@ -26,9 +26,6 @@ export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, ap
     if (!workspace) {
         return null;
     }
-
-    lastOpenResourceId = workspace.lastOpen ? workspace.lastOpen.id : null;
-
 
     React.useEffect(() => {
         if (!app && (workspace.resources != null) && (workspace.resources.length > 0)) {
