@@ -2,7 +2,7 @@ FROM node:15 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
 ENV BRANCH_TAG="osb2"
 ENV FOLDER=nwb-explorer
-
+echo "no cache 2021-06-30"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
