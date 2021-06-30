@@ -1,10 +1,16 @@
 import * as React from "react";
-import { Typography, Box, ButtonBase, Button } from "@material-ui/core";
+import { Typography, Box, Button } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { UserInfo } from "../../types/user";
-import OSBDialog from "../common/OSBDialog";
 import { NewWorkspaceAskUser } from "..";
+import Repositories from "../repository/Repositories";
 import WorkspaceEdit from "./WorkspaceEditor";
+import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
+import OSBDialog from "../common/OSBDialog";
+import OSBPagination from "../common/OSBPagination";
+import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspaces';
+import RepositoryService from "../../service/RepositoryService";
+import { UserInfo } from "../../types/user";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
 
 export interface WorkspaceTemplate {
@@ -73,9 +79,9 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
 }
 
 interface ItemProps {
-  icon: React.ElementType;
+  icon: React.ElementType | React.ReactNode;
   title: string,
-  template: WorkspaceTemplateType,
+  template?: WorkspaceTemplateType | string,
   user: UserInfo;
   refreshWorkspaces: () => null;
 }
@@ -84,15 +90,55 @@ export default (props: ItemProps) => {
   const { user, template, title } = props;
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
+  const [showAddFilesToWorkspaceDialog, setShowAddFilesToWorkspaceDialog] = React.useState(false);
+  const [repositoryLoading, setRepositoryLoading] = React.useState(false);
+  const [selectedRepository, setRepository] = React.useState<OSBRepository>(null);
+  const [repositories, setRepositories] = React.useState<OSBRepository[]>(null);
+  const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
+
+  const [page, setPage] = React.useState(1);
+
+  const [totalPages, setTotalPages] = React.useState(0);
+
+
+  const workspaceTypeUndefined = () => { return typeof WORKSPACE_TEMPLATES[template] === 'undefined'; }
+  const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
+    setPage(pageNumber);
+  }
+
+  const loadRepository = (repositoryId: number) => {
+    setRepositoryLoading(true);
+    RepositoryService.getRepository(repositoryId).then((repo) => {
+      setRepository(repo);
+    });
+  }
+  const closeAddFilesToWorkspaceDialog = () => {
+    setShowAddFilesToWorkspaceDialog(false);
+  }
+
+  const setCheckedArray = (newChecked: RepositoryResourceNode[]) => {
+    setChecked(newChecked);
+  }
 
   const handleClick = () => {
     if (!user) {
       setAskLoginOpen(true);
     } else {
-      setNewWorkspaceOpen(true);
+      if (workspaceTypeUndefined){
+        setShowAddFilesToWorkspaceDialog(true);
+
+      }
+      else{
+        setNewWorkspaceOpen(true);
+      }
     }
   };
 
+  const handleBackAction = () => {
+    setRepositoryLoading(false);
+    setRepository(null);
+    setChecked([]);
+  }
   const closeAskLogin = () => setAskLoginOpen(false);
 
   const closeNewWorkspace = (refresh = false) => {
@@ -102,15 +148,32 @@ export default (props: ItemProps) => {
     }
 
   }
-  const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
+  let defaultWorkspace: Workspace;
+
+  if (typeof WORKSPACE_TEMPLATES[template] === 'undefined'){
+    defaultWorkspace = {
+      resources: [],
+      volume: null,
+      shareType: null,
+      name: "",
+      description: null
+    }
+  }
+  else{
+    defaultWorkspace = WORKSPACE_TEMPLATES[template];
+  }
+
+
 
   return (
     <>
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
-          <props.icon style={{ marginBottom: "0.2em" }} />
+          <Box style={{ marginBottom: "0.2em" }} >
+            {props.icon}
+          </Box>
           <Typography variant="subtitle1">{title}</Typography>
-          <Typography variant="caption">{defaultWorkspace.resources[0].type.application.name}</Typography>
+          <Typography variant="caption">{typeof WORKSPACE_TEMPLATES[template] === 'undefined' ? template : defaultWorkspace.resources[0].type.application.name}</Typography>
         </Box>
       </Button>
       <OSBDialog
@@ -126,6 +189,36 @@ export default (props: ItemProps) => {
         closeAction={closeNewWorkspace}
       >
         <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={closeNewWorkspace} />
+      </OSBDialog>
+      <OSBDialog
+        title="select files for the new workspace"
+        open={showAddFilesToWorkspaceDialog}
+        closeAction={closeAddFilesToWorkspaceDialog}
+      >
+        {
+          repositoryLoading ?
+          selectedRepository ?
+          <Box>
+            <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
+          </Box>
+          :
+          <CircularProgress size={40}
+            style={{
+              position: 'relative',
+              left: '45%',
+            }}
+          />
+          : repositories ?
+          <>
+            <Box>
+              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+            </Box>
+            {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
+            null
+            }
+          </>
+          : null
+        }
       </OSBDialog>
     </>
   );
