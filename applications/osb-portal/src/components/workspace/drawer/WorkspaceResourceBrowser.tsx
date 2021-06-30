@@ -10,6 +10,7 @@ import ArrowDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
+import { getBaseDomain } from '../../../utils';
 
 import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
 import workspaceResourceService from "../../../service/WorkspaceResourceService";
@@ -27,6 +28,9 @@ const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) =>
   return workspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
     const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
     iFrame.contentWindow.postMessage(fileName, '*');
+    console.log('resource', resource);
+    const domain = getBaseDomain();
+    iFrame.src = `//${resource.type.application.subdomain}.${domain}/hub/spawn/hub/spawn//${resource.workspaceId}${resource.type}`;
     refreshWorkspace();
   }).catch(() => {
     console.error("Error opening resource, ResourceOpen function failed!");
