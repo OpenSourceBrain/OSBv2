@@ -38,7 +38,7 @@ export const Banner = (props: any) => {
     user === null ? "Welcome to the Open Source Brain v2.0 preview" : `Welcome back ${user.firstName}`;
   const text2 =
     user === null
-      ? "Coming soon with NeuroML model creation, NWB data exploration and interactive playgrounds."
+      ? "Coming soon with NeuroML model creation, NWB data exploration and interactive development sessions."
       : "Let's do some science.";
 
   return (
