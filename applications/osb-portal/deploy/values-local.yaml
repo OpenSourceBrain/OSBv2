@@ -8,3 +8,4 @@ harness:
       - workspaces
       - workflows
       - jupyterhub
+      - jupyterlab

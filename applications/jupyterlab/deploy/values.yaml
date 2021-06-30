@@ -1,0 +1,22 @@
+harness:
+  subdomain: notebooks
+  service:
+    auto: false
+    port: 80
+    name: proxy-public
+  deployment:
+    auto: false
+  dependencies:
+    build:
+      - cloudharness-base
+  jupyterhub:
+    args: ["--debug", "--NotebookApp.default_url=/lab", "--NotebookApp.notebook_dir=/opt/workspace"]
+    applicationHook: "osb_jupyter.change_pod_manifest"
+    extraConfig:
+      timing: |
+        c.Spawner.port = 8000
+        c.Spawner.http_timeout = 300
+        c.Spawner.start_timeout = 300
+
+        c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' *.osb.local osb.local localhost *.opensourcebrain.org"}}
+

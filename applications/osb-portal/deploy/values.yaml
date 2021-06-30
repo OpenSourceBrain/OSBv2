@@ -25,3 +25,4 @@ harness:
       - netpyne
       - nwb-explorer
       - jupyterhub
+      - jupyterlab
