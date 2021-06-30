@@ -22,7 +22,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 import VolumePathBrowser from "./VolumePathBrowser";
 import { ShareIcon } from "../../icons";
-import { ResourceStatus, Workspace } from "../../../types/workspace";
+import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from '../../../service/UserService';
@@ -110,6 +110,7 @@ interface WorkspaceProps {
   deleteWorkspace: (wsId: number) => null,
   user: UserInfo,
   [propName: string]: any;
+  openResource: (r: WorkspaceResource) => any
 }
 
 
@@ -175,7 +176,7 @@ export default (props: WorkspaceProps | any) => {
       <>
         <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace' || true} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
-            // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
+          // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
             <Typography
               variant="h5"
@@ -211,10 +212,11 @@ export default (props: WorkspaceProps | any) => {
             <WorkspaceResourceBrowser
               workspace={workspace}
               refreshWorkspace={props.refreshWorkspace}
+              openResource={props.openResource}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        { false && // TODO user shared space back when available
+        {false && // TODO user shared space back when available
           <ExpansionPanel elevation={0}>
             <ExpansionPanelSummary
               expandIcon={<ArrowUpIcon />}

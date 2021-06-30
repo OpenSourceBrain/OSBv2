@@ -150,20 +150,11 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
+      publish_jupyterlab:
         stage: publish
         type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
-        stage: publish
-        type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{DEPLOYMENT_TAG}}'
+        title: Jupyterlab
+        candidate: '${{REGISTRY}}/osb/jupyterlab:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest

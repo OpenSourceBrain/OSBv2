@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useParams } from 'react-router-dom';
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -7,10 +8,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 
 import { WorkspaceInteractions } from "../..";
-import { Workspace } from "../../../types/workspace";
+import { Workspace, WorkspaceResource } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
+
+import {
+  WorkspaceFrame
+} from "../../../components";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,8 +88,7 @@ const useStyles = makeStyles((theme) => ({
 interface WorkspaceDrawerProps {
   workspace: Workspace;
   user: UserInfo;
-  refreshWorkspace: () => any
-
+  refreshWorkspace: () => any;
 }
 
 export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ user, children, workspace }) => {
@@ -94,6 +98,9 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
+  const { app } = useParams<{ app: string }>();
+
+  const [currentResource, setCurrentResource] = React.useState<WorkspaceResource>(!app ? workspace.lastOpen : null);
 
   const handleToggleDrawer = () => setOpen(!open);
 
@@ -117,7 +124,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         }}
       >
         <div className={`${open ? classes.drawerContent : ''} verticalFit`}>
-          <WorkspaceInteractions open={open} />
+          <WorkspaceInteractions open={open} openResource={setCurrentResource} />
         </div>
         <div>
           <Divider />
@@ -133,7 +140,10 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         </div>
       </Drawer>
 
-      <Box display="flex" flex="1">{children}</Box>
+      <Box display="flex" flex="1">
+        <WorkspaceFrame currentResource={currentResource} />
+        {children}
+      </Box>
     </Box>
   );
 };

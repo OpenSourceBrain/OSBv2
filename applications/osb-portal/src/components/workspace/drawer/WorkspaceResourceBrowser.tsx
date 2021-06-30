@@ -10,7 +10,6 @@ import ArrowDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
-import { getBaseDomain } from '../../../utils';
 
 import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
 import workspaceResourceService from "../../../service/WorkspaceResourceService";
@@ -23,14 +22,10 @@ import {
 
 
 
-const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) => (e: any) => {
-  const fileName = "/opt/workspace/" + workspaceResourceService.getResourcePath(resource);
+const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any, openResource: (r: WorkspaceResource) => any) => (e: any) => {
+
+  openResource(resource);
   return workspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
-    const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
-    iFrame.contentWindow.postMessage(fileName, '*');
-    console.log('resource', resource);
-    const domain = getBaseDomain();
-    iFrame.src = `//${resource.type.application.subdomain}.${domain}/hub/spawn/hub/spawn//${resource.workspaceId}${resource.type}`;
     refreshWorkspace();
   }).catch(() => {
     console.error("Error opening resource, ResourceOpen function failed!");
@@ -38,8 +33,8 @@ const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any) =>
 }
 
 
-const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => void }) => {
-  const { resource, active, refreshWorkspace } = props;
+const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => void, openResource: (r: WorkspaceResource) => any }) => {
+  const { resource, active, refreshWorkspace, openResource } = props;
   const canOpenFile: boolean = resource.status === ResourceStatus.available;
   const [waiting, setWaiting] = React.useState(resource.status === ResourceStatus.pending);
   const style: any = {
@@ -68,7 +63,7 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
       pr={2}
       pt={1}
       pb={1}
-      onClick={canOpenFile ? openFileResource(resource, refreshWorkspace) : undefined}
+      onClick={canOpenFile ? openFileResource(resource, refreshWorkspace, openResource) : undefined}
     >
       {resource.type.application === null ? <FolderIcon /> : ""}
       <Tooltip title={`${workspaceResourceService.getResourcePath(resource)}
@@ -90,19 +85,20 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
 interface WorkspaceProps {
   workspace: Workspace;
   refreshWorkspace: () => void;
+  openResource: (r: WorkspaceResource) => any
 }
 
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
-  const { workspace, refreshWorkspace } = props;
+  const { workspace, refreshWorkspace, openResource } = props;
 
   const lastOpenResourceId = workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
   const resources = workspace.resources.filter(resource => resource.id !== undefined);
 
   resources.sort((elementA, elementB) => {
     return elementA.id === -1 ? -1
-    : elementA.name.toLowerCase() < elementB.name.toLowerCase() ? -1
-    : elementA.name.toLowerCase() > elementB.name.toLowerCase() ? 1
-    : 0;
+      : elementA.name.toLowerCase() < elementB.name.toLowerCase() ? -1
+        : elementA.name.toLowerCase() > elementB.name.toLowerCase() ? 1
+          : 0;
   });
 
   if (!resources || resources.length === 0) {
@@ -124,7 +120,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               key={resource.id}
               nodeId={idx + ''}
               className="first-level"
-              label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} />}
+              label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} openResource={openResource} />}
             />)
           )
       }

@@ -4,8 +4,7 @@ import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
 
 import {
-  WorkspaceDrawer,
-  WorkspaceFrame
+  WorkspaceDrawer
 } from "../components";
 
 // import workspaceService from "../../service/WorkspaceService";
@@ -19,9 +18,8 @@ export default (props: any) => {
   return (
     <Box className="verticalFill">
       <Divider variant="fullWidth" />
-      <WorkspaceDrawer>
-        <WorkspaceFrame app={app} />
-      </WorkspaceDrawer>
+      <WorkspaceDrawer app={app} />
+
     </Box>
   );
 };
