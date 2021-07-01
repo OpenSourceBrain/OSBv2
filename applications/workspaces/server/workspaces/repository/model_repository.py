@@ -12,6 +12,7 @@ from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
+from workspaces.service.notifications import notify
 from workspaces.service.auth import get_auth_client
 from .base_model_repository import BaseModelRepository
 from .database import db
@@ -115,6 +116,21 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 db.session.commit()
         return workspace
 
+    def post(self, body):
+        obj = super().post(body)
+        if isinstance(obj, tuple):
+            # http return code in result, this means an error, return it
+            return obj
+        # no error, send notification
+        notify(
+            trigger="workspace.post",
+            context={
+                "description": f"{obj.name} - {obj.description}",
+                "obj": obj
+            }
+        )
+        return obj
+
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
@@ -144,6 +160,21 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
     def content_types_list(self, repository):
         return repository.content_types.split(",")
+
+    def post(self, body):
+        obj = super().post(body)
+        if isinstance(obj, tuple):
+            # http return code in result, this means an error, return it
+            return obj
+        # no error, send notification
+        notify(
+            trigger="osbrepository.post",
+            context={
+                "description": f"{obj.name} - {obj.uri}",
+                "obj": obj
+            }
+        )
+        return obj
 
 
 class VolumeStorageRepository(BaseModelRepository):

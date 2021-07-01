@@ -25,6 +25,8 @@ harness:
   secrets:
     github-user:
     github-token:
+    email-user:
+    email-password:
   dependencies:
     build:
       - cloudharness-base
@@ -48,3 +50,22 @@ harness:
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
 
+notification:
+  channels:
+    mail:
+      type: email
+      templateFolder: email
+      from: info@opensourcebrain.org
+      to:
+        - info@opensourcebrain.org
+  triggers:
+    workspace.post:
+      subject: New Workspace - {{domain}}
+      template: new-model-instance.html
+      channels:
+        - mail
+    osbrepository.post:
+      subject: New Repository - {{domain}}
+      template: new-model-instance.html
+      channels:
+        - mail
