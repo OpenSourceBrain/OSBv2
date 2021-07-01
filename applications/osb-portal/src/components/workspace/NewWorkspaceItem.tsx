@@ -21,6 +21,7 @@ import {
   bgDarker,
 } from "../../theme";
 import OSBChipList from "../common/OSBChipList";
+import Grid from "@material-ui/core/Grid";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -96,6 +97,19 @@ interface ItemProps {
 }
 
 const useStyles = makeStyles((theme) => ({
+  helperDialogText: {
+    padding: `0px ${theme.spacing(1)}px ${theme.spacing(1)}px`,
+    fontSize: '0.9rem',
+  },
+  info: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+    "& .MuiTypography-root": {
+      paddingLeft: 0,
+    },
+  },
   repositoriesList: {
     "& .MuiBox-root": {
       maxHeight: '500px',
@@ -111,12 +125,12 @@ const useStyles = makeStyles((theme) => ({
   },
   resourceBrowser: {
     overflow: 'hidden',
-    backgroundColor: bgLight,
     borderRadius: radius,
+    backgroundColor: bgLight,
     margin: theme.spacing(2),
     "& .scrollbar": {
       overflow: 'auto',
-      maxHeight: '450px',
+      maxHeight: '400px',
       "& .MuiList-root": {
         paddingRight: '1rem',
         marginTop: 0,
@@ -215,6 +229,15 @@ export default (props: ItemProps) => {
     }
   };
 
+  const handleContinue = () => {
+    console.log(checked);
+  }
+
+  const handleChipDelete = (key: string) => {
+    const checkedChips = checked.filter(item => item.resource.path !== key);
+    setChecked(checkedChips);
+  }
+
   const handleBackAction = () => {
     setRepositoryLoading(false);
     setRepository(null);
@@ -268,19 +291,32 @@ export default (props: ItemProps) => {
         open={newWorkspaceOpen}
         closeAction={closeNewWorkspace}
       >
+        <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={closeNewWorkspace} />
       </OSBDialog>
       <OSBDialog
-        title="Select files for the new workspace"
+        title="Create new workspace"
         open={showAddFilesToWorkspaceDialog}
         closeAction={closeAddFilesToWorkspaceDialog}
       >
         {
           repositoryLoading ?
           selectedRepository ?
-          <Box className={classes.resourceBrowser}>
-            <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
-          </Box>
+          <>
+            <Box className={classes.resourceBrowser}>
+              <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
+            </Box>
+            <Grid container={true} className={classes.info}>
+              <Grid item={true}>
+                <Typography component="h6" className={classes.helperDialogText}>
+                  Please select the files to add to your new workspace
+                </Typography>
+              </Grid>
+              <Grid item={true}>
+                <Button variant="contained" onClick={handleContinue}>Continue</Button>
+              </Grid>
+            </Grid>
+        </>
           :
           <CircularProgress size={40}
             style={{
@@ -293,12 +329,19 @@ export default (props: ItemProps) => {
           <>
             <Box className={classes.repositoriesList}>
               <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+              <Typography component="h6" className={classes.helperDialogText}>Please select a repository</Typography>
             </Box>
             {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
             null
             }
           </>
-          : null
+          : <CircularProgress size={40}
+              style={{
+                position: 'relative',
+                left: '45%',
+                margin: '10px',
+              }}
+            />
         }
       </OSBDialog>
     </>
