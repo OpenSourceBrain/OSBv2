@@ -1,16 +1,19 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box, Button } from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Typography, Box, Button, Grid, CircularProgress,
+  Dialog, DialogTitle, DialogContent, DialogActions
+} from "@material-ui/core";
 
 import { NewWorkspaceAskUser } from "..";
 import Repositories from "../repository/Repositories";
 import WorkspaceEdit from "./WorkspaceEditor";
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import OSBDialog from "../common/OSBDialog";
+import OSBChipList from "../common/OSBChipList";
 import OSBPagination from "../common/OSBPagination";
 import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspaces';
 import RepositoryService from "../../service/RepositoryService";
+import WorkspaceService from "../../service/WorkspaceService";
 import { UserInfo } from "../../types/user";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
 import {
@@ -20,8 +23,6 @@ import {
   bgLight,
   bgDarker,
 } from "../../theme";
-import OSBChipList from "../common/OSBChipList";
-import Grid from "@material-ui/core/Grid";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -173,7 +174,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default (props: ItemProps) => {
-  const { user, template, title } = props;
+  const { user, template, title, refreshWorkspaces } = props;
   const classes = useStyles();
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
@@ -184,8 +185,10 @@ export default (props: ItemProps) => {
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
+  const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
 
   const workspaceTypeUndefined = typeof WORKSPACE_TEMPLATES[template] === 'undefined';
+
   const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
     setPage(pageNumber);
   }
@@ -231,6 +234,12 @@ export default (props: ItemProps) => {
 
   const handleContinue = () => {
     console.log(checked);
+    if (checked.length === 0){
+      setShowNoFilesSelectedDialog(true);
+    }
+    else{
+      setNewWorkspaceOpen(true);
+    }
   }
 
   const handleChipDelete = (key: string) => {
@@ -245,13 +254,21 @@ export default (props: ItemProps) => {
   }
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = (refresh = false) => {
-    setNewWorkspaceOpen(false);
-    if (refresh) {
-      props.refreshWorkspaces();
+  const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
+    if (workspaceTypeUndefined && checked.length > 0){
+      WorkspaceService.importResourcesToWorkspace(ws.id, checked.map(c => c.resource)).then(() => {
+        setNewWorkspaceOpen(false);
+        closeAddFilesToWorkspaceDialog();
+        setChecked([]);
+        refreshWorkspaces();
+      });
     }
-
+    else{
+      setNewWorkspaceOpen(false);
+      refreshWorkspaces();
+    }
   }
+
   let defaultWorkspace: Workspace;
 
   if (workspaceTypeUndefined){
@@ -266,7 +283,6 @@ export default (props: ItemProps) => {
   else{
     defaultWorkspace = WORKSPACE_TEMPLATES[template];
   }
-
 
   return (
     <>
@@ -289,10 +305,10 @@ export default (props: ItemProps) => {
       <OSBDialog
         title="Create new workspace"
         open={newWorkspaceOpen}
-        closeAction={closeNewWorkspace}
+        closeAction={() => {setNewWorkspaceOpen(false); closeAddFilesToWorkspaceDialog(); setChecked([]); }}
       >
-        <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
-        <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={closeNewWorkspace} />
+        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
+        <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} />
       </OSBDialog>
       <OSBDialog
         title="Create new workspace"
@@ -344,6 +360,18 @@ export default (props: ItemProps) => {
             />
         }
       </OSBDialog>
+      {
+        showNoFilesSelectedDialog && <Dialog open={showNoFilesSelectedDialog} onClose={() => setShowNoFilesSelectedDialog(false)}>
+          <DialogTitle>No files selected</DialogTitle>
+          <DialogContent>{
+            "No files from this repository have been selected, and so all the files in the repository will be added in the workspace. Press OK to proceed, or press Cancel and go back and select some."
+          }</DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => setShowNoFilesSelectedDialog(false)}>Cancel</Button>
+            <Button variant="contained" color="primary" onClick={() => {setNewWorkspaceOpen(true); setShowNoFilesSelectedDialog(false) }}>OK</Button>
+          </DialogActions>
+        </Dialog>
+      }
     </>
   );
 };
