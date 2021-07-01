@@ -1,4 +1,5 @@
 import * as React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Button } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -12,6 +13,13 @@ import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspace
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
+import {
+  fontColor,
+  bgInputs,
+  radius,
+  bgLight,
+  bgDarker,
+} from "../../theme";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -86,8 +94,72 @@ interface ItemProps {
   refreshWorkspaces: () => null;
 }
 
+const useStyles = makeStyles((theme) => ({
+  repositoriesList: {
+    "& .MuiBox-root": {
+      maxHeight: '500px',
+      margin: theme.spacing(2),
+      borderRadius: radius,
+      "& .MuiGrid-container": {
+        backgroundColor: bgLight,
+        "&:hover": {
+          backgroundColor: bgDarker,
+        },
+      },
+    },
+  },
+  resourceBrowser: {
+    overflow: 'hidden',
+    backgroundColor: bgLight,
+    borderRadius: radius,
+    margin: theme.spacing(2),
+    "& .scrollbar": {
+      overflow: 'auto',
+      maxHeight: '450px',
+      "& .MuiList-root": {
+        paddingRight: '1rem',
+        marginTop: 0,
+        "& .MuiListItem-root": {
+          alignItems: 'baseline',
+        },
+        "& p": {
+          fontSize: '0.8rem',
+          color: fontColor,
+          "& span": {
+            fontSize: '0.8rem',
+            color: bgInputs,
+          },
+          "& .icon": {
+            width: '2rem',
+            display: 'flex',
+            "& .MuiSvgIcon-root": {
+              height: '1rem',
+            },
+          },
+        },
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: bgInputs,
+      },
+      "&::-webkit-scrollbar-track": {
+        backgroundColor: 'transparent',
+      },
+    },
+    "& .flex-grow-1": {
+      width: '100%',
+    },
+    "& .MuiTextField-root": {
+      width: '96%',
+      marginRight: '2%',
+      marginLeft: '2%',
+      padding: '0.6rem',
+    },
+  },
+}))
+
 export default (props: ItemProps) => {
   const { user, template, title } = props;
+  const classes = useStyles();
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
   const [showAddFilesToWorkspaceDialog, setShowAddFilesToWorkspaceDialog] = React.useState(false);
@@ -95,16 +167,23 @@ export default (props: ItemProps) => {
   const [selectedRepository, setRepository] = React.useState<OSBRepository>(null);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>(null);
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
-
   const [page, setPage] = React.useState(1);
-
   const [totalPages, setTotalPages] = React.useState(0);
 
-
-  const workspaceTypeUndefined = () => { return typeof WORKSPACE_TEMPLATES[template] === 'undefined'; }
+  const workspaceTypeUndefined = typeof WORKSPACE_TEMPLATES[template] === 'undefined';
   const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
     setPage(pageNumber);
   }
+
+  React.useEffect(() => {
+    if (workspaceTypeUndefined){
+      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+        setRepositories(reposDetails.osbrepositories);
+        setTotalPages(reposDetails.pagination.numberOfPages);
+      });
+    }
+  }, [page]);
+
 
   const loadRepository = (repositoryId: number) => {
     setRepositoryLoading(true);
@@ -126,7 +205,6 @@ export default (props: ItemProps) => {
     } else {
       if (workspaceTypeUndefined){
         setShowAddFilesToWorkspaceDialog(true);
-
       }
       else{
         setNewWorkspaceOpen(true);
@@ -150,7 +228,7 @@ export default (props: ItemProps) => {
   }
   let defaultWorkspace: Workspace;
 
-  if (typeof WORKSPACE_TEMPLATES[template] === 'undefined'){
+  if (workspaceTypeUndefined){
     defaultWorkspace = {
       resources: [],
       volume: null,
@@ -191,14 +269,14 @@ export default (props: ItemProps) => {
         <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={closeNewWorkspace} />
       </OSBDialog>
       <OSBDialog
-        title="select files for the new workspace"
+        title="Select files for the new workspace"
         open={showAddFilesToWorkspaceDialog}
         closeAction={closeAddFilesToWorkspaceDialog}
       >
         {
           repositoryLoading ?
           selectedRepository ?
-          <Box>
+          <Box className={classes.resourceBrowser}>
             <RepositoryResourceBrowser repository={selectedRepository} checkedChanged={setCheckedArray} backAction={handleBackAction}/>
           </Box>
           :
@@ -206,11 +284,12 @@ export default (props: ItemProps) => {
             style={{
               position: 'relative',
               left: '45%',
+              margin: '10px',
             }}
           />
           : repositories ?
           <>
-            <Box>
+            <Box className={classes.repositoriesList}>
               <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
             </Box>
             {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
