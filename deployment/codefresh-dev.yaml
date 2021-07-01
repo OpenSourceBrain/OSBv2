@@ -243,6 +243,34 @@ steps:
         image_name: osb/jupyterlab
         title: Jupyterlab
         working_directory: ./build/applications/jupyterlab
+      netpyne:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/netpyne
+        title: Netpyne
+        working_directory: ./build/applications/netpyne
+      nwb-explorer:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/nwb-explorer
+        title: Nwb explorer
+        working_directory: ./build/applications/nwb-explorer
       jupyterhub:
         type: build
         stage: build
@@ -561,6 +589,22 @@ steps:
         type: push
         title: Jupyterlab
         candidate: '${{REGISTRY}}/osb/jupyterlab:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_netpyne:
+        stage: publish
+        type: push
+        title: Netpyne
+        candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nwb-explorer:
+        stage: publish
+        type: push
+        title: Nwb explorer
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
