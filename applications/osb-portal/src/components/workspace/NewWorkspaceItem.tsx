@@ -20,6 +20,7 @@ import {
   bgLight,
   bgDarker,
 } from "../../theme";
+import OSBChipList from "../common/OSBChipList";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -184,7 +185,6 @@ export default (props: ItemProps) => {
     }
   }, [page]);
 
-
   const loadRepository = (repositoryId: number) => {
     setRepositoryLoading(true);
     RepositoryService.getRepository(repositoryId).then((repo) => {
@@ -193,6 +193,7 @@ export default (props: ItemProps) => {
   }
   const closeAddFilesToWorkspaceDialog = () => {
     setShowAddFilesToWorkspaceDialog(false);
+    setRepository(null);
   }
 
   const setCheckedArray = (newChecked: RepositoryResourceNode[]) => {
@@ -204,6 +205,8 @@ export default (props: ItemProps) => {
       setAskLoginOpen(true);
     } else {
       if (workspaceTypeUndefined){
+        setChecked([]);
+        setRepositoryLoading(false);
         setShowAddFilesToWorkspaceDialog(true);
       }
       else{
@@ -240,7 +243,6 @@ export default (props: ItemProps) => {
   else{
     defaultWorkspace = WORKSPACE_TEMPLATES[template];
   }
-
 
 
   return (
