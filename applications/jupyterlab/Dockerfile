@@ -1,6 +1,10 @@
 FROM jupyter/base-notebook:hub-1.1.0
 USER root
 
+ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+ENV NETPYNE_CORE_BRANCH_TAG=osbv2
+
+
 RUN apt-get update
 RUN apt-get install python-lxml -y
 RUN apt-get install graphviz -y
@@ -10,14 +14,18 @@ RUN apt-get install git vim htop -y      # git and general utilities
 RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
 
 RUN pip install neuron
-RUN pip install netpyne
+
+# Install specific version of NetPyNE
+RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
+RUN cd netpyne ; python setup.py install; cd -
+
 RUN pip install pynwb
 RUN pip install pyneuroml
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN chown jovyan /opt
-RUN chown -R jovyan /opt/conda  # give user permission to update existing packages 
+RUN chown -R jovyan /opt/conda  # give user permission to update existing packages
 
 
 USER jovyan

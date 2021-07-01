@@ -20,6 +20,8 @@ RUN mv @geppettoengine node_modules
 FROM jupyter/base-notebook:hub-1.1.0
 ENV NB_UID=jovyan
 ENV FOLDER=netpyne
+ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+ENV NETPYNE_CORE_BRANCH_TAG=osbv2
 
 COPY --from=jsbuild --chown=1000:1000 $FOLDER $FOLDER
 WORKDIR $FOLDER
@@ -43,6 +45,13 @@ RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
 RUN python utilities/install.py --npm-skip --workspace=
+
+# Install specific version of NetPyNE
+RUN pip uninstall netpyne -y
+RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
+RUN cd netpyne ; python setup.py install; cd -
+
+
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
 COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
