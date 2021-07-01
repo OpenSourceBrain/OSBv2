@@ -58,14 +58,20 @@ notification:
       from: info@opensourcebrain.org
       to:
         - info@opensourcebrain.org
+    console:
+      type: console
+      templateFolder: text
+      from: info@opensourcebrain.org
+      to:
+        - info@opensourcebrain.org
   triggers:
     workspace.post:
       subject: New Workspace - {{domain}}
-      template: new-model-instance.html
+      template: new-model-instance
       channels:
         - mail
     osbrepository.post:
       subject: New Repository - {{domain}}
-      template: new-model-instance.html
+      template: new-model-instance
       channels:
         - mail

@@ -1,0 +1,8 @@
+notification:
+  triggers:
+    workspace.post:
+      channels:
+        - console
+    osbrepository.post:
+      channels:
+        - console
