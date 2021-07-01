@@ -1,3 +1,4 @@
+from cloudharness import log as logger
 from cloudharness.utils.config import CloudharnessConfig as conf
 from workspaces.service.notification.adapters import NotificationEmailAdapter, NotificationConsoleAdapter
 
@@ -11,9 +12,12 @@ def notify(trigger, context):
 
     for c in notification["channels"]:
         channel = CHANNELS[c]
-        if   channel["type"].lower() == "email":
-            return NotificationEmailAdapter(notification, channel).notify(context=context)
-        elif channel["type"].lower() == "console":
-            return NotificationConsoleAdapter(notification, channel).notify(context=context)
-        else:
-            raise NotImplementedError
+        try:
+            if   channel["type"].lower() == "email":
+                return NotificationEmailAdapter(notification, channel).notify(context=context)
+            elif channel["type"].lower() == "console":
+                return NotificationConsoleAdapter(notification, channel).notify(context=context)
+            else:
+                raise NotImplementedError
+        except Exception as e:
+            logger.error('Sending notification error.', exc_info=True)
