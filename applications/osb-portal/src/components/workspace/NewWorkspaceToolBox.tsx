@@ -88,7 +88,7 @@ export const WorkspaceToolBox = (props: any) => {
 
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.ChartIcon}
                   title="Data Analysis"
@@ -97,7 +97,7 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.CubeIcon}
                   title="Playground"
