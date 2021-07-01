@@ -33,8 +33,8 @@ const openFileResource = (resource: WorkspaceResource, refreshWorkspace: any, op
 }
 
 
-const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => void, openResource: (r: WorkspaceResource) => any }) => {
-  const { resource, active, refreshWorkspace, openResource } = props;
+const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refreshWorkspace: () => void, openResource: (r: WorkspaceResource) => any, lastOpenResourceId: number }) => {
+  const { resource, active, refreshWorkspace, openResource, lastOpenResourceId } = props;
   const canOpenFile: boolean = resource.status === ResourceStatus.available;
   const [waiting, setWaiting] = React.useState(resource.status === ResourceStatus.pending);
   const style: any = {
@@ -72,7 +72,7 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
       </Tooltip>
       <Box ml={2}>
         {waiting && <CircularProgress color="secondary" size="small" style={{ color: "#989898", width: "1em" }} />}
-        {!waiting && <IconButton size="small" style={{ color: "#989898", padding: 0 }} title="Delete resource" onClick={handleDeleteResource} >
+        {!waiting && lastOpenResourceId !== resource.id && <IconButton size="small" style={{ color: "#989898", padding: 0 }} title="Delete resource" onClick={handleDeleteResource} >
           <DeleteIcon fontSize="small" color="inherit" />
         </IconButton>}
       </Box>
@@ -120,7 +120,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               key={resource.id}
               nodeId={idx + ''}
               className="first-level"
-              label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} openResource={openResource} />}
+              label={<OSBTreeItem resource={resource} active={resource.id === lastOpenResourceId} refreshWorkspace={refreshWorkspace} openResource={openResource} lastOpenResourceId={lastOpenResourceId}/>}
             />)
           )
       }
