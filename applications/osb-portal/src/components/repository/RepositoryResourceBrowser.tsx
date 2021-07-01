@@ -25,7 +25,6 @@ import {
   linkColor,
   bgLightest,
   fontColor,
-  bgDarkest,
   checkBoxColor,
   paragraph,
   bgLightestShade,
@@ -123,10 +122,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: bgLightest,
       },
     },
-
-
-
-
   },
   breadcrumbs: {
 
@@ -159,9 +154,7 @@ const useStyles = makeStyles((theme) => ({
         cursor: "pointer",
       },
     },
-  }
-
-
+  },
 }));
 
 export default ({ repository, checkedChanged, backAction, refresh }: { repository: OSBRepository, checkedChanged: (checked: RepositoryResourceNode[]) => any, backAction?: () => void, refresh?: boolean }) => {
@@ -191,27 +184,29 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
 
 
   return <>
-
-    <Breadcrumbs
-      separator={<Avatar src="/images/separator.svg" />}
-      aria-label="breadcrumb"
-      className={classes.breadcrumbs}
-    >
-      {backAction && <IconButton onClick={() => backAction()}>
-        <ArrowBackIosIcon fontSize="small" />
-      </IconButton>}
-      {
-        currentPath.map((element, i) =>
-          <Link
-            key={element.resource.name}
-            color="inherit"
-            onClick={() => setCurrentPath(currentPath.slice(0, i + 1))}
-          >
-            {i > 0 ? element.resource.name : repository.name}
-          </Link>)
+    <Box display="flex" flex-direction="row" alignItems="center">
+      {backAction &&
+        <IconButton onClick={() => backAction()}>
+          <ArrowBackIosIcon fontSize="small" />
+        </IconButton>
       }
-
-    </Breadcrumbs>
+      <Breadcrumbs
+        separator={<Avatar src="/images/separator.svg" />}
+        aria-label="breadcrumb"
+        className={classes.breadcrumbs}
+      >
+        {
+          currentPath.map((element, i) =>
+            <Link
+              key={element.resource.name}
+              color="inherit"
+              onClick={() => setCurrentPath(currentPath.slice(0, i + 1))}
+            >
+              {i > 0 ? element.resource.name : repository.name}
+            </Link>)
+        }
+      </Breadcrumbs>
+    </Box>
     <TextField
       id="standard-start-adornment"
       fullWidth={true}

@@ -33,27 +33,31 @@ class WorkspaceView(BaseModelView):
                 workspace.update({"resources": []})
         # check if there are running import tasks
         logger.debug("Post get, check workflows for workspace %....", workspace.get("id"))
-        workflows = argo.get_workflows(status="Running", limit=9999)
-        if workflows and workflows.items:
-            for workflow in workflows.items:
-                try:
-                    if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
-                        "workspace"
-                    ).strip() == str(workspace["id"]):
-                        fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace("/", " of ")
-                        workspace["resources"].append(
-                            {
-                                "id": -1,
-                                "name": "Importing resources into workspace",
-                                "origin": {"path": fake_path},
-                                "resource_type": "e",
-                                "workspace_id": workspace["id"],
-                            }
-                        )
-                    break
-                except Exception as e:
-                    # probably not a workspace import workflow job --> skip it
-                    pass
+        try:
+            workflows = argo.get_workflows(status="Running", limit=9999)
+            if workflows and workflows.items:
+                for workflow in workflows.items:
+                    try:
+                        if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
+                            "workspace"
+                        ).strip() == str(workspace["id"]):
+                            fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace("/", " of ")
+                            workspace["resources"].append(
+                                {
+                                    "id": -1,
+                                    "name": "Importing resources into workspace",
+                                    "origin": {"path": fake_path},
+                                    "resource_type": "e",
+                                    "workspace_id": workspace["id"],
+                                }
+                            )
+                        break
+                    except Exception as e:
+                        # probably not a workspace import workflow job --> skip it
+                        pass
+        except Exception as e:
+            # No workflows raises error
+            logger.debug("Get workflows exception", exc_info=True)
         return workspace
 
 

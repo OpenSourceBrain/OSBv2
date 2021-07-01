@@ -5,7 +5,7 @@ RUN echo $CLOUDHARNESS_BASE
 FROM jupyter/base-notebook:hub-1.1.0
 USER root
 
-
+RUN apt update && apt install nano
 COPY --from=base libraries/cloudharness-common/requirements.txt /libraries/cloudharness-common/requirements.txt
 RUN pip install -r /libraries/cloudharness-common/requirements.txt
 COPY --from=base libraries/client/cloudharness_cli/requirements.txt /libraries/client/cloudharness_cli/requirements.txt
@@ -30,10 +30,5 @@ COPY --chown=1000:1000 theming/hot_fix_for_eventsource.js /opt/conda/share/jupyt
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
-
-RUN chown jovyan /opt
-RUN chown -R jovyan /opt/conda  # give user permission to update existing packages 
-
-
-USER jovyan
+RUN chmod 777 /usr/src/app -R
 

@@ -206,20 +206,6 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '2%',
         padding: '0.6rem',
       },
-      "& .MuiBreadcrumbs-root": {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(0),
-        "& .MuiBreadcrumbs-ol": {
-          lineHeight: 1,
-          "& .MuiBreadcrumbs-li": {
-            "& .MuiLink-root": {
-              fontSize: '0.8rem',
-              color: fontColor,
-              cursor: 'pointer',
-            },
-          },
-        },
-      },
     },
   },
 }));
@@ -427,23 +413,23 @@ export default (props: WorkspaceEditProps) => {
 
               :
               repositories ?
-                  <>
-                    <Box className="repositories-list">
-                      <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true}/>
-                    </Box>
-                    {
-                      totalPages > 1 ?
+                <>
+                  <Box className="repositories-list">
+                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+                  </Box>
+                  {
+                    totalPages > 1 ?
                       <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
                       null
-                    }
-                  </>
-                  : null
-              }
+                  }
+                </>
+                : null
+            }
           </Box>
           <Grid container={true} spacing={1} className="copy-info">
             <Grid item={true} xs={8}>
               {
-                waiting ? <CircularProgress size={25}/> :
+                waiting ? <CircularProgress size={25} /> :
 
                   fromOSBRepositoryConfirmation ?
 
@@ -452,10 +438,9 @@ export default (props: WorkspaceEditProps) => {
                     </Typography> :
 
                     <Typography component="h6">
-                      Copy will duplicate the resource inside your workspace and use your storage quota.
-                      Link will add it as a reference and the resource inside your workspace will be updated
-                      when the repository is.
-                  </Typography>
+                      Copy will duplicate the resource inside your workspace. The resource won't be automatically synched with the source.
+                      To resync, add the resource again from the repository.
+                    </Typography>
               }
 
             </Grid>
