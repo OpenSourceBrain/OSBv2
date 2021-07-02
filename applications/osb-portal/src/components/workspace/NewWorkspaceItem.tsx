@@ -118,6 +118,16 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: radius,
       "& .MuiGrid-container": {
         backgroundColor: bgLight,
+        "& .col": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginTop: 0,
+          marginBottom: 0,
+          "& .tag": {
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
         "&:hover": {
           backgroundColor: bgDarker,
         },
@@ -211,6 +221,7 @@ export default (props: ItemProps) => {
   const closeAddFilesToWorkspaceDialog = () => {
     setShowAddFilesToWorkspaceDialog(false);
     setRepository(null);
+    setPage(0);
   }
 
   const setCheckedArray = (newChecked: RepositoryResourceNode[]) => {
@@ -345,11 +356,11 @@ export default (props: ItemProps) => {
           <>
             <Box className={classes.repositoriesList}>
               <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+              {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
+                null
+              }
               <Typography component="h6" className={classes.helperDialogText}>Please select a repository</Typography>
             </Box>
-            {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
-            null
-            }
           </>
           : <CircularProgress size={40}
               style={{
