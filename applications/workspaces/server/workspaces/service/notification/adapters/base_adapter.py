@@ -8,7 +8,7 @@ from workspaces.service.auth import get_auth_client
 
 
 class NotificationBaseAdapter(metaclass=abc.ABCMeta):
-    def __init__(self, notification, channel):
+    def __init__(self, notification, channel, backend):
         """
         Init a notification
 
@@ -21,6 +21,7 @@ class NotificationBaseAdapter(metaclass=abc.ABCMeta):
         """
         self.notification = notification
         self.channel = channel
+        self.backend = backend
         self.user = self._get_user()
         self.template = os.path.join(
             self.channel["templateFolder"],

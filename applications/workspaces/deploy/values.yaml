@@ -51,15 +51,24 @@ harness:
     pgdata: /opt/data/pgdata
 
 notification:
-  channels:
-    mail:
+  backends:
+    email:
       type: email
+    console:
+      type: console
+  channels:
+    email:
+      type: email
+      backends:
+        - email
       templateFolder: email
       from: info@opensourcebrain.org
       to:
         - info@opensourcebrain.org
     console:
-      type: console
+      type: email
+      backends: 
+        - console
       templateFolder: text
       from: info@opensourcebrain.org
       to:
@@ -69,9 +78,9 @@ notification:
       subject: New Workspace - {{domain}}
       template: new-model-instance
       channels:
-        - mail
+        - email
     osbrepository.post:
       subject: New Repository - {{domain}}
       template: new-model-instance
       channels:
-        - mail
+        - email

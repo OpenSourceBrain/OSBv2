@@ -1,8 +1,4 @@
 notification:
-  triggers:
-    workspace.post:
-      channels:
-        - console
-    osbrepository.post:
-      channels:
-        - console
+  backends:
+    email:
+      type: console # output the emails to the console
