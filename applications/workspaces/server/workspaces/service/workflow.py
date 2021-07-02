@@ -30,7 +30,7 @@ def delete_resource(workspace_resource, pvc_name, resource_path: str):
             scan_task,
         ),
         shared_directory=shared_directory,
-        pod_context=operations.PodExecutionContext("workspace", workspace_resource.workspace_id),
+        pod_context=operations.PodExecutionContext("workspace", workspace_resource.workspace_id, True),
     )
     workflow = op.execute()
 
@@ -43,7 +43,7 @@ def run_copy_tasks(workspace_id, tasks):
         tasks,
         (create_scan_task(workspace_id),),
         shared_directory=shared_directory,
-        pod_context=operations.PodExecutionContext("workspace", workspace_id),
+        pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),
     )
     workflow = op.execute()
 
