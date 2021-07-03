@@ -1,0 +1,6 @@
+notification:
+  channels:
+    email:
+      from: info@opensourcebrain.org
+      to:
+        - info@opensourcebrain.org

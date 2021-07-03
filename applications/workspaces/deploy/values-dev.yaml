@@ -1,4 +1,0 @@
-notification:
-  backends:
-    email:
-      type: console # output the emails to the console
