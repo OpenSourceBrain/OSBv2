@@ -36,6 +36,7 @@ harness:
       - common
       - accounts
       - workflows
+      - notifications
     hard:
       - argo
   database:
@@ -50,37 +51,12 @@ harness:
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
 
-notification:
-  backends:
-    email:
-      type: email
-    console:
-      type: console
-  channels:
-    email:
-      type: email
-      backends:
-        - email
-      templateFolder: email
-      from: info@opensourcebrain.org
-      to:
-        - info@opensourcebrain.org
-    console:
-      type: email
-      backends: 
-        - console
-      templateFolder: text
-      from: info@opensourcebrain.org
-      to:
-        - info@opensourcebrain.org
-  triggers:
-    workspace.post:
-      subject: New Workspace - {{domain}}
-      template: new-model-instance
-      channels:
-        - email
-    osbrepository.post:
-      subject: New Repository - {{domain}}
-      template: new-model-instance
-      channels:
-        - email
+  notifications:  # event notifications the notification service is listening to
+    - type: workspace
+      events:
+      - create
+      - delete
+    - type: osbrepository
+      events:
+      - create
+      - delete

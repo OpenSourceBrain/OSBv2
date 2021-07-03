@@ -1,4 +1,5 @@
 import json
+from cloudharness.events.decorators import send_event
 
 import cloudharness.workflows.argo as argo
 from cloudharness import log as logger
@@ -17,6 +18,7 @@ from ..base_model_view import BaseModelView
 class WorkspaceView(BaseModelView):
     repository = WorkspaceRepository()
 
+    @send_event(message_type="workspace", operation="create", uid="id")
     def post(self, body):
         for r in body.get("resources", []):
             r.update({"origin": json.dumps(r.get("origin"))})
@@ -60,6 +62,7 @@ class WorkspaceView(BaseModelView):
 class OsbrepositoryView(BaseModelView):
     repository = OSBRepositoryRepository()
 
+    @send_event(message_type="osbrepository", operation="create", uid="id")
     def post(self, body):
         content_types = ""
         # convert the content types list to a content type comma separated string

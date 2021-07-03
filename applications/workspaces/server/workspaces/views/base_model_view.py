@@ -48,8 +48,15 @@ class BaseModelView(MethodView):
     def post(self, body):
         """Save an object to the repository."""
         body = rm_null_values(body)
-        obj = self.repository.post(body)
-        return obj.to_dict()
+        try:
+            obj = self.repository.post(body)
+            result_code = 201
+            obj = obj.to_dict()
+        except Exception as e:
+            result_code = 500
+            obj = e
+        return obj, result_code
+        # return obj.to_dict()
 
     def get(self, id_):
         """Get an object from the repository."""

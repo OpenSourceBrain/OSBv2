@@ -1,4 +1,0 @@
-User: {{ user.email }}
-
-Created a new {{ obj.__class__.__name__ }}
-Description: {{ description }}
