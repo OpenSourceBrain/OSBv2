@@ -54,10 +54,7 @@ class BaseModelService():
 
     def get(self, id_):
         """Get an object from the repository."""
-        obj = self.repository.get(id=id_)
-        if obj is None:
-            return f"{self.repository.model.__name__} with id {id_} not found.", 404
-        return obj
+        return self.repository.get(id=id_)
 
     def put(self, body, id_):
         """Update an object in the repository."""
