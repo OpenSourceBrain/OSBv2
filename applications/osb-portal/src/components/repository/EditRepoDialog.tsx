@@ -215,7 +215,18 @@ export const EditRepoDialog = ({
       // TODO implement update
       RepositoryService.addRepository(formValues).then(
         () => {
+          setLoading(false);
           handleClose();
+          setFormValues({
+            ...RepositoryService.EMPTY_REPOSITORY,
+            userId: user.id,
+          });
+          setError({
+            uri: '',
+            defaultContext: '',
+            contentTypesList: '',
+            name: '',
+          });
           onSubmit();
         },
         (e) => {
