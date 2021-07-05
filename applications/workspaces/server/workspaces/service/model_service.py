@@ -67,6 +67,9 @@ class BaseModelService():
         """Delete an object from the repository."""
         return self.repository.delete(id_)
 
+    def __str__(self):
+        return str(self.repository)
+
 
 class WorkspaceService(BaseModelService):
     repository = WorkspaceRepository()

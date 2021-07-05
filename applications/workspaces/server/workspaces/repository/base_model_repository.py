@@ -243,3 +243,6 @@ class BaseModelRepository:
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
         return db.session.commit()
+
+    def __str__(self):
+        return self.model.__name__

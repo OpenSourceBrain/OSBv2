@@ -23,7 +23,7 @@ class BaseModelView(MethodView):
         """
         page, total_pages, objects = self.service.search(page=page, per_page=per_page, *args, **kwargs)
         obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
-        list_name = self.service.repository.model.__tablename__
+        list_name = str(self.service.repository)
         list_name_plural = list_name[:-1] + list_name[-1:].replace("y", "ie") + "s"
         return {
             "pagination": {
@@ -47,7 +47,7 @@ class BaseModelView(MethodView):
         """Get an object from the repository."""
         obj = self.service.get(id_=id_)
         if obj is None:
-            return f"{self.service.repository.model.__name__} with id {id_} not found.", 404
+            return f"{self.service.repository} with id {id_} not found.", 404
         return obj.to_dict()
 
     def put(self, body, id_):
