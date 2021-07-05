@@ -1,22 +1,12 @@
-"""Model base class"""
-from cloudharness import log as logger
 from flask.views import MethodView
 
 from workspaces.utils import row2dict
 
 
-def rm_null_values(dikt):
-    tmp = {}
-    for k, v in dikt.items():  # remove null fields from dict
-        if v:
-            tmp.update({k: v})
-    return tmp
-
-
 class BaseModelView(MethodView):
     """Generic base class for handling REST API endpoints."""
 
-    repository = None
+    service = None
 
     def search(self, page=1, per_page=20, *args, **kwargs):
         """
@@ -31,11 +21,9 @@ class BaseModelView(MethodView):
             current page
             number of pages
         """
-        logger.debug("Search args %s", args)
-        logger.debug("Search kwargs %s", kwargs)
-        page, total_pages, objects = self.repository.search(page=page, per_page=per_page, *args, **kwargs)
+        page, total_pages, objects = self.service.search(page=page, per_page=per_page, *args, **kwargs)
         obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
-        list_name = self.repository.model.__tablename__
+        list_name = self.service.repository.model.__tablename__
         list_name_plural = list_name[:-1] + list_name[-1:].replace("y", "ie") + "s"
         return {
             "pagination": {
@@ -47,28 +35,25 @@ class BaseModelView(MethodView):
 
     def post(self, body):
         """Save an object to the repository."""
-        body = rm_null_values(body)
         try:
-            obj = self.repository.post(body)
+            obj = self.service.post(body).to_dict()
             result_code = 201
-            obj = obj.to_dict()
         except Exception as e:
             result_code = 500
             obj = e
         return obj, result_code
-        # return obj.to_dict()
 
     def get(self, id_):
         """Get an object from the repository."""
-        obj = self.repository.get(id=id_)
+        obj = self.service.get(id_=id_)
         if obj is None:
-            return f"{self.repository.model.__name__} with id {id_} not found.", 404
+            return f"{self.service.repository.model.__name__} with id {id_} not found.", 404
         return obj.to_dict()
 
     def put(self, body, id_):
         """Update an object in the repository."""
-        return self.repository.put(body, id_)
+        return self.service.put(body, id_)
 
     def delete(self, id_):
         """Delete an object from the repository."""
-        return self.repository.delete(id_)
+        return self.service.delete(id_)
