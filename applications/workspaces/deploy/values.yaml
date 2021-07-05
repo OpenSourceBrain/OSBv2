@@ -53,8 +53,6 @@ harness:
     - type: workspace
       events:
       - create
-      - delete
     - type: osbrepository
       events:
       - create
-      - delete
