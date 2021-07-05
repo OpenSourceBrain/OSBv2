@@ -58,10 +58,10 @@ steps:
     - CUSTOM_apps_sentry_harness_secrets_email-server=${{EMAIL-SERVER}}
     - CUSTOM_apps_sentry_harness_secrets_email-user=${{EMAIL-USER}}
     - CUSTOM_apps_sentry_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+    - CUSTOM_apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+    - CUSTOM_apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
     - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
     - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
-    - CUSTOM_apps_workspaces_harness_secrets_email-user=${{EMAIL-USER}}
-    - CUSTOM_apps_workspaces_harness_secrets_email-password=${{EMAIL-PASSWORD}}
   approval:
     type: pending-approval
     stage: publish
