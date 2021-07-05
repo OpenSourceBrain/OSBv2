@@ -25,8 +25,6 @@ harness:
   secrets:
     github-user:
     github-token:
-    email-user:
-    email-password:
   dependencies:
     build:
       - cloudharness-base
