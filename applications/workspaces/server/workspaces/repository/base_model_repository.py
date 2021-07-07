@@ -245,4 +245,4 @@ class BaseModelRepository:
         return db.session.commit()
 
     def __str__(self):
-        return self.model.__name__
+        return self.model.__tablename__
