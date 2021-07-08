@@ -3,16 +3,16 @@ harness:
     email-user:
     email-password:
 
-  events:  # events the notification service is listening to
+  events:
     cdc:
     - app: workspaces
-      type: workspace
-      events:
-      - create
-    - app: workspaces
-      type: osbrepository
-      events:
-      - create
+      types:
+      - name: workspace
+        events:
+        - create
+      - name: osbrepository
+        events:
+        - create
 
 notification:
   channels:
