@@ -48,11 +48,3 @@ harness:
     password: secret
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
-
-  notifications:  # event notifications the notification service is listening to
-    - type: workspace
-      events:
-      - create
-    - type: osbrepository
-      events:
-      - create
