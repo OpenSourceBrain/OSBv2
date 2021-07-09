@@ -363,7 +363,7 @@ export default (props: ItemProps) => {
               <Grid container={true} className={classes.info}>
                 <Grid item={true}>
                   <Typography component="h6" className={classes.helperDialogText}>
-                    If you can't find what you're looking for, go <Link href="/repositories">here</Link> to explor
+                    If you can't find what you're looking for, go <Link href="/repositories">here</Link> to explore
                     all the OSB repositories, or add a new one.
                   </Typography>
                 </Grid>
