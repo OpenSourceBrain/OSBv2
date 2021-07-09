@@ -1,5 +1,11 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw';
+import gfm from 'remark-gfm';
+import github from 'remark-github';
+import remark from "remark";
+// var remark = require('remark');
+// var github = require('remark-github');
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -132,8 +138,10 @@ export const MarkdownViewer = ({ text }: { text: string }) => {
 
   return (
     <Paper className={`verticalFit ${classes.root}`}>
-      <ReactMarkdown skipHtml={true} className="preview-box scrollbar">
-        {text}
+      <ReactMarkdown rehypePlugins={[rehypeRaw, gfm, github]} className="preview-box scrollbar">
+        {remark().use(github).process(text, (err: any, file: any) => {
+          // handle error
+        })}
       </ReactMarkdown>
     </Paper>
 
