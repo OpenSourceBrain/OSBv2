@@ -3,6 +3,7 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Grid, Paper } from "@material-ui/core";
 
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import Box from "@material-ui/core/Box";
 
 
@@ -67,7 +68,7 @@ export const WorkspaceToolBox = (props: any) => {
           </Grid>
           <Grid item={true} xs={12} sm={12} md={8} lg={9}>
             <Grid container={true} direction="row" justify="space-between" spacing={5} >
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter} >
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
                   icon={Icons.SquareCirclesIcon}
                   title="Computational modeling"
@@ -77,7 +78,7 @@ export const WorkspaceToolBox = (props: any) => {
 
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.ChartIcon}
                   title="Data analysis"
@@ -86,13 +87,23 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.CubeIcon}
                   title="Interactive development"
                   template={WorkspaceTemplateType.playground}
                   user={user}
                   refreshWorkspaces={props.refreshWorkspaces}
+                />
+              </Grid>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
+                <WorkspaceItem
+                  icon={<FolderOpenIcon />}
+                  title="Workspace from repository"
+                  template="Any application"
+                  user={user}
+                  refreshWorkspaces={props.refreshWorkspaces}
+
                 />
               </Grid>
             </Grid>
