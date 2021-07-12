@@ -9,12 +9,12 @@ harness:
   sentry: true
   livenessProbe:
     path: /api/live
-    initialDelaySeconds: 45
-    periodSeconds: 30
+    initialDelaySeconds: 5
+    periodSeconds: 15
   readinessProbe:
     path: /api/ready
-    initialDelaySeconds: 30
-    periodSeconds: 30
+    initialDelaySeconds: 10
+    periodSeconds: 15
   deployment:
     auto: true
     port: 8080
