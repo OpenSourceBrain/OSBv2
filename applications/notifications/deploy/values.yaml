@@ -1,0 +1,22 @@
+harness:
+  secrets:
+    email-user:
+    email-password:
+
+  events:
+    cdc:
+    - app: workspaces
+      types:
+      - name: workspace
+        events:
+        - create
+      - name: osbrepository
+        events:
+        - create
+
+notification:
+  channels:
+    email:
+      from: info@opensourcebrain.org
+      to:
+        - info@opensourcebrain.org

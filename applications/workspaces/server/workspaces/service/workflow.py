@@ -13,6 +13,11 @@ except Exception as e:
         "Cannot start workflows module. Probably this is related some problem with the kubectl configuration", e
     )
 
+ttl_strategy: dict = {
+    'secondsAfterCompletion': 60 * 60,
+    'secondsAfterSuccess': 60 * 20,
+    'secondsAfterFailure': 60 * 60 * 24 * 7 # one week
+    }
 
 def delete_resource(workspace_resource, pvc_name, resource_path: str):
     logger.info(f"Delete workspace resource with id: {workspace_resource.id}, path: {resource_path}")
@@ -30,6 +35,7 @@ def delete_resource(workspace_resource, pvc_name, resource_path: str):
             scan_task,
         ),
         shared_directory=shared_directory,
+        ttl_strategy=ttl_strategy,
         pod_context=operations.PodExecutionContext("workspace", workspace_resource.workspace_id, True),
     )
     workflow = op.execute()
@@ -43,6 +49,7 @@ def run_copy_tasks(workspace_id, tasks):
         tasks,
         (create_scan_task(workspace_id),),
         shared_directory=shared_directory,
+        ttl_strategy=ttl_strategy,
         pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),
     )
     workflow = op.execute()

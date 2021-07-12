@@ -1,0 +1,8 @@
+notification:
+  channels:
+    email:
+      backends:
+        - console
+      to:
+        - filippo@metacell.us
+        - zoran@metacell.us
