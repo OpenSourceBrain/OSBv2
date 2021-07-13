@@ -1,6 +1,6 @@
 notification:
   channels:
-    email:
+    admins:
       backends:
         - console
       to:

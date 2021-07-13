@@ -16,7 +16,11 @@ harness:
 
 notification:
   channels:
-    email:
+    admins:
+      from: info@opensourcebrain.org
+      to:
+        - info@opensourcebrain.org
+    log:
       from: info@opensourcebrain.org
       to:
         - info@opensourcebrain.org
