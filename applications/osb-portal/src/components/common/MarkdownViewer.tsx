@@ -15,7 +15,7 @@ import {
   bgInputs,
   radius,
 } from "../../theme";
-import { OSBRepository } from "../../apiclient/workspaces";
+import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -130,8 +130,12 @@ export const MarkdownViewer = ({ text, repository }: { text: string, repository?
     const imageTags: string[] = []
     const imagePaths: string[] = [];
     let img;
-    while ((img = imgRex.exec(str))) {
-      if (!img[1].startsWith('http')){
+    do {
+      img = imgRex.exec(str);
+    }
+    // tslint:disable-next-line: align
+    while (img) {
+      if (!img[1].startsWith('http')) {
         imageTags.push(img[0]);
         imagePaths.push(img[1]);
       }
@@ -143,7 +147,7 @@ export const MarkdownViewer = ({ text, repository }: { text: string, repository?
   const convertImgInMarkdown = (markDown: string) => {
     let mark = markDown;
     const [imageTags, imagePaths] = getImages(markDown);
-    const updatedImages : string[] = [];
+    const updatedImages: string[] = [];
     imageTags.map((tag, index) => {
       mark = mark.replace(tag, `[![img](${repository.uri.replace('https://github.com/', 'https://raw.githubusercontent.com/') + '/' + repository.defaultContext + '/' + imagePaths[index]})](${repository.uri.replace('https://github.com/', 'https://raw.githubusercontent.com/') + '/' + repository.defaultContext + '/' + imagePaths[index]})`)
     })
@@ -156,7 +160,7 @@ export const MarkdownViewer = ({ text, repository }: { text: string, repository?
   return (
     <Paper className={`verticalFit ${classes.root}`}>
       <ReactMarkdown skipHtml={false} className="preview-box scrollbar">
-        {typeof repository !== 'undefined' && repository.repositoryType === 'github' ? convertImgInMarkdown(text) : text}
+        {typeof repository !== 'undefined' && repository.repositoryType === RepositoryType.Github ? convertImgInMarkdown(text) : text}
       </ReactMarkdown>
     </Paper>
 
