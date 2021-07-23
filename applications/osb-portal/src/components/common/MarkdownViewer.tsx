@@ -130,11 +130,10 @@ export const MarkdownViewer = ({ text, repository }: { text: string, repository?
     const imageTags: string[] = []
     const imagePaths: string[] = [];
     let img;
-    do {
-      img = imgRex.exec(str);
-    }
-    // tslint:disable-next-line: align
-    while (img) {
+
+
+    // tslint:disable-next-line: no-conditional-assignment
+    while (img = imgRex.exec(str)) {
       if (!img[1].startsWith('http')) {
         imageTags.push(img[0]);
         imagePaths.push(img[1]);
