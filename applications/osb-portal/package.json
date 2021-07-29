@@ -43,8 +43,7 @@
     "redux-logger": "^3.0.6",
     "rehype-raw": "^5.1.0",
     "remark": "^13.0.0",
-    "remark-gfm": "^1.0.0",
-    "remark-github": "^10.1.0"
+    "remark-gfm": "^1.0.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.14.0",
