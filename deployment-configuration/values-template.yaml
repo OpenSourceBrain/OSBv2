@@ -1,3 +1,6 @@
 domain: v2.opensourcebrain.org
 mainapp: osb-portal
 tls: true
+smtp:
+  host: smtp.ionos.co.uk
+  port: 587

@@ -56,6 +56,7 @@ def init_app(app):
                 )
     mkdirs()
     setup_static_router(app)
+    app.template_folder = Config.TEMPLATE_DIR
 
 
 app = init_flask(
