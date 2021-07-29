@@ -290,7 +290,7 @@ export const RepositoryPage = (props: any) => {
                       Overview
                     </Typography>
                   </Box>
-                  <MarkdownViewer text={repository.description} />
+                  <MarkdownViewer text={repository.description} repository={repository}/>
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
