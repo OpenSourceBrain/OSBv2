@@ -113,10 +113,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   repositoriesList: {
+    "& .scrollbar": {
+      borderBottomRightRadius: radius,
+      borderBottomLeftRadius: radius,
+    },
     "& .MuiBox-root": {
       maxHeight: '500px',
-      margin: theme.spacing(2),
-      borderRadius: radius,
+      marginRight: theme.spacing(2),
+      marginLeft: theme.spacing(2),
+      marginTop: theme.spacing(0),
       "& .MuiGrid-container": {
         backgroundColor: bgLight,
         "& .col": {
@@ -197,6 +202,7 @@ export default (props: ItemProps) => {
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+  const [filter, setFilter] = React.useState("");
 
   const workspaceTypeUndefined = typeof WORKSPACE_TEMPLATES[template] === 'undefined';
 
@@ -206,12 +212,19 @@ export default (props: ItemProps) => {
 
   React.useEffect(() => {
     if (workspaceTypeUndefined){
-      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
-        setRepositories(reposDetails.osbrepositories);
-        setTotalPages(reposDetails.pagination.numberOfPages);
-      });
+      if (typeof filter === 'undefined' || filter.length === 0){
+        RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+          setRepositories(reposDetails.osbrepositories);
+          setTotalPages(reposDetails.pagination.numberOfPages);
+        });
+      }
+      else{
+        RepositoryService.getRepositoriesByFilter(`name__like=%${filter}%`).then((repos) => {
+          setRepositories(repos);
+        });
+      }
     }
-  }, [page]);
+  }, [page, filter]);
 
   const loadRepository = (repositoryId: number) => {
     setRepositoryLoading(true);
@@ -356,7 +369,7 @@ export default (props: ItemProps) => {
           : repositories ?
           <>
             <Box className={classes.repositoriesList}>
-              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} searchRepositories={true} filterChanged={newFilter => setFilter(newFilter)}/>
               {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
                 null
               }
