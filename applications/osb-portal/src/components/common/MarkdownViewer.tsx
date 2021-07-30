@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
-
+import rehypeRaw from 'rehype-raw';
+import gfm from 'remark-gfm';
 import { makeStyles } from "@material-ui/core/styles";
 
 import Paper from "@material-ui/core/Paper";
@@ -158,7 +159,7 @@ export const MarkdownViewer = ({ text, repository }: { text: string, repository?
 
   return (
     <Paper className={`verticalFit ${classes.root}`}>
-      <ReactMarkdown skipHtml={false} className="preview-box scrollbar">
+      <ReactMarkdown rehypePlugins={[rehypeRaw, gfm]} className="preview-box scrollbar">
         {typeof repository !== 'undefined' && repository.repositoryType === RepositoryType.Github ? convertImgInMarkdown(text) : text}
       </ReactMarkdown>
     </Paper>
