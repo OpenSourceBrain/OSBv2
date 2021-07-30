@@ -171,6 +171,21 @@ steps:
         image_name: osb/volumemanager
         title: Volumemanager
         working_directory: ./build/applications/volumemanager/server
+      notifications:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/notifications
+        title: Notifications
+        working_directory: ./build/applications/notifications/server
       accounts:
         type: build
         stage: build
@@ -506,6 +521,8 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
+    - CUSTOM_apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+    - CUSTOM_apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
     - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
     - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
   publish:
@@ -549,6 +566,14 @@ steps:
         type: push
         title: Volumemanager
         candidate: '${{REGISTRY}}/osb/volumemanager:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_notifications:
+        stage: publish
+        type: push
+        title: Notifications
+        candidate: '${{REGISTRY}}/osb/notifications:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
