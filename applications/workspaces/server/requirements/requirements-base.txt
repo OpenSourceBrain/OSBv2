@@ -1,7 +1,7 @@
 connexion == 2.6.0
 cryptography==3.3.2
 Flask==1.1.2
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 flask-oidc==1.4.0
 Flask-SQLAlchemy==2.4.1
 OpenAlchemy==1.1.0
