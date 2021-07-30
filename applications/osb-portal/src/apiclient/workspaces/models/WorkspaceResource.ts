@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    ResourceOrigin,
+    ResourceOriginFromJSON,
+    ResourceOriginFromJSONTyped,
+    ResourceOriginToJSON,
     ResourceStatus,
     ResourceStatusFromJSON,
     ResourceStatusFromJSONTyped,
@@ -22,6 +26,14 @@ import {
     ResourceTypeFromJSON,
     ResourceTypeFromJSONTyped,
     ResourceTypeToJSON,
+    WorkspaceResourceAllOf,
+    WorkspaceResourceAllOfFromJSON,
+    WorkspaceResourceAllOfFromJSONTyped,
+    WorkspaceResourceAllOfToJSON,
+    WorkspaceResourceBase,
+    WorkspaceResourceBaseFromJSON,
+    WorkspaceResourceBaseFromJSONTyped,
+    WorkspaceResourceBaseToJSON,
 } from './';
 
 /**
@@ -43,13 +55,7 @@ export interface WorkspaceResource {
      */
     name: string;
     /**
-     * WorkspaceResource WorkspaceResource location original location of the resource
-     * @type {string}
-     * @memberof WorkspaceResource
-     */
-    location: string;
-    /**
-     * WorkspaceResource WorkspaceResource folder where the resource will stored in the pvc
+     * WorkspaceResource folder where the resource will stored in the pvc
      * @type {string}
      * @memberof WorkspaceResource
      */
@@ -85,11 +91,17 @@ export interface WorkspaceResource {
      */
     resourceType: ResourceType;
     /**
-     * The id of the Workspace this Workspace Resource belongs to
+     * workspace_id
      * @type {number}
      * @memberof WorkspaceResource
      */
-    workspaceId: number;
+    workspaceId?: number;
+    /**
+     * 
+     * @type {ResourceOrigin}
+     * @memberof WorkspaceResource
+     */
+    origin?: ResourceOrigin;
 }
 
 export function WorkspaceResourceFromJSON(json: any): WorkspaceResource {
@@ -104,14 +116,14 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'location': json['location'],
-        'folder': json['folder'],
+        'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
-        'workspaceId': json['workspace_id'],
+        'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
+        'origin': !exists(json, 'origin') ? undefined : ResourceOriginFromJSON(json['origin']),
     };
 }
 
@@ -126,7 +138,6 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         
         'id': value.id,
         'name': value.name,
-        'location': value.location,
         'folder': value.folder,
         'status': ResourceStatusToJSON(value.status),
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
@@ -134,6 +145,7 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
         'workspace_id': value.workspaceId,
+        'origin': ResourceOriginToJSON(value.origin),
     };
 }
 

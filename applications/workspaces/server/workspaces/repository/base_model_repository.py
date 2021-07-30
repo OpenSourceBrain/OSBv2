@@ -1,17 +1,17 @@
 """Model Repository class"""
 
+import logging
 import math
 
-from .database import db
-from .models import *
+from cloudharness import log as logger
+from open_alchemy import model_factory
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
-from open_alchemy import model_factory
 
-import logging
 from ..config import Config
-logger = logging.getLogger(Config.APP_NAME)
+from .database import db
+from .models import *
 
 
 class BaseModelRepository:
@@ -37,23 +37,20 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            sqs = self._get_qs([(self.model.id, '=', id)])
-            obj = sqs.first()
-            if obj:
-                obj, found = self._post_get(obj)
-                return obj, found
-        return None, False
+            obj = self.model.query.get(id)
+            return self._calculated_fields_populate(obj)
+        return None
 
     def _calculated_fields_populate(self, obj):
         if self.calculated_fields:
             for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj.id))
+                setattr(obj, fld, getattr(self, fld)(obj))
         return obj
 
     def _post_get(self, new_obj):
         if hasattr(self, "post_get"):
             return self.post_get(new_obj)
-        return new_obj, True
+        return new_obj
 
     def _pre_commit(self, new_obj):
         if hasattr(self, "pre_commit"):
@@ -87,8 +84,7 @@ class BaseModelRepository:
                 elif isinstance(getattr(cur_obj, key), db.Model):
                     # copy the object if the object exists then update else create
                     new_item = self._get_and_copy_item(getattr(new_obj, key))
-                    setattr(cur_obj, key, self._copy_attrs(
-                        getattr(cur_obj, key), new_item))
+                    setattr(cur_obj, key, self._copy_attrs(getattr(cur_obj, key), new_item))
                 else:
                     # just copy the value
                     setattr(cur_obj, key, getattr(new_obj, key))
@@ -99,7 +95,7 @@ class BaseModelRepository:
         Helper function for creating the criterion for SQL Alchemy
 
         Args:
-            field: the database field 
+            field: the database field
             comparator: the comparator
             value: the search value
 
@@ -110,24 +106,24 @@ class BaseModelRepository:
             = or ==     - equals
             ! or not    - not equals
             like        - text matches, wildcards: % match any n chars, ? match one char
-                            a % will be added at the start and the end of the match string 
+                            a % will be added at the start and the end of the match string
 
-        Usage examples: 
+        Usage examples:
             q=id=3 (id equals to 3)
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        logger.info('Search for workspace filter: %s %s %s', field.key, comparator, value)
-        if comparator == '==':
+        logger.debug("Search for %s filter: %s %s %s", self.model, field, comparator, value)
+        if comparator == "==":
             return field == value
-        elif comparator in ('!', 'not'):
+        elif comparator in ("!", "not"):
             return field != value
-        elif comparator == 'like':
-            return field.like('%'+value+'%')
+        elif comparator == "like":
+            return field.like("%" + value + "%")
         else:
             return field == value
 
-    def _get_qs(self, filter=None):
+    def _get_qs(self, filter=None, q=None):
         """
         Helper function to get the queryset
 
@@ -142,8 +138,25 @@ class BaseModelRepository:
             if isinstance(self.search_qs, str):
                 sqs = eval(self.search_qs)
             else:
-                sqs = self.search_qs(filter)
+                sqs = self.search_qs(filter, q)
         return sqs
+
+    def filters(self, q=None):
+        filters = []
+        for arg in q.strip().split("+"):
+            field_comparator, value = arg.strip().split("=")
+            field_comparator = field_comparator.split("__")
+            field = field_comparator[0]
+            if len(field_comparator) > 1:
+                comparator = field_comparator[1]
+            else:
+                comparator = "="
+            attr = getattr(self.model, field)
+            if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
+                value = value.upper() in ("TRUE", "1", "T")
+            logger.debug("Filter attr: %s comparator: %s value: %s", attr.key, comparator, value)
+            filters.append((attr, comparator, value))
+        return filters
 
     def search(self, page=1, per_page=20, q=None, *args, **kwargs):
         """
@@ -158,38 +171,24 @@ class BaseModelRepository:
             page, total_pages, objects
         """
         """Get all objects from the repository."""
-        if q and q != 'None':
+        if q and q != "None":
             logger.info("Query %s", q)
-            filters = []
-            for arg in q.strip().split('+'):
-                field_comparator, value = arg.strip().split('=')
-                field_comparator = field_comparator.split('__')
-                field = field_comparator[0]
-                if len(field_comparator)>1:
-                    comparator = field_comparator[1]
-                else:
-                    comparator = '='
-                attr = getattr(self.model, field)
-                if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
-                    value = value.upper() in ('TRUE', '1', 'T')
-                logger.info("Filter attr: %s comparator: %s value: %s", attr.key, comparator, value)
-                filters.append((attr, comparator, value))
-            sqs = self._get_qs(filters)
+            filters = self.filters(q)
+            sqs = self._get_qs(filters, q)
         else:
             sqs = self._get_qs()
         objects = sqs.paginate(page, per_page, True)
-        total_objects = len(sqs.all())  # db.session.query(func.count(self.model.id)).scalar()
+        total_pages = objects.pages
         for obj in objects.items:
             self._calculated_fields_populate(obj)
-        total_pages = math.ceil(total_objects / per_page)
         return page, total_pages, objects
 
     def post(self, body):
         """Save an object to the repository."""
         new_obj = self.model.from_dict(**body)
         if new_obj.id is not None:
-            tmp_obj, found = self._get(new_obj.id)
-            if found:
+            tmp_obj = self._get(new_obj.id)
+            if tmp_obj is not None:
                 return f"{self.model.__name__} with id {id} already exists.", 400
             # POST means create new record so clear the current object ID
             new_obj.id = None
@@ -212,14 +211,13 @@ class BaseModelRepository:
         except IntegrityError as e:
             return "{}".format(e.orig), 400
         else:
-            obj, found = self.get(id=new_obj.id)
-            logger.info(f'found obj: {found}')
-            return new_obj, 201
+            obj = self.get(id=new_obj.id)
+            return new_obj
 
     def get(self, id):
         """Get an object from the repository."""
-        obj, found = self._get(id)
-        return obj, found
+        obj = self._get(id)
+        return obj
 
     def save(self, obj):
         if hasattr(obj, "timestamp_updated"):
@@ -227,12 +225,12 @@ class BaseModelRepository:
 
         self._pre_commit(obj)
         db.session.commit()
-        return "Saved", 200
+        return "Saved"
 
     def put(self, body, id):
         """Update an object in the repository."""
-        obj, found = self._get(id)
-        if not found:
+        obj = self._get(id)
+        if obj is None:
             return f"{self.model.__name__} with id {id} not found.", 404
 
         new_obj = self.model.from_dict(**body)
@@ -244,5 +242,4 @@ class BaseModelRepository:
         result = self.model.query.filter_by(id=id).delete()
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
-        db.session.commit()
-        return 200
+        return db.session.commit()

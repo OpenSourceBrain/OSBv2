@@ -1,7 +1,8 @@
-FROM node:13.14 as jsbuild
+FROM node:15 as jsbuild
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-ENV BRANCH_TAG="development"
+ENV BRANCH_TAG="osb2"
 ENV FOLDER=nwb-explorer
+RUN echo "cache 2021-07-01"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -24,10 +25,8 @@ USER root
 
 #
 
-COPY --from=jsbuild --chown=1000:1000 $FOLDER $FOLDER
 WORKDIR $FOLDER
 
-RUN ls -la webapp/node_modules
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip git g++ -qq
@@ -35,21 +34,25 @@ RUN apt-get update -qq &&\
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
 
+COPY --from=jsbuild --chown=1000:1000 $FOLDER/requirements.txt requirements.txt
 RUN pip install -r requirements.txt --no-cache-dir
-
+COPY --from=jsbuild --chown=1000:1000 $FOLDER .
 RUN python utilities/install.py --npm-skip --no-test
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
-# and thus removes the frame ancestor cors settings
+# this removes the frame ancestor default cors settings
 RUN rm -f ~/.jupyter/*.json
 
+
+RUN chown $NB_UID /opt
+RUN chown $NB_UID .
+USER $NB_UID
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
-RUN chown -R jovyan /opt/*
-RUN ln -s /opt/workspace ./workspace
-RUN ln -s /opt/home ./workspace
+RUN ln -s /opt/workspace workspace
 
-USER $NB_UID
+
+
 CMD ./NWBE

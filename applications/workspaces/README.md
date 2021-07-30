@@ -40,3 +40,9 @@ The database model is generated via OpenAlchemy. For more information about Open
 This application is based on Flask
 
 Configuration of the server can be changed in the config.py file
+
+
+### Regenerate backend from openapi
+```
+openapi-generator-cli generate -i api/openapi.yaml -g python-flask -o server -c api/config.json
+```

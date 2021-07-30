@@ -1,2 +1,3 @@
 domain: v2.opensourcebrain.org
-namespace: osb2
+mainapp: osb-portal
+tls: true

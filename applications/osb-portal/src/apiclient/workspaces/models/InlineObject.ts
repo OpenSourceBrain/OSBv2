@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    ResourceOrigin,
+    ResourceOriginFromJSON,
+    ResourceOriginFromJSONTyped,
+    ResourceOriginToJSON,
+} from './';
+
 /**
  * 
  * @export
@@ -21,10 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface InlineObject {
     /**
      * 
-     * @type {Blob}
+     * @type {Array<ResourceOrigin>}
      * @memberof InlineObject
      */
-    thumbNail?: Blob;
+    resourceorigins?: Array<ResourceOrigin>;
 }
 
 export function InlineObjectFromJSON(json: any): InlineObject {
@@ -37,7 +44,7 @@ export function InlineObjectFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'thumbNail': !exists(json, 'thumbNail') ? undefined : json['thumbNail'],
+        'resourceorigins': !exists(json, 'resourceorigins') ? undefined : ((json['resourceorigins'] as Array<any>).map(ResourceOriginFromJSON)),
     };
 }
 
@@ -50,7 +57,7 @@ export function InlineObjectToJSON(value?: InlineObject | null): any {
     }
     return {
         
-        'thumbNail': value.thumbNail,
+        'resourceorigins': value.resourceorigins === undefined ? undefined : ((value.resourceorigins as Array<any>).map(ResourceOriginToJSON)),
     };
 }
 

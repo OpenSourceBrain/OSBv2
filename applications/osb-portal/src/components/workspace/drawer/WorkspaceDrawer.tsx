@@ -1,23 +1,27 @@
 import * as React from "react";
+import { useParams } from 'react-router-dom';
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 
 import { WorkspaceInteractions } from "../..";
-import { Workspace } from "../../../types/workspace";
+import { Workspace, WorkspaceResource } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
+import { UserInfo } from "../../../types/user";
 
+import {
+  WorkspaceFrame
+} from "../../../components";
 
 
 const useStyles = makeStyles((theme) => ({
 
   drawerContent: {
-    maxWidth: 400,
+    width: 400,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -44,7 +48,12 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
+
     width: "auto",
+
+    "& .verticalFit": {
+      display: 'block',
+    }
   },
   drawerPaper: {
     position: "static",
@@ -78,23 +87,26 @@ const useStyles = makeStyles((theme) => ({
 
 interface WorkspaceDrawerProps {
   workspace: Workspace;
-
+  user: UserInfo;
+  refreshWorkspace: () => any;
 }
 
-export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ workspace, children }) => {
+export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ user, children, workspace }) => {
   if (!workspace) {
     return <></>;
   }
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
+  const { app } = useParams<{ app: string }>();
+
+  const [currentResource, setCurrentResource] = React.useState<WorkspaceResource>(!app ? workspace.lastOpen : null);
 
   const handleToggleDrawer = () => setOpen(!open);
 
 
-
-  return (
-    <Box display="flex" alignItems="stretch" flex="1">
+  return user && workspace && (
+    <Box display="flex" alignItems="stretch" flex="1" className="verticalFill">
       <Drawer
         variant="permanent"
         anchor="left"
@@ -111,8 +123,8 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           }),
         }}
       >
-        <div className={classes.drawerContent}>
-          <WorkspaceInteractions workspace={workspace} open={open} />
+        <div className={`${open ? classes.drawerContent : ''} verticalFit`}>
+          <WorkspaceInteractions open={open} openResource={setCurrentResource} />
         </div>
         <div>
           <Divider />
@@ -121,14 +133,17 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
               {open ? (
                 <ArrowLeft style={{ fontSize: "1rem" }} />
               ) : (
-                  <ArrowRight style={{ fontSize: "1rem" }} />
-                )}
+                <ArrowRight style={{ fontSize: "1rem" }} />
+              )}
             </IconButton>
           </div>
         </div>
       </Drawer>
 
-      <Box display="flex" flex="1">{children}</Box>
+      <Box display="flex" flex="1">
+        <WorkspaceFrame currentResource={currentResource} />
+        {children}
+      </Box>
     </Box>
   );
 };

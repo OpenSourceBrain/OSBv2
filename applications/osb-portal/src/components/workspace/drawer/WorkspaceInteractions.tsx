@@ -4,27 +4,59 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 
 import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
+import ReadOnlyIcon from "@material-ui/icons/Lock";
 
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanel from "@material-ui/core/Accordion";
+import ExpansionPanelSummary from "@material-ui/core/AccordionSummary";
+import ExpansionPanelDetails from "@material-ui/core/AccordionDetails";
+import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 import VolumePathBrowser from "./VolumePathBrowser";
 import { ShareIcon } from "../../icons";
-import { ResourceStatus, Workspace } from "../../../types/workspace";
+import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
+import { canEditWorkspace } from '../../../service/UserService';
+import { primaryColor } from "../../../theme";
+import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
+import { UserInfo } from "../../../types/user";
+
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
     maxWidth: 400,
+  },
+  expansionPanel: {
+    display: 'flex',
+    flexDirection: 'column',
+    "& .MuiCollapse-container": {
+      height: '100%',
+      "& .MuiCollapse-wrapper": {
+        height: 'inherit',
+        "& .MuiCollapse-wrapperInner": {
+          height: 'inherit',
+          "& div[role=region]": {
+            height: 'inherit',
+          },
+        },
+      },
+    },
+    "& .MuiAccordionSummary-root": {
+      "& .MuiAccordionSummary-content": {
+        "& .MuiTypography-root": {
+          paddingLeft: theme.spacing(1),
+        },
+      },
+    },
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -53,24 +85,32 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(-180deg)",
     margin: "auto",
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   rotate180: {
     transform: "rotate(-180deg)",
   },
   treePadding: {
-    paddingLeft: 43
-  }
+    paddingLeft: theme.spacing(2)
+  },
+  workspaceName: {
+    color: primaryColor,
+    fontWeight: 700,
+  },
+  dialogTitle: {
+    fontWeight: 'normal',
+  },
 }));
 
 interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
-  refreshWorkspace?: () => any;
+  refreshWorkspace?: () => void;
   updateWorkspace: (ws: Workspace) => null,
   deleteWorkspace: (wsId: number) => null,
-  user: any,
+  user: UserInfo,
   [propName: string]: any;
+  openResource: (r: WorkspaceResource) => any
 }
 
 
@@ -80,20 +120,20 @@ export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
+  const canEdit = canEditWorkspace(props.user, workspace);
 
   const showAddResource = () => {
     setAddResourceOpen(true);
+  }
+
+  const setAddResourceClosed = () => {
+    setAddResourceOpen(false);
   }
 
   const handleResourceAdded = () => {
     setAddResourceOpen(false);
     props.refreshWorkspace();
   }
-
-  if (workspace.resources.find((resource: any) => resource.status === ResourceStatus.pending)) {
-    setTimeout(props.refreshWorkspace, 10000);
-  }
-
 
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
 
@@ -102,8 +142,6 @@ export default (props: WorkspaceProps | any) => {
       setExpanded(newExpanded ? panel : false);
     }
   };
-
-
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -124,26 +162,32 @@ export default (props: WorkspaceProps | any) => {
     handleShareClose();
   }
 
-
+  const dialogTitle = (
+    <>
+      <span className={classes.dialogTitle}>
+        Add resources to<span className={classes.workspaceName}> Workspace {workspace.name}</span>
+      </span>
+    </>
+  )
 
   return (<>
-    <OSBDialog
-      title={"Add resource to Workspace " + workspace.name}
-      open={addResourceOpen}
-      closeAction={() => setAddResourceOpen(false)}
-    >
-      <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} />
-    </OSBDialog>
+
     {props.open ? (
       <>
-        <ExpansionPanel elevation={0} expanded={expanded === 'workspace'} onChange={handleChange('workspace')}>
+        <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace' || true} onChange={handleChange('workspace')}>
           <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
+          // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
-            <Typography variant="h5" className={classes.flexCenter}>{workspace.name}</Typography>
-            <IconButton onMouseDown={handleShareClick}>
-              <ShareIcon />
-            </IconButton>
+            <Typography
+              variant="h5"
+              className={classes.flexCenter}>
+              {workspace.name}
+              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}
+            </Typography>
+
+            <Box p={2}>
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+            </Box>
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -154,55 +198,63 @@ export default (props: WorkspaceProps | any) => {
               {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
               {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
             </Menu>
-
           </ExpansionPanelSummary>
 
-          <ExpansionPanelDetails>
+          <ExpansionPanelDetails className="verticalFit">
             <Divider />
-            <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
+            {canEdit && <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
               <ListItemIcon style={{ paddingLeft: 0 }}>
                 <AddIcon style={{ fontSize: "1.3rem" }} />
               </ListItemIcon>
               <ListItemText primary={"Add resource"} />
-            </ListItem>
+            </ListItem>}
             <Divider />
             <WorkspaceResourceBrowser
               workspace={workspace}
               refreshWorkspace={props.refreshWorkspace}
+              openResource={props.openResource}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel elevation={0}>
-          <ExpansionPanelSummary
-            expandIcon={<ArrowUpIcon />}
-          >
-            <Typography variant="h5" className={classes.flexCenter}>User shared space</Typography>
-          </ExpansionPanelSummary>
+        {false && // TODO user shared space back when available
+          <ExpansionPanel elevation={0}>
+            <ExpansionPanelSummary
+              expandIcon={<ArrowUpIcon />}
+            >
+              <Typography variant="h5" className={classes.flexCenter}>User shared space</Typography>
+            </ExpansionPanelSummary>
 
-          <ExpansionPanelDetails>
-            <VolumePathBrowser
-              volumeId={null/* TODO get from logged user */}
-              path="/"
-            />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+            <ExpansionPanelDetails>
+              <VolumePathBrowser
+                volumeId={null/* TODO get from logged user */}
+                path="/"
+              />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        }
+
       </>) :
       <>
         <div className={classes.closedText}>
-          <IconButton onClick={showAddResource}>
+          {canEdit && <IconButton onClick={showAddResource}>
             <AddIcon style={{ fontSize: "1.3rem" }} />
-          </IconButton>
+          </IconButton>}
           {props.workspace.name}
 
-          <IconButton onClick={showAddResource}>
-            <ShareIcon
-              className={[classes.svgIcon, classes.rotate180].join(" ")}
-              style={{ fontSize: "1rem" }}
-            />
+          <IconButton>
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
           </IconButton>
         </div>
       </>
     }
+    <OSBDialog
+      title={dialogTitle}
+      open={addResourceOpen}
+      closeAction={() => setAddResourceOpen(false)
+      }
+    >
+      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
+    </OSBDialog>
   </>);
 
 };

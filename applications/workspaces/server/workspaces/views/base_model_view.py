@@ -1,8 +1,16 @@
 """Model base class"""
-import logging
-from ..config import Config
-logger = logging.getLogger(Config.APP_NAME)
+from cloudharness import log as logger
 from flask.views import MethodView
+
+from workspaces.utils import row2dict
+
+
+def rm_null_values(dikt):
+    tmp = {}
+    for k, v in dikt.items():  # remove null fields from dict
+        if v:
+            tmp.update({k: v})
+    return tmp
 
 
 class BaseModelView(MethodView):
@@ -23,37 +31,37 @@ class BaseModelView(MethodView):
             current page
             number of pages
         """
-        logger.info("Search args %s", args)
-        logger.info("Search kwargs %s", kwargs)
-        page, total_pages, objects = self.repository.search(page=page,
-                                                            per_page=per_page,
-                                                            *args,
-                                                            **kwargs)
-        obj_dicts = map(lambda obj: obj.to_dict(), objects.items)
-        return {"pagination": {
-                    "current_page": page,
-                    "number_of_pages": total_pages,
-                    },
-                f"{self.repository.model.__tablename__}s": list(obj_dicts)}
+        logger.debug("Search args %s", args)
+        logger.debug("Search kwargs %s", kwargs)
+        page, total_pages, objects = self.repository.search(page=page, per_page=per_page, *args, **kwargs)
+        obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
+        list_name = self.repository.model.__tablename__
+        list_name_plural = list_name[:-1] + list_name[-1:].replace("y", "ie") + "s"
+        return {
+            "pagination": {
+                "current_page": page,
+                "number_of_pages": total_pages,
+            },
+            list_name_plural: obj_dicts,
+        }
 
     def post(self, body):
         """Save an object to the repository."""
-        obj, result_code = self.repository.post(body)
-        if result_code == 201:
-            obj = obj.to_dict()
-        return obj, result_code
-
-    def get(self, id):
-        """Get an object from the repository."""
-        obj, found = self.repository.get(id=id)
-        if not found:
-            return f"{self.repository.model.__name__} with id {id} not found.", 404
+        body = rm_null_values(body)
+        obj = self.repository.post(body)
         return obj.to_dict()
 
-    def put(self, body, id):
-        """Update an object in the repository."""
-        return self.repository.put(body, id)
+    def get(self, id_):
+        """Get an object from the repository."""
+        obj = self.repository.get(id=id_)
+        if obj is None:
+            return f"{self.repository.model.__name__} with id {id_} not found.", 404
+        return obj.to_dict()
 
-    def delete(self, id):
+    def put(self, body, id_):
+        """Update an object in the repository."""
+        return self.repository.put(body, id_)
+
+    def delete(self, id_):
         """Delete an object from the repository."""
-        return self.repository.delete(id)
+        return self.repository.delete(id_)

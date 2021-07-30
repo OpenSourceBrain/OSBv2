@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 
 REQUIREMENTS = [
     'jupyterhub-kubespawner',
+    'cloudharness'
 ]
 
 setup(

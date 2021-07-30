@@ -1,81 +1,71 @@
 #!/usr/bin/env python3
 
 import atexit
-import connexion
-import logging
 import os
-
 from pathlib import Path
 
-from flask import send_from_directory, request
-from flask_cors import CORS
-
 import cloudharness
+import connexion
+from cloudharness.utils.server import init_flask, main
+from flask import request, send_from_directory
+from flask.logging import default_handler
+from flask_cors import CORS
 
 from workspaces.config import Config
 from workspaces.repository.database import db, setup_db
 from workspaces.service.events import start_kafka_consumers, stop_kafka_consumers
 
-logger = logging.getLogger(Config.APP_NAME)
+logger = cloudharness.log
 
-from flask.logging import default_handler
+skip_dependencies = os.getenv("WORKFLOWS_SKIP_DEPENDENCIES", False)
+skip_event_dependencies = os.getenv("EVENTS_SKIP_DEPENDENCIES", False)
 
-
-def setup_logging():
-    logger.setLevel(logging.INFO)
-    # app.logger.removeHandler(default_handler)
-    # app.logger.getLogger
-    # ch = logging.StreamHandler()
-    # ch.setLevel(Config.LOG_LEVEL)
-    default_handler.setFormatter(logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    # logger.addHandler(ch)
-    logger.info("setting up logging, done.")
-
+cloudharness.set_debug() # Remove when not needed
 
 def mkdirs():
     Path(os.path.join(Config.STATIC_DIR, Config.WORKSPACES_DIR)).mkdir(parents=True, exist_ok=True)
 
 
-def setup_static_router():
+def setup_static_router(app):
     # set the static folder root to the www folder
     app.static_folder = Config.STATIC_DIR
     # remove the static route (if exists)
-    app.url_map._rules_by_endpoint['static'] = []
+    app.url_map._rules_by_endpoint["static"] = []
     # add / as static route
-    app.add_url_rule(f'/<path:filename>',
-                     endpoint='static',
-                     view_func=app.send_static_file)
+    app.add_url_rule(f"/<path:filename>", endpoint="static", view_func=app.send_static_file)
 
 
-connexion_app = connexion.App(Config.APP_NAME, specification_dir=Config.OPENAPI_DIR)
-app = connexion_app.app
-app.config.from_object(Config)
-setup_static_router()
-mkdirs()
-db.init_app(app)
+def init_app(app):
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    if not skip_dependencies:
+        if app.config["ENV"] != "development":
+            cloudharness.init(Config.APP_NAME)
+        try:
+            setup_db(app)
+        except Exception as e:
+            logger.error("Could not init database. Some application functionality won't be available.", exc_info=True)
 
-with app.app_context():
-    setup_logging()
-    if app.config['ENV'] != 'development':
-        cloudharness.init(Config.APP_NAME)
-    setup_db(app)
-    connexion_app.add_api(Config.OPENAPI_FILE,
-                          arguments={'title': 'Workspace Manager API'},
-                          resolver=connexion.resolver.MethodViewResolver((__package__ or '') + '.views.api'))
-    atexit.register(stop_kafka_consumers)
-    try:
-        start_kafka_consumers()
-    except:
-        logger.error('Couldn not start kafka consumers', exc_info=True)
+        if not skip_event_dependencies:
+            try:
+                atexit.register(stop_kafka_consumers)
+                start_kafka_consumers()
+            except Exception as e:
+                logger.error(
+                    "Could not start kafka consumers. Some application functionality won't be available.", exc_info=True
+                )
+    mkdirs()
+    setup_static_router(app)
 
 
-@app.route('/', defaults={'file': 'index.html'})
-def index(file):
-    return send_from_directory(app.static_folder, file)
-
+app = init_flask(
+    title="Workspace Manager API",
+    webapp=False,
+    init_app_fn=init_app,
+    resolver=connexion.resolver.MethodViewResolver("workspaces.views.api"),
+    config=Config,
+)
 
 if __name__ == "__main__":
-    connexion_app.run(port=8080)
+    cloudharness.set_debug()
+    main()

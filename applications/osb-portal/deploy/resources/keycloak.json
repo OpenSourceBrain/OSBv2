@@ -1,0 +1,9 @@
+{
+  "realm": {{ .Values.namespace | quote }},
+  "auth-server-url": {{ (printf  "https://%s.%s/auth" .Values.apps.accounts.harness.subdomain  .Values.domain) | quote }},
+  "ssl-required": "external",
+  "resource": "web-client",
+  "public-client": true,
+  "verify-token-audience": true,
+  "confidential-port": 0
+}

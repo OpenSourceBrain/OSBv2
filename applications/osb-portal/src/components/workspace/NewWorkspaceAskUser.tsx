@@ -18,31 +18,31 @@ export default (props: any) => {
   };
 
   return (
-    <>
+    <Box p={4}>
       <Grid container={true} justify="space-between" alignItems="flex-end">
-        <Grid item={true} xs={12} sm={8} md={6}>
+        <Grid item={true} xs={12} sm={8} md={8}>
           <DialogContentText>
-            To create a new workspace you need a Open Source Brain account. If
-            you already have one please sign in, if not create one for free.
-            Workspaces will let you save your own models and data, run
-            simulations and analysis.
+          To use workspaces you need a Open Source Brain account.
+          If you already have one please sign in, if not create one for free.
+          Workspaces will let you save your own models and data, run simulations and analysis.
           </DialogContentText>
         </Grid>
         <Grid item={true}>
-          <div>
+          <Box mr={2}>
             <Button onClick={handleUserLogin} autoFocus={true}>
               Sign In
               </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleSignup}
-            >
-              Sign Up
+          </Box>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleSignup}
+          >
+            Sign Up
             </Button>
-          </div>
+
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };

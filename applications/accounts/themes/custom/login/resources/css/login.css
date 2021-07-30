@@ -26,6 +26,7 @@ body {
   position: absolute;
   right: 0;
   top: 20px;
+  cursor: pointer;
 }
 
 .login-pf-header {
@@ -40,9 +41,6 @@ body {
   font-weight: 700;
 }
 
-input:-webkit-autofill::first-line {
-  font-size: 14px;
-}
 
 .login-pf-page .has-error .form-control {
   border: 0;
@@ -50,12 +48,7 @@ input:-webkit-autofill::first-line {
   box-shadow: none;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #fff inset !important;
-}
+
 
 .form-group {
   margin-bottom: 9px;
@@ -351,14 +344,14 @@ div.kc-logo-text span {
   margin: 0 0 0 11px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 400;
-  text-decoration: underline;
+
 }
 .login-pf-header a,
 .login-pf-header a:hover {
+  text-decoration: underline;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.4);
+  color: inherit;
   outline: 0;
-  text-decoration: none;
 }
 
 .kc-register-form {

@@ -1,6 +1,4 @@
 FROM node:13.14 as base
-ARG DOMAIN=v2.opensourcebrain.org
-ARG NAMESPACE=osb2
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
@@ -17,7 +15,7 @@ COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 EXPOSE 80
 
 RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-COPY deploy/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

@@ -1,7 +1,6 @@
-import { Workspace as WorkspaceBase } from '../apiclient/workspaces/models/Workspace'
-import { WorkspaceResource as WR } from '../apiclient/workspaces/models/WorkspaceResource'
 import { FeaturedType } from './global'
-import { ResourceType as ResourceTypeApi } from '../apiclient/workspaces'
+import { ResourceType as ResourceTypeApi, ResourceOrigin } from '../apiclient/workspaces'
+import { UserInfo } from './user'
 
 export interface OSBApplication {
     name: string,
@@ -9,32 +8,32 @@ export interface OSBApplication {
 }
 
 export enum ResourceStatus {
-    pending= "PENDING",
-    available= "AVAILABLE",
-    error= "ERROR"
+    pending = "PENDING",
+    available = "AVAILABLE",
+    error = "ERROR"
 }
+
 export interface WorkspaceResource {
-    workspaceId: number,
+    workspaceId?: number,
     id?: number,
     name: string,
-    location: string,
+    origin?: ResourceOrigin,
     folder?: string,
-    type: ResourceType,
-    status?: ResourceStatus
+    type?: ResourceType,
+    status?: ResourceStatus,
+    timestampUpdated?: Date,
+    timestampCreated?: Date
 }
 
 export interface ResourceType {
     application: OSBApplication
 }
 
-
-
 export const OSBApplications: { [id: string]: OSBApplication } = {
     nwbexplorer: { name: "NWB Explorer", subdomain: "nwbexplorer" },
     netpyne: { name: "NetPyNE", subdomain: "netpyne" },
-    jupyter: { name: "Jupyter", subdomain: "jupyter" },
+    jupyter: { name: "JupyterLab", subdomain: "notebooks" },
 }
-
 
 export const SampleResourceTypes = {
     [ResourceTypeApi.E.toString()]: { application: OSBApplications.nwbexplorer, name: "NWB File" },
@@ -56,5 +55,6 @@ export interface Workspace {
     thumbnail?: string;
     publicable?: boolean;
     license?: string;
+    owner?: UserInfo;
     [other: string]: any;
 };

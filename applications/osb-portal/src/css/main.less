@@ -1,49 +1,108 @@
 @import (css) url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;1,300;1,400&display=swap");
 @import "variables";
 
-.leftContainer {
-  align-items: flex-start;
-  height: 50% !important;
-}
+
 .verticalFit {
+  @media screen and (min-width:960px) {
     overflow: hidden;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    min-width: 100%;
-    &.card-container{
-      @media screen and (min-width:960px){
-        max-height: calc(100vh - 80px);
-        padding-bottom: 8vh;
-      }
+    max-height: calc(100%);
+
+    &.card-container,
+    .scrollbar {
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100%);
     }
+
+  }
 }
 
-.scrollbarStyle {
-    
-    &::-webkit-scrollbar {
-      width: @gutter / 4;
-    }
-    &::-webkit-scrollbar-button {
-      height: 0;
-    }
-    &::-webkit-scrollbar-thumb{
-      background: white;
-      border-radius: @radius;
-    }
-    &::-webkit-scrollbar-track {
-        background-color: @bgRegular;
-        border-radius: @radius;
-    }
-  }
-  
-.scrollbar {
+@media screen and (min-width:960px) {
+  .scrollbar {
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: @gutter / 2;
     .scrollbarStyle;
+
     * {
-        .scrollbarStyle; 
+      .scrollbarStyle;
     }
+  }
+
+  .verticalFill {
+
+    height: calc(100%);
+    overflow: hidden;
+
+    .scrollbar {
+      max-height: calc(100%);
+
+    }
+
+
+
+    .scrollbar {
+      .scrollbar
+    }
+  }
+
+
+}
+
+
+
+.scrollbarStyle {
+
+  &::-webkit-scrollbar {
+    width: @gutter / 4;
+  }
+
+  &::-webkit-scrollbar-button {
+    height: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: @radius;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: @bgRegular;
+    border-radius: @radius;
+  }
+}
+
+
+
+
+
+.MuiTreeItem-root.first-level {
+  >.MuiTreeItem-content {
+    >.MuiTreeItem-iconContainer {
+      display: none;
+    }
+
+    >.MuiTreeItem-label {
+      &:hover {
+
+        .delete-button {
+          display: block;
+        }
+      }
+
+      .delete-button {
+        display: none;
+      }
+
+      padding: 0;
+    }
+
+  }
+
 }

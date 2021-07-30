@@ -1,0 +1,4 @@
+harness:
+  env:
+  - name: SENTRY_DSN
+    value: https://7265b9d06560418fb18b89cbcbd3cfef@sentry.metacell.us/3

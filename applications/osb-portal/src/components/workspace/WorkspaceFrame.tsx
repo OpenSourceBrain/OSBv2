@@ -1,66 +1,91 @@
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
+import { AnyAction, Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+
 import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from "react-router-dom";
 import { Workspace, WorkspaceResource, OSBApplications, ResourceStatus } from '../../types/workspace';
 import { UserInfo } from '../../types/user';
 import WorkspaceResourceService from '../../service/WorkspaceResourceService';
-import WorkspaceService from '../../service/WorkspaceService';
+import { getBaseDomain } from '../../utils';
+
+const firstVisitToThisPage = true;
 
 const useStyles = makeStyles((theme) => ({
-    iframe: {
-        flex: 1,
-    },
+  iframe: {
+    flex: 1,
+  },
 }));
 
+export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, dispatch: Dispatch, currentResource: WorkspaceResource }) => {
+  const classes = useStyles();
+  const [frameUrl, setFrameUrl] = React.useState(null);
+  const { app } = useParams<{ app: string }>();
+  let applicationSubdomain: string;
 
+  const { user, workspace, dispatch, currentResource } = props;
+  if (!workspace) {
+    return null;
+  }
 
-export const WorkspaceFrame = (props: { user: UserInfo, workspace: Workspace, login: any }) => {
-    const classes = useStyles();
-
-    const { user, workspace } = props;
-    if (!workspace) {
-        return null;
+  React.useEffect(() => {
+    if (currentResource) {
+      applicationSubdomain = currentResource ? currentResource.type.application.subdomain : OSBApplications.jupyter.subdomain;
+      openResource();
+    } else {
+      applicationSubdomain = OSBApplications[app].subdomain;
     }
+    const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
+    const messageListener = (message: MessageEvent) => {
+      if (message.source !== iFrame.contentWindow) {
+        return;
+      }
+      if (!message.origin.includes(applicationSubdomain)) {
+        return;
+      }
 
-    const id = workspace.id;
-    let timerId: any = null;
+      if (!message.data?.type) {
+        return;
+      }
+      const action = message.data as PayloadAction;
+      dispatch(action)
+    };
 
-    const openResource = async (contentWindow: any, workspaceResource: WorkspaceResource) => {
-        if (timerId !== null) {
-            clearTimeout(timerId);
-        }
-        const resource = await WorkspaceResourceService.getResource(workspaceResource.id); // refresh the workspace resource from the db
-        if (resource.status === ResourceStatus.available) {
-            const fileName: string = "/opt/workspace/" + resource.folder + "/" + resource.location.slice(resource.location.lastIndexOf("/") + 1);
-            const r = WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
-                const iFrame: HTMLIFrameElement = document.getElementById("workspace-frame") as HTMLIFrameElement;
-                iFrame.contentWindow.postMessage(fileName, '*');
-            }).catch(() => {
-                alert("Error open resource, ResourceOpen function failed!");
-            });
-        } else {
-            timerId = setTimeout(openResource, 3000, contentWindow, workspaceResource);
-        }
-    }
+    window.addEventListener('message', messageListener);
+    const domain = getBaseDomain()
 
-    const onloadIframe = (e: any) => {
-        if ((workspace.resources != null) && (workspace.resources.length > 0)) {
-            const workspaceResource: WorkspaceResource = workspace.lastOpen != null ? workspace.lastOpen : workspace.resources[0];
-            openResource(e.target.contentWindow, workspaceResource);
-        }
-    }
-
-    const domain = window.location.host.includes('.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
-    const workspaceParam = `workspace=${encodeURIComponent(id)}`;
     const userParam = (user == null) ? '' : `${user.id}`;
-    const application = workspace.lastOpen.type.application.subdomain;
-    const type = application.slice(0, 4);
 
-    const frameUrl = `//${application}.${domain}/hub/spawn/${userParam}/${id}${type}`;
-    document.cookie = `accessToken=${WorkspaceService.accessToken};path=/;domain=${domain}`;
-    document.cookie = `workspaceId=${id};path=/;domain=${domain}`;
+    const type = applicationSubdomain.slice(0, 4);
+    document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
+    document.cookie = `workspaceOwner=${workspace.userId};path=/;domain=${domain}`;
+    setFrameUrl(`//${applicationSubdomain}.${domain}/hub/spawn/${userParam}/${workspace.id}${type}`);
 
-    return (
-        <iframe id="workspace-frame" frameBorder="0" src={frameUrl} className={classes.iframe} onLoad={onloadIframe} />
-    )
+
+    return () => window.removeEventListener('message', messageListener);
+  }, [currentResource]);
+
+
+  const openResource = async () => {
+    const resource: WorkspaceResource = currentResource != null ? currentResource : workspace.resources[workspace.resources.length - 1];
+    const iFrame = document.getElementById("workspace-frame") as HTMLIFrameElement;
+    if (resource.status === ResourceStatus.available) {
+      const fileName: string = "/opt/workspace/" + WorkspaceResourceService.getResourcePath(resource);
+      WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(resource.id).then(() => {
+        iFrame.contentWindow.postMessage(fileName, '*');
+      }).catch(() => {
+        console.error("Error opening resource, openResource function failed!");
+      });
+    }
+  }
+
+  const onloadIframe = (e: any) => {
+    if (!app && (workspace.resources != null) && (workspace.resources.length > 0)) {
+      openResource();
+    }
+  }
+
+  return (
+    <iframe id="workspace-frame" frameBorder="0" src={frameUrl} className={classes.iframe} onLoad={onloadIframe} />
+  )
 }

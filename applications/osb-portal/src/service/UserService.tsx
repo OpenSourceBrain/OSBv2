@@ -1,38 +1,38 @@
 import Keycloak from 'keycloak-js';
 
 import workspaceService from './WorkspaceService';
+import repositoryService from './RepositoryService';
 
 import { UserInfo } from '../types/user';
+import { getBaseDomain } from '../utils';
+import { Workspace } from '../types/workspace';
 
 const keycloak = Keycloak('/keycloak.json');
 
-// set token refresh to 5 minutes
-keycloak.onTokenExpired = () => {
-    keycloak.updateToken(300).then((refreshed) => {
-        if (refreshed) {
-            initApis(keycloak.token);
-        } else {
-            console.error('not refreshed ' + new Date());
-        }
-    }).catch(() => {
-        console.error('Failed to refresh token ' + new Date());
-    })
-}
+
 
 
 declare const window: any;
 
 export const initApis = (token: string) => {
+    document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
+    repositoryService.initApis(token);
     workspaceService.initApis(token);
 }
 
-function mapUser(userInfo: any): UserInfo {
+function mapKeycloakUser(userInfo: any): UserInfo {
     return {
         id: userInfo.sub,
-        firstname: userInfo.given_name,
-        lastname: userInfo.family_name,
-        email: userInfo.email
+        firstName: userInfo.given_name,
+        lastName: userInfo.family_name,
+        email: userInfo.email,
+        isAdmin: isUserAdmin(),
+        username: userInfo.preferred_username || userInfo.given_name
     }
+}
+
+export function isUserAdmin(): boolean {
+    return keycloak.hasRealmRole('administrator');
 }
 
 export async function initUser(): Promise<UserInfo> {
@@ -47,7 +47,7 @@ export async function initUser(): Promise<UserInfo> {
 
         if (authorized) {
             const userInfo: any = await keycloak.loadUserInfo();
-            user = mapUser(userInfo);
+            user = mapKeycloakUser(userInfo);
         }
         initApis(keycloak.token);
     } catch (err) {
@@ -55,12 +55,31 @@ export async function initUser(): Promise<UserInfo> {
         return null;
     }
 
+    const tokenUpdated = (refreshed: any) => {
+        if (refreshed) {
+            initApis(keycloak.token);
+        } else {
+            console.error('not refreshed ' + new Date());
+        }
+    }
+    // set token refresh before 5 minutes
+    keycloak.onTokenExpired = () => {
+        keycloak.updateToken(60).then(tokenUpdated).catch(() => {
+            console.error('Failed to refresh token ' + new Date());
+        })
+    }
+    if (user) {
+        keycloak.updateToken(-1).then(tokenUpdated).catch(() => {
+            console.error('Failed to refresh token ' + new Date());
+        });  // activate refresh token
+    }
+
     return user;
 }
 
 export async function login(): Promise<UserInfo> {
     const userInfo: any = await keycloak.login();
-    return mapUser(userInfo);
+    return mapKeycloakUser(userInfo);
 }
 
 export async function logout() {
@@ -73,4 +92,8 @@ export async function register() {
 
 const errorCallback = (error: any) => {
     initApis(null);
+}
+
+export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
+    return user && (user.isAdmin || workspace.userId === user.id)
 }

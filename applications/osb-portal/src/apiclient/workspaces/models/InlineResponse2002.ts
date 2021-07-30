@@ -14,14 +14,14 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    GITRepository,
-    GITRepositoryFromJSON,
-    GITRepositoryFromJSONTyped,
-    GITRepositoryToJSON,
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
     PaginationToJSON,
+    VolumeStorage,
+    VolumeStorageFromJSON,
+    VolumeStorageFromJSONTyped,
+    VolumeStorageToJSON,
 } from './';
 
 /**
@@ -38,10 +38,10 @@ export interface InlineResponse2002 {
     pagination?: Pagination;
     /**
      * 
-     * @type {Array<GITRepository>}
+     * @type {Array<VolumeStorage>}
      * @memberof InlineResponse2002
      */
-    gitrepositories?: Array<GITRepository>;
+    volumestorages?: Array<VolumeStorage>;
 }
 
 export function InlineResponse2002FromJSON(json: any): InlineResponse2002 {
@@ -55,7 +55,7 @@ export function InlineResponse2002FromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
-        'gitrepositories': !exists(json, 'gitrepositories') ? undefined : ((json['gitrepositories'] as Array<any>).map(GITRepositoryFromJSON)),
+        'volumestorages': !exists(json, 'volumestorages') ? undefined : ((json['volumestorages'] as Array<any>).map(VolumeStorageFromJSON)),
     };
 }
 
@@ -69,7 +69,7 @@ export function InlineResponse2002ToJSON(value?: InlineResponse2002 | null): any
     return {
         
         'pagination': PaginationToJSON(value.pagination),
-        'gitrepositories': value.gitrepositories === undefined ? undefined : ((value.gitrepositories as Array<any>).map(GITRepositoryToJSON)),
+        'volumestorages': value.volumestorages === undefined ? undefined : ((value.volumestorages as Array<any>).map(VolumeStorageToJSON)),
     };
 }
 

@@ -1,6 +1,5 @@
-import { WorkspaceresourceIdGetRequest, WorkspacesControllerWorkspaceResourceOpenRequest } from "../apiclient/workspaces/apis/RestApi";
+import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest } from "../apiclient/workspaces/apis";
 
-import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';
 import { WorkspaceResource, OSBApplications, SampleResourceTypes, Workspace, ResourceStatus } from "../types/workspace";
@@ -15,10 +14,19 @@ class WorkspaceResourceService {
         workspaceResource:
         {
           name: name ? name : urlToName(url),
-          location: url,
-          resourceType: ResourceType.G,
-          workspaceId: workspace.id
+          origin: {
+            path: url
+          },
+          resourceType: ResourceType.U,
+          workspaceId: workspace.id,
         }
+      });
+  }
+
+  async resourceAdded(workspaceResource: WorkspaceResource) {
+    return WorkspaceService.workspacesApi.workspaceresourcePost(
+      {
+        workspaceResource: mapPostAddedResource(workspaceResource)
       });
   }
 
@@ -30,11 +38,20 @@ class WorkspaceResourceService {
 
 
   async workspacesControllerWorkspaceResourceOpen(id: number): Promise<void> {
-    const wsrogr: WorkspacesControllerWorkspaceResourceOpenRequest = { id };
-    await WorkspaceService.workspacesApi.workspacesControllerWorkspaceResourceOpen(wsrogr).then(() => {
+    const wsrogr: WorkspacesControllersWorkspaceResourceControllerOpenRequest = { id };
+    await WorkspaceService.workspacesApi.workspacesControllersWorkspaceResourceControllerOpen(wsrogr).then(() => {
       //
     });
   }
+
+  async deleteResource(resource: WorkspaceResource) {
+    return WorkspaceService.workspacesApi.workspaceresourceIdDelete({ id: resource.id })
+  }
+
+  getResourcePath(resource: WorkspaceResource) {
+    return (resource.folder ? resource.folder + "/" : "") + resource.origin.path.slice(resource.origin.path.lastIndexOf("/") + 1);
+  }
+
 }
 export function urlToName(url: string): string {
   return url.split('/').slice(-1).pop();
@@ -61,6 +78,9 @@ function mapResourceStatus(resource: ApiWorkspaceResource): ResourceStatus {
 }
 
 function mapResourceType(resource: WorkspaceResource) {
+  if (!resource.type) {
+    return ResourceType.U;
+  }
   switch (resource.type.application.subdomain) {
     case 'nwbexplorer':
       return ResourceType.E
@@ -71,10 +91,18 @@ function mapResourceType(resource: WorkspaceResource) {
   }
 }
 
-export function mapPostResource(resource: WorkspaceResource): ApiWorkspaceResource {
+export function mapPostUrlResource(resource: WorkspaceResource): ApiWorkspaceResource {
   return {
     ...resource,
     status: ApiResourceStatus.P,
+    resourceType: mapResourceType(resource)
+  }
+}
+
+export function mapPostAddedResource(resource: WorkspaceResource): ApiWorkspaceResource {
+  return {
+    ...resource,
+    status: ApiResourceStatus.A,
     resourceType: mapResourceType(resource)
   }
 }

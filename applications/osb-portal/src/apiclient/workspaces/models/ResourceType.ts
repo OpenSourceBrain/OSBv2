@@ -17,13 +17,15 @@
  *  * e - Experimental
  *  * m - Model
  *  * g - Generic
+ *  * u - Unknown (to be defined)
  * @export
  * @enum {string}
  */
 export enum ResourceType {
     E = 'e',
     M = 'm',
-    G = 'g'
+    G = 'g',
+    U = 'u'
 }
 
 export function ResourceTypeFromJSON(json: any): ResourceType {

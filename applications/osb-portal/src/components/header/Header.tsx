@@ -12,7 +12,6 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import { radius } from '../../theme';
 
 const title = "Open Source Brain";
 
@@ -91,8 +90,8 @@ export const Header = (props: any) => {
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
               <MenuList autoFocusItem={menuOpen} id="user-menu">
-                <MenuItem>My account</MenuItem>
-                <MenuItem>Settings</MenuItem>
+                {/* <MenuItem>My account</MenuItem>
+                <MenuItem>Settings</MenuItem> */}
                 <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
             </ClickAwayListener>
@@ -107,7 +106,7 @@ export const Header = (props: any) => {
           startIcon={<PersonIcon fontSize="large" />}
           className={classes.button}
         >
-          {user.firstname}
+          {user.username}
         </Button>
       </Box>
     );

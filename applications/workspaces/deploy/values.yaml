@@ -7,6 +7,14 @@ harness:
      name: workspaces
   secured: false
   sentry: true
+  livenessProbe:
+    path: /api/live
+    initialDelaySeconds: 45
+    periodSeconds: 30
+  readinessProbe:
+    path: /api/ready
+    initialDelaySeconds: 30
+    periodSeconds: 30
   deployment:
     auto: true
     port: 8080
@@ -14,12 +22,29 @@ harness:
       name: workspaces-images
       size: 4G
       mountpath: /usr/src/app/workspaces/static/workspaces
-postgres:
-  name: workspaces-postgres-host
-  port: 5432
-  image: postgres:latest
-  initialdb: workspaces
-  user: workspace
-  password: secret
-  datavolume: /opt/data/
-  pgdata: /opt/data/pgdata
+  secrets:
+    github-user:
+    github-token:
+  dependencies:
+    build:
+      - cloudharness-base
+      - cloudharness-flask
+    soft:
+      - events
+      - common
+      - accounts
+      - workflows
+    hard:
+      - argo
+  database:
+    auto: false
+    name: workspaces-postgres-host
+    type: postgres
+    port: 5432
+    image: postgres:latest
+    initialdb: workspaces
+    user: workspace
+    password: secret
+    datavolume: /opt/data/
+    pgdata: /opt/data/pgdata
+
