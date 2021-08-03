@@ -79,7 +79,7 @@ class WorkspaceService(BaseModelService):
 
     def get(self, id_):
         workspace = super().get(id_)
-        if len(workspace) > 2:
+        if workspace:
             resources = workspace.get("resources")
             if resources:
                 for r in resources:
