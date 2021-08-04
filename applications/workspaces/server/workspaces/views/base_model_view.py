@@ -48,6 +48,8 @@ class BaseModelView(MethodView):
         obj = self.service.get(id_=id_)
         if obj is None:
             return f"{self.service.repository} with id {id_} not found.", 404
+        if isinstance(obj, dict):
+            return obj
         return obj.to_dict()
 
     def put(self, body, id_):
