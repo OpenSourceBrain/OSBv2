@@ -369,10 +369,11 @@ export default (props: ItemProps) => {
           : repositories ?
           <>
             <Box className={classes.repositoriesList}>
-              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} searchRepositories={true} filterChanged={newFilter => setFilter(newFilter)}/>
-              {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
-                null
-              }
+              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true}
+                searchRepositories={true} filterChanged={newFilter => setFilter(newFilter)}/>
+                  {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
+                    null
+                  }
               <Grid container={true} className={classes.info}>
                 <Grid item={true}>
                   <Typography component="h6" className={classes.helperDialogText}>

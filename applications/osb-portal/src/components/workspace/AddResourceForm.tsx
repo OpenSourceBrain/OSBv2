@@ -244,12 +244,21 @@ export default (props: WorkspaceEditProps) => {
 
   const [totalPages, setTotalPages] = React.useState(0);
 
+  const [filter, setFilter] = React.useState("");
+
   React.useEffect(() => {
-    RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
-      setRepositories(reposDetails.osbrepositories);
-      setTotalPages(reposDetails.pagination.numberOfPages);
-    });
-  }, [page]);
+    if (typeof filter === 'undefined' || filter.length === 0){
+      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+        setRepositories(reposDetails.osbrepositories);
+        setTotalPages(reposDetails.pagination.numberOfPages);
+      });
+    }
+    else {
+      RepositoryService.getRepositoriesByFilter(`name__like=%${filter}%`).then((repos) => {
+        setRepositories(repos);
+      });
+    }
+  }, [page, filter]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
     setPage(pageNumber);
@@ -415,7 +424,8 @@ export default (props: WorkspaceEditProps) => {
               repositories ?
                 <>
                   <Box className="repositories-list">
-                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)}
+                      showSimpleVersion={true} searchRepositories={true} filterChanged={newFilter => setFilter(newFilter)} />
                   </Box>
                   {
                     totalPages > 1 ?
