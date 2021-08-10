@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Banner = (props: any) => {
   const classes = useStyles();
+  const history = useHistory();
   const user: UserInfo = props.user;
   const handleSignup = () => {
     props.register();
@@ -58,6 +60,8 @@ export const Banner = (props: any) => {
             {user === null ? (
               <Button variant="outlined" onClick={handleSignup}>Sign up</Button>
             ) : null}
+            <Button variant="outlined" onClick={() => history.push('/repositories')}>View repositories</Button>
+            <Button variant="outlined" onClick={() => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html")}>More information</Button>
           </Box>
         </Box>
       </Box>
