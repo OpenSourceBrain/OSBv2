@@ -78,8 +78,10 @@ class WorkspaceService(BaseModelService):
         return super().post(body)
 
     def get(self, id_):
-        workspace = super().get(id_)
-        if len(workspace) > 2:
+
+        from workspaces.utils import row2dict
+        workspace = row2dict(super().get(id_))
+        if workspace:
             resources = workspace.get("resources")
             if resources:
                 for r in resources:
