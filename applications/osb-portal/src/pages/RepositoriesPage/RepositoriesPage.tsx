@@ -84,7 +84,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         firstTimeFiltering = true;
       });
     } else{
-      if(firstTimeFiltering){
+      if (firstTimeFiltering){
         firstTimeFiltering = false;
         RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
           setRepositories(repos.osbrepositories);
@@ -96,7 +96,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
           setRepositories(repos.osbrepositories);
           setTotalPages(repos.pagination.numberOfPages);
         });
-      } 
+      }
     }
   }, [page, filter]);
 

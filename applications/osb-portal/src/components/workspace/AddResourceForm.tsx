@@ -250,7 +250,7 @@ export default (props: WorkspaceEditProps) => {
 
   React.useEffect(() => {
     if (typeof filter === 'undefined' || filter.length === 0){
-      if(!firstTimeFiltering){
+      if (!firstTimeFiltering){
         setPage(1);
       }
       RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
@@ -259,7 +259,7 @@ export default (props: WorkspaceEditProps) => {
       });
     }
     else {
-      if(firstTimeFiltering){
+      if (firstTimeFiltering){
         firstTimeFiltering = false;
         RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
           setRepositories(repos.osbrepositories);

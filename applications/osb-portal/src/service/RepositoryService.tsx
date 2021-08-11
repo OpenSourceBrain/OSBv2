@@ -3,7 +3,7 @@
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, OSBRepository, RepositoryContentType, RepositoryType, InlineResponse2001 } from '../apiclient/workspaces';
 
-interface repositoriesListAndPaginationDetails extends InlineResponse2001 {};
+type RepositoriesListAndPaginationDetails = InlineResponse2001;
 
 const workspacesApiUri = '/proxy/workspaces/api';
 
@@ -38,11 +38,11 @@ class RepositoryService {
     return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size })).osbrepositories;
   }
 
-  async getRepositoriesByFilter(page: number, filter: string, size = PER_PAGE_DEFAULT, ): Promise<repositoriesListAndPaginationDetails> {
-    return (await this.workspacesApi.osbrepositoryGet({ page, q : `name__like=%${filter}%`, perPage: size }));
+  async getRepositoriesByFilter(page: number, filter: string, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
+    return (this.workspacesApi.osbrepositoryGet({ page, q : `name__like=%${filter}%`, perPage: size }));
   }
 
-  async getRepositoriesDetails(page: number, size = PER_PAGE_DEFAULT): Promise<repositoriesListAndPaginationDetails> {
+  async getRepositoriesDetails(page: number, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
     return (this.workspacesApi.osbrepositoryGet({ page, perPage: size }));
   }
 
@@ -50,7 +50,7 @@ class RepositoryService {
     return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size, q: `user_id=${userId}` })).osbrepositories;
   }
 
-  async getUserRepositoriesDetails(userId: string, page: number, size = PER_PAGE_DEFAULT): Promise<repositoriesListAndPaginationDetails> {
+  async getUserRepositoriesDetails(userId: string, page: number, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
     return (this.workspacesApi.osbrepositoryGet({ page, perPage: size, q: `user_id=${userId}` }));
   }
 
