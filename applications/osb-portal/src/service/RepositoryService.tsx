@@ -38,8 +38,8 @@ class RepositoryService {
     return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size })).osbrepositories;
   }
 
-  async getRepositoriesByFilter(q: string): Promise<OSBRepository[]> {
-    return (await this.workspacesApi.osbrepositoryGet({ q })).osbrepositories;
+  async getRepositoriesByFilter(page: number, filter: string, size = PER_PAGE_DEFAULT, ): Promise<InlineResponse2001> {
+    return (await this.workspacesApi.osbrepositoryGet({ page, q : `name__like=%${filter}%`, perPage: size }));
   }
 
   async getRepositoriesDetails(page: number, size = PER_PAGE_DEFAULT): Promise<InlineResponse2001> {

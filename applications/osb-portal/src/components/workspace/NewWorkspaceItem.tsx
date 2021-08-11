@@ -189,6 +189,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+let firstTimeFiltering = true;
+
 export default (props: ItemProps) => {
   const { user, template, title, refreshWorkspaces } = props;
   const classes = useStyles();
@@ -213,15 +215,28 @@ export default (props: ItemProps) => {
   React.useEffect(() => {
     if (workspaceTypeUndefined){
       if (typeof filter === 'undefined' || filter.length === 0){
+        if(!firstTimeFiltering){
+          setPage(1);
+        }
         RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
           setRepositories(reposDetails.osbrepositories);
           setTotalPages(reposDetails.pagination.numberOfPages);
         });
       }
       else{
-        RepositoryService.getRepositoriesByFilter(`name__like=%${filter}%`).then((repos) => {
-          setRepositories(repos);
-        });
+        if(firstTimeFiltering){
+          firstTimeFiltering = false;
+          RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
+            setRepositories(repos.osbrepositories);
+            setTotalPages(repos.pagination.numberOfPages);
+          });
+        }
+        else {
+          RepositoryService.getRepositoriesByFilter(page, filter).then((repos) => {
+            setRepositories(repos.osbrepositories);
+            setTotalPages(repos.pagination.numberOfPages);
+          });
+        }
       }
     }
   }, [page, filter]);
