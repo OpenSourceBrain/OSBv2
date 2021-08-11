@@ -1,8 +1,6 @@
 notification:
   channels:
     admins:
-      backends:
-        - console
       to:
         - filippo@metacell.us
         - zoran@metacell.us
