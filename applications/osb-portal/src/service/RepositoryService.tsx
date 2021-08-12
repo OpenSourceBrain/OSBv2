@@ -39,7 +39,12 @@ class RepositoryService {
   }
 
   async getRepositoriesByFilter(page: number, filter: string, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
-    return (this.workspacesApi.osbrepositoryGet({ page, q : `name__like=%${filter}%`, perPage: size }));
+    return (this.workspacesApi.osbrepositoryGet(
+      {
+        page,
+        q: `name__like=%${filter}%+summary__like=%${filter}%`,
+        perPage: size
+      }));
   }
 
   async getRepositoriesDetails(page: number, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
