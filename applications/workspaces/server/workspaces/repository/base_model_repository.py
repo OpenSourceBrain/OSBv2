@@ -114,7 +114,7 @@ class BaseModelRepository:
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        field = func.lower(field)
+
         logger.debug("Search for %s filter: %s %s %s",
                      self.model, field, comparator, value)
         if comparator == "==":
@@ -122,6 +122,7 @@ class BaseModelRepository:
         elif comparator in ("!", "not"):
             return field != value
         elif comparator == "like":
+            field = func.lower(field)
             return field.like("%" + value + "%")
         else:
             return field == value
