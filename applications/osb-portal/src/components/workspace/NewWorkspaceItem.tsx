@@ -113,10 +113,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   repositoriesList: {
+    "& .scrollbar": {
+      borderBottomRightRadius: radius,
+      borderBottomLeftRadius: radius,
+    },
     "& .MuiBox-root": {
       maxHeight: '500px',
-      margin: theme.spacing(2),
-      borderRadius: radius,
+      marginRight: theme.spacing(2),
+      marginLeft: theme.spacing(2),
+      marginTop: theme.spacing(0),
       "& .MuiGrid-container": {
         backgroundColor: bgLight,
         "& .col": {
@@ -184,6 +189,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+let firstTimeFiltering = true;
+
 export default (props: ItemProps) => {
   const { user, template, title, refreshWorkspaces } = props;
   const classes = useStyles();
@@ -197,6 +204,7 @@ export default (props: ItemProps) => {
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+  const [filter, setFilter] = React.useState("");
 
   const workspaceTypeUndefined = typeof WORKSPACE_TEMPLATES[template] === 'undefined';
 
@@ -206,12 +214,32 @@ export default (props: ItemProps) => {
 
   React.useEffect(() => {
     if (workspaceTypeUndefined){
-      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
-        setRepositories(reposDetails.osbrepositories);
-        setTotalPages(reposDetails.pagination.numberOfPages);
-      });
+      if (typeof filter === 'undefined' || filter.length === 0){
+        if (!firstTimeFiltering){
+          setPage(1);
+        }
+        RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+          setRepositories(reposDetails.osbrepositories);
+          setTotalPages(reposDetails.pagination.numberOfPages);
+        });
+      }
+      else{
+        if (firstTimeFiltering){
+          firstTimeFiltering = false;
+          RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
+            setRepositories(repos.osbrepositories);
+            setTotalPages(repos.pagination.numberOfPages);
+          });
+        }
+        else {
+          RepositoryService.getRepositoriesByFilter(page, filter).then((repos) => {
+            setRepositories(repos.osbrepositories);
+            setTotalPages(repos.pagination.numberOfPages);
+          });
+        }
+      }
     }
-  }, [page]);
+  }, [page, filter]);
 
   const loadRepository = (repositoryId: number) => {
     setRepositoryLoading(true);
@@ -356,10 +384,11 @@ export default (props: ItemProps) => {
           : repositories ?
           <>
             <Box className={classes.repositoriesList}>
-              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
-              {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
-                null
-              }
+              <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true}
+                searchRepositories={true} filterChanged={newFilter => setFilter(newFilter)}/>
+                  {totalPages > 1 ? <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} /> :
+                    null
+                  }
               <Grid container={true} className={classes.info}>
                 <Grid item={true}>
                   <Typography component="h6" className={classes.helperDialogText}>

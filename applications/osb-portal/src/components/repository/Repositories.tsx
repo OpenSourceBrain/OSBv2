@@ -16,12 +16,17 @@ import {
   bgLightestShade,
   teal,
   purple,
+  bgLightest,
+  radius,
 } from "../../theme";
+import RepositoriesSearch from "./RepositoriesSearch";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
   showSimpleVersion?: boolean;
   handleRepositoryClick: (repositoryId: number) => void;
+  searchRepositories?: boolean;
+  filterChanged?: (filter: string) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -145,16 +150,26 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  searchBox: {
+    background: bgLightest,
+    padding: theme.spacing(2),
+    borderTopLeftRadius: radius,
+    borderTopRightRadius: radius,
+  },
 }))
 
 export default (props: RepositoriesProps) => {
   const classes = useStyles();
-
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const showSimpleVersion = typeof props.showSimpleVersion === 'undefined' ? false : props.showSimpleVersion;
+  const searchRepositories = typeof props.searchRepositories === 'undefined' ? false : props.searchRepositories;
 
 
   return (
+    <>
+    { searchRepositories && <Box className={classes.searchBox}>
+      <RepositoriesSearch filterChanged={(newFilter) => props.filterChanged(newFilter)} />
+    </Box>}
     <Box className={`${classes.repositoryData} scrollbar virticalFill`}>
       {props.repositories.map((repository) => (
         <Grid
@@ -222,5 +237,6 @@ export default (props: RepositoriesProps) => {
         </Grid>
       ))}
     </Box>
+    </>
   )
 }

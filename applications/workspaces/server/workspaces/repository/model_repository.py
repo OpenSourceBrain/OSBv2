@@ -4,7 +4,7 @@ import shutil
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from sqlalchemy.sql import func
 
 
@@ -124,8 +124,10 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None):
-
         q_base = self.model.query
+        if filter:
+            q_base = q_base.filter(
+                or_(*[self._create_filter(*f) for f in filter]))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):

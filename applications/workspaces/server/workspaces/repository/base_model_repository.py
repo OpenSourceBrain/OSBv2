@@ -84,7 +84,8 @@ class BaseModelRepository:
                 elif isinstance(getattr(cur_obj, key), db.Model):
                     # copy the object if the object exists then update else create
                     new_item = self._get_and_copy_item(getattr(new_obj, key))
-                    setattr(cur_obj, key, self._copy_attrs(getattr(cur_obj, key), new_item))
+                    setattr(cur_obj, key, self._copy_attrs(
+                        getattr(cur_obj, key), new_item))
                 else:
                     # just copy the value
                     setattr(cur_obj, key, getattr(new_obj, key))
@@ -113,12 +114,15 @@ class BaseModelRepository:
             q=name__like=My%Name (search all records where name matches %My%Name%)
             q=id__!=10 (id is not 10)
         """
-        logger.debug("Search for %s filter: %s %s %s", self.model, field, comparator, value)
+
+        logger.debug("Search for %s filter: %s %s %s",
+                     self.model, field, comparator, value)
         if comparator == "==":
             return field == value
         elif comparator in ("!", "not"):
             return field != value
         elif comparator == "like":
+            field = func.lower(field)
             return field.like("%" + value + "%")
         else:
             return field == value
@@ -154,7 +158,8 @@ class BaseModelRepository:
             attr = getattr(self.model, field)
             if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
                 value = value.upper() in ("TRUE", "1", "T")
-            logger.debug("Filter attr: %s comparator: %s value: %s", attr.key, comparator, value)
+            logger.debug("Filter attr: %s comparator: %s value: %s",
+                         attr.key, comparator, value)
             filters.append((attr, comparator, value))
         return filters
 
