@@ -6,6 +6,7 @@ import repositoryService from './RepositoryService';
 import { UserInfo } from '../types/user';
 import { getBaseDomain } from '../utils';
 import { Workspace } from '../types/workspace';
+import { OSBRepository } from "../apiclient/workspaces";
 
 const keycloak = Keycloak('/keycloak.json');
 
@@ -96,4 +97,8 @@ const errorCallback = (error: any) => {
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
     return user && (user.isAdmin || workspace.userId === user.id)
+}
+
+export function canEditRepository(user: UserInfo, repository: OSBRepository) {
+    return user && (user.isAdmin || repository.userId === user.id);
 }
