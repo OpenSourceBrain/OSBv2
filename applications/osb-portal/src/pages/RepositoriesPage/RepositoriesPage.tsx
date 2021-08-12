@@ -26,6 +26,7 @@ enum RepositoriesTab {
   my,
 }
 
+let firstTimeFiltering = true;
 
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const classes = useStyles();
@@ -74,15 +75,28 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
   React.useEffect(() => {
     if (typeof filter === 'undefined' || filter.length === 0){
+      if (!firstTimeFiltering){
+        setPage(1);
+      }
       RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
         setRepositories(reposDetails.osbrepositories);
         setTotalPages(reposDetails.pagination.numberOfPages);
+        firstTimeFiltering = true;
       });
-    }
-    else {
-      RepositoryService.getRepositoriesByFilter(`name__like=%${filter}%`).then((repos) => {
-        setRepositories(repos);
-      });
+    } else{
+      if (firstTimeFiltering){
+        firstTimeFiltering = false;
+        RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
+      }
+      else {
+        RepositoryService.getRepositoriesByFilter(page, filter).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
+      }
     }
   }, [page, filter]);
 
