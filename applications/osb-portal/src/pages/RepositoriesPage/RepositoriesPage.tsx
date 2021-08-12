@@ -15,7 +15,7 @@ import { OSBRepository } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
-import Repositories from "../../components/repository/Repositories";
+import { Repositories } from "../../components/index";
 import MainMenu from "../../components/menu/MainMenu";
 import OSBPagination from "../../components/common/OSBPagination";
 

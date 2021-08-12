@@ -23,6 +23,7 @@ import { AnyAction, Dispatch } from 'redux';
 
 import { RepositoryPage as repositoryPage } from '../pages/RepositoryPage'
 import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
+import repositories from '../components/repository/Repositories';
 
 const mapWorkspacesStateToProps = (state: RootState) => {
   return ({
@@ -73,6 +74,7 @@ const dispatchErrorProps = {
 };
 
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
+export const Repositories = connect(mapUserStateToProps)(repositories);
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
 export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
