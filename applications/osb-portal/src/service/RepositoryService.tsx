@@ -63,6 +63,10 @@ class RepositoryService {
     repository.autoSync = Boolean(repository.autoSync);
     return this.workspacesApi.osbrepositoryPost({ oSBRepository: repository });
   }
+
+  async updateRepository(repository: OSBRepository) {
+    // TODO: call API to update the repository
+  }
 }
 
 

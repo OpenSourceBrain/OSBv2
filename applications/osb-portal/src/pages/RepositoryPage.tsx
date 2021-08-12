@@ -29,6 +29,7 @@ import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
 import MarkdownViewer from "../components/common/MarkdownViewer"
 import MainMenu from "../components/menu/MainMenu";
+import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
 
 import {
   linkColor,
@@ -273,6 +274,7 @@ export const RepositoryPage = (props: any) => {
               <AddIcon />
               Create new workspace
             </Button>
+            <RepositoryActionsMenu user={user} repository={repository} />
           </Box>
         </Box>
 

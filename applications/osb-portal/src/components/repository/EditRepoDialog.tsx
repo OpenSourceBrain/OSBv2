@@ -167,6 +167,9 @@ export const EditRepoDialog = ({
     userId: user.id,
   });
 
+  React.useEffect(() => {
+    setFormValues({...repository, userId: user.id});
+  }, [repository]);
 
   const [contexts, setContexts] = useState<string[]>();
   const [error, setError] = useState({
@@ -200,7 +203,7 @@ export const EditRepoDialog = ({
 
   }
 
-  const addRepository = () => {
+  const addOrUpdateRepository = () => {
     const errors = {
       name: !formValues.name ? 'Name must be set' : '',
       uri: !formValues.uri ? 'URL must be set' : '',
@@ -213,27 +216,32 @@ export const EditRepoDialog = ({
     if (!Object.values(errors).find((e) => e)) {
       setLoading(true);
       // TODO implement update
-      RepositoryService.addRepository(formValues).then(
-        () => {
-          setLoading(false);
-          handleClose();
-          setFormValues({
-            ...RepositoryService.EMPTY_REPOSITORY,
-            userId: user.id,
-          });
-          setError({
-            uri: '',
-            defaultContext: '',
-            contentTypesList: '',
-            name: '',
-          });
-          onSubmit();
-        },
-        (e) => {
-          setLoading(false);
-          throw new Error("Error submitting the repository");
-        }
-      );
+      if (repository === RepositoryService.EMPTY_REPOSITORY){
+        RepositoryService.addRepository(formValues).then(
+          () => {
+            setLoading(false);
+            handleClose();
+            setFormValues({
+              ...RepositoryService.EMPTY_REPOSITORY,
+              userId: user.id,
+            });
+            setError({
+              uri: '',
+              defaultContext: '',
+              contentTypesList: '',
+              name: '',
+            });
+            onSubmit();
+          },
+          (e) => {
+            setLoading(false);
+            throw new Error("Error submitting the repository");
+          }
+        );
+      }
+      else {
+        // TODO: call repository service method to update repository
+      }
     }
   };
 
@@ -360,10 +368,10 @@ export const EditRepoDialog = ({
           variant="contained"
           disableElevation={true}
           disabled={Object.values(error).filter(e => e).length !== 0}
-          onClick={addRepository}
+          onClick={addOrUpdateRepository}
           color="primary"
         >
-          Add
+          {repository === RepositoryService.EMPTY_REPOSITORY ? 'Add' : 'Save'}
         </Button>
         {loading && (
           <CircularProgress

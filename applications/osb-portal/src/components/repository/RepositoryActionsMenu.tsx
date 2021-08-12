@@ -30,6 +30,7 @@ export default (props: RepositoryActionsMenuProps) => {
 
     const handleEditRepository = () => {
         setRepositoryEditorOpen(true);
+        handleCloseMenu();
     }
 
     const setDialogOpen = () => {
@@ -43,7 +44,7 @@ export default (props: RepositoryActionsMenuProps) => {
     return (
         <>
             <IconButton size="small" onClick={handleClick}>
-                <Icons.Dots style={{ fontSize: "1rem" }} />
+                <Icons.Dots style={{ fontSize: "1rem", transform: 'rotate(90deg)' }} />
             </IconButton>
             <Menu
                 id="simple-menu"

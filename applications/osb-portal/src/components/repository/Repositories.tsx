@@ -157,7 +157,6 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(1),
       '& .MuiIconButton-label': {
         width: 'fit-content',
-        transform: 'rotate(90deg)',
       }
     },
   },
@@ -189,7 +188,7 @@ export default (props: RepositoriesProps) => {
             </Box>
           </Grid>
 
-          {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4}>
+          {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
             <Box className="col">
               <Typography>
                 {repository?.user?.firstName} {repository?.user?.lastName}
