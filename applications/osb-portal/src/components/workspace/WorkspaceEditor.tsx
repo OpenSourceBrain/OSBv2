@@ -14,6 +14,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dropzone from 'react-dropzone'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import { Autocomplete } from "@material-ui/lab";
+import Chip from "@material-ui/core/Chip";
 
 import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
@@ -55,7 +57,13 @@ const useStyles = makeStyles((theme) => ({
   },
   imagePreview: {
     display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
-  }
+  },
+  autoComplete: {
+    marginTop: theme.spacing(1),
+    '& .MuiInputBase-root': {
+      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
+    }
+  },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -112,6 +120,7 @@ export default (props: WorkspaceEditProps) => {
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+  const [tagOptions, setTagOptions] = React.useState(["Experimental", "Modeling"]);
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== 'undefined') {
@@ -124,7 +133,7 @@ export default (props: WorkspaceEditProps) => {
   }
 
   const handleCreateWorkspace = async () => {
-    setLoading(true)
+    setLoading(true);
     workspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
       async (returnedWorkspace) => {
         if (thumbnail && !thumbnailError) {
@@ -186,6 +195,9 @@ export default (props: WorkspaceEditProps) => {
     thumbnail = uploadedThumbnail;
     previewFile(thumbnail);
   }
+  const setWorkspaceTags = (tagsArray: string[]) => {
+    setWorkspaceForm({...workspaceForm, tags: tagsArray});
+  }
   const [loading, setLoading] = React.useState(false);
   return (
     <>
@@ -214,6 +226,22 @@ export default (props: WorkspaceEditProps) => {
           />
 
         </Box>
+        <Autocomplete
+          className={classes.autoComplete}
+          multiple={true}
+          options={tagOptions}
+          freeSolo={true}
+          defaultValue={workspace?.tags}
+          onChange={ (event, value) => setWorkspaceTags(value)}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+             <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+           ))
+          }
+          renderInput={(params) => (
+            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Workspace tags" />
+          )}
+          />
         <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>
           <Typography component="h6" className={classes.workspaceThumbnailText}>
             Workspace thumbnail
