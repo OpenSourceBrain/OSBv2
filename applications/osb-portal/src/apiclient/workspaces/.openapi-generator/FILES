@@ -26,6 +26,7 @@ models/ResourceBase.ts
 models/ResourceOrigin.ts
 models/ResourceStatus.ts
 models/ResourceType.ts
+models/Tag.ts
 models/User.ts
 models/Valid.ts
 models/VolumeStorage.ts
@@ -41,6 +42,5 @@ models/WorkspaceResourceAllOf.ts
 models/WorkspaceResourceBase.ts
 models/WorkspaceResourceEntity.ts
 models/WorkspaceResourceEntityAllOf.ts
-models/WorkspaceTag.ts
 models/index.ts
 runtime.ts
