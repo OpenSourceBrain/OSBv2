@@ -419,7 +419,7 @@ paths:
             default: None
             example: name__like=%reposi%
           required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available repositories
@@ -499,7 +499,6 @@ paths:
         description: the context for getting the resources, optional
     get:
       summary: Used to retrieve a repository.
-      operationId: get
       x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       responses:
         200:

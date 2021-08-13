@@ -419,7 +419,7 @@ paths:
             default: None
             example: name__like=%reposi%
           required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available repositories
@@ -541,7 +541,7 @@ paths:
             default: None
             example: name__like=%storage%
           required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available volumestorages
@@ -558,7 +558,7 @@ paths:
                       $ref: "#/components/schemas/VolumeStorage"
     post:
       tags:
-        - rest                  
+        - rest
       summary: Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
       security:
         - bearerAuth: []
@@ -630,9 +630,9 @@ paths:
         404:
           description: The volumestorage was not found.
       tags:
-        - rest            
+        - rest
 
-components: 
+components:
   securitySchemes:
     bearerAuth:
       type: http
@@ -644,7 +644,7 @@ components:
       type: object
       properties:
         response:
-          type: string    
+          type: string
     Pagination:
       type: object
       properties:
@@ -826,7 +826,7 @@ components:
           description: Workspace Collaborator keycloak user id
           type: string
       required:
-        - user_id    
+        - user_id
     WorkspaceImage:
       description: Workspace images of a workspace
       type: object
@@ -839,7 +839,7 @@ components:
           description: Workspace Image
           $ref: "#/components/schemas/ImageType"
       required:
-        - image    
+        - image
     WorkspaceTag:
       description: Workspace tags linking to workspaces
       type: object
@@ -901,7 +901,7 @@ components:
               type: integer
             origin:
               description: Origin Resource where the WorkspaceResource is build from
-              $ref: "#/components/schemas/ResourceOrigin"      
+              $ref: "#/components/schemas/ResourceOrigin"
     WorkspaceResourceEntity:
       description: Workspace Resource item of a Workspace
       allOf:
@@ -994,7 +994,9 @@ components:
           type: object
           properties:
             context_resources:
-              $ref: "#/components/schemas/RepositoryResourceNode"
+              type: array
+              items:
+                $ref: "#/components/schemas/RepositoryResourceNode"
             contexts:
               type: array
               items:
@@ -1008,6 +1010,11 @@ components:
             description:
               description: Repository description
               type: string
+            timestamp_modified:
+              description: Date/time the OSBReposity is last modified
+              type: string
+              format: 'date-time'
+              example: 2019-11-23T01:23:45Z        
     ResourceBase:
       description: Resource Base
       type: object
