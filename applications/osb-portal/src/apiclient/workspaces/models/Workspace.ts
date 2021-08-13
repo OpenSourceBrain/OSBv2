@@ -111,11 +111,17 @@ export interface Workspace {
      */
     userId?: string;
     /**
-     * Is the workspace available for non collaborators? Default false
+     * Is this a public workspace? Default false
      * @type {boolean}
      * @memberof Workspace
      */
     publicable?: boolean;
+    /**
+     * Is this a featured workspace? Default false
+     * @type {boolean}
+     * @memberof Workspace
+     */
+    featured?: boolean;
     /**
      * Workspace license
      * @type {string}
@@ -163,6 +169,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'gallery': !exists(json, 'gallery') ? undefined : ((json['gallery'] as Array<any>).map(WorkspaceImageFromJSON)),
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'publicable': !exists(json, 'publicable') ? undefined : json['publicable'],
+        'featured': !exists(json, 'featured') ? undefined : json['featured'],
         'license': !exists(json, 'license') ? undefined : json['license'],
         'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(WorkspaceCollaboratorFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
@@ -190,6 +197,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'gallery': value.gallery === undefined ? undefined : ((value.gallery as Array<any>).map(WorkspaceImageToJSON)),
         'user_id': value.userId,
         'publicable': value.publicable,
+        'featured': value.featured,
         'license': value.license,
         'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(WorkspaceCollaboratorToJSON)),
         'storage': VolumeStorageToJSON(value.storage),

@@ -80,6 +80,18 @@ export interface OSBRepositoryBase {
      * @memberof OSBRepositoryBase
      */
     userId?: string;
+    /**
+     * Date/time the Workspace is created
+     * @type {Date}
+     * @memberof OSBRepositoryBase
+     */
+    timestampCreated?: Date;
+    /**
+     * Date/time the Workspace is last updated
+     * @type {Date}
+     * @memberof OSBRepositoryBase
+     */
+    timestampUpdated?: Date;
 }
 
 export function OSBRepositoryBaseFromJSON(json: any): OSBRepositoryBase {
@@ -101,6 +113,8 @@ export function OSBRepositoryBaseFromJSONTyped(json: any, ignoreDiscriminator: b
         'uri': json['uri'],
         'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
+        'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
     };
 }
 
@@ -122,6 +136,8 @@ export function OSBRepositoryBaseToJSON(value?: OSBRepositoryBase | null): any {
         'uri': value.uri,
         'default_context': value.defaultContext,
         'user_id': value.userId,
+        'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
+        'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
     };
 }
 

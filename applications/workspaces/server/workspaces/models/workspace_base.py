@@ -23,7 +23,7 @@ class WorkspaceBase(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, tags=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, license=None, collaborators=None, storage=None):  # noqa: E501
+    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, tags=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, featured=False, license=None, collaborators=None, storage=None):  # noqa: E501
         """WorkspaceBase - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceBase.  # noqa: E501
@@ -48,6 +48,8 @@ class WorkspaceBase(Model):
         :type user_id: str
         :param publicable: The publicable of this WorkspaceBase.  # noqa: E501
         :type publicable: bool
+        :param featured: The featured of this WorkspaceBase.  # noqa: E501
+        :type featured: bool
         :param license: The license of this WorkspaceBase.  # noqa: E501
         :type license: str
         :param collaborators: The collaborators of this WorkspaceBase.  # noqa: E501
@@ -67,6 +69,7 @@ class WorkspaceBase(Model):
             'gallery': List[WorkspaceImage],
             'user_id': str,
             'publicable': bool,
+            'featured': bool,
             'license': str,
             'collaborators': List[WorkspaceCollaborator],
             'storage': VolumeStorage
@@ -84,6 +87,7 @@ class WorkspaceBase(Model):
             'gallery': 'gallery',
             'user_id': 'user_id',
             'publicable': 'publicable',
+            'featured': 'featured',
             'license': 'license',
             'collaborators': 'collaborators',
             'storage': 'storage'
@@ -100,6 +104,7 @@ class WorkspaceBase(Model):
         self._gallery = gallery
         self._user_id = user_id
         self._publicable = publicable
+        self._featured = featured
         self._license = license
         self._collaborators = collaborators
         self._storage = storage
@@ -349,7 +354,7 @@ class WorkspaceBase(Model):
     def publicable(self):
         """Gets the publicable of this WorkspaceBase.
 
-        Is the workspace available for non collaborators? Default false  # noqa: E501
+        Is this a public workspace? Default false  # noqa: E501
 
         :return: The publicable of this WorkspaceBase.
         :rtype: bool
@@ -360,13 +365,36 @@ class WorkspaceBase(Model):
     def publicable(self, publicable):
         """Sets the publicable of this WorkspaceBase.
 
-        Is the workspace available for non collaborators? Default false  # noqa: E501
+        Is this a public workspace? Default false  # noqa: E501
 
         :param publicable: The publicable of this WorkspaceBase.
         :type publicable: bool
         """
 
         self._publicable = publicable
+
+    @property
+    def featured(self):
+        """Gets the featured of this WorkspaceBase.
+
+        Is this a featured workspace? Default false  # noqa: E501
+
+        :return: The featured of this WorkspaceBase.
+        :rtype: bool
+        """
+        return self._featured
+
+    @featured.setter
+    def featured(self, featured):
+        """Sets the featured of this WorkspaceBase.
+
+        Is this a featured workspace? Default false  # noqa: E501
+
+        :param featured: The featured of this WorkspaceBase.
+        :type featured: bool
+        """
+
+        self._featured = featured
 
     @property
     def license(self):
