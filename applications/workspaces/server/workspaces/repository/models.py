@@ -30,6 +30,7 @@ class WorkspaceEntityDict(_WorkspaceEntityDictBase, total=False):
     gallery: typing.Sequence["WorkspaceImageDict"]
     user_id: typing.Optional[str]
     publicable: bool
+    featured: bool
     license: typing.Optional[str]
     collaborators: typing.Sequence["WorkspaceCollaboratorDict"]
     storage: typing.Optional["VolumeStorageDict"]
@@ -55,8 +56,8 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         gallery: Gallery with images of the workspace
         user_id: Workspace keycloak user id, will be automatically be set to
             the logged in user
-        publicable: Is the workspace available for non collaborators? Default
-            false
+        publicable: Is this a public workspace? Default false
+        featured: Is this a featured workspace? Default false
         license: Workspace license
         collaborators: Collaborators who work on the workspace
         storage: The storage of the WorkspaceEntity.
@@ -81,6 +82,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
     gallery: typing.Sequence["TWorkspaceImage"]
     user_id: typing.Optional[str]
     publicable: bool
+    featured: bool
     license: typing.Optional[str]
     collaborators: typing.Sequence["TWorkspaceCollaborator"]
     storage: typing.Optional["TVolumeStorage"]
@@ -99,6 +101,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         gallery: typing.Optional[typing.Sequence["TWorkspaceImage"]] = None,
         user_id: typing.Optional[str] = None,
         publicable: bool = False,
+        featured: bool = False,
         license: typing.Optional[str] = None,
         collaborators: typing.Optional[
             typing.Sequence["TWorkspaceCollaborator"]
@@ -122,8 +125,8 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             gallery: Gallery with images of the workspace
             user_id: Workspace keycloak user id, will be automatically be set
                 to the logged in user
-            publicable: Is the workspace available for non collaborators?
-                Default false
+            publicable: Is this a public workspace? Default false
+            featured: Is this a featured workspace? Default false
             license: Workspace license
             collaborators: Collaborators who work on the workspace
             storage: The storage of the WorkspaceEntity.
@@ -146,6 +149,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         gallery: typing.Optional[typing.Sequence["WorkspaceImageDict"]] = None,
         user_id: typing.Optional[str] = None,
         publicable: bool = False,
+        featured: bool = False,
         license: typing.Optional[str] = None,
         collaborators: typing.Optional[
             typing.Sequence["WorkspaceCollaboratorDict"]
@@ -171,8 +175,8 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             gallery: Gallery with images of the workspace
             user_id: Workspace keycloak user id, will be automatically be set
                 to the logged in user
-            publicable: Is the workspace available for non collaborators?
-                Default false
+            publicable: Is this a public workspace? Default false
+            featured: Is this a featured workspace? Default false
             license: Workspace license
             collaborators: Collaborators who work on the workspace
             storage: The storage of the WorkspaceEntity.

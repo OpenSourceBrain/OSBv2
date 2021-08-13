@@ -499,7 +499,7 @@ paths:
         description: the context for getting the resources, optional
     get:
       summary: Used to retrieve a repository.
-      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      # x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       responses:
         200:
           description: The repository.
@@ -772,7 +772,12 @@ components:
           description: Workspace keycloak user id, will be automatically be set to the logged in user
           type: string
         publicable:
-          description: Is the workspace available for non collaborators? Default false
+          description: Is this a public workspace? Default false
+          type: boolean
+          default: false
+          example: false
+        featured:
+          description: Is this a featured workspace? Default false
           type: boolean
           default: false
           example: false
