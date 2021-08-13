@@ -27,6 +27,7 @@ from workspaces.models.resource_base import ResourceBase
 from workspaces.models.resource_origin import ResourceOrigin
 from workspaces.models.resource_status import ResourceStatus
 from workspaces.models.resource_type import ResourceType
+from workspaces.models.tag import Tag
 from workspaces.models.user import User
 from workspaces.models.valid import Valid
 from workspaces.models.volume_storage import VolumeStorage
@@ -42,4 +43,3 @@ from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
-from workspaces.models.workspace_tag import WorkspaceTag
