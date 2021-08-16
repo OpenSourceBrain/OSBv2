@@ -17,8 +17,9 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Autocomplete } from "@material-ui/lab";
 import Chip from "@material-ui/core/Chip";
 
-import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
+import { Tag } from "../../apiclient/workspaces";
+import WorkspaceService from "../../service/WorkspaceService";
 
 import {
   bgLight,
@@ -116,11 +117,19 @@ export default (props: WorkspaceEditProps) => {
     }
   }
 
+  React.useEffect(() => {
+    WorkspaceService.getAllAvailableTags(1).then(tagObjects => {
+      const availableTags: string[] = tagObjects.map((tagObject) => tagObject.tag);
+      setTagOptions(availableTags);
+    });
+  }, []);
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
-  const [tagOptions, setTagOptions] = React.useState(["Experimental", "Modeling"]);
+  const workspaceTags = workspace.tags.map((tagObject) => tagObject.tag);
+  const [tagOptions, setTagOptions] = React.useState([]);
+  const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== 'undefined') {
@@ -134,11 +143,11 @@ export default (props: WorkspaceEditProps) => {
 
   const handleCreateWorkspace = async () => {
     setLoading(true);
-    workspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
+    WorkspaceService.createOrUpdateWorkspace({...workspace, ...workspaceForm}).then(
       async (returnedWorkspace) => {
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
-          workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
+          WorkspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
             .then(() => props.onLoadWorkspace(true, returnedWorkspace),
               e => console.error('Error uploading thumbnail', e)
             );
@@ -196,7 +205,9 @@ export default (props: WorkspaceEditProps) => {
     previewFile(thumbnail);
   }
   const setWorkspaceTags = (tagsArray: string[]) => {
-    setWorkspaceForm({...workspaceForm, tags: tagsArray});
+    const arrayOfTags: Tag[] = [];
+    tagsArray.forEach(tag => { arrayOfTags.push({tag}); });
+    setWorkspaceForm({...workspaceForm, tags: arrayOfTags});
   }
   const [loading, setLoading] = React.useState(false);
   return (
@@ -229,9 +240,9 @@ export default (props: WorkspaceEditProps) => {
         <Autocomplete
           className={classes.autoComplete}
           multiple={true}
-          options={tagOptions}
           freeSolo={true}
-          defaultValue={workspace?.tags}
+          options={tagOptions}
+          defaultValue={defaultTags}
           onChange={ (event, value) => setWorkspaceTags(value)}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (

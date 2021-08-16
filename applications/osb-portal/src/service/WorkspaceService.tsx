@@ -4,7 +4,7 @@ import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } fr
 import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin, InlineResponse2003, Tag } from '../apiclient/workspaces';
 
 import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 
@@ -67,7 +67,7 @@ class WorkspaceService {
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
-    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
+    return { name: ws.name, description: ws.description, tags: ws.tags, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
   }
 
   async deleteWorkspace(workspaceId: number) {
@@ -94,17 +94,28 @@ class WorkspaceService {
 
 
   }
+
+  async getAllAvailableTags(page?: number, perPage?: number, q?: string): Promise<Tag[]> {
+    const requestObject = {
+      page,
+      perPage,
+      q,
+    }
+    return (await this.workspacesApi.tagGet(requestObject)).tags;
+  }
 }
 
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
+  const tags: Tag[] = workspace.tags;
 
   return {
     ...workspace,
     resources,
     lastOpen,
+    tags,
     userId: workspace.userId,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
