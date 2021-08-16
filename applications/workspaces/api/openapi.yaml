@@ -80,9 +80,9 @@ paths:
           schema:
             type: string
             default: None
-            example: name__like=Work%ce 18+id__=1
+            example: name__like=Work%ce 18+id__=1+tags[tag]=Tag
           required: false
-          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [field/relation[field]][comparator = , __not= , __like= ][value]     
       responses:
         200:
           description: Return all available workspaces
@@ -419,7 +419,7 @@ paths:
             default: None
             example: name__like=%reposi%
           required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available repositories
@@ -499,7 +499,7 @@ paths:
         description: the context for getting the resources, optional
     get:
       summary: Used to retrieve a repository.
-      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      # x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       responses:
         200:
           description: The repository.
@@ -541,7 +541,7 @@ paths:
             default: None
             example: name__like=%storage%
           required: false
-          description: The search string for filtering of the items to return. Format [fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available volumestorages
@@ -558,7 +558,7 @@ paths:
                       $ref: "#/components/schemas/VolumeStorage"
     post:
       tags:
-        - rest                  
+        - rest
       summary: Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
       security:
         - bearerAuth: []
@@ -630,9 +630,129 @@ paths:
         404:
           description: The volumestorage was not found.
       tags:
-        - rest            
+        - rest
 
-components: 
+  /tag:
+    get:
+      tags:
+        - rest
+      summary: Used to list all available tags.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: The page number for starting to collect the result set.
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 20
+          required: false
+          description: The number of items to return.
+        - in: query
+          name: q
+          schema:
+            type: string
+            default: None
+            example: name__like=%Tag 1%
+          required: false
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
+      responses:
+        200:
+          description: Return all available tags
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  tags:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Tag"
+    post:
+      tags:
+        - rest
+      summary: Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The Tag to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+      responses:
+        201:
+          description: Save successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        400:
+          description: The Tag already exists.
+  /tag/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Used to retrieve an tag from the repository.
+      responses:
+        200:
+          description: The tag.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        404:
+          description: The tag was not found.
+      tags:
+        - rest
+    put:
+      summary: Update an tag in the repository.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The tag to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+      responses:
+        200:
+          description: The tag was updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        404:
+          description: The tag was not found.
+      tags:
+        - rest
+    delete:
+      summary: Delete an tag from the repository.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The tag was deleted.
+        404:
+          description: The tag was not found.
+      tags:
+        - rest
+
+components:
   securitySchemes:
     bearerAuth:
       type: http
@@ -644,7 +764,7 @@ components:
       type: object
       properties:
         response:
-          type: string    
+          type: string
     Pagination:
       type: object
       properties:
@@ -750,12 +870,6 @@ components:
           type: string
           format: 'date-time'
           example: 2019-11-23T01:23:45Z
-        tags:
-          description: Workspace tags
-          type: array
-          items:
-            allOf:
-              - $ref: "#/components/schemas/WorkspaceTag"
         last_opened_resource_id:
           description: The workspace resource id the workspace is opened last with
           type: integer
@@ -772,7 +886,12 @@ components:
           description: Workspace keycloak user id, will be automatically be set to the logged in user
           type: string
         publicable:
-          description: Is the workspace available for non collaborators? Default false
+          description: Is this a public workspace? Default false
+          type: boolean
+          default: false
+          example: false
+        featured:
+          description: Is this a featured workspace? Default false
           type: boolean
           default: false
           example: false
@@ -788,6 +907,12 @@ components:
         storage:
           description: Storage of the workspace
           $ref: "#/components/schemas/VolumeStorage"
+        tags:
+          type: array
+          items:
+           allOf:
+              - "$ref": "#/components/schemas/Tag"
+              - x-secondary: workspace_tag
       required:
         - name
         - description
@@ -826,7 +951,7 @@ components:
           description: Workspace Collaborator keycloak user id
           type: string
       required:
-        - user_id    
+        - user_id
     WorkspaceImage:
       description: Workspace images of a workspace
       type: object
@@ -839,21 +964,7 @@ components:
           description: Workspace Image
           $ref: "#/components/schemas/ImageType"
       required:
-        - image    
-    WorkspaceTag:
-      description: Workspace tags linking to workspaces
-      type: object
-      x-tablename: WorkspaceTag
-      properties:
-        id:
-          description: Unique identifier of the WorkspaceTag
-          $ref: "#/components/schemas/PrimaryKey"
-        tag:
-          description: WorkspaceTag tag
-          type: string
-          example: Workspace Tag One
-      required:
-        - tag
+        - image
     WorkspaceResourceBase:
       type: object
       properties:
@@ -901,7 +1012,7 @@ components:
               type: integer
             origin:
               description: Origin Resource where the WorkspaceResource is build from
-              $ref: "#/components/schemas/ResourceOrigin"      
+              $ref: "#/components/schemas/ResourceOrigin"
     WorkspaceResourceEntity:
       description: Workspace Resource item of a Workspace
       allOf:
@@ -976,6 +1087,12 @@ components:
           type: string
           format: 'date-time'
           example: 2019-11-23T01:23:45Z
+        tags:
+          type: array
+          items:
+           allOf:
+              - "$ref": "#/components/schemas/Tag"
+              - x-secondary: osbrepository_tag
       required:
         - name
         - repository_type
@@ -994,7 +1111,9 @@ components:
           type: object
           properties:
             context_resources:
-              $ref: "#/components/schemas/RepositoryResourceNode"
+              type: array
+              items:
+                $ref: "#/components/schemas/RepositoryResourceNode"
             contexts:
               type: array
               items:
@@ -1008,6 +1127,11 @@ components:
             description:
               description: Repository description
               type: string
+            timestamp_modified:
+              description: Date/time the OSBReposity is last modified
+              type: string
+              format: 'date-time'
+              example: 2019-11-23T01:23:45Z        
     ResourceBase:
       description: Resource Base
       type: object
@@ -1097,3 +1221,16 @@ components:
                 children:
                   - name: Dockerfile
                     timestamp_modified: 2019-11-23T01:23:45Z
+
+    Tag:
+      title: Tag
+      type: object
+      x-tablename: tag
+      description: Tags
+      properties:
+        id:
+          $ref: '#/components/schemas/PrimaryKey'
+        tag:
+          type: string
+          x-unique: true
+          x-index: true

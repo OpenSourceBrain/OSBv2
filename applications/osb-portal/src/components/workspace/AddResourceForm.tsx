@@ -53,6 +53,8 @@ function isValidHttpUrl(s: string) {
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
+let firstTimeFiltering = true;
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -244,12 +246,34 @@ export default (props: WorkspaceEditProps) => {
 
   const [totalPages, setTotalPages] = React.useState(0);
 
+  const [filter, setFilter] = React.useState("");
+
   React.useEffect(() => {
-    RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
-      setRepositories(reposDetails.osbrepositories);
-      setTotalPages(reposDetails.pagination.numberOfPages);
-    });
-  }, [page]);
+    if (typeof filter === 'undefined' || filter.length === 0){
+      if (!firstTimeFiltering){
+        setPage(1);
+      }
+      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+        setRepositories(reposDetails.osbrepositories);
+        setTotalPages(reposDetails.pagination.numberOfPages);
+      });
+    }
+    else {
+      if (firstTimeFiltering){
+        firstTimeFiltering = false;
+        RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
+      }
+      else {
+        RepositoryService.getRepositoriesByFilter(page, filter).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
+      }
+    }
+  }, [page, filter]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
     setPage(pageNumber);
@@ -415,7 +439,8 @@ export default (props: WorkspaceEditProps) => {
               repositories ?
                 <>
                   <Box className="repositories-list">
-                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)} showSimpleVersion={true} />
+                    <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => loadRepository(repositoryId)}
+                      showSimpleVersion={true} searchRepositories={true} filterChanged={newFilter => setFilter(newFilter)} />
                   </Box>
                   {
                     totalPages > 1 ?

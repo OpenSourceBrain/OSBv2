@@ -9,6 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
 import { OSBRepository } from "../../apiclient/workspaces";
@@ -18,18 +19,21 @@ import useStyles from './styles';
 import Repositories from "../../components/repository/Repositories";
 import MainMenu from "../../components/menu/MainMenu";
 import OSBPagination from "../../components/common/OSBPagination";
+import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
 
 enum RepositoriesTab {
   all,
   my,
 }
 
+let firstTimeFiltering = true;
 
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const classes = useStyles();
   const history = useHistory();
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
+  const [filter, setFilter] = useState("");
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -70,11 +74,32 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   }
 
   React.useEffect(() => {
-    RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
-      setRepositories(reposDetails.osbrepositories);
-      setTotalPages(reposDetails.pagination.numberOfPages);
-    });
-  }, [page]);
+    if (typeof filter === 'undefined' || filter.length === 0){
+      if (!firstTimeFiltering){
+        setPage(1);
+      }
+      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+        setRepositories(reposDetails.osbrepositories);
+        setTotalPages(reposDetails.pagination.numberOfPages);
+        firstTimeFiltering = true;
+      });
+    } else{
+      if (firstTimeFiltering){
+        firstTimeFiltering = false;
+        RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
+      }
+      else {
+        RepositoryService.getRepositoriesByFilter(page, filter).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
+      }
+    }
+  }, [page, filter]);
+
 
   return (
     <>
@@ -102,19 +127,25 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
               </Typography>
             )}
           </Box>
-          {user && (
-            <Box>
-              <Button
-                variant="contained"
-                disableElevation={true}
-                color="primary"
-                onClick={openDialog}
-              >
-                <AddIcon />
-                Add repository
-              </Button>
-            </Box>
-          )}
+          <Box className={classes.filterAndSearchBox}>
+            <RepositoriesSearch filterChanged={(newFilter) => setFilter(newFilter)} />
+            {user && (
+              <>
+              <Divider orientation="vertical" flexItem={true} className={classes.divider} />
+              <Box>
+                <Button
+                  variant="contained"
+                  disableElevation={true}
+                  color="primary"
+                  onClick={openDialog}
+                >
+                  <AddIcon />
+                  Add repository
+                </Button>
+              </Box>
+              </>
+            )}
+          </Box>
         </Box>
 
         {repositories ?

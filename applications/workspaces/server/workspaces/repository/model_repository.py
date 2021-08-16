@@ -4,7 +4,7 @@ import shutil
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from sqlalchemy.sql import func
 
 
@@ -15,7 +15,7 @@ from workspaces.service.kubernetes import create_persistent_volume_claim
 from workspaces.service.auth import get_auth_client
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *
 
 
@@ -100,6 +100,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
+        workspace.tags = insert_or_get_tags(workspace.tags)
         return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
@@ -121,11 +122,14 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     calculated_fields = ["user", "content_types_list"]
 
     def pre_commit(self, osbrepository):
+        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None):
-
         q_base = self.model.query
+        if filter:
+            q_base = q_base.filter(
+                or_(*[self._create_filter(*f) for f in filter]))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):
@@ -156,6 +160,10 @@ class VolumeStorageRepository(BaseModelRepository):
 
 class WorkspaceImageRepository(BaseModelRepository):
     model = WorkspaceImage
+
+
+class TagRepository(BaseModelRepository):
+    model = Tag
 
 
 class WorkspaceResourceRepository(BaseModelRepository):

@@ -12,6 +12,7 @@ from workspaces.models.inline_object import InlineObject
 from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002
+from workspaces.models.inline_response2003 import InlineResponse2003
 from workspaces.models.osb_repository import OSBRepository
 from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
 from workspaces.models.osb_repository_base import OSBRepositoryBase
@@ -27,6 +28,7 @@ from workspaces.models.resource_base import ResourceBase
 from workspaces.models.resource_origin import ResourceOrigin
 from workspaces.models.resource_status import ResourceStatus
 from workspaces.models.resource_type import ResourceType
+from workspaces.models.tag import Tag
 from workspaces.models.user import User
 from workspaces.models.valid import Valid
 from workspaces.models.volume_storage import VolumeStorage
@@ -42,4 +44,3 @@ from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
-from workspaces.models.workspace_tag import WorkspaceTag

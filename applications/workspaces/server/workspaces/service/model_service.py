@@ -11,6 +11,7 @@ from workspaces.repository import (
     VolumeStorageRepository,
     WorkspaceRepository,
     WorkspaceResourceRepository,
+    TagRepository,
 )
 
 
@@ -124,7 +125,8 @@ class OsbrepositoryService(BaseModelService):
         for ct in body["content_types_list"]:
             content_types += f",{ct}"
         body.update({"content_types": content_types.strip(",")})
-        body = OSBRepositoryEntity().from_dict(OSBRepository.from_dict(body).to_dict()).to_dict()
+        for del_attr in body.keys() & ['description', 'content_types_list']:
+            del body[del_attr]
         return super().post(body)
 
 
@@ -144,3 +146,7 @@ class WorkspaceresourceService(BaseModelService):
         if len(workspace_resource) > 2:
             workspace_resource.update({"origin": json.loads(workspace_resource.get("origin"))})
         return workspace_resource
+
+
+class TagService(BaseModelService):
+    repository = TagRepository()
