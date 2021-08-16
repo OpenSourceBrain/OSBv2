@@ -3,6 +3,7 @@ from workspaces.service.model_service import (
     VolumestorageService,
     WorkspaceService,
     WorkspaceresourceService,
+    TagService,
 )
 
 from ..base_model_view import BaseModelView
@@ -19,3 +20,6 @@ class VolumestorageView(BaseModelView):
 
 class WorkspaceresourceView(BaseModelView):
     service = WorkspaceresourceService()
+
+class TagView(BaseModelView):
+    service = TagService()

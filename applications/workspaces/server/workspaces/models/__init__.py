@@ -12,6 +12,7 @@ from workspaces.models.inline_object import InlineObject
 from workspaces.models.inline_response200 import InlineResponse200
 from workspaces.models.inline_response2001 import InlineResponse2001
 from workspaces.models.inline_response2002 import InlineResponse2002
+from workspaces.models.inline_response2003 import InlineResponse2003
 from workspaces.models.osb_repository import OSBRepository
 from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
 from workspaces.models.osb_repository_base import OSBRepositoryBase

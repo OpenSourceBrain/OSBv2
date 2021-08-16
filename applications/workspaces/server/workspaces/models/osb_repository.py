@@ -11,6 +11,7 @@ from workspaces.models.osb_repository_base import OSBRepositoryBase
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource_node import RepositoryResourceNode
 from workspaces.models.repository_type import RepositoryType
+from workspaces.models.tag import Tag
 from workspaces.models.user import User
 from workspaces import util
 
@@ -19,6 +20,7 @@ from workspaces.models.osb_repository_base import OSBRepositoryBase  # noqa: E50
 from workspaces.models.repository_content_type import RepositoryContentType  # noqa: E501
 from workspaces.models.repository_resource_node import RepositoryResourceNode  # noqa: E501
 from workspaces.models.repository_type import RepositoryType  # noqa: E501
+from workspaces.models.tag import Tag  # noqa: E501
 from workspaces.models.user import User  # noqa: E501
 
 class OSBRepository(Model):
@@ -27,7 +29,7 @@ class OSBRepository(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, summary=None, repository_type=None, content_types=None, auto_sync=True, uri=None, default_context=None, user_id=None, timestamp_created=None, timestamp_updated=None, context_resources=None, contexts=None, user=None, content_types_list=None, description=None, timestamp_modified=None):  # noqa: E501
+    def __init__(self, id=None, name=None, summary=None, repository_type=None, content_types=None, auto_sync=True, uri=None, default_context=None, user_id=None, timestamp_created=None, timestamp_updated=None, tags=None, context_resources=None, contexts=None, user=None, content_types_list=None, description=None, timestamp_modified=None):  # noqa: E501
         """OSBRepository - a model defined in OpenAPI
 
         :param id: The id of this OSBRepository.  # noqa: E501
@@ -52,6 +54,8 @@ class OSBRepository(Model):
         :type timestamp_created: datetime
         :param timestamp_updated: The timestamp_updated of this OSBRepository.  # noqa: E501
         :type timestamp_updated: datetime
+        :param tags: The tags of this OSBRepository.  # noqa: E501
+        :type tags: List[Tag]
         :param context_resources: The context_resources of this OSBRepository.  # noqa: E501
         :type context_resources: List[RepositoryResourceNode]
         :param contexts: The contexts of this OSBRepository.  # noqa: E501
@@ -77,6 +81,7 @@ class OSBRepository(Model):
             'user_id': str,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
+            'tags': List[Tag],
             'context_resources': List[RepositoryResourceNode],
             'contexts': List[str],
             'user': User,
@@ -97,6 +102,7 @@ class OSBRepository(Model):
             'user_id': 'user_id',
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
+            'tags': 'tags',
             'context_resources': 'context_resources',
             'contexts': 'contexts',
             'user': 'user',
@@ -116,6 +122,7 @@ class OSBRepository(Model):
         self._user_id = user_id
         self._timestamp_created = timestamp_created
         self._timestamp_updated = timestamp_updated
+        self._tags = tags
         self._context_resources = context_resources
         self._contexts = contexts
         self._user = user
@@ -390,6 +397,27 @@ class OSBRepository(Model):
         """
 
         self._timestamp_updated = timestamp_updated
+
+    @property
+    def tags(self):
+        """Gets the tags of this OSBRepository.
+
+
+        :return: The tags of this OSBRepository.
+        :rtype: List[Tag]
+        """
+        return self._tags
+
+    @tags.setter
+    def tags(self, tags):
+        """Sets the tags of this OSBRepository.
+
+
+        :param tags: The tags of this OSBRepository.
+        :type tags: List[Tag]
+        """
+
+        self._tags = tags
 
     @property
     def context_resources(self):

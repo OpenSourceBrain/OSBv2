@@ -7,6 +7,7 @@ from cloudharness import log as logger
 from open_alchemy import model_factory
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.inspection import inspect
 from sqlalchemy.sql import func
 
 from ..config import Config
@@ -91,7 +92,7 @@ class BaseModelRepository:
                     setattr(cur_obj, key, getattr(new_obj, key))
         return cur_obj
 
-    def _create_filter(self, field, comparator, value):
+    def _create_filter(self, field, comparator, value, entity=None):
         """
         Helper function for creating the criterion for SQL Alchemy
 
@@ -122,8 +123,8 @@ class BaseModelRepository:
         elif comparator in ("!", "not"):
             return field != value
         elif comparator == "like":
-            field = func.lower(field)
-            return field.like("%" + value + "%")
+            # field = func.lower(field)
+            return field.ilike("%" + value + "%")
         else:
             return field == value
 
@@ -156,10 +157,18 @@ class BaseModelRepository:
             else:
                 comparator = "="
             attr = getattr(self.model, field)
-            if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
+            # sqlalchemy.orm.relationships.RelationshipProperty.Comparator
+            # sqlalchemy.orm.properties.ColumnProperty.Comparator
+            if isinstance(attr.comparator, sqlalchemy.orm.properties.ColumnProperty.Comparator) and \
+               isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
                 value = value.upper() in ("TRUE", "1", "T")
             logger.debug("Filter attr: %s comparator: %s value: %s",
                          attr.key, comparator, value)
+            if isinstance(attr.comparator, sqlalchemy.orm.relationships.RelationshipProperty.Comparator):
+                # filter on sub query
+                field = field_comparator[1]
+                comparator = field_comparator[2] if len(field_comparator)>2 else "="
+                attr = attr.property.entity.class_manager.local_attrs.get(field)
             filters.append((attr, comparator, value))
         return filters
 
@@ -224,10 +233,13 @@ class BaseModelRepository:
         obj = self._get(id)
         return obj
 
-    def save(self, obj):
+    def set_timestamp_updated(self, obj):
         if hasattr(obj, "timestamp_updated"):
             setattr(obj, "timestamp_updated", func.now())
+        return obj
 
+    def save(self, obj):
+        obj = self.set_timestamp_updated(obj)
         self._pre_commit(obj)
         db.session.commit()
         return "Saved"
@@ -239,8 +251,11 @@ class BaseModelRepository:
             return f"{self.model.__name__} with id {id} not found.", 404
 
         new_obj = self.model.from_dict(**body)
+        self._pre_commit(new_obj)
         obj = self._copy_attrs(obj, new_obj)
-        return self.save(obj)
+        obj = self.set_timestamp_updated(obj)
+        db.session.commit()
+        return "Saved"
 
     def delete(self, id):
         """Delete an object from the repository."""

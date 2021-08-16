@@ -698,6 +698,7 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     user_id: typing.Optional[str]
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
+    tags: typing.Sequence["TagDict"]
 
 
 class TOSBRepositoryEntity(typing_extensions.Protocol):
@@ -720,6 +721,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
             to the logged in user
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
+        tags: The tags of the OSBRepositoryEntity.
 
     """
 
@@ -740,6 +742,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
     user_id: typing.Optional[str]
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
+    tags: typing.Sequence["TTag"]
 
     def __init__(
         self,
@@ -754,6 +757,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
+        tags: typing.Optional[typing.Sequence["TTag"]] = None,
     ) -> None:
         """
         Construct.
@@ -772,6 +776,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
                 set to the logged in user
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
+            tags: The tags of the OSBRepositoryEntity.
 
         """
         ...
@@ -790,6 +795,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
+        tags: typing.Optional[typing.Sequence["TagDict"]] = None,
     ) -> "TOSBRepositoryEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -808,6 +814,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
                 set to the logged in user
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
+            tags: The tags of the OSBRepositoryEntity.
 
         Returns:
             Model instance based on the dictionary.
@@ -855,8 +862,6 @@ class TagDict(typing_extensions.TypedDict, total=False):
 
     id: int
     tag: typing.Optional[str]
-    workspaces: typing.Sequence["WorkspaceEntityDict"]
-    repositories: typing.Sequence["OSBRepositoryEntityDict"]
 
 
 class TTag(typing_extensions.Protocol):
@@ -868,8 +873,6 @@ class TTag(typing_extensions.Protocol):
     Attrs:
         id: The id of the Tag.
         tag: The tag of the Tag.
-        workspaces: The workspaces of the Tag.
-        repositories: The repositories of the Tag.
 
     """
 
@@ -881,15 +884,9 @@ class TTag(typing_extensions.Protocol):
     # Model properties
     id: int
     tag: typing.Optional[str]
-    workspaces: typing.Sequence["TWorkspaceEntity"]
-    repositories: typing.Sequence["TOSBRepositoryEntity"]
 
     def __init__(
-        self,
-        id: typing.Optional[int] = None,
-        tag: typing.Optional[str] = None,
-        workspaces: typing.Optional[typing.Sequence["TWorkspaceEntity"]] = None,
-        repositories: typing.Optional[typing.Sequence["TOSBRepositoryEntity"]] = None,
+        self, id: typing.Optional[int] = None, tag: typing.Optional[str] = None
     ) -> None:
         """
         Construct.
@@ -897,21 +894,13 @@ class TTag(typing_extensions.Protocol):
         Args:
             id: The id of the Tag.
             tag: The tag of the Tag.
-            workspaces: The workspaces of the Tag.
-            repositories: The repositories of the Tag.
 
         """
         ...
 
     @classmethod
     def from_dict(
-        cls,
-        id: typing.Optional[int] = None,
-        tag: typing.Optional[str] = None,
-        workspaces: typing.Optional[typing.Sequence["WorkspaceEntityDict"]] = None,
-        repositories: typing.Optional[
-            typing.Sequence["OSBRepositoryEntityDict"]
-        ] = None,
+        cls, id: typing.Optional[int] = None, tag: typing.Optional[str] = None
     ) -> "TTag":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -919,8 +908,6 @@ class TTag(typing_extensions.Protocol):
         Args:
             id: The id of the Tag.
             tag: The tag of the Tag.
-            workspaces: The workspaces of the Tag.
-            repositories: The repositories of the Tag.
 
         Returns:
             Model instance based on the dictionary.

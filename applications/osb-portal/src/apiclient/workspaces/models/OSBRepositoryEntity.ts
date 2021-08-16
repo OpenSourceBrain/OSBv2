@@ -22,6 +22,10 @@ import {
     RepositoryTypeFromJSON,
     RepositoryTypeFromJSONTyped,
     RepositoryTypeToJSON,
+    Tag,
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
 } from './';
 
 /**
@@ -96,6 +100,12 @@ export interface OSBRepositoryEntity {
      * @memberof OSBRepositoryEntity
      */
     timestampUpdated?: Date;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof OSBRepositoryEntity
+     */
+    tags?: Array<Tag>;
 }
 
 export function OSBRepositoryEntityFromJSON(json: any): OSBRepositoryEntity {
@@ -119,6 +129,7 @@ export function OSBRepositoryEntityFromJSONTyped(json: any, ignoreDiscriminator:
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
+        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -142,6 +153,7 @@ export function OSBRepositoryEntityToJSON(value?: OSBRepositoryEntity | null): a
         'user_id': value.userId,
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
+        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

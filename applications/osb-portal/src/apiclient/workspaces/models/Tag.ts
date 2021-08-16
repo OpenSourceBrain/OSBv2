@@ -13,17 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    OSBRepositoryEntity,
-    OSBRepositoryEntityFromJSON,
-    OSBRepositoryEntityFromJSONTyped,
-    OSBRepositoryEntityToJSON,
-    WorkspaceEntity,
-    WorkspaceEntityFromJSON,
-    WorkspaceEntityFromJSONTyped,
-    WorkspaceEntityToJSON,
-} from './';
-
 /**
  * Tags
  * @export
@@ -42,18 +31,6 @@ export interface Tag {
      * @memberof Tag
      */
     tag?: string;
-    /**
-     * 
-     * @type {Array<WorkspaceEntity>}
-     * @memberof Tag
-     */
-    workspaces?: Array<WorkspaceEntity>;
-    /**
-     * 
-     * @type {Array<OSBRepositoryEntity>}
-     * @memberof Tag
-     */
-    repositories?: Array<OSBRepositoryEntity>;
 }
 
 export function TagFromJSON(json: any): Tag {
@@ -68,8 +45,6 @@ export function TagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tag {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'tag': !exists(json, 'tag') ? undefined : json['tag'],
-        'workspaces': !exists(json, 'workspaces') ? undefined : ((json['workspaces'] as Array<any>).map(WorkspaceEntityFromJSON)),
-        'repositories': !exists(json, 'repositories') ? undefined : ((json['repositories'] as Array<any>).map(OSBRepositoryEntityFromJSON)),
     };
 }
 
@@ -84,8 +59,6 @@ export function TagToJSON(value?: Tag | null): any {
         
         'id': value.id,
         'tag': value.tag,
-        'workspaces': value.workspaces === undefined ? undefined : ((value.workspaces as Array<any>).map(WorkspaceEntityToJSON)),
-        'repositories': value.repositories === undefined ? undefined : ((value.repositories as Array<any>).map(OSBRepositoryEntityToJSON)),
     };
 }
 

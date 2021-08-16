@@ -34,6 +34,10 @@ import {
     RepositoryTypeFromJSON,
     RepositoryTypeFromJSONTyped,
     RepositoryTypeToJSON,
+    Tag,
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
     User,
     UserFromJSON,
     UserFromJSONTyped,
@@ -114,6 +118,12 @@ export interface OSBRepository {
     timestampUpdated?: Date;
     /**
      * 
+     * @type {Array<Tag>}
+     * @memberof OSBRepository
+     */
+    tags?: Array<Tag>;
+    /**
+     * 
      * @type {Array<RepositoryResourceNode>}
      * @memberof OSBRepository
      */
@@ -171,6 +181,7 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
+        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'contextResources': !exists(json, 'context_resources') ? undefined : ((json['context_resources'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
         'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
         'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
@@ -200,6 +211,7 @@ export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
         'user_id': value.userId,
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
+        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
         'context_resources': value.contextResources === undefined ? undefined : ((value.contextResources as Array<any>).map(RepositoryResourceNodeToJSON)),
         'contexts': value.contexts,
         'user': UserToJSON(value.user),
