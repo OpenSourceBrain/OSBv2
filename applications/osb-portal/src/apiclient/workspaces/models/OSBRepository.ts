@@ -124,10 +124,10 @@ export interface OSBRepository {
     tags?: Array<Tag>;
     /**
      * 
-     * @type {Array<RepositoryResourceNode>}
+     * @type {RepositoryResourceNode}
      * @memberof OSBRepository
      */
-    contextResources?: Array<RepositoryResourceNode>;
+    contextResources?: RepositoryResourceNode;
     /**
      * 
      * @type {Array<string>}
@@ -182,7 +182,7 @@ export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boole
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
-        'contextResources': !exists(json, 'context_resources') ? undefined : ((json['context_resources'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
+        'contextResources': !exists(json, 'context_resources') ? undefined : RepositoryResourceNodeFromJSON(json['context_resources']),
         'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
         'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
         'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
@@ -212,7 +212,7 @@ export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
-        'context_resources': value.contextResources === undefined ? undefined : ((value.contextResources as Array<any>).map(RepositoryResourceNodeToJSON)),
+        'context_resources': RepositoryResourceNodeToJSON(value.contextResources),
         'contexts': value.contexts,
         'user': UserToJSON(value.user),
         'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),

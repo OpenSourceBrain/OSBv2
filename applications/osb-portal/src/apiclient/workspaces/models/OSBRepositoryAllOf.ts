@@ -36,10 +36,10 @@ import {
 export interface OSBRepositoryAllOf {
     /**
      * 
-     * @type {Array<RepositoryResourceNode>}
+     * @type {RepositoryResourceNode}
      * @memberof OSBRepositoryAllOf
      */
-    contextResources?: Array<RepositoryResourceNode>;
+    contextResources?: RepositoryResourceNode;
     /**
      * 
      * @type {Array<string>}
@@ -82,7 +82,7 @@ export function OSBRepositoryAllOfFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'contextResources': !exists(json, 'context_resources') ? undefined : ((json['context_resources'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
+        'contextResources': !exists(json, 'context_resources') ? undefined : RepositoryResourceNodeFromJSON(json['context_resources']),
         'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
         'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
         'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
@@ -100,7 +100,7 @@ export function OSBRepositoryAllOfToJSON(value?: OSBRepositoryAllOf | null): any
     }
     return {
         
-        'context_resources': value.contextResources === undefined ? undefined : ((value.contextResources as Array<any>).map(RepositoryResourceNodeToJSON)),
+        'context_resources': RepositoryResourceNodeToJSON(value.contextResources),
         'contexts': value.contexts,
         'user': UserToJSON(value.user),
         'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),

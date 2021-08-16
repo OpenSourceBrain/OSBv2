@@ -500,6 +500,7 @@ paths:
     get:
       summary: Used to retrieve a repository.
       # x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      # operationId: get
       responses:
         200:
           description: The repository.
@@ -1111,9 +1112,7 @@ components:
           type: object
           properties:
             context_resources:
-              type: array
-              items:
-                $ref: "#/components/schemas/RepositoryResourceNode"
+              $ref: "#/components/schemas/RepositoryResourceNode"
             contexts:
               type: array
               items:
