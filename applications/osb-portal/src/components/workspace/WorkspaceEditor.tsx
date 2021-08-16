@@ -119,15 +119,17 @@ export default (props: WorkspaceEditProps) => {
 
   React.useEffect(() => {
     WorkspaceService.getAllAvailableTags(1).then(tagObjects => {
-      const availableTags: string[] = tagObjects.map((tagObject) => tagObject.tag);
-      setTagOptions(availableTags);
+      if (typeof tagObjects !== 'undefined') {
+        const availableTags: string[] = tagObjects.map((tagObject) => tagObject.tag);
+        setTagOptions(availableTags);
+      }
     });
   }, []);
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
-  const workspaceTags = workspace.tags.map((tagObject) => tagObject.tag);
+  const workspaceTags = workspace && workspace.tags ? workspace.tags.map((tagObject) => tagObject.tag) : [];
   const [tagOptions, setTagOptions] = React.useState([]);
   const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
 
