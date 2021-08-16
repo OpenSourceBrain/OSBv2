@@ -24,7 +24,6 @@ class WorkspaceEntityDict(_WorkspaceEntityDictBase, total=False):
     id: int
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
-    tags: typing.Sequence["WorkspaceTagDict"]
     last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
     gallery: typing.Sequence["WorkspaceImageDict"]
@@ -34,6 +33,7 @@ class WorkspaceEntityDict(_WorkspaceEntityDictBase, total=False):
     license: typing.Optional[str]
     collaborators: typing.Sequence["WorkspaceCollaboratorDict"]
     storage: typing.Optional["VolumeStorageDict"]
+    tags: typing.Sequence["TagDict"]
     resources: typing.Sequence["WorkspaceResourceEntityDict"]
 
 
@@ -49,7 +49,6 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         description: Workspace description.
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
-        tags: Workspace tags
         last_opened_resource_id: The workspace resource id the workspace is
             opened last with
         thumbnail: The thumbnail of the WorkspaceEntity.
@@ -61,6 +60,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         license: Workspace license
         collaborators: Collaborators who work on the workspace
         storage: The storage of the WorkspaceEntity.
+        tags: The tags of the WorkspaceEntity.
         resources: Resources of the workspace
 
     """
@@ -76,7 +76,6 @@ class TWorkspaceEntity(typing_extensions.Protocol):
     description: str
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
-    tags: typing.Sequence["TWorkspaceTag"]
     last_opened_resource_id: typing.Optional[int]
     thumbnail: typing.Optional[str]
     gallery: typing.Sequence["TWorkspaceImage"]
@@ -86,6 +85,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
     license: typing.Optional[str]
     collaborators: typing.Sequence["TWorkspaceCollaborator"]
     storage: typing.Optional["TVolumeStorage"]
+    tags: typing.Sequence["TTag"]
     resources: typing.Sequence["TWorkspaceResourceEntity"]
 
     def __init__(
@@ -95,7 +95,6 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         id: typing.Optional[int] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
-        tags: typing.Optional[typing.Sequence["TWorkspaceTag"]] = None,
         last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["TWorkspaceImage"]] = None,
@@ -107,6 +106,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             typing.Sequence["TWorkspaceCollaborator"]
         ] = None,
         storage: typing.Optional["TVolumeStorage"] = None,
+        tags: typing.Optional[typing.Sequence["TTag"]] = None,
         resources: typing.Optional[typing.Sequence["TWorkspaceResourceEntity"]] = None,
     ) -> None:
         """
@@ -118,7 +118,6 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             description: Workspace description.
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
-            tags: Workspace tags
             last_opened_resource_id: The workspace resource id the workspace is
                 opened last with
             thumbnail: The thumbnail of the WorkspaceEntity.
@@ -130,6 +129,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             license: Workspace license
             collaborators: Collaborators who work on the workspace
             storage: The storage of the WorkspaceEntity.
+            tags: The tags of the WorkspaceEntity.
             resources: Resources of the workspace
 
         """
@@ -143,7 +143,6 @@ class TWorkspaceEntity(typing_extensions.Protocol):
         id: typing.Optional[int] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
-        tags: typing.Optional[typing.Sequence["WorkspaceTagDict"]] = None,
         last_opened_resource_id: typing.Optional[int] = None,
         thumbnail: typing.Optional[str] = None,
         gallery: typing.Optional[typing.Sequence["WorkspaceImageDict"]] = None,
@@ -155,6 +154,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             typing.Sequence["WorkspaceCollaboratorDict"]
         ] = None,
         storage: typing.Optional["VolumeStorageDict"] = None,
+        tags: typing.Optional[typing.Sequence["TagDict"]] = None,
         resources: typing.Optional[
             typing.Sequence["WorkspaceResourceEntityDict"]
         ] = None,
@@ -168,7 +168,6 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             description: Workspace description.
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
-            tags: Workspace tags
             last_opened_resource_id: The workspace resource id the workspace is
                 opened last with
             thumbnail: The thumbnail of the WorkspaceEntity.
@@ -180,6 +179,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
             license: Workspace license
             collaborators: Collaborators who work on the workspace
             storage: The storage of the WorkspaceEntity.
+            tags: The tags of the WorkspaceEntity.
             resources: Resources of the workspace
 
         Returns:
@@ -413,100 +413,6 @@ class TWorkspaceImage(typing_extensions.Protocol):
 
 
 WorkspaceImage: TWorkspaceImage = models.WorkspaceImage  # type: ignore
-
-
-class _WorkspaceTagDictBase(typing_extensions.TypedDict, total=True):
-    """TypedDict for properties that are required."""
-
-    tag: str
-
-
-class WorkspaceTagDict(_WorkspaceTagDictBase, total=False):
-    """TypedDict for properties that are not required."""
-
-    id: int
-
-
-class TWorkspaceTag(typing_extensions.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    Workspace tags linking to workspaces
-
-    Attrs:
-        id: The id of the WorkspaceTag.
-        tag: WorkspaceTag tag
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    id: int
-    tag: str
-
-    def __init__(self, tag: str, id: typing.Optional[int] = None) -> None:
-        """
-        Construct.
-
-        Args:
-            id: The id of the WorkspaceTag.
-            tag: WorkspaceTag tag
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(cls, tag: str, id: typing.Optional[int] = None) -> "TWorkspaceTag":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            id: The id of the WorkspaceTag.
-            tag: WorkspaceTag tag
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TWorkspaceTag":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> WorkspaceTagDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-WorkspaceTag: TWorkspaceTag = models.WorkspaceTag  # type: ignore
 
 
 class _WorkspaceResourceEntityDictBase(typing_extensions.TypedDict, total=True):
@@ -792,6 +698,7 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     user_id: typing.Optional[str]
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
+    tags: typing.Sequence["TagDict"]
 
 
 class TOSBRepositoryEntity(typing_extensions.Protocol):
@@ -814,6 +721,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
             to the logged in user
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
+        tags: The tags of the OSBRepositoryEntity.
 
     """
 
@@ -834,6 +742,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
     user_id: typing.Optional[str]
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
+    tags: typing.Sequence["TTag"]
 
     def __init__(
         self,
@@ -848,6 +757,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
+        tags: typing.Optional[typing.Sequence["TTag"]] = None,
     ) -> None:
         """
         Construct.
@@ -866,6 +776,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
                 set to the logged in user
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
+            tags: The tags of the OSBRepositoryEntity.
 
         """
         ...
@@ -884,6 +795,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
         user_id: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
+        tags: typing.Optional[typing.Sequence["TagDict"]] = None,
     ) -> "TOSBRepositoryEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -902,6 +814,7 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
                 set to the logged in user
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
+            tags: The tags of the OSBRepositoryEntity.
 
         Returns:
             Model instance based on the dictionary.
@@ -942,3 +855,96 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
 
 
 OSBRepositoryEntity: TOSBRepositoryEntity = models.OSBRepositoryEntity  # type: ignore
+
+
+class TagDict(typing_extensions.TypedDict, total=False):
+    """TypedDict for properties that are not required."""
+
+    id: int
+    tag: typing.Optional[str]
+
+
+class TTag(typing_extensions.Protocol):
+    """
+    SQLAlchemy model protocol.
+
+    Tags
+
+    Attrs:
+        id: The id of the Tag.
+        tag: The tag of the Tag.
+
+    """
+
+    # SQLAlchemy properties
+    __table__: sqlalchemy.Table
+    __tablename__: str
+    query: orm.Query
+
+    # Model properties
+    id: int
+    tag: typing.Optional[str]
+
+    def __init__(
+        self, id: typing.Optional[int] = None, tag: typing.Optional[str] = None
+    ) -> None:
+        """
+        Construct.
+
+        Args:
+            id: The id of the Tag.
+            tag: The tag of the Tag.
+
+        """
+        ...
+
+    @classmethod
+    def from_dict(
+        cls, id: typing.Optional[int] = None, tag: typing.Optional[str] = None
+    ) -> "TTag":
+        """
+        Construct from a dictionary (eg. a POST payload).
+
+        Args:
+            id: The id of the Tag.
+            tag: The tag of the Tag.
+
+        Returns:
+            Model instance based on the dictionary.
+
+        """
+        ...
+
+    @classmethod
+    def from_str(cls, value: str) -> "TTag":
+        """
+        Construct from a JSON string (eg. a POST payload).
+
+        Returns:
+            Model instance based on the JSON string.
+
+        """
+        ...
+
+    def to_dict(self) -> TagDict:
+        """
+        Convert to a dictionary (eg. to send back for a GET request).
+
+        Returns:
+            Dictionary based on the model instance.
+
+        """
+        ...
+
+    def to_str(self) -> str:
+        """
+        Convert to a JSON string (eg. to send back for a GET request).
+
+        Returns:
+            JSON string based on the model instance.
+
+        """
+        ...
+
+
+Tag: TTag = models.Tag  # type: ignore

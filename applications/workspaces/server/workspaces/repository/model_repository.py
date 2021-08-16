@@ -15,7 +15,7 @@ from workspaces.service.kubernetes import create_persistent_volume_claim
 from workspaces.service.auth import get_auth_client
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *
 
 
@@ -100,6 +100,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
+        workspace.tags = insert_or_get_tags(workspace.tags)
         return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
@@ -121,6 +122,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     calculated_fields = ["user", "content_types_list"]
 
     def pre_commit(self, osbrepository):
+        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None):
@@ -158,6 +160,10 @@ class VolumeStorageRepository(BaseModelRepository):
 
 class WorkspaceImageRepository(BaseModelRepository):
     model = WorkspaceImage
+
+
+class TagRepository(BaseModelRepository):
+    model = Tag
 
 
 class WorkspaceResourceRepository(BaseModelRepository):

@@ -27,12 +27,18 @@ import {
     InlineResponse2002,
     InlineResponse2002FromJSON,
     InlineResponse2002ToJSON,
+    InlineResponse2003,
+    InlineResponse2003FromJSON,
+    InlineResponse2003ToJSON,
     OSBRepository,
     OSBRepositoryFromJSON,
     OSBRepositoryToJSON,
     RepositoryType,
     RepositoryTypeFromJSON,
     RepositoryTypeToJSON,
+    Tag,
+    TagFromJSON,
+    TagToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageToJSON,
@@ -67,6 +73,29 @@ export interface OsbrepositoryIdGetRequest {
 
 export interface OsbrepositoryPostRequest {
     oSBRepository: OSBRepository;
+}
+
+export interface TagGetRequest {
+    page?: number;
+    perPage?: number;
+    q?: string;
+}
+
+export interface TagIdDeleteRequest {
+    id: number;
+}
+
+export interface TagIdGetRequest {
+    id: number;
+}
+
+export interface TagIdPutRequest {
+    id: number;
+    tag: Tag;
+}
+
+export interface TagPostRequest {
+    tag: Tag;
 }
 
 export interface VolumestorageGetRequest {
@@ -349,6 +378,205 @@ export class RestApi extends runtime.BaseAPI {
      */
     async osbrepositoryPost(requestParameters: OsbrepositoryPostRequest): Promise<OSBRepository> {
         const response = await this.osbrepositoryPostRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Used to list all available tags.
+     */
+    async tagGetRaw(requestParameters: TagGetRequest): Promise<runtime.ApiResponse<InlineResponse2003>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.perPage !== undefined) {
+            queryParameters['per_page'] = requestParameters.perPage;
+        }
+
+        if (requestParameters.q !== undefined) {
+            queryParameters['q'] = requestParameters.q;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/tag`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2003FromJSON(jsonValue));
+    }
+
+    /**
+     * Used to list all available tags.
+     */
+    async tagGet(requestParameters: TagGetRequest): Promise<InlineResponse2003> {
+        const response = await this.tagGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Delete an tag from the repository.
+     */
+    async tagIdDeleteRaw(requestParameters: TagIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling tagIdDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/tag/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete an tag from the repository.
+     */
+    async tagIdDelete(requestParameters: TagIdDeleteRequest): Promise<void> {
+        await this.tagIdDeleteRaw(requestParameters);
+    }
+
+    /**
+     * Used to retrieve an tag from the repository.
+     */
+    async tagIdGetRaw(requestParameters: TagIdGetRequest): Promise<runtime.ApiResponse<Tag>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling tagIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/tag/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
+    }
+
+    /**
+     * Used to retrieve an tag from the repository.
+     */
+    async tagIdGet(requestParameters: TagIdGetRequest): Promise<Tag> {
+        const response = await this.tagIdGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Update an tag in the repository.
+     */
+    async tagIdPutRaw(requestParameters: TagIdPutRequest): Promise<runtime.ApiResponse<Tag>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling tagIdPut.');
+        }
+
+        if (requestParameters.tag === null || requestParameters.tag === undefined) {
+            throw new runtime.RequiredError('tag','Required parameter requestParameters.tag was null or undefined when calling tagIdPut.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/tag/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TagToJSON(requestParameters.tag),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
+    }
+
+    /**
+     * Update an tag in the repository.
+     */
+    async tagIdPut(requestParameters: TagIdPutRequest): Promise<Tag> {
+        const response = await this.tagIdPutRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
+     */
+    async tagPostRaw(requestParameters: TagPostRequest): Promise<runtime.ApiResponse<Tag>> {
+        if (requestParameters.tag === null || requestParameters.tag === undefined) {
+            throw new runtime.RequiredError('tag','Required parameter requestParameters.tag was null or undefined when calling tagPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/tag`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TagToJSON(requestParameters.tag),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
+    }
+
+    /**
+     * Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
+     */
+    async tagPost(requestParameters: TagPostRequest): Promise<Tag> {
+        const response = await this.tagPostRaw(requestParameters);
         return await response.value();
     }
 

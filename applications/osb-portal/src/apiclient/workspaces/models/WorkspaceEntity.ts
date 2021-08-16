@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    Tag,
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
@@ -38,10 +42,6 @@ import {
     WorkspaceResourceEntityFromJSON,
     WorkspaceResourceEntityFromJSONTyped,
     WorkspaceResourceEntityToJSON,
-    WorkspaceTag,
-    WorkspaceTagFromJSON,
-    WorkspaceTagFromJSONTyped,
-    WorkspaceTagToJSON,
 } from './';
 
 /**
@@ -80,12 +80,6 @@ export interface WorkspaceEntity {
      * @memberof WorkspaceEntity
      */
     timestampUpdated?: Date;
-    /**
-     * Workspace tags
-     * @type {Array<WorkspaceTag>}
-     * @memberof WorkspaceEntity
-     */
-    tags?: Array<WorkspaceTag>;
     /**
      * The workspace resource id the workspace is opened last with
      * @type {number}
@@ -141,6 +135,12 @@ export interface WorkspaceEntity {
      */
     storage?: VolumeStorage;
     /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof WorkspaceEntity
+     */
+    tags?: Array<Tag>;
+    /**
      * Resources of the workspace
      * @type {Array<WorkspaceResourceEntity>}
      * @memberof WorkspaceEntity
@@ -163,7 +163,6 @@ export function WorkspaceEntityFromJSONTyped(json: any, ignoreDiscriminator: boo
         'description': json['description'],
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
-        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(WorkspaceTagFromJSON)),
         'lastOpenedResourceId': !exists(json, 'last_opened_resource_id') ? undefined : json['last_opened_resource_id'],
         'thumbnail': !exists(json, 'thumbnail') ? undefined : json['thumbnail'],
         'gallery': !exists(json, 'gallery') ? undefined : ((json['gallery'] as Array<any>).map(WorkspaceImageFromJSON)),
@@ -173,6 +172,7 @@ export function WorkspaceEntityFromJSONTyped(json: any, ignoreDiscriminator: boo
         'license': !exists(json, 'license') ? undefined : json['license'],
         'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(WorkspaceCollaboratorFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
+        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceEntityFromJSON)),
     };
 }
@@ -191,7 +191,6 @@ export function WorkspaceEntityToJSON(value?: WorkspaceEntity | null): any {
         'description': value.description,
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
-        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(WorkspaceTagToJSON)),
         'last_opened_resource_id': value.lastOpenedResourceId,
         'thumbnail': value.thumbnail,
         'gallery': value.gallery === undefined ? undefined : ((value.gallery as Array<any>).map(WorkspaceImageToJSON)),
@@ -201,6 +200,7 @@ export function WorkspaceEntityToJSON(value?: WorkspaceEntity | null): any {
         'license': value.license,
         'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(WorkspaceCollaboratorToJSON)),
         'storage': VolumeStorageToJSON(value.storage),
+        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
         'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceEntityToJSON)),
     };
 }
