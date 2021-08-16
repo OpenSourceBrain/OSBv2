@@ -25,7 +25,7 @@ class OSBRepositoryAllOf(Model):
         """OSBRepositoryAllOf - a model defined in OpenAPI
 
         :param context_resources: The context_resources of this OSBRepositoryAllOf.  # noqa: E501
-        :type context_resources: List[RepositoryResourceNode]
+        :type context_resources: RepositoryResourceNode
         :param contexts: The contexts of this OSBRepositoryAllOf.  # noqa: E501
         :type contexts: List[str]
         :param user: The user of this OSBRepositoryAllOf.  # noqa: E501
@@ -38,7 +38,7 @@ class OSBRepositoryAllOf(Model):
         :type timestamp_modified: datetime
         """
         self.openapi_types = {
-            'context_resources': List[RepositoryResourceNode],
+            'context_resources': RepositoryResourceNode,
             'contexts': List[str],
             'user': User,
             'content_types_list': List[RepositoryContentType],
@@ -79,7 +79,7 @@ class OSBRepositoryAllOf(Model):
 
 
         :return: The context_resources of this OSBRepositoryAllOf.
-        :rtype: List[RepositoryResourceNode]
+        :rtype: RepositoryResourceNode
         """
         return self._context_resources
 
@@ -89,7 +89,7 @@ class OSBRepositoryAllOf(Model):
 
 
         :param context_resources: The context_resources of this OSBRepositoryAllOf.
-        :type context_resources: List[RepositoryResourceNode]
+        :type context_resources: RepositoryResourceNode
         """
 
         self._context_resources = context_resources
