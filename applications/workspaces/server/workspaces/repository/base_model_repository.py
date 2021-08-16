@@ -2,6 +2,7 @@
 
 import logging
 import math
+import re
 
 from cloudharness import log as logger
 from open_alchemy import model_factory
@@ -152,18 +153,17 @@ class BaseModelRepository:
             field_comparator, value = arg.strip().split("=")
             field_comparator = field_comparator.split("__")
             field = field_comparator[0]
-            if len(field_comparator) > 1:
-                comparator = field_comparator[1]
+            comparator = field_comparator[1] if len(field_comparator) > 1 else "="
+            related_attr = re.compile(r"(.*)\[(.*)\]").match(field)
+            if related_attr:
+                attr = getattr(self.model, related_attr.group(1))
+                attr = attr.property.entity.class_manager.local_attrs.get(related_attr.group(2))
             else:
-                comparator = "="
-            attr = getattr(self.model, field)
-            # sqlalchemy.orm.relationships.RelationshipProperty.Comparator
-            # sqlalchemy.orm.properties.ColumnProperty.Comparator
-            if isinstance(attr.comparator, sqlalchemy.orm.properties.ColumnProperty.Comparator) and \
-               isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
-                value = value.upper() in ("TRUE", "1", "T")
+                attr = getattr(self.model, field)
+                if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
+                    value = value.upper() in ("TRUE", "1", "T")
             logger.debug("Filter attr: %s comparator: %s value: %s",
-                         attr.key, comparator, value)
+                    attr.key, comparator, value)
             if isinstance(attr.comparator, sqlalchemy.orm.relationships.RelationshipProperty.Comparator):
                 # filter on sub query
                 field = field_comparator[1]

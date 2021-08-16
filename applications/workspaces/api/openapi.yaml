@@ -80,9 +80,9 @@ paths:
           schema:
             type: string
             default: None
-            example: name__like=Work%ce 18+id__=1+tags__tag=Tag
+            example: name__like=Work%ce 18+id__=1+tags[tag]=Tag
           required: false
-          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [<table__>fieldname][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [field/relation[field]][comparator = , __not= , __like= ][value]     
       responses:
         200:
           description: Return all available workspaces
@@ -419,7 +419,7 @@ paths:
             default: None
             example: name__like=%reposi%
           required: false
-          description: The search string for filtering of the items to return. Format [<table__>fieldname][comparator = , __not= , __like= ][value]
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available repositories
@@ -541,7 +541,7 @@ paths:
             default: None
             example: name__like=%storage%
           required: false
-          description: The search string for filtering of the items to return. Format [<table__>fieldname][comparator = , __not= , __like= ][value]
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available volumestorages
@@ -661,7 +661,7 @@ paths:
             default: None
             example: name__like=%Tag 1%
           required: false
-          description: The search string for filtering of the items to return. Format [<table__>fieldname][comparator = , __not= , __like= ][value]
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available tags
