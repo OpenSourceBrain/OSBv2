@@ -21,7 +21,7 @@ class OSBRepositoryAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, context_resources=None, contexts=None, user=None, content_types_list=None, description=None):  # noqa: E501
+    def __init__(self, context_resources=None, contexts=None, user=None, content_types_list=None, description=None, timestamp_modified=None):  # noqa: E501
         """OSBRepositoryAllOf - a model defined in OpenAPI
 
         :param context_resources: The context_resources of this OSBRepositoryAllOf.  # noqa: E501
@@ -34,13 +34,16 @@ class OSBRepositoryAllOf(Model):
         :type content_types_list: List[RepositoryContentType]
         :param description: The description of this OSBRepositoryAllOf.  # noqa: E501
         :type description: str
+        :param timestamp_modified: The timestamp_modified of this OSBRepositoryAllOf.  # noqa: E501
+        :type timestamp_modified: datetime
         """
         self.openapi_types = {
             'context_resources': RepositoryResourceNode,
             'contexts': List[str],
             'user': User,
             'content_types_list': List[RepositoryContentType],
-            'description': str
+            'description': str,
+            'timestamp_modified': datetime
         }
 
         self.attribute_map = {
@@ -48,7 +51,8 @@ class OSBRepositoryAllOf(Model):
             'contexts': 'contexts',
             'user': 'user',
             'content_types_list': 'content_types_list',
-            'description': 'description'
+            'description': 'description',
+            'timestamp_modified': 'timestamp_modified'
         }
 
         self._context_resources = context_resources
@@ -56,6 +60,7 @@ class OSBRepositoryAllOf(Model):
         self._user = user
         self._content_types_list = content_types_list
         self._description = description
+        self._timestamp_modified = timestamp_modified
 
     @classmethod
     def from_dict(cls, dikt) -> 'OSBRepositoryAllOf':
@@ -174,3 +179,26 @@ class OSBRepositoryAllOf(Model):
         """
 
         self._description = description
+
+    @property
+    def timestamp_modified(self):
+        """Gets the timestamp_modified of this OSBRepositoryAllOf.
+
+        Date/time the OSBReposity is last modified  # noqa: E501
+
+        :return: The timestamp_modified of this OSBRepositoryAllOf.
+        :rtype: datetime
+        """
+        return self._timestamp_modified
+
+    @timestamp_modified.setter
+    def timestamp_modified(self, timestamp_modified):
+        """Sets the timestamp_modified of this OSBRepositoryAllOf.
+
+        Date/time the OSBReposity is last modified  # noqa: E501
+
+        :param timestamp_modified: The timestamp_modified of this OSBRepositoryAllOf.
+        :type timestamp_modified: datetime
+        """
+
+        self._timestamp_modified = timestamp_modified

@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
-  linkColor,
   bgLightest,
   fontColor,
   bgDarkest,
@@ -87,6 +86,16 @@ export default makeStyles((theme) => ({
           },
         },
       },
+    },
+  },
+  divider: {
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
+  filterAndSearchBox: {
+    display: 'flex',
+    "& .MuiTextField-root": {
+      width: '25vw',
     },
   },
 }));
