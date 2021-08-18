@@ -56,6 +56,11 @@ export default (props: WorkspaceActionsMenuProps) => {
         handleCloseMenu();
     }
 
+    const handleFeaturedWorkspace = () => {
+        props.updateWorkspace({ ...props.workspace, featured: true });
+        handleCloseMenu();
+    }
+
     const handleOpenWorkspace = () => {
         window.location.href = `/workspace/${props.workspace.id}`;
     }
@@ -89,6 +94,7 @@ export default (props: WorkspaceActionsMenuProps) => {
                 {canEdit && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
                 {canEdit && !props.workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
                 {canEdit && props.workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
+                { props.user && props.user.isAdmin && props.workspace.publicable && <MenuItem onClick={handleFeaturedWorkspace}>Make featured</MenuItem>}
                 <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
                 <NestedMenuItem
                 label="Open with..."
