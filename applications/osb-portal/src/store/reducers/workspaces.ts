@@ -6,15 +6,19 @@ import * as UserActions from '../actions/user';
 interface WorkspaceState {
   userWorkspaces: Workspace[],
   publicWorkspaces: Workspace[],
+  featuredWorkspaces: Workspace[],
   selectedWorkspace: Workspace,
-  showPublic: boolean
+  showPublic: boolean,
+  showFeatured: boolean,
 }
 
 export const initialState: WorkspaceState = {
   userWorkspaces: null,
   publicWorkspaces: null,
   selectedWorkspace: null,
-  showPublic: true
+  featuredWorkspaces: null,
+  showPublic: false,
+  showFeatured: true,
 };
 
 
@@ -23,13 +27,19 @@ const workspaceSlice = createSlice({
   initialState,
   reducers: {
     showPublicWorkspaces(state, action: Action) {
-      return { ...state, showPublic: true };
+      return { ...state, showPublic: true, showFeatured: false };
     },
     showUserWorkspaces(state, action: Action) {
       return { ...state, showPublic: false };
     },
+    showFeaturedWorkspaces(state, action: Action) {
+      return { ...state, showFeatured: true, showPublic: false };
+    },
     loadPublicWorkspaces(state, action: PayloadAction<Workspace[]>) {
       return { ...state, publicWorkspaces: action.payload };
+    },
+    loadFeaturedWorkspaces(state, action: PayloadAction<Workspace[]>) {
+      return { ...state, featuredWorkspaces: action.payload };
     },
     selectWorkspace(state, action: PayloadAction<Workspace>) {
       return { ...state, selectedWorkspace: action.payload }

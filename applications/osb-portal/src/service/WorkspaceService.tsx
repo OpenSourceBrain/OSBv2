@@ -67,7 +67,7 @@ class WorkspaceService {
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
-    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
+    return { name: ws.name, description: ws.description, publicable: ws.publicable, featured: ws.featured, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
   }
 
   async deleteWorkspace(workspaceId: number) {

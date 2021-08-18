@@ -54,6 +54,7 @@ export interface Workspace {
     timestampUpdated?: Date;
     thumbnail?: string;
     publicable?: boolean;
+    featured?: boolean,
     license?: string;
     owner?: UserInfo;
     [other: string]: any;

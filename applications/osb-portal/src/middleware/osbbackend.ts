@@ -25,12 +25,16 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
     workspaceService.fetchWorkspaces().then((workspaces) => {
       next(Workspaces.loadUserWorkspaces(workspaces));
     });
+    workspaceService.fetchWorkspaces().then((workspaces) => {
+      const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
+      next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
+    })
   }
 
   switch (action.type) {
     case Workspaces.showPublicWorkspaces.toString():
       if (!store.getState().workspaces.publicWorkspaces) {
-        workspaceService.fetchWorkspaces(true).then((workspaces) => {
+        workspaceService.fetchWorkspaces(false).then((workspaces) => {
           next(Workspaces.loadPublicWorkspaces(workspaces));
         });
       }
@@ -40,6 +44,15 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       if (!store.getState().workspaces.userWorkspaces) {
         workspaceService.fetchWorkspaces(false).then((workspaces) => {
           next(Workspaces.loadUserWorkspaces(workspaces));
+        });
+      }
+      next(action);
+      break;
+    case Workspaces.showFeaturedWorkspaces.toString():
+      if (!store.getState().workspaces.featuredWorkspaces) {
+        workspaceService.fetchWorkspaces(true).then((workspaces) => {
+          const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
+          next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
         });
       }
       next(action);

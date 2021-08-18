@@ -27,7 +27,9 @@ import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
 const mapWorkspacesStateToProps = (state: RootState) => {
   return ({
     showPublic: state.workspaces?.showPublic,
+    showFeatured: state.workspaces?.showFeatured,
     publicWorkspaces: state.workspaces?.publicWorkspaces,
+    featuredWorkspaces: state.workspaces?.featuredWorkspaces,
     userWorkspaces: state.workspaces?.userWorkspaces,
     user: state.user
   })
