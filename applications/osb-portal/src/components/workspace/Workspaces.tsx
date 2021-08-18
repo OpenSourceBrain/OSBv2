@@ -16,11 +16,15 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     minWidth: 'fit-content !important',
-    "& .MuiTab-wrapper": {
-      maxWidth: 'fit-content',
-      display: 'contents',
-    },
+    borderRight: '1px solid white',
+    paddingLeft: theme.spacing(1),
   },
+  lastTab: {
+    borderRight: 'none',
+  },
+  firstTab: {
+    paddingLeft: 0,
+  }
 }))
 
 // TODO handle user's vs public workspaces
@@ -33,13 +37,11 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
   const PUBLIC_WORKSPACES = "Public workspaces";
 
   const [activeTab, setActiveTab] = React.useState(FEATURED_WORKSPACES);
-  console.log('activeTab', activeTab);
 
-  console.log('userworkspaces', activeTab === USER_WORKSPACES);
-  const workspaces = activeTab === FEATURED_WORKSPACES ? featuredWorkspaces : activeTab === PUBLIC_WORKSPACES ? publicWorkspaces : activeTab === USER_WORKSPACES ? userWorkspaces : PUBLIC_WORKSPACES;
+  const workspaces = activeTab === FEATURED_WORKSPACES ? featuredWorkspaces : activeTab === PUBLIC_WORKSPACES ? publicWorkspaces : activeTab === USER_WORKSPACES ? userWorkspaces : publicWorkspaces;
 
   React.useEffect(() => {
-    showFeaturedWorkspaces();
+    refreshWorkspaces();
   }, []);
 
 
@@ -79,11 +81,11 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
         onChange={handleChange}
       >
         { user ?
-            <Tab className={classes.tab} value={USER_WORKSPACES} label={user.isAdmin ? "All workspaces" : "Your workspaces" } />
+            <Tab className={`${classes.tab} ${classes.firstTab}`} value={USER_WORKSPACES} label={user.isAdmin ? "All workspaces" : "Your workspaces" } />
           : null
         }
-        <Tab className={classes.tab} value={FEATURED_WORKSPACES} label="Featured workspaces" />
-        <Tab className={classes.tab} value={PUBLIC_WORKSPACES} label="Public workspaces" />
+        <Tab className={user ? classes.tab : `${classes.firstTab} ${classes.tab}`} value={FEATURED_WORKSPACES} label="Featured workspaces" />
+        <Tab className={`${classes.tab} ${classes.lastTab}`} value={PUBLIC_WORKSPACES} label="Public workspaces" />
       </Tabs>
 
       {

@@ -34,7 +34,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
   switch (action.type) {
     case Workspaces.showPublicWorkspaces.toString():
       if (!store.getState().workspaces.publicWorkspaces) {
-        workspaceService.fetchWorkspaces(false).then((workspaces) => {
+        workspaceService.fetchWorkspaces(true).then((workspaces) => {
           next(Workspaces.loadPublicWorkspaces(workspaces));
         });
       }
