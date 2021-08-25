@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 import { WorkspaceIdGetRequest, WorkspaceGetRequest } from "../apiclient/workspaces/apis/RestApi";
 
 import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } from "../types/workspace";
@@ -38,9 +40,18 @@ class WorkspaceService {
 
 
 
-  async fetchWorkspaces(featured = false): Promise<Workspace[]> {
+  async fetchWorkspaces(isPublic = false, isFeatured = false): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = featured ? { q: 'publicable=true' } : {};
+    const params: any = {};
+    if (isPublic && !isFeatured) {
+      params.publicable = 'true';
+    }
+    if (isFeatured) {
+      params.featured = 'true';
+    }
+
+
+    const wspr: WorkspaceGetRequest = { q: qs.stringify(params) };
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
@@ -67,7 +78,7 @@ class WorkspaceService {
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
-    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
+    return { name: ws.name, description: ws.description, publicable: ws.publicable, featured: ws.featured, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
   }
 
   async deleteWorkspace(workspaceId: number) {
