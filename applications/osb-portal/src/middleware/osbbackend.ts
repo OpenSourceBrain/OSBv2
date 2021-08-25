@@ -25,9 +25,8 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
     workspaceService.fetchWorkspaces().then((workspaces) => {
       next(Workspaces.loadUserWorkspaces(workspaces));
     });
-    workspaceService.fetchWorkspaces().then((workspaces) => {
-      const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
-      next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
+    workspaceService.fetchWorkspaces(true, true).then((workspaces) => {
+      next(Workspaces.loadFeaturedWorkspaces(workspaces));
     })
   }
 
