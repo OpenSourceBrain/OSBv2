@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -13,8 +12,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import LinkIcon from '@material-ui/icons/Link';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
-import { DialogContent, DialogTitle } from "@material-ui/core";
+import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -55,6 +55,21 @@ const useStyles = makeStyles((theme) => ({
   },
   repositoryResourceBrowserBox: {
     width: '100%',
+  },
+  repositoryInformation: {
+    marginBottom: theme.spacing(1),
+    "& .MuiAccordionSummary-root": {
+      flexDirection: 'row',
+      paddingLeft: `${theme.spacing(1)}px !important`,
+    },
+    "& .MuiAccordionDetails-root": {
+      paddingLeft: `${theme.spacing(2)}px !important`,
+      paddingBottom: theme.spacing(1),
+    },
+    "& .MuiChip-root": {
+      marginLeft: '5px',
+      marginRight: '5px',
+    },
   },
   root: {
     maxHeight: '100%',
@@ -289,6 +304,54 @@ export const RepositoryPage = (props: any) => {
                     <Typography component="h2" variant="h2" className="primary-heading">
                       Overview
                     </Typography>
+                  </Box>
+                  <Box className={classes.repositoryInformation}>
+                    <Accordion>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography component="p" variant="body1">OSB Repository Information</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        {repository.id && <Typography component="p" variant="body2">
+                          Id: {repository.id}
+                        </Typography>}
+                        <Typography component="p" variant="body2">
+                          Title: {repository.name}
+                        </Typography>
+                        {repository.summary && <Typography component="p" variant="body2">
+                          Summary: {repository.summary}
+                        </Typography>}
+                        <Typography component="p" variant="body2">
+                          Content type: {repository.contentTypes}
+                        </Typography>
+                        <Typography component="p" variant="body2">
+                          Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
+                        </Typography>
+                        {repository.defaultContext && <Typography component="p" variant="body2">
+                          Context: {repository.defaultContext}
+                        </Typography>}
+                        {repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
+                          User: {`${repository.user.firstName} ${repository.user.lastName}`}
+                        </Typography>}
+                        {repository.timestampCreated && <Typography component="p" variant="body2">
+                          Created: {repository.timestampCreated.toString()}
+                        </Typography>}
+                        {repository.timestampUpdated && <Typography component="p" variant="body2">
+                          Updated: {repository.timestampUpdated.toString()}
+                        </Typography>}
+                        {repository.tags && repository.tags.length > 0 && <Box>
+                          Tags:
+                          {
+                            repository.tags.map(tagObject => {
+                              return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                            })
+                          }
+                        </Box>}
+                      </AccordionDetails>
+                    </Accordion>
                   </Box>
                   <MarkdownViewer text={repository.description} repository={repository}/>
                 </Box>
