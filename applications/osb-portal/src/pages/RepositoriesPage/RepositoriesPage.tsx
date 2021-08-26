@@ -14,7 +14,11 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
+import Chip from "@material-ui/core/Chip";
+import searchFilter from "../../types/searchFilter";
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
@@ -39,9 +43,12 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const history = useHistory();
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
-  const [filter, setFilter] = useState("");
-  const [selectedRepositoryContentTypes, setSelectedRepositoryContentTypes] = useState([]);
-  const [searchTags, setSearchTags] = useState([]);
+  const [searchFilterValues, setSearchFilterValues] = useState<searchFilter>({
+    text: undefined,
+    tags: [],
+    types: [],
+  });
+  const [searchTagOptions, setSearchTagOptions] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -82,7 +89,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   }
 
   React.useEffect(() => {
-    if (typeof filter === 'undefined' || filter.length === 0){
+    if (searchFilterValues.tags.length === 0 && searchFilterValues.types.length === 0 && (typeof searchFilterValues.text === 'undefined' || searchFilterValues.text === '')){
       if (!firstTimeFiltering){
         setPage(1);
       }
@@ -94,23 +101,31 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     } else{
       if (firstTimeFiltering){
         firstTimeFiltering = false;
-        RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
+        RepositoryService.getRepositoriesByFilter(1, searchFilterValues).then((repos) => {
           setRepositories(repos.osbrepositories);
           setTotalPages(repos.pagination.numberOfPages);
         });
       }
       else {
-        RepositoryService.getRepositoriesByFilter(page, filter).then((repos) => {
+        RepositoryService.getRepositoriesByFilter(page, searchFilterValues).then((repos) => {
           setRepositories(repos.osbrepositories);
           setTotalPages(repos.pagination.numberOfPages);
         });
       }
     }
-  }, [page, filter, selectedRepositoryContentTypes]);
+  }, [page, searchFilterValues]);
 
-  const handleInput = (value: any) => {
-    console.log('Inside handleInput value', value);
-    setSelectedRepositoryContentTypes(value);
+  React.useEffect(() => {
+    RepositoryService.getAllTags().then((tagsInformation) => {
+      const tags = tagsInformation.tags.map(tagObject => {
+        return tagObject.tag;
+      });
+      setSearchTagOptions(tags);
+    });
+  }, [])
+
+  const handleInput = (repositoryTypes: any) => {
+    setSearchFilterValues({...searchFilterValues, types: repositoryTypes });
   }
 
 
@@ -141,41 +156,39 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             )}
           </Box>
           <Box className={classes.filterAndSearchBox}>
-          {/* <Autocomplete
-          // className={classes.autoComplete}
+          <Autocomplete
           multiple={true}
-          options={tagOptions}
+          options={searchTagOptions}
           freeSolo={true}
-          // defaultValue={workspace?.tags}
-          options={tagOptions}
-          defaultValue={defaultTags}
-          onChange={ (event, value) => setWorkspaceTags(value)}
+          onChange={ (event, value) => setSearchFilterValues({...searchFilterValues, tags: value })}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-             <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+             <Chip variant="outlined" label={option} size="small" {...getTagProps({index})} key={option} />
            ))
           }
           renderInput={(params) => (
-            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Workspace tags" />
+            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Repository tags" />
           )}
-          /> */}
+          />
           <Select
-              value={selectedRepositoryContentTypes}
+              value={searchFilterValues.types}
               multiple={true}
               onChange={(e) => handleInput(e.target.value)}
-              IconComponent={KeyboardArrowDownIcon}
-              renderValue={(selected) => (selected as string[]).join(', ')}
+              IconComponent={FilterListIcon}
+              renderValue={(selected) => (selected as string[]).map((value) => (
+                <Chip key={value} label={value} />
+              ))}
             >
               <MenuItem value={RepositoryContentType.Experimental}>
-                <Checkbox color="primary" checked={selectedRepositoryContentTypes.includes(RepositoryContentType.Experimental)} />
+                <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} />
                 <ListItemText primary="NWB Experimental Data" />
               </MenuItem>
               <MenuItem value={RepositoryContentType.Modeling}>
-                <Checkbox color="primary" checked={selectedRepositoryContentTypes.includes(RepositoryContentType.Modeling)}/>
+                <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Modeling)}/>
                 <ListItemText primary="Modeling" />
               </MenuItem>
             </Select>
-            <RepositoriesSearch filterChanged={(newFilter) => setFilter(newFilter)} />
+            <RepositoriesSearch filterChanged={(newTextFilter) => setSearchFilterValues({...searchFilterValues, text: newTextFilter})} />
             {user && (
               <>
               <Divider orientation="vertical" flexItem={true} className={classes.divider} />

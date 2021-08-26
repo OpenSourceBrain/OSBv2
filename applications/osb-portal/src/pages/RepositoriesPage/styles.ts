@@ -94,8 +94,18 @@ export default makeStyles((theme) => ({
   },
   filterAndSearchBox: {
     display: 'flex',
+    '& .MuiInputBase-root': {
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(1)
+    },
+    '& .MuiAutocomplete-root': {
+      marginRight: theme.spacing(1),
+      '& .MuiInputBase-root': {
+        paddingTop: 0,
+      },
+    },
     "& .MuiTextField-root": {
-      width: '25vw',
+      minWidth: '20vw',
     },
   },
 }));
