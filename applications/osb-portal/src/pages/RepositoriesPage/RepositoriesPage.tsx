@@ -10,9 +10,15 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
-import { OSBRepository } from "../../apiclient/workspaces";
+import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
@@ -34,6 +40,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
   const [filter, setFilter] = useState("");
+  const [selectedRepositoryContentTypes, setSelectedRepositoryContentTypes] = useState([]);
+  const [searchTags, setSearchTags] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -98,7 +106,12 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         });
       }
     }
-  }, [page, filter]);
+  }, [page, filter, selectedRepositoryContentTypes]);
+
+  const handleInput = (value: any) => {
+    console.log('Inside handleInput value', value);
+    setSelectedRepositoryContentTypes(value);
+  }
 
 
   return (
@@ -128,6 +141,40 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             )}
           </Box>
           <Box className={classes.filterAndSearchBox}>
+          {/* <Autocomplete
+          // className={classes.autoComplete}
+          multiple={true}
+          options={tagOptions}
+          freeSolo={true}
+          // defaultValue={workspace?.tags}
+          options={tagOptions}
+          defaultValue={defaultTags}
+          onChange={ (event, value) => setWorkspaceTags(value)}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+             <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+           ))
+          }
+          renderInput={(params) => (
+            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Workspace tags" />
+          )}
+          /> */}
+          <Select
+              value={selectedRepositoryContentTypes}
+              multiple={true}
+              onChange={(e) => handleInput(e.target.value)}
+              IconComponent={KeyboardArrowDownIcon}
+              renderValue={(selected) => (selected as string[]).join(', ')}
+            >
+              <MenuItem value={RepositoryContentType.Experimental}>
+                <Checkbox color="primary" checked={selectedRepositoryContentTypes.includes(RepositoryContentType.Experimental)} />
+                <ListItemText primary="NWB Experimental Data" />
+              </MenuItem>
+              <MenuItem value={RepositoryContentType.Modeling}>
+                <Checkbox color="primary" checked={selectedRepositoryContentTypes.includes(RepositoryContentType.Modeling)}/>
+                <ListItemText primary="Modeling" />
+              </MenuItem>
+            </Select>
             <RepositoriesSearch filterChanged={(newFilter) => setFilter(newFilter)} />
             {user && (
               <>
