@@ -185,7 +185,3 @@ In the machine running the infrastructure-generate script, run
 ```bash
 kubectl port-forward --namespace kube-system $(kubectl get po -n kube-system --field-selector=status.phase=Running | grep registry | grep -v proxy | \awk '{print $1;}') 5000:5000
 ```
-
-
-
-
