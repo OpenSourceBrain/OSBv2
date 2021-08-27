@@ -32,6 +32,10 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
 
   const classes = useStyles();
 
+  React.useEffect(() => {
+    showFeaturedWorkspaces();
+  }, []);
+
   const FEATURED_WORKSPACES = "Featured workspaces";
   const USER_WORKSPACES = "Your workspaces";
   const PUBLIC_WORKSPACES = "Public workspaces";
@@ -39,10 +43,6 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
   const [activeTab, setActiveTab] = React.useState(FEATURED_WORKSPACES);
 
   const workspaces = activeTab === FEATURED_WORKSPACES ? featuredWorkspaces : activeTab === PUBLIC_WORKSPACES ? publicWorkspaces : activeTab === USER_WORKSPACES ? userWorkspaces : publicWorkspaces;
-
-  React.useEffect(() => {
-    refreshWorkspaces();
-  }, []);
 
 
   const workspaceList =

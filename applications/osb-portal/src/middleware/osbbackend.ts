@@ -32,28 +32,23 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
 
   switch (action.type) {
     case Workspaces.showPublicWorkspaces.toString():
-      if (store.getState().workspaces.publicWorkspaces) {
-        workspaceService.fetchWorkspaces(true).then((workspaces) => {
-          next(Workspaces.loadPublicWorkspaces(workspaces));
-        });
-      }
+      workspaceService.fetchWorkspaces(true).then((workspaces) => {
+        next(Workspaces.loadPublicWorkspaces(workspaces));
+      });
       next(action);
       break;
     case Workspaces.showUserWorkspaces.toString():
-      if (store.getState().workspaces.userWorkspaces) {
-        workspaceService.fetchWorkspaces(false).then((workspaces) => {
-          next(Workspaces.loadUserWorkspaces(workspaces));
-        });
-      }
+      workspaceService.fetchWorkspaces(false).then((workspaces) => {
+        next(Workspaces.loadUserWorkspaces(workspaces));
+      });
       next(action);
       break;
     case Workspaces.showFeaturedWorkspaces.toString():
-      if (store.getState().workspaces.featuredWorkspaces) {
-        workspaceService.fetchWorkspaces(true).then((workspaces) => {
-          const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
-          next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
-        });
-      }
+      
+      workspaceService.fetchWorkspaces(true).then((workspaces) => {
+        const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
+        next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
+      });
       next(action);
       break;
     case Workspaces.refreshWorkspaces.toString(): {
