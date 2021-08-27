@@ -40,19 +40,12 @@ class RepositoryService {
   }
 
   async getRepositoriesByFilter(page: number, filter: searchFilter, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
-    let queryString = '';
-    if (typeof filter.text !== 'undefined') {
-      queryString = queryString.concat(`name__like=%${filter.text}%+summary__like=%${filter.text}%`);
-    }
-    else{
-      queryString = `name__like=%%+summary__like=%%`;
-    }
-    if (filter.tags.length > 0) {
-      queryString = queryString.concat(`&tag=${filter.tags.join('+')}`);
-    }
-    if (filter.types.length > 0) {
-      queryString = queryString.concat(`&type=${filter.types.join('+')}`);
-    }
+    const nameAndSummaryQuery = typeof filter.text === 'undefined' ? `name__like=%%+summary__like=%%` : `name__like=%${filter.text}%+summary__like=%${filter.text}%`;
+    const tagsQuery = filter.tags.length > 0 ? `&tag=${filter.tags.join('+')}` : '';
+    const typesQuery = filter.types.length > 0 ? `&type=${filter.types.join('+')}` : '';
+    const queryString = nameAndSummaryQuery + tagsQuery + typesQuery;
+
+    console.log('final query string', queryString);
     return (this.workspacesApi.osbrepositoryGet(
       {
         page,
