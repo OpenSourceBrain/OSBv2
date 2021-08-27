@@ -190,6 +190,15 @@ export const EditRepoDialog = ({
     name: '',
   });
 
+  React.useEffect(() => {
+    RepositoryService.getAllTags().then((tagsInformation) => {
+      const tags = tagsInformation.tags.map(tagObject => {
+        return tagObject.tag;
+      });
+      setTagOptions(tags);
+    });
+  }, []);
+
   const handleClose = () => {
     setDialogOpen(false);
   };
