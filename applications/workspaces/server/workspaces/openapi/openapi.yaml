@@ -416,26 +416,26 @@ paths:
           name: q
           schema:
             type: string
-            default: None
+            nullable: true
             example: name=myrepo+summary__like=%reposi%
           required: false
-          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]. Multiple parameters are concaatenated with + (OR operator)
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]. Multiple parameters are concatenated with + (OR operator)
         - in: query
           name: tags
           schema:
             type: string
-            default: None
             example: tag1+tag2
+            nullable: true
           required: false
-          description: The tags to filter with Multiple parameters are concaatenated with + (OR operator)
+          description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
         - in: query
           name: types
           schema:
             type: string
-            default: None
+            nullable: true
             example: experimental+modeling
           required: false
-          description: The tags to filter with Multiple parameters are concaatenated with + (OR operator)
+          description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
       responses:
         200:
           description: Return all available repositories

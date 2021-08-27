@@ -9,7 +9,7 @@ from sqlalchemy.sql import func
 
 
 from workspaces.config import Config
-from workspaces.models import RepositoryContentType, ResourceStatus, User
+from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
 from workspaces.service.auth import get_auth_client
@@ -127,13 +127,16 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
     def search_qs(self, filter=None, q=None, tags=None, types=None):
         q_base = self.model.query
+        if tags:
+            q_base = q_base.join(self.model.tags).filter(
+                Tag.tag.in_(tags.split("+")))
         if filter:
             q_base = q_base.filter(
                 or_(*[self._create_filter(*f) for f in filter]))
-        if tags:
-            q_base = q_base.filter(self.model.tags.in_(tags.split("+")))
+
         if types:
-            q_base = q_base.filter(self.model.types.in_(types.split("+")))
+            q_base = q_base.filter(
+                or_(self.model.content_types.ilike(f"%{t}%") for t in types.split("+")))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):
