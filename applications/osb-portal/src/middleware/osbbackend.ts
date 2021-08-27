@@ -32,7 +32,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
 
   switch (action.type) {
     case Workspaces.showPublicWorkspaces.toString():
-      if (!store.getState().workspaces.publicWorkspaces) {
+      if (store.getState().workspaces.publicWorkspaces) {
         workspaceService.fetchWorkspaces(true).then((workspaces) => {
           next(Workspaces.loadPublicWorkspaces(workspaces));
         });
@@ -40,7 +40,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       next(action);
       break;
     case Workspaces.showUserWorkspaces.toString():
-      if (!store.getState().workspaces.userWorkspaces) {
+      if (store.getState().workspaces.userWorkspaces) {
         workspaceService.fetchWorkspaces(false).then((workspaces) => {
           next(Workspaces.loadUserWorkspaces(workspaces));
         });
@@ -48,7 +48,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       next(action);
       break;
     case Workspaces.showFeaturedWorkspaces.toString():
-      if (!store.getState().workspaces.featuredWorkspaces) {
+      if (store.getState().workspaces.featuredWorkspaces) {
         workspaceService.fetchWorkspaces(true).then((workspaces) => {
           const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
           next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
