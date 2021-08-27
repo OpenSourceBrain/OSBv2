@@ -108,7 +108,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       break;
 
     case Workspaces.updateWorkspace.toString():
-      workspaceService.updateWorkspace(action.payload).then((workspace) => { next({ ...action, payload: workspace }); refreshWorkspaces() });
+      workspaceService.updateWorkspace(action.payload).then((workspace) => { next({ ...action, payload: workspace }); });
       break;
     case Workspaces.deleteWorkspace.toString():
       workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
