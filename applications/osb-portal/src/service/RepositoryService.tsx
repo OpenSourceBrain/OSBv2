@@ -45,7 +45,6 @@ class RepositoryService {
     const typesQuery = filter.types.length > 0 ? `&type=${filter.types.join('+')}` : '';
     const queryString = nameAndSummaryQuery + tagsQuery + typesQuery;
 
-    console.log('final query string', queryString);
     return (this.workspacesApi.osbrepositoryGet(
       {
         page,
