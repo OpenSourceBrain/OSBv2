@@ -125,11 +125,15 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
-    def search_qs(self, filter=None, q=None):
+    def search_qs(self, filter=None, q=None, tags=None, types=None):
         q_base = self.model.query
         if filter:
             q_base = q_base.filter(
                 or_(*[self._create_filter(*f) for f in filter]))
+        if tags:
+            q_base = q_base.filter(self.model.tags.in_(tags.split("+")))
+        if types:
+            q_base = q_base.filter(self.model.types.in_(types.split("+")))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):

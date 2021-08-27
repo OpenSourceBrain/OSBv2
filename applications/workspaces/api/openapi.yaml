@@ -82,7 +82,7 @@ paths:
             default: None
             example: name__like=Work%ce 18+id__=1+tags[tag]=Tag
           required: false
-          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [field/relation[field]][comparator = , __not= , __like= ][value]     
+          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
         200:
           description: Return all available workspaces
@@ -99,7 +99,7 @@ paths:
                       $ref: "#/components/schemas/Workspace"
     post:
       tags:
-        - rest                  
+        - rest
       summary: Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
       security:
         - bearerAuth: []
@@ -197,12 +197,12 @@ paths:
                 resourceorigins:
                   type: array
                   items:
-                    $ref: "#/components/schemas/ResourceOrigin"    
+                    $ref: "#/components/schemas/ResourceOrigin"
       responses:
         200:
           description: The workspace was updated with the thumbnail.
         404:
-          description: The workspace was not found or the thumbnail was not specified         
+          description: The workspace was not found or the thumbnail was not specified
       tags:
         - rest
   /workspace/{id}/thumbnail:
@@ -231,7 +231,7 @@ paths:
         200:
           description: The workspace was updated with the thumbnail.
         404:
-          description: The workspace was not found or the thumbnail was not specified         
+          description: The workspace was not found or the thumbnail was not specified
       tags:
         - rest
   /workspace/{id}/gallery:
@@ -260,7 +260,7 @@ paths:
         200:
           description: The image was added to the workspace.
         404:
-          description: The workspace was not found or the image was not specified         
+          description: The workspace was not found or the image was not specified
       tags:
         - rest
   /workspace/{id}/gallery/{image_id}:
@@ -369,7 +369,7 @@ paths:
         404:
           description: The WorkspaceResource was not found.
       tags:
-        - rest       
+        - rest
 
   /workspaceresource/{id}/open:
     parameters:
@@ -391,7 +391,7 @@ paths:
           description: The WorkspaceResource was not found.
       tags:
         - rest
-                
+
   /osbrepository:
     get:
       tags:
@@ -417,9 +417,25 @@ paths:
           schema:
             type: string
             default: None
-            example: name__like=%reposi%
+            example: name=myrepo+summary__like=%reposi%
           required: false
-          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
+          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]. Multiple parameters are concaatenated with + (OR operator)
+        - in: query
+          name: tags
+          schema:
+            type: string
+            default: None
+            example: tag1+tag2
+          required: false
+          description: The tags to filter with Multiple parameters are concaatenated with + (OR operator)
+        - in: query
+          name: types
+          schema:
+            type: string
+            default: None
+            example: experimental+modeling
+          required: false
+          description: The tags to filter with Multiple parameters are concaatenated with + (OR operator)
       responses:
         200:
           description: Return all available repositories
@@ -512,7 +528,39 @@ paths:
           description: The repository was not found.
       tags:
         - rest
-
+    put:
+      summary: Update a OSB repository.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The repository to save.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OSBRepository"
+      responses:
+        200:
+          description: The workspace was updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OSBRepository"
+        404:
+          description: The workspace was not found.
+      tags:
+        - rest
+    delete:
+      summary: Delete a OSBRepository.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The OSBRepository was deleted.
+        404:
+          description: The OSBRepository was not found.
+      tags:
+        - rest
   /volumestorage:
     get:
       tags:
