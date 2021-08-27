@@ -172,7 +172,6 @@ export const EditRepoDialog = ({
 }) => {
   const classes = useStyles();
 
-  console.log('about to add repository');
   const [formValues, setFormValues] = useState({
     ...repository,
     userId: user.id,
@@ -242,7 +241,6 @@ export const EditRepoDialog = ({
     if (!Object.values(errors).find((e) => e)) {
       setLoading(true);
       // TODO implement update
-      console.log('adding this repository', repository);
       RepositoryService.addRepository(formValues).then(
         () => {
           setLoading(false);
