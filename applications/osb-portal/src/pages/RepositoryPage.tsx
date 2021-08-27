@@ -80,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
       background: bgLightest,
       alignItems: "center",
       height: "4.062rem",
+      paddingRight: 0,
       justifyContent: "space-between",
       "& .MuiSvgIcon-root": {
         width: "1rem",

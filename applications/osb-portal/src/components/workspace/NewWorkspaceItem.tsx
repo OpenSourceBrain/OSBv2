@@ -5,7 +5,7 @@ import { Typography, Box, Button, Grid, CircularProgress,
 } from "@material-ui/core";
 
 import { NewWorkspaceAskUser } from "..";
-import Repositories from "../repository/Repositories";
+import { Repositories } from "../index";
 import WorkspaceEdit from "./WorkspaceEditor";
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import OSBDialog from "../common/OSBDialog";

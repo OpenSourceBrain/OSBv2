@@ -248,8 +248,11 @@ export default (props: RepositoriesProps) => {
                 See on {repository.repositoryType}
               </Button>}
               <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)}/>
+              { props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
+              <RepositoryActionsMenu repository={repository} user={props.user} />
+            </Box>}
             </Box>
-            { props.user && <Box className={classes.repositoryActionsBox}>
+            { props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
               <RepositoryActionsMenu repository={repository} user={props.user} />
             </Box>}
           </Grid>
