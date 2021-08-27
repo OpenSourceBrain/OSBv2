@@ -1,7 +1,7 @@
 
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, OSBRepository, RepositoryContentType, RepositoryType, InlineResponse2001 } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, OSBRepository, RepositoryContentType, RepositoryType, InlineResponse2001, InlineResponse2003 } from '../apiclient/workspaces';
 
 type RepositoriesListAndPaginationDetails = InlineResponse2001;
 
@@ -71,6 +71,11 @@ class RepositoryService {
     repository.contentTypes = repository.contentTypesList.join(',');
     repository.autoSync = Boolean(repository.autoSync);
     return this.workspacesApi.osbrepositoryPost({ oSBRepository: repository });
+  }
+
+  async getAllTags(page?: number, perPage?: number, q?: string): Promise<InlineResponse2003> {
+    const requestParameters = { page, perPage, q };
+    return this.workspacesApi.tagGet(requestParameters);
   }
 }
 
