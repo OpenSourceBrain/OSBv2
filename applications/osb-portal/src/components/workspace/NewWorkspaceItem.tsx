@@ -295,6 +295,7 @@ export default (props: ItemProps) => {
   const closeAskLogin = () => setAskLoginOpen(false);
 
   const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
+    document.getElementById("your-all-workspaces-tab").click();
     if (workspaceTypeUndefined && checked.length > 0){
       WorkspaceService.importResourcesToWorkspace(ws.id, checked.map(c => c.resource)).then(() => {
         setNewWorkspaceOpen(false);

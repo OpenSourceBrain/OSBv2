@@ -81,7 +81,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
         onChange={handleChange}
       >
         { user ?
-            <Tab className={`${classes.tab} ${classes.firstTab}`} value={USER_WORKSPACES} label={user.isAdmin ? "All workspaces" : "Your workspaces" } />
+            <Tab id="your-all-workspaces-tab" className={`${classes.tab} ${classes.firstTab}`} value={USER_WORKSPACES} label={user.isAdmin ? "All workspaces" : "Your workspaces" } />
           : null
         }
         <Tab className={user ? classes.tab : `${classes.firstTab} ${classes.tab}`} value={FEATURED_WORKSPACES} label="Featured workspaces" />

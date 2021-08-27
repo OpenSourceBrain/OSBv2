@@ -44,7 +44,6 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       next(action);
       break;
     case Workspaces.showFeaturedWorkspaces.toString():
-      
       workspaceService.fetchWorkspaces(true).then((workspaces) => {
         const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
         next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
