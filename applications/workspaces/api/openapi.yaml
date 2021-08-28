@@ -79,10 +79,17 @@ paths:
           name: q
           schema:
             type: string
-            default: None
-            example: name__like=Work%ce 18+id__=1+tags[tag]=Tag
+            example: name__like=Work%+id__=1+tags[tag]=Tag
           required: false
-          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+'. Format [field/relation[field]][comparator = , __not= , __like= ][value]
+          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+' (and operator is applied). Format [field/relation[field]][comparator = , __not= , __like= ][value]
+        - in: query
+          name: tags
+          schema:
+            type: string
+            example: tag1+tag2
+            nullable: true
+          required: false
+          description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
       responses:
         200:
           description: Return all available workspaces
@@ -587,7 +594,6 @@ paths:
           name: q
           schema:
             type: string
-            default: None
             example: name__like=%storage%
           required: false
           description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
@@ -707,7 +713,6 @@ paths:
           name: q
           schema:
             type: string
-            default: None
             example: name__like=%Tag 1%
           required: false
           description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]

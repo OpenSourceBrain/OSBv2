@@ -189,7 +189,7 @@ class BaseModelRepository:
             page, total_pages, objects
         """
         """Get all objects from the repository."""
-        if q and q != "None":
+        if q:
             logger.info("Query %s", q)
             filters = self.filters(q)
             sqs = self._get_qs(filters, q, *args, **kwargs)
