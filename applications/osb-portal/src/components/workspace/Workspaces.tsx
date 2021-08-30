@@ -6,6 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
@@ -13,6 +14,13 @@ import { Workspace } from "../../types/workspace";
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
     maxHeight: 'calc(100% - 55px) !important',
+    "& .scrollbar": {
+      "& .infinite-scroll-component__outerdiv": {
+        "& .infinite-scroll-component": {
+          overflow: 'hidden !important',
+        },
+      },
+    },
   },
   tab: {
     minWidth: 'fit-content !important',
@@ -72,6 +80,10 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
     setActiveTab(tabSelected);
   };
 
+  const fetchMoreWorkspaces = () => {
+    console.log('in fetchMoreWorkspaces');
+  }
+
   return (
     <>
       <Tabs
@@ -98,12 +110,20 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
       }
 
       <Box className={`verticalFit card-container ${classes.cardContainer}`} >
-        <Box pt={1} pb={1} className="scrollbar">
-          {workspaceList ?
-            <Grid container={true} spacing={1}>
-              {workspaceList}
-            </Grid> : <Box mt={1}><CircularProgress /></Box>
-          }
+        <Box pt={1} pb={1} className="scrollbar" id="workspace-box">
+          <InfiniteScroll
+            dataLength={20}
+            next={fetchMoreWorkspaces}
+            hasMore={true}
+            loader={<CircularProgress />}
+            scrollableTarget="workspace-box"
+            >
+            {workspaceList ?
+              <Grid container={true} spacing={1}>
+                {workspaceList}
+              </Grid> : <Box mt={1}><CircularProgress /></Box>
+            }
+          </InfiniteScroll>
         </Box>
 
       </Box>
