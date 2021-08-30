@@ -21,3 +21,14 @@
 #docs/*.md
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
+
+Dockerfile
+setup.py
+requirements.txt
+tox.ini
+test-requirements.txt
+.gitignore
+.dockerignore
+**/__main__.py
+**/__init__.py
+**/encoder.py
