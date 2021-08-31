@@ -268,7 +268,11 @@ export const EditRepoDialog = ({
         );
       }
       else {
-        RepositoryService.updateRepository(formValues).then(() => {
+        const putRequestRepository: OSBRepository = {
+          id: formValues.id, uri: formValues.uri, name: formValues.name, defaultContext: formValues.defaultContext, contentTypesList: formValues.contentTypesList,
+          contentTypes: formValues.contentTypes, repositoryType: formValues.repositoryType, userId: user.id
+        };
+        RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
           setDialogOpen(false);
         }).catch(() => {
