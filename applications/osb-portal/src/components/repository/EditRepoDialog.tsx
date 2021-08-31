@@ -10,15 +10,8 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
-
-import {
-  bgLight,
-  primaryColor,
-  bgInputs,
-  fontColor,
-  paragraph,
-  bgLightestShade,
-} from "../../theme";
+import Chip from "@material-ui/core/Chip";
+import { Autocomplete } from "@material-ui/lab";
 import {
   Box,
   FormControl,
@@ -26,15 +19,26 @@ import {
   Typography,
   MenuItem,
   TextField,
+  FormHelperText,
 } from "@material-ui/core";
+
+import {
+  bgLight,
+  bgInputs,
+  fontColor,
+  paragraph,
+  bgLightestShade,
+} from "../../theme";
+
 import { RepositoryType } from "../../apiclient/workspaces/models/RepositoryType";
 import RepositoryService from "../../service/RepositoryService";
 import {
   OSBRepository,
   RepositoryContentType,
+  Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
-import FormHelperText from "@material-ui/core/FormHelperText";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,6 +147,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  autoComplete: {
+    marginTop: theme.spacing(1),
+    '& .MuiInputBase-root': {
+      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
+    },
+  },
 }));
 
 export const EditRepoDialog = ({
@@ -162,6 +172,7 @@ export const EditRepoDialog = ({
 }) => {
   const classes = useStyles();
 
+  console.log('about to add repository');
   const [formValues, setFormValues] = useState({
     ...repository,
     userId: user.id,
@@ -171,14 +182,28 @@ export const EditRepoDialog = ({
     setFormValues({...repository, userId: user.id});
   }, [repository]);
 
+  const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
+  const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
+  const [tagOptions, setTagOptions] = useState([]);
+  const [defaultTags, setDefaultTags] = useState(repositoryTags);
+
   const [error, setError] = useState({
     uri: '',
     defaultContext: '',
     contentTypesList: '',
     name: '',
   });
-  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    RepositoryService.getAllTags().then((tagsInformation) => {
+      const tags = tagsInformation.tags.map(tagObject => {
+        return tagObject.tag;
+      });
+      setTagOptions(tags);
+    });
+  }, []);
+
   const handleClose = () => {
     setDialogOpen(false);
   };
@@ -201,6 +226,12 @@ export const EditRepoDialog = ({
       () => setError({ ...error, uri: "Invalid url" })
     )
 
+  }
+
+  const setRepositoryTags = (tagsArray: string[]) => {
+    const arrayOfTags: Tag[] = [];
+    tagsArray.forEach(tag => arrayOfTags.push({ tag }));
+    setFormValues({ ...formValues, tags: arrayOfTags });
   }
 
   const addOrUpdateRepository = () => {
@@ -344,6 +375,25 @@ export const EditRepoDialog = ({
             </Select>
             <FormHelperText>{error.contentTypesList}</FormHelperText>
           </FormControl>
+        </Box>
+
+        <Box className="form-group">
+          <Autocomplete
+            className={classes.autoComplete}
+            multiple={true}
+            freeSolo={true}
+            options={tagOptions}
+            defaultValue={defaultTags}
+            onChange={(event, value) => setRepositoryTags(value) }
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Repository tags" />
+            )}
+          />
         </Box>
 
         <Box className="form-group">

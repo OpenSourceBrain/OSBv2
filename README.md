@@ -111,14 +111,14 @@ Connect your docker registry with minikube with:
 
 Then run:
 ```
-harness-deployment cloud-harness . -l -b -d osb.local
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal 
 ```
 
 ### Minikube on a different machine
 
 With the registry on localhost:5000 run:
 ```
-harness-deployment cloud-harness . -l -r localhost:5000 -b -d osb.local
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal -r localhost:5000
 ```
 
 See below to learn how to configure Minikube and forward the registry.
@@ -185,7 +185,3 @@ In the machine running the infrastructure-generate script, run
 ```bash
 kubectl port-forward --namespace kube-system $(kubectl get po -n kube-system --field-selector=status.phase=Running | grep registry | grep -v proxy | \awk '{print $1;}') 5000:5000
 ```
-
-
-
-

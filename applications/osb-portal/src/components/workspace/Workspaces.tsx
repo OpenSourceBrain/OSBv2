@@ -16,23 +16,35 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     minWidth: 'fit-content !important',
-    "& .MuiTab-wrapper": {
-      maxWidth: 'fit-content',
-      display: 'contents',
-    },
+    borderRight: '1px solid white',
+    paddingLeft: theme.spacing(1),
   },
+  lastTab: {
+    borderRight: 'none',
+  },
+  firstTab: {
+    paddingLeft: 0,
+  }
 }))
 
 // TODO handle user's vs public workspaces
-export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
+export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspaces, showPublicWorkspaces, showUserWorkspaces, showFeaturedWorkspaces, showPublic, showFeatured, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
 
   const classes = useStyles();
 
+  const FEATURED_WORKSPACES = "Featured workspaces";
+  const USER_WORKSPACES = "Your workspaces";
+  const PUBLIC_WORKSPACES = "Public workspaces";
+
+  const [activeTab, setActiveTab] = React.useState(FEATURED_WORKSPACES);
+
+  const workspaces = activeTab === FEATURED_WORKSPACES ? featuredWorkspaces : activeTab === PUBLIC_WORKSPACES ? publicWorkspaces : activeTab === USER_WORKSPACES ? userWorkspaces : publicWorkspaces;
+
   React.useEffect(() => {
     refreshWorkspaces();
-  }, [])
+  }, []);
 
-  const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
+
   const workspaceList =
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
@@ -45,28 +57,37 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspa
       : null;
 
 
-
-  const handleChange = (event: React.ChangeEvent<{}>, isPublicSelected: boolean) => {
-    if (isPublicSelected) {
-      showPublicWorkspaces()
-    } else {
-      showUserWorkspaces()
+  const handleChange = (event: React.ChangeEvent<{}>, tabSelected: string) => {
+    switch (tabSelected) {
+      case USER_WORKSPACES:
+        showUserWorkspaces();
+        break;
+      case FEATURED_WORKSPACES:
+        showFeaturedWorkspaces();
+        break;
+      case PUBLIC_WORKSPACES:
+        showPublicWorkspaces();
+        break;
     }
+    setActiveTab(tabSelected);
   };
 
   return (
     <>
-      {
-        Boolean(user) && <Tabs
-          value={showPublic}
-          textColor="primary"
-          indicatorColor="primary"
-          onChange={handleChange}
-        >
-          <Tab className={classes.tab} value={false} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
-          <Tab className={classes.tab} value={true} label="Public workspaces" />
-        </Tabs>
-      }
+      <Tabs
+        value={activeTab}
+        textColor="primary"
+        indicatorColor="primary"
+        onChange={handleChange}
+      >
+        { user ?
+            <Tab className={`${classes.tab} ${classes.firstTab}`} value={USER_WORKSPACES} label={user.isAdmin ? "All workspaces" : "Your workspaces" } />
+          : null
+        }
+        <Tab className={user ? classes.tab : `${classes.firstTab} ${classes.tab}`} value={FEATURED_WORKSPACES} label="Featured workspaces" />
+        <Tab className={`${classes.tab} ${classes.lastTab}`} value={PUBLIC_WORKSPACES} label="Public workspaces" />
+      </Tabs>
+
       {
         workspaceList && <Box mb={2}>
 
