@@ -35,12 +35,10 @@ class BaseModelView(MethodView):
 
     def post(self, body):
         """Save an object to the repository."""
-        try:
-            obj = self.service.post(body).to_dict()
-            result_code = 201
-        except Exception as e:
-            result_code = 500
-            obj = e
+
+        obj = self.service.post(body).to_dict()
+        result_code = 201
+
         return obj, result_code
 
     def get(self, id_):
