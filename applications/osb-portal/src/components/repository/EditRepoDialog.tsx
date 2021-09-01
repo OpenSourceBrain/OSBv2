@@ -177,7 +177,7 @@ export const EditRepoDialog = ({
   });
 
   React.useEffect(() => {
-    setFormValues({...repository, userId: user.id});
+    setFormValues({ ...repository, userId: user.id });
   }, [repository]);
 
   const [loading, setLoading] = React.useState(false);
@@ -244,7 +244,7 @@ export const EditRepoDialog = ({
     setError(errors);
     if (!Object.values(errors).find((e) => e)) {
       setLoading(true);
-      if (repository === RepositoryService.EMPTY_REPOSITORY){
+      if (repository === RepositoryService.EMPTY_REPOSITORY) {
         RepositoryService.addRepository(formValues).then(
           () => {
             setLoading(false);
@@ -392,10 +392,10 @@ export const EditRepoDialog = ({
             freeSolo={true}
             options={tagOptions}
             defaultValue={defaultTags}
-            onChange={(event, value) => setRepositoryTags(value) }
+            onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
               ))
             }
             renderInput={(params) => (

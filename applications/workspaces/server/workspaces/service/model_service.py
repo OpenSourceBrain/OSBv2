@@ -15,7 +15,6 @@ from workspaces.repository import (
 )
 
 
-
 def rm_null_values(dikt):
     tmp = {}
     for k, v in dikt.items():  # remove null fields from dict
@@ -59,6 +58,7 @@ class BaseModelService():
 
     def put(self, body, id_):
         """Update an object in the repository."""
+        body = rm_null_values(body)
         return self.repository.put(body, id_)
 
     def delete(self, id_):
@@ -90,7 +90,8 @@ class WorkspaceService(BaseModelService):
             else:
                 workspace.update({"resources": []})
         # check if there are running import tasks
-        logger.debug("Post get, check workflows for workspace %....", workspace.get("id"))
+        logger.debug(
+            "Post get, check workflows for workspace %....", workspace.get("id"))
         workflows = argo.get_workflows(status="Running", limit=9999)
         if workflows and workflows.items:
             for workflow in workflows.items:
@@ -98,7 +99,8 @@ class WorkspaceService(BaseModelService):
                     if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
                         "workspace"
                     ).strip() == str(workspace["id"]):
-                        fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace("/", " of ")
+                        fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
+                            "/", " of ")
                         workspace["resources"].append(
                             {
                                 "id": -1,
@@ -120,6 +122,14 @@ class OsbrepositoryService(BaseModelService):
 
     @send_event(message_type="osbrepository", operation="create")
     def post(self, body):
+        self.map_entity(body)
+        return super().post(body)
+
+    def put(self, body, id_):
+        self.map_entity(body)
+        return super().put(body, id_)
+
+    def map_entity(self, body):
         content_types = ""
         # convert the content types list to a content type comma separated string
         for ct in body["content_types_list"]:
@@ -127,7 +137,6 @@ class OsbrepositoryService(BaseModelService):
         body.update({"content_types": content_types.strip(",")})
         for del_attr in body.keys() & ['description', 'content_types_list']:
             del body[del_attr]
-        return super().post(body)
 
 
 class VolumestorageService(BaseModelService):
@@ -144,7 +153,8 @@ class WorkspaceresourceService(BaseModelService):
     def get(self, id_):
         workspace_resource = super().get(id_)
         if len(workspace_resource) > 2:
-            workspace_resource.update({"origin": json.loads(workspace_resource.get("origin"))})
+            workspace_resource.update(
+                {"origin": json.loads(workspace_resource.get("origin"))})
         return workspace_resource
 
 

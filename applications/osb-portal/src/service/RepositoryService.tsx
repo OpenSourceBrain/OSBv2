@@ -74,6 +74,9 @@ class RepositoryService {
   }
 
   async updateRepository(repository: OSBRepository): Promise<OSBRepository> {
+    delete repository.timestampCreated;
+    delete repository.timestampModified;
+    delete repository.timestampUpdated;
     const requestParameters: OsbrepositoryIdPutRequest = { id: repository.id, oSBRepository: repository };
     return this.workspacesApi.osbrepositoryIdPut(requestParameters);
   }
