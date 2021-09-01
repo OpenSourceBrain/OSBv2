@@ -118,7 +118,7 @@ harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m buil
 
 With the registry on localhost:5000 run:
 ```
-harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal -r localhost:5000
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal -r registry:5000
 ```
 
 See below to learn how to configure Minikube and forward the registry.
@@ -172,7 +172,7 @@ current-context: minikube
 In the case we are not building from the same machine as the cluster (which will always happen without Minikube),
 we need a way to share the registry.
 
-Procedure to share localhost:5000 from a kube cluster
+Procedure to share registry:5000 from a kube cluster
 
 In the minikube installation:
 
@@ -180,7 +180,23 @@ In the minikube installation:
 minikube addons enable registry
 ```
 
-In the machine running the infrastructure-generate script, run
+In order to use the registry address add the following entry to the hosts file
+
+```
+[MINIKUBE_ADDRESS]  registry
+```
+
+To also add the name to minikube:
+
+```
+% minikube ssh
+$ sudo su
+$ echo "127.0.0.1  registry" >> /etc/hosts
+```
+
+Also may need to [add the host to the insecure registry on your docker configuration](https://stackoverflow.com/questions/49674004/docker-repository-server-gave-http-response-to-https-client/54190375).
+
+To use localhost, on the machine running the infrastructure-generate script, run
 
 ```bash
 kubectl port-forward --namespace kube-system $(kubectl get po -n kube-system --field-selector=status.phase=Running | grep registry | grep -v proxy | \awk '{print $1;}') 5000:5000
