@@ -58,18 +58,14 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   repositoryInformation: {
-    marginBottom: theme.spacing(1),
-    "& .MuiAccordionSummary-root": {
-      flexDirection: 'row',
-      paddingLeft: `${theme.spacing(1)}px !important`,
-    },
-    "& .MuiAccordionDetails-root": {
-      paddingLeft: `${theme.spacing(2)}px !important`,
-      paddingBottom: theme.spacing(1),
+    "& .MuiTypography-root": {
+      marginBottom: theme.spacing(1),
+      fontSize: '1.5rem',
     },
     "& .MuiChip-root": {
-      marginLeft: '5px',
+      marginLeft: '0px',
       marginRight: '5px',
+      marginBottom: theme.spacing(1),
     },
   },
   root: {
@@ -309,52 +305,16 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                      >
-                        <Typography component="p" variant="body1">OSB Repository Information</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        {repository.id && <Typography component="p" variant="body2">
-                          Id: {repository.id}
-                        </Typography>}
-                        <Typography component="p" variant="body2">
-                          Title: {repository.name}
-                        </Typography>
-                        {repository.summary && <Typography component="p" variant="body2">
-                          Summary: {repository.summary}
-                        </Typography>}
-                        <Typography component="p" variant="body2">
-                          Content type: {repository.contentTypes}
-                        </Typography>
-                        <Typography component="p" variant="body2">
-                          Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
-                        </Typography>
-                        {repository.defaultContext && <Typography component="p" variant="body2">
-                          Context: {repository.defaultContext}
-                        </Typography>}
-                        {repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                          User: {`${repository.user.firstName} ${repository.user.lastName}`}
-                        </Typography>}
-                        {repository.timestampCreated && <Typography component="p" variant="body2">
-                          Created: {repository.timestampCreated.toString()}
-                        </Typography>}
-                        {repository.timestampUpdated && <Typography component="p" variant="body2">
-                          Updated: {repository.timestampUpdated.toString()}
-                        </Typography>}
-                        {repository.tags && repository.tags.length > 0 && <Box>
-                          Tags:
-                          {
-                            repository.tags.map(tagObject => {
-                              return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
-                            })
-                          }
-                        </Box>}
-                      </AccordionDetails>
-                    </Accordion>
+                    <Typography component="h1">
+                      {repository.name}
+                    </Typography>
+                    {repository.tags && repository.tags.length > 0 && <Box>
+                      {
+                        repository.tags.map(tagObject => {
+                          return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                        })
+                      }
+                    </Box>}
                   </Box>
                   <MarkdownViewer text={repository.description} repository={repository}/>
                 </Box>
