@@ -103,6 +103,23 @@ const theme = {
     }
   },
   overrides: {
+    MuiChip: {
+      root: {
+        marginRight: spacing[0.5],
+        marginLeft: spacing[1],
+        color: fontColor,
+        label: {
+          fontSize: '0.8rem',
+        },
+      },
+      outlined: {
+        backgroundColor: bgDarker,
+        border: 'none',
+      },
+      deleteIcon: {
+        color: '#a6a6a6',
+      },
+    },
     MuiInput: {
       input: {
         outline: 'none !important',

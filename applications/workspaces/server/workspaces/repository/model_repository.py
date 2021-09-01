@@ -9,7 +9,7 @@ from sqlalchemy.sql import func
 
 
 from workspaces.config import Config
-from workspaces.models import RepositoryContentType, ResourceStatus, User
+from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
 from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
 from workspaces.service.auth import get_auth_client
@@ -57,11 +57,14 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             return workspace
         return None
 
-    def search_qs(self, filter=None, q=None):
+    def search_qs(self, filter=None, q=None, tags=None, *args, **kwargs):
         q_base = self.model.query
         logger.debug(f"filter: {filter}")
 
         keycloak_user_id = self.keycloak_user_id
+        if tags:
+            q_base = q_base.join(self.model.tags).filter(
+                Tag.tag.in_(tags.split("+")))
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
@@ -125,11 +128,18 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
-    def search_qs(self, filter=None, q=None):
+    def search_qs(self, filter=None, q=None, tags=None, types=None):
         q_base = self.model.query
+        if tags:
+            q_base = q_base.join(self.model.tags).filter(
+                Tag.tag.in_(tags.split("+")))
         if filter:
             q_base = q_base.filter(
                 or_(*[self._create_filter(*f) for f in filter]))
+
+        if types:
+            q_base = q_base.filter(
+                or_(self.model.content_types.ilike(f"%{t}%") for t in types.split("+")))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):

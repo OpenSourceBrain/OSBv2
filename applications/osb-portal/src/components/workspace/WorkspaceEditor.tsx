@@ -14,9 +14,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dropzone from 'react-dropzone'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import { Autocomplete } from "@material-ui/lab";
+import Chip from "@material-ui/core/Chip";
 
-import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
+import { Tag } from "../../apiclient/workspaces";
+import WorkspaceService from "../../service/WorkspaceService";
 
 import {
   bgLight,
@@ -55,7 +58,13 @@ const useStyles = makeStyles((theme) => ({
   },
   imagePreview: {
     display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
-  }
+  },
+  autoComplete: {
+    marginTop: theme.spacing(1),
+    '& .MuiInputBase-root': {
+      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
+    }
+  },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -108,10 +117,21 @@ export default (props: WorkspaceEditProps) => {
     }
   }
 
+  React.useEffect(() => {
+    WorkspaceService.getAllAvailableTags(1).then(tagObjects => {
+      if (typeof tagObjects !== 'undefined') {
+        const availableTags: string[] = tagObjects.map((tagObject) => tagObject.tag);
+        setTagOptions(availableTags);
+      }
+    });
+  }, []);
 
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+  const workspaceTags = workspace && workspace.tags ? workspace.tags.map((tagObject) => tagObject.tag) : [];
+  const [tagOptions, setTagOptions] = React.useState([]);
+  const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== 'undefined') {
@@ -124,12 +144,12 @@ export default (props: WorkspaceEditProps) => {
   }
 
   const handleCreateWorkspace = async () => {
-    setLoading(true)
-    workspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
+    setLoading(true);
+    WorkspaceService.createOrUpdateWorkspace({...workspace, ...workspaceForm}).then(
       async (returnedWorkspace) => {
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
-          workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
+          WorkspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
             .then(() => props.onLoadWorkspace(true, returnedWorkspace),
               e => console.error('Error uploading thumbnail', e)
             );
@@ -186,6 +206,11 @@ export default (props: WorkspaceEditProps) => {
     thumbnail = uploadedThumbnail;
     previewFile(thumbnail);
   }
+  const setWorkspaceTags = (tagsArray: string[]) => {
+    const arrayOfTags: Tag[] = [];
+    tagsArray.forEach(tag => { arrayOfTags.push({tag}); });
+    setWorkspaceForm({...workspaceForm, tags: arrayOfTags});
+  }
   const [loading, setLoading] = React.useState(false);
   return (
     <>
@@ -214,6 +239,22 @@ export default (props: WorkspaceEditProps) => {
           />
 
         </Box>
+        <Autocomplete
+          className={classes.autoComplete}
+          multiple={true}
+          freeSolo={true}
+          options={tagOptions}
+          defaultValue={defaultTags}
+          onChange={ (event, value) => setWorkspaceTags(value)}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+             <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+           ))
+          }
+          renderInput={(params) => (
+            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Workspace tags" />
+          )}
+          />
         <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>
           <Typography component="h6" className={classes.workspaceThumbnailText}>
             Workspace thumbnail

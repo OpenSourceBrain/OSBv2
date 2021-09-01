@@ -29,6 +29,7 @@ import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
 import MarkdownViewer from "../components/common/MarkdownViewer"
 import MainMenu from "../components/menu/MainMenu";
+import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
 
 import {
   linkColor,
@@ -94,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
       background: bgLightest,
       alignItems: "center",
       height: "4.062rem",
+      paddingRight: 0,
       justifyContent: "space-between",
       "& .MuiSvgIcon-root": {
         width: "1rem",
@@ -288,6 +290,7 @@ export const RepositoryPage = (props: any) => {
               <AddIcon />
               Create new workspace
             </Button>
+            <RepositoryActionsMenu user={user} repository={repository} />
           </Box>
         </Box>
 
