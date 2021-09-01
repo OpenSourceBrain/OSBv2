@@ -171,12 +171,15 @@ export const EditRepoDialog = ({
   user: UserInfo;
 }) => {
   const classes = useStyles();
-
-  console.log('about to add repository');
   const [formValues, setFormValues] = useState({
     ...repository,
     userId: user.id,
   });
+
+  React.useEffect(() => {
+    setFormValues({ ...repository, userId: user.id });
+  }, [repository]);
+
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
   const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
@@ -229,7 +232,8 @@ export const EditRepoDialog = ({
     setFormValues({ ...formValues, tags: arrayOfTags });
   }
 
-  const addRepository = () => {
+  const addOrUpdateRepository = () => {
+    console.log('original repository', repository);
     const errors = {
       name: !formValues.name ? 'Name must be set' : '',
       uri: !formValues.uri ? 'URL must be set' : '',
@@ -241,29 +245,42 @@ export const EditRepoDialog = ({
     setError(errors);
     if (!Object.values(errors).find((e) => e)) {
       setLoading(true);
-      // TODO implement update
-      console.log('adding this repository', repository);
-      RepositoryService.addRepository(formValues).then(
-        () => {
+      if (repository === RepositoryService.EMPTY_REPOSITORY) {
+        RepositoryService.addRepository(formValues).then(
+          () => {
+            setLoading(false);
+            handleClose();
+            setFormValues({
+              ...RepositoryService.EMPTY_REPOSITORY,
+              userId: user.id,
+            });
+            setError({
+              uri: '',
+              defaultContext: '',
+              contentTypesList: '',
+              name: '',
+            });
+            onSubmit();
+          },
+          (e) => {
+            setLoading(false);
+            throw new Error("Error submitting the repository");
+          }
+        );
+      }
+      else {
+        const putRequestRepository: OSBRepository = {
+          ...formValues
+        };
+        console.log('sending this repository', putRequestRepository);
+        RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
-          handleClose();
-          setFormValues({
-            ...RepositoryService.EMPTY_REPOSITORY,
-            userId: user.id,
-          });
-          setError({
-            uri: '',
-            defaultContext: '',
-            contentTypesList: '',
-            name: '',
-          });
-          onSubmit();
-        },
-        (e) => {
+          setDialogOpen(false);
+        }).catch(() => {
           setLoading(false);
-          throw new Error("Error submitting the repository");
-        }
-      );
+          throw new Error("Error updating the repository");
+        })
+      }
     }
   };
 
@@ -375,10 +392,10 @@ export const EditRepoDialog = ({
             freeSolo={true}
             options={tagOptions}
             defaultValue={defaultTags}
-            onChange={(event, value) => setRepositoryTags(value) }
+            onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
               ))
             }
             renderInput={(params) => (
@@ -409,10 +426,10 @@ export const EditRepoDialog = ({
           variant="contained"
           disableElevation={true}
           disabled={Object.values(error).filter(e => e).length !== 0}
-          onClick={addRepository}
+          onClick={addOrUpdateRepository}
           color="primary"
         >
-          Add
+          {repository === RepositoryService.EMPTY_REPOSITORY ? 'Add' : 'Save'}
         </Button>
         {loading && (
           <CircularProgress

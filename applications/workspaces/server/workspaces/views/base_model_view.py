@@ -1,4 +1,5 @@
 from flask.views import MethodView
+from sqlalchemy.exc import IntegrityError
 
 from workspaces.utils import row2dict
 
@@ -21,10 +22,12 @@ class BaseModelView(MethodView):
             current page
             number of pages
         """
-        page, total_pages, objects = self.service.search(page=page, per_page=per_page, *args, **kwargs)
+        page, total_pages, objects = self.service.search(
+            page=page, per_page=per_page, *args, **kwargs)
         obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
         list_name = str(self.service.repository)
-        list_name_plural = list_name[:-1] + list_name[-1:].replace("y", "ie") + "s"
+        list_name_plural = list_name[:-1] + \
+            list_name[-1:].replace("y", "ie") + "s"
         return {
             "pagination": {
                 "current_page": page,
@@ -52,7 +55,7 @@ class BaseModelView(MethodView):
 
     def put(self, body, id_):
         """Update an object in the repository."""
-        return self.service.put(body, id_)
+        return self.service.put(body, id_).to_dict()
 
     def delete(self, id_):
         """Delete an object from the repository."""

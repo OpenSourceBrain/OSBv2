@@ -227,7 +227,7 @@ class BaseModelRepository:
             db.session.commit()
             new_obj = self._post_commit(new_obj)
         except IntegrityError as e:
-            return "{}".format(e.orig), 400
+            raise e
         else:
             obj = self.get(id=new_obj.id)
             return new_obj
