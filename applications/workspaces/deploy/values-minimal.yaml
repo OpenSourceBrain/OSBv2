@@ -1,5 +1,5 @@
 harness:
- 
+  sentry: false
   deployment:
     auto: true
     port: 8080
