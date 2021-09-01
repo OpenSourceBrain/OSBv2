@@ -32,7 +32,7 @@ const workspaceSlice = createSlice({
     showUserWorkspaces(state, action: Action) {
       return { ...state, showPublic: false };
     },
-    showFeaturedWorkspaces(state, action: Action) {
+    showFeaturedWorkspaces(state, action: PayloadAction<number>) {
       return { ...state, showFeatured: true, showPublic: false };
     },
     loadPublicWorkspaces(state, action: PayloadAction<Workspace[]>) {

@@ -40,7 +40,7 @@ class WorkspaceService {
 
 
 
-  async fetchWorkspaces(isPublic = false, isFeatured = false): Promise<Workspace[]> {
+  async fetchWorkspaces(isPublic = false, isFeatured = false, page = 1): Promise<Workspace[]> {
     // ToDo: pagination & size of pagination
     const params: any = {};
     if (isPublic && !isFeatured) {
@@ -51,7 +51,7 @@ class WorkspaceService {
     }
 
 
-    const wspr: WorkspaceGetRequest = { q: qs.stringify(params) };
+    const wspr: WorkspaceGetRequest = { q: qs.stringify(params), page };
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
