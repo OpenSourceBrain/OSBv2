@@ -30,6 +30,7 @@ interface RepositoriesProps {
   user?: UserInfo;
   searchRepositories?: boolean;
   filterChanged?: (filter: string) => void;
+  refreshRepositories?: () => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -249,11 +250,11 @@ export default (props: RepositoriesProps) => {
               </Button>}
               <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)}/>
               { props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
-              <RepositoryActionsMenu repository={repository} user={props.user} />
+              <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories}/>
             </Box>}
             </Box>
             { props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
-              <RepositoryActionsMenu repository={repository} user={props.user} />
+              <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories}/>
             </Box>}
           </Grid>
         </Grid>

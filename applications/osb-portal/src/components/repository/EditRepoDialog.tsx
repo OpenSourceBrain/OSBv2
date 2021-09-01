@@ -233,7 +233,6 @@ export const EditRepoDialog = ({
   }
 
   const addOrUpdateRepository = () => {
-    console.log('original repository', repository);
     const errors = {
       name: !formValues.name ? 'Name must be set' : '',
       uri: !formValues.uri ? 'URL must be set' : '',
@@ -271,12 +270,12 @@ export const EditRepoDialog = ({
       else {
         const putRequestRepository: OSBRepository = {
           id: formValues.id, uri: formValues.uri, name: formValues.name, defaultContext: formValues.defaultContext,
-          contentTypes: formValues.contentTypes, tags: formValues.tags, repositoryType: formValues.repositoryType, summary: formValues.summary, userId: user.id
+          contentTypes: formValues.contentTypes, tags: formValues.tags, contentTypesList: formValues.contentTypesList, repositoryType: formValues.repositoryType, summary: formValues.summary, userId: user.id
         };
-        console.log('sending this repository', putRequestRepository);
         RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
-          setDialogOpen(false);
+          handleClose();
+          onSubmit();
         }).catch(() => {
           setLoading(false);
           throw new Error("Error updating the repository");

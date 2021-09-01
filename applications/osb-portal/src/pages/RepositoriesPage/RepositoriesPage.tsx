@@ -150,7 +150,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} />
+            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} refreshRepositories={updateList}/>
             {
               totalPages > 1 ?
               <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true}/>
