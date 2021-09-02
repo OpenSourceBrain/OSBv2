@@ -178,7 +178,6 @@ export const EditRepoDialog = ({
 
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
-  const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
   const [tagOptions, setTagOptions] = useState([]);
   const [defaultTags, setDefaultTags] = useState([]);
 
