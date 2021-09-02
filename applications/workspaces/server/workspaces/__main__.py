@@ -67,6 +67,9 @@ app = init_flask(
     config=Config,
 )
 
+
+
+
 if __name__ == "__main__":
     cloudharness.set_debug()
     main()

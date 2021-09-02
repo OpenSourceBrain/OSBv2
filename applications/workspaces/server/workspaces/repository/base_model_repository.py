@@ -129,7 +129,7 @@ class BaseModelRepository:
         else:
             return field == value
 
-    def _get_qs(self, filter=None, q=None):
+    def _get_qs(self, filter=None, q=None, *args, **kwargs):
         """
         Helper function to get the queryset
 
@@ -144,7 +144,7 @@ class BaseModelRepository:
             if isinstance(self.search_qs, str):
                 sqs = eval(self.search_qs)
             else:
-                sqs = self.search_qs(filter, q)
+                sqs = self.search_qs(filter, q, *args, **kwargs)
         return sqs
 
     def filters(self, q=None):
@@ -153,22 +153,26 @@ class BaseModelRepository:
             field_comparator, value = arg.strip().split("=")
             field_comparator = field_comparator.split("__")
             field = field_comparator[0]
-            comparator = field_comparator[1] if len(field_comparator) > 1 else "="
+            comparator = field_comparator[1] if len(
+                field_comparator) > 1 else "="
             related_attr = re.compile(r"(.*)\[(.*)\]").match(field)
             if related_attr:
                 attr = getattr(self.model, related_attr.group(1))
-                attr = attr.property.entity.class_manager.local_attrs.get(related_attr.group(2))
+                attr = attr.property.entity.class_manager.local_attrs.get(
+                    related_attr.group(2))
             else:
                 attr = getattr(self.model, field)
                 if isinstance(attr.comparator.type, sqlalchemy.types.Boolean):
                     value = value.upper() in ("TRUE", "1", "T")
             logger.debug("Filter attr: %s comparator: %s value: %s",
-                    attr.key, comparator, value)
+                         attr.key, comparator, value)
             if isinstance(attr.comparator, sqlalchemy.orm.relationships.RelationshipProperty.Comparator):
                 # filter on sub query
                 field = field_comparator[1]
-                comparator = field_comparator[2] if len(field_comparator)>2 else "="
-                attr = attr.property.entity.class_manager.local_attrs.get(field)
+                comparator = field_comparator[2] if len(
+                    field_comparator) > 2 else "="
+                attr = attr.property.entity.class_manager.local_attrs.get(
+                    field)
             filters.append((attr, comparator, value))
         return filters
 
@@ -185,12 +189,12 @@ class BaseModelRepository:
             page, total_pages, objects
         """
         """Get all objects from the repository."""
-        if q and q != "None":
+        if q:
             logger.info("Query %s", q)
             filters = self.filters(q)
-            sqs = self._get_qs(filters, q)
+            sqs = self._get_qs(filters, q, *args, **kwargs)
         else:
-            sqs = self._get_qs()
+            sqs = self._get_qs(*args, **kwargs)
         objects = sqs.paginate(page, per_page, True)
         total_pages = objects.pages
         for obj in objects.items:
@@ -223,7 +227,7 @@ class BaseModelRepository:
             db.session.commit()
             new_obj = self._post_commit(new_obj)
         except IntegrityError as e:
-            return "{}".format(e.orig), 400
+            raise e
         else:
             obj = self.get(id=new_obj.id)
             return new_obj
@@ -242,7 +246,7 @@ class BaseModelRepository:
         obj = self.set_timestamp_updated(obj)
         self._pre_commit(obj)
         db.session.commit()
-        return "Saved"
+        return obj
 
     def put(self, body, id):
         """Update an object in the repository."""
@@ -255,7 +259,7 @@ class BaseModelRepository:
         obj = self._copy_attrs(obj, new_obj)
         obj = self.set_timestamp_updated(obj)
         db.session.commit()
-        return "Saved"
+        return obj
 
     def delete(self, id):
         """Delete an object from the repository."""

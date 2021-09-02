@@ -7,10 +7,8 @@ import Chip from "@material-ui/core/Chip";
 
 import { RepositoryResourceNode } from "../../apiclient/workspaces";
 import {
-    bgDarker,
     bgInputs,
     bgLight,
-    fontColor,
 } from "../../theme";
 
 interface OSBChipListProps {
@@ -39,19 +37,6 @@ const useStyles = makeStyles((theme) => ({
         "&::-webkit-scrollbar": {
             width: 0,
             backgroundColor: 'transparent',
-        },
-    },
-    OSBChip: {
-        marginRight: theme.spacing(0.5),
-        marginLeft: theme.spacing(1),
-        backgroundColor: bgDarker,
-        color: fontColor,
-        border: 'none',
-        "& .MuiTypography-root": {
-            fontSize: '0.8rem',
-        },
-        "& .MuiChip-deleteIcon": {
-        color: '#a6a6a6',
         },
     },
     OSBChipFileExtension: {
@@ -92,7 +77,7 @@ export default(props: OSBChipListProps) => {
                 {
                     props.chipItems.map((chipItem) => {
                         return (
-                            <Chip className={classes.OSBChip} key={chipItem.resource.path} label={createChipLabel(chipItem)} variant="outlined" size="medium" onDelete={() => props.onDeleteChip(chipItem.resource.path)} />
+                            <Chip key={chipItem.resource.path} label={createChipLabel(chipItem)} variant="outlined" size="medium" onDelete={() => props.onDeleteChip(chipItem.resource.path)} />
                         );
                     })
                 }

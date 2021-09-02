@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 
 import { OSBRepository } from "../../apiclient/workspaces";
+import RepositoryActionsMenu from "./RepositoryActionsMenu";
+import { UserInfo } from "../../types/user";
 import {
   bgRegular,
   bgDarkest,
@@ -25,6 +27,7 @@ interface RepositoriesProps {
   repositories: OSBRepository[];
   showSimpleVersion?: boolean;
   handleRepositoryClick: (repositoryId: number) => void;
+  user?: UserInfo;
   searchRepositories?: boolean;
   filterChanged?: (filter: string) => void;
 }
@@ -150,13 +153,25 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  repositoryActionsBox: {
+    display: 'flex',
+    '& .MuiButtonBase-root': {
+      minWidth: `${theme.spacing(2)}px !important`,
+    },
+    '& .MuiIconButton-root': {
+      marginLeft: theme.spacing(1),
+      '& .MuiIconButton-label': {
+        width: 'fit-content',
+      }
+    },
+  },
   searchBox: {
     background: bgLightest,
     padding: theme.spacing(2),
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
   },
-}))
+}));
 
 export default (props: RepositoriesProps) => {
   const classes = useStyles();
@@ -177,9 +192,9 @@ export default (props: RepositoriesProps) => {
           className="row"
           spacing={0}
           key={repository.id}
-          onClick={() => props.handleRepositoryClick(repository.id)}
         >
-          <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}>
+          <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}
+            onClick={() => props.handleRepositoryClick(repository.id)}>
             <Box className="col">
               <Typography component="strong">
                 {repository.name}
@@ -188,7 +203,7 @@ export default (props: RepositoriesProps) => {
             </Box>
           </Grid>
 
-          {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4}>
+          {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
             <Box className="col">
               <Typography>
                 {repository?.user?.firstName} {repository?.user?.lastName}
@@ -196,7 +211,8 @@ export default (props: RepositoriesProps) => {
             </Box>
           </Grid>}
 
-          <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}>
+          <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}
+            onClick={() => props.handleRepositoryClick(repository.id)}>
             <Box
               display="flex"
               alignItems="center"
@@ -231,7 +247,7 @@ export default (props: RepositoriesProps) => {
 
             </Box>
           </Grid>
-          <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3}>
+          <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3} >
             <Box
               className="col"
               display="flex"
@@ -240,12 +256,18 @@ export default (props: RepositoriesProps) => {
             >
               {!showSimpleVersion && <Button
                 variant="outlined"
-                onClick={() => openRepoUrl(repository.uri)}
+                onClick={() => {openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
               >
                 See on {repository.repositoryType}
               </Button>}
-              <Avatar src="/images/arrow_right.svg" />
+              <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)}/>
+              { props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
+              <RepositoryActionsMenu repository={repository} user={props.user} />
+            </Box>}
             </Box>
+            { props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
+              <RepositoryActionsMenu repository={repository} user={props.user} />
+            </Box>}
           </Grid>
         </Grid>
       ))}
