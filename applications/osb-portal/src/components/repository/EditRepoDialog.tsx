@@ -176,15 +176,17 @@ export const EditRepoDialog = ({
     userId: user.id,
   });
 
-  React.useEffect(() => {
-    setFormValues({ ...repository, userId: user.id });
-  }, [repository]);
-
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
   const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
   const [tagOptions, setTagOptions] = useState([]);
-  const [defaultTags, setDefaultTags] = useState(repositoryTags);
+  const [defaultTags, setDefaultTags] = useState([]);
+
+  React.useEffect(() => {
+    setFormValues({ ...repository, userId: user.id });
+    const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
+    setDefaultTags(repositoryTags);
+  }, [repository]);
 
   const [error, setError] = useState({
     uri: '',
