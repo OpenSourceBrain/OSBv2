@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -13,8 +12,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import LinkIcon from '@material-ui/icons/Link';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
-import { DialogContent, DialogTitle } from "@material-ui/core";
+import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
 
 import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -56,6 +56,17 @@ const useStyles = makeStyles((theme) => ({
   },
   repositoryResourceBrowserBox: {
     width: '100%',
+  },
+  repositoryInformation: {
+    "& .MuiTypography-root": {
+      marginBottom: theme.spacing(1),
+      fontSize: '1.5rem',
+    },
+    "& .MuiChip-root": {
+      marginLeft: '0px',
+      marginRight: '5px',
+      marginBottom: theme.spacing(1),
+    },
   },
   root: {
     maxHeight: '100%',
@@ -292,6 +303,18 @@ export const RepositoryPage = (props: any) => {
                     <Typography component="h2" variant="h2" className="primary-heading">
                       Overview
                     </Typography>
+                  </Box>
+                  <Box className={classes.repositoryInformation}>
+                    <Typography component="h1">
+                      {repository.name}
+                    </Typography>
+                    {repository.tags && repository.tags.length > 0 && <Box>
+                      {
+                        repository.tags.map(tagObject => {
+                          return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                        })
+                      }
+                    </Box>}
                   </Box>
                   <MarkdownViewer text={repository.description} repository={repository}/>
                 </Box>
