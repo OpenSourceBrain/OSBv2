@@ -245,7 +245,7 @@ export const EditRepoDialog = ({
     };
     setError(errors);
     if (!Object.values(errors).find((e) => e)) {
-      setLoading(true);      
+      setLoading(true);
       if (repository === RepositoryService.EMPTY_REPOSITORY) {
         RepositoryService.addRepository(formValues).then(
           () => {

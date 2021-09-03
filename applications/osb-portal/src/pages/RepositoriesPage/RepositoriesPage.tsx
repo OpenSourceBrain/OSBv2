@@ -156,39 +156,39 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             )}
           </Box>
           <Box className={classes.filterAndSearchBox}>
-          <Autocomplete
-          multiple={true}
-          options={searchTagOptions}
-          freeSolo={true}
-          onChange={ (event, value) => setSearchFilterValues({...searchFilterValues, tags: value })}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-             <Chip variant="outlined" label={option} size="small" {...getTagProps({index})} key={option} />
-           ))
-          }
-          renderInput={(params) => (
-            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Repository tags" />
-          )}
-          />
-          <Select
-              value={searchFilterValues.types}
-              multiple={true}
-              onChange={(e) => handleInput(e.target.value)}
-              IconComponent={FilterListIcon}
-              renderValue={(selected) => (selected as string[]).map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            >
-              <MenuItem value={RepositoryContentType.Experimental}>
-                <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} />
-                <ListItemText primary="NWB Experimental Data" />
-              </MenuItem>
-              <MenuItem value={RepositoryContentType.Modeling}>
-                <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Modeling)}/>
-                <ListItemText primary="Modeling" />
-              </MenuItem>
-            </Select>
-            <RepositoriesSearch filterChanged={(newTextFilter) => setSearchFilterValues({...searchFilterValues, text: newTextFilter})} />
+            <Autocomplete
+            multiple={true}
+            options={searchTagOptions}
+            freeSolo={true}
+            onChange={ (event, value) => setSearchFilterValues({...searchFilterValues, tags: value })}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+              <Chip variant="outlined" label={option} size="small" {...getTagProps({index})} key={option} />
+            ))
+            }
+            renderInput={(params) => (
+              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Repository tags" />
+            )}
+            />
+            <Select
+                value={searchFilterValues.types}
+                multiple={true}
+                onChange={(e) => handleInput(e.target.value)}
+                IconComponent={FilterListIcon}
+                renderValue={(selected) => (selected as string[]).map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              >
+                <MenuItem value={RepositoryContentType.Experimental}>
+                  <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} />
+                  <ListItemText primary="NWB Experimental Data" />
+                </MenuItem>
+                <MenuItem value={RepositoryContentType.Modeling}>
+                  <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Modeling)}/>
+                  <ListItemText primary="Modeling" />
+                </MenuItem>
+              </Select>
+              <RepositoriesSearch filterChanged={(newTextFilter) => setSearchFilterValues({...searchFilterValues, text: newTextFilter})} />
             {user && (
               <>
               <Divider orientation="vertical" flexItem={true} className={classes.divider} />
