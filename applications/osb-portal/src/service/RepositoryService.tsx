@@ -2,6 +2,7 @@
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, OSBRepository, RepositoryContentType, RepositoryType, InlineResponse2001, InlineResponse2003, OsbrepositoryIdPutRequest } from '../apiclient/workspaces';
+import searchFilter from '../types/searchFilter';
 
 type RepositoriesListAndPaginationDetails = InlineResponse2001;
 
@@ -38,12 +39,17 @@ class RepositoryService {
     return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size })).osbrepositories;
   }
 
-  async getRepositoriesByFilter(page: number, filter: string, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
+  async getRepositoriesByFilter(page: number, filter: searchFilter, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {
+    const nameAndSummaryQuery = typeof filter.text === 'undefined' || filter.text === '' ? '' : `name__like=${filter.text}%%+summary__like=${filter.text}%%`;
+    const tagsQuery = filter.tags.length > 0 ? `&tags=${filter.tags.join('+')}` : '';
+    const typesQuery = filter.types.length > 0 ? `&types=${filter.types.join('+')}` : '';
+    const queryString = nameAndSummaryQuery + tagsQuery + typesQuery;
+
     return (this.workspacesApi.osbrepositoryGet(
       {
         page,
-        q: `name__like=%${filter}%+summary__like=%${filter}%`,
-        perPage: size
+        q: queryString,
+        perPage: size,
       }));
   }
 
