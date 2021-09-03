@@ -57,11 +57,14 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             return workspace
         return None
 
-    def search_qs(self, filter=None, q=None):
+    def search_qs(self, filter=None, q=None, tags=None, *args, **kwargs):
         q_base = self.model.query
         logger.debug(f"filter: {filter}")
 
         keycloak_user_id = self.keycloak_user_id
+        if tags:
+            q_base = q_base.join(self.model.tags).filter(
+                Tag.tag.in_(tags.split("+")))
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):

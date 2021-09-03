@@ -63,11 +63,24 @@ export interface GetContextsRequest {
 export interface OsbrepositoryGetRequest {
     page?: number;
     perPage?: number;
-    q?: string;
+    q?: string | null;
+    tags?: string | null;
+    types?: string | null;
+}
+
+export interface OsbrepositoryIdDeleteRequest {
+    id: number;
+    context?: string;
 }
 
 export interface OsbrepositoryIdGetRequest {
     id: number;
+    context?: string;
+}
+
+export interface OsbrepositoryIdPutRequest {
+    id: number;
+    oSBRepository: OSBRepository;
     context?: string;
 }
 
@@ -125,6 +138,7 @@ export interface WorkspaceGetRequest {
     page?: number;
     perPage?: number;
     q?: string;
+    tags?: string | null;
 }
 
 export interface WorkspaceIdDeleteRequest {
@@ -286,6 +300,14 @@ export class RestApi extends runtime.BaseAPI {
             queryParameters['q'] = requestParameters.q;
         }
 
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
+        }
+
+        if (requestParameters.types !== undefined) {
+            queryParameters['types'] = requestParameters.types;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
@@ -304,6 +326,47 @@ export class RestApi extends runtime.BaseAPI {
     async osbrepositoryGet(requestParameters: OsbrepositoryGetRequest): Promise<InlineResponse2001> {
         const response = await this.osbrepositoryGetRaw(requestParameters);
         return await response.value();
+    }
+
+    /**
+     * Delete a OSBRepository.
+     */
+    async osbrepositoryIdDeleteRaw(requestParameters: OsbrepositoryIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.context !== undefined) {
+            queryParameters['context'] = requestParameters.context;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete a OSBRepository.
+     */
+    async osbrepositoryIdDelete(requestParameters: OsbrepositoryIdDeleteRequest): Promise<void> {
+        await this.osbrepositoryIdDeleteRaw(requestParameters);
     }
 
     /**
@@ -337,6 +400,55 @@ export class RestApi extends runtime.BaseAPI {
      */
     async osbrepositoryIdGet(requestParameters: OsbrepositoryIdGetRequest): Promise<OSBRepository> {
         const response = await this.osbrepositoryIdGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Update a OSB repository.
+     */
+    async osbrepositoryIdPutRaw(requestParameters: OsbrepositoryIdPutRequest): Promise<runtime.ApiResponse<OSBRepository>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdPut.');
+        }
+
+        if (requestParameters.oSBRepository === null || requestParameters.oSBRepository === undefined) {
+            throw new runtime.RequiredError('oSBRepository','Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryIdPut.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.context !== undefined) {
+            queryParameters['context'] = requestParameters.context;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/osbrepository/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: OSBRepositoryToJSON(requestParameters.oSBRepository),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
+    }
+
+    /**
+     * Update a OSB repository.
+     */
+    async osbrepositoryIdPut(requestParameters: OsbrepositoryIdPutRequest): Promise<OSBRepository> {
+        const response = await this.osbrepositoryIdPutRaw(requestParameters);
         return await response.value();
     }
 
@@ -795,6 +907,10 @@ export class RestApi extends runtime.BaseAPI {
 
         if (requestParameters.q !== undefined) {
             queryParameters['q'] = requestParameters.q;
+        }
+
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
