@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     margin: '0px 2px 0px 2px',
-    color: '#3c3c3c',
+    backgroundColor: '#3c3c3c',
     '& .MuiChip-label': {
       color: textColor,
     },
