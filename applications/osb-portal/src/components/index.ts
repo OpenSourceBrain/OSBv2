@@ -24,6 +24,7 @@ import { AnyAction, Dispatch } from 'redux';
 import { RepositoryPage as repositoryPage } from '../pages/RepositoryPage'
 import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
 import repositories from '../components/repository/Repositories';
+import { retrieveAllTags, loadTags } from '../store/actions/tags';
 
 const mapWorkspacesStateToProps = (state: RootState) => {
   return ({
@@ -74,6 +75,14 @@ const mapErrorStateToProps = (state: RootState) => ({
 const dispatchErrorProps = {
   setError
 };
+
+const dispatchTagsProps = {
+  retrieveAllTags,
+}
+
+const mapTagsToProps = (state: RootState) => ({
+  tags: state.tags,
+});
 
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
 export const Repositories = connect(mapUserStateToProps)(repositories);
