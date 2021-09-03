@@ -7,8 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
-
-import { OSBRepository } from "../../apiclient/workspaces";
+import Chip from "@material-ui/core/Chip";
+import { OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
 import RepositoryActionsMenu from "./RepositoryActionsMenu";
 import { UserInfo } from "../../types/user";
 import {
@@ -58,26 +58,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
       },
     },
-    "& .tag": {
-      background: bgLightestShade,
-      textTransform: "capitalize",
-      borderRadius: "1rem",
-      fontSize: ".88rem",
-      color: paragraph,
-      height: "1.9rem",
-      margin: ".5rem .5rem .5rem 0",
-      "& .MuiSvgIcon-root": {
-        width: ".63rem",
-        height: ".63rem",
-        marginRight: theme.spacing(1),
-        "&.MuiSvgIcon-colorPrimary": {
-          color: teal,
-        },
-        "&.MuiSvgIcon-colorSecondary": {
-          color: purple,
-        },
-      },
-    },
+
 
     "& .col": {
       borderWidth: 0,
@@ -183,96 +164,86 @@ export default (props: RepositoriesProps) => {
 
   return (
     <>
-    { searchRepositories && <Box className={classes.searchBox}>
-      <RepositoriesSearch filterChanged={(newFilter) => props.filterChanged(newFilter)} />
-    </Box>}
-    <Box className={`${classes.repositoryData} scrollbar virticalFill`}>
-      {props.repositories.map((repository) => (
-        <Grid
-          container={true}
-          className="row"
-          spacing={0}
-          key={repository.id}
-        >
-          <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}
-            onClick={() => props.handleRepositoryClick(repository.id)}>
-            <Box className="col">
-              <Typography component="strong">
-                {repository.name}
-              </Typography>
-              <Typography>{repository.summary}</Typography>
-            </Box>
-          </Grid>
+      {searchRepositories && <Box className={classes.searchBox}>
+        <RepositoriesSearch filterChanged={(newFilter) => props.filterChanged(newFilter)} />
+      </Box>}
+      <Box className={`${classes.repositoryData} scrollbar verticalFill`}>
+        {props.repositories.map((repository) => (
+          <Grid
+            container={true}
+            className="row"
+            spacing={0}
+            key={repository.id}
+          >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}
+              onClick={() => props.handleRepositoryClick(repository.id)}>
+              <Box className="col">
+                <Typography component="strong">
+                  {repository.name}
+                </Typography>
+                <Typography>{repository.summary}</Typography>
+              </Box>
+            </Grid>
 
-          {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
-            <Box className="col">
-              <Typography>
-                {repository?.user?.firstName} {repository?.user?.lastName}
-              </Typography>
-            </Box>
-          </Grid>}
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
+              <Box className="col">
+                <Typography>
+                  {repository?.user?.firstName} {repository?.user?.lastName}
+                </Typography>
+              </Box>
+            </Grid>}
 
-          <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}
-            onClick={() => props.handleRepositoryClick(repository.id)}>
-            <Box
-              display="flex"
-              alignItems="center"
-              flexWrap="wrap"
-            >
-              {repository.contentTypes.split(",").map((type, index) => (
-                <Box
-                  className="tag"
-                  display="flex"
-                  alignItems="center"
-                  paddingX={1}
-                  marginY={1}
-                  key={type}
-                  m={0}
-                >
-                  <FiberManualRecordIcon color={index % 2 === 0 ? "primary" : "secondary"} />{type}
-                </Box>
-              ))}
-              {repository.tags && repository.tags.map((tagObject, index) => (
-                <Box
-                  className="tag"
-                  display="flex"
-                  alignItems="center"
-                  paddingX={1}
-                  marginY={1}
-                  key={tagObject.id}
-                  m={0}
-                >
-                  <FiberManualRecordIcon color={(repository.contentTypes && repository.contentTypes.split(",").length % 2 === 0) ? (index % 2 === 0 ? "primary" : "secondary") : (index % 2 === 0 ? "secondary" : "primary")} />{tagObject.tag}
-                </Box>
-              ))}
-
-            </Box>
-          </Grid>
-          <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3} >
-            <Box
-              className="col"
-              display="flex"
-              flex={1}
-              alignItems="center"
-            >
-              {!showSimpleVersion && <Button
-                variant="outlined"
-                onClick={() => {openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
+            <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}
+              onClick={() => props.handleRepositoryClick(repository.id)}>
+              <Box
+                display="flex"
+                alignItems="center"
+                flexWrap="wrap"
               >
-                See on {repository.repositoryType}
-              </Button>}
-              <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)}/>
-              { props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
-              <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories}/>
-            </Box>}
-            </Box>
-            { props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
-              <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories}/>
-            </Box>}
+                {repository.contentTypes.split(",").map((type, index) => (
+                  <Chip
+                    className="tag"
+                    avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
+                    key={type}
+                    label={type}
+                  />
+
+                ))}
+                {repository.tags && repository.tags.map((tagObject, index) => (
+                  <Chip
+                    className="tag"
+                    key={tagObject.id}
+                    label={tagObject.tag}
+                  />
+                ))}
+
+              </Box>
+            </Grid>
+            <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3} >
+              <Box
+                className="col"
+                display="flex"
+                flex={1}
+                alignItems="center"
+              >
+                {!showSimpleVersion && <Button
+                  variant="outlined"
+                  onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
+                >
+                  See on {repository.repositoryType}
+                </Button>}
+                <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)} />
+                {props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
+                  <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />
+                </Box>}
+              </Box>
+              {props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
+                <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />
+              </Box>}
+            </Grid>
           </Grid>
-        </Grid>
-      ))}
-    </Box>
+        ))}
+      </Box>
     </>
   )
 }

@@ -111,6 +111,19 @@ const theme = {
         label: {
           fontSize: '0.8rem',
         },
+        
+         
+          "& .MuiChip-avatar": {
+            width: ".63rem",
+            height: ".63rem",
+            "&.MuiSvgIcon-colorPrimary": {
+              color: teal,
+            },
+            "&.MuiSvgIcon-colorSecondary": {
+              color: purple,
+            },
+          },
+        
       },
       outlined: {
         backgroundColor: bgDarker,

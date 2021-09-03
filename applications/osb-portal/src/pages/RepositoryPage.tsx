@@ -14,9 +14,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import LinkIcon from '@material-ui/icons/Link';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
 
-import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
+import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
@@ -70,9 +71,6 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiChip-root": {
       margin: `5px 5px ${theme.spacing(1)}px 0px`,
     },
-  },
-  repositoryName: {
-    fontSize: '1.25rem',
   },
   root: {
     maxHeight: '100%',
@@ -313,16 +311,41 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
-                    {/* <Typography component="h1">
+
+                    <Typography component="h1" variant="h1">
                       {repository.name}
                     </Typography>
-                    {repository.tags && repository.tags.length > 0 && <Box>
+                    {
+                      repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
+                        By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                      </Typography>
+                    }
+
+                    <Box>
+                      {
+                        repository.contentTypesList.map(type => {
+                          return <Chip
+                            className="tag"
+                            size="small"
+                            avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
+                            key={type}
+                            label={type}
+                          />
+                        })
+                      }
                       {
                         repository.tags.map(tagObject => {
                           return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
-                    </Box>} */}
+                    </Box>
+
+                    {
+                      repository.summary && <Typography component="p" variant="body2">
+                        {repository.summary}
+                      </Typography>
+                    }
+
                     <Accordion>
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -332,42 +355,26 @@ export const RepositoryPage = (props: any) => {
                         <Typography component="p" variant="body1">More Info</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Typography component="h1" variant="body1" className={classes.repositoryName}>
-                          {repository.name}
-                        </Typography>
-                        {repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                          By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
-                        </Typography>}
-                        {repository.summary && <Typography component="p" variant="body2">
-                          {repository.summary}
-                        </Typography>}
-                        {repository.id && <Typography component="p" variant="body2">
-                          Id: {repository.id}
-                        </Typography>}
+
+                        {
+                          repository.id && <Typography component="p" variant="body2">
+                            Id: {repository.id}
+                          </Typography>
+                        }
                         <Typography component="p" variant="body2">
                           Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
                         </Typography>
-                        {repository.defaultContext && <Typography component="p" variant="body2">
-                          Context: {repository.defaultContext}
-                        </Typography>}
-                        {repository.timestampCreated && <Typography component="p" variant="body2">
-                          Created: {repository.timestampCreated.toDateString()}
-                        </Typography>}
-                        {repository.timestampModified && <Typography component="p" variant="body2">
-                          Modified: {repository.timestampModified.toDateString()}
-                        </Typography>}
-                        {<Box>
-                          {
-                            repository.contentTypesList.map(contentType => {
-                              return <Chip size="small" label={contentType} key={contentType} />
-                            })
-                          }
-                          {
-                            repository.tags.map(tagObject => {
-                              return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
-                            })
-                          }
-                        </Box>}
+                        {
+                          repository.defaultContext && <Typography component="p" variant="body2">
+                            Context: {repository.defaultContext}
+                          </Typography>
+                        }
+                        {
+                          repository.timestampCreated && <Typography component="p" variant="body2">
+                            Created: {repository.timestampCreated.toDateString()}
+                          </Typography>
+                        }
+
                       </AccordionDetails>
                     </Accordion>
                   </Box>
