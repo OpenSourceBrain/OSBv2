@@ -58,15 +58,21 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   repositoryInformation: {
-    "& .MuiTypography-root": {
-      marginBottom: theme.spacing(1),
-      fontSize: '1.5rem',
+    marginBottom: theme.spacing(1),
+    "& .MuiAccordionSummary-root": {
+      flexDirection: 'row',
+      paddingLeft: `${theme.spacing(1)}px !important`,
+    },
+    "& .MuiAccordionDetails-root": {
+      paddingLeft: `${theme.spacing(2)}px !important`,
+      paddingBottom: theme.spacing(1),
     },
     "& .MuiChip-root": {
-      marginLeft: '0px',
-      marginRight: '5px',
-      marginBottom: theme.spacing(1),
+      margin: `5px 5px ${theme.spacing(1)}px 0px`,
     },
+  },
+  repositoryName: {
+    fontSize: '1.25rem',
   },
   root: {
     maxHeight: '100%',
@@ -307,7 +313,7 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
-                    <Typography component="h1">
+                    {/* <Typography component="h1">
                       {repository.name}
                     </Typography>
                     {repository.tags && repository.tags.length > 0 && <Box>
@@ -316,7 +322,54 @@ export const RepositoryPage = (props: any) => {
                           return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
-                    </Box>}
+                    </Box>} */}
+                    <Accordion>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography component="p" variant="body1">More Info</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography component="h1" variant="body1" className={classes.repositoryName}>
+                          {repository.name}
+                        </Typography>
+                        {repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
+                          By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                        </Typography>}
+                        {repository.summary && <Typography component="p" variant="body2">
+                          {repository.summary}
+                        </Typography>}
+                        {repository.id && <Typography component="p" variant="body2">
+                          Id: {repository.id}
+                        </Typography>}
+                        <Typography component="p" variant="body2">
+                          Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
+                        </Typography>
+                        {repository.defaultContext && <Typography component="p" variant="body2">
+                          Context: {repository.defaultContext}
+                        </Typography>}
+                        {repository.timestampCreated && <Typography component="p" variant="body2">
+                          Created: {repository.timestampCreated.toDateString()}
+                        </Typography>}
+                        {repository.timestampModified && <Typography component="p" variant="body2">
+                          Modified: {repository.timestampModified.toDateString()}
+                        </Typography>}
+                        {<Box>
+                          {
+                            repository.contentTypesList.map(contentType => {
+                              return <Chip size="small" label={contentType} key={contentType} />
+                            })
+                          }
+                          {
+                            repository.tags.map(tagObject => {
+                              return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                            })
+                          }
+                        </Box>}
+                      </AccordionDetails>
+                    </Accordion>
                   </Box>
                   <MarkdownViewer text={repository.description} repository={repository} />
                 </Box>
