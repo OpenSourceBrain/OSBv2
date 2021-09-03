@@ -692,8 +692,6 @@ paths:
       tags:
         - rest
       summary: Used to list all available tags.
-      security:
-        - bearerAuth: []
       parameters:
         - in: query
           name: page
