@@ -215,7 +215,6 @@ export default (props: RepositoriesProps) => {
           <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}
             onClick={() => props.handleRepositoryClick(repository.id)}>
             <Box
-              className="col"
               display="flex"
               alignItems="center"
               flexWrap="wrap"
@@ -233,6 +232,20 @@ export default (props: RepositoriesProps) => {
                   <FiberManualRecordIcon color={index % 2 === 0 ? "primary" : "secondary"} />{type}
                 </Box>
               ))}
+              {repository.tags && repository.tags.map((tagObject, index) => (
+                <Box
+                  className="tag"
+                  display="flex"
+                  alignItems="center"
+                  paddingX={1}
+                  marginY={1}
+                  key={tagObject.id}
+                  m={0}
+                >
+                  <FiberManualRecordIcon color={(repository.contentTypes && repository.contentTypes.split(",").length % 2 === 0) ? (index % 2 === 0 ? "primary" : "secondary") : (index % 2 === 0 ? "secondary" : "primary")} />{tagObject.tag}
+                </Box>
+              ))}
+
             </Box>
           </Grid>
           <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3} >
