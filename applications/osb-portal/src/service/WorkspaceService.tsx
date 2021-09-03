@@ -1,5 +1,3 @@
-import qs from 'qs';
-
 import { WorkspaceIdGetRequest, WorkspaceGetRequest } from "../apiclient/workspaces/apis/RestApi";
 
 import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } from "../types/workspace";
@@ -51,7 +49,7 @@ class WorkspaceService {
     }
 
 
-    const wspr: WorkspaceGetRequest = { q: qs.stringify(params) };
+    const wspr: WorkspaceGetRequest = { q: Object.keys(params).map(k => `${k}=${params[k]}`).join("+") };
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return response.workspaces.map(mapWorkspace);
