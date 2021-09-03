@@ -58,15 +58,21 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   repositoryInformation: {
-    "& .MuiTypography-root": {
-      marginBottom: theme.spacing(1),
-      fontSize: '1.5rem',
+    marginBottom: theme.spacing(1),
+    "& .MuiAccordionSummary-root": {
+      flexDirection: 'row',
+      paddingLeft: `${theme.spacing(1)}px !important`,
+    },
+    "& .MuiAccordionDetails-root": {
+      paddingLeft: `${theme.spacing(2)}px !important`,
+      paddingBottom: theme.spacing(1),
     },
     "& .MuiChip-root": {
-      marginLeft: '0px',
-      marginRight: '5px',
-      marginBottom: theme.spacing(1),
+      margin: `5px 5px ${theme.spacing(1)}px 0px`,
     },
+  },
+  repositoryName: {
+    fontSize: '1.25rem',
   },
   root: {
     maxHeight: '100%',
@@ -277,17 +283,19 @@ export const RepositoryPage = (props: any) => {
               </Typography>
             </Box>
           </Box>
-          <Box>
-            <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
-              <AddIcon />
-              Add to existing workspace
-            </Button>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
-              <AddIcon />
-              Create new workspace
-            </Button>
-            <RepositoryActionsMenu user={user} repository={repository} onAction={() => setRefreshRepository(!refreshRepository)}/>
-          </Box>
+          {user &&
+            <Box>
+              <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
+                <AddIcon />
+                Add to existing workspace
+              </Button>
+              <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
+                <AddIcon />
+                Create new workspace
+              </Button>
+              <RepositoryActionsMenu user={user} repository={repository} onAction={() => setRefreshRepository(!refreshRepository)} />
+            </Box>
+          }
         </Box>
 
         <Box className="main-content verticalFit">
@@ -305,7 +313,7 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
-                    <Typography component="h1">
+                    {/* <Typography component="h1">
                       {repository.name}
                     </Typography>
                     {repository.tags && repository.tags.length > 0 && <Box>
@@ -314,9 +322,56 @@ export const RepositoryPage = (props: any) => {
                           return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
-                    </Box>}
+                    </Box>} */}
+                    <Accordion>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography component="p" variant="body1">More Info</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography component="h1" variant="body1" className={classes.repositoryName}>
+                          {repository.name}
+                        </Typography>
+                        {repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
+                          By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                        </Typography>}
+                        {repository.summary && <Typography component="p" variant="body2">
+                          {repository.summary}
+                        </Typography>}
+                        {repository.id && <Typography component="p" variant="body2">
+                          Id: {repository.id}
+                        </Typography>}
+                        <Typography component="p" variant="body2">
+                          Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
+                        </Typography>
+                        {repository.defaultContext && <Typography component="p" variant="body2">
+                          Context: {repository.defaultContext}
+                        </Typography>}
+                        {repository.timestampCreated && <Typography component="p" variant="body2">
+                          Created: {repository.timestampCreated.toDateString()}
+                        </Typography>}
+                        {repository.timestampModified && <Typography component="p" variant="body2">
+                          Modified: {repository.timestampModified.toDateString()}
+                        </Typography>}
+                        {<Box>
+                          {
+                            repository.contentTypesList.map(contentType => {
+                              return <Chip size="small" label={contentType} key={contentType} />
+                            })
+                          }
+                          {
+                            repository.tags.map(tagObject => {
+                              return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                            })
+                          }
+                        </Box>}
+                      </AccordionDetails>
+                    </Accordion>
                   </Box>
-                  <MarkdownViewer text={repository.description} repository={repository}/>
+                  <MarkdownViewer text={repository.description} repository={repository} />
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
@@ -346,23 +401,24 @@ export const RepositoryPage = (props: any) => {
         </Box>
       </Box>
 
-      <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
-        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
+      {user &&
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
+          {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
-        <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
-      </OSBDialog>
-
-      <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
+          <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
+        </OSBDialog>
+      }
+      {user && <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
         {checked.length > 0 &&
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
         <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
-      </OSBDialog>
-
-      <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
-        <NewWorkspaceAskUser />
-      </OSBDialog>
-
+      </OSBDialog>}
+      {user &&
+        <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
+          <NewWorkspaceAskUser />
+        </OSBDialog>
+      }
       {/* Confirm to user if workspace creation/modification was successful */}
       {
         showConfirmationDialog && <Dialog open={showConfirmationDialog}
