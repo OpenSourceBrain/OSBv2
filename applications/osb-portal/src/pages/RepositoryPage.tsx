@@ -21,7 +21,7 @@ import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "..
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
-import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
+import { WorkspaceEditor } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
 import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";

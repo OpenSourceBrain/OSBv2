@@ -273,7 +273,6 @@ export default (props: ItemProps) => {
   };
 
   const handleContinue = () => {
-    console.log(checked);
     if (checked.length === 0){
       setShowNoFilesSelectedDialog(true);
     }

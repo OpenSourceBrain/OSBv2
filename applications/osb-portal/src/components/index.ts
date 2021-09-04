@@ -12,6 +12,7 @@ import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
 import workspacePage from "../pages/WorkspacePage";
+import workspaceEditor  from './workspace/WorkspaceEditor';
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
@@ -96,6 +97,7 @@ export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const WorkspaceInteractions = connect(mapSelectedWorkspaceStateToProps, dispatchWorkspaceProps)(workspaceInteractions) as any
+export const WorkspaceEditor = connect(mapTagsToProps, dispatchTagsProps)(workspaceEditor)
 
 export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
