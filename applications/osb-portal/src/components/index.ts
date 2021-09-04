@@ -84,6 +84,11 @@ const mapTagsToProps = (state: RootState) => ({
   tags: state.tags,
 });
 
+const mapUserAndTagsToProps = (state: RootState) => ({
+  user: state.user,
+  tags: state.tags,
+})
+
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
 export const Repositories = connect(mapUserStateToProps)(repositories);
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
@@ -98,6 +103,6 @@ const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction)
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
 export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage)
-export const RepositoriesPage = connect(mapUserStateToProps, null)(repositoriesPage)
+export const RepositoriesPage = connect(mapUserAndTagsToProps, dispatchTagsProps)(repositoriesPage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
 export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)

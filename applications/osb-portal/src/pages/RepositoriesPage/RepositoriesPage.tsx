@@ -23,6 +23,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
 import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
+import { Tag } from '../../apiclient/workspaces/models/Tag';
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
@@ -38,7 +39,7 @@ enum RepositoriesTab {
 
 let firstTimeFiltering = true;
 
-export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
+export const RepositoriesPage = ({ user, retrieveAllTags , tags }: { user: UserInfo, retrieveAllTags: (page?: number) => void, tags: Tag[]}) => {
   const classes = useStyles();
   const history = useHistory();
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
@@ -48,7 +49,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     tags: [],
     types: [],
   });
-  const [searchTagOptions, setSearchTagOptions] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -116,13 +116,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   }, [page, searchFilterValues]);
 
   React.useEffect(() => {
-    RepositoryService.getAllTags().then((tagsInformation) => {
-      const tags = tagsInformation.tags.map(tagObject => {
-        return tagObject.tag;
-      });
-      setSearchTagOptions(tags);
-    });
-  }, [])
+    retrieveAllTags(1);
+  }, []);
 
   const handleInput = (repositoryTypes: any) => {
     setSearchFilterValues({...searchFilterValues, types: repositoryTypes });
@@ -158,7 +153,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
           <Box className={classes.filterAndSearchBox}>
             <Autocomplete
             multiple={true}
-            options={searchTagOptions}
+            options={tags.map(tagObject => tagObject.tag)}
             freeSolo={true}
             onChange={ (event, value) => setSearchFilterValues({...searchFilterValues, tags: value })}
             renderTags={(value, getTagProps) =>
