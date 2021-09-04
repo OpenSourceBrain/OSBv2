@@ -88,6 +88,9 @@ const TagTooltip = withStyles((theme) => ({
     backgroundColor: bgDarkest,
     color: textColor,
   },
+  arrow: {
+    color: bgDarkest,
+  },
 }))(Tooltip);
 
 export const WorkspaceCard = (props: Props) => {
