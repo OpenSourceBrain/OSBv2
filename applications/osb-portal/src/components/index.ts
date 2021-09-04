@@ -13,6 +13,7 @@ import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
 import workspacePage from "../pages/WorkspacePage";
 import workspaceEditor  from './workspace/WorkspaceEditor';
+import editRepoDialog from '../components/repository/EditRepoDialog';
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
@@ -92,6 +93,7 @@ const mapUserAndTagsToProps = (state: RootState) => ({
 
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
 export const Repositories = connect(mapUserStateToProps)(repositories);
+export const EditRepoDialog = connect(mapTagsToProps, dispatchTagsProps)(editRepoDialog);
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
 export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)

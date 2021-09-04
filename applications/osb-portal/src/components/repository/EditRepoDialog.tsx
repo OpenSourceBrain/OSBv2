@@ -155,13 +155,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EditRepoDialog = ({
+export default ({
   dialogOpen,
   setDialogOpen,
   onSubmit,
   repository = RepositoryService.EMPTY_REPOSITORY,
   title = "Add repository",
   user,
+  tags,
+  retrieveAllTags,
 }: {
   dialogOpen: boolean;
   onSubmit: () => any;
@@ -169,6 +171,8 @@ export const EditRepoDialog = ({
   repository?: OSBRepository;
   title: string;
   user: UserInfo;
+  tags: Tag[];
+  retrieveAllTags: (page: number) => void;
 }) => {
   const classes = useStyles();
 
@@ -179,7 +183,6 @@ export const EditRepoDialog = ({
 
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
-  const [tagOptions, setTagOptions] = useState([]);
   const [defaultTags, setDefaultTags] = useState([]);
 
   React.useEffect(() => {
@@ -196,12 +199,7 @@ export const EditRepoDialog = ({
   });
 
   React.useEffect(() => {
-    RepositoryService.getAllTags().then((tagsInformation) => {
-      const tags = tagsInformation.tags.map(tagObject => {
-        return tagObject.tag;
-      });
-      setTagOptions(tags);
-    });
+    retrieveAllTags(1);
   }, []);
 
   const handleClose = () => {
@@ -392,7 +390,7 @@ export const EditRepoDialog = ({
             className={classes.autoComplete}
             multiple={true}
             freeSolo={true}
-            options={tagOptions}
+            options={tags.map(tagObject => tagObject.tag)}
             defaultValue={defaultTags}
             onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>

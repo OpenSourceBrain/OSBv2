@@ -21,13 +21,12 @@ import searchFilter from "../../types/searchFilter";
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 
-import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
+import { EditRepoDialog, Repositories } from "../../components/index";
 import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
 import { Tag } from '../../apiclient/workspaces/models/Tag';
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
-import { Repositories } from "../../components/index";
 import MainMenu from "../../components/menu/MainMenu";
 import OSBPagination from "../../components/common/OSBPagination";
 import RepositoriesSearch from "../../components/repository/RepositoriesSearch";

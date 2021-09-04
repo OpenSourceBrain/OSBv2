@@ -5,7 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { IconButton } from "@material-ui/core";
 import * as Icons from "../icons";
 
-import { EditRepoDialog } from "./EditRepoDialog";
+import { EditRepoDialog } from "./../index";
 import { canEditRepository } from '../../service/UserService';
 import { UserInfo } from "../../types/user";
 import { OSBRepository } from "../../apiclient/workspaces";
