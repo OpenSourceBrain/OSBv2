@@ -114,9 +114,6 @@ export const RepositoriesPage = ({ user, retrieveAllTags , tags }: { user: UserI
     }
   }, [page, searchFilterValues]);
 
-  React.useEffect(() => {
-    retrieveAllTags(1);
-  }, []);
 
   const handleInput = (repositoryTypes: any) => {
     setSearchFilterValues({...searchFilterValues, types: repositoryTypes });

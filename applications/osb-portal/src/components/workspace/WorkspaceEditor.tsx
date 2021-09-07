@@ -119,10 +119,6 @@ export default (props: WorkspaceEditProps) => {
     }
   }
 
-  React.useEffect(() => {
-    props.retrieveAllTags(1);
-  }, []);
-
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
@@ -143,6 +139,7 @@ export default (props: WorkspaceEditProps) => {
     setLoading(true);
     WorkspaceService.createOrUpdateWorkspace({...workspace, ...workspaceForm}).then(
       async (returnedWorkspace) => {
+        props.retrieveAllTags(1);
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
           WorkspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))

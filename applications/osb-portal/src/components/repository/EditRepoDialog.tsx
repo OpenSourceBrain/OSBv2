@@ -198,10 +198,6 @@ export default ({
     name: '',
   });
 
-  React.useEffect(() => {
-    retrieveAllTags(1);
-  }, []);
-
   const handleClose = () => {
     setDialogOpen(false);
   };
@@ -259,6 +255,7 @@ export default ({
               contentTypesList: '',
               name: '',
             });
+            retrieveAllTags(1);
             onSubmit();
           },
           (e) => {
@@ -275,6 +272,7 @@ export default ({
         RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
           handleClose();
+          retrieveAllTags(1);
           onSubmit();
         }).catch(() => {
           setLoading(false);
