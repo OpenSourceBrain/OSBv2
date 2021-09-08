@@ -10,6 +10,8 @@ import workspaceService from '../service/WorkspaceService';
 import workspaceResourceService from '../service/WorkspaceResourceService';
 import { ResourceStatus, Workspace } from "../types/workspace";
 import RepositoryService from "../service/RepositoryService";
+import { RootState } from "../store/rootReducer";
+import { WorkspaceSelection } from "../store/reducers/workspaces";
 
 
 const AUTO_REFRESH_PERIOD = 5000;
@@ -18,38 +20,52 @@ let refreshPending = false;
 /**
  * @private
  */
-const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyAction) => {
+const callAPIMiddlewareFn: Middleware = ({ getState }: { getState: () => RootState }) => next => async (action: AnyAction) => {
 
   function refreshWorkspaces() {
-    workspaceService.fetchWorkspaces(true).then((workspaces) => {
-      next(Workspaces.loadPublicWorkspaces(workspaces));
-    });
-    workspaceService.fetchWorkspaces().then((workspaces) => {
-      next(Workspaces.loadUserWorkspaces(workspaces));
-    });
-    workspaceService.fetchWorkspaces(true, true).then((workspaces) => {
-      next(Workspaces.loadFeaturedWorkspaces(workspaces));
-    })
+    const wState = getState().workspaces;
+    switch (wState.selection) {
+      case WorkspaceSelection.PUBLIC: {
+        workspaceService.fetchWorkspaces(true).then((workspaces) => {
+          next(Workspaces.loadWorkspaces(workspaces));
+        });
+        break;
+      }
+      case WorkspaceSelection.FEATURED: {
+        workspaceService.fetchWorkspaces(true, true).then((workspaces) => {
+          next(Workspaces.loadWorkspaces(workspaces));
+        })
+        break;
+      }
+      default: {
+        workspaceService.fetchWorkspaces().then((workspaces) => {
+          next(Workspaces.loadWorkspaces(workspaces));
+        });
+        break;
+      }
+    }
   }
 
   switch (action.type) {
     case Workspaces.showPublicWorkspaces.toString():
+      next(Workspaces.loadWorkspaces(null));
       workspaceService.fetchWorkspaces(true).then((workspaces) => {
-        next(Workspaces.loadPublicWorkspaces(workspaces));
+        next(Workspaces.loadWorkspaces(workspaces));
       });
       next(action);
       break;
     case Workspaces.showUserWorkspaces.toString():
+      next(Workspaces.loadWorkspaces(null));
       workspaceService.fetchWorkspaces(false).then((workspaces) => {
-        next(Workspaces.loadUserWorkspaces(workspaces));
+        next(Workspaces.loadWorkspaces(workspaces));
       });
       next(action);
       break;
     case Workspaces.showFeaturedWorkspaces.toString():
-      console.log('payload action', action.payload);
+      next(Workspaces.loadWorkspaces(null));
       workspaceService.fetchWorkspaces(true, action.payload).then((workspaces) => {
         const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
-        next(Workspaces.loadFeaturedWorkspaces(featuredWorkspaces));
+        next(Workspaces.loadWorkspaces(featuredWorkspaces));
       });
       next(action);
       break;
@@ -82,7 +98,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
     case Workspaces.refreshWorkspace.toString():
 
       function refreshWorkspace(callback: (workspace: Workspace) => any) {
-        const selectedWorkspaceId = action.payload || store.getState().workspaces.selectedWorkspace.id;
+        const selectedWorkspaceId = action.payload || getState().workspaces.selectedWorkspace.id;
         refreshPending = true;
         workspaceService.getWorkspace(selectedWorkspaceId).then(
           (workspace: Workspace) => {
@@ -122,7 +138,7 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       break;
     case Workspaces.resourceAdded.toString():
       const { path, name } = action.payload as { path: string, name: string };
-      const workspaceId = store.getState().workspaces.selectedWorkspace.id;
+      const workspaceId = getState().workspaces.selectedWorkspace.id;
       workspaceResourceService.resourceAdded({
         origin: {
           path

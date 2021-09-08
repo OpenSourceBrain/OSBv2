@@ -3,22 +3,26 @@ import { createSlice, PayloadAction, AnyAction, Action } from '@reduxjs/toolkit'
 import { Workspace } from '../../types/workspace';
 import * as UserActions from '../actions/user';
 
-interface WorkspaceState {
-  userWorkspaces: Workspace[],
-  publicWorkspaces: Workspace[],
-  featuredWorkspaces: Workspace[],
-  selectedWorkspace: Workspace,
-  showPublic: boolean,
-  showFeatured: boolean,
+export enum WorkspaceSelection {
+  USER,
+  PUBLIC,
+  FEATURED,
 }
 
+
+interface WorkspaceState {
+  workspaces: Workspace[],
+  page: number,
+  selectedWorkspace: Workspace,
+  selection: WorkspaceSelection
+}
+
+
 export const initialState: WorkspaceState = {
-  userWorkspaces: null,
-  publicWorkspaces: null,
+  workspaces: null,
   selectedWorkspace: null,
-  featuredWorkspaces: null,
-  showPublic: false,
-  showFeatured: true,
+  selection: WorkspaceSelection.FEATURED,
+  page: 1
 };
 
 
@@ -27,28 +31,22 @@ const workspaceSlice = createSlice({
   initialState,
   reducers: {
     showPublicWorkspaces(state, action: Action) {
-      return { ...state, showPublic: true, showFeatured: false };
+      return { ...state, selection: WorkspaceSelection.PUBLIC, page: 1 };
     },
     showUserWorkspaces(state, action: Action) {
-      return { ...state, showPublic: false };
+      return { ...state, selection: WorkspaceSelection.USER, page: 1 };
     },
     showFeaturedWorkspaces(state, action: PayloadAction<number>) {
-      return { ...state, showFeatured: true, showPublic: false };
+      return { ...state, selection: WorkspaceSelection.FEATURED, page: 1 };
     },
-    loadPublicWorkspaces(state, action: PayloadAction<Workspace[]>) {
-      return { ...state, publicWorkspaces: action.payload };
-    },
-    loadFeaturedWorkspaces(state, action: PayloadAction<Workspace[]>) {
-      return { ...state, featuredWorkspaces: action.payload };
+    loadWorkspaces(state, action: PayloadAction<Workspace[]>) {
+      return { ...state, workspaces: action.payload };
     },
     selectWorkspace(state, action: PayloadAction<Workspace>) {
       return { ...state, selectedWorkspace: action.payload }
     },
     refreshWorkspace(state, action: AnyAction) {
       return { ...state, selectedWorkspace: action.payload }
-    },
-    loadUserWorkspaces(state, action: PayloadAction<Workspace[]>) {
-      return { ...state, userWorkspaces: action.payload }
     },
     deleteWorkspace(state, action: PayloadAction<number>) {
       return state; // everything goes in the middleware

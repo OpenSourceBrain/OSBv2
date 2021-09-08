@@ -30,12 +30,10 @@ import { retrieveAllTags, loadTags } from '../store/actions/tags';
 
 const mapWorkspacesStateToProps = (state: RootState) => {
   return ({
-    showPublic: state.workspaces?.showPublic,
-    showFeatured: state.workspaces?.showFeatured,
-    publicWorkspaces: state.workspaces?.publicWorkspaces,
-    featuredWorkspaces: state.workspaces?.featuredWorkspaces,
-    userWorkspaces: state.workspaces?.userWorkspaces,
-    user: state.user
+    selection: state.workspaces?.selection,
+    workspaces: state.workspaces?.workspaces,
+    user: state.user,
+    page: state.workspaces?.page
   })
 };
 

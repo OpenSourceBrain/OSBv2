@@ -10,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
+import { WorkspaceSelection } from "../../store/reducers/workspaces";
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // TODO handle user's vs public workspaces
-export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspaces, showPublicWorkspaces, showUserWorkspaces, showFeaturedWorkspaces, showPublic, showFeatured, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
+export const Workspaces = ({ workspaces, selection, showFeaturedWorkspaces, showUserWorkspaces, showPublicWorkspaces, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
 
   const classes = useStyles();
 
@@ -44,14 +45,9 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
     showFeaturedWorkspaces();
   }, []);
 
-  const FEATURED_WORKSPACES = "Featured workspaces";
-  const USER_WORKSPACES = "Your workspaces";
-  const PUBLIC_WORKSPACES = "Public workspaces";
+  ;
 
-  const [activeTab, setActiveTab] = React.useState(FEATURED_WORKSPACES);
-
-  const workspaces = activeTab === FEATURED_WORKSPACES ? featuredWorkspaces : activeTab === PUBLIC_WORKSPACES ? publicWorkspaces : activeTab === USER_WORKSPACES ? userWorkspaces : publicWorkspaces;
-
+  const [activeTab, setActiveTab] = React.useState(selection);
 
   const workspaceList =
     workspaces
@@ -65,15 +61,15 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
       : null;
 
 
-  const handleChange = (event: React.ChangeEvent<{}>, tabSelected: string) => {
+  const handleChange = (event: React.ChangeEvent<{}>, tabSelected: WorkspaceSelection) => {
     switch (tabSelected) {
-      case USER_WORKSPACES:
+      case WorkspaceSelection.USER:
         showUserWorkspaces();
         break;
-      case FEATURED_WORKSPACES:
+      case WorkspaceSelection.FEATURED:
         showFeaturedWorkspaces();
         break;
-      case PUBLIC_WORKSPACES:
+      case WorkspaceSelection.PUBLIC:
         showPublicWorkspaces();
         break;
     }
@@ -92,12 +88,12 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
         indicatorColor="primary"
         onChange={handleChange}
       >
-        { user ?
-            <Tab id="your-all-workspaces-tab" className={`${classes.tab} ${classes.firstTab}`} value={USER_WORKSPACES} label={user.isAdmin ? "All workspaces" : "Your workspaces" } />
+        {user ?
+          <Tab id="your-all-workspaces-tab" className={`${classes.tab} ${classes.firstTab}`} value={WorkspaceSelection.USER} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
           : null
         }
-        <Tab className={user ? classes.tab : `${classes.firstTab} ${classes.tab}`} value={FEATURED_WORKSPACES} label="Featured workspaces" />
-        <Tab className={`${classes.tab} ${classes.lastTab}`} value={PUBLIC_WORKSPACES} label="Public workspaces" />
+        <Tab className={user ? classes.tab : `${classes.firstTab} ${classes.tab}`} value={WorkspaceSelection.FEATURED} label="Featured workspaces" />
+        <Tab className={`${classes.tab} ${classes.lastTab}`} value={WorkspaceSelection.PUBLIC} label="Public workspaces" />
       </Tabs>
 
       {
@@ -117,7 +113,7 @@ export const Workspaces = ({ publicWorkspaces, userWorkspaces, featuredWorkspace
             hasMore={true}
             loader={<CircularProgress />}
             scrollableTarget="workspace-box"
-            >
+          >
             {workspaceList ?
               <Grid container={true} spacing={1}>
                 {workspaceList}
