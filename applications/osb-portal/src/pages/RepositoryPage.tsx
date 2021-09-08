@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 
 import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -320,8 +321,16 @@ export const RepositoryPage = (props: any) => {
                         By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
                       </Typography>
                     }
+                    {
+                      repository.summary && <Typography component="p" variant="body2">
+                        {repository.summary}
+                      </Typography>
+                    }
 
                     <Box>
+                      {
+                        repository.defaultContext && <Chip size="small" label={repository.defaultContext} key={repository.defaultContext} icon={<DeviceHubIcon />} />
+                      }
                       {
                         repository.contentTypesList.map(type => {
                           return <Chip
@@ -340,11 +349,6 @@ export const RepositoryPage = (props: any) => {
                       }
                     </Box>
 
-                    {
-                      repository.summary && <Typography component="p" variant="body2">
-                        {repository.summary}
-                      </Typography>
-                    }
 
                     <Accordion>
                       <AccordionSummary

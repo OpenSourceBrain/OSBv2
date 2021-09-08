@@ -200,6 +200,7 @@ export default (props: RepositoriesProps) => {
                 alignItems="center"
                 flexWrap="wrap"
               >
+                {repository.defaultContext && <Chip className="tag" key={repository.defaultContext} label={repository.defaultContext} />}
                 {repository.contentTypes.split(",").map((type, index) => (
                   <Chip
                     className="tag"
