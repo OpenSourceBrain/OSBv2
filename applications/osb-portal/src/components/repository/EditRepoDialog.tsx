@@ -270,13 +270,14 @@ export const EditRepoDialog = ({
       }
       else {
         const putRequestRepository: OSBRepository = {
-          id: formValues.id, uri: formValues.uri, name: formValues.name, defaultContext: formValues.defaultContext,
-          contentTypes: formValues.contentTypes, tags: formValues.tags, repositoryType: formValues.repositoryType, summary: formValues.summary, userId: user.id
+          ...formValues,
+          user: undefined
         };
         console.log('sending this repository', putRequestRepository);
         RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
           setDialogOpen(false);
+          onSubmit();
         }).catch(() => {
           setLoading(false);
           throw new Error("Error updating the repository");
