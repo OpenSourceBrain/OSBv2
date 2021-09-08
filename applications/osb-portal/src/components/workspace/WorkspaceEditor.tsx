@@ -74,6 +74,8 @@ interface WorkspaceEditProps {
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
   closeHandler?: () => void;
   filesSelected?: boolean;
+  tags: Tag[];
+  retrieveAllTags?: (page: number) => void;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -117,20 +119,10 @@ export default (props: WorkspaceEditProps) => {
     }
   }
 
-  React.useEffect(() => {
-    WorkspaceService.getAllAvailableTags(1).then(tagObjects => {
-      if (typeof tagObjects !== 'undefined') {
-        const availableTags: string[] = tagObjects.map((tagObject) => tagObject.tag);
-        setTagOptions(availableTags);
-      }
-    });
-  }, []);
-
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
   const workspaceTags = workspace && workspace.tags ? workspace.tags.map((tagObject) => tagObject.tag) : [];
-  const [tagOptions, setTagOptions] = React.useState([]);
   const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
 
   const handleCreateWorkspaceButtonClick = () => {
@@ -147,6 +139,7 @@ export default (props: WorkspaceEditProps) => {
     setLoading(true);
     WorkspaceService.createOrUpdateWorkspace({...workspace, ...workspaceForm}).then(
       async (returnedWorkspace) => {
+        props.retrieveAllTags(1);
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
           WorkspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
@@ -243,7 +236,7 @@ export default (props: WorkspaceEditProps) => {
           className={classes.autoComplete}
           multiple={true}
           freeSolo={true}
-          options={tagOptions}
+          options={props.tags.map(tagObject => tagObject.tag)}
           defaultValue={defaultTags}
           onChange={ (event, value) => setWorkspaceTags(value)}
           renderTags={(value, getTagProps) =>

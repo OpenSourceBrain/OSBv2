@@ -5,8 +5,8 @@ import { Typography, Box, Button, Grid, CircularProgress,
 } from "@material-ui/core";
 
 import { NewWorkspaceAskUser } from "..";
-import Repositories from "../repository/Repositories";
-import WorkspaceEdit from "./WorkspaceEditor";
+import { Repositories } from "../index";
+import { WorkspaceEditor } from "./../index";
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import OSBDialog from "../common/OSBDialog";
 import OSBChipList from "../common/OSBChipList";
@@ -24,6 +24,7 @@ import {
   bgDarker,
 } from "../../theme";
 import Link from "@material-ui/core/Link";
+import { ExistingWorkspaceEditorActions } from "./ExistingWorkspaceSelector";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -273,7 +274,6 @@ export default (props: ItemProps) => {
   };
 
   const handleContinue = () => {
-    console.log(checked);
     if (checked.length === 0){
       setShowNoFilesSelectedDialog(true);
     }
@@ -349,7 +349,7 @@ export default (props: ItemProps) => {
         closeAction={() => {setNewWorkspaceOpen(false); closeAddFilesToWorkspaceDialog(); setChecked([]); }}
       >
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
-        <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} />
+        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} />
       </OSBDialog>
       <OSBDialog
         title="Create new workspace"

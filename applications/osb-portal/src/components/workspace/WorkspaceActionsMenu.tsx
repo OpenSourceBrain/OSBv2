@@ -8,7 +8,7 @@ import * as Icons from "../icons";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
 import OSBDialog from "../common/OSBDialog";
-import WorkspaceEdit from "./WorkspaceEditor";
+import { WorkspaceEditor } from "./../index";
 import { canEditWorkspace } from '../../service/UserService';
 import { UserInfo } from "../../types/user";
 
@@ -124,7 +124,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         open={editWorkspaceOpen}
         closeAction={handleCloseEditWorkspace}
       >
-        <WorkspaceEdit workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+        <WorkspaceEditor workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
       </OSBDialog>
     </>
   )

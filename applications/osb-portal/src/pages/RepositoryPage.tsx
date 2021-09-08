@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -13,14 +12,16 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import LinkIcon from '@material-ui/icons/Link';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
-import { DialogContent, DialogTitle } from "@material-ui/core";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
 
-import { OSBRepository, RepositoryResourceNode } from "../apiclient/workspaces";
+import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
-import WorkspaceEditor from "../components/workspace/WorkspaceEditor";
+import { WorkspaceEditor } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
 import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
@@ -29,6 +30,7 @@ import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
 import MarkdownViewer from "../components/common/MarkdownViewer"
 import MainMenu from "../components/menu/MainMenu";
+import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
 
 import {
   linkColor,
@@ -56,6 +58,20 @@ const useStyles = makeStyles((theme) => ({
   repositoryResourceBrowserBox: {
     width: '100%',
   },
+  repositoryInformation: {
+    marginBottom: theme.spacing(1),
+    "& .MuiAccordionSummary-root": {
+      flexDirection: 'row',
+      paddingLeft: `${theme.spacing(1)}px !important`,
+    },
+    "& .MuiAccordionDetails-root": {
+      paddingLeft: `${theme.spacing(2)}px !important`,
+      paddingBottom: theme.spacing(1),
+    },
+    "& .MuiChip-root": {
+      margin: `5px 5px ${theme.spacing(1)}px 0px`,
+    },
+  },
   root: {
     maxHeight: '100%',
     backgroundColor: bgDarkest,
@@ -79,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
       background: bgLightest,
       alignItems: "center",
       height: "4.062rem",
+      paddingRight: 0,
       justifyContent: "space-between",
       "& .MuiSvgIcon-root": {
         width: "1rem",
@@ -163,15 +180,15 @@ export const RepositoryPage = (props: any) => {
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
+  const [refreshRepository, setRefreshRepository] = React.useState(false);
 
   const classes = useStyles();
 
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
-
       setRepository(repo);
-    })
-  }, [])
+    });
+  }, [refreshRepository]);
 
   const openDialog = () => {
     setShowWorkspaceEditor(!showWorkspaceEditor);
@@ -264,16 +281,19 @@ export const RepositoryPage = (props: any) => {
               </Typography>
             </Box>
           </Box>
-          <Box>
-            <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
-              <AddIcon />
-              Add to existing workspace
-            </Button>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
-              <AddIcon />
-              Create new workspace
-            </Button>
-          </Box>
+          {user &&
+            <Box>
+              <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
+                <AddIcon />
+                Add to existing workspace
+              </Button>
+              <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
+                <AddIcon />
+                Create new workspace
+              </Button>
+              <RepositoryActionsMenu user={user} repository={repository} onAction={() => setRefreshRepository(!refreshRepository)} />
+            </Box>
+          }
         </Box>
 
         <Box className="main-content verticalFit">
@@ -290,7 +310,75 @@ export const RepositoryPage = (props: any) => {
                       Overview
                     </Typography>
                   </Box>
-                  <MarkdownViewer text={repository.description} repository={repository}/>
+                  <Box className={classes.repositoryInformation}>
+
+                    <Typography component="h1" variant="h1">
+                      {repository.name}
+                    </Typography>
+                    {
+                      repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
+                        By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                      </Typography>
+                    }
+
+                    <Box>
+                      {
+                        repository.contentTypesList.map(type => {
+                          return <Chip
+                            className="tag"
+                            size="small"
+                            avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
+                            key={type}
+                            label={type}
+                          />
+                        })
+                      }
+                      {
+                        repository.tags.map(tagObject => {
+                          return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                        })
+                      }
+                    </Box>
+
+                    {
+                      repository.summary && <Typography component="p" variant="body2">
+                        {repository.summary}
+                      </Typography>
+                    }
+
+                    <Accordion>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography component="p" variant="body1">More Info</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+
+                        {
+                          repository.id && <Typography component="p" variant="body2">
+                            Id: {repository.id}
+                          </Typography>
+                        }
+                        <Typography component="p" variant="body2">
+                          Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
+                        </Typography>
+                        {
+                          repository.defaultContext && <Typography component="p" variant="body2">
+                            Context: {repository.defaultContext}
+                          </Typography>
+                        }
+                        {
+                          repository.timestampCreated && <Typography component="p" variant="body2">
+                            Created: {repository.timestampCreated.toDateString()}
+                          </Typography>
+                        }
+
+                      </AccordionDetails>
+                    </Accordion>
+                  </Box>
+                  <MarkdownViewer text={repository.description} repository={repository} />
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
@@ -320,23 +408,24 @@ export const RepositoryPage = (props: any) => {
         </Box>
       </Box>
 
-      <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
-        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
+      {user &&
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
+          {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
-        <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
-      </OSBDialog>
-
-      <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
+          <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
+        </OSBDialog>
+      }
+      {user && <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
         {checked.length > 0 &&
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
         <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
-      </OSBDialog>
-
-      <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
-        <NewWorkspaceAskUser />
-      </OSBDialog>
-
+      </OSBDialog>}
+      {user &&
+        <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
+          <NewWorkspaceAskUser />
+        </OSBDialog>
+      }
       {/* Confirm to user if workspace creation/modification was successful */}
       {
         showConfirmationDialog && <Dialog open={showConfirmationDialog}

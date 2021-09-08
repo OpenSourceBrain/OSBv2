@@ -1,13 +1,15 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as Workspaces from '../store/actions/workspaces'
 import { userLogin, userLogout, userRegister } from '../store/actions/user'
-import { setError } from '../store/actions/error'
+import { setError } from '../store/actions/error';
+import * as Tags from "../store/actions/tags";
 
 
 import * as UserService from '../service/UserService';
 import workspaceService from '../service/WorkspaceService';
 import workspaceResourceService from '../service/WorkspaceResourceService';
 import { ResourceStatus, Workspace } from "../types/workspace";
+import RepositoryService from "../service/RepositoryService";
 
 
 const AUTO_REFRESH_PERIOD = 5000;
@@ -69,6 +71,11 @@ const callAPIMiddlewareFn: Middleware = store => next => async (action: AnyActio
       break;
     case userRegister.toString():
       UserService.register().then((user: any) => next({ ...action, payload: user }));
+      break;
+    case Tags.retrieveAllTags.toString():
+      RepositoryService.getAllTags(action.payload).then((tagDetails) => {
+        next(Tags.loadTags(tagDetails.tags));
+      });
       break;
     case Workspaces.selectWorkspace.toString():
 
