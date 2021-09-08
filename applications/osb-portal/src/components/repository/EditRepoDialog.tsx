@@ -155,15 +155,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({
+export const EditRepoDialog = ({
   dialogOpen,
   setDialogOpen,
   onSubmit,
   repository = RepositoryService.EMPTY_REPOSITORY,
   title = "Add repository",
   user,
-  tags,
-  retrieveAllTags,
 }: {
   dialogOpen: boolean;
   onSubmit: () => any;
@@ -171,25 +169,22 @@ export default ({
   repository?: OSBRepository;
   title: string;
   user: UserInfo;
-  tags: Tag[];
-  retrieveAllTags: (page: number) => void;
 }) => {
   const classes = useStyles();
-
   const [formValues, setFormValues] = useState({
     ...repository,
     userId: user.id,
   });
 
-  const [loading, setLoading] = React.useState(false);
-  const [contexts, setContexts] = useState<string[]>();
-  const [defaultTags, setDefaultTags] = useState([]);
-
   React.useEffect(() => {
     setFormValues({ ...repository, userId: user.id });
-    const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
-    setDefaultTags(repositoryTags);
   }, [repository]);
+
+  const [loading, setLoading] = React.useState(false);
+  const [contexts, setContexts] = useState<string[]>();
+  const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
+  const [tagOptions, setTagOptions] = useState([]);
+  const [defaultTags, setDefaultTags] = useState(repositoryTags);
 
   const [error, setError] = useState({
     uri: '',
@@ -197,6 +192,15 @@ export default ({
     contentTypesList: '',
     name: '',
   });
+
+  React.useEffect(() => {
+    RepositoryService.getAllTags().then((tagsInformation) => {
+      const tags = tagsInformation.tags.map(tagObject => {
+        return tagObject.tag;
+      });
+      setTagOptions(tags);
+    });
+  }, []);
 
   const handleClose = () => {
     setDialogOpen(false);
@@ -229,6 +233,7 @@ export default ({
   }
 
   const addOrUpdateRepository = () => {
+    console.log('original repository', repository);
     const errors = {
       name: !formValues.name ? 'Name must be set' : '',
       uri: !formValues.uri ? 'URL must be set' : '',
@@ -255,7 +260,6 @@ export default ({
               contentTypesList: '',
               name: '',
             });
-            retrieveAllTags(1);
             onSubmit();
           },
           (e) => {
@@ -267,13 +271,12 @@ export default ({
       else {
         const putRequestRepository: OSBRepository = {
           id: formValues.id, uri: formValues.uri, name: formValues.name, defaultContext: formValues.defaultContext,
-          contentTypes: formValues.contentTypes, tags: formValues.tags, contentTypesList: formValues.contentTypesList, repositoryType: formValues.repositoryType, summary: formValues.summary, userId: user.id
+          contentTypes: formValues.contentTypes, tags: formValues.tags, repositoryType: formValues.repositoryType, summary: formValues.summary, userId: user.id
         };
+        console.log('sending this repository', putRequestRepository);
         RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
-          handleClose();
-          retrieveAllTags(1);
-          onSubmit();
+          setDialogOpen(false);
         }).catch(() => {
           setLoading(false);
           throw new Error("Error updating the repository");
@@ -388,7 +391,7 @@ export default ({
             className={classes.autoComplete}
             multiple={true}
             freeSolo={true}
-            options={tags.map(tagObject => tagObject.tag)}
+            options={tagOptions}
             defaultValue={defaultTags}
             onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>
@@ -445,3 +448,5 @@ export default ({
     </Dialog>
   );
 };
+
+export default EditRepoDialog;

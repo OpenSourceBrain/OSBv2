@@ -12,7 +12,7 @@ import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
 import workspacePage from "../pages/WorkspacePage";
-import workspaceEditor  from './workspace/WorkspaceEditor';
+import workspaceEditor from './workspace/WorkspaceEditor';
 import editRepoDialog from '../components/repository/EditRepoDialog';
 
 import { RootState } from '../store/rootReducer'
