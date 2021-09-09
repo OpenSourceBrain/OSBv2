@@ -8,6 +8,8 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
+import Tooltip from '@material-ui/core/Tooltip';
+
 import { OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
 import RepositoryActionsMenu from "./RepositoryActionsMenu";
 import { UserInfo } from "../../types/user";
@@ -37,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
   repositoryData: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
     paddingRight: 0,
     overflow: "auto",
     backgroundColor: bgDarkest,
@@ -50,7 +51,9 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: 1.5,
     },
     "& p": {
-      lineHeight: 1.5,
+      lineHeight: '1rem',
+      height: '4rem',
+      overflow: "hidden",
       fontSize: ".88rem",
       letterSpacing: "0.01rem",
       color: paragraph,
@@ -175,17 +178,19 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 4}
               onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography component="strong">
                   {repository.name}
                 </Typography>
-                <Typography>{repository.summary}</Typography>
+                <Tooltip title={repository.summary} enterDelay={1000} enterNextDelay={1000} placement="right">
+                  <Typography>{repository.summary}</Typography>
+                </Tooltip>
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={2} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography>
                   {repository?.user?.firstName} {repository?.user?.lastName}
