@@ -6,9 +6,9 @@ import { FeaturedType } from '../types//global';
 import * as workspaceApi from '../apiclient/workspaces/apis';
 import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin, InlineResponse2003, Tag } from '../apiclient/workspaces';
 
-import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
+import { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
+import { Page } from "../types/model";
 
-import { InlineObject } from '../apiclient/workspaces/models/InlineObject';
 
 const workspacesApiUri = '/proxy/workspaces/api';
 
@@ -38,7 +38,7 @@ class WorkspaceService {
 
 
 
-  async fetchWorkspaces(isPublic = false, isFeatured = false, page = 1): Promise<Workspace[]> {
+  async fetchWorkspaces(isPublic = false, isFeatured = false, page = 1): Promise<Page<Workspace>> {
     // ToDo: pagination & size of pagination
     const params: any = {};
     if (isPublic && !isFeatured) {
@@ -49,10 +49,14 @@ class WorkspaceService {
     }
 
 
-    const wspr: WorkspaceGetRequest = { q: Object.keys(params).map(k => `${k}=${params[k]}`).join("+") };
+
+    const wspr: WorkspaceGetRequest = { q: Object.keys(params).map(k => `${k}=${params[k]}`).join("+"), page };
     if (this.workspacesApi) {
+
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
-      return response.workspaces.map(mapWorkspace);
+      return { items: response.workspaces.map(mapWorkspace), totalPages: response.pagination.numberOfPages, total: response.pagination.total };
+
+
     } else {
       console.debug('Attempting to fetch workspaces before init');
     }

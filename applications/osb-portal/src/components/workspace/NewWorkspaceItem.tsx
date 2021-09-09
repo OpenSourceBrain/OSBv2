@@ -96,11 +96,6 @@ export const NewWorkspaceItem = (props: ItemProps) => {
 
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
-
-
-
-  const workspaceRepository = typeof WORKSPACE_TEMPLATES[template] === undefined;
 
 
   const handleClick = () => {
@@ -152,7 +147,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
           title="Create new workspace"
           open={newWorkspaceOpen}
           closeAction={() => setNewWorkspaceOpen(false)}
-        > {workspaceRepository ?
+        > {defaultWorkspace ?
           <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} /> :
           <WorkspaceFromRepository close={() => setNewWorkspaceOpen(false)} workspaceCreatedCallback={onWorkspaceCreated} />
           }

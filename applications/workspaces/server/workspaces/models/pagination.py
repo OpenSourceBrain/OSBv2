@@ -15,26 +15,31 @@ class Pagination(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, current_page=None, number_of_pages=None):  # noqa: E501
+    def __init__(self, current_page=None, number_of_pages=None, total=None):  # noqa: E501
         """Pagination - a model defined in OpenAPI
 
         :param current_page: The current_page of this Pagination.  # noqa: E501
         :type current_page: int
         :param number_of_pages: The number_of_pages of this Pagination.  # noqa: E501
         :type number_of_pages: int
+        :param total: The total of this Pagination.  # noqa: E501
+        :type total: int
         """
         self.openapi_types = {
             'current_page': int,
-            'number_of_pages': int
+            'number_of_pages': int,
+            'total': int
         }
 
         self.attribute_map = {
             'current_page': 'current_page',
-            'number_of_pages': 'number_of_pages'
+            'number_of_pages': 'number_of_pages',
+            'total': 'total'
         }
 
         self._current_page = current_page
         self._number_of_pages = number_of_pages
+        self._total = total
 
     @classmethod
     def from_dict(cls, dikt) -> 'Pagination':
@@ -88,3 +93,24 @@ class Pagination(Model):
         """
 
         self._number_of_pages = number_of_pages
+
+    @property
+    def total(self):
+        """Gets the total of this Pagination.
+
+
+        :return: The total of this Pagination.
+        :rtype: int
+        """
+        return self._total
+
+    @total.setter
+    def total(self, total):
+        """Sets the total of this Pagination.
+
+
+        :param total: The total of this Pagination.
+        :type total: int
+        """
+
+        self._total = total

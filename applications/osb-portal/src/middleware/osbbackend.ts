@@ -11,7 +11,6 @@ import workspaceResourceService from '../service/WorkspaceResourceService';
 import { ResourceStatus, Workspace } from "../types/workspace";
 import RepositoryService from "../service/RepositoryService";
 import { RootState } from "../store/rootReducer";
-import { WorkspaceSelection } from "../store/reducers/workspaces";
 
 
 const AUTO_REFRESH_PERIOD = 5000;
@@ -22,57 +21,10 @@ let refreshPending = false;
  */
 const callAPIMiddlewareFn: Middleware = ({ getState }: { getState: () => RootState }) => next => async (action: AnyAction) => {
 
-  function refreshWorkspaces() {
-    const wState = getState().workspaces;
-    switch (wState.selection) {
-      case WorkspaceSelection.PUBLIC: {
-        workspaceService.fetchWorkspaces(true).then((workspaces) => {
-          next(Workspaces.loadWorkspaces(workspaces));
-        });
-        break;
-      }
-      case WorkspaceSelection.FEATURED: {
-        workspaceService.fetchWorkspaces(true, true).then((workspaces) => {
-          next(Workspaces.loadWorkspaces(workspaces));
-        })
-        break;
-      }
-      default: {
-        workspaceService.fetchWorkspaces().then((workspaces) => {
-          next(Workspaces.loadWorkspaces(workspaces));
-        });
-        break;
-      }
-    }
-  }
+
 
   switch (action.type) {
-    case Workspaces.showPublicWorkspaces.toString():
-      next(Workspaces.loadWorkspaces(null));
-      workspaceService.fetchWorkspaces(true).then((workspaces) => {
-        next(Workspaces.loadWorkspaces(workspaces));
-      });
-      next(action);
-      break;
-    case Workspaces.showUserWorkspaces.toString():
-      next(Workspaces.loadWorkspaces(null));
-      workspaceService.fetchWorkspaces(false).then((workspaces) => {
-        next(Workspaces.loadWorkspaces(workspaces));
-      });
-      next(action);
-      break;
-    case Workspaces.showFeaturedWorkspaces.toString():
-      next(Workspaces.loadWorkspaces(null));
-      workspaceService.fetchWorkspaces(true, action.payload).then((workspaces) => {
-        const featuredWorkspaces = workspaces.filter(ws => ws.featured === true);
-        next(Workspaces.loadWorkspaces(featuredWorkspaces));
-      });
-      next(action);
-      break;
-    case Workspaces.refreshWorkspaces.toString(): {
-      refreshWorkspaces();
-      break;
-    }
+
     case userLogin.toString(): {
       if (!action.payload) {
         UserService.login().then((user: any) => next({ ...action, payload: user }));
@@ -134,7 +86,7 @@ const callAPIMiddlewareFn: Middleware = ({ getState }: { getState: () => RootSta
       workspaceService.updateWorkspace(action.payload).then((workspace) => { next({ ...action, payload: workspace }); });
       break;
     case Workspaces.deleteWorkspace.toString():
-      workspaceService.deleteWorkspace(action.payload).then(() => { next(action); refreshWorkspaces() });
+      workspaceService.deleteWorkspace(action.payload).then(() => { next(action); });
       break;
     case Workspaces.resourceAdded.toString():
       const { path, name } = action.payload as { path: string, name: string };
