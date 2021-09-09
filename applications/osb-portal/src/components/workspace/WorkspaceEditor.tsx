@@ -59,12 +59,6 @@ const useStyles = makeStyles((theme) => ({
   imagePreview: {
     display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
   },
-  autoComplete: {
-    marginTop: theme.spacing(1),
-    '& .MuiInputBase-root': {
-      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
-    }
-  },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -233,7 +227,6 @@ export default (props: WorkspaceEditProps) => {
 
         </Box>
         <Autocomplete
-          className={classes.autoComplete}
           multiple={true}
           freeSolo={true}
           options={props.tags.map(tagObject => tagObject.tag)}

@@ -111,8 +111,6 @@ const theme = {
         label: {
           fontSize: '0.8rem',
         },
-        
-         
           "& .MuiChip-avatar": {
             width: ".63rem",
             height: ".63rem",
@@ -282,8 +280,23 @@ const theme = {
       root: {
         minHeight: 15
       }
-    }
-  }
+    },
+    MuiAutocomplete: {
+      root: {
+        '& div': {
+          '&:first-child': {
+            marginTop: '10px',
+            paddingTop: '0px',
+            paddingBottom: '0px',
+          },
+          '& input': {
+            paddingTop: '15px !important',
+            paddingBottom: '15px !important',
+          },
+        },
+      },
+    },
+  },
 }
 
 export default createMuiTheme(theme);

@@ -147,12 +147,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  autoComplete: {
-    marginTop: theme.spacing(1),
-    '& .MuiInputBase-root': {
-      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
-    },
-  },
 }));
 
 export const EditRepoDialog = ({
@@ -388,7 +382,6 @@ export const EditRepoDialog = ({
 
         <Box className="form-group">
           <Autocomplete
-            className={classes.autoComplete}
             multiple={true}
             freeSolo={true}
             options={tagOptions}

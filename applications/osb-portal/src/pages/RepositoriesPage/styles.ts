@@ -100,8 +100,12 @@ export default makeStyles((theme) => ({
     },
     '& .MuiAutocomplete-root': {
       marginRight: theme.spacing(1),
-      '& .MuiInputBase-root': {
-        paddingTop: 0,
+      '& div': {
+        marginTop: '0px',
+        '& input': {
+          paddingTop: '10px !important',
+          paddingBottom: '10px !important',
+        }
       },
     },
     "& .MuiTextField-root": {
