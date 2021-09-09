@@ -282,8 +282,23 @@ const theme = {
       root: {
         minHeight: 15
       }
-    }
-  }
+    },
+    MuiAutocomplete: {
+      root: {
+        '& div': {
+          '&:first-child': {
+            marginTop: '10px',
+            paddingTop: '10px',
+            paddingBottom: '0px',
+          },
+          '& input': {
+            paddingTop: '15px !important',
+            paddingBottom: '15px !important',
+          },
+        },
+      },
+    },
+  },
 }
 
 export default createMuiTheme(theme);
