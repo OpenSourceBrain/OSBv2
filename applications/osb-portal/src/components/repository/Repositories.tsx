@@ -17,13 +17,11 @@ import {
   bgRegular,
   bgDarkest,
   paragraph,
-  bgLightestShade,
-  teal,
-  purple,
   bgLightest,
   radius,
 } from "../../theme";
 import RepositoriesSearch from "./RepositoriesSearch";
+import SeeMoreSeeLess from "../common/SeeMoreSeeLess";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -41,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     paddingRight: 0,
     overflow: "auto",
+    "& .MuiGrid-container": {
+      flex: 0,
+    },
     backgroundColor: bgDarkest,
     "& strong": {
       display: "block",
@@ -51,8 +52,6 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: 1.5,
     },
     "& p": {
-      lineHeight: '1rem',
-      height: '4rem',
       overflow: "hidden",
       fontSize: ".88rem",
       letterSpacing: "0.01rem",
@@ -178,15 +177,12 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 4}
-              onClick={() => props.handleRepositoryClick(repository.id)}>
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 4} >
               <Box className="col">
-                <Typography component="strong">
+                <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
                   {repository.name}
                 </Typography>
-                <Tooltip title={repository.summary} enterDelay={1000} enterNextDelay={1000} placement="right">
-                  <Typography>{repository.summary}</Typography>
-                </Tooltip>
+                {repository.summary && <SeeMoreSeeLess text={repository.summary} />}
               </Box>
             </Grid>
 
