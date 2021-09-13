@@ -320,7 +320,11 @@ export const RepositoryPage = (props: any) => {
                         By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
                       </Typography>
                     }
-
+                    {
+                      repository.summary && <Typography component="p" variant="body2">
+                        {repository.summary}
+                      </Typography>
+                    }
                     <Box>
                       {
                         repository.contentTypesList.map(type => {
@@ -339,12 +343,6 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                     </Box>
-
-                    {
-                      repository.summary && <Typography component="p" variant="body2">
-                        {repository.summary}
-                      </Typography>
-                    }
 
                     <Accordion>
                       <AccordionSummary
