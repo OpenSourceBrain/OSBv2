@@ -21,7 +21,7 @@ import searchFilter from "../../types/searchFilter";
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 
-import { EditRepoDialog } from "../../components/repository/EditRepoDialog";
+import { EditRepoDialog } from "../../components";
 import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
@@ -231,7 +231,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         }
       </Box>
 
-      {user && (
+      {user && dialogOpen && (
         <EditRepoDialog
           user={user}
           title="Add repository"

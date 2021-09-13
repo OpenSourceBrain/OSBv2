@@ -1,13 +1,14 @@
 from flask.views import MethodView
-from sqlalchemy.exc import IntegrityError
+from flask_sqlalchemy import Pagination
 
+from workspaces.service.model_service import BaseModelService
 from workspaces.utils import row2dict
 
 
 class BaseModelView(MethodView):
     """Generic base class for handling REST API endpoints."""
 
-    service = None
+    service: BaseModelService = None
 
     def search(self, page=1, per_page=20, *args, **kwargs):
         """
@@ -22,7 +23,7 @@ class BaseModelView(MethodView):
             current page
             number of pages
         """
-        page, total_pages, objects = self.service.search(
+        objects = self.service.search(
             page=page, per_page=per_page, *args, **kwargs)
         obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
         list_name = str(self.service.repository)
@@ -31,7 +32,8 @@ class BaseModelView(MethodView):
         return {
             "pagination": {
                 "current_page": page,
-                "number_of_pages": total_pages,
+                "number_of_pages": objects.pages,
+                "total": objects.total
             },
             list_name_plural: obj_dicts,
         }
