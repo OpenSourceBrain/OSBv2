@@ -100,7 +100,7 @@ export const WorkspaceToolBox = (props: any) => {
                 <WorkspaceItem
                   icon={<FolderOpenIcon />}
                   title="Workspace from repository"
-                  template="Any application"
+                  template={null}
                   user={user}
                   refreshWorkspaces={props.refreshWorkspaces}
 

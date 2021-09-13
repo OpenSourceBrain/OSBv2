@@ -4,14 +4,12 @@ import logging
 import math
 import re
 
+from flask_sqlalchemy import Pagination
+
 from cloudharness import log as logger
-from open_alchemy import model_factory
-from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.inspection import inspect
 from sqlalchemy.sql import func
 
-from ..config import Config
 from .database import db
 from .models import *
 
@@ -176,7 +174,7 @@ class BaseModelRepository:
             filters.append((attr, comparator, value))
         return filters
 
-    def search(self, page=1, per_page=20, q=None, *args, **kwargs):
+    def search(self, page=1, per_page=20, q=None, *args, **kwargs) -> Pagination:
         """
         Query the model and return all records
 
@@ -190,7 +188,7 @@ class BaseModelRepository:
         """
         """Get all objects from the repository."""
         if q:
-            logger.info("Query %s", q)
+            logger.debug("Query %s", q)
             filters = self.filters(q)
             sqs = self._get_qs(filters, q, *args, **kwargs)
         else:
@@ -199,7 +197,7 @@ class BaseModelRepository:
         total_pages = objects.pages
         for obj in objects.items:
             self._calculated_fields_populate(obj)
-        return page, total_pages, objects
+        return objects
 
     def post(self, body):
         """Save an object to the repository."""

@@ -27,17 +27,13 @@ import { RepositoryPage as repositoryPage } from '../pages/RepositoryPage'
 import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
 import repositories from '../components/repository/Repositories';
 import { retrieveAllTags, loadTags } from '../store/actions/tags';
+import { WorkspaceCard as workspaceCard } from './workspace/WorkspaceCard';
 
-const mapWorkspacesStateToProps = (state: RootState) => {
-  return ({
-    showPublic: state.workspaces?.showPublic,
-    showFeatured: state.workspaces?.showFeatured,
-    publicWorkspaces: state.workspaces?.publicWorkspaces,
-    featuredWorkspaces: state.workspaces?.featuredWorkspaces,
-    userWorkspaces: state.workspaces?.userWorkspaces,
-    user: state.user
-  })
-};
+const mapWorkspacesStateToProps = (state: RootState) => ({
+  user: state.user,
+  counter: state.workspaces?.counter
+});
+
 
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   workspace: state.workspaces?.selectedWorkspace,
@@ -92,6 +88,7 @@ const mapUserAndTagsToProps = (state: RootState) => ({
 })
 
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
+export const WorkspaceCard = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspaceCard);
 export const Repositories = connect(mapUserStateToProps)(repositories);
 export const EditRepoDialog = connect(mapTagsToProps, dispatchTagsProps)(editRepoDialog);
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
@@ -101,7 +98,7 @@ export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatc
 export const WorkspaceInteractions = connect(mapSelectedWorkspaceStateToProps, dispatchWorkspaceProps)(workspaceInteractions) as any
 export const WorkspaceEditor = connect(mapTagsToProps, dispatchTagsProps)(workspaceEditor)
 
-export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
+export const App = connect(mapErrorStateToProps, null)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)

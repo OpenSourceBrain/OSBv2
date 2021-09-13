@@ -31,6 +31,12 @@ export interface Pagination {
      * @memberof Pagination
      */
     numberOfPages?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Pagination
+     */
+    total?: number;
 }
 
 export function PaginationFromJSON(json: any): Pagination {
@@ -45,6 +51,7 @@ export function PaginationFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'currentPage': !exists(json, 'current_page') ? undefined : json['current_page'],
         'numberOfPages': !exists(json, 'number_of_pages') ? undefined : json['number_of_pages'],
+        'total': !exists(json, 'total') ? undefined : json['total'],
     };
 }
 
@@ -59,6 +66,7 @@ export function PaginationToJSON(value?: Pagination | null): any {
         
         'current_page': value.currentPage,
         'number_of_pages': value.numberOfPages,
+        'total': value.total,
     };
 }
 

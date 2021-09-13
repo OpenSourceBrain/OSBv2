@@ -20,11 +20,12 @@ import { bgDarkest, paragraph, textColor } from "../../theme";
 
 interface Props {
   workspace: Workspace;
-  updateWorkspace?: (ws: Workspace) => null,
-  deleteWorkspace?: (wsId: number) => null,
+  updateWorkspace?: (ws: Workspace) => any,
+  deleteWorkspace?: (wsId: number) => any,
   user?: UserInfo,
-  refreshWorkspaces?: () => null,
+  refreshWorkspaces?: () => any,
   hideMenu?: boolean,
+  [k: string]: any
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -102,11 +103,11 @@ export const WorkspaceCard = (props: Props) => {
   return (
     <>
       <Card className={classes.card} elevation={0}>
-        { !props.hideMenu &&
+        {!props.hideMenu &&
           <CardActions className={classes.actions}>
             <WorkspaceActionsMenu user={props.user} workspace={workspace}
-            updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
-        </CardActions>
+              updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
+          </CardActions>
         }
 
         <Box
@@ -143,9 +144,9 @@ export const WorkspaceCard = (props: Props) => {
               {workspace.name}
             </Typography>
             {workspace.tags.length > 0 && <TagTooltip title={workspace.tags.map(tagObject => {
-              return <Chip size="small" label={tagObject.tag} key={tagObject.id} className={classes.chip}/>
+              return <Chip size="small" label={tagObject.tag} key={tagObject.id} className={classes.chip} />
             })} arrow={true} placement="top">
-              <LocalOfferIcon fontSize="small" className={classes.localOfferIcon}/>
+              <LocalOfferIcon fontSize="small" className={classes.localOfferIcon} />
             </TagTooltip>}
           </Link>
           <Typography variant="caption" className={classes.ellipses}>
