@@ -285,16 +285,25 @@ const theme = {
     },
     MuiAutocomplete: {
       root: {
-        '& div': {
-          '&:first-child': {
-            marginTop: '10px',
-            paddingTop: '10px',
+        border: `2px solid #4a4a4a`,
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        borderRadius: '2px',
+        '& div:first-child': {
             paddingBottom: '0px',
+        },
+        '& .MuiInputBase-root': {
+          paddingTop: '0px !important',
+          backgroundColor: 'transparent',
+          '& .MuiAutocomplete-endAdornment': {
+            display: 'none',
           },
-          '& input': {
-            paddingTop: '15px !important',
-            paddingBottom: '15px !important',
-          },
+        },
+        '& .MuiFilledInput-underline::before': {
+          borderBottom: 'none',
+        },
+        '& .MuiFilledInput-underline::after': {
+          borderBottom: 'none',
         },
       },
     },

@@ -238,7 +238,7 @@ export default (props: WorkspaceEditProps) => {
            ))
           }
           renderInput={(params) => (
-            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Workspace tags" />
+            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
           )}
           />
         <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>
