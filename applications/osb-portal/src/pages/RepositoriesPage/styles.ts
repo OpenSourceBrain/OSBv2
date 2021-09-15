@@ -5,6 +5,7 @@ import {
   fontColor,
   bgDarkest,
   bgInputs,
+  bgLightestShade,
 } from "../../theme";
 
 export default makeStyles((theme) => ({
@@ -96,18 +97,14 @@ export default makeStyles((theme) => ({
     display: 'flex',
     '& .MuiInputBase-root': {
       marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(1)
+      marginLeft: theme.spacing(1),
+      height: 'fit-content',
     },
     '& .MuiAutocomplete-root': {
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      backgroundColor: bgLightestShade,
       marginRight: theme.spacing(1),
-      '& div': {
-        marginTop: '0px',
-        paddingTop: '0px',
-        '& input': {
-          paddingTop: '10px !important',
-          paddingBottom: '10px !important',
-        },
-      }
     },
     "& .MuiTextField-root": {
       minWidth: '20vw',

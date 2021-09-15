@@ -167,7 +167,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 ))
               }
               renderInput={(params) => (
-                <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
+                <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Tags" />
               )}
             />
             <Select
