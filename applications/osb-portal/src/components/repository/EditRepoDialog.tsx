@@ -156,6 +156,7 @@ export const EditRepoDialog = ({
   repository = RepositoryService.EMPTY_REPOSITORY,
   title = "Add repository",
   user,
+  tags: tagOptions
 }: {
   dialogOpen: boolean;
   onSubmit: () => any;
@@ -163,6 +164,7 @@ export const EditRepoDialog = ({
   repository?: OSBRepository;
   title: string;
   user: UserInfo;
+  tags: Tag[]
 }) => {
   const classes = useStyles();
   const [formValues, setFormValues] = useState({
@@ -177,7 +179,7 @@ export const EditRepoDialog = ({
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
   const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
-  const [tagOptions, setTagOptions] = useState([]);
+
   const [defaultTags, setDefaultTags] = useState(repositoryTags);
 
   const [error, setError] = useState({
@@ -187,14 +189,7 @@ export const EditRepoDialog = ({
     name: '',
   });
 
-  React.useEffect(() => {
-    RepositoryService.getAllTags().then((tagsInformation) => {
-      const tags = tagsInformation.tags.map(tagObject => {
-        return tagObject.tag;
-      });
-      setTagOptions(tags);
-    });
-  }, []);
+
 
   const handleClose = () => {
     setDialogOpen(false);
@@ -264,13 +259,14 @@ export const EditRepoDialog = ({
       }
       else {
         const putRequestRepository: OSBRepository = {
-          id: formValues.id, uri: formValues.uri, name: formValues.name, defaultContext: formValues.defaultContext,
-          contentTypes: formValues.contentTypes, tags: formValues.tags, repositoryType: formValues.repositoryType, summary: formValues.summary, userId: user.id
+          ...formValues,
+          user: undefined
         };
         console.log('sending this repository', putRequestRepository);
         RepositoryService.updateRepository(putRequestRepository).then(() => {
           setLoading(false);
           setDialogOpen(false);
+          onSubmit();
         }).catch(() => {
           setLoading(false);
           throw new Error("Error updating the repository");
@@ -384,7 +380,7 @@ export const EditRepoDialog = ({
           <Autocomplete
             multiple={true}
             freeSolo={true}
-            options={tagOptions}
+            options={tagOptions.map(t => t.tag)}
             defaultValue={defaultTags}
             onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>

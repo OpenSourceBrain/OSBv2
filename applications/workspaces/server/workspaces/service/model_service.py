@@ -1,8 +1,9 @@
 import json
+
+from flask_sqlalchemy import Pagination
+
 from cloudharness import log as logger
-
 from cloudharness.events.decorators import send_event
-
 import cloudharness.workflows.argo as argo
 
 from workspaces.models import OSBRepository, OSBRepositoryEntity
@@ -30,7 +31,7 @@ class BaseModelService():
 
     repository = None
 
-    def search(self, page=1, per_page=20, *args, **kwargs):
+    def search(self, page=1, per_page=20, *args, **kwargs) -> Pagination:
         """
         Query the model and return all records
 
@@ -97,7 +98,7 @@ class WorkspaceService(BaseModelService):
             for workflow in workflows.items:
                 try:
                     if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
-                        "workspace"
+                            "workspace"
                     ).strip() == str(workspace["id"]):
                         fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
                             "/", " of ")

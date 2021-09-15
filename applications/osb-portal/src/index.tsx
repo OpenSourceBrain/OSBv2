@@ -38,7 +38,7 @@ const timeout = (ms: number, promise: Promise<any>) => {
 
 
 
-timeout(10000, initUser()).then((user: UserInfo) => {
+timeout(20000, initUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   }
