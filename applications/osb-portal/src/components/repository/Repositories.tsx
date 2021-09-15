@@ -8,7 +8,9 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
-import Tooltip from '@material-ui/core/Tooltip';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ShowMoreText from "react-show-more-text";
 
 import { OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
 import RepositoryActionsMenu from "./RepositoryActionsMenu";
@@ -19,9 +21,9 @@ import {
   paragraph,
   bgLightest,
   radius,
+  linkColor,
 } from "../../theme";
 import RepositoriesSearch from "./RepositoriesSearch";
-import SeeMoreSeeLess from "../common/SeeMoreSeeLess";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -155,6 +157,17 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
   },
+  showMoreText: {
+    color: paragraph,
+    '& a': {
+      color: linkColor,
+      display: 'flex',
+      textDecoration: 'none',
+      '& .MuiSvgIcon-root': {
+        color: `${linkColor} !important`,
+      },
+    },
+  },
 }));
 
 export default (props: RepositoriesProps) => {
@@ -162,7 +175,12 @@ export default (props: RepositoriesProps) => {
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const showSimpleVersion = typeof props.showSimpleVersion === 'undefined' ? false : props.showSimpleVersion;
   const searchRepositories = typeof props.searchRepositories === 'undefined' ? false : props.searchRepositories;
+  const [expanded, setExpanded] = React.useState(false);
+  const gridRef = React.useRef(null);
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  }
 
   return (
     <>
@@ -177,12 +195,14 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 4} >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 4} ref={gridRef}>
               <Box className="col">
                 <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
                   {repository.name}
                 </Typography>
-                {repository.summary && <SeeMoreSeeLess text={repository.summary} />}
+                {repository.summary && <ShowMoreText className={classes.showMoreText} lines={4} more={<>See more <ExpandMoreIcon /></>} less={<>See less<ExpandLessIcon /></>} onClick={handleExpandClick} expanded={expanded} width={gridRef.current !== null ? gridRef.current.clientWidth : 100}>
+                  {repository.summary}
+                </ShowMoreText>}
               </Box>
             </Grid>
 
