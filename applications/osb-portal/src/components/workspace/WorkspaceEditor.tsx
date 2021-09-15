@@ -59,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
   imagePreview: {
     display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
   },
+  autocomplete: {
+    marginTop: theme.spacing(1),
+    '& .MuiChip-root': {
+      backgroundColor: bgLight,
+    }
+  },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -229,6 +235,7 @@ export default (props: WorkspaceEditProps) => {
         <Autocomplete
           multiple={true}
           freeSolo={true}
+          className={classes.autocomplete}
           options={props.tags.map(tagObject => tagObject.tag)}
           defaultValue={defaultTags}
           onChange={ (event, value) => setWorkspaceTags(value)}
