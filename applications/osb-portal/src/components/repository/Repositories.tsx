@@ -92,11 +92,9 @@ const useStyles = makeStyles((theme) => ({
       "& .MuiChip-root": {
         backgroundColor: '#3c3c3c',
         color: paragraph,
-        textTransform: 'capitalize',
       },
       "& .repo-tag": {
         color: textColor,
-        textTransform: 'none',
       },
       "& .MuiButtonBase-root": {
         minWidth: "11.5rem",
