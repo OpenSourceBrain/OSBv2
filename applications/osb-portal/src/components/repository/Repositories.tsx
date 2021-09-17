@@ -15,13 +15,12 @@ import {
   bgRegular,
   bgDarkest,
   paragraph,
-  bgLightestShade,
-  teal,
-  purple,
   bgLightest,
   radius,
+  textColor,
 } from "../../theme";
 import RepositoriesSearch from "./RepositoriesSearch";
+import { CodeBranchIcon } from "../icons";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -88,9 +87,17 @@ const useStyles = makeStyles((theme) => ({
       borderWidth: `1px 0 1px 0`,
       borderStyle: "solid",
       borderColor: bgRegular,
-
       paddingLeft: theme.spacing(3),
       paddingRight: theme.spacing(3),
+      "& .MuiChip-root": {
+        backgroundColor: '#3c3c3c',
+        color: paragraph,
+        textTransform: 'capitalize',
+      },
+      "& .repo-tag": {
+        color: textColor,
+        textTransform: 'none',
+      },
       "& .MuiButtonBase-root": {
         minWidth: "11.5rem",
         marginRight: "1.312rem",
@@ -200,19 +207,18 @@ export default (props: RepositoriesProps) => {
                 alignItems="center"
                 flexWrap="wrap"
               >
-                {repository.defaultContext && <Chip className="tag" key={repository.defaultContext} label={repository.defaultContext} />}
                 {repository.contentTypes.split(",").map((type, index) => (
                   <Chip
-                    className="tag"
                     avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                     key={type}
                     label={type}
                   />
 
                 ))}
+                {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
                 {repository.tags && repository.tags.map((tagObject, index) => (
                   <Chip
-                    className="tag"
+                    className="repo-tag"
                     key={tagObject.id}
                     label={tagObject.tag}
                   />

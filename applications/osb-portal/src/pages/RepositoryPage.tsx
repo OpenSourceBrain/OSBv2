@@ -16,7 +16,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
-import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 
 import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
@@ -39,7 +38,10 @@ import {
   fontColor,
   bgDarkest,
   checkBoxColor,
+  paragraph,
+  textColor,
 } from "../theme";
+import { CodeBranchIcon } from "../components/icons";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -71,6 +73,13 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiChip-root": {
       margin: `5px 5px ${theme.spacing(1)}px 0px`,
+      backgroundColor: '#3c3c3c',
+      color: paragraph,
+      textTransform: 'capitalize',
+    },
+    "& .repo-tag": {
+      color: textColor,
+      textTransform: 'none',
     },
   },
   root: {
@@ -328,12 +337,8 @@ export const RepositoryPage = (props: any) => {
                     }
                     <Box>
                       {
-                        repository.defaultContext && <Chip size="small" label={repository.defaultContext} key={repository.defaultContext} icon={<DeviceHubIcon />} />
-                      }
-                      {
                         repository.contentTypesList.map(type => {
                           return <Chip
-                            className="tag"
                             size="small"
                             avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                             key={type}
@@ -342,8 +347,11 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                       {
+                        repository.defaultContext && <Chip size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
+                      }
+                      {
                         repository.tags.map(tagObject => {
-                          return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                          return <Chip className="repo-tag" size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
                     </Box>
