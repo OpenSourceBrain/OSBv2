@@ -824,6 +824,8 @@ components:
           type: integer
         number_of_pages:
           type: integer
+        total:
+          type: integer
     PrimaryKey:
       type: integer
       x-primary-key: true

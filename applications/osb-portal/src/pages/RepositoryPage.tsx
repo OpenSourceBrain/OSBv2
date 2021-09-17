@@ -326,7 +326,6 @@ export const RepositoryPage = (props: any) => {
                         {repository.summary}
                       </Typography>
                     }
-
                     <Box>
                       {
                         repository.defaultContext && <Chip size="small" label={repository.defaultContext} key={repository.defaultContext} icon={<DeviceHubIcon />} />
@@ -348,7 +347,6 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                     </Box>
-
 
                     <Accordion>
                       <AccordionSummary
