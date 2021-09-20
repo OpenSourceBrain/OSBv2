@@ -11,7 +11,7 @@ import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/Workspace
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
-import workspacePage from "../pages/WorkspacePage";
+import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspaceEditor from './workspace/WorkspaceEditor';
 import editRepoDialog from '../components/repository/EditRepoDialog';
 
@@ -102,7 +102,7 @@ export const App = connect(mapErrorStateToProps, null)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
-export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage);
+export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspaceOpenPage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage)
 export const RepositoriesPage = connect(mapUserAndTagsToProps, dispatchTagsProps)(repositoriesPage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
