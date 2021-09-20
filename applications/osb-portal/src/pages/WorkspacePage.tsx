@@ -3,17 +3,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
 import MainMenu from "../components/menu/MainMenu";
 import Box from "@material-ui/core/Box";
+import Chip from "@material-ui/core/Chip";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import AppsIcon from "@material-ui/Icons/Apps";
 import PersonIcon from "@material-ui/Icons/Person";
 import CalendarTodayIcon from "@material-ui/Icons/CalendarToday";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
-import theme, { bgLight, bgRegular } from "../theme";
+import theme, { bgLight, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { Workspace } from "../types/workspace";
-import Chip from "@material-ui/core/Chip";
-import { Divider } from "@material-ui/core";
+
 
 const useStyles = makeStyles(() => ({
   workspaceToolbar: {
@@ -32,9 +34,32 @@ const useStyles = makeStyles(() => ({
   workspaceInformation: {
     backgroundColor: bgRegular,
     minHeight: '30%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    padding: theme.spacing(1),
+    '& h1': {
+        fontSize: '24px',
+        fontWeight: '400',
+        marginBottom: theme.spacing(2),
+    },
+    '& .MuiBox-root': {
+        color: paragraph,
+        marginBottom: theme.spacing(2),
+    },
+    '& span': {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    '& .MuiTypography-root:nth-child(2)': {
+        marginLeft: theme.spacing(1),
+    },
+    '& .MuiChip-root': {
+        backgroundColor: '#3c3c3c',
+    },
   },
   workspaceResourcesInformation: {
-
   },
 }));
 
@@ -54,8 +79,6 @@ export const WorkspacePage = (props: any) => {
             setWorkspace(ws);
         });
     }, []);
-
-    console.log('all props', props);
 
     const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
     const OPEN_JUPYTER = 'OPEN WITH JUPYTER HUB';
@@ -96,12 +119,13 @@ export const WorkspacePage = (props: any) => {
             </Box>
         </Box>
         <Box className={classes.workspaceInformation}>
-            <Typography component="h1">My Workspace</Typography>
-            { workspace && <Box>
-                {workspace.owner && <PersonIcon>By {workspace.owner.firstName + ' ' + workspace.owner.lastName}</PersonIcon>}
-                {workspace.timestampUpdated && <CalendarTodayIcon>Last Updated on {workspace.timestampUpdated}</CalendarTodayIcon>}
-                {workspace.tags && workspace.tags.map(tagObject => { return <Chip size="small" label={tagObject.tag} key={tagObject.id}/>})}
+            {workspace ? <Typography component="h1">{workspace.name}</Typography> : null}
+            { workspace && <Box display="flex" flexDirection="row">
+                {(workspace.owner && (workspace.owner.firstName || workspace.owner.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.owner.firstName + ' ' + workspace.owner.lastName}</Typography> : null}
+                {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
+                {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
             </Box>}
+            <Box>{workspace && workspace.tags && workspace.tags.map(tagObject => { return <Chip size="small" label={tagObject.tag} key={tagObject.id}/>})}</Box>
         </Box>
         <Box className="verticalFill">
             <Box>
