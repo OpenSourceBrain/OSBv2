@@ -180,7 +180,7 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 4 : 4} md={showSimpleVersion ? 4 : 2}
               onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography component="strong">
@@ -190,7 +190,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} md={3} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography>
                   {repository?.user?.firstName} {repository?.user?.lastName}
@@ -198,7 +198,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>}
 
-            <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}
+            <Grid item={true} xs={showSimpleVersion ? 9 : 11} sm={showSimpleVersion ? 4 : 3} md={showSimpleVersion ? 4 : 2}
               onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box
                 display="flex"
@@ -213,7 +213,6 @@ export default (props: RepositoriesProps) => {
                   />
 
                 ))}
-                {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
                 {repository.tags && repository.tags.map((tagObject, index) => (
                   <Chip
                     className="repo-tag"
@@ -224,7 +223,12 @@ export default (props: RepositoriesProps) => {
 
               </Box>
             </Grid>
-            <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3} >
+            <Grid item={true} xs={2} sm={2} md={2} onClick={() => props.handleRepositoryClick(repository.id)}>
+              <Box display="flex" alignItems="center" flexWrap="wrap">
+                {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
+              </Box>
+            </Grid>
+            <Grid item={true} xs={showSimpleVersion ? 2 : 12} sm={showSimpleVersion ? 2 : 12} md={showSimpleVersion ? 2 : 3} >
               <Box
                 className="col"
                 display="flex"
