@@ -63,7 +63,20 @@ export const WorkspacePage = (props: any) => {
     const options = [OPEN_NWB, OPEN_JUPYTER, OPEN_NETPYNE];
 
     const openWithApp = (selectedOption: string) => {
-        console.log('inside open with app, opening with', selectedOption);
+        let app;
+        switch (selectedOption) {
+            case OPEN_NETPYNE:
+                app = 'netpyne';
+                break;
+            case OPEN_JUPYTER:
+                app = 'jupyter';
+                break;
+            default:
+                app = 'nwbexplorer'
+                break;
+        }
+
+        history.push(`/workspace/open/${workspaceId}/${app}`);
     }
 
     return <Box className="verticalFill">
