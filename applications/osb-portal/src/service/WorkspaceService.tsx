@@ -123,12 +123,14 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
   const tags: Tag[] = workspace.tags;
+  const timestampUpdated: Date = workspace.timestampUpdated;
 
   return {
     ...workspace,
     resources,
     lastOpen,
     tags,
+    timestampUpdated,
     userId: workspace.userId,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",
