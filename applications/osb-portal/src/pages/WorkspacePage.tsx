@@ -15,6 +15,8 @@ import { OSBSplitButton } from "../components/common/OSBSpliButton";
 import theme, { bgLight, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { Workspace } from "../types/workspace";
+import OSBDialog from "../components/common/OSBDialog";
+import { WorkspaceEditor } from "../components";
 
 
 const useStyles = makeStyles(() => ({
@@ -69,6 +71,8 @@ export const WorkspacePage = (props: any) => {
     const history = useHistory();
     const { workspaceId } = useParams<{ workspaceId: string}>();
     const [workspace, setWorkspace] = React.useState<Workspace>();
+    const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
+
     console.log('the workspace', workspace);
     if (workspace) {
         console.log('timestamp updated', workspace.timestampUpdated);
@@ -79,6 +83,10 @@ export const WorkspacePage = (props: any) => {
             setWorkspace(ws);
         });
     }, []);
+
+    const handleCloseEditWorkspace = () => {
+        setEditWorkspaceOpen(false);
+    }
 
     const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
     const OPEN_JUPYTER = 'OPEN WITH JUPYTER HUB';
@@ -112,7 +120,7 @@ export const WorkspacePage = (props: any) => {
               </Typography>
             </Box>
             <Box display="flex">
-                <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }}>
+                <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
                     Edit
                 </Button>
                 <OSBSplitButton options={options} handleClick={openWithApp} />
@@ -135,6 +143,13 @@ export const WorkspacePage = (props: any) => {
             </Box>
 
         </Box>
+        {workspace && <OSBDialog
+            title={"Edit workspace " + workspace.name}
+            open={editWorkspaceOpen}
+            closeAction={handleCloseEditWorkspace}
+        >
+            <WorkspaceEditor workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+        </OSBDialog>}
     </Box>
 }
 
