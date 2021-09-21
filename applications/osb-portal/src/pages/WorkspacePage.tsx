@@ -74,6 +74,7 @@ export const WorkspacePage = (props: any) => {
     const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
 
     console.log('the workspace', workspace);
+    console.log('props', props);
     if (workspace) {
         console.log('timestamp updated', workspace.timestampUpdated);
     }
@@ -120,9 +121,9 @@ export const WorkspacePage = (props: any) => {
               </Typography>
             </Box>
             <Box display="flex">
-                <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
+                {workspace && props.user && props.user.id === workspace.userId && <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
                     Edit
-                </Button>
+                </Button>}
                 <OSBSplitButton options={options} handleClick={openWithApp} />
             </Box>
         </Box>
