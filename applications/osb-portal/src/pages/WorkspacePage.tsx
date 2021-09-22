@@ -14,10 +14,10 @@ import CalendarTodayIcon from "@material-ui/Icons/CalendarToday";
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
 import theme, { bgLight, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
-import { Workspace } from "../types/workspace";
+import { Workspace, WorkspaceResource } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor } from "../components";
-
+import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
 
 const useStyles = makeStyles(() => ({
   workspaceToolbar: {
@@ -25,17 +25,15 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    cursor: 'pointer',
     padding: theme.spacing(1),
-    '& .MuiTypography-root': {
-        cursor: 'pointer',
-    },
     '& .MuiGrid-root': {
         marginRight: '10px',
     },
   },
   workspaceInformation: {
     backgroundColor: bgRegular,
-    minHeight: '30%',
+    minHeight: '20vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,6 +60,30 @@ const useStyles = makeStyles(() => ({
     },
   },
   workspaceResourcesInformation: {
+    display: 'flex',
+    flexDirection: 'row',
+    '& .MuiAccordion-root': {
+        maxWidth: '30vw',
+        borderRadius: 0,
+    },
+  },
+  workspaceDescriptionBox: {
+    width: '70vw',
+    padding: theme.spacing(3),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& .MuiTypography-root': {
+        width: '70%',
+        textAlign: 'center',
+        marginBottom: theme.spacing(1),
+        paddingBottom: theme.spacing(2),
+        borderBottom: `solid 1px ${bgLight}`,
+    },
+    '& img': {
+        marginTop: theme.spacing(1),
+        minHeight: '200px',
+    },
   },
 }));
 
@@ -72,21 +94,20 @@ export const WorkspacePage = (props: any) => {
     const { workspaceId } = useParams<{ workspaceId: string}>();
     const [workspace, setWorkspace] = React.useState<Workspace>();
     const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
-
-    console.log('the workspace', workspace);
-    console.log('props', props);
-    if (workspace) {
-        console.log('timestamp updated', workspace.timestampUpdated);
-    }
+    const [refresh, setRefresh] = React.useState(true);
 
     React.useEffect(() => {
         WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
             setWorkspace(ws);
         });
-    }, []);
+    }, [refresh]);
 
     const handleCloseEditWorkspace = () => {
         setEditWorkspaceOpen(false);
+    }
+
+    const handleResourceClick = (resource: WorkspaceResource) => {
+        openWithApp(resource.type.application.name);
     }
 
     const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
@@ -107,51 +128,60 @@ export const WorkspacePage = (props: any) => {
                 app = 'nwbexplorer'
                 break;
         }
-
         history.push(`/workspace/open/${workspaceId}/${app}`);
     }
 
-    return <Box className="verticalFill">
-        <MainMenu />
-        <Box className={classes.workspaceToolbar}>
-            <Box display="flex">
-              <AppsIcon color="primary" fontSize="small" onClick={() => history.goBack()} />
-              <Typography component="h1" color="primary">
-                <Typography component="span" onClick={history.goBack}>See all workspaces</Typography>
-              </Typography>
-            </Box>
-            <Box display="flex">
-                {workspace && props.user && props.user.id === workspace.userId && <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
-                    Edit
-                </Button>}
-                <OSBSplitButton options={options} handleClick={openWithApp} />
-            </Box>
-        </Box>
-        <Box className={classes.workspaceInformation}>
-            {workspace ? <Typography component="h1">{workspace.name}</Typography> : null}
-            { workspace && <Box display="flex" flexDirection="row">
-                {(workspace.owner && (workspace.owner.firstName || workspace.owner.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.owner.firstName + ' ' + workspace.owner.lastName}</Typography> : null}
-                {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
-                {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
-            </Box>}
-            <Box>{workspace && workspace.tags && workspace.tags.map(tagObject => { return <Chip size="small" label={tagObject.tag} key={tagObject.id}/>})}</Box>
-        </Box>
-        <Box className="verticalFill">
-            <Box>
-                {workspace ? workspace.description : null}
-                <Divider />
+    return (
+    <Box className="verticalFit">
+        { workspace && <>
+        <Box className="wrapper-for-now">
+            <Divider />
+            <MainMenu />
+            <Divider />
 
+            <Box className={classes.workspaceToolbar}>
+                <Box display="flex" onClick={() => history.push('/')}>
+                    <AppsIcon color="primary" fontSize="small" />
+                    <Typography component="span" color="primary">See all workspaces</Typography>
+                </Box>
+
+                <Box display="flex">
+                    {props.user && props.user.id === workspace.userId && <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
+                        Edit
+                    </Button>}
+                    <OSBSplitButton options={options} handleClick={openWithApp} />
+                </Box>
             </Box>
 
+            <Box className={classes.workspaceInformation}>
+                <Typography component="h1">{workspace.name}</Typography>
+                <Box display="flex" flexDirection="row">
+                    {(workspace.owner && (workspace.owner.firstName || workspace.owner.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.owner.firstName + ' ' + workspace.owner.lastName}</Typography> : null}
+                    {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
+                </Box>
+                <Box>{workspace.tags && workspace.tags.map(tagObject => { return <Chip size="small" label={tagObject.tag} key={tagObject.id}/>})}</Box>
+            </Box>
+            <Divider />
         </Box>
-        {workspace && <OSBDialog
+
+        <Box className={`verticalFit ${classes.workspaceResourcesInformation}`}>
+            <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
+            <Box className={`${classes.workspaceDescriptionBox} scrollbar`}>
+                <Typography component="p" variant="body1">{workspace.description}</Typography>
+                {workspace.thumbnail ? <img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`}/> : null}
+            </Box>
+        </Box>
+
+        {<OSBDialog
             title={"Edit workspace " + workspace.name}
             open={editWorkspaceOpen}
             closeAction={handleCloseEditWorkspace}
         >
             <WorkspaceEditor workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
         </OSBDialog>}
+        </>}
     </Box>
+    )
 }
 
 export default WorkspacePage;
