@@ -8,6 +8,10 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ShowMoreText from "react-show-more-text";
+
 import { OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
 import RepositoryActionsMenu from "./RepositoryActionsMenu";
 import { UserInfo } from "../../types/user";
@@ -18,6 +22,7 @@ import {
   bgLightest,
   radius,
   textColor,
+  linkColor,
 } from "../../theme";
 import RepositoriesSearch from "./RepositoriesSearch";
 import { CodeBranchIcon } from "../icons";
@@ -36,9 +41,11 @@ const useStyles = makeStyles((theme) => ({
   repositoryData: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
     paddingRight: 0,
     overflow: "auto",
+    "& .MuiGrid-container": {
+      flex: 0,
+    },
     backgroundColor: bgDarkest,
     "& strong": {
       display: "block",
@@ -49,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: 1.5,
     },
     "& p": {
-      lineHeight: 1.5,
+      overflow: "hidden",
       fontSize: ".88rem",
       letterSpacing: "0.01rem",
       color: paragraph,
@@ -158,6 +165,17 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
   },
+  showMoreText: {
+    color: paragraph,
+    '& a': {
+      color: linkColor,
+      display: 'flex',
+      textDecoration: 'none',
+      '& .MuiSvgIcon-root': {
+        color: `${linkColor} !important`,
+      },
+    },
+  },
 }));
 
 export default (props: RepositoriesProps) => {
@@ -165,7 +183,12 @@ export default (props: RepositoriesProps) => {
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const showSimpleVersion = typeof props.showSimpleVersion === 'undefined' ? false : props.showSimpleVersion;
   const searchRepositories = typeof props.searchRepositories === 'undefined' ? false : props.searchRepositories;
+  const [expanded, setExpanded] = React.useState(false);
+  const gridRef = React.useRef(null);
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  }
 
   return (
     <>
@@ -181,12 +204,14 @@ export default (props: RepositoriesProps) => {
             key={repository.id}
           >
             <Grid item={true} xs={12} sm={showSimpleVersion ? 4 : 4} md={showSimpleVersion ? 4 : 2}
-              onClick={() => props.handleRepositoryClick(repository.id)}>
+              onClick={() => props.handleRepositoryClick(repository.id)} ref={gridRef}>
               <Box className="col">
-                <Typography component="strong">
+                <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
                   {repository.name}
                 </Typography>
-                <Typography>{repository.summary}</Typography>
+                {repository.summary && <ShowMoreText className={classes.showMoreText} lines={4} more={<>See more <ExpandMoreIcon /></>} less={<>See less<ExpandLessIcon /></>} onClick={handleExpandClick} expanded={expanded} width={gridRef.current !== null ? gridRef.current.clientWidth : 100}>
+                  {repository.summary}
+                </ShowMoreText>}
               </Box>
             </Grid>
 

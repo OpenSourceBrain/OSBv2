@@ -5,6 +5,9 @@ import {
   fontColor,
   bgDarkest,
   bgInputs,
+  bgLightestShade,
+  paragraph,
+  textColor,
 } from "../../theme";
 
 export default makeStyles((theme) => ({
@@ -96,16 +99,52 @@ export default makeStyles((theme) => ({
     display: 'flex',
     '& .MuiInputBase-root': {
       marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(1)
-    },
-    '& .MuiAutocomplete-root': {
-      marginRight: theme.spacing(1),
-      '& .MuiInputBase-root': {
-        paddingTop: 0,
-      },
+      marginLeft: theme.spacing(1),
+      height: 'fit-content',
     },
     "& .MuiTextField-root": {
       minWidth: '20vw',
+    },
+  },
+  filterButton: {
+    textTransform: 'capitalize',
+    '& :hover': {
+      backgroundColor: 'transparent',
+    },
+    minWidth: 'fit-content !important',
+    backgroundColor: bgLightestShade,
+    '& .MuiButton-label': {
+      color: `${paragraph} !important`,
+    },
+    '& .MuiTouchRipple-root:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  label: {
+    color: bgInputs,
+    fontWeight: 700,
+  },
+  popover: {
+    '& .MuiPaper-root': {
+      minWidth: '350px !important',
+      padding: theme.spacing(3),
+      "& .MuiSvgIcon-root": {
+        cursor: "pointer",
+      },
+      '& .MuiAutocomplete-root': {
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginBottom: theme.spacing(1),
+        '& .MuiSvgIcon-root': {
+          marginLeft: theme.spacing(1),
+          color: paragraph,
+        },
+        '& .MuiInputBase-root': {
+          paddingLeft: 0,
+        },
+      },
     },
   },
 }));

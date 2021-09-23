@@ -10,15 +10,14 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
+import Popover from "@material-ui/core/Popover";
 import searchFilter from "../../types/searchFilter";
 import FilterListIcon from '@material-ui/icons/FilterList';
+import SearchIcon from "@material-ui/icons/Search";
 
 
 import { EditRepoDialog } from "../../components";
@@ -30,6 +29,7 @@ import { Repositories } from "../../components/index";
 import MainMenu from "../../components/menu/MainMenu";
 import OSBPagination from "../../components/common/OSBPagination";
 import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
+import { FormControl, FormControlLabel, FormGroup, InputAdornment } from "@material-ui/core";
 
 enum RepositoriesTab {
   all,
@@ -41,6 +41,7 @@ let firstTimeFiltering = true;
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const classes = useStyles();
   const history = useHistory();
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>();
   const [tabValue, setTabValue] = useState(RepositoriesTab.all);
   const [searchFilterValues, setSearchFilterValues] = useState<searchFilter>({
@@ -48,6 +49,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     tags: [],
     types: [],
   });
+
   const [searchTagOptions, setSearchTagOptions] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -57,8 +59,19 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
   const [totalPages, setTotalPages] = React.useState(0);
 
+  const open = Boolean(anchorEl);
+  const id = open ? 'popover' : undefined;
+
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
+  }
+
+  const handlePopoverClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
   }
 
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
@@ -124,7 +137,19 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     });
   }, [])
 
-  const handleInput = (repositoryTypes: any) => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let repositoryTypes: string[] = [];
+    if (event.target.checked) {
+      repositoryTypes = searchFilterValues.types;
+      repositoryTypes.push(event.target.name);
+    }
+    else {
+      for (const type of searchFilterValues.types) {
+        if (type !== event.target.name) {
+          repositoryTypes.push(event.target.name);
+        }
+      }
+    }
     setSearchFilterValues({ ...searchFilterValues, types: repositoryTypes });
   }
 
@@ -156,7 +181,26 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             )}
           </Box>
           <Box className={classes.filterAndSearchBox}>
-            <Autocomplete
+            <Button aria-describedby={id} variant="contained" onClick={handlePopoverClick} className={classes.filterButton} startIcon={<FilterListIcon />}>
+              <Typography component="label">Filter</Typography>
+            </Button>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              className={classes.popover}
+              onClose={handlePopoverClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <Typography component="label" className={classes.label}>Tags</Typography>
+              <Autocomplete
               multiple={true}
               options={searchTagOptions}
               freeSolo={true}
@@ -167,27 +211,19 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 ))
               }
               renderInput={(params) => (
-                <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Repository tags" />
+                <><SearchIcon /><TextField InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} fullWidth={true} {...params} variant="filled" /></>
               )}
             />
-            <Select
-              value={searchFilterValues.types}
-              multiple={true}
-              onChange={(e) => handleInput(e.target.value)}
-              IconComponent={FilterListIcon}
-              renderValue={(selected) => (selected as string[]).map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            >
-              <MenuItem value={RepositoryContentType.Experimental}>
-                <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} />
-                <ListItemText primary="NWB Experimental Data" />
-              </MenuItem>
-              <MenuItem value={RepositoryContentType.Modeling}>
-                <Checkbox size="small" color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Modeling)} />
-                <ListItemText primary="Modeling" />
-              </MenuItem>
-            </Select>
+              <FormControl component="fieldset" >
+                <FormGroup>
+                  <Typography component="label" className={classes.label}>Types</Typography>
+                  <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} onChange={handleInput} name={RepositoryContentType.Experimental}/>} label="Experimental" />
+                  <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Modeling)} onChange={handleInput} name={RepositoryContentType.Modeling} />} label="Modeling" />
+                  <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes("Development")} onChange={handleInput} name="Development" />} label="Development" />
+                </FormGroup>
+              </FormControl>
+            </Popover>
+
             <RepositoriesSearch filterChanged={(newTextFilter) => setSearchFilterValues({ ...searchFilterValues, text: newTextFilter })} />
             {user && (
               <>
