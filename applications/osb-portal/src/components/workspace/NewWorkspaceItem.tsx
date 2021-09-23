@@ -147,6 +147,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
           title="Create new workspace"
           open={newWorkspaceOpen}
           closeAction={() => setNewWorkspaceOpen(false)}
+          maxWidth="lg"
         > {defaultWorkspace ?
           <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} /> :
           <WorkspaceFromRepository close={() => setNewWorkspaceOpen(false)} workspaceCreatedCallback={onWorkspaceCreated} />

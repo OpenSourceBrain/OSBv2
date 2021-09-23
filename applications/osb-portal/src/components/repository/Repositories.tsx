@@ -186,7 +186,7 @@ export default (props: RepositoriesProps) => {
   const [expanded, setExpanded] = React.useState(false);
   const gridRef = React.useRef(null);
 
-  const handleExpandClick = () => {
+  const handleExpandClick = (exp: boolean) => {
     setExpanded(!expanded);
   }
 
@@ -203,19 +203,26 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 4 : 4} md={showSimpleVersion ? 4 : 2}
-              onClick={() => props.handleRepositoryClick(repository.id)} ref={gridRef}>
+            <Grid item={true} xs={12} sm={5}
+              ref={gridRef}>
               <Box className="col">
                 <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
                   {repository.name}
                 </Typography>
-                {repository.summary && <ShowMoreText className={classes.showMoreText} lines={4} more={<>See more <ExpandMoreIcon /></>} less={<>See less<ExpandLessIcon /></>} onClick={handleExpandClick} expanded={expanded} width={gridRef.current !== null ? gridRef.current.clientWidth : 100}>
+                {repository.summary && <ShowMoreText
+                  className={classes.showMoreText}
+                  lines={4}
+                  more={<>See more <ExpandMoreIcon /></>}
+                  less={<>See less<ExpandLessIcon /></>}
+                  onClick={handleExpandClick}
+                  expanded={expanded}
+                  width={gridRef.current !== null ? gridRef.current.clientWidth : 100}>
                   {repository.summary}
                 </ShowMoreText>}
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} md={3} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={1} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography>
                   {repository?.user?.firstName} {repository?.user?.lastName}
@@ -223,7 +230,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>}
 
-            <Grid item={true} xs={showSimpleVersion ? 9 : 11} sm={showSimpleVersion ? 4 : 3} md={showSimpleVersion ? 4 : 2}
+            {<Grid item={true} xs={12} sm={showSimpleVersion ? 4 : 3}
               onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box
                 display="flex"
@@ -248,12 +255,13 @@ export default (props: RepositoriesProps) => {
 
               </Box>
             </Grid>
-            <Grid item={true} xs={2} sm={2} md={2} onClick={() => props.handleRepositoryClick(repository.id)}>
+            }
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 2 : 1} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box display="flex" alignItems="center" flexWrap="wrap">
                 {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
               </Box>
             </Grid>
-            <Grid item={true} xs={showSimpleVersion ? 2 : 12} sm={showSimpleVersion ? 2 : 12} md={showSimpleVersion ? 2 : 3} >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 2} >
               <Box
                 className="col"
                 display="flex"
@@ -267,9 +275,7 @@ export default (props: RepositoriesProps) => {
                   See on {repository.repositoryType}
                 </Button>}
                 <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)} />
-                {props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
-                  <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />
-                </Box>}
+
               </Box>
               {props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
                 <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />

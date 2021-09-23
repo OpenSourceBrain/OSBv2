@@ -24,7 +24,7 @@ import OSBDialog from '../components/common/OSBDialog';
 import { WorkspaceEditor } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
-import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
+import { ExistingWorkspaceEditor as ExistingWorkspaceSelector, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
@@ -419,7 +419,7 @@ export const RepositoryPage = (props: any) => {
       </Box>
 
       {user &&
-        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} maxWidth="lg">
           {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
           <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
@@ -429,7 +429,7 @@ export const RepositoryPage = (props: any) => {
         {checked.length > 0 &&
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
-        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
+        <ExistingWorkspaceSelector setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
       </OSBDialog>}
       {user &&
         <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
