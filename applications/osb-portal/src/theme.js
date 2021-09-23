@@ -282,8 +282,32 @@ const theme = {
       root: {
         minHeight: 15
       }
-    }
-  }
+    },
+    MuiAutocomplete: {
+      root: {
+        border: `2px solid #4a4a4a`,
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        borderRadius: '2px',
+        '& div:first-child': {
+            paddingBottom: '0px',
+        },
+        '& .MuiInputBase-root': {
+          paddingTop: '0px !important',
+          backgroundColor: 'transparent',
+          '& .MuiAutocomplete-endAdornment': {
+            display: 'none',
+          },
+        },
+        '& .MuiFilledInput-underline::before': {
+          borderBottom: 'none',
+        },
+        '& .MuiFilledInput-underline::after': {
+          borderBottom: 'none',
+        },
+      },
+    },
+  },
 }
 
 export default createMuiTheme(theme);
