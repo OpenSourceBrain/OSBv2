@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
 from workspaces.models.tag import Tag
+from workspaces.models.user import User
 from workspaces.models.volume_storage import VolumeStorage
 from workspaces.models.workspace_all_of import WorkspaceAllOf
 from workspaces.models.workspace_base import WorkspaceBase
@@ -16,6 +17,7 @@ from workspaces.models.workspace_resource import WorkspaceResource
 from workspaces import util
 
 from workspaces.models.tag import Tag  # noqa: E501
+from workspaces.models.user import User  # noqa: E501
 from workspaces.models.volume_storage import VolumeStorage  # noqa: E501
 from workspaces.models.workspace_all_of import WorkspaceAllOf  # noqa: E501
 from workspaces.models.workspace_base import WorkspaceBase  # noqa: E501
@@ -29,7 +31,7 @@ class Workspace(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, featured=False, license=None, collaborators=None, storage=None, tags=None, resources=None):  # noqa: E501
+    def __init__(self, id=None, name=None, description=None, timestamp_created=None, timestamp_updated=None, last_opened_resource_id=None, thumbnail=None, gallery=None, user_id=None, publicable=False, featured=False, license=None, collaborators=None, storage=None, tags=None, resources=None, user=None):  # noqa: E501
         """Workspace - a model defined in OpenAPI
 
         :param id: The id of this Workspace.  # noqa: E501
@@ -64,6 +66,8 @@ class Workspace(Model):
         :type tags: List[Tag]
         :param resources: The resources of this Workspace.  # noqa: E501
         :type resources: List[WorkspaceResource]
+        :param user: The user of this Workspace.  # noqa: E501
+        :type user: User
         """
         self.openapi_types = {
             'id': int,
@@ -81,7 +85,8 @@ class Workspace(Model):
             'collaborators': List[WorkspaceCollaborator],
             'storage': VolumeStorage,
             'tags': List[Tag],
-            'resources': List[WorkspaceResource]
+            'resources': List[WorkspaceResource],
+            'user': User
         }
 
         self.attribute_map = {
@@ -100,7 +105,8 @@ class Workspace(Model):
             'collaborators': 'collaborators',
             'storage': 'storage',
             'tags': 'tags',
-            'resources': 'resources'
+            'resources': 'resources',
+            'user': 'user'
         }
 
         self._id = id
@@ -119,6 +125,7 @@ class Workspace(Model):
         self._storage = storage
         self._tags = tags
         self._resources = resources
+        self._user = user
 
     @classmethod
     def from_dict(cls, dikt) -> 'Workspace':
@@ -494,3 +501,24 @@ class Workspace(Model):
         """
 
         self._resources = resources
+
+    @property
+    def user(self):
+        """Gets the user of this Workspace.
+
+
+        :return: The user of this Workspace.
+        :rtype: User
+        """
+        return self._user
+
+    @user.setter
+    def user(self, user):
+        """Sets the user of this Workspace.
+
+
+        :param user: The user of this Workspace.
+        :type user: User
+        """
+
+        self._user = user
