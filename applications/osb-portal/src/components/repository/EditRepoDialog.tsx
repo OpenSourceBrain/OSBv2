@@ -267,7 +267,12 @@ export const EditRepoDialog = ({
           setLoading(false);
           setDialogOpen(false);
           onSubmit();
-        }).catch(() => {
+        }, (e) => {
+          console.error(e)
+          setLoading(false);
+          throw new Error("Error updating the repository");
+        }).catch((e) => {
+          console.error(e)
           setLoading(false);
           throw new Error("Error updating the repository");
         })
