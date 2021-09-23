@@ -123,6 +123,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         title={"Edit workspace " + props.workspace.name}
         open={editWorkspaceOpen}
         closeAction={handleCloseEditWorkspace}
+        maxWidth="lg"
       >
         <WorkspaceEditor workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
       </OSBDialog>

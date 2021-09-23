@@ -252,6 +252,7 @@ export default (props: WorkspaceProps | any) => {
       open={addResourceOpen}
       closeAction={() => setAddResourceOpen(false)
       }
+      maxWidth="md"
     >
       {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
     </OSBDialog>

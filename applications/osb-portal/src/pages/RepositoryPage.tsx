@@ -24,7 +24,7 @@ import OSBDialog from '../components/common/OSBDialog';
 import { WorkspaceEditor } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
-import { ExistingWorkspaceEditor, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
+import { ExistingWorkspaceEditor as ExistingWorkspaceSelector, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
@@ -38,7 +38,10 @@ import {
   fontColor,
   bgDarkest,
   checkBoxColor,
+  paragraph,
+  textColor,
 } from "../theme";
+import { CodeBranchIcon } from "../components/icons";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +73,13 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiChip-root": {
       margin: `5px 5px ${theme.spacing(1)}px 0px`,
+      backgroundColor: '#3c3c3c',
+      color: paragraph,
+      textTransform: 'capitalize',
+    },
+    "& .repo-tag": {
+      color: textColor,
+      textTransform: 'none',
     },
   },
   root: {
@@ -329,7 +339,6 @@ export const RepositoryPage = (props: any) => {
                       {
                         repository.contentTypesList.map(type => {
                           return <Chip
-                            className="tag"
                             size="small"
                             avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                             key={type}
@@ -338,8 +347,11 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                       {
+                        repository.defaultContext && <Chip size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
+                      }
+                      {
                         repository.tags.map(tagObject => {
-                          return <Chip size="small" label={tagObject.tag} key={tagObject.id} />
+                          return <Chip className="repo-tag" size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
                     </Box>
@@ -407,7 +419,7 @@ export const RepositoryPage = (props: any) => {
       </Box>
 
       {user &&
-        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} >
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} maxWidth="lg">
           {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
           <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
@@ -417,7 +429,7 @@ export const RepositoryPage = (props: any) => {
         {checked.length > 0 &&
           <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
         }
-        <ExistingWorkspaceEditor setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
+        <ExistingWorkspaceSelector setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
       </OSBDialog>}
       {user &&
         <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
