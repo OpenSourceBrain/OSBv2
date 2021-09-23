@@ -203,7 +203,7 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={5}
+            <Grid item={true} xs={12} sm={3} lg={5}
               ref={gridRef}>
               <Box className="col">
                 <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
@@ -222,7 +222,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={1} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography>
                   {repository?.user?.firstName} {repository?.user?.lastName}
@@ -230,7 +230,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>}
 
-            {<Grid item={true} xs={12} sm={showSimpleVersion ? 4 : 3}
+            {<Grid item={true} xs={12} sm={showSimpleVersion ? 3 : 2} lg={showSimpleVersion ? 4 : 3}
               onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box
                 display="flex"
@@ -256,12 +256,12 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
             }
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 2 : 1} onClick={() => props.handleRepositoryClick(repository.id)}>
+            <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box display="flex" alignItems="center" flexWrap="wrap">
                 {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
               </Box>
             </Grid>
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 2} >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={showSimpleVersion ? 1 : 2} >
               <Box
                 className="col"
                 display="flex"
