@@ -21,10 +21,6 @@ import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInter
 
 const useStyles = makeStyles(() => ({
   workspaceToolbar: {
-    backgroundColor: bgLight,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     cursor: 'pointer',
     padding: theme.spacing(1),
     '& .MuiGrid-root': {
@@ -32,13 +28,6 @@ const useStyles = makeStyles(() => ({
     },
   },
   workspaceInformation: {
-    backgroundColor: bgRegular,
-    minHeight: '20vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: theme.spacing(1),
     '& h1': {
         fontSize: '24px',
         fontWeight: '400',
@@ -60,21 +49,15 @@ const useStyles = makeStyles(() => ({
     },
   },
   workspaceResourcesInformation: {
-    display: 'flex',
-    flexDirection: 'row',
     '& .MuiAccordion-root': {
-        maxWidth: '30vw',
+        position: 'fixed',
+        maxWidth: '20vw',
         borderRadius: 0,
     },
   },
   workspaceDescriptionBox: {
-    width: '70vw',
-    padding: theme.spacing(3),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
     '& .MuiTypography-root': {
-        width: '70%',
+        width: '50%',
         textAlign: 'center',
         marginBottom: theme.spacing(1),
         paddingBottom: theme.spacing(2),
@@ -139,7 +122,7 @@ export const WorkspacePage = (props: any) => {
             <MainMenu />
             <Divider />
 
-            <Box className={classes.workspaceToolbar}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" bgcolor={bgLight} className={classes.workspaceToolbar}>
                 <Box display="flex" onClick={() => history.push('/')}>
                     <AppsIcon color="primary" fontSize="small" />
                     <Typography component="span" color="primary">See all workspaces</Typography>
@@ -153,7 +136,7 @@ export const WorkspacePage = (props: any) => {
                 </Box>
             </Box>
 
-            <Box className={classes.workspaceInformation}>
+            <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
                 <Typography component="h1">{workspace.name}</Typography>
                 <Box display="flex" flexDirection="row">
                     {(workspace.owner && (workspace.owner.firstName || workspace.owner.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.owner.firstName + ' ' + workspace.owner.lastName}</Typography> : null}
@@ -164,9 +147,9 @@ export const WorkspacePage = (props: any) => {
             <Divider />
         </Box>
 
-        <Box className={`verticalFit ${classes.workspaceResourcesInformation}`}>
+        <Box className={`verticalFit ${classes.workspaceResourcesInformation}`} display="flex" flexDirection="row">
             <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
-            <Box className={`${classes.workspaceDescriptionBox} scrollbar`}>
+            <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100vw" display="flex" flexDirection="column" alignItems="center" p={1}>
                 <Typography component="p" variant="body1">{workspace.description}</Typography>
                 {workspace.thumbnail ? <img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`}/> : null}
             </Box>
