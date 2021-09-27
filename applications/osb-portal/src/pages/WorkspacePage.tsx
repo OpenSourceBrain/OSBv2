@@ -33,16 +33,12 @@ const useStyles = makeStyles(() => ({
         fontWeight: '400',
         marginBottom: theme.spacing(2),
     },
-    '& .MuiBox-root': {
-        color: paragraph,
-        marginBottom: theme.spacing(2),
-    },
     '& span': {
         display: 'flex',
         alignItems: 'center',
     },
     '& .MuiTypography-root:nth-child(2)': {
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(2),
     },
     '& .MuiChip-root': {
         backgroundColor: '#3c3c3c',
@@ -82,6 +78,7 @@ export const WorkspacePage = (props: any) => {
     React.useEffect(() => {
         WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
             setWorkspace(ws);
+            console.log('returned workspace', ws);
         });
     }, [refresh]);
 
@@ -138,8 +135,8 @@ export const WorkspacePage = (props: any) => {
 
             <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
                 <Typography component="h1">{workspace.name}</Typography>
-                <Box display="flex" flexDirection="row">
-                    {(workspace.owner && (workspace.owner.firstName || workspace.owner.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.owner.firstName + ' ' + workspace.owner.lastName}</Typography> : null}
+                <Box display="flex" flexDirection="row" color={paragraph} mb={2}>
+                    {(workspace.user && (workspace.user.firstName || workspace.user.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.user.firstName + ' ' + workspace.user.lastName}</Typography> : null}
                     {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
                 </Box>
                 <Box>{workspace.tags && workspace.tags.map(tagObject => { return <Chip size="small" label={tagObject.tag} key={tagObject.id}/>})}</Box>
