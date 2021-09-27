@@ -59,10 +59,10 @@ const useStyles = makeStyles((theme) => ({
   imagePreview: {
     display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
   },
-  autoComplete: {
+  autocomplete: {
     marginTop: theme.spacing(1),
-    '& .MuiInputBase-root': {
-      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
+    '& .MuiChip-root': {
+      backgroundColor: bgLight,
     }
   },
 }));
@@ -233,9 +233,9 @@ export default (props: WorkspaceEditProps) => {
 
         </Box>
         <Autocomplete
-          className={classes.autoComplete}
           multiple={true}
           freeSolo={true}
+          className={classes.autocomplete}
           options={props.tags.map(tagObject => tagObject.tag)}
           defaultValue={defaultTags}
           onChange={ (event, value) => setWorkspaceTags(value)}
@@ -245,7 +245,7 @@ export default (props: WorkspaceEditProps) => {
            ))
           }
           renderInput={(params) => (
-            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Workspace tags" />
+            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
           )}
           />
         <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>

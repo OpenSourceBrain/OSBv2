@@ -993,6 +993,8 @@ components:
               type: array
               items:
                   $ref: "#/components/schemas/WorkspaceResource"
+            user:
+              $ref: "#/components/schemas/User"
     WorkspaceCollaborator:
       description: Workspace Collaborator of a workspace
       type: object

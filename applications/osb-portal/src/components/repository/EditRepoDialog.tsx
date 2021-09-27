@@ -147,12 +147,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  autoComplete: {
-    marginTop: theme.spacing(1),
-    '& .MuiInputBase-root': {
-      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px`,
-    },
-  },
 }));
 
 export const EditRepoDialog = ({
@@ -273,7 +267,12 @@ export const EditRepoDialog = ({
           setLoading(false);
           setDialogOpen(false);
           onSubmit();
-        }).catch(() => {
+        }, (e) => {
+          console.error(e)
+          setLoading(false);
+          throw new Error("Error updating the repository");
+        }).catch((e) => {
+          console.error(e)
           setLoading(false);
           throw new Error("Error updating the repository");
         })
@@ -384,7 +383,6 @@ export const EditRepoDialog = ({
 
         <Box className="form-group">
           <Autocomplete
-            className={classes.autoComplete}
             multiple={true}
             freeSolo={true}
             options={tagOptions.map(t => t.tag)}
@@ -396,7 +394,7 @@ export const EditRepoDialog = ({
               ))
             }
             renderInput={(params) => (
-              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" placeholder="Repository tags" />
+              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
             )}
           />
         </Box>
