@@ -20,7 +20,6 @@ def copy_origins(workspace_id, origins):
                 workspace_id=workspace_id,
                 osbrepository_id=osbrepository_id,
                 name=origin.get("name"),
-                folder=origin.get("folder"),
                 path=origin.get("path"),
             )
             if type(task) is list:

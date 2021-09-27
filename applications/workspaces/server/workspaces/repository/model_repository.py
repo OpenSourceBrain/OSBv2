@@ -126,6 +126,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
     def pre_commit(self, osbrepository):
         osbrepository.tags = insert_or_get_tags(osbrepository.tags)
+        # TODO: get tags from the repository
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None, tags=None, types=None):
