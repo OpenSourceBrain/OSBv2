@@ -1,6 +1,9 @@
 import json
 import os
 import shutil
+import workspaces.service.osbrepository.osbrepository as osbrepository_service
+
+from types import SimpleNamespace
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
@@ -125,8 +128,12 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     calculated_fields = ["user", "content_types_list"]
 
     def pre_commit(self, osbrepository):
-        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         # TODO: get tags from the repository
+        tags = osbrepository_service.get_tags(osbrepository)
+        if tags:
+            for tag in tags:
+                osbrepository.tags.append(Tag(tag=tag))
+        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None, tags=None, types=None):

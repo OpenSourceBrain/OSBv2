@@ -24,7 +24,7 @@ def insert_or_get_tags(tags):
     tags_list = []
     for tag in tags:
         z = tag.tag
-        p, tp, tags = repos.TagRepository().search(q=f"tag__={z}")
+        tags = repos.TagRepository().search(q=f"tag__={z}")
         if len(tags.items)>0:
             # if found reference to the tag
             tag = tags.items[0]

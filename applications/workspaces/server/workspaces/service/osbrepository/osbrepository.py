@@ -38,6 +38,12 @@ def get_description(osbrepository, context=None):
         context = osbrepository.default_context
     return repository_service.get_description(context)
 
+def get_tags(osbrepository, context=None):
+    repository_service = get_repository_adapter(osbrepository=osbrepository)
+    if not context:
+        context = osbrepository.default_context
+    return repository_service.get_tags(context)
+
 
 def copy_resource(workspace_resource):
     origin = json.loads(workspace_resource.origin)

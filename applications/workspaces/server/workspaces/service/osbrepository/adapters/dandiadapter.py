@@ -1,12 +1,15 @@
 import re
 import requests
 import sys
-from cloudharness import log as logger
-
+import asyncio
+import concurrent.futures
 import workspaces.service.workflow as workflow
-from workspaces.models import DandiRepositoryResource, RepositoryResource, RepositoryResourceNode
 
+from cloudharness import log as logger
+from workspaces.models import DandiRepositoryResource, RepositoryResource, RepositoryResourceNode
 from .utils import add_to_tree
+
+MAX_WORKERS=20
 
 class DandiException(Exception):
     pass
@@ -17,6 +20,7 @@ class DandiAdapter:
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.url
         self.api_url = "https://api.dandiarchive.org/api"
+        self.futures = []
         try:
             self.dandiset_id = re.search(
                 ".*/dandiset/(.*?)[/.*$|$]",
@@ -25,6 +29,7 @@ class DandiAdapter:
             raise DandiException(f"{self.uri} is not a Dandi set url.")
 
     def get_json(self, uri):
+        logger.debug(f"Getting: {uri}")
         try:
             r = requests.get(
                 uri,
@@ -41,17 +46,8 @@ class DandiAdapter:
         return uri, self.get_json(uri)
 
     def getFiles(self, tree, context, path_prefix=""):
+        logger.info(f"getFiles for {path_prefix}")
         path, contents = self.getFolderContents(context, path_prefix)
-        for key, dandi_folder in contents["folders"].items():
-            new_path_prefix = f"{path_prefix}/{key}".strip("/")
-            folder_url = f"{self.api_url}/dandisets/{self.dandiset_id}/versions/{context}/assets/paths/?path_prefix={new_path_prefix}&folder={context}/{new_path_prefix}"
-            add_to_tree(
-                tree=tree,
-                tree_path=f"{new_path_prefix}".split("/"),
-                path=folder_url,
-                osbrepository_id=self.osbrepository.id,
-            )
-            self.getFiles(context=context, tree=tree, path_prefix=new_path_prefix)
         for key2, dandi_file in contents["files"].items():
             # we save the version in the url query param for later usage in the download task
             download_url = f"{self.api_url}/assets/{dandi_file['asset_id']}?folder={context}/{path_prefix}"
@@ -62,7 +58,25 @@ class DandiAdapter:
                 size=dandi_file["size"],
                 timestamp_modified=dandi_file["modified"],
                 osbrepository_id=self.osbrepository.id,
-            ) 
+            )
+        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            for key, dandi_folder in contents["folders"].items():
+                new_path_prefix = f"{path_prefix}/{key}".strip("/")
+                folder_url = f"{self.api_url}/dandisets/{self.dandiset_id}/versions/{context}/assets/paths/?path_prefix={new_path_prefix}&folder={context}/{new_path_prefix}"
+                add_to_tree(
+                    tree=tree,
+                    tree_path=f"{new_path_prefix}".split("/"),
+                    path=folder_url,
+                    osbrepository_id=self.osbrepository.id,
+                )
+                self.futures.append(
+                    executor.submit(
+                        self.getFiles,
+                        context=context,
+                        tree=tree,
+                        path_prefix=new_path_prefix,
+                    )
+                )
 
     def get_contexts(self):
         versions = self.get_json(f"{self.api_url}/dandisets/{self.dandiset_id}/versions")["results"]
@@ -81,18 +95,29 @@ class DandiAdapter:
     def get_resources(self, context):
         tree = self.createTreeRoot()
         self.getFiles(tree, context)
-
+        for future in concurrent.futures.as_completed(self.futures):
+            pass
         return tree
+
+    def _get_dandi_info(self, context):
+        result = self.get_json(f"{self.api_url}/dandisets/{self.dandiset_id}/versions/{context}/info/")
+        return result
 
     def get_description(self, context):
         try:
-            result = self.get_json(f"{self.api_url}/dandisets/{self.dandiset_id}/versions/{context}/info/")
-            description = result["metadata"]["description"]
-            return description
+            result = self._get_dandi_info(context)
+            return result["metadata"]["description"]
         except Exception as e:
-            logger.debug(
-                "unable to get the description from Dandi, %", str(e))
+            logger.debug("unable to get the description from Dandi, %", str(e))
             return ""
+
+    def get_tags(self, context):
+        try:
+            result = self._get_dandi_info(context)
+            return result["metadata"]["keywords"]
+        except Exception as e:
+            logger.debug("unable to get the tags from Dandi, %", str(e))      
+            return []
 
     def create_copy_task(self, workspace_id, name, path):
         # download the resource
@@ -103,6 +128,8 @@ class DandiAdapter:
             context = folder.split("/")[0]
             tree = self.createTreeRoot()
             self.getFiles(tree, context, path_prefix="/".join(folder.split("/")[1:]))
+            for future in concurrent.futures.as_completed(self.futures):
+                pass
             tasks = []
             self._create_copy_task_assets_of_folder(workspace_id, tree, tasks)
             return tasks

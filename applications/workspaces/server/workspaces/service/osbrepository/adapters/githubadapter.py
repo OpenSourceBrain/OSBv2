@@ -105,6 +105,9 @@ class GitHubAdapter:
                 "unable to get the description from github, %", str(e))
             return ""
 
+    def get_tags(self, context):
+        return []
+
     def create_copy_task(self, workspace_id, name, path):
         # download the resource
         name = name if name != "/" else self.osbrepository.name
