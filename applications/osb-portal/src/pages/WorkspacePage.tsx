@@ -7,9 +7,11 @@ import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import { Accordion, AccordionDetails, AccordionSummary } from "@material-ui/core";
 import AppsIcon from "@material-ui/Icons/Apps";
 import PersonIcon from "@material-ui/Icons/Person";
 import CalendarTodayIcon from "@material-ui/Icons/CalendarToday";
+import ArrowRight from "@material-ui/Icons/ArrowRight";
 
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
 import theme, { bgLight, bgRegular, paragraph } from "../theme";
@@ -19,12 +21,43 @@ import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor } from "../components";
 import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
 
+
 const useStyles = makeStyles(() => ({
   workspaceToolbar: {
     cursor: 'pointer',
     padding: theme.spacing(1),
     '& .MuiGrid-root': {
         marginRight: '10px',
+    },
+    [theme.breakpoints.down("xs")]: {
+        flexDirection: 'column-reverse',
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        padding: 0,
+        '& .MuiBox-root': {
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1),
+            width: '100%',
+            justifyContent: 'center',
+        },
+        '& .buttons': {
+            borderBottom: `1px solid rgb(255, 255, 255, 0.12)`,
+        },
+        '& .MuiGrid-container': {
+            maxWidth: 'fit-content',
+        },
+    },
+  },
+  accordion: {
+    '& .MuiAccordionSummary-root': {
+        color: paragraph,
+        '& .MuiSvgIcon-root': {
+            color: paragraph,
+        },
+    },
+    [theme.breakpoints.up("md")]: {
+        display: 'none',
     },
   },
   workspaceInformation: {
@@ -37,8 +70,18 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         alignItems: 'center',
     },
-    '& .MuiTypography-root:nth-child(2)': {
-        marginLeft: theme.spacing(2),
+    '& .MuiBox-root': {
+        [theme.breakpoints.up("md")] : {
+            '& .MuiTypography-root:nth-child(2)': {
+                marginLeft: theme.spacing(2),
+            },
+        },
+        [theme.breakpoints.down("sm")] : {
+            flexDirection: 'column',
+            '& .MuiTypography-root:nth-child(2)': {
+                marginTop: theme.spacing(1),
+            },
+        },
     },
     '& .MuiChip-root': {
         backgroundColor: '#3c3c3c',
@@ -47,21 +90,30 @@ const useStyles = makeStyles(() => ({
   workspaceResourcesInformation: {
     '& .MuiAccordion-root': {
         position: 'fixed',
-        maxWidth: '20vw',
+        Maxwidth: '20vw',
         borderRadius: 0,
+        [theme.breakpoints.down("sm")]: {
+            display: 'none',
+        },
     },
   },
   workspaceDescriptionBox: {
     '& .MuiTypography-root': {
-        width: '50%',
+        width: '60%',
         textAlign: 'center',
         marginBottom: theme.spacing(1),
-        paddingBottom: theme.spacing(2),
-        borderBottom: `solid 1px ${bgLight}`,
+        paddingTop: theme.spacing(2),
+        borderTop: '1px solid #3c3c3c',
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.down("xs")]: {
+            paddingBottom: theme.spacing(7),
+        },
     },
     '& img': {
         marginTop: theme.spacing(1),
-        minHeight: '200px',
+        marginBottom: theme.spacing(1),
+        maxWidth: '60%',
+        minWidth: '20%',
     },
   },
 }));
@@ -125,17 +177,25 @@ export const WorkspacePage = (props: any) => {
                     <Typography component="span" color="primary">See all workspaces</Typography>
                 </Box>
 
-                <Box display="flex">
+                <Box display="flex" className="buttons">
                     {props.user && props.user.id === workspace.userId && <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
                         Edit
                     </Button>}
                     <OSBSplitButton options={options} handleClick={openWithApp} />
                 </Box>
             </Box>
+            <Accordion className={classes.accordion}>
+                <AccordionSummary expandIcon={<ArrowRight />} aria-controls="panel1a-content" id="panel1a-header">
+                    <Typography>Resources</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
+                </AccordionDetails>
+            </Accordion>
 
             <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
                 <Typography component="h1">{workspace.name}</Typography>
-                <Box display="flex" flexDirection="row" color={paragraph} mb={2}>
+                <Box display="flex" flexDirection="row" color={paragraph} mb={2} alignItems="center">
                     {(workspace.user && (workspace.user.firstName || workspace.user.lastName)) ? <Typography component="span" variant="body2"><PersonIcon fontSize="small" /> By {workspace.user.firstName + ' ' + workspace.user.lastName}</Typography> : null}
                     {workspace.timestampUpdated && <Typography component="span" variant="body2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
                 </Box>
@@ -147,8 +207,8 @@ export const WorkspacePage = (props: any) => {
         <Box className={`verticalFit ${classes.workspaceResourcesInformation}`} display="flex" flexDirection="row">
             <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
             <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100vw" display="flex" flexDirection="column" alignItems="center" p={1}>
+                {workspace.thumbnail ? <><img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`}/></> : null}
                 <Typography component="p" variant="body1">{workspace.description}</Typography>
-                {workspace.thumbnail ? <img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`}/> : null}
             </Box>
         </Box>
 
