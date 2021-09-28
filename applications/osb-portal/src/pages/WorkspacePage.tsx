@@ -14,12 +14,13 @@ import CalendarTodayIcon from "@material-ui/Icons/CalendarToday";
 import ArrowRight from "@material-ui/Icons/ArrowRight";
 
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
-import theme, { bgLight, bgRegular, paragraph } from "../theme";
+import theme, { bgDarker, bgLight, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { Workspace, WorkspaceResource } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor } from "../components";
 import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
+import MarkdownViewer from "../components/common/MarkdownViewer";
 
 
 const useStyles = makeStyles(() => ({
@@ -108,6 +109,13 @@ const useStyles = makeStyles(() => ({
         [theme.breakpoints.down("xs")]: {
             paddingBottom: theme.spacing(7),
         },
+        '& .preview-box': {
+            backgroundColor: bgDarker,
+            border: 'none',
+        },
+        '& .MuiPaper-elevation1': {
+            boxShadow: 'none',
+        }
     },
     '& img': {
         marginTop: theme.spacing(1),
@@ -208,7 +216,7 @@ export const WorkspacePage = (props: any) => {
             <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
             <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100vw" display="flex" flexDirection="column" alignItems="center" p={1}>
                 {workspace.thumbnail ? <><img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`}/></> : null}
-                <Typography component="p" variant="body1">{workspace.description}</Typography>
+                <Typography component="p" variant="body1"><MarkdownViewer text={workspace.description} /></Typography>
             </Box>
         </Box>
 
