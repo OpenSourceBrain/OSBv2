@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    User,
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
     WorkspaceResource,
     WorkspaceResourceFromJSON,
     WorkspaceResourceFromJSONTyped,
@@ -32,6 +36,12 @@ export interface WorkspaceAllOf {
      * @memberof WorkspaceAllOf
      */
     resources?: Array<WorkspaceResource>;
+    /**
+     * 
+     * @type {User}
+     * @memberof WorkspaceAllOf
+     */
+    user?: User;
 }
 
 export function WorkspaceAllOfFromJSON(json: any): WorkspaceAllOf {
@@ -45,6 +55,7 @@ export function WorkspaceAllOfFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
+        'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
     };
 }
 
@@ -58,6 +69,7 @@ export function WorkspaceAllOfToJSON(value?: WorkspaceAllOf | null): any {
     return {
         
         'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
+        'user': UserToJSON(value.user),
     };
 }
 

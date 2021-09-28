@@ -18,7 +18,8 @@ from workspaces.service.kubernetes import create_persistent_volume_claim
 from workspaces.service.auth import get_auth_client
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag, \
+    TWorkspaceEntity
 from .utils import *
 
 
@@ -45,6 +46,7 @@ class OwnerModel:
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
     model = WorkspaceEntity
     defaults = {}
+    calculated_fields = ["user"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,7 +55,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return f"workspace-{workspace_id}"
 
     def get(self, id):
-        workspace = self.model.query.get(id)
+        workspace = self._get(id)
         if workspace and (workspace.publicable or
                           (workspace.user_id and workspace.user_id == self.keycloak_user_id) or
                           (get_auth_client().user_has_realm_role(user_id=self.keycloak_user_id, role="administrator"))):
@@ -121,6 +123,21 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 db.session.add(wsr)
                 db.session.commit()
         return workspace
+
+    def user(self, workspace: TWorkspaceEntity):
+
+        try:
+
+            user = get_auth_client().get_user(workspace.user_id)
+            return User(
+                id=user.get("id", ""),
+                first_name=user.get("firstName", ""),
+                last_name=user.get("lastName", ""),
+                username=user.get("username", ""),
+                email=user.get("email", ""),
+            )
+        except Exception as e:
+            return User()
 
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):

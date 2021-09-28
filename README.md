@@ -28,12 +28,6 @@ pip install -r requirements.txt
 
 CloudHarness scripts script automate the deployment process.
 
-To update the Codefresh deployment, run:
-
-```
-harness-codefresh .
-```
-
 To manually create the helm chart to use on any Kubernetes deployment, run:
 
 ```
@@ -102,7 +96,11 @@ Enable the ingress addon:
 
 ```
 minikube addons enable ingress
+
+
 ```
+
+Create the namespace `kubectl create ns osblocal`
 
 ### Minikube on the host machine
 

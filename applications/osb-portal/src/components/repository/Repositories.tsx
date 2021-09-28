@@ -8,6 +8,10 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ShowMoreText from "react-show-more-text";
+
 import { OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
 import RepositoryActionsMenu from "./RepositoryActionsMenu";
 import { UserInfo } from "../../types/user";
@@ -15,13 +19,13 @@ import {
   bgRegular,
   bgDarkest,
   paragraph,
-  bgLightestShade,
-  teal,
-  purple,
   bgLightest,
   radius,
+  textColor,
+  linkColor,
 } from "../../theme";
 import RepositoriesSearch from "./RepositoriesSearch";
+import { CodeBranchIcon } from "../icons";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -37,9 +41,11 @@ const useStyles = makeStyles((theme) => ({
   repositoryData: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
     paddingRight: 0,
     overflow: "auto",
+    "& .MuiGrid-container": {
+      flex: 0,
+    },
     backgroundColor: bgDarkest,
     "& strong": {
       display: "block",
@@ -50,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: 1.5,
     },
     "& p": {
-      lineHeight: 1.5,
+      overflow: "hidden",
       fontSize: ".88rem",
       letterSpacing: "0.01rem",
       color: paragraph,
@@ -88,9 +94,15 @@ const useStyles = makeStyles((theme) => ({
       borderWidth: `1px 0 1px 0`,
       borderStyle: "solid",
       borderColor: bgRegular,
-
       paddingLeft: theme.spacing(3),
       paddingRight: theme.spacing(3),
+      "& .MuiChip-root": {
+        backgroundColor: '#3c3c3c',
+        color: paragraph,
+      },
+      "& .repo-tag": {
+        color: textColor,
+      },
       "& .MuiButtonBase-root": {
         minWidth: "11.5rem",
         marginRight: "1.312rem",
@@ -153,6 +165,17 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
   },
+  showMoreText: {
+    color: paragraph,
+    '& a': {
+      color: linkColor,
+      display: 'flex',
+      textDecoration: 'none',
+      '& .MuiSvgIcon-root': {
+        color: `${linkColor} !important`,
+      },
+    },
+  },
 }));
 
 export default (props: RepositoriesProps) => {
@@ -160,7 +183,12 @@ export default (props: RepositoriesProps) => {
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const showSimpleVersion = typeof props.showSimpleVersion === 'undefined' ? false : props.showSimpleVersion;
   const searchRepositories = typeof props.searchRepositories === 'undefined' ? false : props.searchRepositories;
+  const [expanded, setExpanded] = React.useState(false);
+  const gridRef = React.useRef(null);
 
+  const handleExpandClick = (exp: boolean) => {
+    setExpanded(!expanded);
+  }
 
   return (
     <>
@@ -175,17 +203,26 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 5 : 4} md={showSimpleVersion ? 5 : 2}
-              onClick={() => props.handleRepositoryClick(repository.id)}>
+            <Grid item={true} xs={12} sm={3} lg={5}
+              ref={gridRef}>
               <Box className="col">
-                <Typography component="strong">
+                <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
                   {repository.name}
                 </Typography>
-                <Typography>{repository.summary}</Typography>
+                {repository.summary && <ShowMoreText
+                  className={classes.showMoreText}
+                  lines={4}
+                  more={<>See more <ExpandMoreIcon /></>}
+                  less={<>See less<ExpandLessIcon /></>}
+                  onClick={handleExpandClick}
+                  expanded={expanded}
+                  width={gridRef.current !== null ? gridRef.current.clientWidth : 100}>
+                  {repository.summary}
+                </ShowMoreText>}
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={4} md={4} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box className="col">
                 <Typography>
                   {repository?.user?.firstName} {repository?.user?.lastName}
@@ -193,7 +230,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>}
 
-            <Grid item={true} xs={showSimpleVersion ? 11 : 12} sm={showSimpleVersion ? 6 : 4} md={showSimpleVersion ? 6 : 3}
+            {<Grid item={true} xs={12} sm={showSimpleVersion ? 3 : 2} lg={showSimpleVersion ? 4 : 3}
               onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box
                 display="flex"
@@ -202,7 +239,6 @@ export default (props: RepositoriesProps) => {
               >
                 {repository.contentTypes.split(",").map((type, index) => (
                   <Chip
-                    className="tag"
                     avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                     key={type}
                     label={type}
@@ -211,7 +247,7 @@ export default (props: RepositoriesProps) => {
                 ))}
                 {repository.tags && repository.tags.map((tagObject, index) => (
                   <Chip
-                    className="tag"
+                    className="repo-tag"
                     key={tagObject.id}
                     label={tagObject.tag}
                   />
@@ -219,7 +255,13 @@ export default (props: RepositoriesProps) => {
 
               </Box>
             </Grid>
-            <Grid item={true} xs={showSimpleVersion ? 1 : 12} sm={showSimpleVersion ? 1 : 12} md={showSimpleVersion ? 1 : 3} >
+            }
+            <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
+              <Box display="flex" alignItems="center" flexWrap="wrap">
+                {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
+              </Box>
+            </Grid>
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={showSimpleVersion ? 1 : 2} >
               <Box
                 className="col"
                 display="flex"
@@ -233,9 +275,7 @@ export default (props: RepositoriesProps) => {
                   See on {repository.repositoryType}
                 </Button>}
                 <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)} />
-                {props.user && showSimpleVersion && <Box className={classes.repositoryActionsBox}>
-                  <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />
-                </Box>}
+
               </Box>
               {props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
                 <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />

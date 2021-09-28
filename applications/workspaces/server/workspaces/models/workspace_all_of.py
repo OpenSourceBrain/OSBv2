@@ -6,9 +6,11 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
+from workspaces.models.user import User
 from workspaces.models.workspace_resource import WorkspaceResource
 from workspaces import util
 
+from workspaces.models.user import User  # noqa: E501
 from workspaces.models.workspace_resource import WorkspaceResource  # noqa: E501
 
 class WorkspaceAllOf(Model):
@@ -17,21 +19,26 @@ class WorkspaceAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, resources=None):  # noqa: E501
+    def __init__(self, resources=None, user=None):  # noqa: E501
         """WorkspaceAllOf - a model defined in OpenAPI
 
         :param resources: The resources of this WorkspaceAllOf.  # noqa: E501
         :type resources: List[WorkspaceResource]
+        :param user: The user of this WorkspaceAllOf.  # noqa: E501
+        :type user: User
         """
         self.openapi_types = {
-            'resources': List[WorkspaceResource]
+            'resources': List[WorkspaceResource],
+            'user': User
         }
 
         self.attribute_map = {
-            'resources': 'resources'
+            'resources': 'resources',
+            'user': 'user'
         }
 
         self._resources = resources
+        self._user = user
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceAllOf':
@@ -66,3 +73,24 @@ class WorkspaceAllOf(Model):
         """
 
         self._resources = resources
+
+    @property
+    def user(self):
+        """Gets the user of this WorkspaceAllOf.
+
+
+        :return: The user of this WorkspaceAllOf.
+        :rtype: User
+        """
+        return self._user
+
+    @user.setter
+    def user(self, user):
+        """Sets the user of this WorkspaceAllOf.
+
+
+        :param user: The user of this WorkspaceAllOf.
+        :type user: User
+        """
+
+        self._user = user

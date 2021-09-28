@@ -18,6 +18,10 @@ import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    User,
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
@@ -146,6 +150,12 @@ export interface Workspace {
      * @memberof Workspace
      */
     resources?: Array<WorkspaceResource>;
+    /**
+     * 
+     * @type {User}
+     * @memberof Workspace
+     */
+    user?: User;
 }
 
 export function WorkspaceFromJSON(json: any): Workspace {
@@ -174,6 +184,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
         'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(WorkspaceResourceFromJSON)),
+        'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
     };
 }
 
@@ -202,6 +213,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'storage': VolumeStorageToJSON(value.storage),
         'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
         'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(WorkspaceResourceToJSON)),
+        'user': UserToJSON(value.user),
     };
 }
 
