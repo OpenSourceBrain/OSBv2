@@ -15,6 +15,7 @@ import Dropzone from 'react-dropzone'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Autocomplete } from "@material-ui/lab";
+import MDEditor from '@uiw/react-md-editor';
 import Chip from "@material-ui/core/Chip";
 
 import { Workspace } from '../../types/workspace';
@@ -220,7 +221,7 @@ export default (props: WorkspaceEditProps) => {
           />
         </Box>
         <Box mt={2}>
-          <TextField
+          {/* <TextField
             id="workspaceDescription"
             placeholder="Description"
             multiline={true}
@@ -229,7 +230,8 @@ export default (props: WorkspaceEditProps) => {
             onChange={setDescriptionField}
             variant="outlined"
             defaultValue={workspace?.description}
-          />
+          /> */}
+          <MDEditor value={workspace?.description} onChange={setDescriptionField} />
 
         </Box>
         <Autocomplete
