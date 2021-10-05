@@ -24,6 +24,15 @@ cd cloud-harness
 pip install -r requirements.txt
 ```
 
+#### Install skaffold
+
+skaffold is needed to build the images and run them on minikube.
+Get it [here](https://skaffold.dev/docs/install/).
+
+#### Install helm
+
+You can install helm from [here](https://helm.sh/docs/intro/install/).
+
 ### Create deployment
 
 CloudHarness scripts script automate the deployment process.
@@ -111,6 +120,14 @@ Then run:
 ```
 harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal 
 ```
+You do not need to run the port-forwarding commands on the local deployment.
+Finally, run skaffold to build and run the images on minikube:
+
+```
+skaffold dev
+```
+
+On making local changes, you can re-run the `harness-deployment` command to update the deployment.
 
 ### Minikube on a different machine
 
