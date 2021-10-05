@@ -4,7 +4,7 @@ import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } fr
 import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin, InlineResponse2003, Tag } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin, InlineResponse2003, Tag, User } from '../apiclient/workspaces';
 
 import { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 import { Page } from "../types/model";
@@ -123,12 +123,16 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
   const tags: Tag[] = workspace.tags;
+  const timestampUpdated: Date = workspace.timestampUpdated;
+  const user: User = workspace.user;
 
   return {
     ...workspace,
     resources,
     lastOpen,
     tags,
+    user,
+    timestampUpdated,
     userId: workspace.userId,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",

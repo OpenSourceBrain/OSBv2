@@ -56,6 +56,9 @@ module.exports = env => {
       },
 
       plugins: [
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify("development")
+        }),
         new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org', 'NAMESPACE': env.NAMESPACE || 'osb2' }),
         new CopyPlugin({
           patterns: [
