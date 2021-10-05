@@ -38,6 +38,12 @@ def get_description(osbrepository, context=None):
         context = osbrepository.default_context
     return repository_service.get_description(context)
 
+def get_tags(osbrepository, context=None):
+    repository_service = get_repository_adapter(osbrepository=osbrepository)
+    if not context:
+        context = osbrepository.default_context
+    return repository_service.get_tags(context)
+
 
 def copy_resource(workspace_resource):
     origin = json.loads(workspace_resource.origin)
@@ -46,7 +52,7 @@ def copy_resource(workspace_resource):
     repository_adapter.copy_resource(workspace_resource, origin)
 
 
-def create_copy_task(workspace_id, osbrepository_id, name, folder, path):
+def create_copy_task(workspace_id, osbrepository_id, name, path):
     osbrepository = repos.OSBRepositoryRepository().get(id=osbrepository_id)
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
-    return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, folder=folder, path=path)
+    return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, path=path)

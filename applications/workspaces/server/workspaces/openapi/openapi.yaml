@@ -1209,6 +1209,16 @@ components:
               type: integer
               description: OSB Repository id
               example: 1
+            size:
+              type: integer
+              format: int64
+              example: 65535
+              description: File size in bytes of the RepositoryResource
+            timestamp_modified:
+              description: Date/time the ReposityResource is last modified
+              type: string
+              format: 'date-time'
+              example: 2019-11-23T01:23:45Z
     FigshareRepositoryResource:
       description: figshare repository resource
       allOf:
@@ -1252,11 +1262,6 @@ components:
       properties:
         resource:
           $ref: "#/components/schemas/RepositoryResource"
-        timestamp_modified:
-          description: Date/time the ReposityResource is last modified
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
         children:
           type: array
           items:

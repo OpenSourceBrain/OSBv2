@@ -17,7 +17,7 @@ class FigshareRepositoryResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, path=None, osbrepository_id=None):  # noqa: E501
+    def __init__(self, name=None, path=None, osbrepository_id=None, size=None, timestamp_modified=None):  # noqa: E501
         """FigshareRepositoryResource - a model defined in OpenAPI
 
         :param name: The name of this FigshareRepositoryResource.  # noqa: E501
@@ -26,22 +26,32 @@ class FigshareRepositoryResource(Model):
         :type path: str
         :param osbrepository_id: The osbrepository_id of this FigshareRepositoryResource.  # noqa: E501
         :type osbrepository_id: int
+        :param size: The size of this FigshareRepositoryResource.  # noqa: E501
+        :type size: int
+        :param timestamp_modified: The timestamp_modified of this FigshareRepositoryResource.  # noqa: E501
+        :type timestamp_modified: datetime
         """
         self.openapi_types = {
             'name': str,
             'path': str,
-            'osbrepository_id': int
+            'osbrepository_id': int,
+            'size': int,
+            'timestamp_modified': datetime
         }
 
         self.attribute_map = {
             'name': 'name',
             'path': 'path',
-            'osbrepository_id': 'osbrepository_id'
+            'osbrepository_id': 'osbrepository_id',
+            'size': 'size',
+            'timestamp_modified': 'timestamp_modified'
         }
 
         self._name = name
         self._path = path
         self._osbrepository_id = osbrepository_id
+        self._size = size
+        self._timestamp_modified = timestamp_modified
 
     @classmethod
     def from_dict(cls, dikt) -> 'FigshareRepositoryResource':
@@ -122,3 +132,49 @@ class FigshareRepositoryResource(Model):
         """
 
         self._osbrepository_id = osbrepository_id
+
+    @property
+    def size(self):
+        """Gets the size of this FigshareRepositoryResource.
+
+        File size in bytes of the RepositoryResource  # noqa: E501
+
+        :return: The size of this FigshareRepositoryResource.
+        :rtype: int
+        """
+        return self._size
+
+    @size.setter
+    def size(self, size):
+        """Sets the size of this FigshareRepositoryResource.
+
+        File size in bytes of the RepositoryResource  # noqa: E501
+
+        :param size: The size of this FigshareRepositoryResource.
+        :type size: int
+        """
+
+        self._size = size
+
+    @property
+    def timestamp_modified(self):
+        """Gets the timestamp_modified of this FigshareRepositoryResource.
+
+        Date/time the ReposityResource is last modified  # noqa: E501
+
+        :return: The timestamp_modified of this FigshareRepositoryResource.
+        :rtype: datetime
+        """
+        return self._timestamp_modified
+
+    @timestamp_modified.setter
+    def timestamp_modified(self, timestamp_modified):
+        """Sets the timestamp_modified of this FigshareRepositoryResource.
+
+        Date/time the ReposityResource is last modified  # noqa: E501
+
+        :param timestamp_modified: The timestamp_modified of this FigshareRepositoryResource.
+        :type timestamp_modified: datetime
+        """
+
+        self._timestamp_modified = timestamp_modified

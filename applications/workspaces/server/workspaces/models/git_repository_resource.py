@@ -19,7 +19,7 @@ class GITRepositoryResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, path=None, osbrepository_id=None, ref=None, sha=None):  # noqa: E501
+    def __init__(self, name=None, path=None, osbrepository_id=None, size=None, timestamp_modified=None, ref=None, sha=None):  # noqa: E501
         """GITRepositoryResource - a model defined in OpenAPI
 
         :param name: The name of this GITRepositoryResource.  # noqa: E501
@@ -28,6 +28,10 @@ class GITRepositoryResource(Model):
         :type path: str
         :param osbrepository_id: The osbrepository_id of this GITRepositoryResource.  # noqa: E501
         :type osbrepository_id: int
+        :param size: The size of this GITRepositoryResource.  # noqa: E501
+        :type size: int
+        :param timestamp_modified: The timestamp_modified of this GITRepositoryResource.  # noqa: E501
+        :type timestamp_modified: datetime
         :param ref: The ref of this GITRepositoryResource.  # noqa: E501
         :type ref: str
         :param sha: The sha of this GITRepositoryResource.  # noqa: E501
@@ -37,6 +41,8 @@ class GITRepositoryResource(Model):
             'name': str,
             'path': str,
             'osbrepository_id': int,
+            'size': int,
+            'timestamp_modified': datetime,
             'ref': str,
             'sha': str
         }
@@ -45,6 +51,8 @@ class GITRepositoryResource(Model):
             'name': 'name',
             'path': 'path',
             'osbrepository_id': 'osbrepository_id',
+            'size': 'size',
+            'timestamp_modified': 'timestamp_modified',
             'ref': 'ref',
             'sha': 'sha'
         }
@@ -52,6 +60,8 @@ class GITRepositoryResource(Model):
         self._name = name
         self._path = path
         self._osbrepository_id = osbrepository_id
+        self._size = size
+        self._timestamp_modified = timestamp_modified
         self._ref = ref
         self._sha = sha
 
@@ -134,6 +144,52 @@ class GITRepositoryResource(Model):
         """
 
         self._osbrepository_id = osbrepository_id
+
+    @property
+    def size(self):
+        """Gets the size of this GITRepositoryResource.
+
+        File size in bytes of the RepositoryResource  # noqa: E501
+
+        :return: The size of this GITRepositoryResource.
+        :rtype: int
+        """
+        return self._size
+
+    @size.setter
+    def size(self, size):
+        """Sets the size of this GITRepositoryResource.
+
+        File size in bytes of the RepositoryResource  # noqa: E501
+
+        :param size: The size of this GITRepositoryResource.
+        :type size: int
+        """
+
+        self._size = size
+
+    @property
+    def timestamp_modified(self):
+        """Gets the timestamp_modified of this GITRepositoryResource.
+
+        Date/time the ReposityResource is last modified  # noqa: E501
+
+        :return: The timestamp_modified of this GITRepositoryResource.
+        :rtype: datetime
+        """
+        return self._timestamp_modified
+
+    @timestamp_modified.setter
+    def timestamp_modified(self, timestamp_modified):
+        """Sets the timestamp_modified of this GITRepositoryResource.
+
+        Date/time the ReposityResource is last modified  # noqa: E501
+
+        :param timestamp_modified: The timestamp_modified of this GITRepositoryResource.
+        :type timestamp_modified: datetime
+        """
+
+        self._timestamp_modified = timestamp_modified
 
     @property
     def ref(self):

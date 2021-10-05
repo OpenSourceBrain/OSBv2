@@ -44,6 +44,18 @@ export interface DandiRepositoryResource {
      * @memberof DandiRepositoryResource
      */
     osbrepositoryId?: number;
+    /**
+     * File size in bytes of the RepositoryResource
+     * @type {number}
+     * @memberof DandiRepositoryResource
+     */
+    size?: number;
+    /**
+     * Date/time the ReposityResource is last modified
+     * @type {Date}
+     * @memberof DandiRepositoryResource
+     */
+    timestampModified?: Date;
 }
 
 export function DandiRepositoryResourceFromJSON(json: any): DandiRepositoryResource {
@@ -59,6 +71,8 @@ export function DandiRepositoryResourceFromJSONTyped(json: any, ignoreDiscrimina
         'name': !exists(json, 'name') ? undefined : json['name'],
         'path': !exists(json, 'path') ? undefined : json['path'],
         'osbrepositoryId': !exists(json, 'osbrepository_id') ? undefined : json['osbrepository_id'],
+        'size': !exists(json, 'size') ? undefined : json['size'],
+        'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
     };
 }
 
@@ -74,6 +88,8 @@ export function DandiRepositoryResourceToJSON(value?: DandiRepositoryResource | 
         'name': value.name,
         'path': value.path,
         'osbrepository_id': value.osbrepositoryId,
+        'size': value.size,
+        'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
     };
 }
 

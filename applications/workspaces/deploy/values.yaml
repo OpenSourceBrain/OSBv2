@@ -22,6 +22,13 @@ harness:
       name: workspaces-images
       size: 4G
       mountpath: /usr/src/app/workspaces/static/workspaces
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+        cpu: 1500m
   secrets:
     github-user:
     github-token:

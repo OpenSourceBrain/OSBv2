@@ -17,30 +17,25 @@ class RepositoryResourceNode(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, resource=None, timestamp_modified=None, children=None):  # noqa: E501
+    def __init__(self, resource=None, children=None):  # noqa: E501
         """RepositoryResourceNode - a model defined in OpenAPI
 
         :param resource: The resource of this RepositoryResourceNode.  # noqa: E501
         :type resource: RepositoryResource
-        :param timestamp_modified: The timestamp_modified of this RepositoryResourceNode.  # noqa: E501
-        :type timestamp_modified: datetime
         :param children: The children of this RepositoryResourceNode.  # noqa: E501
         :type children: List[RepositoryResourceNode]
         """
         self.openapi_types = {
             'resource': RepositoryResource,
-            'timestamp_modified': datetime,
             'children': List[RepositoryResourceNode]
         }
 
         self.attribute_map = {
             'resource': 'resource',
-            'timestamp_modified': 'timestamp_modified',
             'children': 'children'
         }
 
         self._resource = resource
-        self._timestamp_modified = timestamp_modified
         self._children = children
 
     @classmethod
@@ -74,29 +69,6 @@ class RepositoryResourceNode(Model):
         """
 
         self._resource = resource
-
-    @property
-    def timestamp_modified(self):
-        """Gets the timestamp_modified of this RepositoryResourceNode.
-
-        Date/time the ReposityResource is last modified  # noqa: E501
-
-        :return: The timestamp_modified of this RepositoryResourceNode.
-        :rtype: datetime
-        """
-        return self._timestamp_modified
-
-    @timestamp_modified.setter
-    def timestamp_modified(self, timestamp_modified):
-        """Sets the timestamp_modified of this RepositoryResourceNode.
-
-        Date/time the ReposityResource is last modified  # noqa: E501
-
-        :param timestamp_modified: The timestamp_modified of this RepositoryResourceNode.
-        :type timestamp_modified: datetime
-        """
-
-        self._timestamp_modified = timestamp_modified
 
     @property
     def children(self):
