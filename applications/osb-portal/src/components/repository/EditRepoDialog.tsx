@@ -12,6 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from "@material-ui/core/Chip";
 import { Autocomplete } from "@material-ui/lab";
+
 import {
   Box,
   FormControl,
@@ -21,6 +22,10 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
+import MDEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+
 
 import {
   bgLight,
@@ -29,7 +34,7 @@ import {
   paragraph,
   bgLightestShade,
 } from "../../theme";
-
+import MarkdownViewer from "../common/MarkdownViewer";
 import { RepositoryType } from "../../apiclient/workspaces/models/RepositoryType";
 import RepositoryService from "../../service/RepositoryService";
 import {
@@ -196,7 +201,7 @@ export const EditRepoDialog = ({
   };
 
   const handleInput = (event: any, key: any) => {
-    const value = event.target.value;
+    const value = event?.target?.value || event.text;
     setFormValues({ ...formValues, [key]: value });
     setError({ ...error, [key]: !value });
   };
@@ -287,6 +292,8 @@ export const EditRepoDialog = ({
       className={classes.root}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      fullWidth={true} 
+      maxWidth={"lg"}
     >
       <DialogTitle id="alert-dialog-title">
         {title}
@@ -403,13 +410,12 @@ export const EditRepoDialog = ({
           <Typography component="label">
             Can you describe what people can find in this repository?
           </Typography>
-          <TextField
-            multiline={true}
-            fullWidth={true}
-            rows={6}
-            variant="outlined"
-            onChange={(e) => handleInput(e, "summary")}
-            value={formValues.summary}
+
+          <MDEditor
+          defaultValue={repository?.summary}
+          onChange={(e) => handleInput(e, "summary")}
+          view={{html: false, menu: true, md: true}}
+          renderHTML={(text: string) => <MarkdownViewer text={text}/>}
           />
         </Box>
       </DialogContent>
