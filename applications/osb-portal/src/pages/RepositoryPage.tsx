@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Link from "@material-ui/core/Link";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
-
+import Paper from "@material-ui/core/Paper";
 import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
@@ -57,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: 'black',
     },
+  },
+  previewBox: {
+    padding: theme.spacing(3),
+    border: `3px solid #1e1e1e`,
+    backgroundColor: "#191919",
+    minHeight: 300
   },
   repositoryResourceBrowserBox: {
     width: '100%',
@@ -169,7 +175,8 @@ const defaultWorkspace: Workspace = {
   volume: null,
   shareType: null,
   name: "",
-  description: null
+  description: null,
+  user: null
 }
 
 let confirmationDialogTitle = "";
@@ -310,12 +317,10 @@ export const RepositoryPage = (props: any) => {
           {repository ?
             <Grid container={true} spacing={5} className="verticalFill">
               <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box className="flex-grow-1 verticalFit" maxWidth="100%" position="relative">
+                <Box className="flex-grow-1 scrollbar" maxWidth="100%" position="relative">
                   <Box>
 
-                    <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
-                      See on {repository.repositoryType}
-                    </Button>
+
                     <Typography component="h2" variant="h2" className="primary-heading">
                       Overview
                     </Typography>
@@ -332,7 +337,7 @@ export const RepositoryPage = (props: any) => {
                     }
                     {
                       repository.summary && <Typography component="p" variant="body2">
-                        {repository.summary}
+                        <MarkdownViewer text={repository.summary}  />
                       </Typography>
                     }
                     <Box>
@@ -388,7 +393,17 @@ export const RepositoryPage = (props: any) => {
                       </AccordionDetails>
                     </Accordion>
                   </Box>
-                  <MarkdownViewer text={repository.description} repository={repository} />
+                  <Box position="relative" mt="2">
+                    <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                      See on {repository.repositoryType}
+                    </Button>
+                    <Typography component="h2" variant="h2" className="primary-heading">
+                        Repository preview
+                      </Typography>
+                    <Paper className={`verticalFit ${classes.previewBox}`}>
+                      <MarkdownViewer text={repository.description} repository={repository}  />
+                    </Paper>
+                  </Box>
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">

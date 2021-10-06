@@ -15,7 +15,10 @@ import Dropzone from 'react-dropzone'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Autocomplete } from "@material-ui/lab";
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+import MarkdownViewer from "../common/MarkdownViewer";
 import Chip from "@material-ui/core/Chip";
 
 import { Workspace } from '../../types/workspace';
@@ -37,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   dropZoneBox: {
     color: bgInputs,
+    border: `2px dashed ${bgInputs}`,
+    borderRadius: 5,
+    padding: 4,
     "& .MuiTypography-subtitle2": {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(2),
@@ -50,13 +56,6 @@ const useStyles = makeStyles((theme) => ({
       border: `2px solid ${bgInputs}`,
     },
   },
-  workspaceThumbnailText: {
-    ...theme.typography.h6,
-    color: bgInputs,
-    fontSize: '0.7rem',
-    marginBottom: '0.3rem',
-    fontWeight: 'bold',
-  },
   imagePreview: {
     display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
   },
@@ -65,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiChip-root': {
       backgroundColor: bgLight,
     }
-  },
+      },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -83,7 +82,7 @@ const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: 'flex',
   alignItems: 'center',
-  border: `2px dashed ${bgInputs}`,
+
   borderRadius: radius,
   padding: gutter,
   borderColor: error ? "red" : fade(bgInputs, 1),
@@ -195,7 +194,7 @@ export default (props: WorkspaceEditProps) => {
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
   const setDescriptionField = (e: any) =>
-    setWorkspaceForm({ ...workspaceForm, description: e.target.value });
+    setWorkspaceForm({ ...workspaceForm, description: e.text });
   const setThumbnail = (uploadedThumbnail: any) => {
     thumbnail = uploadedThumbnail;
     previewFile(thumbnail);
@@ -209,8 +208,11 @@ export default (props: WorkspaceEditProps) => {
   return (
     <>
 
-      <Box p={2}>
+      <Box p={2} mt={4}>
         <Box>
+        <Typography component="label" variant="h6">
+            Workspace name
+          </Typography>
           <TextField
             id="workspaceName"
             placeholder="Name"
@@ -220,20 +222,14 @@ export default (props: WorkspaceEditProps) => {
             defaultValue={props.workspace.name}
           />
         </Box>
-        <Box mt={2}>
-          {/* <TextField
-            id="workspaceDescription"
-            placeholder="Description"
-            multiline={true}
-            rows={5}
-            fullWidth={true}
-            onChange={setDescriptionField}
-            variant="outlined"
-            defaultValue={workspace?.description}
-          /> */}
-          <MDEditor value={workspace?.description} onChange={setDescriptionField} />
 
-        </Box>
+
+
+
+        <Box mt={4} alignItems="stretch">
+        <Typography component="label" variant="h6">
+            Workspace tags
+          </Typography>
         <Autocomplete
           multiple={true}
           freeSolo={true}
@@ -250,14 +246,29 @@ export default (props: WorkspaceEditProps) => {
             <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
           )}
           />
-        <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>
-          <Typography component="h6" className={classes.workspaceThumbnailText}>
-            Workspace thumbnail
+          </Box>
+
+          <Box mt={4}>
+          <Typography component="label" variant="h6">
+            Workspace description
           </Typography>
 
+          <MDEditor
+          defaultValue={workspace?.description}
+          onChange={setDescriptionField}
+          view={{html: false, menu: true, md: true}}
+          renderHTML={(text: string) => <MarkdownViewer text={text}/>}
+          />
+
+        </Box>
+        <Box mt={4} alignItems="stretch" >
+        <Typography component="label" variant="h6">
+            Workspace thumbnail
+          </Typography>
+          <Box alignItems="stretch" className={classes.dropZoneBox}>
           <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
             {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section className={classes.imagePreview} style={{ display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundPosition: "center", backgroundSize: 'cover', flex: 1 }}>
+              <section className={classes.imagePreview} style={{  backgroundImage: !thumbnailError && `url(${thumbnailPreview})` }}>
                 <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
                   <input {...getInputProps()} />
                   <Grid container={true} justify="center" alignItems="center" direction="row">
@@ -302,13 +313,14 @@ export default (props: WorkspaceEditProps) => {
               </section>
             )}
           </Dropzone>
+          </Box>
         </Box>
       </Box>
-      <Box mt={2} p={2} className={classes.actionBox} textAlign="right">
+      <Box mt={4} p={2} className={classes.actionBox} textAlign="right">
 
         <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
           Cancel
-                  </Button>
+        </Button>
         <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspaceButtonClick}>
           {workspace.id ? "Save" : "Create A New Workspace"}
         </Button>

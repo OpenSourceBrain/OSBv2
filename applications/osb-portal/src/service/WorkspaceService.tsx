@@ -80,7 +80,7 @@ class WorkspaceService {
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
-    return { ...ws, resources: ws.resources && ws.resources.map(mapPostUrlResource), timestampCreated: undefined, timestampUpdated: undefined };
+    return { ...ws, resources: ws.resources && ws.resources.map(mapPostUrlResource), timestampCreated: undefined, timestampUpdated: undefined, user: undefined };
   }
 
   async deleteWorkspace(workspaceId: number) {

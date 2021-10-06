@@ -205,7 +205,7 @@ export const EditRepoDialog = ({
     const uri = event.target.value;
 
     handleInput(event, 'uri');
-    RepositoryService.getRepositoryContext(uri, repository.repositoryType).then(
+    RepositoryService.getRepositoryContext(uri, formValues.repositoryType).then(
       (ctxs) => {
 
         setContexts(ctxs);
@@ -303,7 +303,7 @@ export const EditRepoDialog = ({
                 IconComponent={KeyboardArrowDownIcon}
               >
                 {Object.values(RepositoryType)
-                  .filter((t) => t === RepositoryType.Github) // TODO remove when all repo types are available
+                  .filter((t) => t === RepositoryType.Github || t === RepositoryType.Dandi) // TODO remove when all repo types are available
                   .map((repositoryType) => (
                     <MenuItem key={repositoryType} value={repositoryType}>
                       {repositoryType}

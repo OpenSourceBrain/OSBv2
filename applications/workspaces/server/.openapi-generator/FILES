@@ -47,7 +47,5 @@ workspaces/models/workspace_resource_base.py
 workspaces/models/workspace_resource_entity.py
 workspaces/models/workspace_resource_entity_all_of.py
 workspaces/openapi/openapi.yaml
-workspaces/test/test_k8s_controller.py
-workspaces/test/test_rest_controller.py
 workspaces/typing_utils.py
 workspaces/util.py

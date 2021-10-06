@@ -14,7 +14,7 @@ vars.gutter = vars.gutter.replace('px', '') * 1;
 
 export const {
   primaryColor, secondaryColor, font, fontColor, linkColor, teal, purple, bgLightest, paragraph, bgLightestShade,
-  bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius, checkBoxColor, bgLighter, textColor
+  bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius, checkBoxColor, bgLighter, textColor, inputRadius
 } = vars;
 
 const verticalFill = {
@@ -27,16 +27,6 @@ const spacing = [0, gutter / 2, gutter * 2 / 3, gutter, 24, 40, 50, 100, 150, 20
 const theme = {
   darkMode: true,
   spacing,
-  typography: {
-    useNextVariants: true,
-    htmlFontSize: 12,
-    fontSize: 10,
-    fontFamily: font,
-    button: {
-      textTransform: "none",
-      fontSize: "1.0rem"
-    }
-  },
   palette: {
     type: 'dark',
     primary: {
@@ -57,9 +47,9 @@ const theme = {
   typography: {
     fontFamily: font,
     h1: {
-      fontSize: '1.9rem',
+      fontSize: '2rem',
       fontWeight: 400,
-      flex: 1
+      marginBottom: '0.5em'
     },
 
     h2: {
@@ -88,9 +78,12 @@ const theme = {
       fontWeight: 400,
     },
     h6: {
-      fontSize: '1rem',
       lineHeight: 1,
       fontWeight: 400,
+      color: bgInputs,
+      fontSize: '0.8rem',
+      marginBottom: '0.3rem',
+      fontWeight: 'bold',
     },
     subtitle1: {
       fontWeight: 400,
@@ -100,6 +93,12 @@ const theme = {
     subtitle2: {
       fontWeight: 400,
       lineHeight: 1,
+      fontSize: '0.9em',
+      marginBottom: '0.3rem',
+      fontWeight: 'bold',
+      '& .MuiSvgIcon-root': {
+        marginRight: "0.3em"
+      }
     }
   },
   overrides: {
@@ -125,6 +124,10 @@ const theme = {
           },
         
       },
+      labelSmall: {
+        paddingLeft: "0.8em",
+        paddingRight: "0.8em"
+      },
       outlined: {
         backgroundColor: bgDarker,
         border: 'none',
@@ -139,8 +142,14 @@ const theme = {
         border: 'none !important',
         boxShadow: 'none !important',
       },
+    
       root: { color: fontColor }
 
+    },
+    MuiOutlinedInput: {
+      notchedOutline: {
+        borderColor: bgLightest,
+      }
     },
     MuiSelect: {
       root: {
@@ -229,7 +238,6 @@ const theme = {
     },
     MuiAccordionDetails: { root: { padding: 0, margin: 0, minHeight: 'unset!important', flexDirection: 'column' } },
     MuiAccordion: { root: { padding: 0, margin: '0px!important', minHeight: 'unset' } },
-    MuiAutocomplete: { popupIndicator: { marginRight: 0 } },
     MuiCardContent: {
       root: {
         '&:last-child': {
@@ -285,10 +293,10 @@ const theme = {
     },
     MuiAutocomplete: {
       root: {
-        border: `2px solid #4a4a4a`,
+        border: `1px solid ${bgLightest}`,
         paddingTop: '10px',
         paddingBottom: '10px',
-        borderRadius: '2px',
+        borderRadius: inputRadius,
         '& div:first-child': {
             paddingBottom: '0px',
         },
@@ -306,6 +314,7 @@ const theme = {
           borderBottom: 'none',
         },
       },
+      popupIndicator: { marginRight: 0 }
     },
   },
 }

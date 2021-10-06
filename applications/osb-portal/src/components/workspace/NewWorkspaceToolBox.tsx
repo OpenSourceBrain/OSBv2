@@ -7,7 +7,6 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import Box from "@material-ui/core/Box";
 
 
-import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
 import { ResourceType } from "../../types/global";

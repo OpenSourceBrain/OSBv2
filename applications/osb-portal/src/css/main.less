@@ -106,3 +106,41 @@
   }
 
 }
+
+// Override Markdown editor style
+div.rc-md-editor {
+  .scrollbarStyle;
+  color: @paragraph;
+  background-color: @bgDarker;
+  border: 1px solid @bgLightest;
+  border-radius: @inputRadius;
+  
+
+  .rc-md-navigation .button-wrap .button:hover {
+    color: white;
+  }
+  .editor-container>.section>.section-container {
+    padding-right: 0;
+  }
+  .rc-md-navigation {
+    color: @paragraph;
+    background-color: @bgDarker;
+    border-bottom: 1px solid @bgLightest;
+  }
+  .custom-html-style{
+    height: 15em;
+  }
+  .editor-container .sec-md .input {
+    color: @paragraph;
+    height: 15em;
+    background-color: @bgDarker;
+    resize: vertical;
+    .scrollbarStyle;
+  }
+
+  .drop-wrap {
+    background-color: @bgRegular;
+    border-color: @bgLightest;
+    color: white;
+  }
+}
