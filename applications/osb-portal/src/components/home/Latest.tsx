@@ -21,7 +21,7 @@ export const Latest = () => {
 
   return (
     <Box display="flex" flexDirection="column" className="verticalFill">
-      <Typography component="h2" variant="h6" gutterBottom={true}>
+      <Typography component="h2" variant="h5" gutterBottom={true}>
         Disclaimer
      </Typography>
       <Box mt={3} flexGrow="1"  >

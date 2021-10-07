@@ -63,17 +63,17 @@ const theme = {
       borderBottom: `3px solid ${bgInputs}`
     },
     h3: {
-      fontSize: '1rem',
-      fontWeight: 700,
+      fontSize: '1.3rem',
+      fontWeight: 400,
       flex: 1,
     },
     h4: {
-      fontSize: '1.3rem',
+      fontSize: '1.2rem',
       fontWeight: 400,
       flex: 1
     },
     h5: {
-      fontSize: '1.2rem',
+      fontSize: '1rem',
       flex: 1,
       fontWeight: 400,
     },

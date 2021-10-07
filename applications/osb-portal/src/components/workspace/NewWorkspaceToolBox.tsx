@@ -60,7 +60,7 @@ export const WorkspaceToolBox = (props: any) => {
       <Box>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
           <Grid item={true} sm={12} md={4} lg={3}>
-            <Typography component="h2" variant="h6" className={classes.toolBoxHeading}>
+            <Typography component="h2" variant="h5" className={classes.toolBoxHeading}>
               <Box component="span" className={classes.cardText}>Create a</Box>
               <Box component="span" className={classes.cardText}>new Workspace</Box>
             </Typography>

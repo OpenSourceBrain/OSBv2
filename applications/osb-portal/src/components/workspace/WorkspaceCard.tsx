@@ -140,7 +140,7 @@ export const WorkspaceCard = (props: Props) => {
             color="inherit"
             className={classes.link}
           >
-            <Typography component="h2" variant="h5" className={classes.ellipses}>
+            <Typography component="h2" variant="h4" className={classes.ellipses}>
               {workspace.name}
             </Typography>
             {workspace.tags.length > 0 && <TagTooltip title={workspace.tags.map(tagObject => {
