@@ -197,7 +197,7 @@ export const RepositoryPage = (props: any) => {
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
-  const [refreshRepository, setRefreshRepository] = React.useState(false);
+
 
   const classes = useStyles();
 
@@ -205,7 +205,7 @@ export const RepositoryPage = (props: any) => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
       setRepository(repo);
     });
-  }, [refreshRepository]);
+  }, []);
 
   const openDialog = () => {
     setShowWorkspaceEditor(!showWorkspaceEditor);
@@ -308,7 +308,7 @@ export const RepositoryPage = (props: any) => {
                 <AddIcon />
                 Create new workspace
               </Button>
-              <RepositoryActionsMenu user={user} repository={repository} onAction={() => setRefreshRepository(!refreshRepository)} />
+              <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({...repository, ...r})} />
             </Box>
           }
         </Box>

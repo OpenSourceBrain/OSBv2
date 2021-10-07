@@ -13,7 +13,7 @@ import { OSBRepository } from "../../apiclient/workspaces";
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
   user?: UserInfo;
-  onAction: () => void;
+  onAction: (r: OSBRepository) => void;
 }
 
 export default (props: RepositoryActionsMenuProps) => {
@@ -38,8 +38,8 @@ export default (props: RepositoryActionsMenuProps) => {
     setRepositoryEditorOpen(!repositoryEditorOpen);
   }
 
-  const handleOnSubmit = () => {
-    props.onAction();
+  const handleOnSubmit = (r: OSBRepository) => {
+    props.onAction(r);
   }
 
   return (

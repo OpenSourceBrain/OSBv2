@@ -164,7 +164,7 @@ export const EditRepoDialog = ({
   tags: tagOptions
 }: {
   dialogOpen: boolean;
-  onSubmit: () => any;
+  onSubmit: (r: OSBRepository) => any;
   setDialogOpen: (open: boolean) => any;
   repository?: OSBRepository;
   title: string;
@@ -241,7 +241,7 @@ export const EditRepoDialog = ({
       setLoading(true);
       if (repository === RepositoryService.EMPTY_REPOSITORY) {
         RepositoryService.addRepository(formValues).then(
-          () => {
+          (r) => {
             setLoading(false);
             handleClose();
             setFormValues({
@@ -254,10 +254,14 @@ export const EditRepoDialog = ({
               contentTypesList: '',
               name: '',
             });
-            onSubmit();
+            const obj: any = r;
+            // Computed fields are not updated: remove so that the repo can be merged by the caller
+            Object.keys(r).forEach(key => obj[key] === undefined ? delete obj[key] : {});
+            onSubmit(r);
           },
           (e) => {
             setLoading(false);
+            e.json().then((m: any) => console.error(m))
             throw new Error("Error submitting the repository");
           }
         );
@@ -268,14 +272,16 @@ export const EditRepoDialog = ({
           user: undefined
         };
         console.log('sending this repository', putRequestRepository);
-        RepositoryService.updateRepository(putRequestRepository).then(() => {
+        RepositoryService.updateRepository(putRequestRepository).then((r: OSBRepository) => {
           setLoading(false);
           setDialogOpen(false);
-          onSubmit();
+          const obj: any = r;
+          // Computed fields are not updated: remove so that the repo can be merged by the caller
+          Object.keys(r).forEach(key => obj[key] === undefined ? delete obj[key] : {});
+          onSubmit(r);
         }, (e) => {
-          console.error(e)
           setLoading(false);
-          throw new Error("Error updating the repository");
+          e.json().then((m: any) => console.error(m.description, m.trace))
         }).catch((e) => {
           console.error(e)
           setLoading(false);

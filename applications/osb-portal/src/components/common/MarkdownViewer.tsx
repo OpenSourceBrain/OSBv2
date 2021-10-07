@@ -51,6 +51,14 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor: 'transparent',
         },
       },
+      "& blockquote": {
+        padding: "0 1em",
+        borderLeft: `0.25em solid ${bgLightestShade}`,
+        marginLeft: 0,
+        "& p": {
+          padding: 0
+        }
+      },
       "& h1": {
         marginTop: 0,
         fontWeight: 'normal',

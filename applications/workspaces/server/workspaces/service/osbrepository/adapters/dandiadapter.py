@@ -46,7 +46,7 @@ class DandiAdapter:
         return uri, self.get_json(uri)
 
     def getFiles(self, tree, context, path_prefix=""):
-        logger.info(f"getFiles for {path_prefix}")
+        logger.debug(f"getFiles for {path_prefix}")
         path, contents = self.getFolderContents(context, path_prefix)
         for key2, dandi_file in contents["files"].items():
             # we save the version in the url query param for later usage in the download task

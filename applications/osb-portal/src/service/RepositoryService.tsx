@@ -86,8 +86,6 @@ class RepositoryService {
     delete repository.timestampUpdated;
     delete repository.contexts;
     delete repository.contextResources;
-    delete repository.contentTypesList;
-    delete repository.contentTypes;
     delete repository.autoSync;
     const requestParameters: OsbrepositoryIdPutRequest = { id: repository.id, oSBRepository: repository };
     return this.workspacesApi.osbrepositoryIdPut(requestParameters);
