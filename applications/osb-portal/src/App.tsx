@@ -6,7 +6,7 @@ import SentryErrorBoundary from "./components/sentry/SentryErrorBoundary";
 import HomePage from "./pages/HomePage";
 import theme from "./theme";
 
-import { Header, ErrorDialog, WorkspaceOpenPage, ProtectedRoute, RepositoriesPage, RepositoryPage, WorkspacePage } from "./components/index";
+import { Header, ErrorDialog, WorkspaceOpenPage, ProtectedRoute, RepositoriesPage, RepositoryPage, WorkspacePage, UserPage } from "./components/index";
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -50,6 +50,9 @@ export const App = (props: any) => {
                 </Route>
                 <Route exact={true} path="/repositories/:repositoryId">
                   <RepositoryPage />
+                </Route>
+                <Route exact={true} path="/user/:userId">
+                  <UserPage />
                 </Route>
               </Switch>
 

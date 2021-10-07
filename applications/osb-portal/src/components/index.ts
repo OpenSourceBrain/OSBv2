@@ -25,6 +25,7 @@ import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 import { AnyAction, Dispatch } from 'redux';
 
 import { RepositoryPage as repositoryPage } from '../pages/RepositoryPage'
+import { UserPage as userPage } from '../pages/UserPage';
 import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
 import repositories from '../components/repository/Repositories';
 import { retrieveAllTags, loadTags } from '../store/actions/tags';
@@ -106,6 +107,7 @@ export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericD
 export const WorkspaceOpenPage = connect(null, dispatchWorkspaceProps)(workspaceOpenPage);
 export const WorkspacePage = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage)
+export const UserPage = connect(mapUserStateToProps)(userPage)
 export const RepositoriesPage = connect(mapUserAndTagsToProps, dispatchTagsProps)(repositoriesPage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
 export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)
