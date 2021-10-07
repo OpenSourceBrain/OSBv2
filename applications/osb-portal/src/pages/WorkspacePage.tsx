@@ -159,7 +159,7 @@ export const WorkspacePage = (props: any) => {
   }, [refresh]);
 
   const handleCloseEditWorkspace = () => {
-    
+
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
       setEditWorkspaceOpen(false);
