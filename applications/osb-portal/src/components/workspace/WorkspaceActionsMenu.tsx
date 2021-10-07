@@ -61,7 +61,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   }
 
   const handleOpenWorkspace = () => {
-    window.location.href = `/workspace/${props.workspace.id}`;
+    window.location.href = `/workspace/open/${props.workspace.id}`;
   }
 
   const handleCloseEditWorkspace = () => {
