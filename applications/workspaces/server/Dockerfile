@@ -29,6 +29,7 @@ ENV FLASK_RUN_PORT=8080
 ENV PORT=$FLASK_RUN_PORT
 ENV FLASK_APP=workspaces.__main__
 ENV FLASK_LOG_LEVEL=info
+ENV WORKERS=10
 
 RUN pip3 install -e .
 ENTRYPOINT gunicorn --workers=$WORKERS --bind=0.0.0.0:$PORT $FLASK_APP:app

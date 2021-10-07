@@ -74,7 +74,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   * @param applicatonType OSBApplication key
   */
   const handleOpenWorkspaceWithApp = (applicatonType: string) => {
-    window.location.href = `/workspace/${props.workspace.id}/${applicatonType}`;
+    window.location.href = `/workspace/open/${props.workspace.id}/${applicatonType}`;
   }
 
   return (
