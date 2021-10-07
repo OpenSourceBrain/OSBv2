@@ -298,7 +298,7 @@ export const EditRepoDialog = ({
       className={classes.root}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      fullWidth={true} 
+      fullWidth={true}
       maxWidth={"lg"}
     >
       <DialogTitle id="alert-dialog-title">
