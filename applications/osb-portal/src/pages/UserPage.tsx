@@ -11,7 +11,7 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import {BitBucketIcon} from "../components/icons";
-import { bgDarkest, linkColor, paragraph } from "../theme";
+import { bgDarkest, bgRegular, linkColor, paragraph, textColor } from "../theme";
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
@@ -33,10 +33,48 @@ import Avatar from "@material-ui/core/Avatar";
 const useStyles = makeStyles((theme) => ({
     profileInformation: {
         paddingTop: '10px',
+        '& .MuiSvgIcon-root': {
+            marginRight: '5px',
+        },
         '& .MuiAvatar-root': {
-            width: '120px',
-            height: '120px',
+            width: '150px',
+            height: '150px',
             marginBottom: theme.spacing(2),
+        },
+        '& .name': {
+            color: textColor,
+            flex: 'none',
+        },
+        '& .username': {
+            marginBottom: '1.5rem',
+        },
+        '& .MuiButton-root': {
+            width: '100%',
+            marginBottom: '1.5rem',
+        },
+        '& .links': {
+            marginTop: '2rem',
+            paddingBottom: '2.5rem',
+            borderBottom: `2px solid ${bgRegular}`,
+            '& .MuiTypography-root': {
+                display: 'flex',
+            },
+        },
+        '& .groups': {
+            paddingTop: '1rem',
+            paddingBottom: '1rem',
+            borderBottom: `2px solid ${bgRegular}`,
+            marginBottom: '1rem',
+            '& .MuiTypography-root': {
+                color: textColor,
+            },
+            '& .MuiChip-root': {
+                color: paragraph,
+                border: `1px solid ${paragraph}`
+            },
+            '& .first-chip': {
+                marginLeft: 0,
+            },
         },
     },
     repositoriesAndWorkspaces: {
@@ -120,7 +158,7 @@ export const UserPage = (props: any) => {
         group1: "OpenWorm",
         group2: "SilverLab",
         profileImageUrl: '',
-
+        memberSince: 'March 21st 2011',
     }
 
     return (
@@ -131,29 +169,30 @@ export const UserPage = (props: any) => {
             <Box bgcolor={bgDarkest} className="verticalFill" width="100vw" display="flex" justifyContent="center">
                 <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
 
-                    <Box className={classes.profileInformation} width="25%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
+                    <Box className={classes.profileInformation} width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
                         <Avatar alt="user-profile-avatar" src={exampleData.profileImageUrl}>
                             {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
                         </Avatar>
-                        <Typography component="h1" variant="body1">{exampleData.firstName + " " + exampleData.lastName}</Typography>
-                        <Typography component="p" variant="body2">{exampleData.username}</Typography>
-                        {!props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
+                        <Typography className="name" component="span" variant="h3">{exampleData.firstName + " " + exampleData.lastName}</Typography>
+                        <Typography className="username" component="p" variant="body2">{exampleData.username}</Typography>
+                        {props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
 
-                        <Box><AccountTreeOutlinedIcon /> {exampleData.numRepositories} repositories . <FolderOpenIcon /> {exampleData.numWorkspaces} workspaces</Box>
+                        <Box display="flex" flexDirection="row"><AccountTreeOutlinedIcon fontSize="small" /> {exampleData.numRepositories} repositories . <FolderOpenIcon fontSize="small"/>{exampleData.numWorkspaces} workspaces</Box>
 
-                        <Box display="flex" flexDirection="column">
-                            <Typography gutterBottom={true}><LinkIcon /><Link href={exampleData.webisteLink}>{exampleData.webisteLink}</Link></Typography>
-                            <Typography gutterBottom={true}><LinkIcon /><Link href={exampleData.profileLink}>{exampleData.profileLink}</Link></Typography>
-                            <Typography gutterBottom={true}><GitHubIcon /><Link href={exampleData.githubLink}>{exampleData.githubLink}</Link></Typography>
-                            <Typography gutterBottom={true}><BitBucketIcon /><Link href={exampleData.bitbucketLink}>{exampleData.bitbucketLink}</Link></Typography>
+                        <Box className="links" display="flex" flexDirection="column" width="100%">
+                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={exampleData.webisteLink}>{exampleData.webisteLink}</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={exampleData.profileLink}>INCF Profile</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small"/><Link href={exampleData.githubLink}>Github Profile</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={exampleData.bitbucketLink}>Bitbucket profile</Link></Typography>
                         </Box>
 
-                        <Box width="100%">
-                            <Chip label={exampleData.group1} variant="outlined"/>
+                        <Box className="groups" width="100%">
+                            <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
+                            <Chip className="first-chip" color="secondary" label={exampleData.group1} variant="outlined"/>
                             <Chip label={exampleData.group2} variant="outlined"/>
                         </Box>
 
-                        <Typography component="span">Member since {Date.now().toString()}</Typography>
+                        <Typography component="p" variant="body2">Member since {exampleData.memberSince}</Typography>
                     </Box>
 
                     <Box className={classes.repositoriesAndWorkspaces} width="60%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
