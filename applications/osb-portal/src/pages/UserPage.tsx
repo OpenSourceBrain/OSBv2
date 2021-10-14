@@ -26,10 +26,21 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ShowMoreText from "react-show-more-text";
 import MarkdownViewer from "../components/common/MarkdownViewer";
+import Avatar from "@material-ui/core/Avatar";
 
 
 
 const useStyles = makeStyles((theme) => ({
+    profileInformation: {
+        paddingTop: '10px',
+        '& .MuiAvatar-root': {
+            width: '120px',
+            height: '120px',
+            marginBottom: theme.spacing(2),
+        },
+    },
+    repositoriesAndWorkspaces: {
+    },
     showMoreText: {
         color: paragraph,
         '& a': {
@@ -97,7 +108,8 @@ export const UserPage = (props: any) => {
     }, [])
 
     const exampleData = {
-        name: 'Padraig Gleeson',
+        firstName: 'Padraig',
+        lastName: 'Gleeson',
         username: 'pglesson',
         numRepositories: 16,
         numWorkspaces: 4,
@@ -107,6 +119,7 @@ export const UserPage = (props: any) => {
         profileLink: 'https://github.com/',
         group1: "OpenWorm",
         group2: "SilverLab",
+        profileImageUrl: '',
 
     }
 
@@ -118,10 +131,13 @@ export const UserPage = (props: any) => {
             <Box bgcolor={bgDarkest} className="verticalFill" width="100vw" display="flex" justifyContent="center">
                 <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
 
-                    <Box width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%">
-                        <Typography component="h1" variant="body1">{exampleData.name}</Typography>
+                    <Box className={classes.profileInformation} width="25%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
+                        <Avatar alt="user-profile-avatar" src={exampleData.profileImageUrl}>
+                            {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
+                        </Avatar>
+                        <Typography component="h1" variant="body1">{exampleData.firstName + " " + exampleData.lastName}</Typography>
                         <Typography component="p" variant="body2">{exampleData.username}</Typography>
-                        {props.user && <Button variant="outlined" color="primary">Edit profile</Button>}
+                        {!props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
 
                         <Box><AccountTreeOutlinedIcon /> {exampleData.numRepositories} repositories . <FolderOpenIcon /> {exampleData.numWorkspaces} workspaces</Box>
 
@@ -137,10 +153,10 @@ export const UserPage = (props: any) => {
                             <Chip label={exampleData.group2} variant="outlined"/>
                         </Box>
 
-                        Member since {Date.now().toString()}
+                        <Typography component="span">Member since {Date.now().toString()}</Typography>
                     </Box>
 
-                    <Box width="60%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
+                    <Box className={classes.repositoriesAndWorkspaces} width="60%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
                         <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
                             <Tab label="WORKSPACES" {...a11yProps(0)} />
                             <Tab label="REPOSITORIES" {...a11yProps(1)} />
