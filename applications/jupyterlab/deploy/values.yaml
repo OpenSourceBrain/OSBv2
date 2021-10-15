@@ -9,6 +9,8 @@ harness:
   dependencies:
     build:
       - cloudharness-base
+    hard:
+      - jupyterhub
   jupyterhub:
     args: ["--debug", "--NotebookApp.default_url=/lab", "--NotebookApp.notebook_dir=/opt/workspace"]
     applicationHook: "osb_jupyter.change_pod_manifest"
