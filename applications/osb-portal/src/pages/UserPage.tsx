@@ -1,33 +1,34 @@
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles, styled } from "@material-ui/core/styles";
-import Badge, { BadgeProps } from "@material-ui/core/Badge";
 import Box from "@material-ui/core/Box";
 import Typography from '@material-ui/core/Typography';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import MainMenu from "../components/menu/MainMenu";
+import Chip from "@material-ui/core/Chip";
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
+import Paper from "@material-ui/core/Paper";
+import Badge, { BadgeProps } from "@material-ui/core/Badge";
 import LinkIcon from "@material-ui/icons/Link";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
-import {BitBucketIcon} from "../components/icons";
-import { bgDarkest, bgRegular, linkColor, paragraph, textColor } from "../theme";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
+import { BitBucketIcon } from "../components/icons";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ShowMoreText from "react-show-more-text";
+
+import MarkdownViewer from "../components/common/MarkdownViewer";
+import MainMenu from "../components/menu/MainMenu";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";
 import WorkspaceCard from "../components/workspace/WorkspaceCard";
-import Grid from "@material-ui/core/Grid";
 import RepositoryService from "../service/RepositoryService";
-import Paper from "@material-ui/core/Paper";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ShowMoreText from "react-show-more-text";
-import MarkdownViewer from "../components/common/MarkdownViewer";
-import Avatar from "@material-ui/core/Avatar";
+import { bgDarkest, bgLightestShade, bgRegular, linkColor, paragraph, textColor } from "../theme";
 
 
 
@@ -80,6 +81,11 @@ const useStyles = makeStyles((theme) => ({
     },
     repositoriesAndWorkspaces: {
         paddingTop: '50px',
+        '& .repo-paper': {
+            backgroundColor: bgLightestShade,
+            padding: theme.spacing(3),
+            marginBottom: theme.spacing(2),
+        },
     },
     showMoreText: {
         color: paragraph,
@@ -206,7 +212,7 @@ export const UserPage = (props: any) => {
                         <Typography component="p" variant="body2">Member since {exampleData.memberSince}</Typography>
                     </Box>
 
-                    <Box className={classes.repositoriesAndWorkspaces} width="60%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
+                    <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
                         <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
                             <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
                             <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
@@ -217,7 +223,7 @@ export const UserPage = (props: any) => {
                                 <Grid container={true} spacing={1}>
                                     {workspaces.map(ws => {
                                         return (
-                                            <Grid item={true} key={ws.id} xs={6} sm={4} md={6} lg={4} xl={3} >
+                                            <Grid item={true} key={ws.id} xs={6} sm={4} md={6} lg={4} xl={3}>
                                                 <WorkspaceCard workspace={ws} />
                                             </Grid>
                                         );
@@ -228,7 +234,7 @@ export const UserPage = (props: any) => {
                             <TabPanel value={tabValue} index={1}>
                                 {repositories.map(repo => {
                                     return (
-                                        <Paper key={repo.id}>
+                                        <Paper className="repo-paper" key={repo.id} elevation={0}>
                                             <Typography component="span" gutterBottom={true}>{repo.name}</Typography>
                                             {repo.description && <Typography component="span" gutterBottom={true}>{repo.description}</Typography>}
                                             {repo.summary &&
