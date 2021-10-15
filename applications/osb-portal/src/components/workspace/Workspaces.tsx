@@ -1,7 +1,7 @@
 import * as React from "react";
 
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, styled } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -9,11 +9,11 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Chip from "@material-ui/core/Chip";
 
 import { WorkspaceCard } from "..";
 import { Workspace } from "../../types/workspace";
 import workspaceService from '../../service/WorkspaceService';
-import NavigationFullscreen from "material-ui/svg-icons/navigation/fullscreen";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,14 +26,6 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  },
-  tab: {
-    minWidth: 'fit-content !important',
-    borderRight: '1px solid white',
-    paddingLeft: theme.spacing(1),
-  },
-  lastTab: {
-    borderRight: 'none',
   },
   firstTab: {
     paddingLeft: 0,
@@ -144,11 +136,11 @@ export const Workspaces = ({ user, counter }: any) => {
         onChange={handleChange}
       >
         {user ?
-          <Tab id="your-all-workspaces-tab" className={`${classes.tab} ${classes.firstTab}`} value={WorkspaceSelection.USER} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
+          <Tab className={user ? classes.firstTab : ''} id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ? <Typography component="p" variant="body1">All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total}/>}</Typography> : <Typography component="p" variant="body1">Your workspaces<Chip size="small" color="primary" label={state.total}/></Typography>} />
           : null
         }
-        <Tab className={user ? classes.tab : `${classes.firstTab} ${classes.tab}`} value={WorkspaceSelection.FEATURED} label="Featured workspaces" />
-        <Tab className={`${classes.tab} ${classes.lastTab}`} value={WorkspaceSelection.PUBLIC} label="Public workspaces" />
+        <Tab className={user ? '' : classes.firstTab} value={WorkspaceSelection.FEATURED} label={<Typography component="p" variant="body1">Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total}/>}</Typography>} />
+        <Tab value={WorkspaceSelection.PUBLIC} label={<Typography component="p" variant="body1">Featured workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total}/>}</Typography>} />
       </Tabs>
 
       {
@@ -168,7 +160,7 @@ export const Workspaces = ({ user, counter }: any) => {
       }
 
       <Box className={`verticalFit card-container ${classes.cardContainer}`} >
-        <Box pt={1} pb={1} className="scrollbar" id="workspace-box">
+        <Box pb={1} className="scrollbar" id="workspace-box">
 
           <InfiniteScroll
             dataLength={workspaceList.length}

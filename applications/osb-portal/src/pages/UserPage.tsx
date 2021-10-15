@@ -11,7 +11,6 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
-import Badge, { BadgeProps } from "@material-ui/core/Badge";
 import LinkIcon from "@material-ui/icons/Link";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
@@ -29,10 +28,19 @@ import workspaceService from "../service/WorkspaceService";
 import WorkspaceCard from "../components/workspace/WorkspaceCard";
 import RepositoryService from "../service/RepositoryService";
 import { bgDarkest, bgLightestShade, bgRegular, linkColor, paragraph, textColor } from "../theme";
+import Divider from "@material-ui/core/Divider";
 
 
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        '& .MuiDivider-root': {
+            position: 'fixed',
+            top: '145px',
+            width: '100%',
+            height: '2px',
+        },
+    },
     profileInformation: {
         paddingTop: '10px',
         '& .MuiSvgIcon-root': {
@@ -86,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(3),
             marginBottom: theme.spacing(2),
         },
+        '& .MuiTabs-root': {
+            marginBottom: '15px',
+        },
     },
     showMoreText: {
         color: paragraph,
@@ -119,14 +130,6 @@ function TabPanel(props: TabPanelProps) {
         </div>
     )
 }
-
-const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
-    '& .MuiBadge-badge': {
-      right: '-15px',
-      top: '9px',
-      padding: '0 4px',
-    },
-}));
 
 
 function a11yProps(index: number) {
@@ -183,7 +186,8 @@ export const UserPage = (props: any) => {
 
             <MainMenu />
 
-            <Box bgcolor={bgDarkest} className="verticalFill" width="100vw" display="flex" justifyContent="center">
+            <Box bgcolor={bgDarkest} className={`${classes.root} verticalFill`} width="100vw" display="flex" justifyContent="center">
+                <Divider light={true} variant="fullWidth"/>
                 <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
 
                     <Box className={classes.profileInformation} width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
@@ -213,9 +217,9 @@ export const UserPage = (props: any) => {
                     </Box>
 
                     <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
-                        <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
-                            <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
-                            <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
+                        <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs" variant="standard">
+                            <Tab label={<Typography component="p" variant="body1">WORKSPACES<Chip size="small" color="primary" label={exampleData.numWorkspaces}/></Typography>} {...a11yProps(0)} />
+                            <Tab label={<Typography component="p" variant="body1">REPOSITORIES<Chip size="small" color="primary" label={exampleData.numRepositories}/></Typography>} {...a11yProps(1)} />
                         </Tabs>
 
                         <Box className="scrollbar" height="100%">
@@ -223,7 +227,7 @@ export const UserPage = (props: any) => {
                                 <Grid container={true} spacing={1}>
                                     {workspaces.map(ws => {
                                         return (
-                                            <Grid item={true} key={ws.id} xs={6} sm={4} md={6} lg={4} xl={3}>
+                                            <Grid item={true} key={ws.id} xs={12} sm={6} md={6} lg={4} xl={4}>
                                                 <WorkspaceCard workspace={ws} />
                                             </Grid>
                                         );
