@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, styled } from "@material-ui/core/styles";
+import Badge, { BadgeProps } from "@material-ui/core/Badge";
 import Box from "@material-ui/core/Box";
 import Typography from '@material-ui/core/Typography';
 import Tabs from "@material-ui/core/Tabs";
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     repositoriesAndWorkspaces: {
+        paddingTop: '50px',
     },
     showMoreText: {
         color: paragraph,
@@ -111,6 +113,15 @@ function TabPanel(props: TabPanelProps) {
         </div>
     )
 }
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      right: '-15px',
+      top: '9px',
+      padding: '0 4px',
+    },
+}));
+
 
 function a11yProps(index: number) {
     return {
@@ -197,8 +208,8 @@ export const UserPage = (props: any) => {
 
                     <Box className={classes.repositoriesAndWorkspaces} width="60%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
                         <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
-                            <Tab label="WORKSPACES" {...a11yProps(0)} />
-                            <Tab label="REPOSITORIES" {...a11yProps(1)} />
+                            <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
+                            <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
                         </Tabs>
 
                         <Box className="scrollbar" height="100%">
