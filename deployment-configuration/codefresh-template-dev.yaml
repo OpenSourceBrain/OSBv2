@@ -9,7 +9,7 @@ steps:
       - harness-deployment cloud-harness . -m build -t ${{CF_BUILD_ID}} -d ${{DOMAIN}} -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e dev -i osb-portal
   deployment:
     stage: deploy
-    image: codefresh/cfstep-helm:3.4.1
+    image: codefresh/cfstep-helm:3.7.0
     title: Installing chart
     environment:
       - CHART_REF=./deployment/helm
