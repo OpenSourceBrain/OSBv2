@@ -33,224 +33,224 @@ import { bgDarkest, bgLightestShade, bgRegular, linkColor, paragraph, textColor 
 
 
 const useStyles = makeStyles((theme) => ({
-    profileInformation: {
-        paddingTop: '10px',
-        '& .MuiSvgIcon-root': {
-            marginRight: '5px',
-        },
-        '& .MuiAvatar-root': {
-            width: '150px',
-            height: '150px',
-            marginBottom: theme.spacing(2),
-        },
-        '& .name': {
-            color: textColor,
-            flex: 'none',
-        },
-        '& .username': {
-            marginBottom: '1.5rem',
-        },
-        '& .MuiButton-root': {
-            width: '100%',
-            marginBottom: '1.5rem',
-        },
-        '& .links': {
-            marginTop: '2rem',
-            paddingBottom: '2.5rem',
-            borderBottom: `2px solid ${bgRegular}`,
-            '& .MuiTypography-root': {
-                display: 'flex',
-            },
-        },
-        '& .groups': {
-            paddingTop: '1rem',
-            paddingBottom: '1rem',
-            borderBottom: `2px solid ${bgRegular}`,
-            marginBottom: '1rem',
-            '& .MuiTypography-root': {
-                color: textColor,
-            },
-            '& .MuiChip-root': {
-                color: paragraph,
-                border: `1px solid ${paragraph}`
-            },
-            '& .first-chip': {
-                marginLeft: 0,
-            },
-        },
+  profileInformation: {
+    paddingTop: '10px',
+    '& .MuiSvgIcon-root': {
+      marginRight: '5px',
     },
-    repositoriesAndWorkspaces: {
-        paddingTop: '50px',
-        '& .repo-paper': {
-            backgroundColor: bgLightestShade,
-            padding: theme.spacing(3),
-            marginBottom: theme.spacing(2),
-        },
+    '& .MuiAvatar-root': {
+      width: '150px',
+      height: '150px',
+      marginBottom: theme.spacing(2),
     },
-    showMoreText: {
+    '& .name': {
+      color: textColor,
+      flex: 'none',
+    },
+    '& .username': {
+      marginBottom: '1.5rem',
+    },
+    '& .MuiButton-root': {
+      width: '100%',
+      marginBottom: '1.5rem',
+    },
+    '& .links': {
+      marginTop: '2rem',
+      paddingBottom: '2.5rem',
+      borderBottom: `2px solid ${bgRegular}`,
+      '& .MuiTypography-root': {
+        display: 'flex',
+      },
+    },
+    '& .groups': {
+      paddingTop: '1rem',
+      paddingBottom: '1rem',
+      borderBottom: `2px solid ${bgRegular}`,
+      marginBottom: '1rem',
+      '& .MuiTypography-root': {
+        color: textColor,
+      },
+      '& .MuiChip-root': {
         color: paragraph,
-        '& a': {
-          color: linkColor,
-          display: 'flex',
-          textDecoration: 'none',
-          '& .MuiSvgIcon-root': {
-            color: `${linkColor} !important`,
-          },
-        },
+        border: `1px solid ${paragraph}`
+      },
+      '& .first-chip': {
+        marginLeft: 0,
+      },
     },
+  },
+  repositoriesAndWorkspaces: {
+    paddingTop: '50px',
+    '& .repo-paper': {
+      backgroundColor: bgLightestShade,
+      padding: theme.spacing(3),
+      marginBottom: theme.spacing(2),
+    },
+  },
+  showMoreText: {
+    color: paragraph,
+    '& a': {
+      color: linkColor,
+      display: 'flex',
+      textDecoration: 'none',
+      '& .MuiSvgIcon-root': {
+        color: `${linkColor} !important`,
+      },
+    },
+  },
 }));
 
 interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
+  children?: React.ReactNode;
+  index: number;
+  value: number;
 }
 
 function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props;
 
-    return (
-        <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
-            {value === index &&
-                <Box>
-                    <Typography>{children}</Typography>
-                </Box>
-            }
-        </div>
-    )
+  return (
+    <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
+      {value === index &&
+        <Box>
+          <Typography>{children}</Typography>
+        </Box>
+      }
+    </div>
+  )
 }
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
-    '& .MuiBadge-badge': {
-      right: '-15px',
-      top: '9px',
-      padding: '0 4px',
-    },
+  '& .MuiBadge-badge': {
+    right: '-15px',
+    top: '9px',
+    padding: '0 4px',
+  },
 }));
 
 
 function a11yProps(index: number) {
-    return {
-        id: `tab-${index}`,
-        'aria-controls': `tabpanel-${index}`,
-    };
+  return {
+    id: `tab-${index}`,
+    'aria-controls': `tabpanel-${index}`,
+  };
 }
 
 export const UserPage = (props: any) => {
-    const [tabValue, setTabValue] = React.useState(0);
-    const [expanded, setExpanded] = React.useState(false);
-    const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
-    const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
-    const classes = useStyles();
-    const history = useHistory();
-    const { userId } = useParams<{ userId: string }>();
+  const [tabValue, setTabValue] = React.useState(0);
+  const [expanded, setExpanded] = React.useState(false);
+  const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
+  const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
+  const classes = useStyles();
+  const history = useHistory();
+  const { userId } = useParams<{ userId: string }>();
 
-    const handleTabChange = (event: React.SyntheticEvent, newTabValue: number) => {
-        setTabValue(newTabValue);
-    }
+  const handleTabChange = (event: React.SyntheticEvent, newTabValue: number) => {
+    setTabValue(newTabValue);
+  }
 
-    const handleSeeMore = (exp: boolean) => {
-        setExpanded(!expanded);
-    }
+  const handleSeeMore = (exp: boolean) => {
+    setExpanded(!expanded);
+  }
 
-    React.useEffect(() => {
-        workspaceService.fetchWorkspaces().then((workspacesRetrieved) => {
-            setWorkspaces(workspacesRetrieved.items);
-        });
-        RepositoryService.getRepositories(1).then((repositoriesRetrieved) => {
-            setRepositories(repositoriesRetrieved);
-        })
-    }, [])
+  React.useEffect(() => {
+    workspaceService.fetchWorkspaces().then((workspacesRetrieved) => {
+      setWorkspaces(workspacesRetrieved.items);
+    });
+    RepositoryService.getRepositories(1).then((repositoriesRetrieved) => {
+      setRepositories(repositoriesRetrieved);
+    })
+  }, [])
 
-    const exampleData = {
-        firstName: 'Padraig',
-        lastName: 'Gleeson',
-        username: 'pglesson',
-        numRepositories: 16,
-        numWorkspaces: 4,
-        webisteLink: 'http://www.neuroconstruct.org',
-        githubLink: 'https://github.com/',
-        bitbucketLink: 'https://github.com/',
-        profileLink: 'https://github.com/',
-        group1: "OpenWorm",
-        group2: "SilverLab",
-        profileImageUrl: '',
-        memberSince: 'March 21st 2011',
-    }
+  const exampleData = {
+    firstName: 'Padraig',
+    lastName: 'Gleeson',
+    username: 'pglesson',
+    numRepositories: 16,
+    numWorkspaces: 4,
+    websiteLink: 'http://www.neuroconstruct.org',
+    githubLink: 'https://github.com/',
+    bitbucketLink: 'https://github.com/',
+    profileLink: 'https://github.com/',
+    group1: "OpenWorm",
+    group2: "SilverLab",
+    profileImageUrl: '',
+    memberSince: 'March 21st 2011',
+  }
 
-    return (
-        <Box className="verticalFit">
+  return (
+    <Box className="verticalFit">
 
-            <MainMenu />
+      <MainMenu />
 
-            <Box bgcolor={bgDarkest} className="verticalFill" width="100vw" display="flex" justifyContent="center">
-                <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
+      <Box bgcolor={bgDarkest} className="verticalFill" width="100vw" display="flex" justifyContent="center">
+        <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
 
-                    <Box className={classes.profileInformation} width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
-                        <Avatar alt="user-profile-avatar" src={exampleData.profileImageUrl}>
-                            {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
-                        </Avatar>
-                        <Typography className="name" component="span" variant="h3">{exampleData.firstName + " " + exampleData.lastName}</Typography>
-                        <Typography className="username" component="p" variant="body2">{exampleData.username}</Typography>
-                        {props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
+          <Box className={classes.profileInformation} width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
+            <Avatar alt="user-profile-avatar" src={exampleData.profileImageUrl}>
+              {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
+            </Avatar>
+            <Typography className="name" component="span" variant="h3">{exampleData.firstName + " " + exampleData.lastName}</Typography>
+            <Typography className="username" component="p" variant="body2">{exampleData.username}</Typography>
+            {props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
 
-                        <Box display="flex" flexDirection="row"><AccountTreeOutlinedIcon fontSize="small" /> {exampleData.numRepositories} repositories . <FolderOpenIcon fontSize="small"/>{exampleData.numWorkspaces} workspaces</Box>
+            <Box display="flex" flexDirection="row"><AccountTreeOutlinedIcon fontSize="small" /> {exampleData.numRepositories} repositories . <FolderOpenIcon fontSize="small" />{exampleData.numWorkspaces} workspaces</Box>
 
-                        <Box className="links" display="flex" flexDirection="column" width="100%">
-                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={exampleData.webisteLink}>{exampleData.webisteLink}</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={exampleData.profileLink}>INCF Profile</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small"/><Link href={exampleData.githubLink}>Github Profile</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={exampleData.bitbucketLink}>Bitbucket profile</Link></Typography>
-                        </Box>
-
-                        <Box className="groups" width="100%">
-                            <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
-                            <Chip className="first-chip" color="secondary" label={exampleData.group1} variant="outlined"/>
-                            <Chip label={exampleData.group2} variant="outlined"/>
-                        </Box>
-
-                        <Typography component="p" variant="body2">Member since {exampleData.memberSince}</Typography>
-                    </Box>
-
-                    <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
-                        <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
-                            <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
-                            <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
-                        </Tabs>
-
-                        <Box className="scrollbar" height="100%">
-                            <TabPanel value={tabValue} index={0}>
-                                <Grid container={true} spacing={1}>
-                                    {workspaces.map(ws => {
-                                        return (
-                                            <Grid item={true} key={ws.id} xs={6} sm={4} md={6} lg={4} xl={3}>
-                                                <WorkspaceCard workspace={ws} />
-                                            </Grid>
-                                        );
-                                    })}
-                                </Grid>
-                            </TabPanel>
-
-                            <TabPanel value={tabValue} index={1}>
-                                {repositories.map(repo => {
-                                    return (
-                                        <Paper className="repo-paper" key={repo.id} elevation={0}>
-                                            <Typography component="span" gutterBottom={true}>{repo.name}</Typography>
-                                            {repo.description && <Typography component="span" gutterBottom={true}>{repo.description}</Typography>}
-                                            {repo.summary &&
-                                                <ShowMoreText className={classes.showMoreText} lines={1} more={<>See more <ExpandMoreIcon /></>} less={<>See less <ExpandLessIcon /></>} onClick={handleSeeMore} expanded={expanded}>
-                                                    <MarkdownViewer text={repo.summary} />
-                                                </ShowMoreText>
-                                            }
-                                        </Paper>
-                                    );
-                                })}
-                            </TabPanel>
-                        </Box>
-                    </Box>
-                </Box>
-
+            <Box className="links" display="flex" flexDirection="column" width="100%">
+              <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={exampleData.websiteLink}>{exampleData.websiteLink}</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={exampleData.profileLink}>INCF Profile</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={exampleData.githubLink}>Github Profile</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={exampleData.bitbucketLink}>Bitbucket profile</Link></Typography>
             </Box>
+
+            <Box className="groups" width="100%">
+              <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
+              <Chip className="first-chip" color="secondary" label={exampleData.group1} variant="outlined" />
+              <Chip label={exampleData.group2} variant="outlined" />
+            </Box>
+
+            <Typography component="p" variant="body2">Member since {exampleData.memberSince}</Typography>
+          </Box>
+
+          <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
+            <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
+              <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
+              <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
+            </Tabs>
+
+            <Box className="scrollbar" height="100%">
+              <TabPanel value={tabValue} index={0}>
+                <Grid container={true} spacing={1}>
+                  {workspaces.map(ws => {
+                    return (
+                      <Grid item={true} key={ws.id} xs={6} sm={4} md={6} lg={4} xl={3}>
+                        <WorkspaceCard workspace={ws} />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </TabPanel>
+
+              <TabPanel value={tabValue} index={1}>
+                {repositories.map(repo => {
+                  return (
+                    <Paper className="repo-paper" key={repo.id} elevation={0}>
+                      <Typography component="span" gutterBottom={true}>{repo.name}</Typography>
+                      {repo.description && <Typography component="span" gutterBottom={true}>{repo.description}</Typography>}
+                      {repo.summary &&
+                        <ShowMoreText className={classes.showMoreText} lines={1} more={<>See more <ExpandMoreIcon /></>} less={<>See less <ExpandLessIcon /></>} onClick={handleSeeMore} expanded={expanded}>
+                          <MarkdownViewer text={repo.summary} />
+                        </ShowMoreText>
+                      }
+                    </Paper>
+                  );
+                })}
+              </TabPanel>
+            </Box>
+          </Box>
         </Box>
-    )
+
+      </Box>
+    </Box>
+  )
 }
