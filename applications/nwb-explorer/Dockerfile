@@ -29,7 +29,7 @@ WORKDIR $FOLDER
 
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
-    apt-get install python3-tk vim nano unzip git g++ -qq
+    apt-get install python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
 
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
