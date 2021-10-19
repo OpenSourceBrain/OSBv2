@@ -21,6 +21,17 @@ def get_user(userid: str) -> User:
     except KeycloakError as e:
         raise Exception("Unhandled Keycloak exception") from e
 
+    user = map_user(kc_user)
+    try:
+        current_user = client.get_current_user()
+        if current_user['id'] != userid:
+            user.email = None
+    except:  # user not provided
+        user.email = None
+    return user
+
+
+def map_user(kc_user) -> User:
     user = User.from_dict(kc_user)
     user.profiles = {k[len('profile--')::]: kc_user['attributes'][k][0]
                      for k in kc_user['attributes'] if k.startswith('profile--')}
@@ -28,12 +39,6 @@ def get_user(userid: str) -> User:
     user.registration_date = datetime.fromtimestamp(kc_user['createdTimestamp'] / 1000)
     user.website = kc_user['attributes'].get('website', [None])[0]
     user.groups = [g['name'] for g in kc_user['userGroups']]
-    try:
-        current_user = client.get_current_user()
-        if current_user['id'] != userid:
-            user.email = None
-    except:  # user not provided
-        user.email = None
     return user
 
 
@@ -45,7 +50,7 @@ def update_user(userid, user: User):
         if current_user['id'] != userid != user.id:
             raise UserNotAuthorized
         admin_client = client.get_admin_client()
-        admin_client.update_user(userid, {
+        updated_user = admin_client.update_user(userid, {
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'attributes': {
@@ -55,6 +60,7 @@ def update_user(userid, user: User):
                 'website': user.website
             }
         })
+        return updated_user(client.get_user(userid))
     except KeycloakError as e:
         if e.response_code == 404:
             raise UserNotFound(userid)

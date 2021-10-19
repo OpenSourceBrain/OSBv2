@@ -30,6 +30,8 @@ module.exports = env => {
     return result;
   }
 
+  console.log(env)
+
   return merge(
     common(env),
     {
@@ -45,10 +47,16 @@ module.exports = env => {
         historyApiFallback: true,
         proxy: {
           '/proxy/workspaces': {
-            target: replaceHost(proxyTarget, 'workspaces'),
+            target: env.WORKSPACES_DOMAIN || replaceHost(proxyTarget, 'workspaces'),
             secure: false,
             changeOrigin: true,
             pathRewrite: { '^/proxy/workspaces': '' }
+          },
+          '/proxy/accounts_api': {
+            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN): replaceHost(proxyTarget, 'accounts_api'),
+            secure: false,
+            changeOrigin: true,
+            pathRewrite: { '^/proxy/accounts_api': '' }
           }
         },
         port: PORT,
@@ -59,7 +67,12 @@ module.exports = env => {
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify("development")
         }),
-        new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org', 'NAMESPACE': env.NAMESPACE || 'osb2' }),
+        new webpack.EnvironmentPlugin({ 
+          'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org', 
+          'NAMESPACE': env.NAMESPACE || 'osb2', 
+          "ACCOUNTS_API_DOMAIN ": env.ACCOUNTS_API_DOMAIN || '',
+          "WORKSPACES_DOMAIN ": env.WORKSPACES_DOMAIN || '',
+        }),
         new CopyPlugin({
           patterns: [
             {

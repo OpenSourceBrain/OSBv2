@@ -14,7 +14,7 @@ const workspacesApiUri = '/proxy/workspaces/api';
 
 class WorkspaceService {
 
-  workspacesApi: RestApi = null;
+  workspacesApi: workspaceApi.RestApi = null;
   accessToken: string = null;
 
   constructor() {

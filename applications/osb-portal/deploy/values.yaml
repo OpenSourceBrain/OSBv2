@@ -15,6 +15,7 @@ harness:
   use_services:
     - name: workspaces
     - name: common
+    - name: accounts_api
   dependencies:
     soft:
       - accounts

@@ -16,20 +16,23 @@ import LinkIcon from "@material-ui/icons/Link";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
-import { BitBucketIcon } from "../components/icons";
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import CircularProgress from "@material-ui/core/CircularProgress";
 import ShowMoreText from "react-show-more-text";
 
+import { BitBucketIcon } from "../components/icons";
 import MarkdownViewer from "../components/common/MarkdownViewer";
 import MainMenu from "../components/menu/MainMenu";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";
+import { getUser } from "../service/UserService";
 import WorkspaceCard from "../components/workspace/WorkspaceCard";
 import RepositoryService from "../service/RepositoryService";
 import { bgDarkest, bgLightestShade, bgRegular, linkColor, paragraph, textColor } from "../theme";
-
+import { User } from "../apiclient/accounts";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -141,6 +144,7 @@ export const UserPage = (props: any) => {
   const [expanded, setExpanded] = React.useState(false);
   const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
+  const [user, setUser] = React.useState<User>(null);
   const classes = useStyles();
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
@@ -154,6 +158,7 @@ export const UserPage = (props: any) => {
   }
 
   React.useEffect(() => {
+    getUser(userId).then(u => setUser(u));
     workspaceService.fetchWorkspaces().then((workspacesRetrieved) => {
       setWorkspaces(workspacesRetrieved.items);
     });
@@ -162,23 +167,8 @@ export const UserPage = (props: any) => {
     })
   }, [])
 
-  const exampleData = {
-    firstName: 'Padraig',
-    lastName: 'Gleeson',
-    username: 'pglesson',
-    numRepositories: 16,
-    numWorkspaces: 4,
-    websiteLink: 'http://www.neuroconstruct.org',
-    githubLink: 'https://github.com/',
-    bitbucketLink: 'https://github.com/',
-    profileLink: 'https://github.com/',
-    group1: "OpenWorm",
-    group2: "SilverLab",
-    profileImageUrl: '',
-    memberSince: 'March 21st 2011',
-  }
 
-  return (
+  return user && (
     <Box className="verticalFit">
 
       <MainMenu />
@@ -187,35 +177,38 @@ export const UserPage = (props: any) => {
         <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
 
           <Box className={classes.profileInformation} width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
-            <Avatar alt="user-profile-avatar" src={exampleData.profileImageUrl}>
-              {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
+            <Avatar alt="user-profile-avatar" src={user.avatar}>
+              {user.firstName.charAt(0) + user.lastName.charAt(0)}
             </Avatar>
-            <Typography className="name" component="span" variant="h3">{exampleData.firstName + " " + exampleData.lastName}</Typography>
-            <Typography className="username" component="p" variant="body2">{exampleData.username}</Typography>
+            <Typography className="name" component="span" variant="h3">{user.firstName + " " + user.lastName}</Typography>
+            <Typography className="username" component="p" variant="body2">{user.username}</Typography>
             {props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
 
-            <Box display="flex" flexDirection="row"><AccountTreeOutlinedIcon fontSize="small" /> {exampleData.numRepositories} repositories . <FolderOpenIcon fontSize="small" />{exampleData.numWorkspaces} workspaces</Box>
+            <Box display="flex" flexDirection="row">
+              {repositories ? <><AccountTreeOutlinedIcon fontSize="small" /> {user.numRepositories} repositories .</> : <CircularProgress size="1rem" />}
+              {workspaces ? <><FolderOpenIcon fontSize="small" />{user.numWorkspaces} workspaces</> : <CircularProgress size="1rem" />}
+            </Box>
 
             <Box className="links" display="flex" flexDirection="column" width="100%">
-              <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={exampleData.websiteLink}>{exampleData.websiteLink}</Link></Typography>
-              <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={exampleData.profileLink}>INCF Profile</Link></Typography>
-              <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={exampleData.githubLink}>Github Profile</Link></Typography>
-              <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={exampleData.bitbucketLink}>Bitbucket profile</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.websiteLink}>{user.websiteLink}</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.profileLink}>INCF Profile</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={user.githubLink}>Github Profile</Link></Typography>
+              <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={user.bitbucketLink}>Bitbucket profile</Link></Typography>
             </Box>
 
             <Box className="groups" width="100%">
               <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
-              <Chip className="first-chip" color="secondary" label={exampleData.group1} variant="outlined" />
-              <Chip label={exampleData.group2} variant="outlined" />
+              <Chip className="first-chip" color="secondary" label={user.group1} variant="outlined" />
+              <Chip label={user.group2} variant="outlined" />
             </Box>
 
-            <Typography component="p" variant="body2">Member since {exampleData.memberSince}</Typography>
+            <Typography component="p" variant="body2">Member since {user.memberSince}</Typography>
           </Box>
 
           <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
             <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs">
-              <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
-              <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={exampleData.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
+              <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={user.numWorkspaces} color="primary">WORKSPACES</StyledBadge></Typography></>} {...a11yProps(0)} />
+              <Tab label={<><Typography component="p" variant="body2"><StyledBadge badgeContent={user.numRepositories} color="primary">REPOSITORIES</StyledBadge></Typography></>} {...a11yProps(1)} />
             </Tabs>
 
             <Box className="scrollbar" height="100%">
