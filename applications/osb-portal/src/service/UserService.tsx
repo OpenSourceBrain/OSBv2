@@ -109,7 +109,7 @@ const errorCallback = (error: any) => {
 }
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
-  return Boolean(user && (user.isAdmin || workspace.userId === user.id))
+  return Boolean(user && (user.isAdmin || workspace?.userId === user.id))
 }
 
 export function canEditRepository(user: UserInfo, repository: OSBRepository) {
