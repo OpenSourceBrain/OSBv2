@@ -1,16 +1,23 @@
-FROM node:15 as jsbuild
-ENV REPO=https://github.com/MetaCell/nwb-explorer.git
+FROM node:15 as clone
 ENV BRANCH_TAG="osb2"
-ENV FOLDER=nwb-explorer
-RUN echo "cache 2021-07-01"
-RUN git clone $REPO -b $BRANCH_TAG $FOLDER
+ENV REPO=https://github.com/MetaCell/nwb-explorer.git
+RUN git clone $REPO -b $BRANCH_TAG
 RUN rm -Rf .git
 
-COPY geppetto/GeppettoConfiguration.json $FOLDER/webapp/GeppettoConfiguration.json
+FROM node:15 as jsbuild
+
+
+ENV FOLDER=nwb-explorer
+RUN echo "cache 2021-07-01"
+
 
 WORKDIR $FOLDER/webapp
-RUN npm ci
 
+COPY --from=clone nwb-explorer/webapp/package.json .
+COPY --from=clone nwb-explorer/webapp/package-lock.json .
+RUN npm ci
+COPY --from=clone nwb-explorer/webapp/ .
+COPY geppetto/GeppettoConfiguration.json GeppettoConfiguration.json
 RUN npm run build
 #Remove node_modules, need to keep the geppetto client
 RUN mv node_modules/@geppettoengine .
@@ -30,13 +37,13 @@ WORKDIR $FOLDER
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
-
+RUN pip install cython
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
 
-COPY --from=jsbuild --chown=1000:1000 $FOLDER/requirements.txt requirements.txt
+COPY --from=clone --chown=1000:1000 $FOLDER/requirements.txt requirements.txt
 RUN pip install -r requirements.txt --no-cache-dir
-COPY --from=jsbuild --chown=1000:1000 $FOLDER .
+COPY --from=clone --chown=1000:1000 $FOLDER .
 RUN python utilities/install.py --npm-skip --no-test
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
@@ -52,7 +59,7 @@ USER $NB_UID
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
 RUN ln -s /opt/workspace workspace
-
+COPY --from=jsbuild --chown=1000:1000 $FOLDER/webapp/build $FOLDER/webapp
 
 
 CMD ./NWBE
