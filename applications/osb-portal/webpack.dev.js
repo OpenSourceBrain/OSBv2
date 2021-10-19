@@ -52,11 +52,11 @@ module.exports = env => {
             changeOrigin: true,
             pathRewrite: { '^/proxy/workspaces': '' }
           },
-          '/proxy/accounts_api': {
-            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN): replaceHost(proxyTarget, 'accounts_api'),
+          '/proxy/accounts-api': {
+            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN): replaceHost(proxyTarget, 'accounts-api'),
             secure: false,
             changeOrigin: true,
-            pathRewrite: { '^/proxy/accounts_api': '' }
+            pathRewrite: { '^/proxy/accounts-api': '' }
           }
         },
         port: PORT,
