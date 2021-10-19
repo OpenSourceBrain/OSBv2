@@ -12,9 +12,9 @@ import * as accountsApi from '../apiclient/accounts/apis';
 
 const keycloak = Keycloak('/keycloak.json');
 
-const accountsApiUri = '/proxy/accounts_api/api';
+const accountsApiUri = '/proxy/accounts-api/api';
 
-let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(new Configuration({ basePath: accountsApiUri })); ;
+let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(new Configuration({ basePath: accountsApiUri }));;
 
 declare const window: any;
 
