@@ -19,10 +19,7 @@ RUN npm ci
 COPY --from=clone nwb-explorer/webapp/ .
 COPY geppetto/GeppettoConfiguration.json GeppettoConfiguration.json
 RUN npm run build
-#Remove node_modules, need to keep the geppetto client
-RUN mv node_modules/@geppettoengine .
-RUN rm -Rf node_modules/*
-RUN mv @geppettoengine node_modules
+
 
 ###
 FROM jupyter/base-notebook:hub-1.4.2
@@ -60,6 +57,6 @@ RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
 RUN ln -s /opt/workspace workspace
 COPY --from=jsbuild --chown=1000:1000 $FOLDER/webapp/build $FOLDER/webapp
-
+COPY --from=jsbuild --chown=1000:1000 $FOLDER/webapp/node_modules/@geppettoengine $FOLDER/webapp/node_modules
 
 CMD ./NWBE
