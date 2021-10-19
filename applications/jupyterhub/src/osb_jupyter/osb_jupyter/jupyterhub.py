@@ -43,7 +43,7 @@ def change_pod_manifest(self: KubeSpawner):
         cookie = self.handler.request.cookies.get(cookie_name, None)
         if cookie is None:
             raise Exception(
-                "Required cookie not found. Check that the cookie named '%s' is set.", cookie_name)
+                "Required cookie not found. Check that the cookie named '%s' is set." % cookie_name)
         return cookie.value
 
     try:

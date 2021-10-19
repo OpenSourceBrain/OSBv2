@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:hub-1.1.0
+FROM jupyter/base-notebook:hub-1.4.2
 USER root
 
 ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
