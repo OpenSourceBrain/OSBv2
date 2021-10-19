@@ -185,8 +185,8 @@ export const UserPage = (props: any) => {
             {props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
 
             <Box display="flex" flexDirection="row">
-              {repositories ? <><AccountTreeOutlinedIcon fontSize="small" /> {user.numRepositories} repositories .</> : <CircularProgress size="1rem" />}
-              {workspaces ? <><FolderOpenIcon fontSize="small" />{user.numWorkspaces} workspaces</> : <CircularProgress size="1rem" />}
+              {repositories ? <><AccountTreeOutlinedIcon fontSize="small" /> {repositories.length} repositories .</> : <CircularProgress size="1rem" />}
+              {workspaces ? <><FolderOpenIcon fontSize="small" />{workspaces.length} workspaces</> : <CircularProgress size="1rem" />}
             </Box>
 
             <Box className="links" display="flex" flexDirection="column" width="100%">
