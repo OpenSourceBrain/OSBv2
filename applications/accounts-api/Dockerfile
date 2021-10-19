@@ -6,11 +6,11 @@ ENV MODULE_NAME=accounts_api
 ENV WORKERS=2
 ENV PORT=8080
 
-COPY requirements.txt /usr/src/app/
+COPY backend/requirements.txt /usr/src/app/
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . /usr/src/app
+COPY backend /usr/src/app
 
 RUN pip3 install -e .
 

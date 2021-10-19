@@ -19,6 +19,7 @@ harness:
   dependencies:
     soft:
       - accounts
+      - accounts-api
       - common
       - volumemanager
       - workspaces
