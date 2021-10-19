@@ -29,6 +29,8 @@ import WorkspaceCard from "../components/workspace/WorkspaceCard";
 import RepositoryService from "../service/RepositoryService";
 import { bgDarkest, bgLightestShade, bgRegular, linkColor, paragraph, textColor } from "../theme";
 import Divider from "@material-ui/core/Divider";
+import OSBDialog from "../components/common/OSBDialog";
+import UserEditor from "../components/user/UserEditor";
 
 
 
@@ -143,6 +145,7 @@ export const UserPage = (props: any) => {
     const [tabValue, setTabValue] = React.useState(0);
     const [expanded, setExpanded] = React.useState(false);
     const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
+    const [profileEditDialogOpen, setProfielEditDialogOpen] = React.useState(false);
     const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
     const classes = useStyles();
     const history = useHistory();
@@ -196,7 +199,7 @@ export const UserPage = (props: any) => {
                         </Avatar>
                         <Typography className="name" component="span" variant="h3">{exampleData.firstName + " " + exampleData.lastName}</Typography>
                         <Typography className="username" component="p" variant="body2">{exampleData.username}</Typography>
-                        {props.user && <Button variant="outlined" color="primary">Edit My Profile</Button>}
+                        {/* {false && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>} */}
 
                         <Box display="flex" flexDirection="row"><AccountTreeOutlinedIcon fontSize="small" /> {exampleData.numRepositories} repositories . <FolderOpenIcon fontSize="small"/>{exampleData.numWorkspaces} workspaces</Box>
 
@@ -255,6 +258,9 @@ export const UserPage = (props: any) => {
                 </Box>
 
             </Box>
+            <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfielEditDialogOpen(false)}>
+                <UserEditor closeHandler={() => setProfielEditDialogOpen(false)} />
+            </OSBDialog>
         </Box>
     )
 }

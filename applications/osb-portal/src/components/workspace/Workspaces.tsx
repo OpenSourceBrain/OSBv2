@@ -143,14 +143,14 @@ export const Workspaces = ({ user, counter }: any) => {
         <Tab value={WorkspaceSelection.PUBLIC} label={<Typography component="p" variant="body1">Featured workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total}/>}</Typography>} />
       </Tabs>
 
-      {
+      {/* {
         workspaces && <Box mb={2}>
 
           <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
             {state.total} Workspace{workspaceList.length !== 1 ? 's' : ''}
           </Typography>
         </Box>
-      }
+      } */}
 
       {
         !workspaces && <Box mt={2}>
@@ -159,7 +159,7 @@ export const Workspaces = ({ user, counter }: any) => {
         </Box>
       }
 
-      <Box className={`verticalFit card-container ${classes.cardContainer}`} >
+      <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
         <Box pb={1} className="scrollbar" id="workspace-box">
 
           <InfiniteScroll
