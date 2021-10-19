@@ -31,7 +31,9 @@ import { bgDarkest, bgLightestShade, bgRegular, linkColor, paragraph, textColor 
 import Divider from "@material-ui/core/Divider";
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
-
+import { User } from "../apiclient/accounts";
+import { getUser } from "../service/UserService";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -147,6 +149,7 @@ export const UserPage = (props: any) => {
     const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
     const [profileEditDialogOpen, setProfielEditDialogOpen] = React.useState(false);
     const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
+    const [user, setUser] = React.useState<User>(null);
     const classes = useStyles();
     const history = useHistory();
     const { userId } = useParams<{ userId: string }>();
@@ -160,31 +163,16 @@ export const UserPage = (props: any) => {
     }
 
     React.useEffect(() => {
+        getUser(userId).then(u => setUser(u));
         workspaceService.fetchWorkspaces().then((workspacesRetrieved) => {
             setWorkspaces(workspacesRetrieved.items);
         });
         RepositoryService.getRepositories(1).then((repositoriesRetrieved) => {
             setRepositories(repositoriesRetrieved);
         })
-    }, [])
+    }, []);
 
-    const exampleData = {
-        firstName: 'Padraig',
-        lastName: 'Gleeson',
-        username: 'pglesson',
-        numRepositories: 16,
-        numWorkspaces: 4,
-        webisteLink: 'http://www.neuroconstruct.org',
-        githubLink: 'https://github.com/',
-        bitbucketLink: 'https://github.com/',
-        profileLink: 'https://github.com/',
-        group1: "OpenWorm",
-        group2: "SilverLab",
-        profileImageUrl: '',
-        memberSince: 'March 21st 2011',
-    }
-
-    return (
+    return user && (
         <Box className="verticalFit">
 
             <MainMenu />
@@ -194,35 +182,38 @@ export const UserPage = (props: any) => {
                 <Box width="80%" display="flex" flexDirection="row" justifyContent="space-around">
 
                     <Box className={classes.profileInformation} width="30%" display="flex" alignItems="flex-start" flexDirection="column" height="100%" color={paragraph}>
-                        <Avatar alt="user-profile-avatar" src={exampleData.profileImageUrl}>
-                            {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
+                        <Avatar alt="user-profile-avatar" src={user.avatar}>
+                            {user.firstName.charAt(0) + user.lastName.charAt(0)}
                         </Avatar>
-                        <Typography className="name" component="span" variant="h3">{exampleData.firstName + " " + exampleData.lastName}</Typography>
-                        <Typography className="username" component="p" variant="body2">{exampleData.username}</Typography>
-                        {/* {false && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>} */}
+                        <Typography className="name" component="span" variant="h3">{user.firstName + " " + user.lastName}</Typography>
+                        <Typography className="username" component="p" variant="body2">{user.username}</Typography>
+                        {false && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>}
 
-                        <Box display="flex" flexDirection="row"><AccountTreeOutlinedIcon fontSize="small" /> {exampleData.numRepositories} repositories . <FolderOpenIcon fontSize="small"/>{exampleData.numWorkspaces} workspaces</Box>
-
+                        <Box display="flex" flexDirection="row">
+                            {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} .</> : <CircularProgress size="1rem" />}
+                            {workspaces ? <><FolderOpenIcon fontSize="small" />{user.numWorkspaces} </> : <CircularProgress size="1rem" />}
+                        </Box>
                         <Box className="links" display="flex" flexDirection="column" width="100%">
-                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={exampleData.webisteLink}>{exampleData.webisteLink}</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={exampleData.profileLink}>INCF Profile</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small"/><Link href={exampleData.githubLink}>Github Profile</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={exampleData.bitbucketLink}>Bitbucket profile</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.website}>{user.website}</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.profileLink}>INCF Profile</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small"/><Link href={user.githubLink}>Github Profile</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={user.bitbucketLink}>Bitbucket profile</Link></Typography>
                         </Box>
 
-                        <Box className="groups" width="100%">
+                        {user.groups && <Box className="groups" width="100%">
                             <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
-                            <Chip className="first-chip" color="secondary" label={exampleData.group1} variant="outlined"/>
-                            <Chip label={exampleData.group2} variant="outlined"/>
-                        </Box>
+                            { user.groups.map((group, index) => {
+                                <Chip className={index === 0 ? "first-chip" : ''} color="secondary" label={group} variant="outlined"/>
+                            })}
+                        </Box>}
 
-                        <Typography component="p" variant="body2">Member since {exampleData.memberSince}</Typography>
+                        <Typography component="p" variant="body2">Member since {user.memberSince}</Typography>
                     </Box>
 
                     <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
                         <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs" variant="standard">
-                            <Tab label={<Typography component="p" variant="body1">WORKSPACES<Chip size="small" color="primary" label={exampleData.numWorkspaces}/></Typography>} {...a11yProps(0)} />
-                            <Tab label={<Typography component="p" variant="body1">REPOSITORIES<Chip size="small" color="primary" label={exampleData.numRepositories}/></Typography>} {...a11yProps(1)} />
+                            <Tab label={<Typography component="p" variant="body1">WORKSPACES<Chip size="small" color="primary" label={workspaces.length}/></Typography>} {...a11yProps(0)} />
+                            <Tab label={<Typography component="p" variant="body1">REPOSITORIES<Chip size="small" color="primary" label={repositories.length}/></Typography>} {...a11yProps(1)} />
                         </Tabs>
 
                         <Box className="scrollbar" height="100%">

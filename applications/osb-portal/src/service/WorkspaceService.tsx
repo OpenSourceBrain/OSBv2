@@ -14,7 +14,7 @@ const workspacesApiUri = '/proxy/workspaces/api';
 
 class WorkspaceService {
 
-  workspacesApi: RestApi = null;
+  workspacesApi: workspaceApi.RestApi = null;
   accessToken: string = null;
 
   constructor() {
@@ -48,15 +48,10 @@ class WorkspaceService {
       params.featured = 'true';
     }
 
-
-
     const wspr: WorkspaceGetRequest = { q: Object.keys(params).map(k => `${k}=${params[k]}`).join("+"), page, perPage };
     if (this.workspacesApi) {
-
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
       return { items: response.workspaces.map(mapWorkspace), totalPages: response.pagination.numberOfPages, total: response.pagination.total };
-
-
     } else {
       console.debug('Attempting to fetch workspaces before init');
     }

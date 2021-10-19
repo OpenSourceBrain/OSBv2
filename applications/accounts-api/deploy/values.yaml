@@ -1,0 +1,19 @@
+harness:
+  subdomain: api.accounts
+  secured: false
+  service:
+    port: 8080
+    auto: true
+  deployment:
+    auto: true
+    port: 8080
+  livenessProbe:
+    path: /api/live
+  readinessProbe:
+    path: /api/ready
+  dependencies:
+    hard:
+      - accounts
+    build:
+      - cloudharness-base
+      - cloudharness-flask

@@ -39,7 +39,7 @@ steps:
     environment:
     - ACTION=auth
     - KUBE_CONTEXT=${{NAMESPACE}}
-    image: codefresh/cfstep-helm:3.4.1
+    image: codefresh/cfstep-helm:3.6.2
     stage: prepare
     title: View helm chart
   build_base_images:
@@ -267,6 +267,24 @@ steps:
         image_name: osb/common
         title: Common
         working_directory: ./build/applications/common/server
+      accounts-api:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/accounts-api
+        title: Accounts api
+        working_directory: ./build/applications/accounts-api
       jupyterlab:
         type: build
         stage: build
@@ -594,7 +612,7 @@ steps:
         working_directory: ./build/applications/workflows/server
   deployment:
     stage: deploy
-    image: codefresh/cfstep-helm:3.4.1
+    image: codefresh/cfstep-helm:3.6.2
     title: Installing chart
     environment:
     - CHART_REF=./deployment/helm
@@ -691,6 +709,14 @@ steps:
         type: push
         title: Common
         candidate: '${{REGISTRY}}/osb/common:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_accounts-api:
+        stage: publish
+        type: push
+        title: Accounts api
+        candidate: '${{REGISTRY}}/osb/accounts-api:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
