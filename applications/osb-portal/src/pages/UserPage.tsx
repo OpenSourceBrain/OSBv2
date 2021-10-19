@@ -11,6 +11,7 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import LinkIcon from "@material-ui/icons/Link";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
@@ -33,7 +34,6 @@ import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser } from "../service/UserService";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -163,7 +163,7 @@ export const UserPage = (props: any) => {
     }
 
     React.useEffect(() => {
-        getUser(userId).then(u => setUser(u));
+        getUser(userId).then(u => {setUser(u) ; console.log('the user', user)}).catch(e => console.log('error from user', e))
         workspaceService.fetchWorkspaces().then((workspacesRetrieved) => {
             setWorkspaces(workspacesRetrieved.items);
         });
@@ -191,19 +191,19 @@ export const UserPage = (props: any) => {
 
                         <Box display="flex" flexDirection="row">
                             {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} .</> : <CircularProgress size="1rem" />}
-                            {workspaces ? <><FolderOpenIcon fontSize="small" />{user.numWorkspaces} </> : <CircularProgress size="1rem" />}
+                            {workspaces ? <><FolderOpenIcon fontSize="small" />{workspaces.length} </> : <CircularProgress size="1rem" />}
                         </Box>
                         <Box className="links" display="flex" flexDirection="column" width="100%">
                             <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.website}>{user.website}</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.profileLink}>INCF Profile</Link></Typography>
+                            {/* <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.profileLink}>INCF Profile</Link></Typography>
                             <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small"/><Link href={user.githubLink}>Github Profile</Link></Typography>
-                            <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={user.bitbucketLink}>Bitbucket profile</Link></Typography>
+                            <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={user.bitbucketLink}>Bitbucket profile</Link></Typography> */}
                         </Box>
 
                         {user.groups && <Box className="groups" width="100%">
                             <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
-                            { user.groups.map((group, index) => {
-                                <Chip className={index === 0 ? "first-chip" : ''} color="secondary" label={group} variant="outlined"/>
+                            { user.groups && user.groups.map((group, index) => {
+                                return <Chip className={index === 0 ? "first-chip" : ''} color="secondary" label={group} key={group} variant="outlined"/>
                             })}
                         </Box>}
 
