@@ -261,17 +261,30 @@ const theme = {
       root: {
         minHeight: '20px',
         height: '20px',
+        '& .MuiChip-root': {
+          height: '15px',
+          '& .MuiChip-label': {
+            fontSize: '0.75rem',
+          },
+        },
+        '& .MuiTab-wrapper': {
+          display: 'flex',
+          flexDirection: 'row',
+        },
       },
       indicator: {
-        backgroundColor: 'transparent',
+        width: '100%',
       }
     },
     MuiTab: {
       root: {
+        alignContent: 'flex-start',
+        paddingBottom: '10px',
         textTransform: 'none',
+        paddingRight: '30px',
+        paddingLeft: '30px',
         fontSize: '1.1rem',
-        fontWeight: 400,
-        padding: '0 8px 0 0',
+        fontWeight: 500,
         textDecoration: 'none',
         border: 0,
         minHeight: '20px',
@@ -279,11 +292,8 @@ const theme = {
         minWidth: '150px !important',
         textAlign: 'left',
         '&:first-child': {
-          borderRight: '1px solid #FFF',
+          borderRight: 'none',
         },
-        '&:last-child': {
-          padding: '0 0 0 8px',
-        }
       }
     },
     MuiToolbar: {
