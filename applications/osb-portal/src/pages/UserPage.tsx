@@ -17,8 +17,10 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
+import EmailIcon from "@material-ui/icons/Email";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ShowMoreText from "react-show-more-text";
 
 import MarkdownViewer from "../components/common/MarkdownViewer";
@@ -113,6 +115,12 @@ const useStyles = makeStyles((theme) => ({
           },
         },
     },
+    dot: {
+        height: '5px',
+        width: '5px',
+        alignSelf: 'center',
+        marginLeft: '5px',
+    },
 }));
 
 interface TabPanelProps {
@@ -143,13 +151,23 @@ function a11yProps(index: number) {
     };
 }
 
+// temporary mock user
+const user: User = {
+    firstName: 'Padraig',
+    lastName: 'Gleeson',
+    username: 'pgleeson',
+    groups: ['SilverLab', 'Openworm'],
+    website: 'http://www.neuroconstruct.org/',
+    registrationDate: new Date(),
+
+}
 export const UserPage = (props: any) => {
     const [tabValue, setTabValue] = React.useState(0);
     const [expanded, setExpanded] = React.useState(false);
     const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
     const [profileEditDialogOpen, setProfielEditDialogOpen] = React.useState(false);
     const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
-    const [user, setUser] = React.useState<User>(null);
+    // const [user, setUser] = React.useState<User>(null);
     const classes = useStyles();
     const history = useHistory();
     const { userId } = useParams<{ userId: string }>();
@@ -163,7 +181,7 @@ export const UserPage = (props: any) => {
     }
 
     React.useEffect(() => {
-        getUser(userId).then(u => {setUser(u) ; console.log('the user', user)}).catch(e => console.log('error from user', e))
+        // getUser(userId).then(u => {setUser(u) ; console.log('the user', user)}).catch(e => console.log('error from user', e))
         workspaceService.fetchWorkspaces().then((workspacesRetrieved) => {
             setWorkspaces(workspacesRetrieved.items);
         });
@@ -190,15 +208,15 @@ export const UserPage = (props: any) => {
                         {false && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>}
 
                         <Box display="flex" flexDirection="row">
-                            {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} .</> : <CircularProgress size="1rem" />}
-                            {workspaces ? <><FolderOpenIcon fontSize="small" />{workspaces.length} </> : <CircularProgress size="1rem" />}
+                            {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small"/></> : <CircularProgress size="1rem" />}
+                            {workspaces ? <><FolderOpenIcon fontSize="small" />{workspaces.length} repositories</> : <CircularProgress size="1rem" />}
                         </Box>
-                        <Box className="links" display="flex" flexDirection="column" width="100%">
-                            <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.website}>{user.website}</Link></Typography>
+                        {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">
+                            {user.website && <Typography component="p" variant="body2" gutterBottom={true}><EmailIcon fontSize="small"/><Link href={user.website}>{user.website}</Link></Typography>}
                             {/* <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small"/><Link href={user.profileLink}>INCF Profile</Link></Typography>
                             <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small"/><Link href={user.githubLink}>Github Profile</Link></Typography>
                             <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small"/><Link href={user.bitbucketLink}>Bitbucket profile</Link></Typography> */}
-                        </Box>
+                        </Box>}
 
                         {user.groups && <Box className="groups" width="100%">
                             <Typography component="p" variant="h5" gutterBottom={true}>Groups</Typography>
@@ -207,7 +225,7 @@ export const UserPage = (props: any) => {
                             })}
                         </Box>}
 
-                        <Typography component="p" variant="body2">Member since {user.memberSince}</Typography>
+                        {user.registrationDate && <Typography component="p" variant="body2">Member since {user.registrationDate.toDateString()}</Typography>}
                     </Box>
 
                     <Box className={classes.repositoriesAndWorkspaces} width="65%" height="100%" display="flex" justifyContent="flex-start" flexDirection="column">
