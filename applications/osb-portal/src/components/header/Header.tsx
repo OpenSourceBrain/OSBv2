@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = (props: any) => {
   const classes = useStyles();
-
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
 
@@ -71,6 +70,10 @@ export const Header = (props: any) => {
   };
 
   const user = props.user;
+  let userId: string = null;
+  if (window.location.pathname.includes('user')) {
+    userId = window.location.pathname.split('/')[2];
+  }
 
   const handleUserLogin = () => {
     props.login();
@@ -90,8 +93,8 @@ export const Header = (props: any) => {
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
               <MenuList autoFocusItem={menuOpen} id="user-menu">
-                {/* <MenuItem>My account</MenuItem>
-                <MenuItem>Settings</MenuItem> */}
+                {typeof userId !== 'undefined' && user && user.id === userId && <MenuItem>My account</MenuItem>}
+                {/* <MenuItem>Settings</MenuItem> */}
                 <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
             </ClickAwayListener>
