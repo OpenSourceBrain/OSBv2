@@ -68,13 +68,19 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: white;
     border-radius: @radius;
+    background: 'transparent';
+    &:hover {
+      background: white;
+    }
   }
 
   &::-webkit-scrollbar-track {
-    background-color: @bgRegular;
+    background-color: 'transparent';
     border-radius: @radius;
+    &:hover {
+      background: @bgRegular;
+    }
   }
 }
 
