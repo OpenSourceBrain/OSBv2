@@ -217,8 +217,8 @@ export const UserPage = (props: any) => {
                 {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.website}>{user.website}</Link></Typography>}
 
                 {icnf && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={icnf}>INCF Profile</Link></Typography>}
-                {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={github}>Github Profile</Link></Typography>}
-                {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={bitbucket}>Bitbucket profile</Link></Typography>}
+                {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>Github Profile</Link></Typography>}
+                {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>Bitbucket profile</Link></Typography>}
                 {Object.keys(otherProfiles).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={otherProfiles[k]}>{k} profile</Link></Typography>)}
               </Box>}
 
