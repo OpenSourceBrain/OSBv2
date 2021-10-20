@@ -53,7 +53,7 @@ module.exports = env => {
             pathRewrite: { '^/proxy/workspaces': '' }
           },
           '/proxy/accounts-api': {
-            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN): replaceHost(proxyTarget, 'accounts-api'),
+            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN): replaceHost(proxyTarget, 'api.accounts'),
             secure: false,
             changeOrigin: true,
             pathRewrite: { '^/proxy/accounts-api': '' }

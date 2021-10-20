@@ -47,9 +47,9 @@ const theme = {
   typography: {
     fontFamily: font,
     h1: {
-      fontSize: '2rem',
-      fontWeight: 400,
-      marginBottom: '0.5em'
+      fontSize: '1.7rem',
+      fontWeight: 700,
+      marginBottom: '0.6rem'
     },
 
     h2: {
@@ -259,8 +259,7 @@ const theme = {
     },
     MuiTabs: {
       root: {
-        minHeight: '20px',
-        height: '20px',
+        marginBottom: '2rem',
         '& .MuiChip-root': {
           height: '15px',
           '& .MuiChip-label': {
@@ -279,18 +278,14 @@ const theme = {
     MuiTab: {
       root: {
         alignContent: 'flex-start',
-        paddingBottom: '10px',
-        textTransform: 'none',
-        paddingRight: '30px',
-        paddingLeft: '30px',
-        fontSize: '1.1rem',
-        fontWeight: 500,
-        textDecoration: 'none',
+        
+        paddingRight: '2.5rem',
+        paddingLeft: '2.5rem',
+        fontSize: '1rem',
+        fontWeight: 700,
         border: 0,
-        minHeight: '20px',
-        height: '20px',
         minWidth: '150px !important',
-        textAlign: 'left',
+        maxWidth: 'auto',
         '&:first-child': {
           borderRight: 'none',
         },
@@ -300,6 +295,12 @@ const theme = {
       root: {
         minHeight: 15
       }
+    },
+    MuiAvatar: {
+      root: {
+        border: `1px solid ${bgLightest}`,
+      }
+      
     },
     MuiAutocomplete: {
       root: {

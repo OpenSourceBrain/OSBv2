@@ -26,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  },
-  firstTab: {
-    paddingLeft: 0,
   }
 }))
 
@@ -136,11 +133,14 @@ export const Workspaces = ({ user, counter }: any) => {
         onChange={handleChange}
       >
         {user ?
-          <Tab className={user ? classes.firstTab : ''} id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ? <Typography component="p" variant="body1">All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total}/>}</Typography> : <Typography component="p" variant="body1">Your workspaces<Chip size="small" color="primary" label={state.total}/></Typography>} />
+          <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
+            <>All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
+            <>Your workspaces<Chip size="small" color="primary" label={state.total} /></>}
+          />
           : null
         }
-        <Tab className={user ? '' : classes.firstTab} value={WorkspaceSelection.FEATURED} label={<Typography component="p" variant="body1">Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total}/>}</Typography>} />
-        <Tab value={WorkspaceSelection.PUBLIC} label={<Typography component="p" variant="body1">Featured workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total}/>}</Typography>} />
+        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
+        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
       </Tabs>
 
       {/* {
