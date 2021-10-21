@@ -56,7 +56,7 @@ USER $NB_UID
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
 RUN ln -s /opt/workspace workspace
-COPY --from=jsbuild --chown=1000:1000 $FOLDER/webapp/build $FOLDER/webapp
-COPY --from=jsbuild --chown=1000:1000 $FOLDER/webapp/node_modules/@geppettoengine $FOLDER/webapp/node_modules
+COPY --from=jsbuild --chown=$NB_UID:1000 $FOLDER/webapp/build webapp/build
+COPY --from=jsbuild --chown=$NB_UID:1000 $FOLDER/webapp/node_modules/@geppettoengine webapp/node_modules/@geppettoengine
 
 CMD ./NWBE
