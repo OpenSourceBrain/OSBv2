@@ -209,8 +209,8 @@ export const UserPage = (props: any) => {
               {false && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>}
 
               <Box display="flex" flexDirection="row">
-                {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small" /></> : <CircularProgress size="1rem" />}
-                {workspaces ? <><FolderOpenIcon fontSize="small" />{workspaces.length} repositories</> : <CircularProgress size="1rem" />}
+                {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{workspaces.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small" /></> : <CircularProgress size="1rem" />}
+                {workspaces ? <><FolderOpenIcon fontSize="small" />{repositories.length} repositories</> : <CircularProgress size="1rem" />}
               </Box>
 
               {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">

@@ -1,4 +1,4 @@
 harness:
   sentry: false
   database:
-    size: 10Gi
+    size: 20Gi
