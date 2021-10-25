@@ -41,7 +41,7 @@ class WorkspaceService {
   async fetchWorkspaces(isPublic = false, isFeatured = false, page = 1, perPage = 20): Promise<Page<Workspace>> {
     // ToDo: pagination & size of pagination
     const params: any = {};
-    if (isPublic && !isFeatured) {
+    if (isPublic) {
       params.publicable = 'true';
     }
     if (isFeatured) {

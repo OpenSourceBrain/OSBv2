@@ -45,7 +45,7 @@ export const Workspaces = ({ user, counter }: any) => {
     totalPages: number,
     total: number
   }>({
-    selection: WorkspaceSelection.FEATURED,
+    selection: user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED,
     items: null,
     page: 1,
     totalPages: 0,
@@ -135,7 +135,7 @@ export const Workspaces = ({ user, counter }: any) => {
         {user ?
           <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
             <>All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
-            <>Your workspaces<Chip size="small" color="primary" label={state.total} /></>}
+            <>Your workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
           />
           : null
         }

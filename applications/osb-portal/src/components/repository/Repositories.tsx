@@ -26,6 +26,7 @@ import {
 } from "../../theme";
 import RepositoriesSearch from "./RepositoriesSearch";
 import { CodeBranchIcon } from "../icons";
+import Resources from "./resources";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -272,7 +273,7 @@ export default (props: RepositoriesProps) => {
                   variant="outlined"
                   onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
                 >
-                  See on {repository.repositoryType}
+                  View on {Resources[repository.repositoryType] || repository.repositoryType}
                 </Button>}
                 <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)} />
 

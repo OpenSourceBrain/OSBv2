@@ -124,6 +124,9 @@ const useStyles = makeStyles((theme) => ({
     width: '5px',
     alignSelf: 'center',
     marginLeft: '5px',
+  },
+  repository: {
+    cursor: "pointer"
   }
 }));
 
@@ -188,7 +191,9 @@ export const UserPage = (props: any) => {
   if (!user) {
     return null;
   }
-
+  const openRepoUrl = (repositoryId: number) => {
+    history.push(`/repositories/${repositoryId}`);
+  }
   const { icnf, bitbucket, github, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
   return (
@@ -255,14 +260,11 @@ export const UserPage = (props: any) => {
                   <Grid container={true} spacing={1}>
                     {repositories.map(repo => {
                       return (
-                        <Grid item={true} key={repo.id} xs={12}>
+                        <Grid item={true} key={repo.id} xs={12} className={classes.repository} onClick={() => openRepoUrl(repo.id)}>
                           <Paper className="repo-paper" elevation={0}>
                             <Typography component="span" gutterBottom={true}>{repo.name}</Typography>
                             {repo.description && <Typography component="span" gutterBottom={true}>{repo.description}</Typography>}
-                            {repo.summary &&
-                              <ShowMoreText className={classes.showMoreText} lines={1} more={<>See more <ExpandMoreIcon /></>} less={<>See less <ExpandLessIcon /></>} onClick={handleSeeMore} expanded={expanded}>
-                                <MarkdownViewer text={repo.summary} />
-                              </ShowMoreText>
+                            {repo.summary && <MarkdownViewer text={repo.summary} />
                             }
                           </Paper>
                         </Grid>

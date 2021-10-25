@@ -31,6 +31,7 @@ import { UserInfo } from "../types/user";
 import MarkdownViewer from "../components/common/MarkdownViewer"
 import MainMenu from "../components/menu/MainMenu";
 import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
+import Resources from "../components/repository/resources";
 
 import {
   linkColor,
@@ -308,7 +309,7 @@ export const RepositoryPage = (props: any) => {
                 <AddIcon />
                 Create new workspace
               </Button>
-              <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({...repository, ...r})} />
+              <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({ ...repository, ...r })} />
             </Box>
           }
         </Box>
@@ -337,7 +338,7 @@ export const RepositoryPage = (props: any) => {
                     }
                     {
                       repository.summary && <Typography component="p" variant="body2">
-                        <MarkdownViewer text={repository.summary}  />
+                        <MarkdownViewer text={repository.summary} />
                       </Typography>
                     }
                     <Box>
@@ -395,13 +396,13 @@ export const RepositoryPage = (props: any) => {
                   </Box>
                   <Box position="relative" mt="2">
                     <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
-                      See on {repository.repositoryType}
+                      View on {Resources[repository.repositoryType] || repository.repositoryType}
                     </Button>
                     <Typography component="h2" variant="h2" className="primary-heading">
-                        Repository preview
-                      </Typography>
+                      Repository preview
+                    </Typography>
                     <Paper className={`verticalFit ${classes.previewBox}`}>
-                      <MarkdownViewer text={repository.description} repository={repository}  />
+                      <MarkdownViewer text={repository.description} repository={repository} />
                     </Paper>
                   </Box>
                 </Box>

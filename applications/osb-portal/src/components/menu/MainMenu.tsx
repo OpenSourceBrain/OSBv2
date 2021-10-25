@@ -46,7 +46,7 @@ export const MainMenu = () => {
           className={classes.button}
           items={[
             { label: "Repositories", callback: () => history.push("/repositories"), checked: history.location.pathname === "/repositories" },
-            { label: "Workspaces", callback: () => history.push("/"), checked: history.location.pathname !== "/repositories" },
+            { label: "Workspaces", callback: () => history.push("/"), checked: history.location.pathname === '/' },
           ]}
         />
       </Box>

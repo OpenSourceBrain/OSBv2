@@ -201,23 +201,23 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             >
               <Typography component="label" className={classes.label}>Tags</Typography>
               <Autocomplete
-              multiple={true}
-              options={searchTagOptions}
-              freeSolo={true}
-              onChange={(event, value) => setSearchFilterValues({ ...searchFilterValues, tags: value })}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip variant="outlined" label={option} size="small" {...getTagProps({ index })} key={option} />
-                ))
-              }
-              renderInput={(params) => (
-                <><SearchIcon /><TextField InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} fullWidth={true} {...params} variant="filled" /></>
-              )}
-            />
+                multiple={true}
+                options={searchTagOptions}
+                freeSolo={true}
+                onChange={(event, value) => setSearchFilterValues({ ...searchFilterValues, tags: value })}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip variant="outlined" label={option} size="small" {...getTagProps({ index })} key={option} />
+                  ))
+                }
+                renderInput={(params) => (
+                  <><SearchIcon /><TextField InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} fullWidth={true} {...params} variant="filled" /></>
+                )}
+              />
               <FormControl component="fieldset" >
                 <FormGroup>
                   <Typography component="label" className={classes.label}>Types</Typography>
-                  <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} onChange={handleInput} name={RepositoryContentType.Experimental}/>} label="Experimental" />
+                  <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Experimental)} onChange={handleInput} name={RepositoryContentType.Experimental} />} label="Experimental" />
                   <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes(RepositoryContentType.Modeling)} onChange={handleInput} name={RepositoryContentType.Modeling} />} label="Modeling" />
                   <FormControlLabel control={<Checkbox color="primary" checked={searchFilterValues.types.includes("Development")} onChange={handleInput} name="Development" />} label="Development" />
                 </FormGroup>
@@ -246,7 +246,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} refreshRepositories={updateList} />
+            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} refreshRepositories={() => updateList(tabValue)} />
             {
               totalPages > 1 ?
                 <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} />
@@ -273,7 +273,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
           title="Add repository"
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
-          onSubmit={updateList}
+          onSubmit={() => updateList(tabValue)}
         />
       )}
     </>
