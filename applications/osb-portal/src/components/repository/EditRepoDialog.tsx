@@ -395,6 +395,7 @@ export const EditRepoDialog = ({
         </Box>
 
         <Box className="form-group">
+          <Typography component="label">Tags</Typography>
           <Autocomplete
             multiple={true}
             freeSolo={true}
@@ -418,10 +419,10 @@ export const EditRepoDialog = ({
           </Typography>
 
           <MDEditor
-          defaultValue={repository?.summary}
-          onChange={(e) => handleInput(e, "summary")}
-          view={{html: false, menu: true, md: true}}
-          renderHTML={(text: string) => <MarkdownViewer text={text}/>}
+            defaultValue={repository?.summary}
+            onChange={(e) => handleInput(e, "summary")}
+            view={{ html: false, menu: true, md: true }}
+            renderHTML={(text: string) => <MarkdownViewer text={text} />}
           />
         </Box>
       </DialogContent>
