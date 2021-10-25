@@ -21,6 +21,7 @@ RUN cd netpyne ; python setup.py install; cd -
 
 RUN pip install pynwb
 RUN pip install pyneuroml
+RUN pip install brian2
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
