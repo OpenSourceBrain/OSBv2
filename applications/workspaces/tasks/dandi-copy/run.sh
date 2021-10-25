@@ -11,7 +11,7 @@ cd "${download_path}"
 
 export asset_id=`echo "${url##*/}"`
 
-echo Dandi copy asset id "${asset_id}" to "${download_path}"
+echo Dandi copy "${url}" to "${download_path}"
 dandi download --existing refresh ${url}
 
 # fix permissions

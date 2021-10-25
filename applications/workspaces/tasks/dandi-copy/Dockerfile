@@ -1,5 +1,4 @@
-ARG CLOUDHARNESS_BASE_DEBIAN
-FROM $CLOUDHARNESS_BASE_DEBIAN
+FROM python:3.9
 
 RUN pip install --no-cache-dir dandi pydantic[email]
 
