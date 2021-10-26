@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     '& .MuiSvgIcon-root': {
       marginRight: '5px',
+      color: paragraph,
     },
     '& .MuiAvatar-root': {
       width: '150px',
@@ -180,7 +181,7 @@ export const UserPage = (props: any) => {
   }
 
   React.useEffect(() => {
-    getUser(userId).then(u => { setUser(u); console.log('the user', user) }).catch(e => console.log('error from user', e))
+    getUser(userId).then(u => { setUser(u); });
     workspaceService.fetchWorkspaces(false, false, 1, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
       setWorkspaces(workspacesRetrieved.items);
     });
@@ -211,9 +212,9 @@ export const UserPage = (props: any) => {
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
-              {false && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>}
+              {props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>}
 
-              <Box display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row" color={paragraph}>
                 {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{workspaces.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small" /></> : <CircularProgress size="1rem" />}
                 {workspaces ? <><FolderOpenIcon fontSize="small" />{repositories.length} repositories</> : <CircularProgress size="1rem" />}
               </Box>
@@ -279,7 +280,7 @@ export const UserPage = (props: any) => {
 
       </Box>
       <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfielEditDialogOpen(false)}>
-        <UserEditor closeHandler={() => setProfielEditDialogOpen(false)} />
+        <UserEditor user={user} closeHandler={() => setProfielEditDialogOpen(false)} />
       </OSBDialog>
     </Box >
   )
