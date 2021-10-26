@@ -12,14 +12,15 @@ RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURO
 
 ################################################################################
 
-####  NeuroML
+####  NeuroML etc.
 
-RUN pip install pyneuroml
+RUN pip install pyneuroml pyelectro --no-cache-dir
+RUN pip install git+https://github.com/NeuralEnsemble/neurotune.git --no-cache-dir
 
 
 ####  NEURON & NetPyNE
 
-RUN pip install neuron
+RUN pip install neuron --no-cache-dir
 
 # Install specific version of NetPyNE
 ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
@@ -30,16 +31,23 @@ RUN cd netpyne ; python setup.py install; cd -
 
 ####  Other simulators
 
-RUN pip install brian2
+RUN pip install brian2 --no-cache-dir
 
 
 ####  NWB
 
-RUN pip install pynwb # nwbwidgets seaborn # v big...
+RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big...
+
 
 ####  Machine learning libs
 
-RUN pip install torch==1.8.0
+RUN pip install torch==1.8.0 --no-cache-dir
+
+
+####  Octave etc.
+
+RUN apt-get install octave -y
+RUN pip install octave_kernel --no-cache-dir
 
 
 ################################################################################
