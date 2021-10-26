@@ -1,9 +1,6 @@
 FROM jupyter/base-notebook:hub-1.4.2
 USER root
 
-ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
-ENV NETPYNE_CORE_BRANCH_TAG=osbv2
-
 
 RUN apt-get update
 RUN apt-get install python-lxml -y
@@ -13,14 +10,39 @@ RUN apt-get install openjdk-11-jdk -y
 RUN apt-get install git vim htop -y      # git and general utilities
 RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
 
+################################################################################
+
+####  NeuroML
+
+RUN pip install pyneuroml
+
+
+####  NEURON & NetPyNE
+
 RUN pip install neuron
 
 # Install specific version of NetPyNE
+ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+ENV NETPYNE_CORE_BRANCH_TAG=osbv2
 RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
 RUN cd netpyne ; python setup.py install; cd -
 
-RUN pip install pynwb
-RUN pip install pyneuroml
+
+####  Other simulators
+
+RUN pip install brian2
+
+
+####  NWB
+
+RUN pip install pynwb # nwbwidgets seaborn # v big...
+
+####  Machine learning libs
+
+RUN pip install torch==1.8.0
+
+
+################################################################################
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
