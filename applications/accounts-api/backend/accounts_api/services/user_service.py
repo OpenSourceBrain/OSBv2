@@ -55,7 +55,7 @@ def update_user(userid, user: User):
         if current_user['id'] != userid != user.id:
             raise UserNotAuthorized
         admin_client = client.get_admin_client()
-        updated_user = admin_client.update_user(userid, {
+        updated_user = {
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'attributes': {
@@ -64,7 +64,9 @@ def update_user(userid, user: User):
                 'avatar': user.avatar,
                 'website': user.website
             }
-        })
+        }
+
+        admin_client.update_user(userid, {**current_user, **updated_user})
         return updated_user
     except KeycloakError as e:
         if e.response_code == 404:
