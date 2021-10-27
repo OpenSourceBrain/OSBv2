@@ -14,6 +14,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import { AddIcon, BitBucketIcon } from "../icons";
 import { bgLight, paragraph } from "../../theme";
 import { User } from "../../apiclient/accounts";
+import { updateUser } from "../../service/UserService";
 
 
 const useStyeles = makeStyles((theme) => ({
@@ -53,7 +54,8 @@ let num = 1;
 
 export default (props: UserEditProps) => {
     const classes = useStyeles();
-    const [userProfileForm, setUserProfileForm] = React.useState<User>({...props.user});
+    const [userProfileForm, setUserProfileForm] = React.useState<any>({...props.user});
+    delete userProfileForm.groups;
     const [loading, setLoading] = React.useState(false);
 
     const GITHUB_PROFILE = 'github';
@@ -98,6 +100,7 @@ export default (props: UserEditProps) => {
 
     const handleProfileLinkChange = (profileType: string, e: any) => {
         setUserProfiles({...userProfiles, [profileType]: e.target.value });
+        setUserProfileForm({...userProfileForm, profiles: userProfiles });
     }
 
 
@@ -105,8 +108,13 @@ export default (props: UserEditProps) => {
         num++;
     }
 
-    const handleProfileUpdate = (e: any) => {
-        // communicate with backend
+    const handleUserUpdate = (e: any) => {
+        console.log('updated user profile', userProfileForm);
+        updateUser(userProfileForm).then(() => {
+            console.log('user should be updated');
+        }).catch(() => {
+            console.log('error updating user');
+        })
         props.closeHandler();
         console.log('save changes to profile button clicked');
     }
@@ -184,7 +192,7 @@ export default (props: UserEditProps) => {
             </Box>
             <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
                 <Button color="primary" onClick={props.closeHandler}>Cancel</Button>
-                <Button variant="contained" color="primary" disabled={loading} onClick={handleProfileUpdate}>Save Changes</Button>
+                <Button variant="contained" color="primary" disabled={loading} onClick={handleUserUpdate}>Save Changes</Button>
                 {loading &&
                     <CircularProgress
                         size={24}
