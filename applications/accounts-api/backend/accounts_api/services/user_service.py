@@ -59,8 +59,8 @@ def update_user(userid, user: User):
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'attributes': {
-                **current_user['attributes'],
-                **{('profile--' + k): user.profiles[k] for k in user.profiles},
+                **current_user.get('attributes', {}),
+                **({('profile--' + k): user.profiles[k] for k in user.profiles} if user.profiles else {}),
                 'avatar': user.avatar,
                 'website': user.website
             }
