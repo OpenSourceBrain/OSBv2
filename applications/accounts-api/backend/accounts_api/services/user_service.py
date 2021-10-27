@@ -65,7 +65,7 @@ def update_user(userid, user: User):
                 'website': user.website
             }
         })
-        return updated_user(client.get_user(userid))
+        return updated_user
     except KeycloakError as e:
         if e.response_code == 404:
             raise UserNotFound(userid)
