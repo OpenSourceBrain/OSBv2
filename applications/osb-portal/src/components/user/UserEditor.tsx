@@ -49,72 +49,60 @@ interface UserEditProps {
     user: User;
 }
 
-const exampleData = {
-    firstName: 'Padraig',
-    lastName: 'Gleeson',
-    username: 'pglesson',
-    numRepositories: 16,
-    numWorkspaces: 4,
-    webisteLink: 'http://www.neuroconstruct.org',
-    githubLink: 'https://github.com/',
-    bitbucketLink: 'https://github.com/',
-    profileLink: 'https://github.com/',
-    group1: "OpenWorm",
-    group2: "SilverLab",
-    profileImageUrl: '',
-    profileDisplayName: 'Padraig Gleeson',
-    memberSince: 'March 21st 2011',
-}
+let num = 1;
 
 export default (props: UserEditProps) => {
     const classes = useStyeles();
-    const [userProfileForm, setUserProfileForm] = React.useState({});
+    const [userProfileForm, setUserProfileForm] = React.useState<User>({...props.user});
     const [loading, setLoading] = React.useState(false);
 
-    console.log('user from props', props.user);
+    const GITHUB_PROFILE = 'github';
+    const BITBUCKET_PROFILE = 'bitbucket';
+    const TWITTER_PROFILE = 'twitter';
+    const ORCID_PROFILE = 'orcid';
+    const NEUROTREE_PROFILE = 'neurotree';
+    const ICNF_PROFILE = 'icnf';
+
+    const [userProfiles, setUserProfiles] = React.useState<{}>({
+        icnf: userProfileForm.profiles.icnf ? userProfileForm.profiles.icnf : undefined,
+        github: userProfileForm.profiles.github ? userProfileForm.profiles.github : undefined,
+        bitbucket: userProfileForm.profiles.bitBucket ? userProfileForm.profiles.bitBucket : undefined,
+        twitter: userProfileForm.profiles.twitter ? userProfileForm.profiles.twitter : undefined,
+        orcid: userProfileForm.profiles.orcid ? userProfileForm.profiles.orcid : undefined,
+        neurotree: userProfileForm.profiles.neurotree ? userProfileForm.profiles.neuroTree : undefined,
+        ...userProfileForm.profiles,
+    });
+
+    console.log('user from props', userProfileForm);
+    console.log('user profiles', userProfiles);
 
     const setWebsiteURLField = (e: any) => {
         setUserProfileForm({...userProfileForm, website: e.target.value });
     }
 
     const setProfileURLField = (e: any) => {
-        setUserProfileForm({...userProfileForm, profilePictureUrl: e.target.value });
+        setUserProfileForm({...userProfileForm, avatar: e.target.value });
     }
 
     const setProfileDisplayName = (e: any) => {
-        setUserProfileForm({...userProfileForm, displayName: e.target.value });
+        setUserProfileForm({...userProfileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ')[1] : null });
     }
 
     const setProfileUserName = (e: any) => {
-        setUserProfileForm({...userProfileForm, userName: e.target.value });
+        setUserProfileForm({...userProfileForm, username: e.target.value });
     }
 
     const setProfileEmailAddress = (e: any) => {
-        setUserProfileForm({...userProfileForm, emailAddress: e.target.value });
+        setUserProfileForm({...userProfileForm, email: e.target.value });
     }
 
-    const setProfileBitBucketLink = (e: any) => {
-        setUserProfileForm({...userProfileForm, bitBucketLink: e.target.value });
+    const handleProfileLinkChange = (profileType: string, e: any) => {
+        setUserProfiles({...userProfiles, [profileType]: e.target.value });
     }
 
-    const setProfileGitHubLink = (e: any) => {
-        setUserProfileForm({...userProfileForm, githubLink: e.target.value });
-    }
 
-    const setProfileLink = (e: any) => {
-        setUserProfileForm({...userProfileForm, link: e.target.value });
-    }
-
-    const setProfileTwitterLink = (e: any) => {
-        setUserProfileForm({...userProfileForm, twitterLink: e.target.value });
-    }
-
-    const setOrcidId = (e: any) => {
-        setUserProfileForm({...userProfileForm, orcidId: e.target.value });
-    }
-
-    const setNeuroTreeId = (e: any) => {
-        setUserProfileForm({...userProfileForm, neuroTreeIdId: e.target.value });
+    const addNewProfileLinkSpace = (e: any) => {
+        num++;
     }
 
     const handleProfileUpdate = (e: any) => {
@@ -127,21 +115,21 @@ export default (props: UserEditProps) => {
         <>
             <Box p={3}>
                 <Box display="flex" flexDirection="row" mb={1}>
-                    <Avatar className={classes.avatar} alt="user-profile-avatar" src={exampleData.profileImageUrl}>
-                        {exampleData.firstName.charAt(0) + exampleData.lastName.charAt(0)}
+                    <Avatar className={classes.avatar} alt="user-profile-avatar" src={userProfileForm.avatar}>
+                        {userProfileForm.firstName?.charAt(0) + userProfileForm.lastName?.charAt(0)}
                     </Avatar>
                     <Box width="100%">
                         <Typography component="label" variant="h6">Profile picture URL</Typography>
-                        <TextField id="profilePictureURL" fullWidth={true} onChange={setProfileURLField} variant="outlined" defaultValue={exampleData.profileImageUrl} />
+                        <TextField id="profilePictureURL" fullWidth={true} onChange={setProfileURLField} variant="outlined" defaultValue={userProfileForm.avatar} />
                     </Box>
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Display Name</Typography>
-                    <TextField fullWidth={true} onChange={setProfileDisplayName} variant="outlined" defaultValue={exampleData.profileDisplayName} />
+                    <TextField fullWidth={true} onChange={setProfileDisplayName} variant="outlined" defaultValue={userProfileForm.firstName + ' ' + userProfileForm.lastName} />
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Username</Typography>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={exampleData.username} InputProps={{
+                    <TextField className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={userProfileForm.username} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <AlternateEmail fontSize="small"/>
@@ -151,7 +139,7 @@ export default (props: UserEditProps) => {
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Email address</Typography>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileEmailAddress} variant="outlined" defaultValue={exampleData.username} InputProps={{
+                    <TextField className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileEmailAddress} variant="outlined" defaultValue={userProfileForm.email} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <EmailIcon fontSize="small"/>
@@ -162,7 +150,7 @@ export default (props: UserEditProps) => {
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Links</Typography>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={exampleData.profileLink} InputProps={{
+                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={userProfileForm.website} placeholder="Website link" InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <LinkIcon fontSize="small"/>
@@ -170,58 +158,28 @@ export default (props: UserEditProps) => {
                         )
                     }}/>
 
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setProfileLink} variant="outlined" defaultValue={exampleData.profileLink} InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <LinkIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setProfileGitHubLink} variant="outlined" defaultValue={exampleData.bitbucketLink} InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <GitHubIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setProfileBitBucketLink} variant="outlined" defaultValue={exampleData.bitbucketLink} InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <BitBucketIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setProfileTwitterLink} variant="outlined" defaultValue={""} InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <TwitterIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setOrcidId} variant="outlined" defaultValue={exampleData.profileLink} InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <LinkIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setNeuroTreeId} variant="outlined" defaultValue={exampleData.profileLink} InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <LinkIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-
-
+                    {
+                        Object.entries(userProfiles).map((profile => {
+                            const profileType = profile[0];
+                            const profileLinkOrId = profile[1];
+                            return <TextField key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
+                            placeholder={profileType === ICNF_PROFILE ? "ICNF link" : profileType === GITHUB_PROFILE ? "Github link" : profileType === BITBUCKET_PROFILE ? "Bitbucket link" : profileType === TWITTER_PROFILE ? "Twitter link" : profileType === ORCID_PROFILE ? "Orcid ID" : profileType === NEUROTREE_PROFILE ? "Neurotree ID" : "" }
+                            onChange={() => {handleProfileLinkChange(profileType, event)}}
+                            InputProps={{
+                                startAdornment: (
+                                    <Box className={classes.inputIconBox}>
+                                        {
+                                            profileType === GITHUB_PROFILE ? <GitHubIcon fontSize="small"/> : profileType === BITBUCKET_PROFILE ? <BitBucketIcon /> : profileType === TWITTER_PROFILE ? <TwitterIcon fontSize="small"/> : <LinkIcon fontSize="small" />
+                                        }
+                                    </Box>
+                                )
+                            }}/>
+                        }))
+                    }
 
                 </Box>
                 <Box>
-                    <Button variant="outlined" color="primary" fullWidth={true}><AddIcon /> Add link</Button>
+                    <Button variant="outlined" color="primary" fullWidth={true} onClick={addNewProfileLinkSpace}><AddIcon /> Add link</Button>
                 </Box>
             </Box>
             <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
