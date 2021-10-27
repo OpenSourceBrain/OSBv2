@@ -1,9 +1,6 @@
 FROM jupyter/base-notebook:hub-1.4.2
 USER root
 
-ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
-ENV NETPYNE_CORE_BRANCH_TAG=osbv2
-
 
 RUN apt-get update
 RUN apt-get install python-lxml -y
@@ -13,14 +10,47 @@ RUN apt-get install openjdk-11-jdk -y
 RUN apt-get install git vim htop -y      # git and general utilities
 RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
 
-RUN pip install neuron
+################################################################################
+
+####  NeuroML etc.
+
+RUN pip install pyneuroml pyelectro --no-cache-dir
+RUN pip install git+https://github.com/NeuralEnsemble/neurotune.git --no-cache-dir
+
+
+####  NEURON & NetPyNE
+
+RUN pip install neuron --no-cache-dir
 
 # Install specific version of NetPyNE
+ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+ENV NETPYNE_CORE_BRANCH_TAG=osbv2
 RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
 RUN cd netpyne ; python setup.py install; cd -
 
-RUN pip install pynwb
-RUN pip install pyneuroml
+
+####  Other simulators
+
+RUN pip install brian2 --no-cache-dir
+
+
+####  NWB
+
+RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big...
+
+
+####  Machine learning libs
+
+RUN pip install torch==1.8.0 --no-cache-dir
+
+
+####  Octave etc.
+
+RUN apt-get install octave -y
+RUN pip install octave_kernel --no-cache-dir
+
+
+################################################################################
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
