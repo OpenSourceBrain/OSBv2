@@ -15,6 +15,7 @@ import { AddIcon, BitBucketIcon } from "../icons";
 import { bgLight, paragraph } from "../../theme";
 import { User } from "../../apiclient/accounts";
 import { updateUser } from "../../service/UserService";
+import OSBDialog from "../common/OSBDialog";
 
 
 const useStyeles = makeStyles((theme) => ({
@@ -50,14 +51,13 @@ interface UserEditProps {
     user: User;
 }
 
-let num = 1;
-
 export default (props: UserEditProps) => {
     const classes = useStyeles();
     const [userProfileForm, setUserProfileForm] = React.useState<any>({...props.user});
     delete userProfileForm.groups;
     const [loading, setLoading] = React.useState(false);
-
+    const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
+    const [newLinkInformation, setNewLinkInformation] = React.useState<{linkFor: string, link: string}>({linkFor: '', link: ''});
     const GITHUB_PROFILE = 'github';
     const BITBUCKET_PROFILE = 'bitbucket';
     const TWITTER_PROFILE = 'twitter';
@@ -98,20 +98,22 @@ export default (props: UserEditProps) => {
         setUserProfileForm({...userProfileForm, email: e.target.value });
     }
 
-    const handleProfileLinkChange = (profileType: string, e: any) => {
-        setUserProfiles({...userProfiles, [profileType]: e.target.value });
+    const handleProfileLinkChange = (profileType: string, value: string) => {
+        setUserProfiles({...userProfiles, [profileType]: value });
         setUserProfileForm({...userProfileForm, profiles: userProfiles });
     }
 
-
-    const addNewProfileLinkSpace = (e: any) => {
-        num++;
+    const addNewProfileLink = (e: any) => {
+        setAddLinkDialogOpen(false);
+        handleProfileLinkChange(newLinkInformation.linkFor, newLinkInformation.link);
     }
 
     const handleUserUpdate = (e: any) => {
+        setLoading(true);
         console.log('updated user profile', userProfileForm);
         updateUser(userProfileForm).then(() => {
             console.log('user should be updated');
+            setLoading(false);
         }).catch(() => {
             console.log('error updating user');
         })
@@ -172,7 +174,7 @@ export default (props: UserEditProps) => {
                             const profileLinkOrId = profile[1];
                             return <TextField key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
                             placeholder={profileType === ICNF_PROFILE ? "ICNF link" : profileType === GITHUB_PROFILE ? "Github link" : profileType === BITBUCKET_PROFILE ? "Bitbucket link" : profileType === TWITTER_PROFILE ? "Twitter link" : profileType === ORCID_PROFILE ? "Orcid ID" : profileType === NEUROTREE_PROFILE ? "Neurotree ID" : "" }
-                            onChange={() => {handleProfileLinkChange(profileType, event)}}
+                            onChange={(event) => {handleProfileLinkChange(profileType, event.target.value)}}
                             InputProps={{
                                 startAdornment: (
                                     <Box className={classes.inputIconBox}>
@@ -187,7 +189,7 @@ export default (props: UserEditProps) => {
 
                 </Box>
                 <Box>
-                    <Button variant="outlined" color="primary" fullWidth={true} onClick={addNewProfileLinkSpace}><AddIcon /> Add link</Button>
+                    <Button variant="outlined" color="primary" fullWidth={true} onClick={() => setAddLinkDialogOpen(true)}><AddIcon /> Add link</Button>
                 </Box>
             </Box>
             <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
@@ -206,6 +208,23 @@ export default (props: UserEditProps) => {
                     />
                 }
             </Box>
+            <OSBDialog open={addLinkDialogOpen} title="Add new link" closeAction={() => setAddLinkDialogOpen(false)}>
+                <Box p={3}>
+                    <TextField fullWidth={true} margin="normal" variant="outlined" onChange={(e) => setNewLinkInformation({...newLinkInformation, linkFor: e.target.value.replace(/\s+/g, '')})} placeholder="What is this link for?"/>
+                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="normal" variant="outlined" onChange={(e) => setNewLinkInformation({...newLinkInformation, link: e.target.value})} placeholder="Link" InputProps={{
+                        startAdornment: (
+                            <Box className={classes.inputIconBox}>
+                                <LinkIcon fontSize="small" />
+                            </Box>
+                        )
+                    }}/>
+                </Box>
+                <Box textAlign="right" bgcolor={bgLight} mt={1} p={2}>
+                    <Button color="primary" onClick={() => setAddLinkDialogOpen(false)}>Cancel</Button>
+                    <Button disabled={newLinkInformation.linkFor.length < 0 || newLinkInformation.link.length < 0}
+                    variant="contained" color="primary" onClick={addNewProfileLink}>Add new link</Button>
+                </Box>
+            </OSBDialog>
         </>
     )
 }
