@@ -75,9 +75,6 @@ export default (props: UserEditProps) => {
         ...userProfileForm.profiles,
     });
 
-    console.log('user from props', userProfileForm);
-    console.log('user profiles', userProfiles);
-
     const setWebsiteURLField = (e: any) => {
         setUserProfileForm({...userProfileForm, website: e.target.value });
     }
@@ -110,7 +107,6 @@ export default (props: UserEditProps) => {
 
     const handleUserUpdate = (e: any) => {
         setLoading(true);
-        console.log('updated user profile', userProfileForm);
         updateUser(userProfileForm).then(() => {
             console.log('user should be updated');
             setLoading(false);
@@ -118,7 +114,6 @@ export default (props: UserEditProps) => {
             console.log('error updating user');
         })
         props.closeHandler();
-        console.log('save changes to profile button clicked');
     }
 
     return (
