@@ -10,17 +10,26 @@
     flex-direction: column;
     align-items: stretch;
     max-height: calc(100%);
+    &.card-container {
+      margin-right: -(@gutter / 4);
+    }
 
     &.card-container,
     .scrollbar {
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: scroll;
       display: flex;
       flex-direction: column;
       max-height: calc(100%);
+     
+      .scrollbarStyle;
     }
 
   }
+}
+
+* {
+  .scrollbarStyle;
 }
 
 @media screen and (min-width:960px) {
@@ -28,11 +37,16 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: @gutter / 2;
-    .scrollbarStyle;
-
-    * {
-      .scrollbarStyle;
+    visibility: hidden;
+    overflow: scroll;
+  
+    &:hover{
+      visibility: visible;
     }
+    > div {
+      visibility: visible;
+    }
+    .scrollbarStyle;
   }
 
   .verticalFill {
@@ -42,7 +56,6 @@
 
     .scrollbar {
       max-height: calc(100%);
-
     }
 
 
@@ -57,29 +70,23 @@
 
 
 
+
 .scrollbarStyle {
 
   &::-webkit-scrollbar {
     width: @gutter / 4;
-    visibility: hidden;
   }
-
-  &:hover::-webkit-scrollbar {
-    visibility: visible;
-    
-  }
-
+  
+  
   &::-webkit-scrollbar-button {
     height: 0;
   }
-
+  
   &::-webkit-scrollbar-thumb {
     border-radius: @radius;
     background: @bgLightest;
-    
-    
   }
-
+  
   &::-webkit-scrollbar-track {
     background: transparent;
     border-radius: @radius;

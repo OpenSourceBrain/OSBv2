@@ -36,7 +36,7 @@ import Container from "@material-ui/core/Container";
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
-import { getUser, updateUser } from "../service/UserService";
+import { getUser } from "../service/UserService";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -197,10 +197,11 @@ export const UserPage = (props: any) => {
   }
   const { icnf, bitbucket, github, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
-  const updateUser = (u: User) => {
+  const handleUpdateUser = (u: User) => {
     setUser(u);
     setProfileEditDialogOpen(false);
   }
+
   return (
     <Box className="verticalFit">
 
@@ -284,7 +285,7 @@ export const UserPage = (props: any) => {
 
       </Box>
       {props.user.id === user.id && <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)}>
-        <UserEditor user={user} closeHandler={updateUser} />
+        <UserEditor user={user} closeHandler={handleUpdateUser} />
       </OSBDialog>}
     </Box >
   )

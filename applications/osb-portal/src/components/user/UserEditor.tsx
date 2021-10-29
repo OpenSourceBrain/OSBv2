@@ -114,7 +114,6 @@ export default (props: UserEditProps) => {
         }).catch(() => {
             console.log('error updating user');
         })
-        
     }
 
     return (

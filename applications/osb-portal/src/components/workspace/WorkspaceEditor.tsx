@@ -57,14 +57,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   imagePreview: {
-    display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
+    display: 'flex', minHeight: "15em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
   },
   autocomplete: {
     marginTop: theme.spacing(1),
     '& .MuiChip-root': {
       backgroundColor: bgLight,
     }
-      },
+  },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -137,7 +137,7 @@ export default (props: WorkspaceEditProps) => {
 
   const handleCreateWorkspace = async () => {
     setLoading(true);
-    WorkspaceService.createOrUpdateWorkspace({...workspace, ...workspaceForm}).then(
+    WorkspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
       async (returnedWorkspace) => {
         props.retrieveAllTags(1);
         if (thumbnail && !thumbnailError) {
@@ -201,8 +201,8 @@ export default (props: WorkspaceEditProps) => {
   }
   const setWorkspaceTags = (tagsArray: string[]) => {
     const arrayOfTags: Tag[] = [];
-    tagsArray.forEach(tag => { arrayOfTags.push({tag}); });
-    setWorkspaceForm({...workspaceForm, tags: arrayOfTags});
+    tagsArray.forEach(tag => { arrayOfTags.push({ tag }); });
+    setWorkspaceForm({ ...workspaceForm, tags: arrayOfTags });
   }
   const [loading, setLoading] = React.useState(false);
   return (
@@ -210,7 +210,7 @@ export default (props: WorkspaceEditProps) => {
 
       <Box p={2} mt={4}>
         <Box>
-        <Typography component="label" variant="h6">
+          <Typography component="label" variant="h6">
             Workspace name
           </Typography>
           <TextField
@@ -227,92 +227,92 @@ export default (props: WorkspaceEditProps) => {
 
 
         <Box mt={4} alignItems="stretch">
-        <Typography component="label" variant="h6">
+          <Typography component="label" variant="h6">
             Workspace tags
           </Typography>
-        <Autocomplete
-          multiple={true}
-          freeSolo={true}
-          className={classes.autocomplete}
-          options={props.tags.map(tagObject => tagObject.tag)}
-          defaultValue={defaultTags}
-          onChange={ (event, value) => setWorkspaceTags(value)}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-             <Chip variant="outlined" label={option} {...getTagProps({index})} key={option} />
-           ))
-          }
-          renderInput={(params) => (
-            <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
-          )}
+          <Autocomplete
+            multiple={true}
+            freeSolo={true}
+            className={classes.autocomplete}
+            options={props.tags.map(tagObject => tagObject.tag)}
+            defaultValue={defaultTags}
+            onChange={(event, value) => setWorkspaceTags(value)}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
+            )}
           />
-          </Box>
+        </Box>
 
-          <Box mt={4}>
+        <Box mt={4}>
           <Typography component="label" variant="h6">
             Workspace description
           </Typography>
 
           <MDEditor
-          defaultValue={workspace?.description}
-          onChange={setDescriptionField}
-          view={{html: false, menu: true, md: true}}
-          renderHTML={(text: string) => <MarkdownViewer text={text}/>}
+            defaultValue={workspace?.description}
+            onChange={setDescriptionField}
+            view={{ html: false, menu: true, md: true }}
+            renderHTML={(text: string) => <MarkdownViewer text={text} />}
           />
 
         </Box>
         <Box mt={4} alignItems="stretch" >
-        <Typography component="label" variant="h6">
+          <Typography component="label" variant="h6">
             Workspace thumbnail
           </Typography>
           <Box alignItems="stretch" className={classes.dropZoneBox}>
-          <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
-            {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section className={classes.imagePreview} style={{  backgroundImage: !thumbnailError && `url(${thumbnailPreview})` }}>
-                <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
-                  <input {...getInputProps()} />
-                  <Grid container={true} justify="center" alignItems="center" direction="row">
-                    {acceptedFiles.length !== 0 && <Grid item={true}>
-                      {/* <IconButton><PublishIcon /></IconButton> */}
-                      {acceptedFiles.length === 0 ? '' :
-                        <IconButton
-                          onClick={(e: any) => {
-                            e.preventDefault();
-                            setThumbnail(null)
-                          }
-                          }
-                        >
-                          <DeleteForeverIcon />
-                        </IconButton>}
-                    </Grid>
-                    }
-                    <Grid item={true} >
-                      <Box component="div" m={1} >
-                        <Typography variant="subtitle2" component="p">
-                          {acceptedFiles.length === 0 ?
-                            "Drop file here to upload..."
-                            :
-                            null
-                          }
-                        </Typography>
-                        <Button variant="outlined">
-                          Browse files
-                        </Button>
-                        {
-                          thumbnailError &&
-                          <Typography color="error" variant="subtitle2" component="p">
-                            {
-                              thumbnailError
+            <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
+              {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
+                <section className={classes.imagePreview} style={{ backgroundImage: !thumbnailError && `url(${thumbnailPreview})` }}>
+                  <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
+                    <input {...getInputProps()} />
+                    <Grid container={true} justify="center" alignItems="center" direction="row">
+                      {acceptedFiles.length !== 0 && <Grid item={true}>
+                        {/* <IconButton><PublishIcon /></IconButton> */}
+                        {acceptedFiles.length === 0 ? '' :
+                          <IconButton
+                            onClick={(e: any) => {
+                              e.preventDefault();
+                              setThumbnail(null)
+                            }
+                            }
+                          >
+                            <DeleteForeverIcon />
+                          </IconButton>}
+                      </Grid>
+                      }
+                      <Grid item={true} >
+                        <Box component="div" m={1} >
+                          <Typography variant="subtitle2" component="p">
+                            {acceptedFiles.length === 0 ?
+                              "Drop file here to upload..."
+                              :
+                              null
                             }
                           </Typography>
-                        }
-                      </Box>
+                          <Button variant="outlined">
+                            Browse files
+                          </Button>
+                          {
+                            thumbnailError &&
+                            <Typography color="error" variant="subtitle2" component="p">
+                              {
+                                thumbnailError
+                              }
+                            </Typography>
+                          }
+                        </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </div>
-              </section>
-            )}
-          </Dropzone>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
           </Box>
         </Box>
       </Box>

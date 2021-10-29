@@ -168,6 +168,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
               <Tabs
                 value={tabValue}
                 textColor="primary"
+
                 indicatorColor="primary"
                 onChange={handleTabChange}
               >

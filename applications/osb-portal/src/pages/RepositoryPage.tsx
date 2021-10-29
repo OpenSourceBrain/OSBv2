@@ -435,7 +435,7 @@ export const RepositoryPage = (props: any) => {
       </Box>
 
       {user &&
-        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} maxWidth="lg">
+        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} maxWidth="md">
           {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
 
           <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />

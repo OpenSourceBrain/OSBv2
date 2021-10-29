@@ -26,30 +26,14 @@ export default makeStyles((theme) => ({
       },
       "& .MuiTabs-root": {
         height: "auto",
+        marginBottom: -12,
+        fontSize: "1rem"
       },
       "& .MuiTab-root": {
-        minWidth: "inherit !important",
-        lineHeight: 1,
-        paddingLeft: "1.25rem",
-        height: "1.875rem",
-        [theme.breakpoints.down("xs")]: {
-          paddingLeft: ".8rem",
-        },
-        "&:first-child": {
-          borderRightColor: bgInputs,
-          paddingLeft: 0,
-          paddingRight: "1.25rem",
-          [theme.breakpoints.down("xs")]: {
-            paddingRight: ".8em",
-          },
-        },
-        "& .MuiTouchRipple-root": {
-          display: "none",
-        },
-        "& .MuiTab-wrapper": {
-          lineHeight: 1,
-          fontSize: ".88rem",
-        },
+        paddingLeft: 0,
+        paddingRight: 0,
+        marginRight: theme.spacing(2),
+        paddingBottom: 16
       },
       "& .MuiButton-contained": {
         [theme.breakpoints.down("sm")]: {

@@ -31,34 +31,34 @@ const useStyles = makeStyles((theme: any) => ({
       marginRight: '10px',
     },
     [theme.breakpoints.down("xs")]: {
-        flexDirection: 'column-reverse',
-        position: 'fixed',
-        bottom: 0,
+      flexDirection: 'column-reverse',
+      position: 'fixed',
+      bottom: 0,
+      width: '100%',
+      padding: 0,
+      '& .MuiBox-root': {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
         width: '100%',
-        padding: 0,
-        '& .MuiBox-root': {
-            paddingTop: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
-            width: '100%',
-            justifyContent: 'center',
-        },
-        '& .buttons': {
-            borderBottom: `1px solid rgb(255, 255, 255, 0.12)`,
-        },
-        '& .MuiGrid-container': {
-            maxWidth: 'fit-content',
-        },
+        justifyContent: 'center',
+      },
+      '& .buttons': {
+        borderBottom: `1px solid rgb(255, 255, 255, 0.12)`,
+      },
+      '& .MuiGrid-container': {
+        maxWidth: 'fit-content',
+      },
     },
   },
   accordion: {
     '& .MuiAccordionSummary-root': {
+      color: paragraph,
+      '& .MuiSvgIcon-root': {
         color: paragraph,
-        '& .MuiSvgIcon-root': {
-            color: paragraph,
-        },
+      },
     },
     [theme.breakpoints.up("md")]: {
-        display: 'none',
+      display: 'none',
     },
   },
   workspaceInformation: {
@@ -68,17 +68,17 @@ const useStyles = makeStyles((theme: any) => ({
       alignItems: 'center',
     },
     '& .MuiBox-root': {
-        [theme.breakpoints.up("md")] : {
-            '& .MuiTypography-root:nth-child(2)': {
-                marginLeft: theme.spacing(2),
-            },
+      [theme.breakpoints.up("md")]: {
+        '& .MuiTypography-root:nth-child(2)': {
+          marginLeft: theme.spacing(2),
         },
-        [theme.breakpoints.down("sm")] : {
-            flexDirection: 'column',
-            '& .MuiTypography-root:nth-child(2)': {
-                marginTop: theme.spacing(1),
-            },
+      },
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: 'column',
+        '& .MuiTypography-root:nth-child(2)': {
+          marginTop: theme.spacing(1),
         },
+      },
     },
     '& .MuiChip-root': {
       backgroundColor: '#3c3c3c',
@@ -93,8 +93,8 @@ const useStyles = makeStyles((theme: any) => ({
       maxWidth: 400,
       borderRadius: 0,
       [theme.breakpoints.down("sm")]: {
-            display: 'none',
-        },
+        display: 'none',
+      },
     },
   },
   workspaceDescriptionBox: {
@@ -114,20 +114,20 @@ const useStyles = makeStyles((theme: any) => ({
     },
     '& .MuiTypography-root': {
 
-        textAlign: 'center',
-        marginBottom: theme.spacing(1),
+      textAlign: 'center',
+      marginBottom: theme.spacing(1),
 
 
-        [theme.breakpoints.down("xs")]: {
-            paddingBottom: theme.spacing(7),
-        },
-        '& .preview-box': {
-            backgroundColor: bgDarker,
-            border: 'none',
-        },
-        '& .MuiPaper-elevation1': {
-            boxShadow: 'none',
-        }
+      [theme.breakpoints.down("xs")]: {
+        paddingBottom: theme.spacing(7),
+      },
+      '& .preview-box': {
+        backgroundColor: bgDarker,
+        border: 'none',
+      },
+      '& .MuiPaper-elevation1': {
+        boxShadow: 'none',
+      }
     },
   },
   imageBox: {
@@ -147,7 +147,7 @@ export const WorkspacePage = (props: any) => {
 
   const classes = useStyles();
   const history = useHistory();
-  const { workspaceId } = useParams<{ workspaceId: string}>();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
   const [workspace, setWorkspace] = React.useState<Workspace>();
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
@@ -202,25 +202,25 @@ export const WorkspacePage = (props: any) => {
           <Divider />
 
           <Box display="flex" alignItems="center" justifyContent="space-between" bgcolor={bgLight} className={classes.workspaceToolbar}>
-              <Box display="flex" onClick={() => history.push('/')}>
-                <AppsIcon color="primary" fontSize="small" />
-                <Typography component="a" color="primary">See all workspaces</Typography>
-              </Box>
+            <Box display="flex" onClick={() => history.push('/')}>
+              <AppsIcon color="primary" fontSize="small" />
+              <Typography component="a" color="primary">See all workspaces</Typography>
+            </Box>
 
-              <Box display="flex" className="buttons">
-                { canEdit && <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
-                  Edit
-                </Button>}
-                <OSBSplitButton options={options} handleClick={openWithApp} />
-              </Box>
+            <Box display="flex" className="buttons">
+              {canEdit && <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => setEditWorkspaceOpen(true)}>
+                Edit
+              </Button>}
+              <OSBSplitButton options={options} handleClick={openWithApp} />
+            </Box>
           </Box>
           <Accordion className={classes.accordion}>
-              <AccordionSummary expandIcon={<ArrowRight />} aria-controls="panel1a-content" id="panel1a-header">
-                <Typography>Resources</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
-              </AccordionDetails>
+            <AccordionSummary expandIcon={<ArrowRight />} aria-controls="panel1a-content" id="panel1a-header">
+              <Typography>Resources</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+            </AccordionDetails>
           </Accordion>
 
           <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
@@ -229,24 +229,24 @@ export const WorkspacePage = (props: any) => {
               {(workspace.user && (workspace.user.firstName || workspace.user.lastName)) ? <Typography component="span" variant="subtitle2"><PersonIcon fontSize="small" /> By {workspace.user.firstName + ' ' + workspace.user.lastName}</Typography> : null}
               {workspace.timestampUpdated && <Typography component="span" variant="subtitle2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
             </Box>
-            <Box>{workspace.tags && workspace.tags.map(tagObject => { return <Chip label={tagObject.tag} key={tagObject.id}/>})}</Box>
+            <Box>{workspace.tags && workspace.tags.map(tagObject => { return <Chip label={tagObject.tag} key={tagObject.id} /> })}</Box>
           </Box>
         </Box>
 
         <Box className={`verticalFit ${classes.workspaceResourcesInformation}`} display="flex" flexDirection="row">
-          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => {setRefresh(!refresh)}} openResource={handleResourceClick} />
+          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
           <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100%" display="flex" flexDirection="column" alignItems="center">
-          <Box className={`inner-description`}  p={4}>
+            <Box className={`inner-description`} p={4}>
               {workspace.thumbnail &&
-              <>
-              <Box className={classes.imageBox}>
-                <img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`} alt="Workspace thumbnail"/>
-              </Box>
-              <Divider />
-              </>}
+                <>
+                  <Box className={classes.imageBox}>
+                    <img src={`/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()}`} alt="Workspace thumbnail" />
+                  </Box>
+                  <Divider />
+                </>}
 
               <Typography component="p" variant="body1"><MarkdownViewer text={workspace.description} /></Typography>
-              </Box>
+            </Box>
 
           </Box>
         </Box>
@@ -255,7 +255,7 @@ export const WorkspacePage = (props: any) => {
           title={"Edit workspace " + workspace.name}
           open={editWorkspaceOpen}
           closeAction={handleCloseEditWorkspace}
-          maxWidth="lg"
+          maxWidth="md"
         >
           <WorkspaceEditor workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
         </OSBDialog>}
