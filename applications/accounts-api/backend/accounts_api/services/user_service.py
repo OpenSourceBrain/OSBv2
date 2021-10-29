@@ -2,7 +2,7 @@ from datetime import datetime
 from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient
-
+from cloudharness import log
 
 class UserNotFound(Exception): pass
 
@@ -24,9 +24,10 @@ def get_user(userid: str) -> User:
     user = map_user(kc_user)
     try:
         current_user = client.get_current_user()
-        if current_user['id'] != userid:
+        if not current_user or current_user['id'] != userid:
             user.email = None
     except:  # user not provided
+        log.error("Error checking user", exc_info=True)
         user.email = None
     return user
 
@@ -35,8 +36,9 @@ def map_user(kc_user) -> User:
     user = User.from_dict(kc_user)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
+
     user.profiles = {k[len('profile--')::]: kc_user['attributes'][k][0]
-                     for k in kc_user['attributes'] if k.startswith('profile--')}
+                     for k in kc_user['attributes'] if k.startswith('profile--') and len(k) > len('profile--')}
     user.avatar = kc_user['attributes'].get('avatar', [None])[0]
     user.registration_date = datetime.fromtimestamp(kc_user['createdTimestamp'] / 1000)
     user.website = kc_user['attributes'].get('website', [None])[0]

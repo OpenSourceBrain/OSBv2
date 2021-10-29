@@ -225,7 +225,7 @@ export const UserPage = (props: any) => {
               </Box>
 
               {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">
-                {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.website}>{user.website}</Link></Typography>}
+                {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.website}>Website</Link></Typography>}
 
                 {icnf && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={icnf}>INCF Profile</Link></Typography>}
                 {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>Github Profile</Link></Typography>}

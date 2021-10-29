@@ -16,7 +16,14 @@ import { bgLight, paragraph } from "../../theme";
 import { User } from "../../apiclient/accounts";
 import { updateUser } from "../../service/UserService";
 import OSBDialog from "../common/OSBDialog";
+import Tooltip from "@material-ui/core/Tooltip";
 
+const GITHUB_PROFILE = 'github';
+const BITBUCKET_PROFILE = 'bitbucket';
+const TWITTER_PROFILE = 'twitter';
+const ORCID_PROFILE = 'orcid';
+const NEUROTREE_PROFILE = 'neurotree';
+const ICNF_PROFILE = 'icnf';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -53,51 +60,90 @@ interface UserEditProps {
 
 export default (props: UserEditProps) => {
     const classes = useStyles();
-    const [userProfileForm, setUserProfileForm] = React.useState<any>({...props.user});
+    const [userProfileForm, setUserProfileForm] = React.useState<any>({ ...props.user });
     delete userProfileForm.groups;
     const [loading, setLoading] = React.useState(false);
     const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
-    const [newLinkInformation, setNewLinkInformation] = React.useState<{linkFor: string, link: string}>({linkFor: '', link: ''});
-    const GITHUB_PROFILE = 'github';
-    const BITBUCKET_PROFILE = 'bitbucket';
-    const TWITTER_PROFILE = 'twitter';
-    const ORCID_PROFILE = 'orcid';
-    const NEUROTREE_PROFILE = 'neurotree';
-    const ICNF_PROFILE = 'icnf';
+    const [newLinkInformation, setNewLinkInformation] = React.useState<{ linkFor: string, link: string }>({ linkFor: '', link: '' });
 
-    const [userProfiles, setUserProfiles] = React.useState<{}>({
-        icnf: userProfileForm.profiles.icnf ? userProfileForm.profiles.icnf : undefined,
-        github: userProfileForm.profiles.github ? userProfileForm.profiles.github : undefined,
-        bitbucket: userProfileForm.profiles.bitBucket ? userProfileForm.profiles.bitBucket : undefined,
-        twitter: userProfileForm.profiles.twitter ? userProfileForm.profiles.twitter : undefined,
-        orcid: userProfileForm.profiles.orcid ? userProfileForm.profiles.orcid : undefined,
-        neurotree: userProfileForm.profiles.neurotree ? userProfileForm.profiles.neuroTree : undefined,
-        ...userProfileForm.profiles,
-    });
+
+    const profiles: any = {
+        [GITHUB_PROFILE]: null,
+        [BITBUCKET_PROFILE]: null,
+        [TWITTER_PROFILE]: null,
+        [ORCID_PROFILE]: null,
+        [ICNF_PROFILE]: null,
+        [NEUROTREE_PROFILE]: null,
+        ...props.user.profiles
+    };
+
+    const [error, setError] = React.useState<any>({});
+
 
     const setWebsiteURLField = (e: any) => {
-        setUserProfileForm({...userProfileForm, website: e.target.value });
+        const value = e.target.value;
+        try {
+            if (value) {
+                new URL(value);
+            }
+
+            setUserProfileForm({ ...userProfileForm, website: value });
+            setError({ ...error, website: undefined });
+        } catch (_) {
+            setError({ ...error, website: "Invalid URL" });
+        }
     }
 
     const setProfileURLField = (e: any) => {
-        setUserProfileForm({...userProfileForm, avatar: e.target.value });
+        const value = e.target.value;
+        try {
+            if (value) {
+                new URL(value);
+            }
+            setError({ ...error, avatar: undefined });
+            setUserProfileForm({ ...userProfileForm, avatar: value });
+        } catch (_) {
+            setError({ ...error, avatar: "Invalid URL" });
+        }
     }
 
     const setProfileDisplayName = (e: any) => {
-        setUserProfileForm({...userProfileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ')[1] : null });
+        setUserProfileForm({ ...userProfileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ')[1] : null });
     }
 
     const setProfileUserName = (e: any) => {
-        setUserProfileForm({...userProfileForm, username: e.target.value });
+        const value = e.target.value;
+        if (!value) {
+            setError({ ...error, username: "Username cannot be empty" });
+        } else {
+            setUserProfileForm({ ...userProfileForm, username: e.target.value });
+            setError({ ...error, username: undefined });
+        }
     }
 
     const setProfileEmailAddress = (e: any) => {
-        setUserProfileForm({...userProfileForm, email: e.target.value });
+        const value = e.target.value;
+        if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)) {
+            setError({ ...error, email: "Invalid Email" });
+        } else {
+            setUserProfileForm({ ...userProfileForm, email: e.target.value });
+            setError({ ...error, email: undefined });
+        }
+
     }
 
     const handleProfileLinkChange = (profileType: string, value: string) => {
-        setUserProfiles({...userProfiles, [profileType]: value });
-        setUserProfileForm({...userProfileForm, profiles: userProfiles });
+        try {
+            if (value) {
+                new URL(value);
+            }
+            setError({ ...error, [profileType]: undefined });
+            setUserProfileForm({ ...userProfileForm, profiles: { ...userProfileForm.profiles, [profileType]: value } });
+        } catch (_) {
+            setError({ ...error, [profileType]: `Please enter your ${profileType} profile address` });
+        }
+
+
     }
 
     const addNewProfileLink = (e: any) => {
@@ -111,8 +157,10 @@ export default (props: UserEditProps) => {
             console.log('user should be updated');
             setLoading(false);
             props.closeHandler(updatedUser);
-        }).catch(() => {
-            console.log('error updating user');
+        }).catch((e) => {
+            setLoading(false);
+            console.log('error updating user', e);
+            setError({ ...error, general: `An error occurred updating the user. Please try again later.` })
         })
     }
 
@@ -125,60 +173,61 @@ export default (props: UserEditProps) => {
                     </Avatar>
                     <Box width="100%">
                         <Typography component="label" variant="h6">Profile picture URL</Typography>
-                        <TextField id="profilePictureURL" fullWidth={true} onChange={setProfileURLField} variant="outlined" defaultValue={userProfileForm.avatar} />
+                        <TextField error={error.avatar} helperText={error.avatar} id="profilePictureURL" fullWidth={true} onChange={setProfileURLField} variant="outlined" defaultValue={userProfileForm.avatar} />
                     </Box>
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Display Name</Typography>
-                    <TextField fullWidth={true} onChange={setProfileDisplayName} variant="outlined" defaultValue={userProfileForm.firstName + ' ' + userProfileForm.lastName} />
+                    <TextField error={error.firstName} helperText={error.firstName} fullWidth={true} onChange={setProfileDisplayName} variant="outlined" defaultValue={userProfileForm.firstName + ' ' + userProfileForm.lastName} />
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Username</Typography>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={userProfileForm.username} InputProps={{
+                    <TextField error={error.username} helperText={error.username} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={userProfileForm.username} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
-                                <AlternateEmail fontSize="small"/>
+                                <AlternateEmail fontSize="small" />
                             </Box>
                         )
-                    }}/>
+                    }} />
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Email address</Typography>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileEmailAddress} variant="outlined" defaultValue={userProfileForm.email} InputProps={{
+                    <TextField error={error.email} helperText={error.email} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileEmailAddress} variant="outlined" defaultValue={userProfileForm.email} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
-                                <EmailIcon fontSize="small"/>
+                                <EmailIcon fontSize="small" />
                             </Box>
                         )
-                    }}/>
+                    }} />
                     <Typography component="span" variant="h6" style={{ fontWeight: 'normal' }}>Your email address is private. Other users can't see it.</Typography>
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Links</Typography>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={userProfileForm.website} placeholder="Website link" InputProps={{
-                        startAdornment: (
-                            <Box className={classes.inputIconBox}>
-                                <LinkIcon fontSize="small"/>
-                            </Box>
-                        )
-                    }}/>
-
+                    <Tooltip title="Website link">
+                        <TextField error={error.website} helperText={error.website} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={userProfileForm.website} placeholder="Website link" InputProps={{
+                            startAdornment: (
+                                <Box className={classes.inputIconBox}>
+                                    <LinkIcon fontSize="small" />
+                                </Box>
+                            )
+                        }} />
+                    </Tooltip>
                     {
-                        Object.entries(userProfiles).map((profile => {
+                        Object.entries(profiles).map((profile => {
                             const profileType = profile[0];
                             const profileLinkOrId = profile[1];
-                            return <TextField key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
-                            placeholder={profileType === ICNF_PROFILE ? "ICNF link" : profileType === GITHUB_PROFILE ? "Github link" : profileType === BITBUCKET_PROFILE ? "Bitbucket link" : profileType === TWITTER_PROFILE ? "Twitter link" : profileType === ORCID_PROFILE ? "Orcid ID" : profileType === NEUROTREE_PROFILE ? "Neurotree ID" : "" }
-                            onChange={(event) => {handleProfileLinkChange(profileType, event.target.value)}}
-                            InputProps={{
-                                startAdornment: (
-                                    <Box className={classes.inputIconBox}>
-                                        {
-                                            profileType === GITHUB_PROFILE ? <GitHubIcon fontSize="small"/> : profileType === BITBUCKET_PROFILE ? <BitBucketIcon /> : profileType === TWITTER_PROFILE ? <TwitterIcon fontSize="small"/> : <LinkIcon fontSize="small" />
-                                        }
-                                    </Box>
-                                )
-                            }}/>
+                            return <Tooltip title={`${profileType} link`}><TextField error={error[profileType]} helperText={error[profileType]} key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
+                                placeholder={`${profileType} profile link`}
+                                onChange={(event) => { handleProfileLinkChange(profileType, event.target.value) }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <Box className={classes.inputIconBox}>
+                                            {
+                                                profileType === GITHUB_PROFILE ? <GitHubIcon fontSize="small" /> : profileType === BITBUCKET_PROFILE ? <BitBucketIcon /> : profileType === TWITTER_PROFILE ? <TwitterIcon fontSize="small" /> : <LinkIcon fontSize="small" />
+                                            }
+                                        </Box>
+                                    )
+                                }} /></Tooltip>
                         }))
                     }
 
@@ -187,9 +236,11 @@ export default (props: UserEditProps) => {
                     <Button variant="outlined" color="primary" fullWidth={true} onClick={() => setAddLinkDialogOpen(true)}><AddIcon /> Add link</Button>
                 </Box>
             </Box>
+
             <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
+                {error.general && <Typography color="error">{error.general}</Typography>}
                 <Button color="primary" onClick={props.closeHandler}>Cancel</Button>
-                <Button variant="contained" color="primary" disabled={loading} onClick={handleUserUpdate}>Save Changes</Button>
+                <Button variant="contained" color="primary" disabled={loading || Object.values(error).filter(v => v).length > 0} onClick={handleUserUpdate}>Save Changes</Button>
                 {loading &&
                     <CircularProgress
                         size={24}
@@ -205,19 +256,19 @@ export default (props: UserEditProps) => {
             </Box>
             <OSBDialog open={addLinkDialogOpen} title="Add new link" closeAction={() => setAddLinkDialogOpen(false)}>
                 <Box p={3}>
-                    <TextField fullWidth={true} margin="normal" variant="outlined" onChange={(e) => setNewLinkInformation({...newLinkInformation, linkFor: e.target.value.replace(/\s+/g, '')})} placeholder="What is this link for?"/>
-                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="normal" variant="outlined" onChange={(e) => setNewLinkInformation({...newLinkInformation, link: e.target.value})} placeholder="Link" InputProps={{
+                    <TextField fullWidth={true} margin="normal" variant="outlined" onChange={(e) => setNewLinkInformation({ ...newLinkInformation, linkFor: e.target.value.replace(/\s+/g, '') })} placeholder="What is this link for?" />
+                    <TextField className={classes.textFieldWithIcon} fullWidth={true} margin="normal" variant="outlined" onChange={(e) => setNewLinkInformation({ ...newLinkInformation, link: e.target.value })} placeholder="Link" InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <LinkIcon fontSize="small" />
                             </Box>
                         )
-                    }}/>
+                    }} />
                 </Box>
                 <Box textAlign="right" bgcolor={bgLight} mt={1} p={2}>
                     <Button color="primary" onClick={() => setAddLinkDialogOpen(false)}>Cancel</Button>
                     <Button disabled={newLinkInformation.linkFor.length < 0 || newLinkInformation.link.length < 0}
-                    variant="contained" color="primary" onClick={addNewProfileLink}>Add new link</Button>
+                        variant="contained" color="primary" onClick={addNewProfileLink}>Add new link</Button>
                 </Box>
             </OSBDialog>
         </>
