@@ -18,7 +18,7 @@ import { updateUser } from "../../service/UserService";
 import OSBDialog from "../common/OSBDialog";
 
 
-const useStyeles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     avatar: {
         alignSelf: 'center',
         height: '70px',
@@ -47,12 +47,12 @@ const useStyeles = makeStyles((theme) => ({
 }))
 
 interface UserEditProps {
-    closeHandler: () => void;
+    closeHandler: (updatedUser: User) => void;
     user: User;
 }
 
 export default (props: UserEditProps) => {
-    const classes = useStyeles();
+    const classes = useStyles();
     const [userProfileForm, setUserProfileForm] = React.useState<any>({...props.user});
     delete userProfileForm.groups;
     const [loading, setLoading] = React.useState(false);
@@ -107,13 +107,14 @@ export default (props: UserEditProps) => {
 
     const handleUserUpdate = (e: any) => {
         setLoading(true);
-        updateUser(userProfileForm).then(() => {
+        updateUser(userProfileForm).then((updatedUser) => {
             console.log('user should be updated');
             setLoading(false);
+            props.closeHandler(updatedUser);
         }).catch(() => {
             console.log('error updating user');
         })
-        props.closeHandler();
+        
     }
 
     return (

@@ -36,7 +36,7 @@ import Container from "@material-ui/core/Container";
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
-import { getUser } from "../service/UserService";
+import { getUser, updateUser } from "../service/UserService";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -165,7 +165,7 @@ export const UserPage = (props: any) => {
   const [tabValue, setTabValue] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
   const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
-  const [profileEditDialogOpen, setProfielEditDialogOpen] = React.useState(false);
+  const [profileEditDialogOpen, setProfileEditDialogOpen] = React.useState(false);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [user, setUser] = React.useState<User>(null);
   const classes = useStyles();
@@ -197,6 +197,10 @@ export const UserPage = (props: any) => {
   }
   const { icnf, bitbucket, github, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
+  const updateUser = (u: User) => {
+    setUser(u);
+    setProfileEditDialogOpen(false);
+  }
   return (
     <Box className="verticalFit">
 
@@ -212,7 +216,7 @@ export const UserPage = (props: any) => {
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
-              {props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfielEditDialogOpen(true)}>Edit My Profile</Button>}
+              {props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
 
               <Box display="flex" flexDirection="row" color={paragraph}>
                 {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{workspaces.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small" /></> : <CircularProgress size="1rem" />}
@@ -279,9 +283,9 @@ export const UserPage = (props: any) => {
         </Container>
 
       </Box>
-      <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfielEditDialogOpen(false)}>
-        <UserEditor user={user} closeHandler={() => setProfielEditDialogOpen(false)} />
-      </OSBDialog>
+      {props.user.id === user.id && <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)}>
+        <UserEditor user={user} closeHandler={updateUser} />
+      </OSBDialog>}
     </Box >
   )
 }
