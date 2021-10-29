@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -84,7 +85,7 @@ export default (props: UserEditProps) => {
         const value = e.target.value;
         try {
             if (value) {
-                new URL(value);
+                const _ = new URL(value);
             }
 
             setUserProfileForm({ ...userProfileForm, website: value });
@@ -98,7 +99,7 @@ export default (props: UserEditProps) => {
         const value = e.target.value;
         try {
             if (value) {
-                new URL(value);
+                const _ = new URL(value);
             }
             setError({ ...error, avatar: undefined });
             setUserProfileForm({ ...userProfileForm, avatar: value });
@@ -135,7 +136,7 @@ export default (props: UserEditProps) => {
     const handleProfileLinkChange = (profileType: string, value: string) => {
         try {
             if (value) {
-                new URL(value);
+                const _ = new URL(value);
             }
             setError({ ...error, [profileType]: undefined });
             setUserProfileForm({ ...userProfileForm, profiles: { ...userProfileForm.profiles, [profileType]: value } });
@@ -157,9 +158,9 @@ export default (props: UserEditProps) => {
             console.log('user should be updated');
             setLoading(false);
             props.closeHandler(updatedUser);
-        }).catch((e) => {
+        }).catch((err) => {
             setLoading(false);
-            console.log('error updating user', e);
+            console.log('error updating user', err);
             setError({ ...error, general: `An error occurred updating the user. Please try again later.` })
         })
     }
