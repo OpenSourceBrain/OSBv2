@@ -187,7 +187,7 @@ export default (props: RepositoriesProps) => {
   const [expanded, setExpanded] = React.useState(false);
   const gridRef = React.useRef(null);
 
-  const handleExpandClick = (exp: boolean) => {
+  const handleExpandClick = () => {
     setExpanded(!expanded);
   }
 
@@ -206,8 +206,8 @@ export default (props: RepositoriesProps) => {
           >
             <Grid item={true} xs={12} sm={3} lg={5}
               ref={gridRef}>
-              <Box className="col">
-                <Typography component="strong" onClick={() => props.handleRepositoryClick(repository.id)}>
+              <Box className="col" onClick={(e: any) => { console.log(e); if (e.target.tagName.toLowerCase() !== 'a') props.handleRepositoryClick(repository.id) }}>
+                < Typography component="strong" >
                   {repository.name}
                 </Typography>
                 {repository.summary && <ShowMoreText

@@ -1,10 +1,6 @@
 import * as React from "react";
 
 import Typography from "@material-ui/core/Typography";
-
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SearchIcon from "@material-ui/icons/Search";
 import Link from "@material-ui/core/Link";
 import Avatar from "@material-ui/core/Avatar";
@@ -18,6 +14,14 @@ import FolderIcon from "@material-ui/icons/Folder";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import prettyBytes from 'pretty-bytes';
+
 
 import { OSBRepository, RepositoryResourceNode } from "../../apiclient/workspaces";
 import {
@@ -65,13 +69,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
 
-    "& .flex-grow-1": {
-      borderBottom: `1px solid ${bgRegular}`,
-      borderTop: `1px solid ${bgRegular}`,
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-      marginLeft: theme.spacing(2),
-    },
     "& .MuiListItemIcon-root": {
       minWidth: 1,
     },
@@ -224,56 +221,64 @@ export default ({ repository, checkedChanged, backAction, refresh }: { repositor
     />
 
     <Box mt={1} className="scrollbar">
-      <List className={classes.list}>
-        {currentPath.slice(-1)[0].children.filter(e => !filter || e.resource.name.toLowerCase().includes(filter)).map((value, index) => {
-          const labelId = `checkbox-list-label-${value}`;
+      <TableContainer component="div">
+        <Table className={classes.list} aria-label="repository resources">
+          <TableBody>
+            {currentPath.slice(-1)[0].children.filter(e => !filter || e.resource.name.toLowerCase().includes(filter)).map((value, index) => {
+              const labelId = `checkbox-list-label-${value}`;
 
-          const splitfilename = value.resource.name.split(".");
-          const extension = splitfilename.length > 1 ? splitfilename.pop() : null;
-          const filename = splitfilename.join('.');
-          const isFolder = value.children && value.children.length;
-          return (
-            <ListItem
-              key={value.resource.name}
-              role={undefined}
-              dense={true}
-              button={true}
-              onClick={handleToggle(value)}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={Boolean(checked[value.resource.path])}
-                  tabIndex={-1}
-                  disableRipple={true}
-                  inputProps={{ "aria-labelledby": labelId }}
-                  onChange={(e) => onCheck(e.target.checked, value)}
-                />
-              </ListItemIcon>
-              <Box
-                className="flex-grow-1"
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                onClick={isFolder ? () => addToCurrentPath(value) : null}
-              >
-                <Box display="flex" alignItems="center">
-                  <Box pr={1} className={'icon' + (!isFolder ? '' : ' file')}>
-                    {isFolder ? <FolderIcon color="primary" /> : <InsertDriveFileIcon color="disabled" />}
-                  </Box>
-                  <Typography component="p">
-                    {filename}
-                    {extension && <Typography component="span">.{extension}</Typography>}
-                  </Typography>
-                </Box>
-                {/* <Typography component="strong">
-      {value.resource.}
-      </Typography> */}
-              </Box>
-            </ListItem>
-          );
-        })}
-      </List>
+              const splitfilename = value.resource.name.split(".");
+              const extension = splitfilename.length > 1 ? splitfilename.pop() : null;
+              const filename = splitfilename.join('.');
+              const isFolder = value.children && value.children.length;
+              return (
+                <TableRow
+                  key={value.resource.name}
+                  onClick={handleToggle(value)}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      edge="start"
+                      checked={Boolean(checked[value.resource.path])}
+                      tabIndex={-1}
+                      disableRipple={true}
+                      inputProps={{ "aria-labelledby": labelId }}
+                      onChange={(e) => onCheck(e.target.checked, value)}
+                    />
+                  </TableCell>
+                  <TableCell component="th" scope="row" padding="none">
+                    <Box
+                      display="flex"
+                      alignItems="left"
+                      alignContent="center"
+                      justifyContent="space-between"
+                      pt={2}
+                      pb={2}
+                      onClick={isFolder ? () => addToCurrentPath(value) : null}
+                    >
+                      <Box display="flex" alignItems="center">
+                        <Box pr={1} display="flex" alignItems="center" alignContent="center" className={'icon' + (!isFolder ? '' : ' file')}>
+                          {isFolder ? <FolderIcon color="primary" /> : <InsertDriveFileIcon color="disabled" />}
+                        </Box>
+                        <Typography component="p">
+                          {filename}
+                          {extension && <Typography component="span">.{extension}</Typography>}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  {
+                    value.resource.size && <TableCell>{prettyBytes(value.resource.size)}</TableCell>
+                  }
+                  {
+                    value.resource.timestampModified && <TableCell>{value.resource.timestampModified.toLocaleDateString('en-US')}</TableCell>
+                  }
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   </>
 }
