@@ -45,6 +45,9 @@ export const App = (props: any) => {
                 <ProtectedRoute exact={true} path="/workspace/open/:workspaceId/:app">
                   <WorkspaceOpenPage />
                 </ProtectedRoute>
+                <ProtectedRoute exact={true} path="/workspace/open/:workspaceId">
+                  <WorkspaceOpenPage />
+                </ProtectedRoute>
                 <Route exact={true} path="/repositories">
                   <RepositoriesPage />
                 </Route>
