@@ -284,7 +284,7 @@ export const UserPage = (props: any) => {
         </Container>
 
       </Box>
-      {props.user.id === user.id && <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)}>
+      {props.user && props.user.id === user.id && <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)}>
         <UserEditor user={user} closeHandler={handleUpdateUser} />
       </OSBDialog>}
     </Box >
