@@ -217,7 +217,7 @@ export const UserPage = (props: any) => {
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
-              {props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
+              {props.user && props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
 
               <Box display="flex" flexDirection="row" color={paragraph}>
                 {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{workspaces.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small" /></> : <CircularProgress size="1rem" />}

@@ -38,7 +38,7 @@ def map_user(kc_user) -> User:
         kc_user['attributes'] = {}
 
     user.profiles = {k[len('profile--')::]: kc_user['attributes'][k][0]
-                     for k in kc_user['attributes'] if k.startswith('profile--') and len(k) > len('profile--')}
+                     for k in kc_user['attributes'] if kc_user['attributes'][k] and len(k) > len('profile--') and k.startswith('profile--') }
     user.avatar = kc_user['attributes'].get('avatar', [None])[0]
     user.registration_date = datetime.fromtimestamp(kc_user['createdTimestamp'] / 1000)
     user.website = kc_user['attributes'].get('website', [None])[0]
