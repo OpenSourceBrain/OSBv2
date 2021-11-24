@@ -8,7 +8,7 @@ FROM node:15 as jsbuild
 
 
 ENV FOLDER=nwb-explorer
-RUN echo "cache 2021-07-01"
+RUN echo "cache 2021-11-24"
 
 
 WORKDIR $FOLDER/webapp
