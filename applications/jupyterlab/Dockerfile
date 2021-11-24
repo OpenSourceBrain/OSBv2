@@ -46,8 +46,8 @@ RUN pip install torch==1.8.0 --no-cache-dir
 
 ####  Octave etc.
 
-RUN apt-get install octave -y
-RUN pip install octave_kernel --no-cache-dir
+#RUN apt-get install octave -y   
+#RUN pip install octave_kernel --no-cache-dir
 
 
 ################################################################################
