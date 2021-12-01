@@ -4,9 +4,8 @@ from cloudharness import log as logger
 
 import workspaces.repository as repos
 # import copy_resource, create_copy_origin_task
-import workspaces.service.osbrepository.osbrepository as osbrepository_service
+from workspaces.service.osbrepository import osbrepository_service
 import workspaces.service.workflow as workflow
-from workspaces.service.osbrepository.osbrepository import copy_resource
 from workspaces.models.resource_status import ResourceStatus
 
 

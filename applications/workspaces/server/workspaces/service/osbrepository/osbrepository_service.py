@@ -2,9 +2,8 @@ import json
 
 from cloudharness import log as logger
 
-import workspaces.repository as repos
 
-from .adapters import DandiAdapter, FigShareAdapter, GitHubAdapter
+from workspaces.service.osbrepository.adapters import DandiAdapter, FigShareAdapter, GitHubAdapter
 
 
 def get_repository_adapter(osbrepository=None, repository_type=None, uri=None, *args, **kwargs):
@@ -21,7 +20,8 @@ def get_repository_adapter(osbrepository=None, repository_type=None, uri=None, *
 
 
 def get_contexts(uri, repository_type):
-    repository_service = get_repository_adapter(repository_type=repository_type, uri=uri)
+    repository_service = get_repository_adapter(
+        repository_type=repository_type, uri=uri)
     return repository_service.get_contexts()
 
 
@@ -38,6 +38,7 @@ def get_description(osbrepository, context=None):
         context = osbrepository.default_context
     return repository_service.get_description(context)
 
+
 def get_tags(osbrepository, context=None):
     repository_service = get_repository_adapter(osbrepository=osbrepository)
     if not context:
@@ -46,8 +47,10 @@ def get_tags(osbrepository, context=None):
 
 
 def copy_resource(workspace_resource):
+    import workspaces.repository as repos
     origin = json.loads(workspace_resource.origin)
-    osbrepository = repos.OSBRepositoryRepository().get(id=origin.get("osbrepository_id"))
+    osbrepository = repos.OSBRepositoryRepository().get(
+        id=origin.get("osbrepository_id"))
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
     repository_adapter.copy_resource(workspace_resource, origin)
 

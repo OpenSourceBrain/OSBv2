@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-import workspaces.service.osbrepository.osbrepository as osbrepository_service
+
 
 from types import SimpleNamespace
 
@@ -13,9 +13,7 @@ from sqlalchemy.sql import func
 
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
-from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
-from workspaces.service.kubernetes import create_persistent_volume_claim
-from workspaces.service.auth import get_auth_client
+
 from .base_model_repository import BaseModelRepository
 from .database import db
 from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag, \
@@ -29,7 +27,7 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 class OwnerModel:
     @property
     def keycloak_user_id(self):
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         try:
             return get_auth_client().get_current_user().get("id", None)
         except Exception as e:
@@ -51,10 +49,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def get_pvc_name(self, workspace_id):
-        return f"workspace-{workspace_id}"
-
     def get(self, id):
+
+        from workspaces.service.auth import get_auth_client  # FIXME
         workspace = self._get(id)
         if workspace and (workspace.publicable or
                           (workspace.user_id and workspace.user_id == self.keycloak_user_id) or
@@ -65,7 +62,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def search_qs(self, filter=None, q=None, tags=None, *args, **kwargs):
         q_base = self.model.query
         logger.debug(f"filter: {filter}")
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         keycloak_user_id = self.keycloak_user_id
         if tags:
             q_base = q_base.join(self.model.tags).filter(
@@ -112,6 +109,8 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
+
+        from workspaces.service.kubernetes import create_persistent_volume_claim  # FIXME
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
         create_persistent_volume_claim(name=self.get_pvc_name(
@@ -125,7 +124,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return workspace
 
     def user(self, workspace: TWorkspaceEntity):
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         try:
 
             user = get_auth_client().get_user(workspace.user_id)
@@ -145,7 +144,9 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     calculated_fields = ["user", "content_types_list"]
 
     def pre_commit(self, osbrepository):
-        # TODO: get tags from the repository
+
+        # FIXME should not call service layer from repository layer
+        from workspaces.service.osbrepository import osbrepository_service
         tags = osbrepository_service.get_tags(osbrepository)
         if tags:
             for tag in tags:
@@ -168,7 +169,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         try:
             user = get_auth_client().get_user(repository.user_id)
             return User(
@@ -271,6 +272,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
         return workspace_resource
 
     def post_commit(self, workspace_resource):
+        from workspaces.service.etlservice import copy_workspace_resource
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f"Post Commit for workspace resource id: {workspace_resource.id}")
@@ -314,6 +316,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def delete(self, id, delete_file_from_pvc=True):
         """Delete an object from the repository."""
+        from workspaces.service.etlservice import delete_workspace_resource
         workspace_resource = self.get(id)
         super().delete(id)
 
