@@ -1,7 +1,7 @@
 import uuid
 
 from cloudharness import log as logger
-
+from workspaces.utils import get_pvc_name
 import workspaces.service.events as events
 
 try:
@@ -41,10 +41,6 @@ def delete_resource(workspace_resource, pvc_name, resource_path: str):
             "workspace", workspace_resource.workspace_id, True),
     )
     workflow = op.execute()
-
-
-def get_pvc_name(self, workspace_id):
-    return f"workspace-{workspace_id}"
 
 
 def run_copy_tasks(workspace_id, tasks):

@@ -10,6 +10,7 @@ from cloudharness.service import pvc
 from sqlalchemy import desc, or_
 from sqlalchemy.sql import func
 
+from workspaces.utils import get_pvc_name
 
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
@@ -108,13 +109,14 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         workspace.tags = insert_or_get_tags(workspace.tags)
         return super().pre_commit(workspace)
 
-    def post_commit(self, workspace):
-
+    def post_commit(self, workspace: WorkspaceEntity):
+        # FIXME move this in the service layer
         from workspaces.service.kubernetes import create_persistent_volume_claim  # FIXME
+        from workspaces.service.user_quota_service import get_pvc_size
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
-        create_persistent_volume_claim(name=self.get_pvc_name(
-            workspace.id), size="2Gi", logger=logger)
+        create_persistent_volume_claim(name=get_pvc_name(
+            workspace.id), size=get_pvc_size(workspace.user_id), logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
