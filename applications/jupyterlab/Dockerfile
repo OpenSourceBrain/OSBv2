@@ -21,6 +21,7 @@ RUN pip install git+https://github.com/NeuralEnsemble/neurotune.git --no-cache-d
 ####  NEURON & NetPyNE
 
 RUN pip install neuron --no-cache-dir
+ENV NEURON_HOME=/opt/conda
 
 # Install specific version of NetPyNE
 ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
@@ -42,11 +43,12 @@ RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big...
 ####  Machine learning libs
 
 RUN pip install torch==1.8.0 --no-cache-dir
+RUN pip install git+https://github.com/SheffieldML/GPy.git@devel # for MDF
 
 
 ####  Octave etc.
 
-#RUN apt-get install octave -y   
+#RUN apt-get install octave -y
 #RUN pip install octave_kernel --no-cache-dir
 
 
