@@ -299,19 +299,19 @@ export const RepositoryPage = (props: any) => {
               </Typography>
             </Box>
           </Box>
-          {user &&
-            <Box>
-              <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
-                <AddIcon />
-                Add to existing workspace
-              </Button>
-              <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
-                <AddIcon />
-                Create new workspace
-              </Button>
-              <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({ ...repository, ...r })} />
-            </Box>
-          }
+
+          <Box>
+            <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
+              <AddIcon />
+              Add to existing workspace
+            </Button>
+            <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
+              <AddIcon />
+              Create new workspace
+            </Button>
+            <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({ ...repository, ...r })} />
+          </Box>
+
         </Box>
 
         <Box className="main-content verticalFit">
@@ -447,11 +447,11 @@ export const RepositoryPage = (props: any) => {
         }
         <ExistingWorkspaceSelector setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
       </OSBDialog>}
-      {user &&
-        <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
-          <NewWorkspaceAskUser />
-        </OSBDialog>
-      }
+
+      <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
+        <NewWorkspaceAskUser />
+      </OSBDialog>
+
       {/* Confirm to user if workspace creation/modification was successful */}
       {
         showConfirmationDialog && <Dialog open={showConfirmationDialog}
