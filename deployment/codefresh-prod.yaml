@@ -55,10 +55,13 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
-    - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
     - CUSTOM_apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
     - CUSTOM_apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+    - CUSTOM_apps_sentry_harness_secrets_email-server=${{EMAIL-SERVER}}
+    - CUSTOM_apps_sentry_harness_secrets_email-user=${{EMAIL-USER}}
+    - CUSTOM_apps_sentry_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+    - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+    - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
   approval:
     type: pending-approval
     stage: publish
@@ -107,42 +110,6 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-scan-workspace:
-        stage: publish
-        type: push
-        title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-github-copy:
-        stage: publish
-        type: push
-        title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-dandi-copy:
-        stage: publish
-        type: push
-        title: Workspaces dandi copy
-        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces:
-        stage: publish
-        type: push
-        title: Workspaces
-        candidate: '${{REGISTRY}}/osb/workspaces:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_notifications:
         stage: publish
         type: push
@@ -170,29 +137,11 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
+      publish_sentry:
         stage: publish
         type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts-api:
-        stage: publish
-        type: push
-        title: Accounts api
-        candidate: '${{REGISTRY}}/osb/accounts-api:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_osb-portal:
-        stage: publish
-        type: push
-        title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{DEPLOYMENT_TAG}}'
+        title: Sentry
+        candidate: '${{REGISTRY}}/osb/sentry:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -206,11 +155,20 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
+      publish_samples:
         stage: publish
         type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{DEPLOYMENT_TAG}}'
+        title: Samples
+        candidate: '${{REGISTRY}}/osb/samples:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_samples-sum:
+        stage: publish
+        type: push
+        title: Samples sum
+        candidate: '${{REGISTRY}}/osb/samples-sum:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -220,15 +178,6 @@ steps:
         type: push
         title: Common
         candidate: '${{REGISTRY}}/osb/common:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterlab:
-        stage: publish
-        type: push
-        title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -292,6 +241,87 @@ steps:
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/osb/workflows:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-scan-workspace:
+        stage: publish
+        type: push
+        title: Workspaces scan workspace
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-github-copy:
+        stage: publish
+        type: push
+        title: Workspaces github copy
+        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-dandi-copy:
+        stage: publish
+        type: push
+        title: Workspaces dandi copy
+        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces:
+        stage: publish
+        type: push
+        title: Workspaces
+        candidate: '${{REGISTRY}}/osb/workspaces:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_netpyne:
+        stage: publish
+        type: push
+        title: Netpyne
+        candidate: '${{REGISTRY}}/osb/netpyne:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_accounts-api:
+        stage: publish
+        type: push
+        title: Accounts api
+        candidate: '${{REGISTRY}}/osb/accounts-api:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_osb-portal:
+        stage: publish
+        type: push
+        title: Osb portal
+        candidate: '${{REGISTRY}}/osb/osb-portal:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nwb-explorer:
+        stage: publish
+        type: push
+        title: Nwb explorer
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_jupyterlab:
+        stage: publish
+        type: push
+        title: Jupyterlab
+        candidate: '${{REGISTRY}}/osb/jupyterlab:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
