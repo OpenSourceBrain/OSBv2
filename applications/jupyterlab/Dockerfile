@@ -25,7 +25,7 @@ RUN pip install neuron --no-cache-dir
 # Install specific version of NetPyNE
 ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
 ENV NETPYNE_CORE_BRANCH_TAG=osbv2
-RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
+RUN git clone --depth=1 $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
 RUN cd netpyne ; python setup.py install; cd -
 
 
