@@ -31,7 +31,7 @@ RUN cd netpyne ; python setup.py install; cd -
 
 ####  Other simulators
 
-RUN pip install brian2 --no-cache-dir
+RUN pip install brian2 brian2tools --no-cache-dir
 
 
 ####  NWB
