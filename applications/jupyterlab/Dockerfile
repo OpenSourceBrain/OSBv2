@@ -3,7 +3,6 @@ USER root
 
 
 RUN apt-get update
-RUN apt-get install python-lxml -y
 RUN apt-get install graphviz -y
 RUN apt-get install openjdk-11-jdk -y
 
