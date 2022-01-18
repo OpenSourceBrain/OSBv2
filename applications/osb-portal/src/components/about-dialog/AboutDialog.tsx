@@ -32,7 +32,7 @@ export const AboutContent = (props: any) => {
     <Paper className={classes.paper}>
       <img width="250" src={logoOSB} />
       <Box m={1}>
-        <Link variant="h5" style={{ display: 'block' }} href="https://github.com/OpenSourcBrain/OSBv2" target="_blank">
+        <Link variant="h5" style={{ display: 'block' }} href="https://github.com/OpenSourceBrain/OSBv2" target="_blank">
           Open Source Brain v2.0.
         </Link>
       </Box>
