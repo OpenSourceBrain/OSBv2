@@ -9,6 +9,8 @@ import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/WorkspaceDrawer'
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
+import { AboutDialog as aboutDialog } from './about-dialog/AboutDialog'
+import { MainMenu as mainMenu } from './menu/MainMenu'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
 import workspaceOpenPage from "../pages/WorkspaceOpenPage";
@@ -21,6 +23,7 @@ import * as WorkspacesActions from '../store/actions/workspaces'
 import { userLogin, userLogout, userRegister } from '../store/actions/user';
 import { toggleDrawer } from '../store/actions/drawer';
 import { setError } from '../store/actions/error';
+import { openDialog, closeDialog } from '../store/actions/aboutdialog'
 import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 import { AnyAction, Dispatch } from 'redux';
 
@@ -78,7 +81,7 @@ const dispatchErrorProps = {
 
 const dispatchTagsProps = {
   retrieveAllTags,
-}
+};
 
 const mapTagsToProps = (state: RootState) => ({
   tags: state.tags,
@@ -87,7 +90,18 @@ const mapTagsToProps = (state: RootState) => ({
 const mapUserAndTagsToProps = (state: RootState) => ({
   user: state.user,
   tags: state.tags,
-})
+});
+
+const mapAboutDialogToProps = (state: RootState) => ({
+    aboutDialog: state.aboutDialog,
+});
+
+const dispatchAboutDialogProps = {
+    closeDialog,
+};
+const dispatchMainMenuProps = {
+    openDialog,
+};
 
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
 export const WorkspaceCard = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspaceCard);
@@ -102,6 +116,8 @@ export const WorkspaceEditor = connect(mapTagsToProps, dispatchTagsProps)(worksp
 
 export const App = connect(mapErrorStateToProps, null)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
+export const AboutDialog = connect(mapAboutDialogToProps, dispatchAboutDialogProps)(aboutDialog)
+export const MainMenu = connect(null, dispatchMainMenuProps)(mainMenu)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
 export const WorkspaceOpenPage = connect(null, dispatchWorkspaceProps)(workspaceOpenPage);
