@@ -1,7 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
-import MainMenu from "../components/menu/MainMenu";
+import { MainMenu } from "../components/index";
 import Box from "@material-ui/core/Box";
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";

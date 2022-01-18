@@ -4,6 +4,7 @@ import user from './reducers/user'
 import drawer from './reducers/drawer';
 import error from './reducers/error';
 import tags from './reducers/tags';
+import aboutDialog from './reducers/aboutdialog'
 
 const rootReducer = combineReducers({
   drawer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   user,
   workspaces,
   tags,
+  aboutDialog,
 })
 
 

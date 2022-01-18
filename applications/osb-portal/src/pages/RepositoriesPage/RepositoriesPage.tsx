@@ -25,8 +25,7 @@ import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
-import { Repositories } from "../../components/index";
-import MainMenu from "../../components/menu/MainMenu";
+import { Repositories, MainMenu } from "../../components/index";
 import OSBPagination from "../../components/common/OSBPagination";
 import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
 import { FormControl, FormControlLabel, FormGroup, InputAdornment } from "@material-ui/core";

@@ -24,7 +24,7 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ShowMoreText from "react-show-more-text";
 
 import MarkdownViewer from "../components/common/MarkdownViewer";
-import MainMenu from "../components/menu/MainMenu";
+import { MainMenu } from "../components/index";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";
