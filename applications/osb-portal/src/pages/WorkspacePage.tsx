@@ -133,12 +133,10 @@ const useStyles = makeStyles((theme: any) => ({
   imageBox: {
     width: '100%',
     maxHeight: 300,
-    overflow: "hidden",
     "& img": {
+      height: 300,
       width: "100%",
-      position: "relative",
-      top: "50%",
-      transform: "translateY(-50%)"
+      objectFit: "contain",
     }
   }
 }));
