@@ -41,9 +41,10 @@ harness:
       - common
       - workflows
       - notifications
-      - accounts
+      
     hard:
       - argo
+      - accounts
   database:
     auto: false
     name: workspaces-postgres-host
