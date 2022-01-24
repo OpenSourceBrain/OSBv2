@@ -39,9 +39,9 @@ harness:
     soft:
       - events
       - common
-      - accounts
       - workflows
       - notifications
+      - accounts
     hard:
       - argo
   database:
