@@ -132,7 +132,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       const tags = tagsInformation.tags.map(tagObject => {
         return tagObject.tag;
       });
-      setSearchTagOptions(tags);
+      setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
     });
   }, [])
 
