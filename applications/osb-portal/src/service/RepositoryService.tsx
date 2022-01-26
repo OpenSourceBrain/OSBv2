@@ -92,6 +92,10 @@ class RepositoryService {
   }
 
   async getAllTags(page?: number, perPage?: number, q?: string): Promise<InlineResponse2003> {
+    if ((page === undefined) && (perPage === undefined)) {
+      page = 1;
+      perPage = 9999;
+    }
     const requestParameters = { page, perPage, q };
     return this.workspacesApi.tagGet(requestParameters);
   }
