@@ -332,7 +332,7 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                     {
                       repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                        By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                        Added by {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampCreated && ` on ${repository.timestampCreated.toDateString()}`}
                       </Typography>
                     }
                     {
