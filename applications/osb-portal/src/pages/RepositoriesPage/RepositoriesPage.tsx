@@ -201,6 +201,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             >
               <Typography component="label" className={classes.label}>Tags</Typography>
               <Autocomplete
+                value={searchFilterValues.tags}
                 multiple={true}
                 options={searchTagOptions}
                 freeSolo={true}
