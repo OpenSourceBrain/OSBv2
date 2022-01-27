@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -322,7 +324,10 @@ export const RepositoryPage = (props: any) => {
 
 
                     <Typography component="h2" variant="h2" className="primary-heading">
-                      Overview
+                      Overview <Tooltip title={`The repository overview page always shows the latest (current) version and contents of the repository. To see its previous version and contents, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
+                      <InfoOutlinedIcon fontSize="small"/>
+                    </Tooltip>
+
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
