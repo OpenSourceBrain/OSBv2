@@ -132,7 +132,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       const tags = tagsInformation.tags.map(tagObject => {
         return tagObject.tag;
       });
-      setSearchTagOptions(tags);
+      setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
     });
   }, [])
 
@@ -204,6 +204,14 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 multiple={true}
                 options={searchTagOptions}
                 freeSolo={true}
+                onInputChange={(event, value) => {
+                  RepositoryService.getAllTags(undefined, undefined, "tag__like=" + value.toString()).then((tagsInformation) => {
+                    const tags = tagsInformation.tags.map(tagObject => {
+                      return tagObject.tag;
+                    });
+                    setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
+                  });
+                }}
                 onChange={(event, value) => setSearchFilterValues({ ...searchFilterValues, tags: value })}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
