@@ -409,7 +409,7 @@ export const RepositoryPage = (props: any) => {
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
                   <Typography component="h2" variant="h2">
-                    Resources
+                    Repository contents
                   </Typography>
                   <Box className="verticalFit">
                     <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
