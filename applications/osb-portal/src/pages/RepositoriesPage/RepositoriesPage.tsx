@@ -52,6 +52,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const [searchTagOptions, setSearchTagOptions] = useState([]);
   const [tagPage, setTagPage] = React.useState(1);
   const [totalTagPages, setTotalTagPages] = React.useState(0);
+  const [tagSearchValue, setTagSearchValue] = React.useState("");
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -210,10 +211,13 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 options={searchTagOptions}
                 freeSolo={true}
                 onInputChange={(event, value) => {
-                  RepositoryService.getAllTags(undefined, undefined, "tag__like=" + value.toString()).then((tagsInformation) => {
+                  setTagSearchValue(value);
+                  RepositoryService.getAllTags(1, undefined, "tag__like=" + value.toString()).then((tagsInformation) => {
                     const tags = tagsInformation.tags.map(tagObject => {
                       return tagObject.tag;
                     });
+                    setTagPage(tagsInformation.pagination.currentPage);
+                    setTotalTagPages(tagsInformation.pagination.numberOfPages);
                     setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
                   });
                 }}
@@ -232,7 +236,11 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                     if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
 
                       if (tagPage < totalTagPages){
-                        RepositoryService.getAllTags(tagPage + 1, undefined, undefined).then((tagsInformation) => {
+                        let query: any;
+                        if (tagSearchValue !== "") {
+                          query = "tag__like=" + tagSearchValue.toString();
+                        }
+                        RepositoryService.getAllTags(tagPage + 1, undefined, query).then((tagsInformation) => {
                           const tags: any[] = tagsInformation.tags.map(tagObject => {
                             return tagObject.tag;
                           });
