@@ -324,7 +324,7 @@ export const RepositoryPage = (props: any) => {
 
 
                     <Typography component="h2" variant="h2" className="primary-heading">
-                      Overview <Tooltip title={`The repository overview page always shows the latest (current) version and contents of the repository. To see its previous version and contents, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
+                      Overview <Tooltip title={`Repositories provide views of files in public resources that have been indexed in OSBv2 by users. Use the Repository Contents pane on the right to select files from this repository to add to your workspaces.`}>
                       <InfoOutlinedIcon fontSize="small"/>
                     </Tooltip>
 
@@ -414,7 +414,9 @@ export const RepositoryPage = (props: any) => {
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
                   <Typography component="h2" variant="h2">
-                    Repository contents
+                    Repository contents <Tooltip title={`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
+                      <InfoOutlinedIcon fontSize="small"/>
+                    </Tooltip>
                   </Typography>
                   <Box className="verticalFit">
                     <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
