@@ -15,6 +15,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExpansionPanel from "@material-ui/core/Accordion";
 import ExpansionPanelSummary from "@material-ui/core/AccordionSummary";
 import ExpansionPanelDetails from "@material-ui/core/AccordionDetails";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
@@ -178,11 +179,16 @@ export default (props: WorkspaceProps | any) => {
           <ExpansionPanelSummary
           // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
+            {
+            // TODO: when cloning workspaces has been implemented, update tooltip to tell users they can clone workspace to make modifications */
+            }
             <Typography
               variant="h4"
               className={classes.flexCenter}>
-              {workspace.name}
-              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}
+              {workspace.name}<Tooltip style={{ marginLeft: '0.3em' }} title="Resources are special files that can be opened with applications supported by Open Source Brain. To see all your files, and upload non-resource files, please open the workspace in the JupyterLab application.">
+                <InfoOutlinedIcon fontSize="small"/>
+              </Tooltip>
+              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="You do not have permissions to modify this workspace."><ReadOnlyIcon fontSize="small" /></Tooltip>}
             </Typography>
 
             <Box p={2}>
