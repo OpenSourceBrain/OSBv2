@@ -50,6 +50,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   });
 
   const [searchTagOptions, setSearchTagOptions] = useState([]);
+  const [tagPage, setTagPage] = React.useState(1);
+  const [totalTagPages, setTotalTagPages] = React.useState(0);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -133,6 +135,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         return tagObject.tag;
       });
       setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
+      setTagPage(tagsInformation.pagination.currentPage);
+      setTotalTagPages(tagsInformation.pagination.numberOfPages);
     });
   }, [])
 
@@ -222,6 +226,24 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 renderInput={(params) => (
                   <><SearchIcon /><TextField InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} fullWidth={true} {...params} variant="filled" /></>
                 )}
+                ListboxProps={{
+                  onScroll: (event: React.SyntheticEvent) => {
+                    const listboxNode = event.currentTarget;
+                    if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+
+                      if (tagPage < totalTagPages){
+                        RepositoryService.getAllTags(tagPage + 1, undefined, undefined).then((tagsInformation) => {
+                          const tags: any[] = tagsInformation.tags.map(tagObject => {
+                            return tagObject.tag;
+                          });
+                          setTagPage(tagsInformation.pagination.currentPage);
+                          setTotalTagPages(tagsInformation.pagination.numberOfPages);
+                          setSearchTagOptions(searchTagOptions.concat(tags.sort((a: string, b: string) => a.localeCompare(b))));
+                        });
+                      }
+                    }
+                  }
+                }}
               />
               <FormControl component="fieldset" >
                 <FormGroup>
