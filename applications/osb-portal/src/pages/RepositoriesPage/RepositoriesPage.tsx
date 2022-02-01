@@ -50,6 +50,9 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   });
 
   const [searchTagOptions, setSearchTagOptions] = useState([]);
+  const [tagPage, setTagPage] = React.useState(1);
+  const [totalTagPages, setTotalTagPages] = React.useState(0);
+  const [tagSearchValue, setTagSearchValue] = React.useState("");
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -127,14 +130,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     }
   }, [page, searchFilterValues]);
 
-  React.useEffect(() => {
-    RepositoryService.getAllTags().then((tagsInformation) => {
-      const tags = tagsInformation.tags.map(tagObject => {
-        return tagObject.tag;
-      });
-      setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
-    });
-  }, [])
+  React.useEffect(() => handleTagInput(""), [])
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     let repositoryTypes: string[] = [];
@@ -152,6 +148,36 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setSearchFilterValues({ ...searchFilterValues, types: repositoryTypes });
   }
 
+  /* This function handles changes to the input in the Autocomplete tag box.
+   *
+   * Initially, when the autocomplete box is populated, no text is provided to
+   * filter tags on, so we get only the first set of tags from the API. If the
+   * user enters some value, we only fetch tags using the provided text as a
+   * filter.
+   *
+   * The function also takes the tag page number as argument, which is used to
+   * implement infinite scroll
+   */
+  const handleTagInput = (value?: any, tagpage?: number) => {
+    let query: any;
+    if ((value !== "") && (value !== undefined)){
+      query = "tag__like=" + value;
+    }
+    RepositoryService.getAllTags(tagpage, undefined, query).then((tagsInformation) => {
+      const tags = tagsInformation.tags.map(tagObject => {
+        return tagObject.tag;
+      });
+      setTagSearchValue(value);
+      setTagPage(tagsInformation.pagination.currentPage);
+      setTotalTagPages(tagsInformation.pagination.numberOfPages);
+      if (tagpage !== undefined) {
+        setSearchTagOptions(searchTagOptions.concat(tags.sort((a: string, b: string) => a.localeCompare(b))));
+      }
+      else {
+        setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
+      }
+    });
+  }
 
   return (
     <>
@@ -201,18 +227,16 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             >
               <Typography component="label" className={classes.label}>Tags</Typography>
               <Autocomplete
+                value={searchFilterValues.tags}
+                inputValue={tagSearchValue}
                 multiple={true}
                 options={searchTagOptions}
                 freeSolo={true}
                 onInputChange={(event, value) => {
-                  RepositoryService.getAllTags(undefined, undefined, "tag__like=" + value.toString()).then((tagsInformation) => {
-                    const tags = tagsInformation.tags.map(tagObject => {
-                      return tagObject.tag;
-                    });
-                    setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
-                  });
+                  handleTagInput(value);
                 }}
                 onChange={(event, value) => setSearchFilterValues({ ...searchFilterValues, tags: value })}
+                onClose={(event, reason) => handleTagInput("")}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
                     <Chip variant="outlined" label={option} size="small" {...getTagProps({ index })} key={option} />
@@ -221,6 +245,17 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 renderInput={(params) => (
                   <><SearchIcon /><TextField InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} fullWidth={true} {...params} variant="filled" /></>
                 )}
+                ListboxProps={{
+                  onScroll: (event: React.SyntheticEvent) => {
+                    const listboxNode = event.currentTarget;
+                    if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+
+                      if (tagPage < totalTagPages){
+                        handleTagInput(tagSearchValue, tagPage + 1);
+                      }
+                    }
+                  }
+                }}
               />
               <FormControl component="fieldset" >
                 <FormGroup>
