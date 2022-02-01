@@ -170,7 +170,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       setTagSearchValue(value);
       setTagPage(tagsInformation.pagination.currentPage);
       setTotalTagPages(tagsInformation.pagination.numberOfPages);
-      setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
       if (tagpage !== undefined) {
         setSearchTagOptions(searchTagOptions.concat(tags.sort((a: string, b: string) => a.localeCompare(b))));
       }
