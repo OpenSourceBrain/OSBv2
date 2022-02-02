@@ -261,15 +261,9 @@ export default (props: RepositoriesProps) => {
                   />
 
                 ))}
-              </Box>
-              {repository.tags && repository.tags.map((tagObject, index) => (
-                <Box
-                  key={tagObject.id}
-                  display="flex"
-                  alignItems="center"
-                  flexWrap="wrap"
-                >
-                  { (props.searchFilterValues.tags.indexOf(tagObject.tag) !== -1) && <Chip
+              {repository.tags && repository.tags.map((tagObject, index) => {
+                if (props.searchFilterValues.tags.indexOf(tagObject.tag) !== -1) {
+                  return <Chip
                       className="repo-tag"
                       key={tagObject.id}
                       label={tagObject.tag}
@@ -278,7 +272,8 @@ export default (props: RepositoriesProps) => {
                       onDelete={(event) => handleTagUnclick(tagObject) }
                     />
                   }
-                  { (props.searchFilterValues.tags.indexOf(tagObject.tag) === -1) && <Chip
+                  else {
+                    return <Chip
                       className="repo-tag"
                       key={tagObject.id}
                       label={tagObject.tag}
@@ -286,8 +281,8 @@ export default (props: RepositoriesProps) => {
                       clickable={true}
                     />
                   }
-                </Box>
-                ))}
+              })}
+              </Box>
             </Grid>
             }
             <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
