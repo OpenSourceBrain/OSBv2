@@ -35,6 +35,8 @@ interface RepositoriesProps {
   handleRepositoryClick: (repositoryId: number) => void;
   handleTagClick: (tagObject: Tag) => void;
   handleTagUnclick: (tagObject: Tag) => void;
+  handleTypeClick: (type: string) => void;
+  handleTypeUnclick: (type: string) => void;
   searchFilterValues: searchFilter;
   user?: UserInfo;
   searchRepositories?: boolean;
@@ -209,6 +211,14 @@ export default (props: RepositoriesProps) => {
     props.handleTagUnclick(tagObject);
   }
 
+  const handleTypeClick = (type: string) => {
+    props.handleTypeClick(type);
+  }
+
+  const handleTypeUnclick = (type: string) => {
+    props.handleTypeUnclick(type);
+  }
+
   return (
     <>
       {searchRepositories && <Box className={classes.searchBox}>
@@ -256,14 +266,26 @@ export default (props: RepositoriesProps) => {
                 alignItems="center"
                 flexWrap="wrap"
               >
-                {repository.contentTypes.split(",").map((type, index) => (
-                  <Chip
+                {repository.contentTypes.split(",").map((type, index) => {
+                  if (props.searchFilterValues.types.indexOf(type) !== -1) {
+                  return <Chip
                     avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                     key={type}
                     label={type}
+                    onDelete={() => handleTypeUnclick(type)}
+                    clickable={true}
                   />
-
-                ))}
+                }
+                else {
+                  return <Chip
+                    avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
+                    key={type}
+                    label={type}
+                    onClick={() => handleTypeClick(type)}
+                    clickable={true}
+                  />
+                }
+                })}
               {repository.tags && repository.tags.map((tagObject, index) => {
                 if (props.searchFilterValues.tags.indexOf(tagObject.tag) !== -1) {
                   return <Chip
