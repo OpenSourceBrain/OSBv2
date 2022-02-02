@@ -21,7 +21,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 
 import { EditRepoDialog } from "../../components";
-import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
+import { Tag, OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
@@ -289,7 +289,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} refreshRepositories={() => updateList(tabValue)} />
+            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} refreshRepositories={() => updateList(tabValue)} handleTagClick={ (tag: Tag) => searchFilterValues.tags.indexOf(tag.tag) === -1 ? setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.concat(tag.tag)}) : console.log("Tag exists, no op.") } handleTagUnclick={ (tag: Tag) => setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.filter(t => t !== tag.tag) })} searchFilterValues={searchFilterValues}/>
             {
               totalPages > 1 ?
                 <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} />

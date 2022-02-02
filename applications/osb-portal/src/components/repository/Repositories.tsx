@@ -12,9 +12,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ShowMoreText from "react-show-more-text";
 
-import { OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
+import { Tag, OSBRepository, RepositoryContentType, RepositoryType } from "../../apiclient/workspaces";
 import RepositoryActionsMenu from "./RepositoryActionsMenu";
 import { UserInfo } from "../../types/user";
+import searchFilter from "../../types/searchFilter";
 import {
   bgRegular,
   bgDarkest,
@@ -32,6 +33,9 @@ interface RepositoriesProps {
   repositories: OSBRepository[];
   showSimpleVersion?: boolean;
   handleRepositoryClick: (repositoryId: number) => void;
+  handleTagClick: (tagObject: Tag) => void;
+  handleTagUnclick: (tagObject: Tag) => void;
+  searchFilterValues: searchFilter;
   user?: UserInfo;
   searchRepositories?: boolean;
   filterChanged?: (filter: string) => void;
@@ -191,6 +195,13 @@ export default (props: RepositoriesProps) => {
     setExpanded(!expanded);
   }
 
+  const handleTagClick = (tagObject: Tag) => {
+    props.handleTagClick(tagObject);
+  }
+  const handleTagUnclick = (tagObject: Tag) => {
+    props.handleTagUnclick(tagObject);
+  }
+
   return (
     <>
       {searchRepositories && <Box className={classes.searchBox}>
@@ -232,7 +243,7 @@ export default (props: RepositoriesProps) => {
             </Grid>}
 
             {<Grid item={true} xs={12} sm={showSimpleVersion ? 3 : 2} lg={showSimpleVersion ? 4 : 3}
-              onClick={() => props.handleRepositoryClick(repository.id)}>
+              >
               <Box
                 display="flex"
                 alignItems="center"
@@ -246,15 +257,33 @@ export default (props: RepositoriesProps) => {
                   />
 
                 ))}
-                {repository.tags && repository.tags.map((tagObject, index) => (
-                  <Chip
-                    className="repo-tag"
-                    key={tagObject.id}
-                    label={tagObject.tag}
-                  />
-                ))}
-
               </Box>
+              {repository.tags && repository.tags.map((tagObject, index) => (
+                <Box
+                  key={tagObject.id}
+                  display="flex"
+                  alignItems="center"
+                  flexWrap="wrap"
+                >
+                  { (props.searchFilterValues.tags.indexOf(tagObject.tag) !== -1) && <Chip
+                      className="repo-tag"
+                      key={tagObject.id}
+                      label={tagObject.tag}
+                      onClick={() => handleTagClick(tagObject)}
+                      clickable={true}
+                      onDelete={(event) => handleTagUnclick(tagObject) }
+                    />
+                  }
+                  { (props.searchFilterValues.tags.indexOf(tagObject.tag) === -1) && <Chip
+                      className="repo-tag"
+                      key={tagObject.id}
+                      label={tagObject.tag}
+                      onClick={() => handleTagClick(tagObject)}
+                      clickable={true}
+                    />
+                  }
+                </Box>
+                ))}
             </Grid>
             }
             <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
