@@ -115,6 +115,9 @@ const useStyles = makeStyles((theme) => ({
       "& .MuiChip-clickable": {
         minWidth: "unset",
         marginRight: "unset",
+        "&:hover": {
+          backgroundColor: bgDarkest,
+          },
       },
       "&:hover": {
         backgroundColor: bgRegular,
