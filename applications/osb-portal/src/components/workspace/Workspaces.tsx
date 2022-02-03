@@ -13,6 +13,7 @@ import Chip from "@material-ui/core/Chip";
 
 import { WorkspaceCard } from "..";
 import { Workspace } from "../../types/workspace";
+import WorkspacesSearch from "./WorkspacesSearch"
 import workspaceService from '../../service/WorkspaceService';
 
 
@@ -26,7 +27,21 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  }
+  },
+  workspaceTabs: {
+    display: 'flex',
+  },
+  filterAndSearchBox: {
+    display: 'flex',
+    '& .MuiInputBase-root': {
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(1),
+      height: 'fit-content',
+    },
+    "& .MuiTextField-root": {
+      minWidth: '5vw',
+    },
+  },
 }))
 
 export enum WorkspaceSelection {
@@ -52,6 +67,8 @@ export const Workspaces = ({ user, counter }: any) => {
     total: null
   });
 
+
+  const [searchFilterValues, setSearchFilterValues] = React.useState<string>()
 
   const classes = useStyles();
 
@@ -126,23 +143,29 @@ export const Workspaces = ({ user, counter }: any) => {
 
   return (
     <>
-      <Tabs
-        value={selection}
-        textColor="primary"
-        indicatorColor="primary"
-        onChange={handleChange}
-      >
-        {user ?
-          <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
-            <>All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
-            <>Your workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
-          />
-          : null
-        }
-        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
-        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
-      </Tabs>
-
+      <Box className={`${classes.workspaceTabs}`}>
+        <Box>
+          <Tabs
+            value={selection}
+            textColor="primary"
+            indicatorColor="primary"
+            onChange={handleChange}
+          >
+            {user ?
+              <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
+                <>All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
+                <>Your workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
+              />
+              : null
+            }
+            <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
+            <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
+          </Tabs>
+        </Box>
+        <Box className={`${classes.filterAndSearchBox} verticalFit`}>
+          <WorkspacesSearch filterChanged={(newTextFilter) => setSearchFilterValues(newTextFilter)} />
+        </Box>
+      </Box>
       {/* {
         workspaces && <Box mb={2}>
 

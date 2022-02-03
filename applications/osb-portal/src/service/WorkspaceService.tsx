@@ -9,7 +9,9 @@ import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, R
 import { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 import { Page } from "../types/model";
 
+import SearchFilter from '../types/searchFilter';
 
+const PER_PAGE_DEFAULT = 10;
 const workspacesApiUri = '/proxy/workspaces/api';
 
 class WorkspaceService {
@@ -61,6 +63,32 @@ class WorkspaceService {
     }
 
     return null;
+  }
+
+  async fetchWorkspacesByFilter(isPublic: boolean = false, isFeatured: boolean = false, page: number = 1, filter: SearchFilter, size: number = PER_PAGE_DEFAULT): Promise<any>  {
+    const params: any = {};
+    if (isPublic) {
+      params.publicable = 'true';
+    }
+    if (isFeatured) {
+      params.featured = 'true';
+    }
+
+    if (filter.text) {
+      params.name__like = filter.text
+      params.summary__like = filter.text
+    }
+    // The workspace page does not have a separate tag filter, so the search text is used for all query fields
+    const nameAndSummaryQuery = Object.keys(params).map(k => `${k}=${params[k]}`).join("+")
+    const tags = !filter.text ? '' : filter.text;
+
+    return (this.workspacesApi.workspaceGet(
+      {
+        page,
+        q: nameAndSummaryQuery,
+        perPage: size,
+        tags,
+      }));
   }
 
   async createOrUpdateWorkspace(ws: Workspace): Promise<any> {
