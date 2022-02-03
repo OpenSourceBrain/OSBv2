@@ -267,7 +267,7 @@ export default (props: RepositoriesProps) => {
                 flexWrap="wrap"
               >
                 {repository.contentTypes.split(",").map((type, index) => {
-                  if (props.searchFilterValues.types.indexOf(type) !== -1) {
+                  if (props.searchFilterValues.types.includes(type)) {
                   return <Chip
                     avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                     key={type}
@@ -287,7 +287,7 @@ export default (props: RepositoriesProps) => {
                 }
                 })}
               {repository.tags && repository.tags.map((tagObject, index) => {
-                if (props.searchFilterValues.tags.indexOf(tagObject.tag) !== -1) {
+                if (props.searchFilterValues.tags.includes(tagObject.tag)) {
                   return <Chip
                       className="repo-tag"
                       key={tagObject.id}
