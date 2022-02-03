@@ -47,6 +47,11 @@ import { CodeBranchIcon } from "../components/icons";
 
 
 const useStyles = makeStyles((theme) => ({
+  infoIcon: {
+    fontSize: "0.9rem",
+    verticalAlign: "middle",
+    color: paragraph,
+  },
   linkButton: {
     position: 'absolute',
     right: 0,
@@ -325,7 +330,7 @@ export const RepositoryPage = (props: any) => {
 
                     <Typography component="h2" variant="h2" className="primary-heading">
                       Overview <Tooltip title={`Repositories provide views of files in public resources that have been indexed in OSBv2 by users. Use the Repository Contents pane on the right to select files from this repository to add to your workspaces.`}>
-                      <InfoOutlinedIcon fontSize="small"/>
+                        <InfoOutlinedIcon className={classes.infoIcon}/>
                     </Tooltip>
 
                     </Typography>
@@ -415,7 +420,7 @@ export const RepositoryPage = (props: any) => {
                 <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
                   <Typography component="h2" variant="h2">
                     Repository contents <Tooltip title={`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
-                      <InfoOutlinedIcon fontSize="small"/>
+                      <InfoOutlinedIcon className={classes.infoIcon}/>
                     </Tooltip>
                   </Typography>
                   <Box className="verticalFit">
