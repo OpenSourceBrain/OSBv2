@@ -294,7 +294,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             refreshRepositories={() => updateList(tabValue)}
             searchFilterValues={searchFilterValues}
             handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)}
-              handleTagClick={ (tag: Tag) => searchFilterValues.tags.includes(tag.tag) ? null : setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.concat(tag.tag)}) }
+            handleTagClick={ (tag: Tag) => searchFilterValues.tags.includes(tag.tag) ? null : setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.concat(tag.tag)}) }
             handleTagUnclick={ (tag: Tag) => setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.filter(t => t !== tag.tag) })}
             handleTypeClick={(type: string) => setSearchFilterValues({...searchFilterValues, types: searchFilterValues.types.concat(type)})}
             handleTypeUnclick={(type: string) => setSearchFilterValues({...searchFilterValues, types: searchFilterValues.types.filter(t => t !== type)})}/>
