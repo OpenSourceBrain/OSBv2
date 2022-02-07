@@ -212,6 +212,26 @@ paths:
           description: The workspace was not found or the thumbnail was not specified
       tags:
         - rest
+  /workspace/{id}/clone:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Workspace ID of the workspace
+    post:
+      summary: Clones a workspace
+      operationId: workspaces.controllers.workspace_controller.workspace_clone
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The workspace was cloned.
+        404:
+          description: The workspace was not found
+      tags:
+        - rest
   /workspace/{id}/thumbnail:
     parameters:
       - in: path

@@ -199,7 +199,7 @@ class BaseModelRepository:
             self._calculated_fields_populate(obj)
         return objects
 
-    def post(self, body):
+    def post(self, body, do_pre=True, do_post=True):
         """Save an object to the repository."""
         new_obj = self.model.from_dict(**body)
         if new_obj.id is not None:
@@ -220,10 +220,12 @@ class BaseModelRepository:
                 setattr(new_obj, fld, default)
         try:
             # trigger post operation
-            new_obj = self._pre_commit(new_obj)
+            if do_pre:
+                new_obj = self._pre_commit(new_obj)
             db.session.add(new_obj)
             db.session.commit()
-            new_obj = self._post_commit(new_obj)
+            if do_post:
+                new_obj = self._post_commit(new_obj)
         except IntegrityError as e:
             raise e
         else:

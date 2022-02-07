@@ -7,13 +7,14 @@ from types import SimpleNamespace
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
+from cloudharness.applications import get_configuration
 from sqlalchemy import desc, or_
 from sqlalchemy.sql import func
 
 
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
-from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
+from workspaces.helpers.etl_helpers import copy_workspace_resource, delete_workspace_resource
 from workspaces.service.kubernetes import create_persistent_volume_claim
 from workspaces.service.auth import get_auth_client
 from .base_model_repository import BaseModelRepository
@@ -115,7 +116,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
         create_persistent_volume_claim(name=self.get_pvc_name(
-            workspace.id), size="2Gi", logger=logger)
+            workspace.id), size=get_configuration('workspaces').conf['workspace_size'], logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)

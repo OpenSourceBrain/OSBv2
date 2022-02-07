@@ -3,7 +3,7 @@ import logging
 import connexion
 from flask_testing import TestCase
 
-from workspaces.encoder import JSONEncoder
+from cloudharness.utils.server import JSONEncoder
 
 
 class BaseTestCase(TestCase):
