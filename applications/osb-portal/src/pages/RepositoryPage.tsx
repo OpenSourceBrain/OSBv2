@@ -48,7 +48,7 @@ import { CodeBranchIcon } from "../components/icons";
 
 const useStyles = makeStyles((theme) => ({
   infoIcon: {
-    fontSize: "0.9rem",
+    fontSize: "small",
     verticalAlign: "middle",
     color: paragraph,
   },
