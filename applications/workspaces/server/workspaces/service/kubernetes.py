@@ -4,7 +4,7 @@ import workspaces.repository as repos
 def create_persistent_volume_claim(name, size, logger):
     pvc.create_persistent_volume_claim(name, size, logger)
 
-def clone_workspace_volumes(source_ws_id, dest_ws_id):
+def clone_workspace_volume(source_ws_id, dest_ws_id):
     try:
         source_pvc_name = repos.WorkspaceRepository().get_pvc_name(
             source_ws_id)
@@ -16,7 +16,8 @@ def clone_workspace_volumes(source_ws_id, dest_ws_id):
         k8s.api_instance.create_namespaced_persistent_volume_claim(namespace=k8s.namespace, body=V1PersistentVolumeClaim(
             metadata=V1ObjectMeta(name=dest_pvc_name),
             spec=V1PersistentVolumeClaimSpec(
-                access_modes=["ReadWriteOnce"],
+                access_modes=["ReadWriteOnce","ReadOnlyMany"],
+                storage_class_name="standard",
                 data_source=V1TypedLocalObjectReference(
                     kind="PersistentVolumeClaim", name=source_pvc_name),
                 resources=V1ResourceRequirements(requests=dict(storage=get_configuration('workspaces').conf['workspace_size']))

@@ -17,7 +17,7 @@ from workspaces.repository import (
     TagRepository,
 )
 from workspaces.repository.models import WorkspaceResourceEntity
-from workspaces.service.kubernetes import clone_workspace_volumes
+from workspaces.service.kubernetes import clone_workspace_volume
 
 
 def rm_null_values(dikt):
@@ -100,7 +100,7 @@ class WorkspaceService(BaseModelService):
             featured=False,
         )
         cloned = self.repository.post(cloned, do_post=False)
-        clone_workspace_volumes(source_ws_id=id_, dest_ws_id=cloned.id)
+        clone_workspace_volume(source_ws_id=id_, dest_ws_id=cloned.id)
         self.resource_repository.update_workspace_resources(
             cloned.id,
             [os.path.join(r.folder, r.name)

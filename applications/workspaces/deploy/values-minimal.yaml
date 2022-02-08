@@ -18,6 +18,8 @@ harness:
       - common
       - accounts
       - events
+      - workflows
+      - volumemanager
   database:
     auto: false
     name: workspaces-postgres-host

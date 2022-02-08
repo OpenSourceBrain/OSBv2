@@ -8,7 +8,7 @@ from workspaces.config import Config
 from workspaces.repository.model_repository import WorkspaceImageRepository, WorkspaceRepository, db
 from workspaces.repository.models import WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
-from workspaces.service.kubernetes import clone_workspace_volumes
+from workspaces.service.kubernetes import clone_workspace_volume
 from workspaces.service.model_service import WorkspaceService
 
 def _save_image(id_=None, image=None, filename_base=None):
@@ -96,4 +96,4 @@ def import_resources(id_, body, **kwargs):
 def workspace_clone(id_, body=None):
     
     ws = WorkspaceService().clone(id_)
-    return ws
+    return ws.to_dict()
