@@ -169,7 +169,7 @@ export const WorkspacePage = (props: any) => {
   }
 
   const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
-  const OPEN_JUPYTER = 'OPEN WITH JUPYTER HUB';
+  const OPEN_JUPYTER = 'OPEN WITH JUPYTER LAB';
   const OPEN_NETPYNE = 'OPEN WITH NETPYNE';
   const options = [OPEN_NWB, OPEN_JUPYTER, OPEN_NETPYNE];
 
