@@ -65,29 +65,38 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def search_qs(self, filter=None, q=None, tags=None, *args, **kwargs):
         q_base = self.model.query
-        logger.debug(f"filter: {filter}")
 
         keycloak_user_id = self.keycloak_user_id
-        if tags:
-            q_base = q_base.join(self.model.tags).filter(
-                Tag.tag.in_(tags.split("+")))
+
         if filter is not None:
-            q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
+            
+            if tags:
+                q_base = q_base.filter(*[self._create_filter(*f) for f in filter]).union(self.model.query.join(self.model.tags).filter(
+                    Tag.tag.in_(tags.split("+"))))
+            else:
+                q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
+        elif tags:
+            q_base = q_base.join(self.model.tags).filter(
+                    Tag.tag.in_(tags.split("+")))
+
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
             q1 = q_base
         elif keycloak_user_id is not None:
+            # Admins see all workspaces, non admin users can see only their own workspaces
             if not get_auth_client().user_has_realm_role(user_id=keycloak_user_id, role="administrator"):
                 logger.debug(
                     "searching workspaces on keycloak_user_id: %s", keycloak_user_id)
-                # non admin users can see only their own workspaces
                 q1 = q_base.filter_by(user_id=keycloak_user_id)
                 q1 = q1.union(q_base.filter(
                     WorkspaceEntity.collaborators.any(user_id=keycloak_user_id)))
             else:
                 q1 = q_base
         else:
-            q1 = q_base.filter_by(publicable=True)
-        logger.debug(str(q1))
+            # No logged in user, show only public (in case was not specified)
+            q1 = q_base.filter(WorkspaceEntity.publicable==True)
+
+
+        
         return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
