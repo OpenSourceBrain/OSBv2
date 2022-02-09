@@ -326,7 +326,7 @@ export const RepositoryPage = (props: any) => {
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className="flex-grow-1 scrollbar" maxWidth="100%" position="relative">
                   <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Typography component="h2" variant="h2" className="primary-heading">
+                    <Typography component="h2" variant="h2" className="primary-heading" style={{ width: "100%" }}>
                       Overview <Tooltip title={`Repositories provide views of files in public resources that have been indexed in OSBv2 by users. Use the Repository Contents pane on the right to select files from this repository to add to your workspaces.`}>
                         <InfoOutlinedIcon className={classes.infoIcon}/>
                       </Tooltip>
@@ -417,7 +417,7 @@ export const RepositoryPage = (props: any) => {
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Typography component="h2" variant="h2">
+                    <Typography component="h2" variant="h2" style={{ width: "100%" }}>
                       Repository contents <Tooltip title={`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
                         <InfoOutlinedIcon className={classes.infoIcon}/>
                       </Tooltip>
