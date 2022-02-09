@@ -56,3 +56,4 @@ harness:
     password: secret
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
+workspace_size: 2Gi

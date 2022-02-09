@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask_sqlalchemy import Pagination
 
@@ -6,7 +7,8 @@ from cloudharness import log as logger
 from cloudharness.events.decorators import send_event
 import cloudharness.workflows.argo as argo
 
-from workspaces.models import OSBRepository, OSBRepositoryEntity
+from workspaces.models import OSBRepository, OSBRepositoryEntity, WorkspaceEntity, Workspace, WorkspaceResource
+from workspaces.models.resource_status import ResourceStatus
 from workspaces.repository import (
     OSBRepositoryRepository,
     VolumeStorageRepository,
@@ -14,6 +16,8 @@ from workspaces.repository import (
     WorkspaceResourceRepository,
     TagRepository,
 )
+from workspaces.repository.models import WorkspaceResourceEntity
+from workspaces.service.kubernetes import clone_workspace_volume
 
 
 def rm_null_values(dikt):
@@ -72,12 +76,37 @@ class BaseModelService():
 
 class WorkspaceService(BaseModelService):
     repository = WorkspaceRepository()
+    resource_repository = WorkspaceResourceRepository()
 
     @send_event(message_type="workspace", operation="create")
     def post(self, body):
         for r in body.get("resources", []):
             r.update({"origin": json.dumps(r.get("origin"))})
         return super().post(body)
+
+    @send_event(message_type="workspace", operation="create")
+    def clone(self, id_):
+        workspace = self.repository.get(id=id_)
+        if workspace is None:
+            raise Exception(f"Cannot clone workspace with id {id_}: not found.")
+
+        cloned = dict(
+            name=f"Clone of {workspace.name}",
+            tags=[t.to_dict() for t in workspace.tags],
+            user_id=self.repository.keycloak_user_id,
+            thumbnail=workspace.thumbnail,
+            description=workspace.description,
+            publicable=False,
+            featured=False,
+        )
+        cloned = self.repository.post(cloned, do_post=False)
+        clone_workspace_volume(source_ws_id=id_, dest_ws_id=cloned.id)
+        self.resource_repository.update_workspace_resources(
+            cloned.id,
+            [os.path.join(r.folder, r.name)
+             for r in workspace.resources if r.status == ResourceStatus.A]
+        )
+        return cloned
 
     def get(self, id_):
 

@@ -1,6 +1,7 @@
 import json
 
 from cloudharness import log as logger
+import cloudharness
 
 import workspaces.repository as repos
 # import copy_resource, create_copy_origin_task
