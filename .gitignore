@@ -5,3 +5,4 @@ cloud-harness
 .vscode
 skaffold.yaml
 /deployment.yaml
+.pytest_cache

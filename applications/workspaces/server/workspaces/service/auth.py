@@ -21,3 +21,12 @@ def get_auth_client():
         except Exception as e:
             raise Exception("Keycloak not available") from e
     return _auth_client
+
+
+def keycloak_user_id():
+
+    try:
+        return get_auth_client().get_current_user().get("id", None)
+    except Exception as e:
+        log.error("Auth client error: cannot retrieve the current user", exc_info=True)
+        return None
