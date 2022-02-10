@@ -151,7 +151,7 @@ class WorkspaceService(BaseModelService):
         clone_workspace_volume(source_ws_id=workspace_id, dest_ws_id=cloned.id)
         self.resource_repository.update_workspace_resources(
             cloned.id,
-            [os.path.join(r.folder, r.name)
+            [os.path.join(r['folder'], r['name'])
              for r in workspace['resources'] if r['status'] == ResourceStatus.A]
         )
         return cloned
