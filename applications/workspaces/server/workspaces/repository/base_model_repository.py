@@ -40,8 +40,6 @@ class BaseModelRepository:
             return self.model.query.get(id)
         return None
 
-
-
     def _post_get(self, new_obj):
         if hasattr(self, "post_get"):
             return self.post_get(new_obj)
@@ -117,7 +115,7 @@ class BaseModelRepository:
         elif comparator in ("!", "not"):
             return field != value
         elif comparator == "like":
-            # field = func.lower(field)
+            # ilike makes the search case insensitive
             return field.ilike("%" + value + "%")
         else:
             return field == value

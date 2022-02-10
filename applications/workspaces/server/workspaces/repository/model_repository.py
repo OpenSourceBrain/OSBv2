@@ -7,7 +7,6 @@ from types import SimpleNamespace
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from cloudharness.applications import get_configuration
 from sqlalchemy import desc, or_
 from sqlalchemy.sql import func
 
@@ -15,12 +14,10 @@ from sqlalchemy.sql import func
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
 from workspaces.helpers.etl_helpers import copy_workspace_resource, delete_workspace_resource
-from workspaces.service.kubernetes import create_persistent_volume_claim
 
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag, \
-    TWorkspaceEntity
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *
 
 
@@ -29,17 +26,14 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 
 class OwnerModel:
 
-
     def pre_commit(self, obj):
         logger.debug(f"Pre Commit for {obj} id: {obj.id}")
-        
         return obj
 
 
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
     model = WorkspaceEntity
     defaults = {}
-    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -47,29 +41,27 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def get_pvc_name(self, workspace_id):
         return f"workspace-{workspace_id}"
 
-
-
     def get(self, id):
         workspace = self._get(id)
-        
+
         return workspace
-        
 
     def search_qs(self, filter=None, q=None, tags=None, user_id=None, show_all=False, *args, **kwargs):
         q_base = self.model.query
         if filter is not None:
             if tags:
                 q_base = q_base.filter(*[self._create_filter(*f) for f in filter]).union(self.model.query.join(self.model.tags).filter(
-                    Tag.tag.in_(tags.split("+"))))
+                    func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+"))))
             else:
-                q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
+                q_base = q_base.filter(
+                    *[self._create_filter(*f) for f in filter])
         elif tags:
             q_base = q_base.join(self.model.tags).filter(
-                    Tag.tag.in_(tags.split("+")))
+                func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
 
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
             q1 = q_base
-        
+
         elif user_id is not None:
             # Admins see all workspaces, non admin users can see only their own workspaces or shared with them
             if not show_all:
@@ -80,7 +72,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 q1 = q_base
         else:
             # No logged in user, show only public (in case was not specified)
-            q1 = q_base.filter(WorkspaceEntity.publicable==True)
+            q1 = q_base.filter(WorkspaceEntity.publicable == True)
 
         return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
@@ -109,7 +101,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
-        
+
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
@@ -118,12 +110,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 db.session.commit()
         return workspace
 
-    
-
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
-    
 
     def pre_commit(self, osbrepository):
         # TODO: get tags from the repository
@@ -147,8 +136,6 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
             q_base = q_base.filter(
                 or_(self.model.content_types.ilike(f"%{t}%") for t in types.split("+")))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
-
-    
 
 
 class VolumeStorageRepository(BaseModelRepository):
