@@ -139,11 +139,11 @@ class WorkspaceService(BaseModelService):
             raise Exception(f"Cannot clone workspace with id {workspace_id}: not found.")
 
         cloned = dict(
-            name=f"Clone of {workspace.name}",
-            tags=[t.to_dict() for t in workspace.tags],
+            name=f"Clone of {workspace['name']}",
+            tags=workspace['tags'],
             user_id=keycloak_user_id(),
-            thumbnail=workspace.thumbnail,
-            description=workspace.description,
+            thumbnail=workspace['thumbnail'],
+            description=workspace['description'],
             publicable=False,
             featured=False,
         )
