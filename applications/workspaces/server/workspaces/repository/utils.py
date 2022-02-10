@@ -31,3 +31,5 @@ def insert_or_get_tags(tags):
             tag = items[0]
         tags_list.append(tag)
     return tags_list
+
+

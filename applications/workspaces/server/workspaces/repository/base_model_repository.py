@@ -18,7 +18,7 @@ class BaseModelRepository:
     """Generic base class for handling REST API endpoints."""
 
     model = None
-    calculated_fields = None
+
     defaults = None
     search_qs = None
 
@@ -37,15 +37,10 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            obj = self.model.query.get(id)
-            return self._calculated_fields_populate(obj)
+            return self.model.query.get(id)
         return None
 
-    def _calculated_fields_populate(self, obj):
-        if self.calculated_fields:
-            for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj))
-        return obj
+
 
     def _post_get(self, new_obj):
         if hasattr(self, "post_get"):
@@ -194,9 +189,7 @@ class BaseModelRepository:
         else:
             sqs = self._get_qs(*args, **kwargs)
         objects = sqs.paginate(page, per_page, True)
-        total_pages = objects.pages
-        for obj in objects.items:
-            self._calculated_fields_populate(obj)
+
         return objects
 
     def post(self, body, do_pre=True, do_post=True):

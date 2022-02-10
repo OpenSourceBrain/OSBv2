@@ -1,8 +1,8 @@
 from flask.views import MethodView
 from flask_sqlalchemy import Pagination
 
-from workspaces.service.model_service import BaseModelService
-from workspaces.utils import row2dict
+from workspaces.service.model_service import BaseModelService, NotAuthorized
+from workspaces.utils import dao_entity2dict
 
 
 class BaseModelView(MethodView):
@@ -25,7 +25,7 @@ class BaseModelView(MethodView):
         """
         objects = self.service.search(
             page=page, per_page=per_page, *args, **kwargs)
-        obj_dicts = list(map(lambda obj: row2dict(obj), objects.items))
+        obj_dicts = list(map(lambda obj: dao_entity2dict(obj), objects.items))
         list_name = str(self.service.repository)
         list_name_plural = list_name[:-1] + \
             list_name[-1:].replace("y", "ie") + "s"
@@ -48,7 +48,10 @@ class BaseModelView(MethodView):
 
     def get(self, id_):
         """Get an object from the repository."""
-        obj = self.service.get(id_=id_)
+        try:
+            obj = self.service.get(id_)
+        except NotAuthorized:
+            return "Access to the requested resources not authorized", 401
         if obj is None:
             return f"{self.service.repository} with id {id_} not found.", 404
         if isinstance(obj, dict):

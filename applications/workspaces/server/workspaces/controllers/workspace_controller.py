@@ -9,7 +9,7 @@ from workspaces.repository.model_repository import WorkspaceImageRepository, Wor
 from workspaces.repository.models import WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
 from workspaces.service.kubernetes import clone_workspace_volume
-from workspaces.service.model_service import WorkspaceService
+from workspaces.service.model_service import NotAuthorized, WorkspaceService
 
 def _save_image(id_=None, image=None, filename_base=None):
     ext = mimetypes.guess_extension(image.mimetype)
@@ -94,6 +94,10 @@ def import_resources(id_, body, **kwargs):
     return "Scheduled", 200
 
 def workspace_clone(id_, body=None):
-    
-    ws = WorkspaceService().clone(id_)
-    return ws.to_dict()
+    try:
+        ws = WorkspaceService().clone(id_)
+        if ws is None:
+            return "Workspace not found", 404
+        return ws.to_dict()
+    except NotAuthorized:
+        return "Not authorized", 401
