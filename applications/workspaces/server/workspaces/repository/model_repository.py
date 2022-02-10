@@ -89,10 +89,12 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         logger.info("deleting volume %s", id)
         pvc.delete_persistent_volume_claim(f"workspace-{id}")
         logger.info("deleted volume %s", id)
-        logger.info("deleting workspace files")
+        
         folder = os.path.join(Config.WORKSPACES_DIR, f"{id}")
-        shutil.rmtree(os.path.join(Config.STATIC_DIR, folder))
-        logger.info("deleted workspace files")
+        if os.path.exists(os.path.join(Config.STATIC_DIR, folder)):
+            logger.info("deleting workspace files")
+            shutil.rmtree(os.path.join(Config.STATIC_DIR, folder))
+            logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
         workspace.tags = insert_or_get_tags(workspace.tags)
