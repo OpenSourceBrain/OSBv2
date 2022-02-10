@@ -97,7 +97,7 @@ class BaseModelService:
 
     def get(self, id_):
         """Get an object from the repository."""
-        res = self.repository.get(id=id_)
+        res = self.repository.get(id_)
         if not self.is_authorized(res):
             raise NotAuthorized()
         return self._calculated_fields_populate(res)
@@ -134,7 +134,7 @@ class WorkspaceService(BaseModelService):
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):
-        workspace = self.get(id=workspace_id)
+        workspace = self.get(workspace_id)
         if workspace is None:
             raise Exception(f"Cannot clone workspace with id {workspace_id}: not found.")
 

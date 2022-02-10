@@ -227,7 +227,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f"Post Commit for workspace resource id: {workspace_resource.id}")
-        workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        workspace = WorkspaceRepository().get(workspace_resource.workspace_id)
         if workspace_resource.folder is None:
             logger.debug(
                 f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
