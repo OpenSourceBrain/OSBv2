@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -45,6 +47,11 @@ import { CodeBranchIcon } from "../components/icons";
 
 
 const useStyles = makeStyles((theme) => ({
+  infoIcon: {
+    fontSize: "small",
+    verticalAlign: "middle",
+    color: paragraph,
+  },
   linkButton: {
     position: 'absolute',
     right: 0,
@@ -318,11 +325,12 @@ export const RepositoryPage = (props: any) => {
             <Grid container={true} spacing={5} className="verticalFill">
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className="flex-grow-1 scrollbar" maxWidth="100%" position="relative">
-                  <Box>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography component="h2" variant="h2" className="primary-heading" style={{ width: "100%" }}>
+                      Overview <Tooltip title={`Repositories provide views of files in public resources that have been indexed in OSBv2 by users. Use the Repository Contents pane on the right to select files from this repository to add to your workspaces.`}>
+                        <InfoOutlinedIcon className={classes.infoIcon}/>
+                      </Tooltip>
 
-
-                    <Typography component="h2" variant="h2" className="primary-heading">
-                      Overview
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
@@ -332,7 +340,7 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                     {
                       repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                        By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                        Added by {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampCreated && ` on ${repository.timestampCreated.toDateString()}`}
                       </Typography>
                     }
                     {
@@ -408,9 +416,13 @@ export const RepositoryPage = (props: any) => {
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
-                  <Typography component="h2" variant="h2">
-                    Resources
-                  </Typography>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography component="h2" variant="h2" style={{ width: "100%" }}>
+                      Repository contents <Tooltip title={`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
+                        <InfoOutlinedIcon className={classes.infoIcon}/>
+                      </Tooltip>
+                    </Typography>
+                  </Box>
                   <Box className="verticalFit">
                     <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
                   </Box>
