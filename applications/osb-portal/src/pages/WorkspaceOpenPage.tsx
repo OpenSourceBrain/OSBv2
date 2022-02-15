@@ -18,7 +18,7 @@ export default (props: any) => {
   return (
     <Box className="verticalFill">
       <Divider variant="fullWidth" />
-      <WorkspaceDrawer app={app} />
+      <WorkspaceDrawer app={app} cloneWorkspace={props.cloneWorkspace}/>
 
     </Box>
   );

@@ -107,6 +107,7 @@ interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
   refreshWorkspace?: () => void;
+  cloneWorkspace?: (wsId: number) => any,
   updateWorkspace: (ws: Workspace) => null,
   deleteWorkspace: (wsId: number) => null,
   user: UserInfo,
@@ -192,7 +193,7 @@ export default (props: WorkspaceProps | any) => {
             </Typography>
 
             <Box p={2}>
-              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} cloneWorkspace={props.cloneWorkspace} />
             </Box>
             <Menu
               id="simple-menu"
@@ -248,7 +249,7 @@ export default (props: WorkspaceProps | any) => {
           {props.workspace.name}
 
           <IconButton>
-            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} cloneWorkspace={props.cloneWorkspace} />
           </IconButton>
         </div>
       </>

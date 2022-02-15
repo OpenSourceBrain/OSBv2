@@ -198,7 +198,11 @@ export const WorkspacePage = (props: any) => {
           <Divider />
           <MainMenu />
           <Divider />
-
+          {
+            /*
+              Top panel.
+            */
+          }
           <Box display="flex" alignItems="center" justifyContent="space-between" bgcolor={bgLight} className={classes.workspaceToolbar}>
             <Box display="flex" onClick={() => history.push('/')}>
               <AppsIcon color="primary" fontSize="small" />
@@ -212,15 +216,25 @@ export const WorkspacePage = (props: any) => {
               <OSBSplitButton options={options} handleClick={openWithApp} />
             </Box>
           </Box>
+          {
+            /*
+              TODO: is this accordion being used? Looks like a duplicate of the left resource panel below
+            */
+          }
           <Accordion className={classes.accordion}>
             <AccordionSummary expandIcon={<ArrowRight />} aria-controls="panel1a-content" id="panel1a-header">
               <Typography>Resources</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} cloneWorkspace={props.cloneWorkspace}/>
             </AccordionDetails>
           </Accordion>
 
+          {
+            /*
+               Mid panel: workspace metadata
+            */
+          }
           <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
             <Typography component="h1" variant="h1">{workspace.name}</Typography>
             <Box display="flex" flexDirection="row" color={paragraph} mb={2} alignItems="center">
@@ -231,8 +245,13 @@ export const WorkspacePage = (props: any) => {
           </Box>
         </Box>
 
+          {
+            /*
+              Bottom: workspace resource panel and thumbnail
+            */
+          }
         <Box className={`verticalFit ${classes.workspaceResourcesInformation}`} display="flex" flexDirection="row">
-          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick}  cloneWorkspace={props.cloneWorkspace}/>
           <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100%" display="flex" flexDirection="column" alignItems="center">
             <Box className={`inner-description`} p={4}>
               {workspace.thumbnail &&

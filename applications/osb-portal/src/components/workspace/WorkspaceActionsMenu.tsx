@@ -17,6 +17,7 @@ interface WorkspaceActionsMenuProps {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => null;
   deleteWorkspace?: (wsId: number) => null;
+  cloneWorkspace?: (wsId: number) => null;
   refreshWorkspaces?: () => null;
   user?: UserInfo;
 }
@@ -69,6 +70,11 @@ export default (props: WorkspaceActionsMenuProps) => {
     props.refreshWorkspaces();
   }
 
+  const handleCloneWorkspace = () => {
+    props.cloneWorkspace(props.workspace.id);
+    handleCloseMenu();
+  }
+
   /*
   *
   * @param applicatonType OSBApplication key
@@ -96,6 +102,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         {props.user && props.user.isAdmin && props.workspace.publicable && !props.workspace.featured && <MenuItem onClick={handleFeaturedWorkspace}>Add to featured</MenuItem>}
         {props.user && props.user.isAdmin && props.workspace.featured && <MenuItem onClick={handleFeaturedWorkspace}>Remove from featured</MenuItem>}
         <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+        {props.user && <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>}
         <NestedMenuItem
           label="Open with..."
           parentMenuOpen={true}

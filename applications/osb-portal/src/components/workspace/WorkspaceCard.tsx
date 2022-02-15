@@ -22,6 +22,7 @@ interface Props {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => any,
   deleteWorkspace?: (wsId: number) => any,
+  cloneWorkspace?: (wsId: number) => any,
   user?: UserInfo,
   refreshWorkspaces?: () => any,
   hideMenu?: boolean,
@@ -106,7 +107,7 @@ export const WorkspaceCard = (props: Props) => {
         {!props.hideMenu &&
           <CardActions className={classes.actions}>
             <WorkspaceActionsMenu user={props.user} workspace={workspace}
-              updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
+              updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} cloneWorkspace={props.cloneWorkspace} />
           </CardActions>
         }
 
