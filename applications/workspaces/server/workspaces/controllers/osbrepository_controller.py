@@ -1,7 +1,4 @@
-import workspaces.service.osbrepository.osbrepository as repository_service
-from workspaces.repository.model_repository import OSBRepositoryRepository
-from workspaces.utils import dao_entity2dict
-from workspaces.views.api.rest_api_views import OsbrepositoryView
+import workspaces.service.osbrepository as repository_service
 
 
 def get_contexts(uri=None, repository_type=None, **kwargs):

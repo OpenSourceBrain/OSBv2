@@ -1,14 +1,11 @@
-import json
 from inspect import getmembers, ismethod
 from types import FunctionType
-from urllib.parse import urljoin
 
-import jwt
-import requests
+from flask import request
+
 from cloudharness import log as logger
 from cloudharness.auth import AuthClient
-from cloudharness.utils import env
-from flask import request
+
 
 
 def get_keycloak_data():
