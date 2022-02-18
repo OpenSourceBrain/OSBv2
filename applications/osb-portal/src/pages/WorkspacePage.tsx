@@ -243,7 +243,7 @@ export const WorkspacePage = (props: any) => {
                   <Divider />
                 </>}
 
-              <Typography component="p" variant="body1"><MarkdownViewer text={workspace.description} /></Typography>
+              <Typography component="div" variant="body1"><MarkdownViewer text={workspace.description} /></Typography>
             </Box>
 
           </Box>
