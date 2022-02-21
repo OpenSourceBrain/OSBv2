@@ -123,7 +123,7 @@ export default (props: WorkspaceProps | any) => {
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
   const history = useHistory();
-  if(!workspace) {
+  if (!workspace) {
     return null;
   }
   const canEdit = canEditWorkspace(props.user, workspace);
