@@ -218,7 +218,7 @@ export const WorkspacePage = (props: any) => {
           </Box>
           {
             /*
-              TODO: is this accordion being used? Looks like a duplicate of the left resource panel below
+              Alternative accordion for us in small displays.
             */
           }
           <Accordion className={classes.accordion}>
