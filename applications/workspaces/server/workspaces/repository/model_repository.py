@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-import workspaces.service.osbrepository.osbrepository as osbrepository_service
 
 from types import SimpleNamespace
 
@@ -13,10 +12,10 @@ from sqlalchemy.sql import func
 
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
-from workspaces.helpers.etl_helpers import copy_workspace_resource, delete_workspace_resource
+
 
 from .base_model_repository import BaseModelRepository
-from .database import db
+from ..database import db
 from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *
 
@@ -37,9 +36,6 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    def get_pvc_name(self, workspace_id):
-        return f"workspace-{workspace_id}"
 
     def get(self, id):
         workspace = self._get(id)
@@ -77,27 +73,10 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
-        resource_repository = WorkspaceResourceRepository()
-        workspace = self.model.query.filter_by(id=id).first()
-
-        for resource in workspace.resources:
-            logger.debug("deleting resource %s", resource.id)
-            resource_repository.delete(resource.id, delete_file_from_pvc=False)
-        logger.info("deleting workspace %s", id)
         super().delete(id)
-        logger.info("deleted workspace %s", id)
-        logger.info("deleting volume %s", id)
-        pvc.delete_persistent_volume_claim(f"workspace-{id}")
-        logger.info("deleted volume %s", id)
-        
-        folder = os.path.join(Config.WORKSPACES_DIR, f"{id}")
-        if os.path.exists(os.path.join(Config.STATIC_DIR, folder)):
-            logger.info("deleting workspace files")
-            shutil.rmtree(os.path.join(Config.STATIC_DIR, folder))
-            logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
-        workspace.tags = insert_or_get_tags(workspace.tags)
+        workspace.tags = TagRepository().get_tags_daos(workspace.tags)
         return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
@@ -116,13 +95,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
 
+
     def pre_commit(self, osbrepository):
-        # TODO: get tags from the repository
-        tags = osbrepository_service.get_tags(osbrepository)
-        if tags:
-            for tag in tags:
-                osbrepository.tags.append(Tag(tag=tag))
-        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
+        osbrepository.tags = TagRepository().get_tags_daos(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None, tags=None, types=None):
@@ -154,6 +129,17 @@ class WorkspaceImageRepository(BaseModelRepository):
 
 class TagRepository(BaseModelRepository):
     model = Tag
+
+    def get_tags_daos(self, tags):
+        tags_list = []
+        for tag in tags:
+            z = tag.tag
+            items = self.search(q=f"tag__={z}").items
+            if len(items) > 0:
+                # if found reference to the tag
+                tag = items[0]
+            tags_list.append(tag)
+        return tags_list
 
 
 class WorkspaceResourceRepository(BaseModelRepository):
@@ -241,6 +227,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
             and workspace_resource.origin
             and len(workspace_resource.origin) > 0
         ):
+            from workspaces.helpers.etl_helpers import copy_workspace_resource
             copy_workspace_resource(workspace_resource)
         return workspace_resource
 
@@ -267,10 +254,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
         return "Saved", 200
 
-    def delete(self, id, delete_file_from_pvc=True):
+    def delete(self, id):
         """Delete an object from the repository."""
         workspace_resource = self.get(id)
         super().delete(id)
-
-        if delete_file_from_pvc:
-            delete_workspace_resource(workspace_resource)

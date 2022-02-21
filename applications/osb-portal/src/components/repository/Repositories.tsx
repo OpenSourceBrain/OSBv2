@@ -267,7 +267,7 @@ export default (props: RepositoriesProps) => {
                 flexWrap="wrap"
               >
                 {repository.contentTypes.split(",").map((type, index) => {
-                  if (props.searchFilterValues.types.includes(type)) {
+                  if (props.searchFilterValues && props.searchFilterValues.types.includes(type)) {
                   return <Chip
                     avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                     key={type}

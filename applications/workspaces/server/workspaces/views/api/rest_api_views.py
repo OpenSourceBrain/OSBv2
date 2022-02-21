@@ -1,4 +1,4 @@
-import workspaces.service.osbrepository.osbrepository as repository_service
+import workspaces.service.osbrepository as repository_service
 from workspaces.service.model_service import (
     NotAuthorized,
     OsbrepositoryService,

@@ -1,13 +1,11 @@
 import json
 
 from cloudharness import log as logger
-import cloudharness
 
-import workspaces.repository as repos
-# import copy_resource, create_copy_origin_task
-import workspaces.service.osbrepository.osbrepository as osbrepository_service
+from workspaces.service.model_service import WorkspaceService
+
+import workspaces.service.osbrepository as osbrepository_service
 import workspaces.service.workflow as workflow
-from workspaces.service.osbrepository.osbrepository import copy_resource
 from workspaces.models.resource_status import ResourceStatus
 
 
@@ -17,6 +15,7 @@ def copy_origins(workspace_id, origins):
         osbrepository_id = origin.get("osbrepository_id")
         if osbrepository_id:
             # osb repository origin
+            
             task = osbrepository_service.create_copy_task(
                 workspace_id=workspace_id,
                 osbrepository_id=osbrepository_id,
@@ -50,7 +49,7 @@ def copy_workspace_resource(workspace_resource):
 
 def delete_workspace_resource(workspace_resource):
     try:
-        pvc_name = repos.WorkspaceRepository().get_pvc_name(
+        pvc_name = WorkspaceService.get_pvc_name(
             workspace_resource.workspace_id)
         workflow.delete_resource(
             workspace_resource=workspace_resource, pvc_name=pvc_name, resource_path=workspace_resource.folder

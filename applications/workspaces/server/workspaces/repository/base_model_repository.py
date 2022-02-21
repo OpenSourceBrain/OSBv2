@@ -1,7 +1,7 @@
-"""Model Repository class"""
+"""
+Base CRUD logic for application models
+"""
 
-import logging
-import math
 import re
 
 from flask_sqlalchemy import Pagination
@@ -10,7 +10,7 @@ from cloudharness import log as logger
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
 
-from .database import db
+from ..database import db
 from .models import *
 
 
@@ -25,6 +25,7 @@ class BaseModelRepository:
     def __init__(self, model=None):
         if model:
             self.model = model
+        
 
     def _get(self, id):
         """
@@ -83,6 +84,8 @@ class BaseModelRepository:
                     # just copy the value
                     setattr(cur_obj, key, getattr(new_obj, key))
         return cur_obj
+
+    
 
     def _create_filter(self, field, comparator, value, entity=None):
         """
@@ -201,10 +204,10 @@ class BaseModelRepository:
             new_obj.id = None
 
         if "timestamp_created" in self.model.__dict__:
-            setattr(new_obj, "timestamp_created", func.now())
+            new_obj.timestamp_created = func.now()
 
         if "timestamp_updated" in self.model.__dict__:
-            setattr(new_obj, "timestamp_updated", func.now())
+            new_obj.timestamp_updated = func.now()
 
         if self.defaults:
             for fld, default in self.defaults.items():
