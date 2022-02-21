@@ -89,10 +89,9 @@ interface WorkspaceDrawerProps {
   workspace: Workspace;
   user: UserInfo;
   refreshWorkspace: () => any;
-  cloneWorkspace?: (wsId: number) => any,
 }
 
-export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ user, children, workspace, cloneWorkspace }) => {
+export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({ user, children, workspace }) => {
   if (!workspace) {
     return <></>;
   }
@@ -125,7 +124,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         }}
       >
         <div className={`${open ? classes.drawerContent : ''} verticalFit`}>
-          <WorkspaceInteractions open={open} openResource={setCurrentResource} cloneWorkspace={cloneWorkspace}/>
+          <WorkspaceInteractions open={open} openResource={setCurrentResource} />
         </div>
         <div>
           <Divider />

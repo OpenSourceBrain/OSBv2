@@ -226,7 +226,7 @@ export const WorkspacePage = (props: any) => {
               <Typography>Resources</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} cloneWorkspace={props.cloneWorkspace}/>
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
             </AccordionDetails>
           </Accordion>
 
