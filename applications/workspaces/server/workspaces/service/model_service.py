@@ -280,7 +280,7 @@ class WorkspaceService(BaseModelService):
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
-        workspace = Workspace.from_dict(super().get(id))
+        workspace = super().get(id)
 
         for resource in workspace.resources:
             logger.debug("deleting resource %s", resource.id)

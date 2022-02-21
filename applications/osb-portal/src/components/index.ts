@@ -41,9 +41,7 @@ const mapWorkspacesStateToProps = (state: RootState) => ({
 
 
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
-  workspace: state.workspaces?.selectedWorkspace,
   user: state.user,
-
 });
 
 const dispatchWorkspaceProps = {

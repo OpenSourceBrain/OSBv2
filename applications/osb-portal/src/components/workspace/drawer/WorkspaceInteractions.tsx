@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
@@ -121,6 +122,10 @@ export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
+  const history = useHistory();
+  if(!workspace) {
+    return null;
+  }
   const canEdit = canEditWorkspace(props.user, workspace);
 
   const showAddResource = () => {
@@ -171,6 +176,12 @@ export default (props: WorkspaceProps | any) => {
     </>
   )
 
+  const deleteWorkspace = (wid: number) => {
+
+    props.deleteWorkspace(wid);
+    history.push("/")
+  }
+
   return (<>
 
     {props.open ? (
@@ -192,7 +203,7 @@ export default (props: WorkspaceProps | any) => {
             </Typography>
 
             <Box p={2}>
-              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
             </Box>
             <Menu
               id="simple-menu"

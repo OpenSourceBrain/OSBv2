@@ -19,7 +19,7 @@ import WorkspaceService from "../service/WorkspaceService";
 import { Workspace, WorkspaceResource } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor } from "../components";
-import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
+import { WorkspaceInteractions } from "../components";
 import MarkdownViewer from "../components/common/MarkdownViewer";
 import { canEditWorkspace } from '../service/UserService';
 
