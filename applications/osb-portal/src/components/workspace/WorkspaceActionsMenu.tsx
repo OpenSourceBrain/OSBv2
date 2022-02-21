@@ -13,6 +13,8 @@ import { canEditWorkspace } from '../../service/UserService';
 import { UserInfo } from "../../types/user";
 
 
+// TODO: refactor to use redux instead of passing props
+
 interface WorkspaceActionsMenuProps {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => null;
