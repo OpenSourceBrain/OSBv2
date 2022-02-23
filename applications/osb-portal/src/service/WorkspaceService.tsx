@@ -83,7 +83,7 @@ class WorkspaceService {
   }
 
   async deleteWorkspace(workspaceId: number) {
-    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
+    return this.workspacesApi.workspaceIdDelete({ id: workspaceId });
   }
 
   async updateWorkspace(workspace: Workspace) {
