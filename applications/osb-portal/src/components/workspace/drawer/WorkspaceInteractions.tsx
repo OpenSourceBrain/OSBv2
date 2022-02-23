@@ -113,6 +113,7 @@ interface WorkspaceProps {
   user: UserInfo,
   [propName: string]: any;
   openResource: (r: WorkspaceResource) => any
+  refreshWorkspacePage?: () => void;
 }
 
 
@@ -136,9 +137,14 @@ export default (props: WorkspaceProps | any) => {
     setAddResourceOpen(false);
   }
 
+  const handleWorkspaceRefresh = () => {
+    props.refreshWorkspace(workspace.id);
+    props.refreshWorkspacePage();
+  }
+
   const handleResourceAdded = () => {
     setAddResourceOpen(false);
-    props.refreshWorkspace();
+    handleWorkspaceRefresh()
   }
 
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
@@ -204,7 +210,7 @@ export default (props: WorkspaceProps | any) => {
             </Typography>
 
             <Box p={2}>
-              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} refreshWorkspace={props.refreshWorkspace} />
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
             </Box>
             <Menu
               id="simple-menu"
@@ -229,7 +235,7 @@ export default (props: WorkspaceProps | any) => {
             <Divider />
             <WorkspaceResourceBrowser
               workspace={workspace}
-              refreshWorkspace={props.refreshWorkspace}
+              refreshWorkspace={handleWorkspaceRefresh}
               openResource={props.openResource}
             />
           </ExpansionPanelDetails>
@@ -260,7 +266,7 @@ export default (props: WorkspaceProps | any) => {
           {props.workspace.name}
 
           <IconButton>
-            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} refreshWorkspace={props.refreshWorkspace} />
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
           </IconButton>
         </div>
       </>

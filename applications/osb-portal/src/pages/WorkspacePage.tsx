@@ -225,7 +225,7 @@ export const WorkspacePage = (props: any) => {
               <Typography>Resources</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspacePage={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
             </AccordionDetails>
           </Accordion>
 
@@ -250,7 +250,7 @@ export const WorkspacePage = (props: any) => {
             */
           }
         <Box className={`verticalFit ${classes.workspaceResourcesInformation}`} display="flex" flexDirection="row">
-          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspacePage={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
           <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100%" display="flex" flexDirection="column" alignItems="center">
             <Box className={`inner-description`} p={4}>
               {workspace.thumbnail &&

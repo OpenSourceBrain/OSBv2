@@ -20,8 +20,7 @@ interface WorkspaceActionsMenuProps {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => null;
   deleteWorkspace?: (wsId: number) => null;
-  refreshWorkspace?: () => null;
-  refreshWorkspaces?: () => null;
+  refreshWorkspaces: () => void;
   user?: UserInfo;
 }
 
@@ -70,7 +69,7 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   const handleCloseEditWorkspace = () => {
     setEditWorkspaceOpen(false);
-    props.refreshWorkspace();
+    props.refreshWorkspaces();
   }
 
   const handleCloneWorkspace = () => {
