@@ -11,6 +11,7 @@ import OSBDialog from "../common/OSBDialog";
 import { WorkspaceEditor } from "./../index";
 import { canEditWorkspace } from '../../service/UserService';
 import { UserInfo } from "../../types/user";
+import WorkspaceService from "../../service/WorkspaceService"
 
 
 // TODO: refactor to use redux instead of passing props
@@ -19,7 +20,7 @@ interface WorkspaceActionsMenuProps {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => null;
   deleteWorkspace?: (wsId: number) => null;
-  cloneWorkspace?: (wsId: number) => null;
+  refreshWorkspace?: () => null;
   refreshWorkspaces?: () => null;
   user?: UserInfo;
 }
@@ -69,11 +70,13 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   const handleCloseEditWorkspace = () => {
     setEditWorkspaceOpen(false);
-    props.refreshWorkspaces();
+    props.refreshWorkspace();
   }
 
   const handleCloneWorkspace = () => {
-    props.cloneWorkspace(props.workspace.id);
+    WorkspaceService.cloneWorkspace(props.workspace.id).then(() => {
+      props.refreshWorkspaces();
+    });
     handleCloseMenu();
   }
 

@@ -1,6 +1,6 @@
 import { WorkspaceActions } from '../reducers/workspaces'
 
-export const { selectWorkspace, refreshWorkspace, refreshWorkspaces, deleteWorkspace, updateWorkspace, resourceAdded, cloneWorkspace } = WorkspaceActions;
+export const { selectWorkspace, refreshWorkspace, refreshWorkspaces, deleteWorkspace, updateWorkspace, resourceAdded} = WorkspaceActions;
 
 
 

@@ -36,9 +36,6 @@ const workspaceSlice = createSlice({
     updateWorkspace(state, action: PayloadAction<Workspace>) {
       return { ...state, selectedWorkspace: action.payload, counter: state.counter + 1 };
     },
-    cloneWorkspace(state, action: PayloadAction<number>) {
-      return { ...state, counter: state.counter + 1 };
-    },
     resourceAdded(state, action: PayloadAction<Workspace>) {
       return state;
     },

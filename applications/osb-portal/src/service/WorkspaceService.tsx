@@ -75,7 +75,7 @@ class WorkspaceService {
   }
 
   async cloneWorkspace(workspaceId: number) {
-    this.workspacesApi.workspacesControllersWorkspaceControllerWorkspaceClone({ id: workspaceId });
+    return this.workspacesApi.workspacesControllersWorkspaceControllerWorkspaceClone({ id: workspaceId });
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {

@@ -88,9 +88,6 @@ const callAPIMiddlewareFn: Middleware = ({ getState }: { getState: () => RootSta
     case Workspaces.deleteWorkspace.toString():
       workspaceService.deleteWorkspace(action.payload).then(() => { next(action); });
       break;
-    case Workspaces.cloneWorkspace.toString():
-      workspaceService.cloneWorkspace(action.payload).then(() => { next(action); });
-      break;
     case Workspaces.resourceAdded.toString():
       const { path, name } = action.payload as { path: string, name: string };
       const workspaceId = getState().workspaces.selectedWorkspace.id;
