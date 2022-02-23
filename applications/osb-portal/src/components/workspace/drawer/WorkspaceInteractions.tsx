@@ -139,7 +139,9 @@ export default (props: WorkspaceProps | any) => {
 
   const handleWorkspaceRefresh = () => {
     props.refreshWorkspace(workspace.id);
-    props.refreshWorkspacePage();
+    if ("refreshWorkspacePage" in props) {
+      props.refreshWorkspacePage();
+    }
   }
 
   const handleResourceAdded = () => {
