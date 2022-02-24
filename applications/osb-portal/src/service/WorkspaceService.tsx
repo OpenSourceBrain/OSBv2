@@ -74,6 +74,10 @@ class WorkspaceService {
     return this.workspacesApi.workspacePost(wspr);
   }
 
+  async cloneWorkspace(workspaceId: number) {
+    return this.workspacesApi.workspacesControllersWorkspaceControllerWorkspaceClone({ id: workspaceId });
+  }
+
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
     return { ...ws, resources: ws.resources && ws.resources.map(mapPostUrlResource), timestampCreated: undefined, timestampUpdated: undefined, user: undefined };
   }
