@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
       color: paragraph,
       textTransform: 'capitalize',
     },
-    "& .repo-tag": {
+    "& .repo-chip": {
       color: textColor,
       textTransform: 'none',
     },
@@ -366,6 +366,7 @@ export const RepositoryPage = (props: any) => {
                       {
                         repository.contentTypesList.map(type => {
                           return <Chip
+                            className="repo-chip"
                             size="small"
                             avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                             key={type}
@@ -374,11 +375,11 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                       {
-                        repository.defaultContext && <Chip size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
+                        repository.defaultContext && <Chip className="repo-chip" size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
                       }
                       {
                         repository.tags.map(tagObject => {
-                          return <Chip className="repo-tag" size="small" label={tagObject.tag} key={tagObject.id} />
+                          return <Chip className="repo-chip" size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
                     </Box>
