@@ -291,6 +291,20 @@ export const RepositoryPage = (props: any) => {
     setChecked([]);
   }
 
+
+  const getRepoURL = () => {
+    switch (repository.repositoryType) {
+      // For github, the URL is: repo/tree/branch
+      case "github":
+        return repository.uri + "/tree/" + repository.defaultContext;
+      // For dandi, the URL is: repo/version
+      case "dandi":
+        return repository.uri + "/" + repository.defaultContext;
+      default:
+        return "#"
+    }
+  }
+
   return (
     <>
       <MainMenu />
@@ -402,7 +416,7 @@ export const RepositoryPage = (props: any) => {
                     </Accordion>
                   </Box>
                   <Box position="relative" mt="2">
-                    <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                    <Button href={getRepoURL()} target="_blank" className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
                       View on {Resources[repository.repositoryType] || repository.repositoryType}
                     </Button>
                     <Typography component="h2" variant="h2" className="primary-heading">
