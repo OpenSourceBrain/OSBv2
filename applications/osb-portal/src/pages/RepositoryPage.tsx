@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
       color: paragraph,
       textTransform: 'capitalize',
     },
-    "& .repo-tag": {
+    "& .repo-chip": {
       color: textColor,
       textTransform: 'none',
     },
@@ -291,6 +291,20 @@ export const RepositoryPage = (props: any) => {
     setChecked([]);
   }
 
+
+  const getRepoURL = () => {
+    switch (repository.repositoryType) {
+      // For github, the URL is: repo/tree/branch
+      case "github":
+        return repository.uri + "/tree/" + repository.defaultContext;
+      // For dandi, the URL is: repo/version
+      case "dandi":
+        return repository.uri + "/" + repository.defaultContext;
+      default:
+        return "#"
+    }
+  }
+
   return (
     <>
       <MainMenu />
@@ -352,6 +366,7 @@ export const RepositoryPage = (props: any) => {
                       {
                         repository.contentTypesList.map(type => {
                           return <Chip
+                            className="repo-chip"
                             size="small"
                             avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                             key={type}
@@ -360,11 +375,11 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                       {
-                        repository.defaultContext && <Chip size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
+                        repository.defaultContext && <Chip className="repo-chip" size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
                       }
                       {
                         repository.tags.map(tagObject => {
-                          return <Chip className="repo-tag" size="small" label={tagObject.tag} key={tagObject.id} />
+                          return <Chip className="repo-chip" size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
                     </Box>
@@ -402,7 +417,7 @@ export const RepositoryPage = (props: any) => {
                     </Accordion>
                   </Box>
                   <Box position="relative" mt="2">
-                    <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                    <Button href={getRepoURL()} target="_blank" className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
                       View on {Resources[repository.repositoryType] || repository.repositoryType}
                     </Button>
                     <Typography component="h2" variant="h2" className="primary-heading">
