@@ -10,36 +10,32 @@ import * as Sentry from '@sentry/react';
 export const ErrorDialog = (props: any) => {
   const handleClose = () => {
     props.setError(null);
+    window.open("/", "_self");
   };
 
   const handleReport = () => {
     Sentry.captureException(new Error(props.error));
-    handleClose();
+    window.open("https://github.com/OpenSourceBrain/OSBv2/issues/new");
   };
 
-  if (props.error !== null){
-    const alerts = <Alert severity="error" key={1}><div className="errorAlertDiv" key={"div-1"} dangerouslySetInnerHTML={{ __html: props.error }} /></Alert>;
+  return (<Dialog
+    open={props.error !== null}
+    onClose={handleClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+  >
+    <DialogTitle id="alert-dialog-title">{"Error"}</DialogTitle>
+    <DialogContent>
+      <Alert severity="error" key={1}><div className="errorAlertDiv" key={"div-1"} dangerouslySetInnerHTML={{ __html: props.error }} /></Alert>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleReport} color="primary" autoFocus={true}>
+        Report
+      </Button>
+      <Button onClick={handleClose} color="primary">
+        Close
+      </Button>
+    </DialogActions>
+  </Dialog>);
 
-    return (<Dialog
-      open={props.error !== null}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{"Error"}</DialogTitle>
-      <DialogContent>
-        {alerts}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleReport} color="primary">
-          Report
-        </Button>
-        <Button onClick={handleClose} color="primary" autoFocus={true}>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>);
-  }
-
-  return <div />;
 };
