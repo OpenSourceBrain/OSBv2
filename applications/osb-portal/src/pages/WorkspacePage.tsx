@@ -1,7 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
-import { MainMenu } from "../components/index";
+import { MainMenu, ErrorDialog } from "../components/index";
 import Box from "@material-ui/core/Box";
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
@@ -152,7 +152,12 @@ export const WorkspacePage = (props: any) => {
   React.useEffect(() => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
-    });
+      props.setError(null);
+    },
+    (error) => {
+      const errorMessage = `Oops! This workspace could not be accessed. (Code: ${error.status})`;
+      props.setError(errorMessage);
+    })
   }, [refresh]);
 
   const handleCloseEditWorkspace = () => {

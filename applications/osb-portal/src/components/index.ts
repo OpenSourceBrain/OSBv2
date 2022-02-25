@@ -120,7 +120,7 @@ export const MainMenu = connect(null, dispatchMainMenuProps)(mainMenu)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
 export const WorkspaceOpenPage = connect(null, dispatchWorkspaceProps)(workspaceOpenPage);
-export const WorkspacePage = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacePage);
+export const WorkspacePage = connect(mapUserStateToProps, { ...dispatchWorkspaceProps, ...dispatchErrorProps })(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage)
 export const UserPage = connect(mapUserStateToProps)(userPage)
 export const RepositoriesPage = connect(mapUserAndTagsToProps, dispatchTagsProps)(repositoriesPage)
