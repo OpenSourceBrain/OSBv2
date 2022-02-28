@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: primaryColor,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   root: {
     position: 'absolute',
