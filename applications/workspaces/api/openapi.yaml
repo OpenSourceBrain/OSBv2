@@ -220,7 +220,7 @@ paths:
         schema:
           type: integer
         description: Workspace ID of the workspace
-    post:
+    put:
       summary: Clones a workspace
       operationId: workspaces.controllers.workspace_controller.workspace_clone
       security:
@@ -228,6 +228,10 @@ paths:
       responses:
         200:
           description: The workspace was cloned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
         404:
           description: The workspace was not found
       tags:

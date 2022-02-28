@@ -1418,7 +1418,7 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Clones a workspace
      */
-    async workspacesControllersWorkspaceControllerWorkspaceCloneRaw(requestParameters: WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest): Promise<runtime.ApiResponse<void>> {
+    async workspacesControllersWorkspaceControllerWorkspaceCloneRaw(requestParameters: WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerWorkspaceClone.');
         }
@@ -1437,19 +1437,20 @@ export class RestApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/workspace/{id}/clone`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'POST',
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
     }
 
     /**
      * Clones a workspace
      */
-    async workspacesControllersWorkspaceControllerWorkspaceClone(requestParameters: WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest): Promise<void> {
-        await this.workspacesControllersWorkspaceControllerWorkspaceCloneRaw(requestParameters);
+    async workspacesControllersWorkspaceControllerWorkspaceClone(requestParameters: WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest): Promise<Workspace> {
+        const response = await this.workspacesControllersWorkspaceControllerWorkspaceCloneRaw(requestParameters);
+        return await response.value();
     }
 
     /**

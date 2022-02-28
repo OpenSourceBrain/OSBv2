@@ -43,6 +43,10 @@ To manually create the helm chart to use on any Kubernetes deployment, run:
 harness-deployment cloud-harness . 
 ```
 ### Cluster setup
+
+Kubernetes 1.19+ is supported (v1 spec)
+
+#### Cert-manager
 The cert-manager must be installed in order to use letsencrypt generated certificates
 
 To check if cert-manager is installed, run:
@@ -58,6 +62,9 @@ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/relea
 
 See also https://cert-manager.io/docs/installation/kubernetes/.
 
+#### CSI driver
+
+On google cloud, the **Compute Engine persistent disk CSI Driver** must be enabled in order for the volume cloning to work.
 
 ### Install and upgrade with Helm
 

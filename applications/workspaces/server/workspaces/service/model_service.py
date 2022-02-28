@@ -177,11 +177,14 @@ class WorkspaceService(BaseModelService):
             name=f"Clone of {workspace['name']}",
             tags=workspace['tags'],
             user_id=keycloak_user_id(),
-            thumbnail=workspace['thumbnail'],
+            
             description=workspace['description'],
             publicable=False,
-            featured=False,
+            featured=False
         )
+        if workspace['thumbnail']:
+            cloned['thumbnail']=workspace['thumbnail']
+            
         cloned = self.repository.post(cloned, do_post=False)
 
         clone_workspace_volume(
