@@ -43,7 +43,7 @@ class SentryErrorBoundary extends React.Component<{}, OwnState> {
         <>
           <Box textAlign='center'>
             <Box padding={2}>
-              <Typography align="center" display="block" variant="h4" color="textPrimary">Oops. Something went wrong. This page could not be found.</Typography>
+              <Typography align="center" display="block" variant="h4" color="textPrimary">Oops. Something went wrong.</Typography>
             </Box>
             <Box padding={2}>
               <Button variant="outlined" onClick={this.showDialog}>Report feedback</Button>
