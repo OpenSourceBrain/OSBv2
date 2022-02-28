@@ -1,5 +1,7 @@
 import React from 'react';
 import * as Sentry from '@sentry/react';
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 
 import Button from '@material-ui/core/Button';
 
@@ -38,7 +40,17 @@ class SentryErrorBoundary extends React.Component<{}, OwnState> {
     if (this.state.hasError) {
       // render fallback UI
       return (
-        <Button onClick={this.showDialog}>Report feedback</Button>
+        <>
+          <Box textAlign='center'>
+            <Box padding={2}>
+              <Typography align="center" display="block" variant="h4" color="textPrimary">Oops. Something went wrong. This page could not be found.</Typography>
+            </Box>
+            <Box padding={2}>
+              <Button variant="outlined" onClick={this.showDialog}>Report feedback</Button>
+              <Button variant="outlined" color="primary" onClick={() => window.open("/", "_self")}>Return to homepage</Button>
+            </Box>
+          </Box>
+        </>
       );
     }
 
