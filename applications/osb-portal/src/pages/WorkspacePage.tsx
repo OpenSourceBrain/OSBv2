@@ -154,9 +154,8 @@ export const WorkspacePage = (props: any) => {
       setWorkspace(ws);
       props.setError(null);
     },
-    (error) => {
-      const errorMessage = `Oops! This workspace could not be accessed. (Code: ${error.status})`;
-      props.setError(errorMessage);
+    () => {
+      props.setError("Oops! This workspace could not be accessed.");
     })
   }, [refresh]);
 
