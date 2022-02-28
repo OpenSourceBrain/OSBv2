@@ -6,7 +6,7 @@ import SentryErrorBoundary from "./components/sentry/SentryErrorBoundary";
 import HomePage from "./pages/HomePage";
 import theme from "./theme";
 
-import { Header, AboutDialog, ErrorDialog, WorkspaceOpenPage, ProtectedRoute, RepositoriesPage, RepositoryPage, WorkspacePage, UserPage } from "./components/index";
+import { Header, AboutDialog, WorkspaceOpenPage, ProtectedRoute, RepositoriesPage, RepositoryPage, WorkspacePage, UserPage } from "./components/index";
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -28,7 +28,6 @@ export const App = (props: any) => {
     <SentryErrorBoundary>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ErrorDialog />
         <AboutDialog />
         {!props.error &&
           <Router>

@@ -8,7 +8,6 @@ import workspaceInteractions from './workspace/drawer/WorkspaceInteractions';
 import { Banner as banner } from './header/Banner'
 import { Header as header } from './header/Header'
 import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/WorkspaceDrawer'
-import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { AboutDialog as aboutDialog } from './about-dialog/AboutDialog'
 import { MainMenu as mainMenu } from './menu/MainMenu'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
@@ -114,7 +113,6 @@ export const WorkspaceInteractions = connect(mapUserStateToProps, dispatchWorksp
 export const WorkspaceEditor = connect(mapTagsToProps, dispatchTagsProps)(workspaceEditor)
 
 export const App = connect(mapErrorStateToProps, null)(app)
-export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 export const AboutDialog = connect(mapAboutDialogToProps, dispatchAboutDialogProps)(aboutDialog)
 export const MainMenu = connect(null, dispatchMainMenuProps)(mainMenu)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
