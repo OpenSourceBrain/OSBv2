@@ -152,7 +152,8 @@ export const WorkspacePage = (props: any) => {
   React.useEffect(() => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
-    });
+    },
+    () => (setWorkspace(null)));
   }, [refresh]);
 
   const handleCloseEditWorkspace = () => {
@@ -192,7 +193,7 @@ export const WorkspacePage = (props: any) => {
 
   return (
     <Box className="verticalFit">
-      {workspace && <>
+      {<>
         <Box className="wrapper-for-now">
           <Divider />
           <MainMenu />
