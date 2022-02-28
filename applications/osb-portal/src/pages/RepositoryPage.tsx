@@ -194,7 +194,7 @@ export const RepositoryPage = (props: any) => {
 
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
-  const [repository, setRepository] = React.useState<OSBRepository>();
+  const [repository, setRepository] = React.useState<OSBRepository>(null);
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] = React.useState(false);
@@ -211,7 +211,8 @@ export const RepositoryPage = (props: any) => {
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
       setRepository(repo);
-    });
+    },
+    () => setRepository(null));
   }, []);
 
   const openDialog = () => {
