@@ -145,7 +145,7 @@ export const WorkspacePage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [workspace, setWorkspace] = React.useState<Workspace>();
+  const [workspace, setWorkspace] = React.useState<Workspace>(null);
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
 
@@ -161,7 +161,8 @@ export const WorkspacePage = (props: any) => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
       setEditWorkspaceOpen(false);
-    });
+    },
+    () => (setWorkspace(null)));
   }
 
   const handleResourceClick = (resource: WorkspaceResource) => {
