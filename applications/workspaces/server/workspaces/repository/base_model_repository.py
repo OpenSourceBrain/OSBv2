@@ -257,9 +257,11 @@ class BaseModelRepository:
 
     def delete(self, id):
         """Delete an object from the repository."""
-        result = self.model.query.filter_by(id=id).delete()
+        result = self.model.query.filter_by(id=id).first()
+    
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
+        db.session.delete(result)
         return db.session.commit()
 
     def __str__(self):
