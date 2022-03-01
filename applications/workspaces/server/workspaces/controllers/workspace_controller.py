@@ -8,7 +8,6 @@ from workspaces.config import Config
 from workspaces.repository.model_repository import WorkspaceImageRepository, WorkspaceRepository, db
 from workspaces.repository.models import WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
-from workspaces.service.kubernetes import clone_workspace_volume
 from workspaces.service.model_service import NotAuthorized, WorkspaceService
 
 def _save_image(id_=None, image=None, filename_base=None):

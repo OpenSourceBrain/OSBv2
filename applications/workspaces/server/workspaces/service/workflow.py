@@ -85,3 +85,29 @@ def create_scan_task(workspace_id, **kwargs):
         queue=events.UPDATE_WORKSPACES_RESOURCE_QUEUE,
         **kwargs,
     )
+
+def clone_workspaces_content(source_ws_id, dest_ws_id):
+    source_pvc_name = WorkspaceService.get_pvc_name(source_ws_id)
+    dest_pvc_name = WorkspaceService.get_pvc_name(dest_ws_id)
+    source_volume = f"{source_pvc_name}:/source"
+    dest_volume = f"{dest_pvc_name}:/project_download"
+
+    copy_task = tasks.BashTask(
+        name=f"clone-workspace-data",
+        source="sleep 1 && cp -R /source/* /project_download"
+    )
+
+    scan_task = create_scan_task(dest_ws_id)
+
+    op = operations.PipelineOperation(
+        basename="osb-clone-workspace-job",
+        tasks=(
+            copy_task,
+            scan_task,
+        ),
+        ttl_strategy=ttl_strategy,
+        pod_context=operations.PodExecutionContext(
+            "workspace", dest_ws_id, True),
+    )
+    op.volumes=(source_volume, dest_volume)
+    workflow = op.execute()
