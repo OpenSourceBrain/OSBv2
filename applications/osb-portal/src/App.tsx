@@ -2,7 +2,7 @@ import * as React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, makeStyles } from "@material-ui/core";
-import SentryErrorBoundary from "./components/sentry/SentryErrorBoundary";
+import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
 import HomePage from "./pages/HomePage";
 import theme from "./theme";
 
@@ -25,8 +25,9 @@ export const App = (props: any) => {
   const classes = useStyles();
 
   return (
-    <SentryErrorBoundary>
-      <ThemeProvider theme={theme}>
+
+    <ThemeProvider theme={theme}>
+      <OSBErrorBoundary>
         <CssBaseline />
         <AboutDialog />
         {!props.error &&
@@ -34,35 +35,36 @@ export const App = (props: any) => {
             <div className={classes.mainContainer}>
               <Header />
 
-
-              <Switch>
-                <Route exact={true} path="/">
-                  <HomePage />
-                </Route>
-                <Route exact={true} path="/workspace/:workspaceId">
-                  <WorkspacePage />
-                </Route>
-                <ProtectedRoute exact={true} path="/workspace/open/:workspaceId/:app">
-                  <WorkspaceOpenPage />
-                </ProtectedRoute>
-                <ProtectedRoute exact={true} path="/workspace/open/:workspaceId">
-                  <WorkspaceOpenPage />
-                </ProtectedRoute>
-                <Route exact={true} path="/repositories">
-                  <RepositoriesPage />
-                </Route>
-                <Route exact={true} path="/repositories/:repositoryId">
-                  <RepositoryPage />
-                </Route>
-                <Route exact={true} path="/user/:userId">
-                  <UserPage />
-                </Route>
-              </Switch>
-
+              <OSBErrorBoundary>
+                <Switch>
+                  <Route exact={true} path="/">
+                    <HomePage />
+                  </Route>
+                  <Route exact={true} path="/workspace/:workspaceId">
+                    <WorkspacePage />
+                  </Route>
+                  <ProtectedRoute exact={true} path="/workspace/open/:workspaceId/:app">
+                    <WorkspaceOpenPage />
+                  </ProtectedRoute>
+                  <ProtectedRoute exact={true} path="/workspace/open/:workspaceId">
+                    <WorkspaceOpenPage />
+                  </ProtectedRoute>
+                  <Route exact={true} path="/repositories">
+                    <RepositoriesPage />
+                  </Route>
+                  <Route exact={true} path="/repositories/:repositoryId">
+                    <RepositoryPage />
+                  </Route>
+                  <Route exact={true} path="/user/:userId">
+                    <UserPage />
+                  </Route>
+                </Switch>
+              </OSBErrorBoundary>
             </div>
           </Router>
         }
-      </ThemeProvider>
-    </SentryErrorBoundary>
+      </OSBErrorBoundary>
+    </ThemeProvider>
+
   );
 };
