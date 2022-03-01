@@ -35,12 +35,14 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
   componentDidCatch(error: any, errorInfo: any) {
     Sentry.withScope((scope: any) => {
       scope.setExtras(errorInfo);
-      const eventId: string = Sentry.captureException(error);
+      
       let message = "Oops. Something went wrong.";
-      if (error.status) {
+      if (error.status && error.status < 500) {
         message = ERROR_MESSAGES[error.statusText] || error.statusText;
+      } else {
+        Sentry.captureException(error);
       }
-      this.setState({ ...this.state, eventId, message });
+      this.setState({ ...this.state, message });
     });
   }
 
