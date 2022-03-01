@@ -29,7 +29,7 @@ from workspaces.repository import (
 from workspaces.repository.base_model_repository import BaseModelRepository
 from workspaces.repository.models import TWorkspaceEntity, WorkspaceResourceEntity
 from workspaces.service import osbrepository as osbrepository_helper
-from workspaces.service.kubernetes import clone_workspace_volume, create_volume
+from workspaces.service.kubernetes import create_volume
 from workspaces.service.auth import get_auth_client, keycloak_user_id
 
 from workspaces.utils import dao_entity2dict
@@ -168,6 +168,7 @@ class WorkspaceService(BaseModelService):
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):
+        from workspaces.service.workflow import clone_workspaces_content
         workspace = self.get(workspace_id)
         if workspace is None:
             raise Exception(
@@ -187,16 +188,9 @@ class WorkspaceService(BaseModelService):
             
         cloned = self.repository.post(cloned, do_post=False)
 
-        clone_workspace_volume(
-            self.get_pvc_name(workspace_id),
-            self.get_pvc_name(cloned.id),
-            size=self.get_workspace_volume_size(workspace)
-        )
-        self.resource_repository.update_workspace_resources(
-            cloned.id,
-            [os.path.join(r['folder'], r['name'])
-             for r in workspace['resources'] if r['status'] == ResourceStatus.A]
-        )
+        create_volume(name=self.get_pvc_name(cloned.id),
+                      size=self.get_workspace_volume_size(workspace))
+        clone_workspaces_content(workspace_id, cloned.id)
         return cloned
 
     def is_authorized(self, workspace):
