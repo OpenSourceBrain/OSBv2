@@ -14,7 +14,12 @@ interface OwnState {
 }
 
 const ERROR_MESSAGES: any = {
-  UNAUTHORIZED: "You are not autorized to view this content."
+  // 401
+  "UNAUTHORIZED": "Oops. This resource could not be accessed. Please check that you are logged in and have the necessary permissions to access this content.",
+  // 403
+  "FORBIDDEN": "Oops. This resource could not be accessed. Please check that you have the necessary permissions to access this content.",
+  // 404
+  "NOT FOUND": "Oops. This resource could not be found. Please check the URL you are trying to access and try again.",
 }
 
 class OSBErrorBoundary extends React.Component<{}, OwnState> {
@@ -35,8 +40,8 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
   componentDidCatch(error: any, errorInfo: any) {
     Sentry.withScope((scope: any) => {
       scope.setExtras(errorInfo);
-      
-      let message = "Oops. Something went wrong.";
+
+      let message = "Oops. Something went wrong. Please report this error to us.";
       if (error.status && error.status < 500) {
         message = ERROR_MESSAGES[error.statusText] || error.statusText;
       } else {
@@ -59,7 +64,7 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
             <Alert severity="error" key={1}><div className="errorAlertDiv" key={"div-1"} >{this.state.message}</div></Alert>
             </DialogContent>
             <DialogActions>
-              <Button href="https://github.com/OpenSourceBrain/OSBv2/issues/new" target="_blank">Report feedback</Button>
+              <Button href="https://github.com/OpenSourceBrain/OSBv2/issues/new" target="_blank">Report error</Button>
               <Button variant="outlined" color="primary" onClick={() => window.open("/", "_self")}>Return to homepage</Button>
             </DialogActions>
           </Dialog>
