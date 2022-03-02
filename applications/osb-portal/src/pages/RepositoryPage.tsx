@@ -204,6 +204,7 @@ export const RepositoryPage = (props: any) => {
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
+  const [error, setError] = React.useState<any>(null);
 
 
   const classes = useStyles();
@@ -212,8 +213,12 @@ export const RepositoryPage = (props: any) => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
       setRepository(repo);
     },
-    () => setRepository(null));
+    (e) => {setError(e)});
   }, []);
+
+  if (error) {
+    throw error;
+  }
 
   const openDialog = () => {
     setShowWorkspaceEditor(!showWorkspaceEditor);
@@ -262,7 +267,7 @@ export const RepositoryPage = (props: any) => {
       setShowWorkspaceEditor(false);
       setWorkspaceLink(`/workspace/${ws.id}`);
       confirmAction("Success", "New workspace created!");
-    }).catch((error) => {
+    }).catch((e) => {
       setShowWorkspaceEditor(false);
       confirmAction("Error", "There was an error creating the new workspace.");
     });
@@ -283,7 +288,7 @@ export const RepositoryPage = (props: any) => {
       setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
-    }).catch((error) => {
+    }).catch((e) => {
       confirmAction("Error", "There was an error adding the resources to the workspace");
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
