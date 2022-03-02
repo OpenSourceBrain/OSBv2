@@ -171,6 +171,7 @@ export const UserPage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
+  const [error, setError] = React.useState<any>(null);
 
   const handleTabChange = (event: React.SyntheticEvent, newTabValue: number) => {
     setTabValue(newTabValue);
@@ -184,11 +185,18 @@ export const UserPage = (props: any) => {
     getUser(userId).then(u => { setUser(u); });
     workspaceService.fetchWorkspaces(false, false, 1, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
       setWorkspaces(workspacesRetrieved.items);
-    });
+    },
+    (e) => { setError(e) });
     RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS).then((repositoriesRetrieved) => {
       setRepositories(repositoriesRetrieved);
-    })
+    },
+    (e) => { setError(e) });
   }, []);
+
+  if (error) {
+    throw error;
+  }
+
   if (!user) {
     return null;
   }
