@@ -148,7 +148,7 @@ export const WorkspacePage = (props: any) => {
   const [workspace, setWorkspace] = React.useState<Workspace>(null);
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
-  const [error, setError] = React.useState<String>(null);
+  const [error, setError] = React.useState<any>(null);
 
   React.useEffect(() => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
@@ -157,7 +157,7 @@ export const WorkspacePage = (props: any) => {
     (e) => {setError(e)});
   }, [refresh]);
 
-  if(error) {
+  if (error) {
     throw error;
   }
   const handleCloseEditWorkspace = () => {
@@ -166,7 +166,7 @@ export const WorkspacePage = (props: any) => {
       setWorkspace(ws);
       setEditWorkspaceOpen(false);
     },
-    () => (setWorkspace(null)));
+    (e) => {setError(e)});
   }
 
   const handleResourceClick = (resource: WorkspaceResource) => {
