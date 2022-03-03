@@ -145,22 +145,28 @@ export const WorkspacePage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [workspace, setWorkspace] = React.useState<Workspace>();
+  const [workspace, setWorkspace] = React.useState<Workspace>(null);
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
+  const [error, setError] = React.useState<any>(null);
 
   React.useEffect(() => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
-    });
+    },
+    (e) => {setError(e)});
   }, [refresh]);
 
+  if (error) {
+    throw error;
+  }
   const handleCloseEditWorkspace = () => {
 
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
       setEditWorkspaceOpen(false);
-    });
+    },
+    (e) => {setError(e)});
   }
 
   const handleResourceClick = (resource: WorkspaceResource) => {
@@ -191,8 +197,8 @@ export const WorkspacePage = (props: any) => {
   const canEdit = canEditWorkspace(props.user, workspace);
 
   return (
-    <Box className="verticalFit">
-      {workspace && <>
+    workspace && <Box className="verticalFit">
+      {<>
         <Box className="wrapper-for-now">
           <Divider />
           <MainMenu />

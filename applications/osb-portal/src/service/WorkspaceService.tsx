@@ -28,8 +28,12 @@ class WorkspaceService {
 
   async getWorkspace(id: number): Promise<Workspace> {
     const wsigr: WorkspaceIdGetRequest = { id };
-    let ws = null;
-    await this.workspacesApi.workspaceIdGet(wsigr).then(result => ws = mapWorkspace(result));
+
+    const result = await this.workspacesApi.workspaceIdGet(wsigr);
+    if (!result) {
+      throw new Error("Workspace not found")
+    }
+    const ws = mapWorkspace(result);
     if (!ws) {
       throw new Error("Workspace not found")
     }

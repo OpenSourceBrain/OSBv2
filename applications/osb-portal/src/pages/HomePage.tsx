@@ -13,7 +13,6 @@ import {
   WorkspaceDrawer,
   Workspaces,
   WorkspaceToolBox,
-  ErrorDialog,
 } from "../components";
 
 const useStyles = makeStyles((theme) => ({
