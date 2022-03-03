@@ -287,7 +287,7 @@ export default (props: RepositoriesProps) => {
                 }
                 })}
               {repository.tags && repository.tags.map((tagObject, index) => {
-                if (props.searchFilterValues.tags.includes(tagObject.tag)) {
+                if (props.searchFilterValues && props.searchFilterValues.tags.includes(tagObject.tag)) {
                   return <Chip
                       className="repo-tag"
                       key={tagObject.id}
