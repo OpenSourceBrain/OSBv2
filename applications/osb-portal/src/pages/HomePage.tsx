@@ -5,7 +5,7 @@ import Box from "@material-ui/core/Box";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Latest } from "../components/home/Latest";
-import MainMenu from "../components/menu/MainMenu";
+import { MainMenu } from "../components/index";
 
 import {
   Header,
@@ -13,7 +13,6 @@ import {
   WorkspaceDrawer,
   Workspaces,
   WorkspaceToolBox,
-  ErrorDialog,
 } from "../components";
 
 const useStyles = makeStyles((theme) => ({

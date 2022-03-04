@@ -36,7 +36,7 @@ module.exports = env => {
     common(env),
     {
       mode: 'development',
-      devtool: 'eval-source-map',
+      devtool: 'source-map',
       devServer: {
 
 

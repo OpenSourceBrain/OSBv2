@@ -1,7 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
-import MainMenu from "../components/menu/MainMenu";
+import { MainMenu } from "../components/index";
 import Box from "@material-ui/core/Box";
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
@@ -18,8 +18,7 @@ import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import { Workspace, WorkspaceResource } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
-import { WorkspaceEditor } from "../components";
-import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
+import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import MarkdownViewer from "../components/common/MarkdownViewer";
 import { canEditWorkspace } from '../service/UserService';
 
@@ -133,12 +132,10 @@ const useStyles = makeStyles((theme: any) => ({
   imageBox: {
     width: '100%',
     maxHeight: 300,
-    overflow: "hidden",
     "& img": {
+      height: 300,
       width: "100%",
-      position: "relative",
-      top: "50%",
-      transform: "translateY(-50%)"
+      objectFit: "contain",
     }
   }
 }));
@@ -148,22 +145,28 @@ export const WorkspacePage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [workspace, setWorkspace] = React.useState<Workspace>();
+  const [workspace, setWorkspace] = React.useState<Workspace>(null);
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
+  const [error, setError] = React.useState<any>(null);
 
   React.useEffect(() => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
-    });
+    },
+    (e) => {setError(e)});
   }, [refresh]);
 
+  if (error) {
+    throw error;
+  }
   const handleCloseEditWorkspace = () => {
 
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
       setEditWorkspaceOpen(false);
-    });
+    },
+    (e) => {setError(e)});
   }
 
   const handleResourceClick = (resource: WorkspaceResource) => {
@@ -171,7 +174,7 @@ export const WorkspacePage = (props: any) => {
   }
 
   const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
-  const OPEN_JUPYTER = 'OPEN WITH JUPYTER HUB';
+  const OPEN_JUPYTER = 'OPEN WITH JUPYTER LAB';
   const OPEN_NETPYNE = 'OPEN WITH NETPYNE';
   const options = [OPEN_NWB, OPEN_JUPYTER, OPEN_NETPYNE];
 
@@ -194,13 +197,17 @@ export const WorkspacePage = (props: any) => {
   const canEdit = canEditWorkspace(props.user, workspace);
 
   return (
-    <Box className="verticalFit">
-      {workspace && <>
+    workspace && <Box className="verticalFit">
+      {<>
         <Box className="wrapper-for-now">
           <Divider />
           <MainMenu />
           <Divider />
-
+          {
+            /*
+              Top panel.
+            */
+          }
           <Box display="flex" alignItems="center" justifyContent="space-between" bgcolor={bgLight} className={classes.workspaceToolbar}>
             <Box display="flex" onClick={() => history.push('/')}>
               <AppsIcon color="primary" fontSize="small" />
@@ -214,15 +221,25 @@ export const WorkspacePage = (props: any) => {
               <OSBSplitButton options={options} handleClick={openWithApp} />
             </Box>
           </Box>
+          {
+            /*
+              Alternative accordion for us in small displays.
+            */
+          }
           <Accordion className={classes.accordion}>
             <AccordionSummary expandIcon={<ArrowRight />} aria-controls="panel1a-content" id="panel1a-header">
               <Typography>Resources</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspacePage={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
             </AccordionDetails>
           </Accordion>
 
+          {
+            /*
+               Mid panel: workspace metadata
+            */
+          }
           <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
             <Typography component="h1" variant="h1">{workspace.name}</Typography>
             <Box display="flex" flexDirection="row" color={paragraph} mb={2} alignItems="center">
@@ -233,8 +250,13 @@ export const WorkspacePage = (props: any) => {
           </Box>
         </Box>
 
+          {
+            /*
+              Bottom: workspace resource panel and thumbnail
+            */
+          }
         <Box className={`verticalFit ${classes.workspaceResourcesInformation}`} display="flex" flexDirection="row">
-          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspace={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+          <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspacePage={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
           <Box className={`${classes.workspaceDescriptionBox} scrollbar`} width="100%" display="flex" flexDirection="column" alignItems="center">
             <Box className={`inner-description`} p={4}>
               {workspace.thumbnail &&
@@ -245,7 +267,7 @@ export const WorkspacePage = (props: any) => {
                   <Divider />
                 </>}
 
-              <Typography component="p" variant="body1"><MarkdownViewer text={workspace.description} /></Typography>
+              <Typography component="div" variant="body1"><MarkdownViewer text={workspace.description} /></Typography>
             </Box>
 
           </Box>

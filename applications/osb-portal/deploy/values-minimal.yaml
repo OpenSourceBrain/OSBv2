@@ -2,8 +2,6 @@ harness:
   sentry: false
   dependencies:
     soft:
-      - accounts_api
-      - common
-      - volumemanager
+      - accounts-api
       - workspaces
 

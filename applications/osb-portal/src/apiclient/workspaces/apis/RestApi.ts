@@ -190,6 +190,10 @@ export interface WorkspacesControllersWorkspaceControllerSetthumbnailRequest {
     thumbNail?: Blob;
 }
 
+export interface WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest {
+    id: number;
+}
+
 export interface WorkspacesControllersWorkspaceResourceControllerOpenRequest {
     id: number;
 }
@@ -202,7 +206,7 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete a Workspace Image from the workspace.
      */
-    async delimageRaw(requestParameters: DelimageRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async delimageRaw(requestParameters: DelimageRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling delimage.');
         }
@@ -217,7 +221,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -228,7 +232,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -236,14 +240,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete a Workspace Image from the workspace.
      */
-    async delimage(requestParameters: DelimageRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.delimageRaw(requestParameters, initOverrides);
+    async delimage(requestParameters: DelimageRequest): Promise<void> {
+        await this.delimageRaw(requestParameters);
     }
 
     /**
      * Used to retrieve a list of contexts of a repository.
      */
-    async getContextsRaw(requestParameters: GetContextsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<string>>> {
+    async getContextsRaw(requestParameters: GetContextsRequest): Promise<runtime.ApiResponse<Array<string>>> {
         if (requestParameters.uri === null || requestParameters.uri === undefined) {
             throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling getContexts.');
         }
@@ -269,7 +273,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -277,15 +281,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve a list of contexts of a repository.
      */
-    async getContexts(requestParameters: GetContextsRequest, initOverrides?: RequestInit): Promise<Array<string>> {
-        const response = await this.getContextsRaw(requestParameters, initOverrides);
+    async getContexts(requestParameters: GetContextsRequest): Promise<Array<string>> {
+        const response = await this.getContextsRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to list all available repositories.
      */
-    async osbrepositoryGetRaw(requestParameters: OsbrepositoryGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<InlineResponse2001>> {
+    async osbrepositoryGetRaw(requestParameters: OsbrepositoryGetRequest): Promise<runtime.ApiResponse<InlineResponse2001>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -315,7 +319,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2001FromJSON(jsonValue));
     }
@@ -323,15 +327,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to list all available repositories.
      */
-    async osbrepositoryGet(requestParameters: OsbrepositoryGetRequest, initOverrides?: RequestInit): Promise<InlineResponse2001> {
-        const response = await this.osbrepositoryGetRaw(requestParameters, initOverrides);
+    async osbrepositoryGet(requestParameters: OsbrepositoryGetRequest): Promise<InlineResponse2001> {
+        const response = await this.osbrepositoryGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Delete a OSBRepository.
      */
-    async osbrepositoryIdDeleteRaw(requestParameters: OsbrepositoryIdDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async osbrepositoryIdDeleteRaw(requestParameters: OsbrepositoryIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdDelete.');
         }
@@ -346,7 +350,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -357,7 +361,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -365,14 +369,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete a OSBRepository.
      */
-    async osbrepositoryIdDelete(requestParameters: OsbrepositoryIdDeleteRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.osbrepositoryIdDeleteRaw(requestParameters, initOverrides);
+    async osbrepositoryIdDelete(requestParameters: OsbrepositoryIdDeleteRequest): Promise<void> {
+        await this.osbrepositoryIdDeleteRaw(requestParameters);
     }
 
     /**
      * Used to retrieve a repository.
      */
-    async osbrepositoryIdGetRaw(requestParameters: OsbrepositoryIdGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<OSBRepository>> {
+    async osbrepositoryIdGetRaw(requestParameters: OsbrepositoryIdGetRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdGet.');
         }
@@ -390,7 +394,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
     }
@@ -398,15 +402,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve a repository.
      */
-    async osbrepositoryIdGet(requestParameters: OsbrepositoryIdGetRequest, initOverrides?: RequestInit): Promise<OSBRepository> {
-        const response = await this.osbrepositoryIdGetRaw(requestParameters, initOverrides);
+    async osbrepositoryIdGet(requestParameters: OsbrepositoryIdGetRequest): Promise<OSBRepository> {
+        const response = await this.osbrepositoryIdGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Update a OSB repository.
      */
-    async osbrepositoryIdPutRaw(requestParameters: OsbrepositoryIdPutRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<OSBRepository>> {
+    async osbrepositoryIdPutRaw(requestParameters: OsbrepositoryIdPutRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling osbrepositoryIdPut.');
         }
@@ -427,7 +431,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -439,7 +443,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: OSBRepositoryToJSON(requestParameters.oSBRepository),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
     }
@@ -447,15 +451,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Update a OSB repository.
      */
-    async osbrepositoryIdPut(requestParameters: OsbrepositoryIdPutRequest, initOverrides?: RequestInit): Promise<OSBRepository> {
-        const response = await this.osbrepositoryIdPutRaw(requestParameters, initOverrides);
+    async osbrepositoryIdPut(requestParameters: OsbrepositoryIdPutRequest): Promise<OSBRepository> {
+        const response = await this.osbrepositoryIdPutRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async osbrepositoryPostRaw(requestParameters: OsbrepositoryPostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<OSBRepository>> {
+    async osbrepositoryPostRaw(requestParameters: OsbrepositoryPostRequest): Promise<runtime.ApiResponse<OSBRepository>> {
         if (requestParameters.oSBRepository === null || requestParameters.oSBRepository === undefined) {
             throw new runtime.RequiredError('oSBRepository','Required parameter requestParameters.oSBRepository was null or undefined when calling osbrepositoryPost.');
         }
@@ -468,7 +472,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -480,7 +484,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: OSBRepositoryToJSON(requestParameters.oSBRepository),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => OSBRepositoryFromJSON(jsonValue));
     }
@@ -488,15 +492,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async osbrepositoryPost(requestParameters: OsbrepositoryPostRequest, initOverrides?: RequestInit): Promise<OSBRepository> {
-        const response = await this.osbrepositoryPostRaw(requestParameters, initOverrides);
+    async osbrepositoryPost(requestParameters: OsbrepositoryPostRequest): Promise<OSBRepository> {
+        const response = await this.osbrepositoryPostRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to list all available tags.
      */
-    async tagGetRaw(requestParameters: TagGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<InlineResponse2003>> {
+    async tagGetRaw(requestParameters: TagGetRequest): Promise<runtime.ApiResponse<InlineResponse2003>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -518,7 +522,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2003FromJSON(jsonValue));
     }
@@ -526,15 +530,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to list all available tags.
      */
-    async tagGet(requestParameters: TagGetRequest, initOverrides?: RequestInit): Promise<InlineResponse2003> {
-        const response = await this.tagGetRaw(requestParameters, initOverrides);
+    async tagGet(requestParameters: TagGetRequest): Promise<InlineResponse2003> {
+        const response = await this.tagGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Delete an tag from the repository.
      */
-    async tagIdDeleteRaw(requestParameters: TagIdDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async tagIdDeleteRaw(requestParameters: TagIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling tagIdDelete.');
         }
@@ -545,7 +549,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -556,7 +560,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -564,14 +568,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete an tag from the repository.
      */
-    async tagIdDelete(requestParameters: TagIdDeleteRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.tagIdDeleteRaw(requestParameters, initOverrides);
+    async tagIdDelete(requestParameters: TagIdDeleteRequest): Promise<void> {
+        await this.tagIdDeleteRaw(requestParameters);
     }
 
     /**
      * Used to retrieve an tag from the repository.
      */
-    async tagIdGetRaw(requestParameters: TagIdGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Tag>> {
+    async tagIdGetRaw(requestParameters: TagIdGetRequest): Promise<runtime.ApiResponse<Tag>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling tagIdGet.');
         }
@@ -585,7 +589,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
     }
@@ -593,15 +597,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve an tag from the repository.
      */
-    async tagIdGet(requestParameters: TagIdGetRequest, initOverrides?: RequestInit): Promise<Tag> {
-        const response = await this.tagIdGetRaw(requestParameters, initOverrides);
+    async tagIdGet(requestParameters: TagIdGetRequest): Promise<Tag> {
+        const response = await this.tagIdGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Update an tag in the repository.
      */
-    async tagIdPutRaw(requestParameters: TagIdPutRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Tag>> {
+    async tagIdPutRaw(requestParameters: TagIdPutRequest): Promise<runtime.ApiResponse<Tag>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling tagIdPut.');
         }
@@ -618,7 +622,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -630,7 +634,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: TagToJSON(requestParameters.tag),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
     }
@@ -638,15 +642,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Update an tag in the repository.
      */
-    async tagIdPut(requestParameters: TagIdPutRequest, initOverrides?: RequestInit): Promise<Tag> {
-        const response = await this.tagIdPutRaw(requestParameters, initOverrides);
+    async tagIdPut(requestParameters: TagIdPutRequest): Promise<Tag> {
+        const response = await this.tagIdPutRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async tagPostRaw(requestParameters: TagPostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Tag>> {
+    async tagPostRaw(requestParameters: TagPostRequest): Promise<runtime.ApiResponse<Tag>> {
         if (requestParameters.tag === null || requestParameters.tag === undefined) {
             throw new runtime.RequiredError('tag','Required parameter requestParameters.tag was null or undefined when calling tagPost.');
         }
@@ -659,7 +663,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -671,7 +675,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: TagToJSON(requestParameters.tag),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
     }
@@ -679,15 +683,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async tagPost(requestParameters: TagPostRequest, initOverrides?: RequestInit): Promise<Tag> {
-        const response = await this.tagPostRaw(requestParameters, initOverrides);
+    async tagPost(requestParameters: TagPostRequest): Promise<Tag> {
+        const response = await this.tagPostRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to list all available volumestorages.
      */
-    async volumestorageGetRaw(requestParameters: VolumestorageGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<InlineResponse2002>> {
+    async volumestorageGetRaw(requestParameters: VolumestorageGetRequest): Promise<runtime.ApiResponse<InlineResponse2002>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -706,7 +710,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -717,7 +721,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2002FromJSON(jsonValue));
     }
@@ -725,15 +729,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to list all available volumestorages.
      */
-    async volumestorageGet(requestParameters: VolumestorageGetRequest, initOverrides?: RequestInit): Promise<InlineResponse2002> {
-        const response = await this.volumestorageGetRaw(requestParameters, initOverrides);
+    async volumestorageGet(requestParameters: VolumestorageGetRequest): Promise<InlineResponse2002> {
+        const response = await this.volumestorageGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Delete an volumestorage from the repository.
      */
-    async volumestorageIdDeleteRaw(requestParameters: VolumestorageIdDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async volumestorageIdDeleteRaw(requestParameters: VolumestorageIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdDelete.');
         }
@@ -744,7 +748,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -755,7 +759,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -763,14 +767,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete an volumestorage from the repository.
      */
-    async volumestorageIdDelete(requestParameters: VolumestorageIdDeleteRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.volumestorageIdDeleteRaw(requestParameters, initOverrides);
+    async volumestorageIdDelete(requestParameters: VolumestorageIdDeleteRequest): Promise<void> {
+        await this.volumestorageIdDeleteRaw(requestParameters);
     }
 
     /**
      * Used to retrieve an volumestorage from the repository.
      */
-    async volumestorageIdGetRaw(requestParameters: VolumestorageIdGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<VolumeStorage>> {
+    async volumestorageIdGetRaw(requestParameters: VolumestorageIdGetRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdGet.');
         }
@@ -784,7 +788,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => VolumeStorageFromJSON(jsonValue));
     }
@@ -792,15 +796,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve an volumestorage from the repository.
      */
-    async volumestorageIdGet(requestParameters: VolumestorageIdGetRequest, initOverrides?: RequestInit): Promise<VolumeStorage> {
-        const response = await this.volumestorageIdGetRaw(requestParameters, initOverrides);
+    async volumestorageIdGet(requestParameters: VolumestorageIdGetRequest): Promise<VolumeStorage> {
+        const response = await this.volumestorageIdGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Update an volumestorage in the repository.
      */
-    async volumestorageIdPutRaw(requestParameters: VolumestorageIdPutRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<VolumeStorage>> {
+    async volumestorageIdPutRaw(requestParameters: VolumestorageIdPutRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling volumestorageIdPut.');
         }
@@ -817,7 +821,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -829,7 +833,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: VolumeStorageToJSON(requestParameters.volumeStorage),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => VolumeStorageFromJSON(jsonValue));
     }
@@ -837,15 +841,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Update an volumestorage in the repository.
      */
-    async volumestorageIdPut(requestParameters: VolumestorageIdPutRequest, initOverrides?: RequestInit): Promise<VolumeStorage> {
-        const response = await this.volumestorageIdPutRaw(requestParameters, initOverrides);
+    async volumestorageIdPut(requestParameters: VolumestorageIdPutRequest): Promise<VolumeStorage> {
+        const response = await this.volumestorageIdPutRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async volumestoragePostRaw(requestParameters: VolumestoragePostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<VolumeStorage>> {
+    async volumestoragePostRaw(requestParameters: VolumestoragePostRequest): Promise<runtime.ApiResponse<VolumeStorage>> {
         if (requestParameters.volumeStorage === null || requestParameters.volumeStorage === undefined) {
             throw new runtime.RequiredError('volumeStorage','Required parameter requestParameters.volumeStorage was null or undefined when calling volumestoragePost.');
         }
@@ -858,7 +862,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -870,7 +874,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: VolumeStorageToJSON(requestParameters.volumeStorage),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => VolumeStorageFromJSON(jsonValue));
     }
@@ -878,15 +882,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async volumestoragePost(requestParameters: VolumestoragePostRequest, initOverrides?: RequestInit): Promise<VolumeStorage> {
-        const response = await this.volumestoragePostRaw(requestParameters, initOverrides);
+    async volumestoragePost(requestParameters: VolumestoragePostRequest): Promise<VolumeStorage> {
+        const response = await this.volumestoragePostRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to list all available workspaces.
      */
-    async workspaceGetRaw(requestParameters: WorkspaceGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<InlineResponse200>> {
+    async workspaceGetRaw(requestParameters: WorkspaceGetRequest): Promise<runtime.ApiResponse<InlineResponse200>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -909,7 +913,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -920,7 +924,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse200FromJSON(jsonValue));
     }
@@ -928,15 +932,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to list all available workspaces.
      */
-    async workspaceGet(requestParameters: WorkspaceGetRequest, initOverrides?: RequestInit): Promise<InlineResponse200> {
-        const response = await this.workspaceGetRaw(requestParameters, initOverrides);
+    async workspaceGet(requestParameters: WorkspaceGetRequest): Promise<InlineResponse200> {
+        const response = await this.workspaceGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Delete a workspace from the repository.
      */
-    async workspaceIdDeleteRaw(requestParameters: WorkspaceIdDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async workspaceIdDeleteRaw(requestParameters: WorkspaceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdDelete.');
         }
@@ -947,7 +951,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -958,7 +962,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -966,14 +970,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete a workspace from the repository.
      */
-    async workspaceIdDelete(requestParameters: WorkspaceIdDeleteRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.workspaceIdDeleteRaw(requestParameters, initOverrides);
+    async workspaceIdDelete(requestParameters: WorkspaceIdDeleteRequest): Promise<void> {
+        await this.workspaceIdDeleteRaw(requestParameters);
     }
 
     /**
      * Used to retrieve a workspace from the repository.
      */
-    async workspaceIdGetRaw(requestParameters: WorkspaceIdGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Workspace>> {
+    async workspaceIdGetRaw(requestParameters: WorkspaceIdGetRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdGet.');
         }
@@ -984,7 +988,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -995,7 +999,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
     }
@@ -1003,15 +1007,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve a workspace from the repository.
      */
-    async workspaceIdGet(requestParameters: WorkspaceIdGetRequest, initOverrides?: RequestInit): Promise<Workspace> {
-        const response = await this.workspaceIdGetRaw(requestParameters, initOverrides);
+    async workspaceIdGet(requestParameters: WorkspaceIdGetRequest): Promise<Workspace> {
+        const response = await this.workspaceIdGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Update a workspace in the repository.
      */
-    async workspaceIdPutRaw(requestParameters: WorkspaceIdPutRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Workspace>> {
+    async workspaceIdPutRaw(requestParameters: WorkspaceIdPutRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceIdPut.');
         }
@@ -1028,7 +1032,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1040,7 +1044,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: WorkspaceToJSON(requestParameters.workspace),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
     }
@@ -1048,15 +1052,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Update a workspace in the repository.
      */
-    async workspaceIdPut(requestParameters: WorkspaceIdPutRequest, initOverrides?: RequestInit): Promise<Workspace> {
-        const response = await this.workspaceIdPutRaw(requestParameters, initOverrides);
+    async workspaceIdPut(requestParameters: WorkspaceIdPutRequest): Promise<Workspace> {
+        const response = await this.workspaceIdPutRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async workspacePostRaw(requestParameters: WorkspacePostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Workspace>> {
+    async workspacePostRaw(requestParameters: WorkspacePostRequest): Promise<runtime.ApiResponse<Workspace>> {
         if (requestParameters.workspace === null || requestParameters.workspace === undefined) {
             throw new runtime.RequiredError('workspace','Required parameter requestParameters.workspace was null or undefined when calling workspacePost.');
         }
@@ -1069,7 +1073,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1081,7 +1085,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: WorkspaceToJSON(requestParameters.workspace),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
     }
@@ -1089,15 +1093,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
      */
-    async workspacePost(requestParameters: WorkspacePostRequest, initOverrides?: RequestInit): Promise<Workspace> {
-        const response = await this.workspacePostRaw(requestParameters, initOverrides);
+    async workspacePost(requestParameters: WorkspacePostRequest): Promise<Workspace> {
+        const response = await this.workspacePostRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Delete a WorkspaceResource.
      */
-    async workspaceresourceIdDeleteRaw(requestParameters: WorkspaceresourceIdDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async workspaceresourceIdDeleteRaw(requestParameters: WorkspaceresourceIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdDelete.');
         }
@@ -1108,7 +1112,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1119,7 +1123,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -1127,14 +1131,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Delete a WorkspaceResource.
      */
-    async workspaceresourceIdDelete(requestParameters: WorkspaceresourceIdDeleteRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.workspaceresourceIdDeleteRaw(requestParameters, initOverrides);
+    async workspaceresourceIdDelete(requestParameters: WorkspaceresourceIdDeleteRequest): Promise<void> {
+        await this.workspaceresourceIdDeleteRaw(requestParameters);
     }
 
     /**
      * Used to retrieve a WorkspaceResource.
      */
-    async workspaceresourceIdGetRaw(requestParameters: WorkspaceresourceIdGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<WorkspaceResource>> {
+    async workspaceresourceIdGetRaw(requestParameters: WorkspaceresourceIdGetRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdGet.');
         }
@@ -1145,7 +1149,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1156,7 +1160,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceResourceFromJSON(jsonValue));
     }
@@ -1164,15 +1168,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to retrieve a WorkspaceResource.
      */
-    async workspaceresourceIdGet(requestParameters: WorkspaceresourceIdGetRequest, initOverrides?: RequestInit): Promise<WorkspaceResource> {
-        const response = await this.workspaceresourceIdGetRaw(requestParameters, initOverrides);
+    async workspaceresourceIdGet(requestParameters: WorkspaceresourceIdGetRequest): Promise<WorkspaceResource> {
+        const response = await this.workspaceresourceIdGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Update the WorkspaceResource.
      */
-    async workspaceresourceIdPutRaw(requestParameters: WorkspaceresourceIdPutRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<WorkspaceResource>> {
+    async workspaceresourceIdPutRaw(requestParameters: WorkspaceresourceIdPutRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspaceresourceIdPut.');
         }
@@ -1189,7 +1193,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1201,7 +1205,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: WorkspaceResourceToJSON(requestParameters.workspaceResource),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceResourceFromJSON(jsonValue));
     }
@@ -1209,15 +1213,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Update the WorkspaceResource.
      */
-    async workspaceresourceIdPut(requestParameters: WorkspaceresourceIdPutRequest, initOverrides?: RequestInit): Promise<WorkspaceResource> {
-        const response = await this.workspaceresourceIdPutRaw(requestParameters, initOverrides);
+    async workspaceresourceIdPut(requestParameters: WorkspaceresourceIdPutRequest): Promise<WorkspaceResource> {
+        const response = await this.workspaceresourceIdPutRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Used to save a WorkspaceResource to the repository.
      */
-    async workspaceresourcePostRaw(requestParameters: WorkspaceresourcePostRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<WorkspaceResource>> {
+    async workspaceresourcePostRaw(requestParameters: WorkspaceresourcePostRequest): Promise<runtime.ApiResponse<WorkspaceResource>> {
         if (requestParameters.workspaceResource === null || requestParameters.workspaceResource === undefined) {
             throw new runtime.RequiredError('workspaceResource','Required parameter requestParameters.workspaceResource was null or undefined when calling workspaceresourcePost.');
         }
@@ -1230,7 +1234,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1242,7 +1246,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: WorkspaceResourceToJSON(requestParameters.workspaceResource),
-        }, initOverrides);
+        });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceResourceFromJSON(jsonValue));
     }
@@ -1250,15 +1254,15 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to save a WorkspaceResource to the repository.
      */
-    async workspaceresourcePost(requestParameters: WorkspaceresourcePostRequest, initOverrides?: RequestInit): Promise<WorkspaceResource> {
-        const response = await this.workspaceresourcePostRaw(requestParameters, initOverrides);
+    async workspaceresourcePost(requestParameters: WorkspaceresourcePostRequest): Promise<WorkspaceResource> {
+        const response = await this.workspaceresourcePostRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Adds and image to the workspace.
      */
-    async workspacesControllersWorkspaceControllerAddimageRaw(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async workspacesControllersWorkspaceControllerAddimageRaw(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerAddimage.');
         }
@@ -1269,7 +1273,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1301,7 +1305,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: formParams,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -1309,14 +1313,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Adds and image to the workspace.
      */
-    async workspacesControllersWorkspaceControllerAddimage(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.workspacesControllersWorkspaceControllerAddimageRaw(requestParameters, initOverrides);
+    async workspacesControllersWorkspaceControllerAddimage(requestParameters: WorkspacesControllersWorkspaceControllerAddimageRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerAddimageRaw(requestParameters);
     }
 
     /**
      * Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
      */
-    async workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerImportResources.');
         }
@@ -1329,7 +1333,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1341,7 +1345,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: InlineObjectToJSON(requestParameters.inlineObject),
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -1349,14 +1353,14 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
      */
-    async workspacesControllersWorkspaceControllerImportResources(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters, initOverrides);
+    async workspacesControllersWorkspaceControllerImportResources(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters);
     }
 
     /**
      * Sets the thumbnail of the workspace.
      */
-    async workspacesControllersWorkspaceControllerSetthumbnailRaw(requestParameters: WorkspacesControllersWorkspaceControllerSetthumbnailRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async workspacesControllersWorkspaceControllerSetthumbnailRaw(requestParameters: WorkspacesControllersWorkspaceControllerSetthumbnailRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerSetthumbnail.');
         }
@@ -1367,7 +1371,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1399,7 +1403,7 @@ export class RestApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: formParams,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -1407,14 +1411,52 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Sets the thumbnail of the workspace.
      */
-    async workspacesControllersWorkspaceControllerSetthumbnail(requestParameters: WorkspacesControllersWorkspaceControllerSetthumbnailRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.workspacesControllersWorkspaceControllerSetthumbnailRaw(requestParameters, initOverrides);
+    async workspacesControllersWorkspaceControllerSetthumbnail(requestParameters: WorkspacesControllersWorkspaceControllerSetthumbnailRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerSetthumbnailRaw(requestParameters);
+    }
+
+    /**
+     * Clones a workspace
+     */
+    async workspacesControllersWorkspaceControllerWorkspaceCloneRaw(requestParameters: WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest): Promise<runtime.ApiResponse<Workspace>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerWorkspaceClone.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/workspace/{id}/clone`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
+    }
+
+    /**
+     * Clones a workspace
+     */
+    async workspacesControllersWorkspaceControllerWorkspaceClone(requestParameters: WorkspacesControllersWorkspaceControllerWorkspaceCloneRequest): Promise<Workspace> {
+        const response = await this.workspacesControllersWorkspaceControllerWorkspaceCloneRaw(requestParameters);
+        return await response.value();
     }
 
     /**
      * Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
      */
-    async workspacesControllersWorkspaceResourceControllerOpenRaw(requestParameters: WorkspacesControllersWorkspaceResourceControllerOpenRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async workspacesControllersWorkspaceResourceControllerOpenRaw(requestParameters: WorkspacesControllersWorkspaceResourceControllerOpenRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceResourceControllerOpen.');
         }
@@ -1425,7 +1467,7 @@ export class RestApi extends runtime.BaseAPI {
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
 
             if (tokenString) {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
@@ -1436,7 +1478,7 @@ export class RestApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        });
 
         return new runtime.VoidApiResponse(response);
     }
@@ -1444,8 +1486,8 @@ export class RestApi extends runtime.BaseAPI {
     /**
      * Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
      */
-    async workspacesControllersWorkspaceResourceControllerOpen(requestParameters: WorkspacesControllersWorkspaceResourceControllerOpenRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.workspacesControllersWorkspaceResourceControllerOpenRaw(requestParameters, initOverrides);
+    async workspacesControllersWorkspaceResourceControllerOpen(requestParameters: WorkspacesControllersWorkspaceResourceControllerOpenRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceResourceControllerOpenRaw(requestParameters);
     }
 
 }

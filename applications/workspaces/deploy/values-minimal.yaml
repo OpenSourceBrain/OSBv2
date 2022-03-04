@@ -17,6 +17,9 @@ harness:
     soft:
       - common
       - accounts
+      - events
+      - workflows
+      - volumemanager
   database:
     auto: false
     name: workspaces-postgres-host
@@ -28,3 +31,4 @@ harness:
     password: secret
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
+workspace_size: 10Mi

@@ -12,7 +12,7 @@ from flask.logging import default_handler
 from flask_cors import CORS
 
 from workspaces.config import Config
-from workspaces.repository.database import db, setup_db
+from workspaces.database import setup_db
 from workspaces.service.events import start_kafka_consumers, stop_kafka_consumers
 
 logger = cloudharness.log
@@ -47,6 +47,7 @@ def init_app(app):
             logger.error("Could not init database. Some application functionality won't be available.", exc_info=True)
 
         if not skip_event_dependencies:
+            
             try:
                 atexit.register(stop_kafka_consumers)
                 start_kafka_consumers()

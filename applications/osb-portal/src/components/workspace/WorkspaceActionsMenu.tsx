@@ -11,19 +11,23 @@ import OSBDialog from "../common/OSBDialog";
 import { WorkspaceEditor } from "./../index";
 import { canEditWorkspace } from '../../service/UserService';
 import { UserInfo } from "../../types/user";
+import WorkspaceService from "../../service/WorkspaceService"
+import OSBLoader from "../common/OSBLoader"
 
+// TODO: refactor to use redux instead of passing props
 
 interface WorkspaceActionsMenuProps {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => null;
   deleteWorkspace?: (wsId: number) => null;
-  refreshWorkspaces?: () => null;
+  refreshWorkspaces: () => void;
   user?: UserInfo;
 }
 
 
 export default (props: WorkspaceActionsMenuProps) => {
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
+  const [cloneInProgress, setCloneInProgress] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const canEdit = canEditWorkspace(props.user, props.workspace);
 
@@ -69,6 +73,18 @@ export default (props: WorkspaceActionsMenuProps) => {
     props.refreshWorkspaces();
   }
 
+  const handleCloneWorkspace = () => {
+    setCloneInProgress(true);
+    WorkspaceService.cloneWorkspace(props.workspace.id).then(() => {
+      props.refreshWorkspaces();
+      setCloneInProgress(false);
+    },
+    () => {
+      setCloneInProgress(true);
+    });
+    handleCloseMenu();
+  }
+
   /*
   *
   * @param applicatonType OSBApplication key
@@ -96,6 +112,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         {props.user && props.user.isAdmin && props.workspace.publicable && !props.workspace.featured && <MenuItem onClick={handleFeaturedWorkspace}>Add to featured</MenuItem>}
         {props.user && props.user.isAdmin && props.workspace.featured && <MenuItem onClick={handleFeaturedWorkspace}>Remove from featured</MenuItem>}
         <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+        {props.user && <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>}
         <NestedMenuItem
           label="Open with..."
           parentMenuOpen={true}
@@ -127,6 +144,7 @@ export default (props: WorkspaceActionsMenuProps) => {
       >
         <WorkspaceEditor workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
       </OSBDialog>
+      <OSBLoader active={cloneInProgress} fullscreen={true} handleClose={handleCloseMenu} messages={["Cloning workspace. Please wait."]} />
     </>
   )
 }

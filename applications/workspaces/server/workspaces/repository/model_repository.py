@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-import workspaces.service.osbrepository.osbrepository as osbrepository_service
 
 from types import SimpleNamespace
 
@@ -13,13 +12,11 @@ from sqlalchemy.sql import func
 
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
-from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
-from workspaces.service.kubernetes import create_persistent_volume_claim
-from workspaces.service.auth import get_auth_client
+
+
 from .base_model_repository import BaseModelRepository
-from .database import db
-from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag, \
-    TWorkspaceEntity
+from ..database import db
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *
 
 
@@ -27,95 +24,65 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 
 
 class OwnerModel:
-    @property
-    def keycloak_user_id(self):
-
-        try:
-            return get_auth_client().get_current_user().get("id", None)
-        except Exception as e:
-            logger.error("Auth client error", exc_info=True)
-            return None
 
     def pre_commit(self, obj):
         logger.debug(f"Pre Commit for {obj} id: {obj.id}")
-        if not obj.user_id:
-            obj.user_id = self.keycloak_user_id
         return obj
 
 
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
     model = WorkspaceEntity
     defaults = {}
-    calculated_fields = ["user"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def get_pvc_name(self, workspace_id):
-        return f"workspace-{workspace_id}"
-
     def get(self, id):
         workspace = self._get(id)
-        if workspace and (workspace.publicable or
-                          (workspace.user_id and workspace.user_id == self.keycloak_user_id) or
-                          (get_auth_client().user_has_realm_role(user_id=self.keycloak_user_id, role="administrator"))):
-            return workspace
-        return None
 
-    def search_qs(self, filter=None, q=None, tags=None, *args, **kwargs):
+        return workspace
+
+    def search_qs(self, filter=None, q=None, tags=None, user_id=None, show_all=False, *args, **kwargs):
         q_base = self.model.query
-        logger.debug(f"filter: {filter}")
-
-        keycloak_user_id = self.keycloak_user_id
-        if tags:
-            q_base = q_base.join(self.model.tags).filter(
-                Tag.tag.in_(tags.split("+")))
         if filter is not None:
-            q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
+            if tags:
+                q_base = q_base.filter(*[self._create_filter(*f) for f in filter]).union(self.model.query.join(self.model.tags).filter(
+                    func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+"))))
+            else:
+                q_base = q_base.filter(
+                    *[self._create_filter(*f) for f in filter])
+        elif tags:
+            q_base = q_base.join(self.model.tags).filter(
+                func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
+
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
             q1 = q_base
-        elif keycloak_user_id is not None:
-            if not get_auth_client().user_has_realm_role(user_id=keycloak_user_id, role="administrator"):
-                logger.debug(
-                    "searching workspaces on keycloak_user_id: %s", keycloak_user_id)
-                # non admin users can see only their own workspaces
-                q1 = q_base.filter_by(user_id=keycloak_user_id)
+
+        elif user_id is not None:
+            # Admins see all workspaces, non admin users can see only their own workspaces or shared with them
+            if not show_all:
+                q1 = q_base.filter_by(user_id=user_id)
                 q1 = q1.union(q_base.filter(
-                    WorkspaceEntity.collaborators.any(user_id=keycloak_user_id)))
+                    WorkspaceEntity.collaborators.any(user_id=user_id)))
             else:
                 q1 = q_base
         else:
-            q1 = q_base.filter_by(publicable=True)
-        logger.debug(str(q1))
+            # No logged in user, show only public (in case was not specified)
+            q1 = q_base.filter(WorkspaceEntity.publicable == True)
+
         return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
-        resource_repository = WorkspaceResourceRepository()
-        workspace = self.model.query.filter_by(id=id).first()
-
-        for resource in workspace.resources:
-            logger.debug("deleting resource %s", resource.id)
-            resource_repository.delete(resource.id, delete_file_from_pvc=False)
-        logger.info("deleting workspace %s", id)
         super().delete(id)
-        logger.info("deleted workspace %s", id)
-        logger.info("deleting volume %s", id)
-        pvc.delete_persistent_volume_claim(f"workspace-{id}")
-        logger.info("deleted volume %s", id)
-        logger.info("deleting workspace files")
-        folder = os.path.join(Config.WORKSPACES_DIR, f"{id}")
-        shutil.rmtree(os.path.join(Config.STATIC_DIR, folder))
-        logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
-        workspace.tags = insert_or_get_tags(workspace.tags)
+        workspace.tags = TagRepository().get_tags_daos(workspace.tags)
         return super().pre_commit(workspace)
 
     def post_commit(self, workspace):
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
-        create_persistent_volume_claim(name=self.get_pvc_name(
-            workspace.id), size="2Gi", logger=logger)
+
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
@@ -124,33 +91,13 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 db.session.commit()
         return workspace
 
-    def user(self, workspace: TWorkspaceEntity):
-
-        try:
-
-            user = get_auth_client().get_user(workspace.user_id)
-            return User(
-                id=user.get("id", ""),
-                first_name=user.get("firstName", ""),
-                last_name=user.get("lastName", ""),
-                username=user.get("username", ""),
-                email=user.get("email", ""),
-            )
-        except Exception as e:
-            return User()
-
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
-    calculated_fields = ["user", "content_types_list"]
+
 
     def pre_commit(self, osbrepository):
-        # TODO: get tags from the repository
-        tags = osbrepository_service.get_tags(osbrepository)
-        if tags:
-            for tag in tags:
-                osbrepository.tags.append(Tag(tag=tag))
-        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
+        osbrepository.tags = TagRepository().get_tags_daos(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
     def search_qs(self, filter=None, q=None, tags=None, types=None):
@@ -167,23 +114,6 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
                 or_(self.model.content_types.ilike(f"%{t}%") for t in types.split("+")))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
-    def user(self, repository):
-
-        try:
-            user = get_auth_client().get_user(repository.user_id)
-            return User(
-                id=user.get("id", ""),
-                first_name=user.get("firstName", ""),
-                last_name=user.get("lastName", ""),
-                username=user.get("username", ""),
-                email=user.get("email", ""),
-            )
-        except Exception as e:
-            return User()
-
-    def content_types_list(self, repository):
-        return repository.content_types.split(",")
-
 
 class VolumeStorageRepository(BaseModelRepository):
     model = VolumeStorage
@@ -199,6 +129,17 @@ class WorkspaceImageRepository(BaseModelRepository):
 
 class TagRepository(BaseModelRepository):
     model = Tag
+
+    def get_tags_daos(self, tags):
+        tags_list = []
+        for tag in tags:
+            z = tag.tag
+            items = self.search(q=f"tag__={z}").items
+            if len(items) > 0:
+                # if found reference to the tag
+                tag = items[0]
+            tags_list.append(tag)
+        return tags_list
 
 
 class WorkspaceResourceRepository(BaseModelRepository):
@@ -274,7 +215,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f"Post Commit for workspace resource id: {workspace_resource.id}")
-        workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
+        workspace = WorkspaceRepository().get(workspace_resource.workspace_id)
         if workspace_resource.folder is None:
             logger.debug(
                 f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
@@ -286,6 +227,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
             and workspace_resource.origin
             and len(workspace_resource.origin) > 0
         ):
+            from workspaces.helpers.etl_helpers import copy_workspace_resource
             copy_workspace_resource(workspace_resource)
         return workspace_resource
 
@@ -312,10 +254,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
         return "Saved", 200
 
-    def delete(self, id, delete_file_from_pvc=True):
+    def delete(self, id):
         """Delete an object from the repository."""
         workspace_resource = self.get(id)
         super().delete(id)
-
-        if delete_file_from_pvc:
-            delete_workspace_resource(workspace_resource)

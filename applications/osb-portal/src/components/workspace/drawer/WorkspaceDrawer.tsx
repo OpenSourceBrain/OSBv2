@@ -124,7 +124,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         }}
       >
         <div className={`${open ? classes.drawerContent : ''} verticalFit`}>
-          <WorkspaceInteractions open={open} openResource={setCurrentResource} />
+          <WorkspaceInteractions workspace={workspace} open={open} openResource={setCurrentResource} />
         </div>
         <div>
           <Divider />

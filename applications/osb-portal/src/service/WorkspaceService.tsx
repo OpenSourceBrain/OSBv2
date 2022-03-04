@@ -28,8 +28,12 @@ class WorkspaceService {
 
   async getWorkspace(id: number): Promise<Workspace> {
     const wsigr: WorkspaceIdGetRequest = { id };
-    let ws = null;
-    await this.workspacesApi.workspaceIdGet(wsigr).then(result => ws = mapWorkspace(result));
+
+    const result = await this.workspacesApi.workspaceIdGet(wsigr);
+    if (!result) {
+      throw new Error("Workspace not found")
+    }
+    const ws = mapWorkspace(result);
     if (!ws) {
       throw new Error("Workspace not found")
     }
@@ -74,12 +78,16 @@ class WorkspaceService {
     return this.workspacesApi.workspacePost(wspr);
   }
 
+  async cloneWorkspace(workspaceId: number) {
+    return this.workspacesApi.workspacesControllersWorkspaceControllerWorkspaceClone({ id: workspaceId });
+  }
+
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
     return { ...ws, resources: ws.resources && ws.resources.map(mapPostUrlResource), timestampCreated: undefined, timestampUpdated: undefined, user: undefined };
   }
 
   async deleteWorkspace(workspaceId: number) {
-    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
+    return this.workspacesApi.workspaceIdDelete({ id: workspaceId });
   }
 
   async updateWorkspace(workspace: Workspace) {

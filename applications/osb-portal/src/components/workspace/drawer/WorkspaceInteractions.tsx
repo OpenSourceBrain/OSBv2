@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
@@ -15,6 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExpansionPanel from "@material-ui/core/Accordion";
 import ExpansionPanelSummary from "@material-ui/core/AccordionSummary";
 import ExpansionPanelDetails from "@material-ui/core/AccordionDetails";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
@@ -111,6 +113,7 @@ interface WorkspaceProps {
   user: UserInfo,
   [propName: string]: any;
   openResource: (r: WorkspaceResource) => any
+  refreshWorkspacePage?: () => void;
 }
 
 
@@ -120,6 +123,10 @@ export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
   const classes = useStyles();
   const [addResourceOpen, setAddResourceOpen] = React.useState(false);
+  const history = useHistory();
+  if (!workspace) {
+    return null;
+  }
   const canEdit = canEditWorkspace(props.user, workspace);
 
   const showAddResource = () => {
@@ -130,9 +137,16 @@ export default (props: WorkspaceProps | any) => {
     setAddResourceOpen(false);
   }
 
+  const handleWorkspaceRefresh = () => {
+    props.refreshWorkspace(workspace.id);
+    if ("refreshWorkspacePage" in props) {
+      props.refreshWorkspacePage();
+    }
+  }
+
   const handleResourceAdded = () => {
     setAddResourceOpen(false);
-    props.refreshWorkspace();
+    handleWorkspaceRefresh()
   }
 
   const [expanded, setExpanded] = React.useState<string | false>('workspace');
@@ -162,6 +176,7 @@ export default (props: WorkspaceProps | any) => {
     handleShareClose();
   }
 
+
   const dialogTitle = (
     <>
       <span className={classes.dialogTitle}>
@@ -169,6 +184,12 @@ export default (props: WorkspaceProps | any) => {
       </span>
     </>
   )
+
+  const deleteWorkspace = (wid: number) => {
+
+    props.deleteWorkspace(wid);
+    history.push("/")
+  }
 
   return (<>
 
@@ -178,15 +199,20 @@ export default (props: WorkspaceProps | any) => {
           <ExpansionPanelSummary
           // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
+            {
+            // TODO: when cloning workspaces has been implemented, update tooltip to tell users they can clone workspace to make modifications */
+            }
             <Typography
               variant="h4"
               className={classes.flexCenter}>
-              {workspace.name}
-              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}
+              {workspace.name}<Tooltip style={{ marginLeft: '0.3em' }} title="Resources are special files that can be opened with applications supported by Open Source Brain. To see all your files, and upload non-resource files, please open the workspace in the JupyterLab application.">
+                <InfoOutlinedIcon fontSize="small"/>
+              </Tooltip>
+              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="You do not have permissions to modify this workspace."><ReadOnlyIcon fontSize="small" /></Tooltip>}
             </Typography>
 
             <Box p={2}>
-              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
             </Box>
             <Menu
               id="simple-menu"
@@ -211,7 +237,7 @@ export default (props: WorkspaceProps | any) => {
             <Divider />
             <WorkspaceResourceBrowser
               workspace={workspace}
-              refreshWorkspace={props.refreshWorkspace}
+              refreshWorkspace={handleWorkspaceRefresh}
               openResource={props.openResource}
             />
           </ExpansionPanelDetails>
@@ -242,7 +268,7 @@ export default (props: WorkspaceProps | any) => {
           {props.workspace.name}
 
           <IconButton>
-            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspace} />
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
           </IconButton>
         </div>
       </>

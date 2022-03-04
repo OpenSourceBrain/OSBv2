@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -21,7 +23,7 @@ import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "..
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from '../components/common/OSBDialog';
-import { WorkspaceEditor } from "../components/index";
+import { WorkspaceEditor, MainMenu } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
 import { ExistingWorkspaceEditor as ExistingWorkspaceSelector, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
@@ -29,7 +31,6 @@ import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
 import MarkdownViewer from "../components/common/MarkdownViewer"
-import MainMenu from "../components/menu/MainMenu";
 import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
 import Resources from "../components/repository/resources";
 
@@ -46,6 +47,11 @@ import { CodeBranchIcon } from "../components/icons";
 
 
 const useStyles = makeStyles((theme) => ({
+  infoIcon: {
+    fontSize: "small",
+    verticalAlign: "middle",
+    color: paragraph,
+  },
   linkButton: {
     position: 'absolute',
     right: 0,
@@ -84,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
       color: paragraph,
       textTransform: 'capitalize',
     },
-    "& .repo-tag": {
+    "& .repo-chip": {
       color: textColor,
       textTransform: 'none',
     },
@@ -188,7 +194,7 @@ export const RepositoryPage = (props: any) => {
 
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
-  const [repository, setRepository] = React.useState<OSBRepository>();
+  const [repository, setRepository] = React.useState<OSBRepository>(null);
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
   const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] = React.useState(false);
@@ -198,6 +204,7 @@ export const RepositoryPage = (props: any) => {
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
+  const [error, setError] = React.useState<any>(null);
 
 
   const classes = useStyles();
@@ -205,8 +212,13 @@ export const RepositoryPage = (props: any) => {
   React.useEffect(() => {
     RepositoryService.getRepository(+repositoryId).then((repo) => {
       setRepository(repo);
-    });
+    },
+    (e) => {setError(e)});
   }, []);
+
+  if (error) {
+    throw error;
+  }
 
   const openDialog = () => {
     setShowWorkspaceEditor(!showWorkspaceEditor);
@@ -255,7 +267,7 @@ export const RepositoryPage = (props: any) => {
       setShowWorkspaceEditor(false);
       setWorkspaceLink(`/workspace/${ws.id}`);
       confirmAction("Success", "New workspace created!");
-    }).catch((error) => {
+    }).catch((e) => {
       setShowWorkspaceEditor(false);
       confirmAction("Error", "There was an error creating the new workspace.");
     });
@@ -276,13 +288,27 @@ export const RepositoryPage = (props: any) => {
       setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
-    }).catch((error) => {
+    }).catch((e) => {
       confirmAction("Error", "There was an error adding the resources to the workspace");
       setLoading(false);
       setShowExisitngWorkspaceEditor(false);
     });
     setRefresh(!refresh);
     setChecked([]);
+  }
+
+
+  const getRepoURL = () => {
+    switch (repository.repositoryType) {
+      // For github, the URL is: repo/tree/branch
+      case "github":
+        return repository.uri + "/tree/" + repository.defaultContext;
+      // For dandi, the URL is: repo/version
+      case "dandi":
+        return repository.uri + "/" + repository.defaultContext;
+      default:
+        return "#"
+    }
   }
 
   return (
@@ -319,11 +345,12 @@ export const RepositoryPage = (props: any) => {
             <Grid container={true} spacing={5} className="verticalFill">
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className="flex-grow-1 scrollbar" maxWidth="100%" position="relative">
-                  <Box>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography component="h2" variant="h2" className="primary-heading" style={{ width: "100%" }}>
+                      Overview <Tooltip title={`Repositories provide views of files in public resources that have been indexed in OSBv2 by users. Use the Repository Contents pane on the right to select files from this repository to add to your workspaces.`}>
+                        <InfoOutlinedIcon className={classes.infoIcon}/>
+                      </Tooltip>
 
-
-                    <Typography component="h2" variant="h2" className="primary-heading">
-                      Overview
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
@@ -333,7 +360,7 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                     {
                       repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                        By {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampUpdated && `- last updated ${repository.timestampUpdated.toDateString()}`}
+                        Added by {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampCreated && ` on ${repository.timestampCreated.toDateString()}`}
                       </Typography>
                     }
                     {
@@ -345,6 +372,7 @@ export const RepositoryPage = (props: any) => {
                       {
                         repository.contentTypesList.map(type => {
                           return <Chip
+                            className="repo-chip"
                             size="small"
                             avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
                             key={type}
@@ -353,11 +381,11 @@ export const RepositoryPage = (props: any) => {
                         })
                       }
                       {
-                        repository.defaultContext && <Chip size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
+                        repository.defaultContext && <Chip className="repo-chip" size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
                       }
                       {
                         repository.tags.map(tagObject => {
-                          return <Chip className="repo-tag" size="small" label={tagObject.tag} key={tagObject.id} />
+                          return <Chip className="repo-chip" size="small" label={tagObject.tag} key={tagObject.id} />
                         })
                       }
                     </Box>
@@ -395,7 +423,7 @@ export const RepositoryPage = (props: any) => {
                     </Accordion>
                   </Box>
                   <Box position="relative" mt="2">
-                    <Button onClick={() => window.open(repository.uri, "_blank")} className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
+                    <Button href={getRepoURL()} target="_blank" className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
                       View on {Resources[repository.repositoryType] || repository.repositoryType}
                     </Button>
                     <Typography component="h2" variant="h2" className="primary-heading">
@@ -409,9 +437,13 @@ export const RepositoryPage = (props: any) => {
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
                 <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
-                  <Typography component="h2" variant="h2">
-                    Resources
-                  </Typography>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography component="h2" variant="h2" style={{ width: "100%" }}>
+                      Repository contents <Tooltip title={`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`}>
+                        <InfoOutlinedIcon className={classes.infoIcon}/>
+                      </Tooltip>
+                    </Typography>
+                  </Box>
                   <Box className="verticalFit">
                     <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
                   </Box>

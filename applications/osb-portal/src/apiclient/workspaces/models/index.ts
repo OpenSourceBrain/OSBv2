@@ -1,5 +1,3 @@
-/* tslint:disable */
-/* eslint-disable */
 export * from './DandiRepositoryResource';
 export * from './DownloadResource';
 export * from './FigshareRepositoryResource';

@@ -9,3 +9,4 @@ pyjwt>=1.7.1
 swagger-ui-bundle >= 0.0.2
 psycopg2-binary==2.8.5
 kubernetes==11.0.0
+itsdangerous==2.0.1

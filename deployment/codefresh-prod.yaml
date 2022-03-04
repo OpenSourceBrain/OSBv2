@@ -29,7 +29,7 @@ steps:
     stage: prepare
     working_directory: .
     commands:
-    - pip install cloud-harness/utilities
+    - pip install cloud-harness/tools
     - harness-deployment cloud-harness . -m build -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}}
       -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e prod -i osb-portal
   prepare_deployment_view:
@@ -242,11 +242,11 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-print-file:
+      publish_workflows-send-result-event:
         stage: publish
         type: push
-        title: Workflows print file
-        candidate: '${{REGISTRY}}/osb/workflows-print-file:${{DEPLOYMENT_TAG}}'
+        title: Workflows send result event
+        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest

@@ -1,7 +1,7 @@
 import workspaces.repository.model_repository as repos
 
 
-def get_class_attr(Cls) -> []:
+def get_class_attr(Cls):
     import re
 
     return [
@@ -21,13 +21,6 @@ def get_class_attr_val(cls):
     return attr_dict
 
 
-def insert_or_get_tags(tags):
-    tags_list = []
-    for tag in tags:
-        z = tag.tag
-        items = repos.TagRepository().search(q=f"tag__={z}").items
-        if len(items) > 0:
-            # if found reference to the tag
-            tag = items[0]
-        tags_list.append(tag)
-    return tags_list
+
+
+
