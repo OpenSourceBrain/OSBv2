@@ -5,7 +5,7 @@ steps:
     stage: prepare
     working_directory: .
     commands:
-      - pip install cloud-harness/tools
+      - bash cloud-harness/install.sh
       - harness-deployment cloud-harness . -m build -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}} -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e prod -i osb-portal
   deployment:
     stage: deploy

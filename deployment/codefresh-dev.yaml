@@ -30,9 +30,9 @@ steps:
     stage: prepare
     working_directory: .
     commands:
-    - pip install cloud-harness/tools
-    - harness-deployment cloud-harness . -m build -t ${{CF_BUILD_ID}} -d ${{DOMAIN}}
-      -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e dev -i osb-portal
+    - bash cloud-harness/install.sh
+    - harness-deployment cloud-harness . -t ${{CF_BUILD_ID}} -d ${{DOMAIN}} -r ${{REGISTRY}}
+      -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e dev -i osb-portal
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
