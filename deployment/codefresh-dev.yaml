@@ -51,7 +51,7 @@ steps:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
-        dockerfile: cloud-harness/infrastructure/base-images/cloudharness-base/Dockerfile
+        dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
         registry: '${{CODEFRESH_REGISTRY}}'
         buildkit: true
         build_arguments:
