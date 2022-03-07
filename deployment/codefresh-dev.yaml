@@ -51,7 +51,7 @@ steps:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
+        dockerfile: cloud-harness/infrastructure/base-images/cloudharness-base/Dockerfile
         registry: '${{CODEFRESH_REGISTRY}}'
         buildkit: true
         build_arguments:
@@ -60,17 +60,17 @@ steps:
         - DOMAIN=${{DOMAIN}}
         - NOCACHE=${{CF_BUILD_ID}}
         - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
         - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
         - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         image_name: osb/cloudharness-base
         title: Cloudharness base
-        working_directory: ./build
+        working_directory: ./cloud-harness
   build_static_images:
     title: Build static images
     type: parallel
@@ -89,21 +89,210 @@ steps:
         - DOMAIN=${{DOMAIN}}
         - NOCACHE=${{CF_BUILD_ID}}
         - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
         - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
         - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         image_name: osb/cloudharness-flask
         title: Cloudharness flask
-        working_directory: ./build/infrastructure/common-images/cloudharness-flask
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
   build_application_images:
     type: parallel
     stage: build
     steps:
+      notifications:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/notifications
+        title: Notifications
+        working_directory: ./.overrides/applications/notifications/server
+      accounts:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/accounts
+        title: Accounts
+        working_directory: ./.overrides/applications/accounts
+      volumemanager:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/volumemanager
+        title: Volumemanager
+        working_directory: ./cloud-harness/applications/volumemanager/server
+      jupyterhub:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/jupyterhub
+        title: Jupyterhub
+        working_directory: ./.overrides/applications/jupyterhub
+      common:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/common
+        title: Common
+        working_directory: ./.overrides/applications/common/server
+      events:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/events
+        title: Events
+        working_directory: ./cloud-harness/applications/events
+      workflows-send-result-event:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
+        image_name: osb/workflows-send-result-event
+        title: Workflows send result event
+        working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
+      workflows-extract-download:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
+        image_name: osb/workflows-extract-download
+        title: Workflows extract download
+        working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
+      workflows-notify-queue:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
+        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
+        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
+        image_name: osb/workflows-notify-queue
+        title: Workflows notify queue
+        working_directory: ./cloud-harness/applications/workflows/tasks/notify-queue
+      workflows:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/workflows
+        title: Workflows
+        working_directory: ./cloud-harness/applications/workflows/server
       workspaces-scan-workspace:
         type: build
         stage: build
@@ -117,17 +306,17 @@ steps:
         - DOMAIN=${{DOMAIN}}
         - NOCACHE=${{CF_BUILD_ID}}
         - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
         - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
         - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         image_name: osb/workspaces-scan-workspace
         title: Workspaces scan workspace
-        working_directory: ./build/applications/workspaces/tasks/scan-workspace
+        working_directory: ./applications/workspaces/tasks/scan-workspace
       workspaces-github-copy:
         type: build
         stage: build
@@ -141,17 +330,17 @@ steps:
         - DOMAIN=${{DOMAIN}}
         - NOCACHE=${{CF_BUILD_ID}}
         - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
         - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
         - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         image_name: osb/workspaces-github-copy
         title: Workspaces github copy
-        working_directory: ./build/applications/workspaces/tasks/github-copy
+        working_directory: ./applications/workspaces/tasks/github-copy
       workspaces-dandi-copy:
         type: build
         stage: build
@@ -165,17 +354,17 @@ steps:
         - DOMAIN=${{DOMAIN}}
         - NOCACHE=${{CF_BUILD_ID}}
         - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
         - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
         - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
+        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
+        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
+        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
         image_name: osb/workspaces-dandi-copy
         title: Workspaces dandi copy
-        working_directory: ./build/applications/workspaces/tasks/dandi-copy
+        working_directory: ./applications/workspaces/tasks/dandi-copy
       workspaces:
         type: build
         stage: build
@@ -193,57 +382,7 @@ steps:
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         image_name: osb/workspaces
         title: Workspaces
-        working_directory: ./build/applications/workspaces/server
-      notifications:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
-        image_name: osb/notifications
-        title: Notifications
-        working_directory: ./build/applications/notifications/server
-      accounts:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/accounts
-        title: Accounts
-        working_directory: ./build/applications/accounts
-      volumemanager:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        image_name: osb/volumemanager
-        title: Volumemanager
-        working_directory: ./build/applications/volumemanager/server
+        working_directory: ./applications/workspaces/server
       netpyne:
         type: build
         stage: build
@@ -259,7 +398,7 @@ steps:
         - REGISTRY=${{REGISTRY}}/osb/
         image_name: osb/netpyne
         title: Netpyne
-        working_directory: ./build/applications/netpyne
+        working_directory: ./applications/netpyne
       accounts-api:
         type: build
         stage: build
@@ -277,7 +416,7 @@ steps:
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
         image_name: osb/accounts-api
         title: Accounts api
-        working_directory: ./build/applications/accounts-api
+        working_directory: ./applications/accounts-api
       osb-portal:
         type: build
         stage: build
@@ -293,24 +432,7 @@ steps:
         - REGISTRY=${{REGISTRY}}/osb/
         image_name: osb/osb-portal
         title: Osb portal
-        working_directory: ./build/applications/osb-portal
-      jupyterhub:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
-        image_name: osb/jupyterhub
-        title: Jupyterhub
-        working_directory: ./build/applications/jupyterhub
+        working_directory: ./applications/osb-portal
       nwb-explorer:
         type: build
         stage: build
@@ -326,24 +448,7 @@ steps:
         - REGISTRY=${{REGISTRY}}/osb/
         image_name: osb/nwb-explorer
         title: Nwb explorer
-        working_directory: ./build/applications/nwb-explorer
-      common:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        image_name: osb/common
-        title: Common
-        working_directory: ./build/applications/common/server
+        working_directory: ./applications/nwb-explorer
       jupyterlab:
         type: build
         stage: build
@@ -360,112 +465,7 @@ steps:
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
         image_name: osb/jupyterlab
         title: Jupyterlab
-        working_directory: ./build/applications/jupyterlab
-      events:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/events
-        title: Events
-        working_directory: ./build/applications/events
-      workflows-send-result-event:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
-        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
-        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
-        image_name: osb/workflows-send-result-event
-        title: Workflows send result event
-        working_directory: ./build/applications/workflows/tasks/send-result-event
-      workflows-extract-download:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
-        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
-        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
-        image_name: osb/workflows-extract-download
-        title: Workflows extract download
-        working_directory: ./build/applications/workflows/tasks/extract-download
-      workflows-notify-queue:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - WORKSPACES_SCAN_WORKSPACE=${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}
-        - WORKSPACES_GITHUB_COPY=${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}
-        - WORKSPACES_DANDI_COPY=${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        - WORKFLOWS_SEND_RESULT_EVENT=${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}
-        - WORKFLOWS_EXTRACT_DOWNLOAD=${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}
-        - WORKFLOWS_NOTIFY_QUEUE=${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}
-        image_name: osb/workflows-notify-queue
-        title: Workflows notify queue
-        working_directory: ./build/applications/workflows/tasks/notify-queue
-      workflows:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        image_name: osb/workflows
-        title: Workflows
-        working_directory: ./build/applications/workflows/server
+        working_directory: ./applications/jupyterlab
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.6.2
@@ -500,38 +500,6 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-scan-workspace:
-        stage: publish
-        type: push
-        title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-github-copy:
-        stage: publish
-        type: push
-        title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-dandi-copy:
-        stage: publish
-        type: push
-        title: Workspaces dandi copy
-        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces:
-        stage: publish
-        type: push
-        title: Workspaces
-        candidate: '${{REGISTRY}}/osb/workspaces:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_notifications:
         stage: publish
         type: push
@@ -556,30 +524,6 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
-        stage: publish
-        type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts-api:
-        stage: publish
-        type: push
-        title: Accounts api
-        candidate: '${{REGISTRY}}/osb/accounts-api:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_osb-portal:
-        stage: publish
-        type: push
-        title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_jupyterhub:
         stage: publish
         type: push
@@ -588,27 +532,11 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
-        stage: publish
-        type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_common:
         stage: publish
         type: push
         title: Common
         candidate: '${{REGISTRY}}/osb/common:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterlab:
-        stage: publish
-        type: push
-        title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -649,6 +577,78 @@ steps:
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/osb/workflows:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-scan-workspace:
+        stage: publish
+        type: push
+        title: Workspaces scan workspace
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-github-copy:
+        stage: publish
+        type: push
+        title: Workspaces github copy
+        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-dandi-copy:
+        stage: publish
+        type: push
+        title: Workspaces dandi copy
+        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces:
+        stage: publish
+        type: push
+        title: Workspaces
+        candidate: '${{REGISTRY}}/osb/workspaces:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_netpyne:
+        stage: publish
+        type: push
+        title: Netpyne
+        candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_accounts-api:
+        stage: publish
+        type: push
+        title: Accounts api
+        candidate: '${{REGISTRY}}/osb/accounts-api:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_osb-portal:
+        stage: publish
+        type: push
+        title: Osb portal
+        candidate: '${{REGISTRY}}/osb/osb-portal:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nwb-explorer:
+        stage: publish
+        type: push
+        title: Nwb explorer
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_jupyterlab:
+        stage: publish
+        type: push
+        title: Jupyterlab
+        candidate: '${{REGISTRY}}/osb/jupyterlab:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
