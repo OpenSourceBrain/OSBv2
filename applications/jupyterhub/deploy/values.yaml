@@ -24,11 +24,11 @@ hub:
     spawner: >-
       c.Spawner.args = []
   singleuser:
-  storage:
-    type: dynamic
-    capacity: 2Mi
-    dynamic:
-      pvcNameTemplate: osb-user-{userid}
-      volumeNameTemplate: osb-user-{userid}
-    homeMountPath: /opt/user
-    extraLabels: {}
+    storage:
+      type: dynamic
+      capacity: 2Mi
+      dynamic:
+        pvcNameTemplate: osb-user-{userid}
+        volumeNameTemplate: osb-user-{userid}
+      homeMountPath: /opt/user
+      extraLabels: {}
