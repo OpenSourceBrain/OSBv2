@@ -76,19 +76,19 @@ class WorkspaceService {
 
     if (filter.text) {
       params.name__like = filter.text
-      params.summary__like = filter.text
     }
     // The workspace page does not have a separate tag filter, so the search text is used for all query fields
     const nameAndSummaryQuery = Object.keys(params).map(k => `${k}=${params[k]}`).join("+")
     const tags = !filter.text ? '' : filter.text;
 
-    return (this.workspacesApi.workspaceGet(
+    const response: InlineResponse200 = await this.workspacesApi.workspaceGet(
       {
         page,
         q: nameAndSummaryQuery,
         perPage: size,
         tags,
-      }));
+      });
+    return { items: response.workspaces.map(mapWorkspace), totalPages: response.pagination.numberOfPages, total: response.pagination.total };
   }
 
   async createOrUpdateWorkspace(ws: Workspace): Promise<any> {
