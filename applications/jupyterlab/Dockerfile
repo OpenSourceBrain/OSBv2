@@ -20,6 +20,7 @@ RUN pip install git+https://github.com/NeuralEnsemble/neurotune.git --no-cache-d
 ####  NEURON & NetPyNE
 
 RUN pip install neuron --no-cache-dir
+ENV NEURON_HOME=/opt/conda
 
 # Install specific version of NetPyNE
 ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
@@ -30,22 +31,31 @@ RUN cd netpyne ; python setup.py install; cd -
 
 ####  Other simulators
 
+# Brian
 RUN pip install brian2 brian2tools --no-cache-dir
+
+# Arbor
+RUN pip install arbor --no-cache-dir
 
 
 ####  NWB
 
-RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big...
+RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big increase in size...
 
 
 ####  Machine learning libs
 
 RUN pip install torch==1.8.0 --no-cache-dir
 
+# For MDF
+RUN pip install dask==2.30.0 distributed==2.30.1 protobuf==3.17.0
+RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
+#RUN pip install modeci_mdf==0.3.3 # big jump in size of image...
+
 
 ####  Octave etc.
 
-#RUN apt-get install octave -y   
+#RUN apt-get install octave -y
 #RUN pip install octave_kernel --no-cache-dir
 
 
