@@ -48,7 +48,6 @@ def get_tags(osbrepository, context=None):
     return repository_adapter.get_tags(context)
 
 
-<<<<<<< HEAD:applications/workspaces/server/workspaces/service/osbrepository/__init__.py
 # def copy_resource(workspace_resource):
 #     origin = json.loads(workspace_resource.origin)
 #     osbrepository = repos.OSBRepositoryRepository().get(id=origin.get("osbrepository_id"))
@@ -59,19 +58,5 @@ def get_tags(osbrepository, context=None):
 def create_copy_task(workspace_id, osbrepository_id, name, path):
     from workspaces.repository.model_repository import OSBRepositoryRepository
     osbrepository = OSBRepositoryRepository().get(id=osbrepository_id)
-=======
-def copy_resource(workspace_resource):
-    import workspaces.repository as repos
-    origin = json.loads(workspace_resource.origin)
-    osbrepository = repos.OSBRepositoryRepository().get(
-        id=origin.get("osbrepository_id"))
-    repository_adapter = get_repository_adapter(osbrepository=osbrepository)
-    repository_adapter.copy_resource(workspace_resource, origin)
-
-
-def create_copy_task(workspace_id, osbrepository_id, name, path):
-    import workspaces.repository as repos
-    osbrepository = repos.OSBRepositoryRepository().get(id=osbrepository_id)
->>>>>>> fb8df9b514a825e45594d0b0a56ea18ce5d1866a:applications/workspaces/server/workspaces/service/osbrepository/osbrepository_service.py
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
     return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, path=path)
