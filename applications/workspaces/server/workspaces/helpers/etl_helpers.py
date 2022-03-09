@@ -3,7 +3,6 @@ import json
 from cloudharness import log as logger
 
 from workspaces.service.model_service import WorkspaceService
-
 import workspaces.service.osbrepository as osbrepository_service
 import workspaces.service.workflow as workflow
 from workspaces.models.resource_status import ResourceStatus

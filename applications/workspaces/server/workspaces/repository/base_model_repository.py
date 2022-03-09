@@ -4,8 +4,6 @@ Base CRUD logic for application models
 
 import re
 
-from flask_sqlalchemy import Pagination
-
 from cloudharness import log as logger
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
@@ -170,7 +168,7 @@ class BaseModelRepository:
             filters.append((attr, comparator, value))
         return filters
 
-    def search(self, page=1, per_page=20, q=None, *args, **kwargs) -> Pagination:
+    def search(self, page=1, per_page=20, q=None, *args, **kwargs):
         """
         Query the model and return all records
 
