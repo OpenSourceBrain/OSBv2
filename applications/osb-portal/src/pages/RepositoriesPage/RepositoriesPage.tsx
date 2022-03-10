@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
+import debounce from "lodash/debounce";
 
 import Box from "@material-ui/core/Box";
 
@@ -148,6 +149,10 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setSearchFilterValues({ ...searchFilterValues, types: repositoryTypes });
   }
 
+  const debouncedHandleSearchFilter = React.useCallback(debounce((newTextFilter: string) => {
+    setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+  }, 500), []);
+
   /* This function handles changes to the input in the Autocomplete tag box.
    *
    * Initially, when the autocomplete box is populated, no text is provided to
@@ -267,7 +272,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
               </FormControl>
             </Popover>
 
-            <RepositoriesSearch filterChanged={(newTextFilter) => setSearchFilterValues({ ...searchFilterValues, text: newTextFilter })} />
+            <RepositoriesSearch filterChanged={(newTextFilter) => debouncedHandleSearchFilter(newTextFilter)} />
             {user && (
               <>
                 <Divider orientation="vertical" flexItem={true} className={classes.divider} />
