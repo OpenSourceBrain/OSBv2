@@ -4,4 +4,6 @@ harness:
     soft:
       - accounts-api
       - workspaces
+      - jupyterhub
+      - notifications
 
