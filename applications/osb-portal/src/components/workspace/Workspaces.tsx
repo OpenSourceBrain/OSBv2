@@ -143,6 +143,9 @@ export const Workspaces = ({ user, counter }: any) => {
 
   return (
     <>
+      <Box className={`${classes.filterAndSearchBox}`}>
+        <WorkspacesSearch filterChanged={(newTextFilter) => setSearchFilterValues(newTextFilter)} />
+      </Box>
       <Box className={`${classes.workspaceTabs}`}>
         <Box>
           <Tabs
@@ -161,9 +164,6 @@ export const Workspaces = ({ user, counter }: any) => {
             <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
             <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
           </Tabs>
-        </Box>
-        <Box className={`${classes.filterAndSearchBox} verticalFit`}>
-          <WorkspacesSearch filterChanged={(newTextFilter) => setSearchFilterValues(newTextFilter)} />
         </Box>
       </Box>
       {/* {
