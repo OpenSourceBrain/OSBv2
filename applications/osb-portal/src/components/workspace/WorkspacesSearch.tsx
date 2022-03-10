@@ -8,10 +8,16 @@ import SearchIcon from "@material-ui/icons/Search";
 import { bgLightestShade, paragraph } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
-  textField: {
+  root: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1),
     borderRadius: 2,
     backgroundColor: bgLightestShade,
     padding: theme.spacing(1),
+    '& .MuiInputBase-root': {
+      height: 'fit-content',
+    },
     "& .MuiSvgIcon-root": {
       width: "1.25rem",
       borderRadius: 0,
@@ -49,7 +55,7 @@ export default (props: WorkspacesSearchProps) => {
       id="standard-start-adornment"
       fullWidth={true}
       placeholder="Search"
-      className={classes.textField}
+      className={classes.root}
       onChange={(e) => { props.filterChanged(e.target.value.toLowerCase()); }}
 
       InputProps={{

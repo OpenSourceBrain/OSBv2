@@ -28,20 +28,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  workspaceTabs: {
-    display: 'flex',
-  },
-  filterAndSearchBox: {
-    display: 'flex',
-    '& .MuiInputBase-root': {
-      marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(1),
-      height: 'fit-content',
-    },
-    "& .MuiTextField-root": {
-      minWidth: '5vw',
-    },
-  },
 }))
 
 export enum WorkspaceSelection {
@@ -159,29 +145,23 @@ export const Workspaces = ({ user, counter }: any) => {
 
   return (
     <>
-      <Box className={`${classes.filterAndSearchBox}`}>
-        <WorkspacesSearch filterChanged={(newTextFilter) => debounceRefreshWorkspace(newTextFilter)} />
-      </Box>
-      <Box className={`${classes.workspaceTabs}`}>
-        <Box>
-          <Tabs
-            value={selection.current}
-            textColor="primary"
-            indicatorColor="primary"
-            onChange={handleChange}
-          >
-            {user ?
-              <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
-                <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
-                <>Your workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
-              />
-              : null
-            }
-            <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
-            <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
-          </Tabs>
-        </Box>
-      </Box>
+      <WorkspacesSearch filterChanged={(newTextFilter) => debounceRefreshWorkspace(newTextFilter)} />
+      <Tabs
+        value={selection.current}
+        textColor="primary"
+        indicatorColor="primary"
+        onChange={handleChange}
+      >
+        {user ?
+          <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
+            <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
+            <>Your workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
+          />
+          : null
+        }
+        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
+        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
+      </Tabs>
       {/* {
         workspaces && <Box mb={2}>
 
