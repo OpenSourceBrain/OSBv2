@@ -48,22 +48,10 @@ class DandiAdapter:
     def getFiles(self, tree, context, path_prefix=""):
         logger.debug(f"getFiles for {path_prefix}")
         path, contents = self.getFolderContents(context, path_prefix)
-        
-        for key2, dandi_file in contents["files"].items():
-            # we save the version in the url query param for later usage in the download task
-            download_url = f"{self.api_url}/assets/{dandi_file['asset_id']}?folder={context}/{path_prefix}"
-            add_to_tree(
-                tree=tree,
-                tree_path=dandi_file["path"].split("/"),
-                path=download_url,
-                size=dandi_file["size"],
-                timestamp_modified=dandi_file["modified"],
-                osbrepository_id=self.osbrepository.id,
-            )
-        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            for key, dandi_folder in contents["folders"].items():
-                new_path_prefix = f"{path_prefix}/{key}".strip("/")
-                folder_url = f"{self.api_url}/dandisets/{self.dandiset_id}/versions/{context}/assets/paths/?path_prefix={new_path_prefix}&folder={context}/{new_path_prefix}"
+        if "files" in contents:
+            for key2, dandi_file in contents["files"].items():
+                # we save the version in the url query param for later usage in the download task
+                download_url = f"{self.api_url}/assets/{dandi_file['asset_id']}?folder={context}/{path_prefix}"
                 add_to_tree(
                     tree=tree,
                     tree_path=dandi_file["path"].split("/"),

@@ -311,7 +311,7 @@ class OsbrepositoryService(BaseModelService):
             for tag in tags:
                 osbrepository.tags.append(Tag(tag=tag))
         
-        body['tags'] = osbrepository.to_dict()['tags']
+        body['tags'] = osbrepository.to_dict().get('tags', [])
         self.map_entity(body)
         return super().post(body)
 
