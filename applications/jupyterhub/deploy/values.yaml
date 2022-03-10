@@ -23,12 +23,12 @@ hub:
       c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost *.osb.local *.opensourcebrain.org *.v2.opensourcebrain.org"}}
     spawner: >-
       c.Spawner.args = []
-  singleuser:
-    storage:
-      type: dynamic
-      capacity: 2Mi
-      dynamic:
-        pvcNameTemplate: osb-user-{userid}
-        volumeNameTemplate: osb-user-{userid}
-      homeMountPath: /opt/user
-      extraLabels: {}
+singleuser:
+  storage:
+    type: dynamic
+    capacity: 2Mi
+    dynamic:
+      pvcNameTemplate: osb-user-{userid}
+      volumeNameTemplate: osb-user-{userid}
+    homeMountPath: /opt/user
+    extraLabels: {}
