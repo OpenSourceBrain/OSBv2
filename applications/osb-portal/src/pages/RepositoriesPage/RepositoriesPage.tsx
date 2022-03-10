@@ -164,6 +164,11 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
    * implement infinite scroll
    */
   const handleTagInput = (value?: any, tagpage?: number) => {
+      setTagSearchValue(value);
+      debouncedTagInputUpdate(value, tagpage);
+  }
+
+  const debouncedTagInputUpdate = React.useCallback(debounce((value?: any, tagpage?: number) => {
     let query: any;
     if ((value !== "") && (value !== undefined)){
       query = "tag__like=" + value;
@@ -172,7 +177,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       const tags = tagsInformation.tags.map(tagObject => {
         return tagObject.tag;
       });
-      setTagSearchValue(value);
       setTagPage(tagsInformation.pagination.currentPage);
       setTotalTagPages(tagsInformation.pagination.numberOfPages);
       if (tagpage !== undefined) {
@@ -182,7 +186,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
         setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
       }
     });
-  }
+  }, 500), []);
 
   return (
     <>
