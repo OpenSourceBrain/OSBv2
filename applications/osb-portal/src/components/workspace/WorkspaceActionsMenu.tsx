@@ -3,8 +3,11 @@ import * as React from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import NestedMenuItem from "material-ui-nested-menu-item";
+import Button from '@material-ui/core/Button';
 import { IconButton } from "@material-ui/core";
+import Snackbar from '@material-ui/core/Snackbar';
 import * as Icons from "../icons";
+import CloseIcon from '@material-ui/icons/Close';
 
 import { OSBApplications, Workspace } from "../../types/workspace";
 import OSBDialog from "../common/OSBDialog";
@@ -27,7 +30,9 @@ interface WorkspaceActionsMenuProps {
 
 export default (props: WorkspaceActionsMenuProps) => {
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
-  const [cloneInProgress, setCloneInProgress] = React.useState(false);
+  const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
+  const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
+  const [clonedWSId, setClonedWSId] = React.useState<number>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const canEdit = canEditWorkspace(props.user, props.workspace);
 
@@ -74,15 +79,21 @@ export default (props: WorkspaceActionsMenuProps) => {
   }
 
   const handleCloneWorkspace = () => {
+    handleCloseMenu();
     setCloneInProgress(true);
-    WorkspaceService.cloneWorkspace(props.workspace.id).then(() => {
+    WorkspaceService.cloneWorkspace(props.workspace.id).then((res) => {
       props.refreshWorkspaces();
       setCloneInProgress(false);
+      setCloneComplete(true);
+      setClonedWSId(res.id);
     },
     () => {
       setCloneInProgress(true);
     });
-    handleCloseMenu();
+  }
+
+  const handleOpenClonedWorkspace = () => {
+    window.location.href = `/workspace/${clonedWSId}`;
   }
 
   /*
@@ -145,6 +156,17 @@ export default (props: WorkspaceActionsMenuProps) => {
         <WorkspaceEditor workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
       </OSBDialog>
       <OSBLoader active={cloneInProgress} fullscreen={true} handleClose={handleCloseMenu} messages={["Cloning workspace. Please wait."]} />
+      <Snackbar open={cloneComplete} onClose={() => setCloneComplete(false)} message="Workspace cloned" anchorOrigin={{"vertical": "bottom", "horizontal": "left"}} autoHideDuration={6000}
+        action={
+          <React.Fragment>
+            <Button color="secondary" size="small" onClick={handleOpenClonedWorkspace}>
+              Open
+            </Button>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={() => setCloneComplete(false)}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        } />
     </>
   )
 }
