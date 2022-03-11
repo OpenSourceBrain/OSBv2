@@ -51,6 +51,8 @@ export const Workspaces = ({ user, counter }: any) => {
     total: null
   });
 
+  const [error, setError] = React.useState<boolean>(false);
+
   // need to use useRef because if these are stored as states, they get
   // reinitialised each time the function component re-renders.
   const filterText = React.useRef<string>("");
@@ -74,25 +76,25 @@ export const Workspaces = ({ user, counter }: any) => {
     switch (selection.current) {
       case WorkspaceSelection.PUBLIC: {
         if (filterText.current !== ""){
-          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current }).then(update);
+          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current }).then(update, (e) => setError(true));
         } else {
-          workspaceService.fetchWorkspaces(true, false, page).then(update);
+          workspaceService.fetchWorkspaces(true, false, page).then(update, (e) => setError(true));
         }
         break;
       }
       case WorkspaceSelection.FEATURED: {
         if (filterText.current !== ""){
-          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current }).then(update);
+          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current }).then(update, (e) => setError(true));
         } else {
-            workspaceService.fetchWorkspaces(true, true, page).then(update)
+            workspaceService.fetchWorkspaces(true, true, page).then(update, (e) => setError(true));
         }
         break;
       }
       default: {
         if (filterText.current !== ""){
-          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current }).then(update);
+          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current }).then(update, (e) => setError(true));
         } else {
-          workspaceService.fetchWorkspaces(false, false, page).then(update);
+          workspaceService.fetchWorkspaces(false, false, page).then(update, (e) => setError(true));
         }
         break;
       }
@@ -111,6 +113,12 @@ export const Workspaces = ({ user, counter }: any) => {
   React.useEffect(() => {
     refreshWorkspaces();
   }, [counter, selection.current, page]);
+
+  React.useEffect(() => {
+    if (error === true) {
+      throw new Error("Error loading workspaces.");
+    }
+  }, [error])
 
   // For the search filter: debounced to prevent an update each time the user
   // types a letter.
