@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import NestedMenuItem from "material-ui-nested-menu-item";
@@ -16,6 +17,7 @@ import { canEditWorkspace } from '../../service/UserService';
 import { UserInfo } from "../../types/user";
 import WorkspaceService from "../../service/WorkspaceService"
 import OSBLoader from "../common/OSBLoader"
+import { bgDarkest, textColor } from "../../theme";
 
 // TODO: refactor to use redux instead of passing props
 
@@ -27,8 +29,19 @@ interface WorkspaceActionsMenuProps {
   user?: UserInfo;
 }
 
+const useStyles = makeStyles((theme) => ({
+  snackbar: {
+    '& .MuiSnackbarContent-root': {
+      backgroundColor: bgDarkest,
+      color: textColor,
+    }
+  },
+}))
+
 
 export default (props: WorkspaceActionsMenuProps) => {
+  const classes = useStyles();
+
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
@@ -156,10 +169,11 @@ export default (props: WorkspaceActionsMenuProps) => {
         <WorkspaceEditor workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
       </OSBDialog>
       <OSBLoader active={cloneInProgress} fullscreen={true} handleClose={handleCloseMenu} messages={["Cloning workspace. Please wait."]} />
-      <Snackbar open={cloneComplete} onClose={() => setCloneComplete(false)} message="Workspace cloned" anchorOrigin={{"vertical": "bottom", "horizontal": "left"}} autoHideDuration={6000}
+      <Snackbar classes={{  root: classes.snackbar }} open={cloneComplete} onClose={() => setCloneComplete(false)} message="Workspace cloned" anchorOrigin={{"vertical": "bottom", "horizontal": "left"}}
+        autoHideDuration={5000}
         action={
           <React.Fragment>
-            <Button color="secondary" size="small" onClick={handleOpenClonedWorkspace}>
+            <Button color="primary" size="small" onClick={handleOpenClonedWorkspace}>
               Open
             </Button>
             <IconButton size="small" aria-label="close" color="inherit" onClick={() => setCloneComplete(false)}>
