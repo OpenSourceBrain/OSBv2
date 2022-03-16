@@ -16,7 +16,7 @@ import ArrowRight from "@material-ui/icons/ArrowRight";
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
 import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
-import { Workspace, WorkspaceResource } from "../types/workspace";
+import { Workspace, WorkspaceResource, OSBApplications } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import MarkdownViewer from "../components/common/MarkdownViewer";
@@ -149,10 +149,23 @@ export const WorkspacePage = (props: any) => {
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
   const [error, setError] = React.useState<any>(null);
+  const [options, setOptions] = React.useState<string[]>([]);
+
+  const PREFIX_TEXT = "Open with "
 
   React.useEffect(() => {
     WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
       setWorkspace(ws);
+
+      // Populate ordered list from OSBApplications
+      // set last used application as first entry if it is set
+      let apps = ws ? ws.lastOpen.type.application.name ? [PREFIX_TEXT + ws.lastOpen.type.application.name] : [] : null;
+      for (const app of Object.keys(OSBApplications)) {
+        if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
+            apps.push(PREFIX_TEXT + OSBApplications[app].name);
+        }
+      }
+      setOptions(apps);
     },
     (e) => {setError(e)});
   }, [refresh]);
@@ -173,25 +186,15 @@ export const WorkspacePage = (props: any) => {
     openWithApp(resource.type.application.name);
   }
 
-  const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
-  const OPEN_JUPYTER = 'OPEN WITH JUPYTER LAB';
-  const OPEN_NETPYNE = 'OPEN WITH NETPYNE';
-  const options = [OPEN_NWB, OPEN_JUPYTER, OPEN_NETPYNE];
 
+  // open application that is default for selected resource,
+  // or option selected from app selection drop down
   const openWithApp = (selectedOption: string) => {
-    let app;
-    switch (selectedOption) {
-      case OPEN_NETPYNE:
-        app = 'netpyne';
-        break;
-      case OPEN_JUPYTER:
-        app = 'jupyter';
-        break;
-      default:
-        app = 'nwbexplorer'
-        break;
+    for (const app of Object.keys(OSBApplications)) {
+      if ((PREFIX_TEXT + OSBApplications[app].name).includes(selectedOption)) {
+        history.push(`/workspace/open/${workspaceId}/${app}`);
+      }
     }
-    history.push(`/workspace/open/${workspaceId}/${app}`);
   }
 
   const canEdit = canEditWorkspace(props.user, workspace);
