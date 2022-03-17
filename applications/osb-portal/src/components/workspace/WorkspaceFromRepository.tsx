@@ -137,7 +137,6 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
 
   enum Stage {
     SELECT_REPO,
-    WAIT_REPO,
     SELECT_FILES,
     EDIT_WORKSPACE,
     ERROR_NO_FILES
@@ -146,13 +145,16 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
 
 
   const handleBackAction = () => {
-    setStage(stage - 1)
+    if (stage > Stage.SELECT_REPO) {
+      setStage(stage - 1);
+      setChecked([]);
+    }
 
-    setChecked([]);
   }
 
   const handleContinue = () => {
-    setStage(stage + 1)
+    if (stage < Stage.ERROR_NO_FILES)
+      setStage(stage + 1)
   }
 
   const defaultWorkspace: Workspace = {
@@ -289,12 +291,17 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
     />
   }
 
+  const handleClose = () => {
+    setStage(Stage.SELECT_REPO);
+    close();
+  }
+
   const returnDialoged = (children: any) => {
       return (
         <OSBDialog
           title="Create new workspace"
           open={true}
-          closeAction={close}
+          closeAction={handleClose}
           maxWidth="md">
           {children}
         </OSBDialog>
@@ -313,7 +320,7 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
     )
     case Stage.EDIT_WORKSPACE:
       return <>
-        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={close} >
+        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={handleClose} >
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
       </WorkspaceEditor>
       </>
@@ -336,12 +343,6 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
     default:
       return null
   }
-
-
-
-
-
-
 }
 
 export default WorkspaceFromRepository;
