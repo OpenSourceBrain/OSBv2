@@ -1,9 +1,7 @@
 import re
 import requests
 import sys
-import asyncio
 import concurrent.futures
-import workspaces.service.workflow as workflow
 
 from cloudharness import log as logger
 from workspaces.models import DandiRepositoryResource, RepositoryResource, RepositoryResourceNode
@@ -19,7 +17,7 @@ class DandiException(Exception):
 class DandiAdapter:
     def __init__(self, osbrepository, uri=None):
         self.osbrepository = osbrepository
-        self.uri = uri if uri else osbrepository.url
+        self.uri = uri if uri else osbrepository.uri
         self.api_url = "https://api.dandiarchive.org/api"
         self.futures = []
         try:
@@ -165,6 +163,7 @@ class DandiAdapter:
         folder = f"{self.osbrepository.name}/{folder}"
         downloadpath = re.search("(.*)\?folder=.*$", path).group(1)
         print(f"Copy task: {name} - {folder} - {downloadpath}")
+        import workspaces.service.workflow as workflow
         return workflow.create_copy_task(
             image_name="workspaces-dandi-copy",
             workspace_id=workspace_id,

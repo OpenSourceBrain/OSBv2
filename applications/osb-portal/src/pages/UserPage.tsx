@@ -208,6 +208,7 @@ export const UserPage = (props: any) => {
   const handleUpdateUser = (u: User) => {
     setUser(u);
     setProfileEditDialogOpen(false);
+    window.location.reload();
   }
 
   return (

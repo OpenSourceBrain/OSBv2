@@ -3,6 +3,7 @@ from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient
 from cloudharness import log
+from cloudharness.models import User as CHUser
 
 class UserNotFound(Exception): pass
 
@@ -32,8 +33,8 @@ def get_user(userid: str) -> User:
     return user
 
 
-def map_user(kc_user) -> User:
-    user = User.from_dict(kc_user)
+def map_user(kc_user: CHUser) -> User:
+    user = User.from_dict(kc_user.to_dict())
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
 

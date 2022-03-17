@@ -20,6 +20,13 @@ def get_keycloak_data():
         keycloak_id = decoded_token["sub"]
     return keycloak_id, decoded_token
 
+from inspect import getmembers, ismethod
+from types import FunctionType
+
+
+def get_pvc_name(workspace_id):
+    return f"workspace-{workspace_id}"
+
 
 disallowed_class_types = ["BaseQuery", "type", "registry", "MetaData"]
 

@@ -1,4 +1,5 @@
 import workspaces.service.osbrepository as repository_service
+
 from workspaces.service.model_service import (
     NotAuthorized,
     OsbrepositoryService,
@@ -51,3 +52,12 @@ class WorkspaceresourceView(BaseModelView):
 
 class TagView(BaseModelView):
     service = TagService()
+
+from workspaces.service.model_service import (
+    NotAuthorized,
+    OsbrepositoryService,
+    VolumestorageService,
+    WorkspaceService,
+    WorkspaceresourceService,
+    TagService,
+)

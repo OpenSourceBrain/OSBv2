@@ -31,18 +31,27 @@ RUN cd netpyne ; python setup.py install; cd -
 
 ####  Other simulators
 
+# Brian
 RUN pip install brian2 brian2tools --no-cache-dir
+
+# Arbor
+RUN pip install arbor --no-cache-dir
 
 
 ####  NWB
 
-RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big...
+RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big increase in size...
 
 
 ####  Machine learning libs
 
 RUN pip install torch==1.8.0 --no-cache-dir
 RUN pip install git+https://github.com/SheffieldML/GPy.git@devel # for MDF
+
+# For MDF
+RUN pip install dask==2.30.0 distributed==2.30.1 protobuf==3.17.0
+RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
+#RUN pip install modeci_mdf==0.3.3 # big jump in size of image...
 
 
 ####  Octave etc.
