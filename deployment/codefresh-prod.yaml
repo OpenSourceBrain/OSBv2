@@ -55,10 +55,6 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
-    - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
-    - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
-    - CUSTOM_apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
-    - CUSTOM_apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
   approval:
     type: pending-approval
     stage: publish
@@ -76,24 +72,6 @@ steps:
         type: push
         title: Cloudharness base
         candidate: '${{REGISTRY}}/osb/cloudharness-base:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-frontend-build:
-        stage: publish
-        type: push
-        title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-base-debian:
-        stage: publish
-        type: push
-        title: Cloudharness base debian
-        candidate: '${{REGISTRY}}/osb/cloudharness-base-debian:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -242,7 +220,7 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-s3:
+      publish_accounts-api:
         stage: publish
         type: push
         title: Accounts api
@@ -251,7 +229,7 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-download:
+      publish_osb-portal:
         stage: publish
         type: push
         title: Osb portal
@@ -260,7 +238,7 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-notify-queue:
+      publish_nwb-explorer:
         stage: publish
         type: push
         title: Nwb explorer
@@ -269,7 +247,7 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows:
+      publish_jupyterlab:
         stage: publish
         type: push
         title: Jupyterlab
