@@ -7,10 +7,10 @@ An updated version of the Open Source Brain platform
 ### Prerequisites
 
 The OSB deployment is built on top of [CloudHarness](https://github.com/MetaCell/cloud-harness).
-The deployment process is based on Python 3.7+ scripts. It is recommended to setup a virtual 
+The deployment process is based on Python 3.7+ scripts. It is recommended to setup a virtual
 environment first.
 
-With conda: 
+With conda:
 ```bash
 conda create --name osb python=3.7
 conda activate osb
@@ -40,7 +40,7 @@ CloudHarness scripts script automate the deployment process.
 To manually create the helm chart to use on any Kubernetes deployment, run:
 
 ```
-harness-deployment cloud-harness . 
+harness-deployment cloud-harness .
 ```
 ### Cluster setup
 
@@ -108,9 +108,17 @@ Connect your docker registry with minikube with:
 
 Then run:
 ```
-harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal 
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -e local -i osb-portal
 ```
 You do not need to run the port-forwarding commands on the local deployment.
+
+Here, you can modify the argument of the `-e` option to select what environment you want to deploy.
+These correspond to the files from the `osb-portal/deploy` directory.
+
+If you only want to run the back-end in the minikube deployment, change the `osb-portal` to `workspaces`.
+You can then use `npm start:minikube` to point `npm` to the local minikube back-end.
+Note that the domain in `package.json` for the `start:minikube` command should match the namespace used for minikube.
+
 Finally, run skaffold to build and run the images on minikube:
 
 ```
@@ -123,7 +131,7 @@ On making local changes, you can re-run the `harness-deployment` command to upda
 
 With the registry on localhost:5000 run:
 ```
-harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal -r registry:5000
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -e local -i osb-portal -r registry:5000
 ```
 
 See below to learn how to configure Minikube and forward the registry.
