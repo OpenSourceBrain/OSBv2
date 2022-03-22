@@ -13,6 +13,7 @@ import { OSBRepository, RepositoryResourceNode } from '../../apiclient/workspace
 import RepositoryService from "../../service/RepositoryService";
 import WorkspaceService from "../../service/WorkspaceService";
 import { Workspace, OSBApplication } from "../../types/workspace";
+import OSBDialog from "../common/OSBDialog";
 import {
   fontColor,
   bgInputs,
@@ -136,7 +137,6 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
 
   enum Stage {
     SELECT_REPO,
-    WAIT_REPO,
     SELECT_FILES,
     EDIT_WORKSPACE,
     ERROR_NO_FILES
@@ -145,13 +145,16 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
 
 
   const handleBackAction = () => {
-    setStage(stage - 1)
+    if (stage > Stage.SELECT_REPO) {
+      setStage(stage - 1);
+      setChecked([]);
+    }
 
-    setChecked([]);
   }
 
   const handleContinue = () => {
-    setStage(stage + 1)
+    if (stage < Stage.ERROR_NO_FILES)
+      setStage(stage + 1)
   }
 
   const defaultWorkspace: Workspace = {
@@ -288,41 +291,58 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
     />
   }
 
+  const handleClose = () => {
+    setStage(Stage.SELECT_REPO);
+    close();
+  }
 
-  switch (stage) {
-    case Stage.SELECT_REPO:
-      return <SelectRepository />
-    case Stage.SELECT_FILES:
-      return <SelectFilesFromRepository repositoryId={selectedRepository} />
-    case Stage.EDIT_WORKSPACE:
-      return <>
-        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
-        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={close} />
-      </>
-    case Stage.ERROR_NO_FILES:
-      return <>
-
-        <Grid container={true} className={classes.info}>
-          <Grid item={true}>
-            <Typography component="h6" className={classes.helperDialogText}>
-              No files from this repository have been selected, and so all the files in the repository will be added in the workspace. Press OK to proceed, or press Cancel and go back and select some.
-            </Typography>
-          </Grid>
-          <Grid item={true}>
-            <Button color="primary" onClick={() => setStage(Stage.SELECT_FILES)}>Cancel</Button>
-            <Button variant="contained" color="primary" onClick={() => setStage(Stage.EDIT_WORKSPACE)}>OK</Button>
-          </Grid>
-        </Grid>
-      </>
-    default:
-      return null
+  const returnDialoged = (children: any) => {
+      return (
+        <OSBDialog
+          title="Create new workspace"
+          open={true}
+          closeAction={handleClose}
+          maxWidth="md">
+          {children}
+        </OSBDialog>
+    )
   }
 
 
-
-
-
-
+  switch (stage) {
+    case Stage.SELECT_REPO:
+      return (
+         returnDialoged(<SelectRepository />)
+    )
+    case Stage.SELECT_FILES:
+      return (
+        returnDialoged(<SelectFilesFromRepository repositoryId={selectedRepository} />)
+    )
+    case Stage.EDIT_WORKSPACE:
+      return <>
+        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={handleClose} >
+        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
+      </WorkspaceEditor>
+      </>
+    case Stage.ERROR_NO_FILES:
+      return (
+        returnDialoged(
+          <Grid container={true} className={classes.info}>
+            <Grid item={true}>
+              <Typography component="h6" className={classes.helperDialogText}>
+                No files from this repository have been selected, and so all the files in the repository will be added in the workspace. Press OK to proceed, or press Cancel and go back and select some.
+              </Typography>
+            </Grid>
+            <Grid item={true}>
+              <Button color="primary" onClick={() => setStage(Stage.SELECT_FILES)}>Cancel</Button>
+              <Button variant="contained" color="primary" onClick={() => setStage(Stage.EDIT_WORKSPACE)}>OK</Button>
+            </Grid>
+          </Grid>
+        )
+    )
+    default:
+      return null
+  }
 }
 
 export default WorkspaceFromRepository;

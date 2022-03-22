@@ -88,17 +88,17 @@ steps:
       publish_notifications:
         stage: publish
         type: push
-        title: Sentry
-        candidate: '${{REGISTRY}}/osb/sentry:${{DEPLOYMENT_TAG}}'
+        title: Notifications
+        candidate: '${{REGISTRY}}/osb/notifications:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterhub:
+      publish_accounts:
         stage: publish
         type: push
-        title: Jupyterhub
-        candidate: '${{REGISTRY}}/osb/jupyterhub:${{DEPLOYMENT_TAG}}'
+        title: Accounts
+        candidate: '${{REGISTRY}}/osb/accounts:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -175,11 +175,11 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-notify-queue:
+      publish_workspaces-scan-workspace:
         stage: publish
         type: push
-        title: Workflows notify queue
-        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{DEPLOYMENT_TAG}}'
+        title: Workspaces scan workspace
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest

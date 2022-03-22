@@ -164,7 +164,7 @@ class WorkspaceService(BaseModelService):
 
     def get_workspace_volume_size(self, ws: Workspace):
         # Place to change whenever we implement user or workspace based sizing
-        return get_configuration('workspaces').workspace_size
+        return get_configuration('workspaces').conf['workspace_size']
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):

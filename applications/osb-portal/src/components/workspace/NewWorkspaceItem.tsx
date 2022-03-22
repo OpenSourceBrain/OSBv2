@@ -97,7 +97,6 @@ export const NewWorkspaceItem = (props: ItemProps) => {
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
 
-
   const handleClick = () => {
     if (!user) {
       setAskLoginOpen(true);
@@ -143,20 +142,11 @@ export const NewWorkspaceItem = (props: ItemProps) => {
       </OSBDialog>
       }
       {newWorkspaceOpen &&
-        <OSBDialog
-          title="Create new workspace"
-          open={newWorkspaceOpen}
-          closeAction={() => setNewWorkspaceOpen(false)}
-          maxWidth="md"
-        > {defaultWorkspace ?
+        (defaultWorkspace ?
           <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={() => setNewWorkspaceOpen(false)}/> :
-          <WorkspaceFromRepository close={() => setNewWorkspaceOpen(false)} workspaceCreatedCallback={onWorkspaceCreated} />
-          }
-
-        </OSBDialog>
-
+          <WorkspaceFromRepository close={() => setNewWorkspaceOpen(false) } workspaceCreatedCallback={onWorkspaceCreated} />
+        )
       }
-
     </>
   );
 };
