@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import debounce from "lodash/debounce";
 
 import { makeStyles, styled } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -13,6 +13,7 @@ import Chip from "@material-ui/core/Chip";
 
 import { WorkspaceCard } from "..";
 import { Workspace } from "../../types/workspace";
+import WorkspacesSearch from "./WorkspacesSearch"
 import workspaceService from '../../service/WorkspaceService';
 
 
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  }
+  },
 }))
 
 export enum WorkspaceSelection {
@@ -39,24 +40,29 @@ export enum WorkspaceSelection {
 export const Workspaces = ({ user, counter }: any) => {
 
   const [state, setState] = React.useState<{
-    selection: WorkspaceSelection,
     items: Workspace[],
     page: number,
     totalPages: number,
     total: number
   }>({
-    selection: user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED,
     items: null,
     page: 1,
     totalPages: 0,
     total: null
   });
 
+  const [error, setError] = React.useState<boolean>(false);
+
+  // need to use useRef because if these are stored as states, they get
+  // reinitialised each time the function component re-renders.
+  const filterText = React.useRef<string>("");
+  const selection = React.useRef<WorkspaceSelection>(user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED);
 
   const classes = useStyles();
 
   function changeSelection(newSelection: WorkspaceSelection) {
-    setState({ ...state, selection: newSelection, page: 1, items: null, totalPages: 0, total: null });
+    setState({ ...state, page: 1, items: null, totalPages: 0, total: null });
+    selection.current = newSelection;
   }
 
   function refreshWorkspaces() {
@@ -66,19 +72,30 @@ export const Workspaces = ({ user, counter }: any) => {
       } else {
         setState({ ...state, ...res, items: [...state.items, ...res.items] })
       }
-
     }
-    switch (state.selection) {
+    switch (selection.current) {
       case WorkspaceSelection.PUBLIC: {
-        workspaceService.fetchWorkspaces(true, false, page).then(update);
+        if (filterText.current !== ""){
+          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current }).then(update, (e) => setError(true));
+        } else {
+          workspaceService.fetchWorkspaces(true, false, page).then(update, (e) => setError(true));
+        }
         break;
       }
       case WorkspaceSelection.FEATURED: {
-        workspaceService.fetchWorkspaces(true, true, page).then(update)
+        if (filterText.current !== ""){
+          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current }).then(update, (e) => setError(true));
+        } else {
+            workspaceService.fetchWorkspaces(true, true, page).then(update, (e) => setError(true));
+        }
         break;
       }
       default: {
-        workspaceService.fetchWorkspaces(false, false, page).then(update);
+        if (filterText.current !== ""){
+          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current }).then(update, (e) => setError(true));
+        } else {
+          workspaceService.fetchWorkspaces(false, false, page).then(update, (e) => setError(true));
+        }
         break;
       }
     }
@@ -90,18 +107,28 @@ export const Workspaces = ({ user, counter }: any) => {
     setState({ ...state, page: page + 1 })
   }
 
-  const { items: workspaces, selection, totalPages, page } = state;
+  const { items: workspaces, totalPages, page } = state;
 
 
   React.useEffect(() => {
     refreshWorkspaces();
-  }, [counter, selection, page]);
+  }, [counter, selection.current, page]);
 
+  React.useEffect(() => {
+    if (error === true) {
+      throw new Error("Error loading workspaces.");
+    }
+  }, [error])
 
-
-
-
-
+  // For the search filter: debounced to prevent an update each time the user
+  // types a letter.
+  // Must use useCallback so that the function persists between renders.
+  // Otherwise, since this is a function component, the function is redefined
+  // each time the component is rendered
+  const debounceRefreshWorkspace = React.useCallback(debounce((text) => {
+    filterText.current = text;
+    refreshWorkspaces();
+  }, 500), []);
 
   const workspaceList =
     workspaces
@@ -126,23 +153,23 @@ export const Workspaces = ({ user, counter }: any) => {
 
   return (
     <>
+      <WorkspacesSearch filterChanged={(newTextFilter) => debounceRefreshWorkspace(newTextFilter)} />
       <Tabs
-        value={selection}
+        value={selection.current}
         textColor="primary"
         indicatorColor="primary"
         onChange={handleChange}
       >
         {user ?
           <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
-            <>All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
-            <>Your workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
+            <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
+            <>Your workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
           />
           : null
         }
-        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
-        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
+        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
+        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
       </Tabs>
-
       {/* {
         workspaces && <Box mb={2}>
 
