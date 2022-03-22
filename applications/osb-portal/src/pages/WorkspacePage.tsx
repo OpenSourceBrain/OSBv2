@@ -159,7 +159,7 @@ export const WorkspacePage = (props: any) => {
 
       // Populate ordered list from OSBApplications
       // set last used application as first entry if it is set
-      let apps = ws ? ws.lastOpen.type.application.name ? [PREFIX_TEXT + ws.lastOpen.type.application.name] : [] : null;
+      const apps = ws ? ws.lastOpen.type.application.name ? [PREFIX_TEXT + ws.lastOpen.type.application.name] : [] : null;
       for (const app of Object.keys(OSBApplications)) {
         if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
             apps.push(PREFIX_TEXT + OSBApplications[app].name);
