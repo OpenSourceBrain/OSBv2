@@ -14,7 +14,7 @@ RUN pip install -r /libraries/client/cloudharness_cli/requirements.txt
 # COPY --from=base /libraries/models /libraries/models
 COPY --from=base /libraries /libraries
 
-RUN pip install -e /libraries/models
+# RUN pip install -e /libraries/models # remove comment for cloudharness 2.0
 RUN pip install -e /libraries/cloudharness-common
 RUN pip install -e /libraries/client/cloudharness_cli
 

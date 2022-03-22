@@ -7,7 +7,7 @@ RUN apt-get install graphviz -y
 RUN apt-get install openjdk-11-jre-headless -y
 
 RUN apt-get install git vim htop -y      # git and general utilities
-RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON's nrnivmodl
+RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON`s nrnivmodl
 
 ################################################################################
 
