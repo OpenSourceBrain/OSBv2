@@ -325,6 +325,93 @@ export class RestApi extends runtime.BaseAPI {
     }
 
     /**
+     * Used to retrieve the description of a repository.
+     */
+    async getDescriptionRaw(requestParameters: GetContextsRequest): Promise<runtime.ApiResponse<Array<string>>> {
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling getContexts.');
+        }
+
+        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
+            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling getContexts.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
+        }
+
+        if (requestParameters.repositoryType !== undefined) {
+            queryParameters['repository_type'] = requestParameters.repositoryType;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/osbrepository/description`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+
+    /**
+     * Used to retrieve description of a repository.
+     */
+    async getDescription(requestParameters: GetContextsRequest): Promise<Array<string>> {
+        const response = await this.getDescriptionRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Used to retrieve keywords for a repository.
+     */
+    async getKeywordsRaw(requestParameters: GetContextsRequest): Promise<runtime.ApiResponse<Array<string>>> {
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling getContexts.');
+        }
+
+        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
+            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling getContexts.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
+        }
+
+        if (requestParameters.repositoryType !== undefined) {
+            queryParameters['repository_type'] = requestParameters.repositoryType;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/osbrepository/keywords`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+
+    /**
+     * Used to retrieve keywords/topics of a repository.
+     */
+    async getKeywords(requestParameters: GetContextsRequest): Promise<Array<string>> {
+        const response = await this.getKeywordsRaw(requestParameters);
+        return await response.value();
+    }
+
+
+    /**
      * Used to list all available repositories.
      */
     async osbrepositoryGet(requestParameters: OsbrepositoryGetRequest): Promise<InlineResponse2001> {
