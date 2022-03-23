@@ -150,21 +150,21 @@ export const WorkspacePage = (props: any) => {
   const [refresh, setRefresh] = React.useState(true);
   const [error, setError] = React.useState<any>(null);
   let options;
-  
+
 
   const PREFIX_TEXT = "Open with "
-  if(!workspace) {
+  if (!workspace) {
     props.selectWorkspace(workspaceId);
   } else {
     const apps = workspace ? workspace.lastOpen.type.application.name ? [PREFIX_TEXT + workspace.lastOpen.type.application.name] : [] : null;
-      for (const app of Object.keys(OSBApplications)) {
+    for (const app of Object.keys(OSBApplications)) {
         if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
             apps.push(PREFIX_TEXT + OSBApplications[app].name);
         }
       }
-      options = apps;
+    options = apps;
   }
-  
+
 
   if (error) {
     throw error;
