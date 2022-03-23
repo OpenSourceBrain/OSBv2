@@ -173,7 +173,7 @@ export const Workspaces = ({ user, counter }: any) => {
             <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
             <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
           </Tabs>
-          <WorkspacesSearch filterChanged={(newTextFilter) => 
+          <WorkspacesSearch filterChanged={(newTextFilter) =>
             debounceRefreshWorkspace(newTextFilter)
           } />
         </Box>

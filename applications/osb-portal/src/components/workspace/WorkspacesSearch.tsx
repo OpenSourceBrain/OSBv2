@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     padding: 0
   }
-  
+
 }));
 
 interface WorkspacesSearchProps {
@@ -51,13 +51,13 @@ export default (props: WorkspacesSearchProps) => {
 
 
   const [searchToggled, setSearchToggled] = React.useState(false);
-  
+
   const toggleSearch = () => {
     setSearchToggled(!searchToggled);
   }
   return (
     <>
-      
+
       {searchToggled && <TextField
         id="standard-start-adornment"
         fullWidth={false}
