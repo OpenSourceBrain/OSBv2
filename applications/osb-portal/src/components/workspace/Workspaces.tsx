@@ -16,6 +16,7 @@ import { Workspace } from "../../types/workspace";
 import WorkspacesSearch from "./WorkspacesSearch"
 import workspaceService from '../../service/WorkspaceService';
 
+import { bgLightest as lineColor } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -75,7 +76,7 @@ export const Workspaces = ({ user, counter }: any) => {
     }
     switch (selection.current) {
       case WorkspaceSelection.PUBLIC: {
-        if (filterText.current !== ""){
+        if (filterText.current !== "") {
           workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(true, false, page).then(update, (e) => setError(true));
@@ -83,15 +84,15 @@ export const Workspaces = ({ user, counter }: any) => {
         break;
       }
       case WorkspaceSelection.FEATURED: {
-        if (filterText.current !== ""){
+        if (filterText.current !== "") {
           workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current }).then(update, (e) => setError(true));
         } else {
-            workspaceService.fetchWorkspaces(true, true, page).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspaces(true, true, page).then(update, (e) => setError(true));
         }
         break;
       }
       default: {
-        if (filterText.current !== ""){
+        if (filterText.current !== "") {
           workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(false, false, page).then(update, (e) => setError(true));
@@ -153,23 +154,27 @@ export const Workspaces = ({ user, counter }: any) => {
 
   return (
     <>
-      <WorkspacesSearch filterChanged={(newTextFilter) => debounceRefreshWorkspace(newTextFilter)} />
-      <Tabs
-        value={selection.current}
-        textColor="primary"
-        indicatorColor="primary"
-        onChange={handleChange}
-      >
-        {user ?
-          <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
-            <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
-            <>Your workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
-          />
-          : null
-        }
-        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
-        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
-      </Tabs>
+      <Box borderBottom={`2px solid ${lineColor}`}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="-2px" >
+          <Tabs
+            value={selection.current}
+            textColor="primary"
+            indicatorColor="primary"
+            onChange={handleChange}
+          >
+            {user ?
+              <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
+                <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
+                <>Your workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
+              />
+              : null
+            }
+            <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
+            <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
+          </Tabs>
+          <WorkspacesSearch filterChanged={(newTextFilter) => debounceRefreshWorkspace(newTextFilter)} />
+        </Box>
+      </Box>
       {/* {
         workspaces && <Box mb={2}>
 

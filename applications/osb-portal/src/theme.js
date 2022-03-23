@@ -259,7 +259,6 @@ const theme = {
     },
     MuiTabs: {
       root: {
-        marginBottom: '2rem',
         '& .MuiChip-root': {
           height: '15px',
           '& .MuiChip-label': {
@@ -279,12 +278,14 @@ const theme = {
       root: {
         alignContent: 'flex-start',
         
-        paddingRight: '2.5rem',
-        paddingLeft: '2.5rem',
-        fontSize: '1rem',
+        paddingRight: "1rem",
+        paddingTop: 0,
+        paddingLeft: 0,
+        paddingBottom: 0,
+        fontSize: '0.9rem',
         fontWeight: 700,
         border: 0,
-        minWidth: '150px !important',
+        // minWidth: '150px !important',
         maxWidth: 'auto',
         '&:first-child': {
           borderRight: 'none',
