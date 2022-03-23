@@ -24,7 +24,7 @@ import { bgDarkest, textColor } from "../../theme";
 interface WorkspaceActionsMenuProps {
   workspace: Workspace;
   updateWorkspace?: (ws: Workspace) => null;
-  deleteWorkspace?: (wsId: number) => null;
+  deleteWorkspace?: (wsId: number) => void;
   refreshWorkspaces: () => void;
   user?: UserInfo;
 }

@@ -15,8 +15,11 @@ queue = sys.argv[3]
 
 USER_LINK_NAME = "my-shared"
 
-if not os.path.exists(os.path.join(folder, USER_LINK_NAME)):
+
+try:
     os.symlink("/opt/user", os.path.join(folder, USER_LINK_NAME))
+except:
+    pass
 
 if not os.path.exists(os.path.join(folder, "README.md")):   
     shutil.copy("README.md", os.path.join(folder, "README.md"))

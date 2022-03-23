@@ -45,8 +45,13 @@ const OSBTreeItem = (props: { resource: WorkspaceResource, active: boolean, refr
     textOverflow: "ellipsis"
   };
 
-  const handleDeleteResource = () => {
-    setWaiting(true)
+  React.useEffect(() => {
+    setWaiting(resource.status === ResourceStatus.pending)
+  }, [resource])
+
+  const handleDeleteResource = (e: Event) => {
+    e.preventDefault();
+    setWaiting(true);
     workspaceResourceService.deleteResource(resource).then(() => {
       refreshWorkspace();
       setWaiting(false);

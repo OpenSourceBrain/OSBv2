@@ -145,41 +145,33 @@ export const WorkspacePage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [workspace, setWorkspace] = React.useState<Workspace>(null);
+  const workspace = props.workspace;
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
   const [error, setError] = React.useState<any>(null);
-  const [options, setOptions] = React.useState<string[]>([]);
+  let options;
+  
 
   const PREFIX_TEXT = "Open with "
-
-  React.useEffect(() => {
-    WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
-      setWorkspace(ws);
-
-      // Populate ordered list from OSBApplications
-      // set last used application as first entry if it is set
-      const apps = ws ? ws.lastOpen.type.application.name ? [PREFIX_TEXT + ws.lastOpen.type.application.name] : [] : null;
+  if(!workspace) {
+    props.selectWorkspace(workspaceId);
+  } else {
+    const apps = workspace ? workspace.lastOpen.type.application.name ? [PREFIX_TEXT + workspace.lastOpen.type.application.name] : [] : null;
       for (const app of Object.keys(OSBApplications)) {
         if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
             apps.push(PREFIX_TEXT + OSBApplications[app].name);
         }
       }
-      setOptions(apps);
-    },
-    (e) => {setError(e)});
-  }, [refresh]);
+      options = apps;
+  }
+  
 
   if (error) {
     throw error;
   }
   const handleCloseEditWorkspace = () => {
-
-    WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
-      setWorkspace(ws);
+      props.refreshWorkspace(workspaceId)
       setEditWorkspaceOpen(false);
-    },
-    (e) => {setError(e)});
   }
 
   const handleResourceClick = (resource: WorkspaceResource) => {
@@ -234,7 +226,7 @@ export const WorkspacePage = (props: any) => {
               <Typography>Resources</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspacePage={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} openResource={handleResourceClick} />
             </AccordionDetails>
           </Accordion>
 

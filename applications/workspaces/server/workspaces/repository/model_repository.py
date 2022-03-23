@@ -39,7 +39,6 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def get(self, id):
         workspace = self._get(id)
-
         return workspace
 
     def search_qs(self, filter=None, q=None, tags=None, user_id=None, show_all=False, *args, **kwargs):
