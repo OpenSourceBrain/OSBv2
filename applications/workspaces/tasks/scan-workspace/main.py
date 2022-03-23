@@ -1,13 +1,25 @@
 import os
 import sys
+import shutil
+
 from cloudharness import log as logger
 from cloudharness.workflows.utils import notify_queue
 
 assert len(sys.argv) > 3, 'Not all arguments not specified. Cannot notify queue. Usage: [shared directory] [workspace id] [queue name]'
 
+
+
 folder = sys.argv[1].split(":")[-1]
 workspace_id = sys.argv[2]
 queue = sys.argv[3]
+
+USER_LINK_NAME = "my-shared"
+
+if not os.path.exists(os.path.join(folder, USER_LINK_NAME)):
+    os.symlink("/opt/user", os.path.join(folder, USER_LINK_NAME))
+
+if not os.path.exists(os.path.join(folder, "README.md")):   
+    shutil.copy("README.md", os.path.join(folder, "README.md"))
 
 logger.info(f"Scanning folder: {folder}, workspace id: {workspace_id}, queue: {queue}")
 
