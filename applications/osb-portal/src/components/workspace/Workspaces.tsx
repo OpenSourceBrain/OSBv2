@@ -128,6 +128,7 @@ export const Workspaces = ({ user, counter }: any) => {
   // each time the component is rendered
   const debounceRefreshWorkspace = React.useCallback(debounce((text) => {
     filterText.current = text;
+    setState({...state, items: null});
     refreshWorkspaces();
   }, 500), []);
 
@@ -172,7 +173,9 @@ export const Workspaces = ({ user, counter }: any) => {
             <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
             <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
           </Tabs>
-          <WorkspacesSearch filterChanged={(newTextFilter) => debounceRefreshWorkspace(newTextFilter)} />
+          <WorkspacesSearch filterChanged={(newTextFilter) => 
+            debounceRefreshWorkspace(newTextFilter)
+          } />
         </Box>
       </Box>
       {/* {
