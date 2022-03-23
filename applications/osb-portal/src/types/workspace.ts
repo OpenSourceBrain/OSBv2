@@ -1,5 +1,5 @@
 import { FeaturedType } from './global'
-import { ResourceType as ResourceTypeApi, ResourceOrigin } from '../apiclient/workspaces'
+import { ResourceType as ResourceTypeApi, ResourceOrigin, Tag, User } from '../apiclient/workspaces'
 import { UserInfo } from './user'
 
 export interface OSBApplication {
@@ -50,11 +50,14 @@ export interface Workspace {
     id?: number;
     name: string;
     description: string;
+    user: User;
     timestampCreated?: Date;
     timestampUpdated?: Date;
     thumbnail?: string;
     publicable?: boolean;
+    featured?: boolean,
     license?: string;
     owner?: UserInfo;
+    tags?: Tag[];
     [other: string]: any;
 };

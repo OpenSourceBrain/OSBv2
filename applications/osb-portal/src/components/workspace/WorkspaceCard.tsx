@@ -1,26 +1,31 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import Tooltip from "@material-ui/core/Tooltip";
+import Chip from "@material-ui/core/Chip";
 import FolderIcon from "@material-ui/icons/Folder";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
 import WorkspaceActionsMenu from "./WorkspaceActionsMenu";
+import { bgDarkest, paragraph, textColor } from "../../theme";
 
 interface Props {
   workspace: Workspace;
-  updateWorkspace?: (ws: Workspace) => null,
-  deleteWorkspace?: (wsId: number) => null,
+  updateWorkspace?: (ws: Workspace) => any,
+  deleteWorkspace?: (wsId: number) => any,
   user?: UserInfo,
-  refreshWorkspaces?: () => null,
+  refreshWorkspaces?: () => any,
   hideMenu?: boolean,
+  [k: string]: any
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -59,11 +64,35 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     lineHeight: "0",
-    display: "inline-block",
-    width: "100%",
-    textAlign: "center",
+    display: "flex",
+    width: "fit-content",
+    maxWidth: "100%",
+    justifyContent: "center",
+  },
+  localOfferIcon: {
+    color: paragraph,
+    fontSize: '1rem',
+    alignSelf: 'center',
+    marginLeft: '5px',
+  },
+  chip: {
+    margin: '0px 2px 0px 2px',
+    backgroundColor: '#3c3c3c',
+    '& .MuiChip-label': {
+      color: textColor,
+    },
   },
 }));
+
+const TagTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: bgDarkest,
+    color: textColor,
+  },
+  arrow: {
+    color: bgDarkest,
+  },
+}))(Tooltip);
 
 export const WorkspaceCard = (props: Props) => {
   const workspace: Workspace = props.workspace;
@@ -74,11 +103,11 @@ export const WorkspaceCard = (props: Props) => {
   return (
     <>
       <Card className={classes.card} elevation={0}>
-        { !props.hideMenu &&
+        {!props.hideMenu &&
           <CardActions className={classes.actions}>
             <WorkspaceActionsMenu user={props.user} workspace={workspace}
-            updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
-        </CardActions>
+              updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
+          </CardActions>
         }
 
         <Box
@@ -109,11 +138,16 @@ export const WorkspaceCard = (props: Props) => {
           <Link
             href={`/workspace/${workspace.id}`}
             color="inherit"
-            title={`${workspace.name}`}
+            className={classes.link}
           >
-            <Typography component="h2" variant="h5" className={classes.ellipses}>
+            <Typography component="h2" variant="h4" className={classes.ellipses}>
               {workspace.name}
             </Typography>
+            {workspace.tags.length > 0 && <TagTooltip title={workspace.tags.map(tagObject => {
+              return <Chip size="small" label={tagObject.tag} key={tagObject.id} className={classes.chip} />
+            })} arrow={true} placement="top">
+              <LocalOfferIcon fontSize="small" className={classes.localOfferIcon} />
+            </TagTooltip>}
           </Link>
           <Typography variant="caption" className={classes.ellipses}>
             {defaultResource && defaultResource.type.application.name},{" "}

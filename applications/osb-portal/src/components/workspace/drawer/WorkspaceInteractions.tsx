@@ -179,7 +179,7 @@ export default (props: WorkspaceProps | any) => {
           // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
           >
             <Typography
-              variant="h5"
+              variant="h4"
               className={classes.flexCenter}>
               {workspace.name}
               {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="Read only"><ReadOnlyIcon fontSize="small" /></Tooltip>}
@@ -221,7 +221,7 @@ export default (props: WorkspaceProps | any) => {
             <ExpansionPanelSummary
               expandIcon={<ArrowUpIcon />}
             >
-              <Typography variant="h5" className={classes.flexCenter}>User shared space</Typography>
+              <Typography variant="h4" className={classes.flexCenter}>User shared space</Typography>
             </ExpansionPanelSummary>
 
             <ExpansionPanelDetails>
@@ -252,6 +252,7 @@ export default (props: WorkspaceProps | any) => {
       open={addResourceOpen}
       closeAction={() => setAddResourceOpen(false)
       }
+      maxWidth="md"
     >
       {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
     </OSBDialog>

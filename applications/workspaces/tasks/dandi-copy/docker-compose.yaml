@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  copy:
+    image: osb/workspaces-dandi-copy:latest
+    environment:
+      - url=https://api.dandiarchive.org/api/assets/f42a7bd1-71f4-4972-84a7-2cd1dfbed8a1/download/

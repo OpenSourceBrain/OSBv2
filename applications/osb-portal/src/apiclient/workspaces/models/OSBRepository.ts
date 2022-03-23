@@ -14,30 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-  OSBRepositoryAllOf,
-  OSBRepositoryAllOfFromJSON,
-  OSBRepositoryAllOfFromJSONTyped,
-  OSBRepositoryAllOfToJSON,
-  OSBRepositoryBase,
-  OSBRepositoryBaseFromJSON,
-  OSBRepositoryBaseFromJSONTyped,
-  OSBRepositoryBaseToJSON,
-  RepositoryContentType,
-  RepositoryContentTypeFromJSON,
-  RepositoryContentTypeFromJSONTyped,
-  RepositoryContentTypeToJSON,
-  RepositoryResourceNode,
-  RepositoryResourceNodeFromJSON,
-  RepositoryResourceNodeFromJSONTyped,
-  RepositoryResourceNodeToJSON,
-  RepositoryType,
-  RepositoryTypeFromJSON,
-  RepositoryTypeFromJSONTyped,
-  RepositoryTypeToJSON,
-  User,
-  UserFromJSON,
-  UserFromJSONTyped,
-  UserToJSON,
+    OSBRepositoryAllOf,
+    OSBRepositoryAllOfFromJSON,
+    OSBRepositoryAllOfFromJSONTyped,
+    OSBRepositoryAllOfToJSON,
+    OSBRepositoryBase,
+    OSBRepositoryBaseFromJSON,
+    OSBRepositoryBaseFromJSONTyped,
+    OSBRepositoryBaseToJSON,
+    RepositoryContentType,
+    RepositoryContentTypeFromJSON,
+    RepositoryContentTypeFromJSONTyped,
+    RepositoryContentTypeToJSON,
+    RepositoryResourceNode,
+    RepositoryResourceNodeFromJSON,
+    RepositoryResourceNodeFromJSONTyped,
+    RepositoryResourceNodeToJSON,
+    RepositoryType,
+    RepositoryTypeFromJSON,
+    RepositoryTypeFromJSONTyped,
+    RepositoryTypeToJSON,
+    Tag,
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+    User,
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
 } from './';
 
 /**
@@ -46,151 +50,175 @@ import {
  * @interface OSBRepository
  */
 export interface OSBRepository {
-  /**
-   * 
-   * @type {number}
-   * @memberof OSBRepository
-   */
-  id?: number;
-  /**
-   * Repository name.
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  name: string;
-  /**
-   * Summary describing the OSB Repository
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  summary?: string;
-  /**
-   * 
-   * @type {RepositoryType}
-   * @memberof OSBRepository
-   */
-  repositoryType: RepositoryType;
-  /**
-   * List of Repository Content Types
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  contentTypes: string;
-  /**
-   * Auto sync of the resources
-   * @type {boolean}
-   * @memberof OSBRepository
-   */
-  autoSync?: boolean;
-  /**
-   * URI of the repository
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  uri: string;
-  /**
-   * The default branch to show for this repository
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  defaultContext?: string;
-  /**
-   * OSBRepository keycloak user id, will be automatically be set to the logged in user
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  userId?: string;
-  /**
-   * 
-   * @type {RepositoryResourceNode}
-   * @memberof OSBRepository
-   */
-  contextResources?: RepositoryResourceNode;
-  /**
-   * 
-   * @type {Array<string>}
-   * @memberof OSBRepository
-   */
-  contexts?: Array<string>;
-  /**
-   * 
-   * @type {User}
-   * @memberof OSBRepository
-   */
-  user?: User;
-  /**
-   * 
-   * @type {Array<RepositoryContentType>}
-   * @memberof OSBRepository
-   */
-  contentTypesList?: Array<RepositoryContentType>;
-  /**
-   * Repository description
-   * @type {string}
-   * @memberof OSBRepository
-   */
-  description?: string;
-  /**
-   * Date/time the OSBReposity is last modified
-   * @type {Date}
-   * @memberof OSBRepository
-   */
-  timestampModified?: Date;
+    /**
+     * 
+     * @type {number}
+     * @memberof OSBRepository
+     */
+    id?: number;
+    /**
+     * Repository name.
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    name: string;
+    /**
+     * Summary describing the OSB Repository
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    summary?: string;
+    /**
+     * 
+     * @type {RepositoryType}
+     * @memberof OSBRepository
+     */
+    repositoryType: RepositoryType;
+    /**
+     * List of Repository Content Types
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    contentTypes: string;
+    /**
+     * Auto sync of the resources
+     * @type {boolean}
+     * @memberof OSBRepository
+     */
+    autoSync?: boolean;
+    /**
+     * URI of the repository
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    uri: string;
+    /**
+     * The default branch to show for this repository
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    defaultContext?: string;
+    /**
+     * OSBRepository keycloak user id, will be automatically be set to the logged in user
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    userId?: string;
+    /**
+     * Date/time the Workspace is created
+     * @type {Date}
+     * @memberof OSBRepository
+     */
+    timestampCreated?: Date;
+    /**
+     * Date/time the Workspace is last updated
+     * @type {Date}
+     * @memberof OSBRepository
+     */
+    timestampUpdated?: Date;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof OSBRepository
+     */
+    tags?: Array<Tag>;
+    /**
+     * 
+     * @type {RepositoryResourceNode}
+     * @memberof OSBRepository
+     */
+    contextResources?: RepositoryResourceNode;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OSBRepository
+     */
+    contexts?: Array<string>;
+    /**
+     * 
+     * @type {User}
+     * @memberof OSBRepository
+     */
+    user?: User;
+    /**
+     * 
+     * @type {Array<RepositoryContentType>}
+     * @memberof OSBRepository
+     */
+    contentTypesList?: Array<RepositoryContentType>;
+    /**
+     * Repository description
+     * @type {string}
+     * @memberof OSBRepository
+     */
+    description?: string;
+    /**
+     * Date/time the OSBReposity is last modified
+     * @type {Date}
+     * @memberof OSBRepository
+     */
+    timestampModified?: Date;
 }
 
 export function OSBRepositoryFromJSON(json: any): OSBRepository {
-  return OSBRepositoryFromJSONTyped(json, false);
+    return OSBRepositoryFromJSONTyped(json, false);
 }
 
 export function OSBRepositoryFromJSONTyped(json: any, ignoreDiscriminator: boolean): OSBRepository {
-  if ((json === undefined) || (json === null)) {
-    return json;
-  }
-  return {
-
-    'id': !exists(json, 'id') ? undefined : json['id'],
-    'name': json['name'],
-    'summary': !exists(json, 'summary') ? undefined : json['summary'],
-    'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
-    'contentTypes': json['content_types'],
-    'autoSync': !exists(json, 'auto_sync') ? undefined : json['auto_sync'],
-    'uri': json['uri'],
-    'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
-    'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
-    'contextResources': !exists(json, 'context_resources') ? undefined : RepositoryResourceNodeFromJSON(json['context_resources']),
-    'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
-    'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
-    'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
-    'description': !exists(json, 'description') ? undefined : json['description'],
-    'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
-  };
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': json['name'],
+        'summary': !exists(json, 'summary') ? undefined : json['summary'],
+        'repositoryType': RepositoryTypeFromJSON(json['repository_type']),
+        'contentTypes': json['content_types'],
+        'autoSync': !exists(json, 'auto_sync') ? undefined : json['auto_sync'],
+        'uri': json['uri'],
+        'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
+        'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
+        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'contextResources': !exists(json, 'context_resources') ? undefined : RepositoryResourceNodeFromJSON(json['context_resources']),
+        'contexts': !exists(json, 'contexts') ? undefined : json['contexts'],
+        'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
+        'contentTypesList': !exists(json, 'content_types_list') ? undefined : ((json['content_types_list'] as Array<any>).map(RepositoryContentTypeFromJSON)),
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
+    };
 }
 
 export function OSBRepositoryToJSON(value?: OSBRepository | null): any {
-  if (value === undefined) {
-    return undefined;
-  }
-  if (value === null) {
-    return null;
-  }
-  return {
-
-    'id': value.id,
-    'name': value.name,
-    'summary': value.summary,
-    'repository_type': RepositoryTypeToJSON(value.repositoryType),
-    'content_types': value.contentTypes,
-    'auto_sync': value.autoSync,
-    'uri': value.uri,
-    'default_context': value.defaultContext,
-    'user_id': value.userId,
-    'context_resources': RepositoryResourceNodeToJSON(value.contextResources),
-    'contexts': value.contexts,
-    'user': UserToJSON(value.user),
-    'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),
-    'description': value.description,
-    'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
-  };
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'name': value.name,
+        'summary': value.summary,
+        'repository_type': RepositoryTypeToJSON(value.repositoryType),
+        'content_types': value.contentTypes,
+        'auto_sync': value.autoSync,
+        'uri': value.uri,
+        'default_context': value.defaultContext,
+        'user_id': value.userId,
+        'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
+        'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
+        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
+        'context_resources': RepositoryResourceNodeToJSON(value.contextResources),
+        'contexts': value.contexts,
+        'user': UserToJSON(value.user),
+        'content_types_list': value.contentTypesList === undefined ? undefined : ((value.contentTypesList as Array<any>).map(RepositoryContentTypeToJSON)),
+        'description': value.description,
+        'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
+    };
 }
 
 

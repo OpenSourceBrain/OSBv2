@@ -1,11 +1,19 @@
 import * as React from "react";
-import { Typography, Box, ButtonBase, Button } from "@material-ui/core";
+
+import {
+  Typography, Box, Button
+} from "@material-ui/core";
+
+import { NewWorkspaceAskUser } from "..";
+import { WorkspaceEditor } from "./../index";
+
+import OSBDialog from "../common/OSBDialog";
+
+import { RepositoryResourceNode } from '../../apiclient/workspaces';
 
 import { UserInfo } from "../../types/user";
-import OSBDialog from "../common/OSBDialog";
-import { NewWorkspaceAskUser } from "..";
-import WorkspaceEdit from "./WorkspaceEditor";
 import { Workspace, SampleResourceTypes, OSBApplication } from "../../types/workspace";
+import WorkspaceFromRepository from "./WorkspaceFromRepository";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -73,60 +81,84 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
 }
 
 interface ItemProps {
-  icon: React.ElementType;
+  icon: React.ElementType | React.ReactNode;
   title: string,
-  template: WorkspaceTemplateType,
+  template?: WorkspaceTemplateType | string,
   user: UserInfo;
   refreshWorkspaces: () => null;
 }
 
-export default (props: ItemProps) => {
-  const { user, template, title } = props;
+
+
+
+export const NewWorkspaceItem = (props: ItemProps) => {
+  const { user, template, title, refreshWorkspaces } = props;
+
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
+
 
   const handleClick = () => {
     if (!user) {
       setAskLoginOpen(true);
     } else {
+
       setNewWorkspaceOpen(true);
+
     }
   };
 
+
   const closeAskLogin = () => setAskLoginOpen(false);
 
-  const closeNewWorkspace = (refresh = false) => {
+  const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
+    document.getElementById("your-all-workspaces-tab").click();
+
     setNewWorkspaceOpen(false);
     if (refresh) {
-      props.refreshWorkspaces();
+      refreshWorkspaces();
     }
-
   }
+
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
+
 
   return (
     <>
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
-          <props.icon style={{ marginBottom: "0.2em" }} />
+          <Box style={{ marginBottom: "0.2em" }} >
+            {props.icon}
+          </Box>
           <Typography variant="subtitle1">{title}</Typography>
-          <Typography variant="caption">{defaultWorkspace.resources[0].type.application.name}</Typography>
+          <Typography variant="caption">{typeof WORKSPACE_TEMPLATES[template] === 'undefined' ? template : defaultWorkspace.resources[0].type.application.name}</Typography>
         </Box>
       </Button>
-      <OSBDialog
+      {askLoginOpen && <OSBDialog
         title="Create new workspace"
         open={askLoginOpen}
         closeAction={closeAskLogin}
       >
         <NewWorkspaceAskUser />
       </OSBDialog>
-      <OSBDialog
-        title="Create new workspace"
-        open={newWorkspaceOpen}
-        closeAction={closeNewWorkspace}
-      >
-        <WorkspaceEdit workspace={defaultWorkspace} onLoadWorkspace={closeNewWorkspace} />
-      </OSBDialog>
+      }
+      {newWorkspaceOpen &&
+        <OSBDialog
+          title="Create new workspace"
+          open={newWorkspaceOpen}
+          closeAction={() => setNewWorkspaceOpen(false)}
+          maxWidth="md"
+        > {defaultWorkspace ?
+          <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} /> :
+          <WorkspaceFromRepository close={() => setNewWorkspaceOpen(false)} workspaceCreatedCallback={onWorkspaceCreated} />
+          }
+
+        </OSBDialog>
+
+      }
+
     </>
   );
 };
+
+export default NewWorkspaceItem;

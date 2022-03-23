@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 
 import {
   Toolbar,
@@ -58,9 +59,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = (props: any) => {
   const classes = useStyles();
-
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
+  const history = useHistory();
 
   const handleMenuToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -72,12 +73,17 @@ export const Header = (props: any) => {
 
   const user = props.user;
 
+
   const handleUserLogin = () => {
     props.login();
   };
   const handleUserLogout = () => {
     props.logout();
   };
+
+  const handleMyAccount = () => {
+    history.push(`/user/${user.id}`)
+  }
 
   const headerText =
     user === null ? (
@@ -90,8 +96,8 @@ export const Header = (props: any) => {
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
               <MenuList autoFocusItem={menuOpen} id="user-menu">
-                {/* <MenuItem>My account</MenuItem>
-                <MenuItem>Settings</MenuItem> */}
+                {<MenuItem onClick={handleMyAccount}>My account</MenuItem>}
+                {/* <MenuItem>Settings</MenuItem> */}
                 <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
             </ClickAwayListener>

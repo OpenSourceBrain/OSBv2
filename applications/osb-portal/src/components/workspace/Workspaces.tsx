@@ -1,93 +1,186 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+
+
+import { makeStyles, styled } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Chip from "@material-ui/core/Chip";
 
-import WorkspaceCard from "./WorkspaceCard";
+import { WorkspaceCard } from "..";
 import { Workspace } from "../../types/workspace";
+import workspaceService from '../../service/WorkspaceService';
+
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
     maxHeight: 'calc(100% - 55px) !important',
-  },
-  tab: {
-    minWidth: 'fit-content !important',
-    "& .MuiTab-wrapper": {
-      maxWidth: 'fit-content',
-      display: 'contents',
+    "& .scrollbar": {
+      "& .infinite-scroll-component__outerdiv": {
+        "& .infinite-scroll-component": {
+          overflow: 'hidden !important',
+        },
+      },
     },
-  },
+  }
 }))
 
+export enum WorkspaceSelection {
+  USER,
+  PUBLIC,
+  FEATURED,
+}
+
 // TODO handle user's vs public workspaces
-export const Workspaces = ({ publicWorkspaces, userWorkspaces, showPublicWorkspaces, showUserWorkspaces, showPublic, user, deleteWorkspace, updateWorkspace, refreshWorkspaces }: any) => {
+export const Workspaces = ({ user, counter }: any) => {
+
+  const [state, setState] = React.useState<{
+    selection: WorkspaceSelection,
+    items: Workspace[],
+    page: number,
+    totalPages: number,
+    total: number
+  }>({
+    selection: user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED,
+    items: null,
+    page: 1,
+    totalPages: 0,
+    total: null
+  });
+
 
   const classes = useStyles();
 
+  function changeSelection(newSelection: WorkspaceSelection) {
+    setState({ ...state, selection: newSelection, page: 1, items: null, totalPages: 0, total: null });
+  }
+
+  function refreshWorkspaces() {
+    const update = (res: any) => {
+      if (page === 1) {
+        setState({ ...state, ...res });
+      } else {
+        setState({ ...state, ...res, items: [...state.items, ...res.items] })
+      }
+
+    }
+    switch (state.selection) {
+      case WorkspaceSelection.PUBLIC: {
+        workspaceService.fetchWorkspaces(true, false, page).then(update);
+        break;
+      }
+      case WorkspaceSelection.FEATURED: {
+        workspaceService.fetchWorkspaces(true, true, page).then(update)
+        break;
+      }
+      default: {
+        workspaceService.fetchWorkspaces(false, false, page).then(update);
+        break;
+      }
+    }
+  }
+
+
+
+  function showMore() {
+    setState({ ...state, page: page + 1 })
+  }
+
+  const { items: workspaces, selection, totalPages, page } = state;
+
+
   React.useEffect(() => {
     refreshWorkspaces();
-  }, [])
+  }, [counter, selection, page]);
 
-  const workspaces = showPublic || !user ? publicWorkspaces : userWorkspaces;
+
+
+
+
+
+
   const workspaceList =
     workspaces
       ? workspaces.map((workspace: Workspace, index: number) => {
         return (
           <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3} >
-            <WorkspaceCard workspace={workspace} deleteWorkspace={deleteWorkspace} updateWorkspace={updateWorkspace} user={user} refreshWorkspaces={refreshWorkspaces} />
+            <WorkspaceCard workspace={workspace} />
           </Grid>
         );
       })
-      : null;
+      : [];
 
 
-
-  const handleChange = (event: React.ChangeEvent<{}>, isPublicSelected: boolean) => {
-    if (isPublicSelected) {
-      showPublicWorkspaces()
-    } else {
-      showUserWorkspaces()
-    }
+  const handleChange = (event: React.ChangeEvent<{}>, tabSelected: WorkspaceSelection) => {
+    changeSelection(tabSelected)
   };
+
+  const fetchMoreWorkspaces = () => {
+    console.log('in fetchMoreWorkspaces');
+    showMore();
+  }
 
   return (
     <>
-      {
-        Boolean(user) && <Tabs
-          value={showPublic}
-          textColor="primary"
-          indicatorColor="primary"
-          onChange={handleChange}
-        >
-          <Tab className={classes.tab} value={false} label={user.isAdmin ? "All workspaces" : "Your workspaces"} />
-          <Tab className={classes.tab} value={true} label="Public workspaces" />
-        </Tabs>
-      }
-      {
-        workspaceList && <Box mb={2}>
+      <Tabs
+        value={selection}
+        textColor="primary"
+        indicatorColor="primary"
+        onChange={handleChange}
+      >
+        {user ?
+          <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
+            <>All workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
+            <>Your workspaces{selection === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
+          />
+          : null
+        }
+        <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
+        <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
+      </Tabs>
+
+      {/* {
+        workspaces && <Box mb={2}>
 
           <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
-            {workspaceList.length} Workspace{workspaceList.length !== 1 ? 's' : ''}
+            {state.total} Workspace{workspaceList.length !== 1 ? 's' : ''}
           </Typography>
+        </Box>
+      } */}
+
+      {
+        !workspaces && <Box mt={2}>
+
+          <CircularProgress />
         </Box>
       }
 
-      <Box className={`verticalFit card-container ${classes.cardContainer}`} >
-        <Box pt={1} pb={1} className="scrollbar">
-          {workspaceList ?
+      <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
+        <Box pb={1} className="scrollbar" id="workspace-box">
+
+          <InfiniteScroll
+            dataLength={workspaceList.length}
+            next={fetchMoreWorkspaces}
+            hasMore={page < totalPages}
+            loader={<CircularProgress size="small" />}
+            scrollableTarget="workspace-box"
+          >
+
             <Grid container={true} spacing={1}>
               {workspaceList}
-            </Grid> : <Box mt={1}><CircularProgress /></Box>
-          }
+            </Grid>
+
+          </InfiniteScroll>
         </Box>
 
       </Box>
     </>
   );
 };
+
 
 export default Workspaces;

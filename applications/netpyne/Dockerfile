@@ -2,7 +2,7 @@ FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
 ENV BRANCH_TAG=osb2
 ENV FOLDER=netpyne
-RUN echo "no-cache3"
+RUN echo "no-cache4"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -17,7 +17,7 @@ RUN rm -Rf node_modules/*
 RUN mv @geppettoengine node_modules
 
 ###
-FROM jupyter/base-notebook:hub-1.1.0
+FROM jupyter/base-notebook:hub-1.4.2
 ENV NB_UID=jovyan
 ENV FOLDER=netpyne
 ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne

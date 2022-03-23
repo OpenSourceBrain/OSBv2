@@ -11,6 +11,7 @@ models/InlineObject.ts
 models/InlineResponse200.ts
 models/InlineResponse2001.ts
 models/InlineResponse2002.ts
+models/InlineResponse2003.ts
 models/OSBRepository.ts
 models/OSBRepositoryAllOf.ts
 models/OSBRepositoryBase.ts
@@ -26,6 +27,7 @@ models/ResourceBase.ts
 models/ResourceOrigin.ts
 models/ResourceStatus.ts
 models/ResourceType.ts
+models/Tag.ts
 models/User.ts
 models/Valid.ts
 models/VolumeStorage.ts
@@ -41,6 +43,5 @@ models/WorkspaceResourceAllOf.ts
 models/WorkspaceResourceBase.ts
 models/WorkspaceResourceEntity.ts
 models/WorkspaceResourceEntityAllOf.ts
-models/WorkspaceTag.ts
 models/index.ts
 runtime.ts

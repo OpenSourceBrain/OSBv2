@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    Tag,
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
     VolumeStorage,
     VolumeStorageFromJSON,
     VolumeStorageFromJSONTyped,
@@ -26,10 +30,6 @@ import {
     WorkspaceImageFromJSON,
     WorkspaceImageFromJSONTyped,
     WorkspaceImageToJSON,
-    WorkspaceTag,
-    WorkspaceTagFromJSON,
-    WorkspaceTagFromJSONTyped,
-    WorkspaceTagToJSON,
 } from './';
 
 /**
@@ -69,12 +69,6 @@ export interface WorkspaceBase {
      */
     timestampUpdated?: Date;
     /**
-     * Workspace tags
-     * @type {Array<WorkspaceTag>}
-     * @memberof WorkspaceBase
-     */
-    tags?: Array<WorkspaceTag>;
-    /**
      * The workspace resource id the workspace is opened last with
      * @type {number}
      * @memberof WorkspaceBase
@@ -99,11 +93,17 @@ export interface WorkspaceBase {
      */
     userId?: string;
     /**
-     * Is the workspace available for non collaborators? Default false
+     * Is this a public workspace? Default false
      * @type {boolean}
      * @memberof WorkspaceBase
      */
     publicable?: boolean;
+    /**
+     * Is this a featured workspace? Default false
+     * @type {boolean}
+     * @memberof WorkspaceBase
+     */
+    featured?: boolean;
     /**
      * Workspace license
      * @type {string}
@@ -122,6 +122,12 @@ export interface WorkspaceBase {
      * @memberof WorkspaceBase
      */
     storage?: VolumeStorage;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof WorkspaceBase
+     */
+    tags?: Array<Tag>;
 }
 
 export function WorkspaceBaseFromJSON(json: any): WorkspaceBase {
@@ -139,15 +145,16 @@ export function WorkspaceBaseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
-        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(WorkspaceTagFromJSON)),
         'lastOpenedResourceId': !exists(json, 'last_opened_resource_id') ? undefined : json['last_opened_resource_id'],
         'thumbnail': !exists(json, 'thumbnail') ? undefined : json['thumbnail'],
         'gallery': !exists(json, 'gallery') ? undefined : ((json['gallery'] as Array<any>).map(WorkspaceImageFromJSON)),
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'publicable': !exists(json, 'publicable') ? undefined : json['publicable'],
+        'featured': !exists(json, 'featured') ? undefined : json['featured'],
         'license': !exists(json, 'license') ? undefined : json['license'],
         'collaborators': !exists(json, 'collaborators') ? undefined : ((json['collaborators'] as Array<any>).map(WorkspaceCollaboratorFromJSON)),
         'storage': !exists(json, 'storage') ? undefined : VolumeStorageFromJSON(json['storage']),
+        'tags': !exists(json, 'tags') ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -165,15 +172,16 @@ export function WorkspaceBaseToJSON(value?: WorkspaceBase | null): any {
         'description': value.description,
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
-        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(WorkspaceTagToJSON)),
         'last_opened_resource_id': value.lastOpenedResourceId,
         'thumbnail': value.thumbnail,
         'gallery': value.gallery === undefined ? undefined : ((value.gallery as Array<any>).map(WorkspaceImageToJSON)),
         'user_id': value.userId,
         'publicable': value.publicable,
+        'featured': value.featured,
         'license': value.license,
         'collaborators': value.collaborators === undefined ? undefined : ((value.collaborators as Array<any>).map(WorkspaceCollaboratorToJSON)),
         'storage': VolumeStorageToJSON(value.storage),
+        'tags': value.tags === undefined ? undefined : ((value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

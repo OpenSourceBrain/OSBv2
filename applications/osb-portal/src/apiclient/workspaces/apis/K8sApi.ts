@@ -23,7 +23,7 @@ export class K8sApi extends runtime.BaseAPI {
     /**
      * Test if application is healthy
      */
-    async liveRaw(): Promise<runtime.ApiResponse<string>> {
+    async liveRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -33,7 +33,7 @@ export class K8sApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.TextApiResponse(response) as any;
     }
@@ -41,15 +41,15 @@ export class K8sApi extends runtime.BaseAPI {
     /**
      * Test if application is healthy
      */
-    async live(): Promise<string> {
-        const response = await this.liveRaw();
+    async live(initOverrides?: RequestInit): Promise<string> {
+        const response = await this.liveRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Test if application is ready to take requests
      */
-    async readyRaw(): Promise<runtime.ApiResponse<string>> {
+    async readyRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -59,7 +59,7 @@ export class K8sApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.TextApiResponse(response) as any;
     }
@@ -67,8 +67,8 @@ export class K8sApi extends runtime.BaseAPI {
     /**
      * Test if application is ready to take requests
      */
-    async ready(): Promise<string> {
-        const response = await this.readyRaw();
+    async ready(initOverrides?: RequestInit): Promise<string> {
+        const response = await this.readyRaw(initOverrides);
         return await response.value();
     }
 

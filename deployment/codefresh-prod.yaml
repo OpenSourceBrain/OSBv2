@@ -38,12 +38,12 @@ steps:
     environment:
     - ACTION=auth
     - KUBE_CONTEXT=${{NAMESPACE}}
-    image: codefresh/cfstep-helm:3.4.1
+    image: codefresh/cfstep-helm:3.6.2
     stage: prepare
     title: View helm chart
   deployment:
     stage: deploy
-    image: codefresh/cfstep-helm:3.4.1
+    image: codefresh/cfstep-helm:3.6.2
     title: Installing chart
     environment:
     - CHART_REF=./deployment/helm
@@ -55,6 +55,11 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
+    - CUSTOM_apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+    - CUSTOM_apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+    - CUSTOM_apps_sentry_harness_secrets_email-server=${{EMAIL-SERVER}}
+    - CUSTOM_apps_sentry_harness_secrets_email-user=${{EMAIL-USER}}
+    - CUSTOM_apps_sentry_harness_secrets_email-password=${{EMAIL-PASSWORD}}
     - CUSTOM_apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
     - CUSTOM_apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
   approval:
@@ -78,20 +83,20 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-base-debian:
-        stage: publish
-        type: push
-        title: Cloudharness base debian
-        candidate: '${{REGISTRY}}/osb/cloudharness-base-debian:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_cloudharness-frontend-build:
         stage: publish
         type: push
         title: Cloudharness frontend build
         candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_cloudharness-base-debian:
+        stage: publish
+        type: push
+        title: Cloudharness base debian
+        candidate: '${{REGISTRY}}/osb/cloudharness-base-debian:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -105,11 +110,11 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_volumemanager:
+      publish_notifications:
         stage: publish
         type: push
-        title: Volumemanager
-        candidate: '${{REGISTRY}}/osb/volumemanager:${{DEPLOYMENT_TAG}}'
+        title: Notifications
+        candidate: '${{REGISTRY}}/osb/notifications:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -123,20 +128,47 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_osb-portal:
+      publish_volumemanager:
         stage: publish
         type: push
-        title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{DEPLOYMENT_TAG}}'
+        title: Volumemanager
+        candidate: '${{REGISTRY}}/osb/volumemanager:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_events:
+      publish_sentry:
         stage: publish
         type: push
-        title: Events
-        candidate: '${{REGISTRY}}/osb/events:${{DEPLOYMENT_TAG}}'
+        title: Sentry
+        candidate: '${{REGISTRY}}/osb/sentry:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_jupyterhub:
+        stage: publish
+        type: push
+        title: Jupyterhub
+        candidate: '${{REGISTRY}}/osb/jupyterhub:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_samples:
+        stage: publish
+        type: push
+        title: Samples
+        candidate: '${{REGISTRY}}/osb/samples:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_samples-sum:
+        stage: publish
+        type: push
+        title: Samples sum
+        candidate: '${{REGISTRY}}/osb/samples-sum:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -150,38 +182,65 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterlab:
+      publish_events:
         stage: publish
         type: push
-        title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{DEPLOYMENT_TAG}}'
+        title: Events
+        candidate: '${{REGISTRY}}/osb/events:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
+      publish_workflows-print-file:
         stage: publish
         type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{DEPLOYMENT_TAG}}'
+        title: Workflows print file
+        candidate: '${{REGISTRY}}/osb/workflows-print-file:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
+      publish_workflows-send-result-event:
         stage: publish
         type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{DEPLOYMENT_TAG}}'
+        title: Workflows send result event
+        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterhub:
+      publish_workflows-extract-s3:
         stage: publish
         type: push
-        title: Jupyterhub
-        candidate: '${{REGISTRY}}/osb/jupyterhub:${{DEPLOYMENT_TAG}}'
+        title: Workflows extract s3
+        candidate: '${{REGISTRY}}/osb/workflows-extract-s3:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workflows-extract-download:
+        stage: publish
+        type: push
+        title: Workflows extract download
+        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workflows-notify-queue:
+        stage: publish
+        type: push
+        title: Workflows notify queue
+        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workflows:
+        stage: publish
+        type: push
+        title: Workflows
+        candidate: '${{REGISTRY}}/osb/workflows:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
@@ -204,6 +263,15 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-dandi-copy:
+        stage: publish
+        type: push
+        title: Workspaces dandi copy
+        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_workspaces:
         stage: publish
         type: push
@@ -213,56 +281,47 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-print-file:
+      publish_netpyne:
         stage: publish
         type: push
-        title: Workflows print file
-        candidate: '${{REGISTRY}}/osb/workflows-print-file:${{DEPLOYMENT_TAG}}'
+        title: Netpyne
+        candidate: '${{REGISTRY}}/osb/netpyne:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-download:
+      publish_accounts-api:
         stage: publish
         type: push
-        title: Workflows extract download
-        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{DEPLOYMENT_TAG}}'
+        title: Accounts api
+        candidate: '${{REGISTRY}}/osb/accounts-api:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-send-result-event:
+      publish_osb-portal:
         stage: publish
         type: push
-        title: Workflows send result event
-        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{DEPLOYMENT_TAG}}'
+        title: Osb portal
+        candidate: '${{REGISTRY}}/osb/osb-portal:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-notify-queue:
+      publish_nwb-explorer:
         stage: publish
         type: push
-        title: Workflows notify queue
-        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{DEPLOYMENT_TAG}}'
+        title: Nwb explorer
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-s3:
+      publish_jupyterlab:
         stage: publish
         type: push
-        title: Workflows extract s3
-        candidate: '${{REGISTRY}}/osb/workflows-extract-s3:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows:
-        stage: publish
-        type: push
-        title: Workflows
-        candidate: '${{REGISTRY}}/osb/workflows:${{DEPLOYMENT_TAG}}'
+        title: Jupyterlab
+        candidate: '${{REGISTRY}}/osb/jupyterlab:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest

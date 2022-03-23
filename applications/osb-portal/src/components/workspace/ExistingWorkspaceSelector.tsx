@@ -83,9 +83,9 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
   const [workspaces, setWorkspaces] = React.useState<Workspace[]>(null);
 
   React.useEffect(() => {
-    workspaceService.fetchWorkspaces().then((retrievedWorkspaces) => {
-      setWorkspaces(retrievedWorkspaces);
-      setActiveCardClassNames(Array(retrievedWorkspaces.length).fill('not-active'));
+    workspaceService.fetchWorkspaces(null, null, 1, 1000).then((retrievedWorkspaces) => {
+      setWorkspaces(retrievedWorkspaces.items);
+      setActiveCardClassNames(Array(retrievedWorkspaces.items.length).fill('not-active'));
     });
   }, []);
 
@@ -105,7 +105,7 @@ export const ExistingWorkspaceEditor = (props: ExistingWorkspaceEditorProps) => 
               {
                 workspaces && workspaces.map((workspace, index) => {
                   return (
-                    <Grid item={true} key={index} xs={6} sm={4} md={4} lg={4} xl={3}>
+                    <Grid item={true} key={workspace.id} xs={6} sm={4} md={4} lg={4} xl={3}>
                       <Button className={`${activeCardClassNames[index]}-button ${classes.workspaceButton}`} onClick={() => handleWorkspaceSelection(index)}
                         disableRipple={true}>
                         <CheckCircleIcon className={`${activeCardClassNames[index]} ${classes.checkMarkIcon}`} color="primary" />

@@ -1,11 +1,13 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
-  linkColor,
   bgLightest,
   fontColor,
   bgDarkest,
   bgInputs,
+  bgLightestShade,
+  paragraph,
+  textColor,
 } from "../../theme";
 
 export default makeStyles((theme) => ({
@@ -24,30 +26,14 @@ export default makeStyles((theme) => ({
       },
       "& .MuiTabs-root": {
         height: "auto",
+        marginBottom: -12,
+        fontSize: "1rem"
       },
       "& .MuiTab-root": {
-        minWidth: "inherit !important",
-        lineHeight: 1,
-        paddingLeft: "1.25rem",
-        height: "1.875rem",
-        [theme.breakpoints.down("xs")]: {
-          paddingLeft: ".8rem",
-        },
-        "&:first-child": {
-          borderRightColor: bgInputs,
-          paddingLeft: 0,
-          paddingRight: "1.25rem",
-          [theme.breakpoints.down("xs")]: {
-            paddingRight: ".8em",
-          },
-        },
-        "& .MuiTouchRipple-root": {
-          display: "none",
-        },
-        "& .MuiTab-wrapper": {
-          lineHeight: 1,
-          fontSize: ".88rem",
-        },
+        paddingLeft: 0,
+        paddingRight: 0,
+        marginRight: theme.spacing(2),
+        paddingBottom: 16
       },
       "& .MuiButton-contained": {
         [theme.breakpoints.down("sm")]: {
@@ -85,6 +71,62 @@ export default makeStyles((theme) => ({
           "& .MuiPaginationItem-root": {
             color: 'white',
           },
+        },
+      },
+    },
+  },
+  divider: {
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
+  filterAndSearchBox: {
+    display: 'flex',
+    '& .MuiInputBase-root': {
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(1),
+      height: 'fit-content',
+    },
+    "& .MuiTextField-root": {
+      minWidth: '20vw',
+    },
+  },
+  filterButton: {
+    textTransform: 'capitalize',
+    '& :hover': {
+      backgroundColor: 'transparent',
+    },
+    minWidth: 'fit-content !important',
+    backgroundColor: bgLightestShade,
+    '& .MuiButton-label': {
+      color: `${paragraph} !important`,
+    },
+    '& .MuiTouchRipple-root:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  label: {
+    color: bgInputs,
+    fontWeight: 700,
+  },
+  popover: {
+    '& .MuiPaper-root': {
+      minWidth: '350px !important',
+      padding: theme.spacing(3),
+      "& .MuiSvgIcon-root": {
+        cursor: "pointer",
+      },
+      '& .MuiAutocomplete-root': {
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginBottom: theme.spacing(1),
+        '& .MuiSvgIcon-root': {
+          marginLeft: theme.spacing(1),
+          color: paragraph,
+        },
+        '& .MuiInputBase-root': {
+          paddingLeft: 0,
         },
       },
     },

@@ -1,9 +1,10 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
-
+import rehypeRaw from 'rehype-raw';
+import gfm from 'remark-gfm';
 import { makeStyles } from "@material-ui/core/styles";
 
-import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 
 import {
@@ -15,14 +16,15 @@ import {
   bgInputs,
   radius,
 } from "../../theme";
+import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
+import { white } from "material-ui/styles/colors";
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    color: "white",
+    backgroundColor: "transparent",
     "& .preview-box": {
-      padding: theme.spacing(3),
-      border: `3px solid #1e1e1e`,
-      backgroundColor: "#191919",
       overflowWrap: 'anywhere',
       flexGrow: 1,
       "& a": {
@@ -31,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
           textDecoration: 'underline',
         },
+      },
+      "&  code": {
+        backgroundColor: bgLightestShade,
       },
       "& pre": {
         padding: theme.spacing(2),
@@ -45,6 +50,14 @@ const useStyles = makeStyles((theme) => ({
         "&::-webkit-scrollbar-track": {
           backgroundColor: 'transparent',
         },
+      },
+      "& blockquote": {
+        padding: "0 1em",
+        borderLeft: `0.25em solid ${bgLightestShade}`,
+        marginLeft: 0,
+        "& p": {
+          padding: 0
+        }
       },
       "& h1": {
         marginTop: 0,
@@ -121,21 +134,46 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const MarkdownViewer = ({ text }: { text: string }) => {
-
-
-
+export const MarkdownViewer = ({ text, repository, className }: { text: string, repository?: OSBRepository , className?: string}) => {
   const classes = useStyles();
 
+  const getImages = (str: string) => {
+    const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
+    const imageTags: string[] = []
+    const imagePaths: string[] = [];
+    let img;
 
 
+    // tslint:disable-next-line: no-conditional-assignment
+    while (img = imgRex.exec(str)) {
+      if (!img[1].startsWith('http')) {
+        imageTags.push(img[0]);
+        imagePaths.push(img[1]);
+      }
+    }
+    return [imageTags, imagePaths];
+  }
+
+
+  const convertImgInMarkdown = (markDown: string) => {
+    let mark = markDown;
+    const [imageTags, imagePaths] = getImages(markDown);
+    const updatedImages: string[] = [];
+    imageTags.map((tag, index) => {
+      mark = mark.replace(tag, `[![img](${repository.uri.replace('https://github.com/', 'https://raw.githubusercontent.com/') + '/' + repository.defaultContext + '/' + imagePaths[index]})](${repository.uri.replace('https://github.com/', 'https://raw.githubusercontent.com/') + '/' + repository.defaultContext + '/' + imagePaths[index]})`)
+    })
+    for (let i = 0; i < updatedImages.length; i++) {
+      mark = mark.replace(imageTags[i], updatedImages[i]);
+    }
+    return mark;
+  };
 
   return (
-    <Paper className={`verticalFit ${classes.root}`}>
-      <ReactMarkdown skipHtml={true} className="preview-box scrollbar">
-        {text}
+    <Box className={`verticalFit ${classes.root} ${className}`}>
+      <ReactMarkdown rehypePlugins={[rehypeRaw, gfm]} className={`preview-box scrollbar `}>
+        {typeof repository !== 'undefined' && repository.repositoryType === RepositoryType.Github ? convertImgInMarkdown(text) : text}
       </ReactMarkdown>
-    </Paper>
+    </Box>
 
   );
 };

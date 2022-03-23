@@ -56,6 +56,7 @@ def init_app(app):
                 )
     mkdirs()
     setup_static_router(app)
+    app.template_folder = Config.TEMPLATE_DIR
 
 
 app = init_flask(
@@ -65,6 +66,9 @@ app = init_flask(
     resolver=connexion.resolver.MethodViewResolver("workspaces.views.api"),
     config=Config,
 )
+
+
+
 
 if __name__ == "__main__":
     cloudharness.set_debug()

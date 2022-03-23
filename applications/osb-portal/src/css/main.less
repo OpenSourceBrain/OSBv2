@@ -10,17 +10,26 @@
     flex-direction: column;
     align-items: stretch;
     max-height: calc(100%);
+    &.card-container {
+      margin-right: -(@gutter / 4);
+    }
 
     &.card-container,
     .scrollbar {
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: scroll;
       display: flex;
       flex-direction: column;
       max-height: calc(100%);
+     
+      .scrollbarStyle;
     }
 
   }
+}
+
+* {
+  .scrollbarStyle;
 }
 
 @media screen and (min-width:960px) {
@@ -28,11 +37,16 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: @gutter / 2;
-    .scrollbarStyle;
-
-    * {
-      .scrollbarStyle;
+    visibility: hidden;
+    overflow: scroll;
+  
+    &:hover{
+      visibility: visible;
     }
+    > * {
+      visibility: visible;
+    }
+    .scrollbarStyle;
   }
 
   .verticalFill {
@@ -42,7 +56,6 @@
 
     .scrollbar {
       max-height: calc(100%);
-
     }
 
 
@@ -57,23 +70,25 @@
 
 
 
+
 .scrollbarStyle {
 
   &::-webkit-scrollbar {
     width: @gutter / 4;
   }
-
+  
+  
   &::-webkit-scrollbar-button {
     height: 0;
   }
-
+  
   &::-webkit-scrollbar-thumb {
-    background: white;
     border-radius: @radius;
+    background: @bgLightest;
   }
-
+  
   &::-webkit-scrollbar-track {
-    background-color: @bgRegular;
+    background: transparent;
     border-radius: @radius;
   }
 }
@@ -105,4 +120,42 @@
 
   }
 
+}
+
+// Override Markdown editor style
+div.rc-md-editor {
+  .scrollbarStyle;
+  color: @paragraph;
+  background-color: @bgDarker;
+  border: 1px solid @bgLightest;
+  border-radius: @inputRadius;
+  
+
+  .rc-md-navigation .button-wrap .button:hover {
+    color: white;
+  }
+  .editor-container>.section>.section-container {
+    padding-right: 0;
+  }
+  .rc-md-navigation {
+    color: @paragraph;
+    background-color: @bgDarker;
+    border-bottom: 1px solid @bgLightest;
+  }
+  .custom-html-style{
+    height: 15em;
+  }
+  .editor-container .sec-md .input {
+    color: @paragraph;
+    height: 15em;
+    background-color: @bgDarker;
+    resize: vertical;
+    .scrollbarStyle;
+  }
+
+  .drop-wrap {
+    background-color: @bgRegular;
+    border-color: @bgLightest;
+    color: white;
+  }
 }

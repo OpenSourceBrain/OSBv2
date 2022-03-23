@@ -2,20 +2,23 @@ import json
 import os
 import shutil
 
+
+from types import SimpleNamespace
+
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from sqlalchemy.sql import func
 
+from workspaces.utils import get_pvc_name
 
 from workspaces.config import Config
-from workspaces.models import RepositoryContentType, ResourceStatus, User
-from workspaces.service.etlservice import copy_workspace_resource, delete_workspace_resource
-from workspaces.service.kubernetes import create_persistent_volume_claim
-from workspaces.service.auth import get_auth_client
+from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
+
 from .base_model_repository import BaseModelRepository
 from .database import db
-from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity
+from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag, \
+    TWorkspaceEntity
 from .utils import *
 
 
@@ -25,7 +28,7 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 class OwnerModel:
     @property
     def keycloak_user_id(self):
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         try:
             return get_auth_client().get_current_user().get("id", None)
         except Exception as e:
@@ -42,26 +45,29 @@ class OwnerModel:
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
     model = WorkspaceEntity
     defaults = {}
+    calculated_fields = ["user"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def get_pvc_name(self, workspace_id):
-        return f"workspace-{workspace_id}"
-
     def get(self, id):
-        workspace = self.model.query.get(id)
+
+        from workspaces.service.auth import get_auth_client  # FIXME
+        workspace = self._get(id)
         if workspace and (workspace.publicable or
                           (workspace.user_id and workspace.user_id == self.keycloak_user_id) or
                           (get_auth_client().user_has_realm_role(user_id=self.keycloak_user_id, role="administrator"))):
             return workspace
         return None
 
-    def search_qs(self, filter=None, q=None):
+    def search_qs(self, filter=None, q=None, tags=None, *args, **kwargs):
         q_base = self.model.query
         logger.debug(f"filter: {filter}")
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         keycloak_user_id = self.keycloak_user_id
+        if tags:
+            q_base = q_base.join(self.model.tags).filter(
+                Tag.tag.in_(tags.split("+")))
         if filter is not None:
             q_base = q_base.filter(*[self._create_filter(*f) for f in filter])
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
@@ -100,13 +106,17 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         logger.info("deleted workspace files")
 
     def pre_commit(self, workspace):
+        workspace.tags = insert_or_get_tags(workspace.tags)
         return super().pre_commit(workspace)
 
-    def post_commit(self, workspace):
+    def post_commit(self, workspace: WorkspaceEntity):
+        # FIXME move this in the service layer
+        from workspaces.service.kubernetes import create_persistent_volume_claim  # FIXME
+        from workspaces.service.user_quota_service import get_pvc_size
         # Create a new Persistent Volume Claim for this workspace
         logger.debug(f"Post Commit for workspace id: {workspace.id}")
-        create_persistent_volume_claim(name=self.get_pvc_name(
-            workspace.id), size="2Gi", logger=logger)
+        create_persistent_volume_claim(name=get_pvc_name(
+            workspace.id), size=get_pvc_size(workspace.user_id), logger=logger)
         wsrr = WorkspaceResourceRepository()
         for workspace_resource in workspace.resources:
             wsr = wsrr.post_commit(workspace_resource)
@@ -115,21 +125,53 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 db.session.commit()
         return workspace
 
+    def user(self, workspace: TWorkspaceEntity):
+        from workspaces.service.auth import get_auth_client  # FIXME
+        try:
+
+            user = get_auth_client().get_user(workspace.user_id)
+            return User(
+                id=user.get("id", ""),
+                first_name=user.get("firstName", ""),
+                last_name=user.get("lastName", ""),
+                username=user.get("username", ""),
+                email=user.get("email", ""),
+            )
+        except Exception as e:
+            return User()
+
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
     calculated_fields = ["user", "content_types_list"]
 
     def pre_commit(self, osbrepository):
+
+        # FIXME should not call service layer from repository layer
+        from workspaces.service.osbrepository import osbrepository_service
+        tags = osbrepository_service.get_tags(osbrepository)
+        if tags:
+            for tag in tags:
+                osbrepository.tags.append(Tag(tag=tag))
+        osbrepository.tags = insert_or_get_tags(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
-    def search_qs(self, filter=None, q=None):
-
+    def search_qs(self, filter=None, q=None, tags=None, types=None):
         q_base = self.model.query
+        if tags:
+            q_base = q_base.join(self.model.tags).filter(
+                Tag.tag.in_(tags.split("+")))
+        if filter:
+            q_base = q_base.filter(
+                or_(*[self._create_filter(*f) for f in filter]))
+
+        if types:
+            q_base = q_base.filter(
+                or_(self.model.content_types.ilike(f"%{t}%") for t in types.split("+")))
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
     def user(self, repository):
-
+        from workspaces.service.auth import get_auth_client  # FIXME
         try:
             user = get_auth_client().get_user(repository.user_id)
             return User(
@@ -156,6 +198,10 @@ class VolumeStorageRepository(BaseModelRepository):
 
 class WorkspaceImageRepository(BaseModelRepository):
     model = WorkspaceImage
+
+
+class TagRepository(BaseModelRepository):
+    model = Tag
 
 
 class WorkspaceResourceRepository(BaseModelRepository):
@@ -228,6 +274,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
         return workspace_resource
 
     def post_commit(self, workspace_resource):
+        from workspaces.service.etlservice import copy_workspace_resource
         # Create a load WorkspaceResource workflow task
         logger.debug(
             f"Post Commit for workspace resource id: {workspace_resource.id}")
@@ -271,6 +318,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
     def delete(self, id, delete_file_from_pvc=True):
         """Delete an object from the repository."""
+        from workspaces.service.etlservice import delete_workspace_resource
         workspace_resource = self.get(id)
         super().delete(id)
 

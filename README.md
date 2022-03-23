@@ -24,15 +24,18 @@ cd cloud-harness
 pip install -r requirements.txt
 ```
 
+#### Install skaffold
+
+skaffold is needed to build the images and run them on minikube.
+Get it [here](https://skaffold.dev/docs/install/).
+
+#### Install helm
+
+You can install helm from [here](https://helm.sh/docs/intro/install/).
+
 ### Create deployment
 
 CloudHarness scripts script automate the deployment process.
-
-To update the Codefresh deployment, run:
-
-```
-harness-codefresh .
-```
 
 To manually create the helm chart to use on any Kubernetes deployment, run:
 
@@ -70,19 +73,6 @@ To upgrade an existing deployment, use:
 helm upgrade osb2 deployment/helm --namespace osb2 --install --reset-values [--force]
 ```
 
-### Install Argo (temporary)
-
-Argo is not yet part of the helm chart (issue https://github.com/MetaCell/mnp/issues/31)
-
-In order to install it in the cluster, run
-
-```
-kubectl create ns argo
-kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/v2.4.3/manifests/install.yaml
-kubectl create rolebinding argo-workflows-default --clusterrole=admin --serviceaccount=argo-workflows:default -n argo-workflows
-kubectl create rolebinding argo-workflows --clusterrole=admin --serviceaccount=argo-workflows:argo-workflows -n argo-workflows
-```
-
 ## Development setup
 
 Minikube is recommended to setup locally. The procedure is different depending on where Minikube is installed.
@@ -102,7 +92,11 @@ Enable the ingress addon:
 
 ```
 minikube addons enable ingress
+
+
 ```
+
+Create the namespace `kubectl create ns osblocal`
 
 ### Minikube on the host machine
 
@@ -111,14 +105,22 @@ Connect your docker registry with minikube with:
 
 Then run:
 ```
-harness-deployment cloud-harness . -l -b -d osb.local
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal 
 ```
+You do not need to run the port-forwarding commands on the local deployment.
+Finally, run skaffold to build and run the images on minikube:
+
+```
+skaffold dev
+```
+
+On making local changes, you can re-run the `harness-deployment` command to update the deployment.
 
 ### Minikube on a different machine
 
 With the registry on localhost:5000 run:
 ```
-harness-deployment cloud-harness . -l -r localhost:5000 -b -d osb.local
+harness-deployment cloud-harness . -l  -n osblocal -d osb.local -u -dtls -m build -e local -i osb-portal -r registry:5000
 ```
 
 See below to learn how to configure Minikube and forward the registry.
@@ -172,7 +174,7 @@ current-context: minikube
 In the case we are not building from the same machine as the cluster (which will always happen without Minikube),
 we need a way to share the registry.
 
-Procedure to share localhost:5000 from a kube cluster
+Procedure to share registry:5000 from a kube cluster
 
 In the minikube installation:
 
@@ -180,12 +182,24 @@ In the minikube installation:
 minikube addons enable registry
 ```
 
-In the machine running the infrastructure-generate script, run
+In order to use the registry address add the following entry to the hosts file
+
+```
+[MINIKUBE_ADDRESS]  registry
+```
+
+To also add the name to minikube:
+
+```
+% minikube ssh
+$ sudo su
+$ echo "127.0.0.1  registry" >> /etc/hosts
+```
+
+Also may need to [add the host to the insecure registry on your docker configuration](https://stackoverflow.com/questions/49674004/docker-repository-server-gave-http-response-to-https-client/54190375).
+
+To use localhost, on the machine running the infrastructure-generate script, run
 
 ```bash
 kubectl port-forward --namespace kube-system $(kubectl get po -n kube-system --field-selector=status.phase=Running | grep registry | grep -v proxy | \awk '{print $1;}') 5000:5000
 ```
-
-
-
-

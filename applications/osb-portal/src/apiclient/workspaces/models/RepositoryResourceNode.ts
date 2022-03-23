@@ -33,12 +33,6 @@ export interface RepositoryResourceNode {
      */
     resource?: RepositoryResource;
     /**
-     * Date/time the ReposityResource is last modified
-     * @type {Date}
-     * @memberof RepositoryResourceNode
-     */
-    timestampModified?: Date;
-    /**
      * 
      * @type {Array<RepositoryResourceNode>}
      * @memberof RepositoryResourceNode
@@ -57,7 +51,6 @@ export function RepositoryResourceNodeFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'resource': !exists(json, 'resource') ? undefined : RepositoryResourceFromJSON(json['resource']),
-        'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
         'children': !exists(json, 'children') ? undefined : ((json['children'] as Array<any>).map(RepositoryResourceNodeFromJSON)),
     };
 }
@@ -72,7 +65,6 @@ export function RepositoryResourceNodeToJSON(value?: RepositoryResourceNode | nu
     return {
         
         'resource': RepositoryResourceToJSON(value.resource),
-        'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
         'children': value.children === undefined ? undefined : ((value.children as Array<any>).map(RepositoryResourceNodeToJSON)),
     };
 }

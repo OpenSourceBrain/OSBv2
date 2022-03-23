@@ -4,9 +4,8 @@ from cloudharness import log as logger
 
 import workspaces.repository as repos
 # import copy_resource, create_copy_origin_task
-import workspaces.service.osbrepository.osbrepository as osbrepository_service
+from workspaces.service.osbrepository import osbrepository_service
 import workspaces.service.workflow as workflow
-from workspaces.service.osbrepository.osbrepository import copy_resource
 from workspaces.models.resource_status import ResourceStatus
 
 
@@ -20,7 +19,6 @@ def copy_origins(workspace_id, origins):
                 workspace_id=workspace_id,
                 osbrepository_id=osbrepository_id,
                 name=origin.get("name"),
-                folder=origin.get("folder"),
                 path=origin.get("path"),
             )
             if type(task) is list:

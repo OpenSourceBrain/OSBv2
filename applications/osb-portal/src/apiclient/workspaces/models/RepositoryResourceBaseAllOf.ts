@@ -25,6 +25,18 @@ export interface RepositoryResourceBaseAllOf {
      * @memberof RepositoryResourceBaseAllOf
      */
     osbrepositoryId?: number;
+    /**
+     * File size in bytes of the RepositoryResource
+     * @type {number}
+     * @memberof RepositoryResourceBaseAllOf
+     */
+    size?: number;
+    /**
+     * Date/time the ReposityResource is last modified
+     * @type {Date}
+     * @memberof RepositoryResourceBaseAllOf
+     */
+    timestampModified?: Date;
 }
 
 export function RepositoryResourceBaseAllOfFromJSON(json: any): RepositoryResourceBaseAllOf {
@@ -38,6 +50,8 @@ export function RepositoryResourceBaseAllOfFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'osbrepositoryId': !exists(json, 'osbrepository_id') ? undefined : json['osbrepository_id'],
+        'size': !exists(json, 'size') ? undefined : json['size'],
+        'timestampModified': !exists(json, 'timestamp_modified') ? undefined : (new Date(json['timestamp_modified'])),
     };
 }
 
@@ -51,6 +65,8 @@ export function RepositoryResourceBaseAllOfToJSON(value?: RepositoryResourceBase
     return {
         
         'osbrepository_id': value.osbrepositoryId,
+        'size': value.size,
+        'timestamp_modified': value.timestampModified === undefined ? undefined : (value.timestampModified.toISOString()),
     };
 }
 

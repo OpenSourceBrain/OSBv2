@@ -3,8 +3,7 @@ import requests
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
 
-import workspaces.service.etlservice as etlservice
-import workspaces.service.workflow as workflow
+
 from workspaces.models import GITRepositoryResource, RepositoryResourceNode
 
 from .utils import add_to_tree
@@ -106,8 +105,12 @@ class GitHubAdapter:
                 "unable to get the description from github, %", str(e))
             return ""
 
-    def create_copy_task(self, workspace_id, name, folder, path):
+    def get_tags(self, context):
+        return []
+
+    def create_copy_task(self, workspace_id, name, path):
         # download the resource
+        import workspaces.service.workflow as workflow
         name = name if name != "/" else self.osbrepository.name
         folder = self.osbrepository.name + \
             path.replace(self.download_base_url + "branches", "")

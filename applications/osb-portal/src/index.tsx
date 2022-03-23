@@ -5,6 +5,7 @@ import { App } from './components/index';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import { userLogin } from './store/actions/user';
+import { retrieveAllTags } from './store/actions/tags';
 
 import { CONFIGURATION } from "./config";
 import { initErrorHandler } from './service/ErrorHandleService';
@@ -37,7 +38,7 @@ const timeout = (ms: number, promise: Promise<any>) => {
 
 
 
-timeout(10000, initUser()).then((user: UserInfo) => {
+timeout(20000, initUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   }
@@ -45,3 +46,5 @@ timeout(10000, initUser()).then((user: UserInfo) => {
 
 initErrorHandler(appName);
 
+
+store.dispatch(retrieveAllTags);

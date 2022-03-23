@@ -1,11 +1,6 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Grid, Paper } from "@material-ui/core";
-import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import Box from "@material-ui/core/Box";
-import AppsOutlinedIcon from "@material-ui/icons/AppsOutlined";
-import InsertChartOutlinedIcon from "@material-ui/icons/InsertChartOutlined";
-import CodeOutlinedIcon from "@material-ui/icons/CodeOutlined";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -13,8 +8,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
-
-import "react-markdown-editor-lite/lib/index.css";
 
 import * as Icons from "../icons";
 
@@ -26,7 +19,7 @@ import {
 interface DialogProps {
   open: boolean;
   title: string | React.ReactNode;
-
+  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl"
   actions?: React.ReactElement;
   closeAction: () => void;
 }
@@ -53,6 +46,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   title,
   children,
   actions,
+  maxWidth
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -65,11 +59,11 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   const classes = useStyles();
 
   return (
-    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true}>
+    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true} maxWidth={maxWidth}>
       <DialogTitle disableTypography={true}>
         <Box display="flex" justifyContent="space-between">
           {title}
-          <IconButton className={classes.closeIcon} aria-label="close" onClick={handleClose} style={{padding: 0}} >
+          <IconButton className={classes.closeIcon} aria-label="close" onClick={handleClose} style={{ padding: 0 }} >
             <Icons.CloseIcon fontSize="small" />
           </IconButton>
         </Box>

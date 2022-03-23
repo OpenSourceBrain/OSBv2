@@ -2,7 +2,7 @@ ARG CLOUDHARNESS_BASE
 FROM $CLOUDHARNESS_BASE as base
 RUN echo $CLOUDHARNESS_BASE
 
-FROM jupyter/base-notebook:hub-1.1.0
+FROM jupyterhub/k8s-hub:1.1.3
 USER root
 
 RUN apt update && apt install nano
@@ -24,11 +24,14 @@ RUN pip install -e /usr/src/app/chauthenticator
 RUN pip install -e /usr/src/app/osb_jupyter
 
 
-COPY --chown=1000:1000 theming/page.html /opt/conda/share/jupyterhub/templates/page.html
-COPY --chown=1000:1000 theming/spawn_pending.html /opt/conda/share/jupyterhub/templates/spawn_pending.html
-COPY --chown=1000:1000 theming/hot_fix_for_eventsource.js /opt/conda/share/jupyterhub/static/hot_fix_for_eventsource.js
+COPY --chown=1000:1000 theming/page.html /usr/local/share/jupyterhub/templates/page.html
+COPY --chown=1000:1000 theming/spawn_pending.html /usr/local/share/jupyterhub/templates/spawn_pending.html
+COPY --chown=1000:1000 theming/hot_fix_for_eventsource.js /usr/local/share/jupyterhub/static/hot_fix_for_eventsource.js
+COPY --chown=1000:1000 theming/arrow-dropdown.svg /usr/local/share/jupyterhub/static/arrow-dropdown.svg
 
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN chmod 777 /usr/src/app -R
+USER jovyan
+
 

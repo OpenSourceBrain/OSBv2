@@ -4,17 +4,17 @@ import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } fr
 import { FeaturedType } from '../types//global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin } from '../apiclient/workspaces';
+import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin, InlineResponse2003, Tag, User } from '../apiclient/workspaces';
 
-import WorkspaceResourceService, { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
+import { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
+import { Page } from "../types/model";
 
-import { InlineObject } from '../apiclient/workspaces/models/InlineObject';
 
 const workspacesApiUri = '/proxy/workspaces/api';
 
 class WorkspaceService {
 
-  workspacesApi: RestApi = null;
+  workspacesApi: workspaceApi.RestApi = null;
   accessToken: string = null;
 
   constructor() {
@@ -38,12 +38,20 @@ class WorkspaceService {
 
 
 
-  async fetchWorkspaces(featured = false): Promise<Workspace[]> {
+  async fetchWorkspaces(isPublic = false, isFeatured = false, page = 1, perPage = 20): Promise<Page<Workspace>> {
     // ToDo: pagination & size of pagination
-    const wspr: WorkspaceGetRequest = featured ? { q: 'publicable=true' } : {};
+    const params: any = {};
+    if (isPublic) {
+      params.publicable = 'true';
+    }
+    if (isFeatured) {
+      params.featured = 'true';
+    }
+
+    const wspr: WorkspaceGetRequest = { q: Object.keys(params).map(k => `${k}=${params[k]}`).join("+"), page, perPage };
     if (this.workspacesApi) {
       const response: InlineResponse200 = await this.workspacesApi.workspaceGet(wspr);
-      return response.workspaces.map(mapWorkspace);
+      return { items: response.workspaces.map(mapWorkspace), totalPages: response.pagination.numberOfPages, total: response.pagination.total };
     } else {
       console.debug('Attempting to fetch workspaces before init');
     }
@@ -67,7 +75,7 @@ class WorkspaceService {
   }
 
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
-    return { name: ws.name, description: ws.description, publicable: ws.publicable, resources: ws.resources && ws.resources.map(mapPostUrlResource) };
+    return { ...ws, resources: ws.resources && ws.resources.map(mapPostUrlResource), timestampCreated: undefined, timestampUpdated: undefined, user: undefined };
   }
 
   async deleteWorkspace(workspaceId: number) {
@@ -94,17 +102,32 @@ class WorkspaceService {
 
 
   }
+
+  async getAllAvailableTags(page?: number, perPage?: number, q?: string): Promise<Tag[]> {
+    const requestObject = {
+      page,
+      perPage,
+      q,
+    }
+    return (await this.workspacesApi.tagGet(requestObject)).tags;
+  }
 }
 
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
   const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
+  const tags: Tag[] = workspace.tags;
+  const timestampUpdated: Date = workspace.timestampUpdated;
+  const user: User = workspace.user;
 
   return {
     ...workspace,
     resources,
     lastOpen,
+    tags,
+    user,
+    timestampUpdated,
     userId: workspace.userId,
     shareType: workspace.publicable ? FeaturedType.Public : FeaturedType.Private,
     volume: "1",

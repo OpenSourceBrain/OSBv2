@@ -1,92 +1,51 @@
-import json
+import workspaces.service.osbrepository.osbrepository_service as osbrepository_service
 
-import cloudharness.workflows.argo as argo
-from cloudharness import log as logger
-
-from workspaces.models import OSBRepository, OSBRepositoryEntity
-from workspaces.repository import (
-    OSBRepositoryRepository,
-    VolumeStorageRepository,
-    WorkspaceRepository,
-    WorkspaceResourceRepository,
+from workspaces.service.model_service import (
+    OsbrepositoryService,
+    VolumestorageService,
+    WorkspaceService,
+    WorkspaceresourceService,
+    TagService,
 )
-
-from ..base_model_view import BaseModelView
+from workspaces.repository.model_repository import OSBRepositoryRepository
+from workspaces.utils import row2dict
+from workspaces.views.base_model_view import BaseModelView
 
 
 class WorkspaceView(BaseModelView):
-    repository = WorkspaceRepository()
-
-    def post(self, body):
-        for r in body.get("resources", []):
-            r.update({"origin": json.dumps(r.get("origin"))})
-        return super().post(body)
-
-    def get(self, id_):
-        workspace = super().get(id_)
-        if len(workspace) > 2:
-            resources = workspace.get("resources")
-            if resources:
-                for r in resources:
-                    r.update({"origin": json.loads(r.get("origin"))})
-            else:
-                workspace.update({"resources": []})
-        # check if there are running import tasks
-        logger.debug("Post get, check workflows for workspace %....", workspace.get("id"))
-        try:
-            workflows = argo.get_workflows(status="Running", limit=9999)
-            if workflows and workflows.items:
-                for workflow in workflows.items:
-                    try:
-                        if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
-                            "workspace"
-                        ).strip() == str(workspace["id"]):
-                            fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace("/", " of ")
-                            workspace["resources"].append(
-                                {
-                                    "id": -1,
-                                    "name": "Importing resources into workspace",
-                                    "origin": {"path": fake_path},
-                                    "resource_type": "e",
-                                    "workspace_id": workspace["id"],
-                                }
-                            )
-                        break
-                    except Exception as e:
-                        # probably not a workspace import workflow job --> skip it
-                        pass
-        except Exception as e:
-            # No workflows raises error
-            logger.debug("Get workflows exception", exc_info=True)
-        return workspace
+    service = WorkspaceService()
 
 
 class OsbrepositoryView(BaseModelView):
-    repository = OSBRepositoryRepository()
+    service = OsbrepositoryService()
 
-    def post(self, body):
-        content_types = ""
-        # convert the content types list to a content type comma separated string
-        for ct in body["content_types_list"]:
-            content_types += f",{ct}"
-        body.update({"content_types": content_types.strip(",")})
-        body = OSBRepositoryEntity().from_dict(OSBRepository.from_dict(body).to_dict()).to_dict()
-        return super().post(body)
+    def get(*args, **kwargs):
+        id_ = kwargs.get("id_")
+        context = kwargs.get("context")
+
+        osbrepository_ext = OSBRepositoryRepository().get(id=id_)
+        if osbrepository_ext is None:
+            return f"OSBRepository with id {id_} not found.", 404
+
+        osbrepository_ext.context_resources = osbrepository_service.get_resources(
+            osbrepository=osbrepository_ext, context=context, osbrepository_id=id_
+        )  # use context to get the files
+        osbrepository_ext.contexts = osbrepository_service.get_contexts(
+            repository_type=osbrepository_ext.repository_type, uri=osbrepository_ext.uri
+        )
+        osbrepository_ext.description = osbrepository_service.get_description(
+            osbrepository=osbrepository_ext, context=context
+        )  # use context to get the files
+        return row2dict(osbrepository_ext), 200
 
 
 class VolumestorageView(BaseModelView):
-    repository = VolumeStorageRepository()
+    service = VolumestorageService()
 
 
 class WorkspaceresourceView(BaseModelView):
-    repository = WorkspaceResourceRepository()
+    service = WorkspaceresourceService()
 
-    def post(self, body):
-        body.update({"origin": json.dumps(body.get("origin"))})
-        return super().post(body)
 
-    def get(self, id_):
-        workspace_resource = super().get(id_)
-        if len(workspace_resource) > 2:
-            workspace_resource.update({"origin": json.loads(workspace_resource.get("origin"))})
-        return workspace_resource
+class TagView(BaseModelView):
+    service = TagService()

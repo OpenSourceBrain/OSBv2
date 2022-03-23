@@ -15,21 +15,31 @@ class RepositoryResourceBaseAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, osbrepository_id=None):  # noqa: E501
+    def __init__(self, osbrepository_id=None, size=None, timestamp_modified=None):  # noqa: E501
         """RepositoryResourceBaseAllOf - a model defined in OpenAPI
 
         :param osbrepository_id: The osbrepository_id of this RepositoryResourceBaseAllOf.  # noqa: E501
         :type osbrepository_id: int
+        :param size: The size of this RepositoryResourceBaseAllOf.  # noqa: E501
+        :type size: int
+        :param timestamp_modified: The timestamp_modified of this RepositoryResourceBaseAllOf.  # noqa: E501
+        :type timestamp_modified: datetime
         """
         self.openapi_types = {
-            'osbrepository_id': int
+            'osbrepository_id': int,
+            'size': int,
+            'timestamp_modified': datetime
         }
 
         self.attribute_map = {
-            'osbrepository_id': 'osbrepository_id'
+            'osbrepository_id': 'osbrepository_id',
+            'size': 'size',
+            'timestamp_modified': 'timestamp_modified'
         }
 
         self._osbrepository_id = osbrepository_id
+        self._size = size
+        self._timestamp_modified = timestamp_modified
 
     @classmethod
     def from_dict(cls, dikt) -> 'RepositoryResourceBaseAllOf':
@@ -64,3 +74,49 @@ class RepositoryResourceBaseAllOf(Model):
         """
 
         self._osbrepository_id = osbrepository_id
+
+    @property
+    def size(self):
+        """Gets the size of this RepositoryResourceBaseAllOf.
+
+        File size in bytes of the RepositoryResource  # noqa: E501
+
+        :return: The size of this RepositoryResourceBaseAllOf.
+        :rtype: int
+        """
+        return self._size
+
+    @size.setter
+    def size(self, size):
+        """Sets the size of this RepositoryResourceBaseAllOf.
+
+        File size in bytes of the RepositoryResource  # noqa: E501
+
+        :param size: The size of this RepositoryResourceBaseAllOf.
+        :type size: int
+        """
+
+        self._size = size
+
+    @property
+    def timestamp_modified(self):
+        """Gets the timestamp_modified of this RepositoryResourceBaseAllOf.
+
+        Date/time the ReposityResource is last modified  # noqa: E501
+
+        :return: The timestamp_modified of this RepositoryResourceBaseAllOf.
+        :rtype: datetime
+        """
+        return self._timestamp_modified
+
+    @timestamp_modified.setter
+    def timestamp_modified(self, timestamp_modified):
+        """Sets the timestamp_modified of this RepositoryResourceBaseAllOf.
+
+        Date/time the ReposityResource is last modified  # noqa: E501
+
+        :param timestamp_modified: The timestamp_modified of this RepositoryResourceBaseAllOf.
+        :type timestamp_modified: datetime
+        """
+
+        self._timestamp_modified = timestamp_modified

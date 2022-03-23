@@ -14,9 +14,16 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dropzone from 'react-dropzone'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import { Autocomplete } from "@material-ui/lab";
+import MDEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+import MarkdownViewer from "../common/MarkdownViewer";
+import Chip from "@material-ui/core/Chip";
 
-import workspaceService from '../../service/WorkspaceService'
 import { Workspace } from '../../types/workspace';
+import { Tag } from "../../apiclient/workspaces";
+import WorkspaceService from "../../service/WorkspaceService";
 
 import {
   bgLight,
@@ -33,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   dropZoneBox: {
     color: bgInputs,
+    border: `2px dashed ${bgInputs}`,
+    borderRadius: 5,
+    padding: 4,
     "& .MuiTypography-subtitle2": {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(2),
@@ -46,16 +56,15 @@ const useStyles = makeStyles((theme) => ({
       border: `2px solid ${bgInputs}`,
     },
   },
-  workspaceThumbnailText: {
-    ...theme.typography.h6,
-    color: bgInputs,
-    fontSize: '0.7rem',
-    marginBottom: '0.3rem',
-    fontWeight: 'bold',
-  },
   imagePreview: {
-    display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
-  }
+    display: 'flex', minHeight: "15em", alignItems: 'stretch', backgroundPosition: "center", backgroundSize: 'cover', flex: 1
+  },
+  autocomplete: {
+    marginTop: theme.spacing(1),
+    '& .MuiChip-root': {
+      backgroundColor: bgLight,
+    }
+  },
 }));
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
@@ -65,13 +74,15 @@ interface WorkspaceEditProps {
   onLoadWorkspace: (refresh?: boolean, workspace?: Workspace) => void;
   closeHandler?: () => void;
   filesSelected?: boolean;
+  tags: Tag[];
+  retrieveAllTags?: (page: number) => void;
 }
 
 const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: 'flex',
   alignItems: 'center',
-  border: `2px dashed ${bgInputs}`,
+
   borderRadius: radius,
   padding: gutter,
   borderColor: error ? "red" : fade(bgInputs, 1),
@@ -108,10 +119,11 @@ export default (props: WorkspaceEditProps) => {
     }
   }
 
-
   const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null);
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] = React.useState(false);
+  const workspaceTags = workspace && workspace.tags ? workspace.tags.map((tagObject) => tagObject.tag) : [];
+  const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== 'undefined') {
@@ -124,12 +136,13 @@ export default (props: WorkspaceEditProps) => {
   }
 
   const handleCreateWorkspace = async () => {
-    setLoading(true)
-    workspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
+    setLoading(true);
+    WorkspaceService.createOrUpdateWorkspace({ ...workspace, ...workspaceForm }).then(
       async (returnedWorkspace) => {
+        props.retrieveAllTags(1);
         if (thumbnail && !thumbnailError) {
           const fileThumbnail: any = await readFile(thumbnail);
-          workspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
+          WorkspaceService.updateWorkspaceThumbnail(returnedWorkspace.id, new Blob([fileThumbnail]))
             .then(() => props.onLoadWorkspace(true, returnedWorkspace),
               e => console.error('Error uploading thumbnail', e)
             );
@@ -181,17 +194,25 @@ export default (props: WorkspaceEditProps) => {
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
   const setDescriptionField = (e: any) =>
-    setWorkspaceForm({ ...workspaceForm, description: e.target.value });
+    setWorkspaceForm({ ...workspaceForm, description: e.text });
   const setThumbnail = (uploadedThumbnail: any) => {
     thumbnail = uploadedThumbnail;
     previewFile(thumbnail);
+  }
+  const setWorkspaceTags = (tagsArray: string[]) => {
+    const arrayOfTags: Tag[] = [];
+    tagsArray.forEach(tag => { arrayOfTags.push({ tag }); });
+    setWorkspaceForm({ ...workspaceForm, tags: arrayOfTags });
   }
   const [loading, setLoading] = React.useState(false);
   return (
     <>
 
-      <Box p={2}>
+      <Box p={2} mt={4}>
         <Box>
+          <Typography component="label" variant="h6">
+            Workspace name
+          </Typography>
           <TextField
             id="workspaceName"
             placeholder="Name"
@@ -201,78 +222,105 @@ export default (props: WorkspaceEditProps) => {
             defaultValue={props.workspace.name}
           />
         </Box>
-        <Box mt={2}>
-          <TextField
-            id="workspaceDescription"
-            placeholder="Description"
-            multiline={true}
-            rows={5}
-            fullWidth={true}
-            onChange={setDescriptionField}
-            variant="outlined"
+
+
+
+
+        <Box mt={4} alignItems="stretch">
+          <Typography component="label" variant="h6">
+            Workspace tags
+          </Typography>
+          <Autocomplete
+            multiple={true}
+            freeSolo={true}
+            className={classes.autocomplete}
+            options={props.tags.map(tagObject => tagObject.tag)}
+            defaultValue={defaultTags}
+            onChange={(event, value) => setWorkspaceTags(value)}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
+            )}
+          />
+        </Box>
+
+        <Box mt={4}>
+          <Typography component="label" variant="h6">
+            Workspace description
+          </Typography>
+
+          <MDEditor
             defaultValue={workspace?.description}
+            onChange={setDescriptionField}
+            view={{ html: false, menu: true, md: true }}
+            renderHTML={(text: string) => <MarkdownViewer text={text} />}
           />
 
         </Box>
-        <Box mt={2} alignItems="stretch" className={classes.dropZoneBox}>
-          <Typography component="h6" className={classes.workspaceThumbnailText}>
+        <Box mt={4} alignItems="stretch" >
+          <Typography component="label" variant="h6">
             Workspace thumbnail
           </Typography>
-
-          <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
-            {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
-              <section className={classes.imagePreview} style={{ display: 'flex', minHeight: "20em", alignItems: 'stretch', backgroundImage: !thumbnailError && `url(${thumbnailPreview})`, backgroundPosition: "center", backgroundSize: 'cover', flex: 1 }}>
-                <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
-                  <input {...getInputProps()} />
-                  <Grid container={true} justify="center" alignItems="center" direction="row">
-                    {acceptedFiles.length !== 0 && <Grid item={true}>
-                      {/* <IconButton><PublishIcon /></IconButton> */}
-                      {acceptedFiles.length === 0 ? '' :
-                        <IconButton
-                          onClick={(e: any) => {
-                            e.preventDefault();
-                            setThumbnail(null)
-                          }
-                          }
-                        >
-                          <DeleteForeverIcon />
-                        </IconButton>}
-                    </Grid>
-                    }
-                    <Grid item={true} >
-                      <Box component="div" m={1} >
-                        <Typography variant="subtitle2" component="p">
-                          {acceptedFiles.length === 0 ?
-                            "Drop file here to upload..."
-                            :
-                            null
-                          }
-                        </Typography>
-                        <Button variant="outlined">
-                          Browse files
-                        </Button>
-                        {
-                          thumbnailError &&
-                          <Typography color="error" variant="subtitle2" component="p">
-                            {
-                              thumbnailError
+          <Box alignItems="stretch" className={classes.dropZoneBox}>
+            <Dropzone onDrop={(acceptedFiles: any) => { setThumbnail(acceptedFiles[0]) }}>
+              {({ getRootProps, getInputProps, acceptedFiles }: { getRootProps: (p: any) => any, getInputProps: () => any, acceptedFiles: any[] }) => (
+                <section className={classes.imagePreview} style={{ backgroundImage: !thumbnailError && `url(${thumbnailPreview})` }}>
+                  <div {...getRootProps({ style: dropAreaStyle(thumbnailError) })}>
+                    <input {...getInputProps()} />
+                    <Grid container={true} justify="center" alignItems="center" direction="row">
+                      {acceptedFiles.length !== 0 && <Grid item={true}>
+                        {/* <IconButton><PublishIcon /></IconButton> */}
+                        {acceptedFiles.length === 0 ? '' :
+                          <IconButton
+                            onClick={(e: any) => {
+                              e.preventDefault();
+                              setThumbnail(null)
+                            }
+                            }
+                          >
+                            <DeleteForeverIcon />
+                          </IconButton>}
+                      </Grid>
+                      }
+                      <Grid item={true} >
+                        <Box component="div" m={1} >
+                          <Typography variant="subtitle2" component="p">
+                            {acceptedFiles.length === 0 ?
+                              "Drop file here to upload..."
+                              :
+                              null
                             }
                           </Typography>
-                        }
-                      </Box>
+                          <Button variant="outlined">
+                            Browse files
+                          </Button>
+                          {
+                            thumbnailError &&
+                            <Typography color="error" variant="subtitle2" component="p">
+                              {
+                                thumbnailError
+                              }
+                            </Typography>
+                          }
+                        </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </div>
-              </section>
-            )}
-          </Dropzone>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+          </Box>
         </Box>
       </Box>
-      <Box mt={2} p={2} className={classes.actionBox} textAlign="right">
+      <Box mt={4} p={2} className={classes.actionBox} textAlign="right">
 
         <Button disabled={loading} color="primary" onClick={closeWorkSpaceEditor}>
           Cancel
-                  </Button>
+        </Button>
         <Button className={classes.actionButton} variant="contained" color="primary" disabled={loading} onClick={handleCreateWorkspaceButtonClick}>
           {workspace.id ? "Save" : "Create A New Workspace"}
         </Button>

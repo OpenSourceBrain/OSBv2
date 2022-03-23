@@ -1,0 +1,9 @@
+harness:
+  sentry: false
+  dependencies:
+    soft:
+      - accounts-api
+      - common
+      - volumemanager
+      - workspaces
+

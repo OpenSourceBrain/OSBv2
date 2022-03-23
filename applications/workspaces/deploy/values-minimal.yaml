@@ -1,0 +1,30 @@
+harness:
+  sentry: false
+  deployment:
+    auto: true
+    port: 8080
+    volume:
+      name: workspaces-images
+      size: 100M
+      mountpath: /usr/src/app/workspaces/static/workspaces
+  secrets:
+    github-user:
+    github-token:
+  dependencies:
+    build:
+      - cloudharness-base
+      - cloudharness-flask
+    soft:
+      - common
+      - accounts
+  database:
+    auto: false
+    name: workspaces-postgres-host
+    type: postgres
+    port: 5432
+    image: postgres:latest
+    initialdb: workspaces
+    user: workspace
+    password: secret
+    datavolume: /opt/data/
+    pgdata: /opt/data/pgdata

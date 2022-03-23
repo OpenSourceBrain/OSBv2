@@ -3,10 +3,10 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Grid, Paper } from "@material-ui/core";
 
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import Box from "@material-ui/core/Box";
 
 
-import "react-markdown-editor-lite/lib/index.css";
 
 import { UserInfo } from "../../types/user";
 import { ResourceType } from "../../types/global";
@@ -60,14 +60,14 @@ export const WorkspaceToolBox = (props: any) => {
       <Box>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
           <Grid item={true} sm={12} md={4} lg={3}>
-            <Typography component="h2" variant="h6" className={classes.toolBoxHeading}>
+            <Typography component="h2" variant="h5" className={classes.toolBoxHeading}>
               <Box component="span" className={classes.cardText}>Create a</Box>
               <Box component="span" className={classes.cardText}>new Workspace</Box>
             </Typography>
           </Grid>
           <Grid item={true} xs={12} sm={12} md={8} lg={9}>
             <Grid container={true} direction="row" justify="space-between" spacing={5} >
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter} >
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
                   icon={Icons.SquareCirclesIcon}
                   title="Computational modeling"
@@ -77,7 +77,7 @@ export const WorkspaceToolBox = (props: any) => {
 
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.ChartIcon}
                   title="Data analysis"
@@ -86,13 +86,23 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={4} className={classes.justifyCenter}>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.CubeIcon}
                   title="Interactive development"
                   template={WorkspaceTemplateType.playground}
                   user={user}
                   refreshWorkspaces={props.refreshWorkspaces}
+                />
+              </Grid>
+              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
+                <WorkspaceItem
+                  icon={<FolderOpenIcon />}
+                  title="Workspace from repository"
+                  template={null}
+                  user={user}
+                  refreshWorkspaces={props.refreshWorkspaces}
+
                 />
               </Grid>
             </Grid>

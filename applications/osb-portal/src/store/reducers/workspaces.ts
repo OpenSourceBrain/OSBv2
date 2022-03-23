@@ -3,18 +3,16 @@ import { createSlice, PayloadAction, AnyAction, Action } from '@reduxjs/toolkit'
 import { Workspace } from '../../types/workspace';
 import * as UserActions from '../actions/user';
 
+
 interface WorkspaceState {
-  userWorkspaces: Workspace[],
-  publicWorkspaces: Workspace[],
+  counter: number,
   selectedWorkspace: Workspace,
-  showPublic: boolean
 }
 
+
 export const initialState: WorkspaceState = {
-  userWorkspaces: null,
-  publicWorkspaces: null,
-  selectedWorkspace: null,
-  showPublic: true
+  counter: 0,
+  selectedWorkspace: null
 };
 
 
@@ -22,33 +20,25 @@ const workspaceSlice = createSlice({
   name: 'workspaces',
   initialState,
   reducers: {
-    showPublicWorkspaces(state, action: Action) {
-      return { ...state, showPublic: true };
-    },
-    showUserWorkspaces(state, action: Action) {
-      return { ...state, showPublic: false };
-    },
-    loadPublicWorkspaces(state, action: PayloadAction<Workspace[]>) {
-      return { ...state, publicWorkspaces: action.payload };
-    },
+
     selectWorkspace(state, action: PayloadAction<Workspace>) {
       return { ...state, selectedWorkspace: action.payload }
     },
     refreshWorkspace(state, action: AnyAction) {
-      return { ...state, selectedWorkspace: action.payload }
+      return { ...state, selectedWorkspace: action.payload, counter: state.counter + 1 }
     },
-    loadUserWorkspaces(state, action: PayloadAction<Workspace[]>) {
-      return { ...state, userWorkspaces: action.payload }
+    refreshWorkspaces(state, action: AnyAction) {
+      return { ...state, counter: state.counter + 1 }
     },
     deleteWorkspace(state, action: PayloadAction<number>) {
-      return state; // everything goes in the middleware
+      return { ...state, counter: state.counter + 1 }; // everything goes in the middleware
     },
     updateWorkspace(state, action: PayloadAction<Workspace>) {
-      return { ...state, selectedWorkspace: action.payload };
+      return { ...state, selectedWorkspace: action.payload, counter: state.counter + 1 };
     },
     resourceAdded(state, action: PayloadAction<Workspace>) {
       return state;
-    }
+    },
   }
 });
 

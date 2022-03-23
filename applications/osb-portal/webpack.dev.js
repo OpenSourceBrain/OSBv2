@@ -30,25 +30,37 @@ module.exports = env => {
     return result;
   }
 
+  console.log(env)
+
   return merge(
     common(env),
     {
       mode: 'development',
       devtool: 'eval-source-map',
       devServer: {
-        contentBase: path.resolve(__dirname, 'public'),
-        publicPath: '/',
-        filename: path.join('js', 'bundle.js'),
+
+
+
         compress: true,
         https: true,
-        disableHostCheck: true,
+        allowedHosts: "all",
         historyApiFallback: true,
+        static: [{
+          directory: path.resolve(__dirname, 'public'),
+          publicPath: '/',
+        }],
         proxy: {
           '/proxy/workspaces': {
-            target: replaceHost(proxyTarget, 'workspaces'),
+            target: env.WORKSPACES_DOMAIN || replaceHost(proxyTarget, 'workspaces'),
             secure: false,
             changeOrigin: true,
             pathRewrite: { '^/proxy/workspaces': '' }
+          },
+          '/proxy/accounts-api': {
+            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN) : replaceHost(proxyTarget, 'api.accounts'),
+            secure: false,
+            changeOrigin: true,
+            pathRewrite: { '^/proxy/accounts-api': '' }
           }
         },
         port: PORT,
@@ -56,7 +68,15 @@ module.exports = env => {
       },
 
       plugins: [
-        new webpack.EnvironmentPlugin({ 'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org', 'NAMESPACE': env.NAMESPACE || 'osb2' }),
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify("development")
+        }),
+        new webpack.EnvironmentPlugin({
+          'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org',
+          'NAMESPACE': env.NAMESPACE || 'osb2',
+          "ACCOUNTS_API_DOMAIN ": env.ACCOUNTS_API_DOMAIN || '',
+          "WORKSPACES_DOMAIN ": env.WORKSPACES_DOMAIN || '',
+        }),
         new CopyPlugin({
           patterns: [
             {

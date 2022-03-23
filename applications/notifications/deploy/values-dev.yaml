@@ -1,0 +1,6 @@
+notification:
+  channels:
+    admins:
+      to:
+        - filippo@metacell.us
+        - zoran@metacell.us

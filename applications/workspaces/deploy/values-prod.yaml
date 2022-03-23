@@ -1,0 +1,4 @@
+harness:
+  sentry: false
+  database:
+    size: 20Gi

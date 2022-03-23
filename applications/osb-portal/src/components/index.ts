@@ -11,7 +11,10 @@ import { WorkspaceDrawer as workspacedrawer } from './workspace/drawer/Workspace
 import { ErrorDialog as errorDialog } from './error-dialog/ErrorDialog'
 import { WorkspaceFrame as workspaceFrame } from './workspace/WorkspaceFrame';
 import { ProtectedRoute as protectedRoute } from './auth/ProtectedRouter';
+import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspacePage from "../pages/WorkspacePage";
+import workspaceEditor from './workspace/WorkspaceEditor';
+import editRepoDialog from '../components/repository/EditRepoDialog';
 
 import { RootState } from '../store/rootReducer'
 import * as WorkspacesActions from '../store/actions/workspaces'
@@ -22,16 +25,17 @@ import newWorkspaceAskUser from './workspace/NewWorkspaceAskUser';
 import { AnyAction, Dispatch } from 'redux';
 
 import { RepositoryPage as repositoryPage } from '../pages/RepositoryPage'
+import { UserPage as userPage } from '../pages/UserPage';
 import { RepositoriesPage as repositoriesPage } from '../pages/RepositoriesPage'
+import repositories from '../components/repository/Repositories';
+import { retrieveAllTags, loadTags } from '../store/actions/tags';
+import { WorkspaceCard as workspaceCard } from './workspace/WorkspaceCard';
 
-const mapWorkspacesStateToProps = (state: RootState) => {
-  return ({
-    showPublic: state.workspaces?.showPublic,
-    publicWorkspaces: state.workspaces?.publicWorkspaces,
-    userWorkspaces: state.workspaces?.userWorkspaces,
-    user: state.user
-  })
-};
+const mapWorkspacesStateToProps = (state: RootState) => ({
+  user: state.user,
+  counter: state.workspaces?.counter
+});
+
 
 const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   workspace: state.workspaces?.selectedWorkspace,
@@ -72,19 +76,38 @@ const dispatchErrorProps = {
   setError
 };
 
+const dispatchTagsProps = {
+  retrieveAllTags,
+}
+
+const mapTagsToProps = (state: RootState) => ({
+  tags: state.tags,
+});
+
+const mapUserAndTagsToProps = (state: RootState) => ({
+  user: state.user,
+  tags: state.tags,
+})
+
 export const Workspaces = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(workspace)
+export const WorkspaceCard = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspaceCard);
+export const Repositories = connect(mapUserStateToProps)(repositories);
+export const EditRepoDialog = connect(mapTagsToProps, dispatchTagsProps)(editRepoDialog);
 export const WorkspaceToolBox = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacetoolbox)
 export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner)
 export const Header = connect(mapUserStateToProps, { ...dispatchUserProps, ...dispatchDrawerProps })(header)
 export const WorkspaceDrawer = connect(mapSelectedWorkspaceStateToProps, dispatchDrawerProps)(workspacedrawer) as any // any to fix weird type mapping error
 export const WorkspaceInteractions = connect(mapSelectedWorkspaceStateToProps, dispatchWorkspaceProps)(workspaceInteractions) as any
+export const WorkspaceEditor = connect(mapTagsToProps, dispatchTagsProps)(workspaceEditor)
 
-export const App = connect(mapWorkspacesStateToProps, dispatchWorkspaceProps)(app)
+export const App = connect(mapErrorStateToProps, null)(app)
 export const ErrorDialog = connect(mapErrorStateToProps, dispatchErrorProps)(errorDialog)
 const genericDispatch = (dispatch: Dispatch) => ({ dispatch: (action: AnyAction) => dispatch(action) });
 export const WorkspaceFrame = connect(mapSelectedWorkspaceStateToProps, genericDispatch)(workspaceFrame)
-export const WorkspacePage = connect(null, dispatchWorkspaceProps)(workspacePage);
+export const WorkspaceOpenPage = connect(null, dispatchWorkspaceProps)(workspaceOpenPage);
+export const WorkspacePage = connect(mapUserStateToProps, dispatchWorkspaceProps)(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage)
-export const RepositoriesPage = connect(mapUserStateToProps, null)(repositoriesPage)
+export const UserPage = connect(mapUserStateToProps)(userPage)
+export const RepositoriesPage = connect(mapUserAndTagsToProps, dispatchTagsProps)(repositoriesPage)
 export const NewWorkspaceAskUser = connect(null, dispatchUserProps)(newWorkspaceAskUser)
 export const ProtectedRoute = connect(mapUserStateToProps, dispatchUserProps)(protectedRoute)
