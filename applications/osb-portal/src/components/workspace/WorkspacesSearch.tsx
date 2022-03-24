@@ -51,9 +51,19 @@ export default (props: WorkspacesSearchProps) => {
 
 
   const [searchToggled, setSearchToggled] = React.useState(false);
+  const [search, setSearch] = React.useState("");
 
   const toggleSearch = () => {
-    setSearchToggled(!searchToggled);
+    if(!search) {
+      setSearchToggled(!searchToggled);
+    }
+    
+  }
+
+  const onSearchChange = (e:React.ChangeEvent<HTMLInputElement>) => 
+  { 
+    setSearch(e.target.value)
+    props.filterChanged(e.target.value.toLowerCase()); 
   }
   return (
     <>
@@ -63,7 +73,8 @@ export default (props: WorkspacesSearchProps) => {
         fullWidth={false}
         placeholder="Search"
         className={classes.input}
-        onChange={(e) => { props.filterChanged(e.target.value.toLowerCase()); }}
+        defaultValue={search}
+        onChange={onSearchChange}
       />}
       <IconButton className={classes.button} onClick={toggleSearch}><SearchIcon fontSize="small"/></IconButton>
     </>
