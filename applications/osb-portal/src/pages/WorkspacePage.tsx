@@ -268,14 +268,12 @@ export const WorkspacePage = (props: any) => {
           </Box>
         </Box>
 
-        {canEdit && editWorkspaceOpen && <OSBDialog
-          title={"Edit workspace " + workspace.name}
+        {canEdit && <WorkspaceEditor
           open={editWorkspaceOpen}
-          closeAction={handleCloseEditWorkspace}
-          maxWidth="md"
-        >
-          <WorkspaceEditor workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
-        </OSBDialog>}
+          title={"Edit workspace: " + workspace.name}
+          closeHandler={handleCloseEditWorkspace}
+          workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+        }
       </>}
     </Box>
   )
