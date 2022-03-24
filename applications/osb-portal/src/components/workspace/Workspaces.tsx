@@ -167,8 +167,8 @@ export const Workspaces = ({ user, counter }: any) => {
             onChange={handleChange}
           >
             {user ?
-              <Tab id="your-all-workspaces-tab" 
-              value={WorkspaceSelection.USER} 
+              <Tab id="your-all-workspaces-tab"
+              value={WorkspaceSelection.USER}
               className={classes.tab}
               label={user.isAdmin ?
                 <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
@@ -182,7 +182,7 @@ export const Workspaces = ({ user, counter }: any) => {
               label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED &&
                 <Chip size="small" color="primary" label={state.total} />}</>}
             />
-            <Tab 
+            <Tab
             value={WorkspaceSelection.PUBLIC}
             className={classes.tab}
               label={<>

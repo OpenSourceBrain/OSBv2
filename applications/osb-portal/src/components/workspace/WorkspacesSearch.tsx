@@ -54,16 +54,16 @@ export default (props: WorkspacesSearchProps) => {
   const [search, setSearch] = React.useState("");
 
   const toggleSearch = () => {
-    if(!search) {
+    if (!search) {
       setSearchToggled(!searchToggled);
     }
-    
+
   }
 
-  const onSearchChange = (e:React.ChangeEvent<HTMLInputElement>) => 
-  { 
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  {
     setSearch(e.target.value)
-    props.filterChanged(e.target.value.toLowerCase()); 
+    props.filterChanged(e.target.value.toLowerCase());
   }
   return (
     <>
