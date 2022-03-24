@@ -45,12 +45,13 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         q_base = self.model.query
         if filter is not None:
             if tags:
-                q_base = q_base.filter(*[self._create_filter(*f) for f in filter]).\
-                    union(self.model.query.filter(*[self._create_filter(*f) for f in filter if f[0].key in ("publicable", "featured")]).join(self.model.tags).filter(
-                    func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+"))))
-            else:
                 q_base = q_base.filter(
-                    *[self._create_filter(*f) for f in filter])
+                    *[self._create_filter(*f) for f in filter if f[0].key == "name"] )
+                q_base = q_base.union(self.model.query.join(self.model.tags).filter(
+                    func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+"))))
+           
+            q_base = q_base.filter(
+                    *[self._create_filter(*f) for f in filter if f[0].key != "name"])
         elif tags:
             q_base = q_base.join(self.model.tags).filter(
                 func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
