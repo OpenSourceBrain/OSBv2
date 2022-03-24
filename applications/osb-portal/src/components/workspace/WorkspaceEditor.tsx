@@ -81,6 +81,9 @@ interface WorkspaceEditProps {
   tags: Tag[];
   retrieveAllTags?: (page: number) => void;
   children?: any;
+  title: string;
+  open: boolean;
+
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -215,8 +218,8 @@ export default (props: WorkspaceEditProps) => {
     <>
 
       <OSBDialog
-        title="Create new workspace"
-        open={true}
+        title={props.title}
+        open={props.open}
         closeAction={closeWorkSpaceEditor}
         maxWidth="md"
         actions={
