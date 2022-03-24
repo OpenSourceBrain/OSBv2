@@ -259,6 +259,7 @@ const theme = {
     },
     MuiTabs: {
       root: {
+        width: "100%",
         '& .MuiChip-root': {
           height: '15px',
           '& .MuiChip-label': {
@@ -269,6 +270,9 @@ const theme = {
           display: 'flex',
           flexDirection: 'row',
         },
+        "& .MuiTabs-flexContainer": {
+          flexWrap: "wrap"
+        }
       },
       indicator: {
         width: '100%',
@@ -277,20 +281,22 @@ const theme = {
     MuiTab: {
       root: {
         alignContent: 'flex-start',
-        
         paddingRight: "1rem",
         paddingTop: 0,
+        overflow: "auto",
         paddingLeft: 0,
         paddingBottom: 0,
         fontSize: '0.9rem',
         fontWeight: 700,
         border: 0,
-        // minWidth: '150px !important',
-        maxWidth: 'auto',
+        minWidth: 'auto',
+
         '&:first-child': {
           borderRight: 'none',
         },
-      }
+        
+      },
+     
     },
     MuiToolbar: {
       root: {

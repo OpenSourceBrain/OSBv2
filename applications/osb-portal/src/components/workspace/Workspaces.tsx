@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  tab: {
+    maxWidth: "33%"
+  }
 }))
 
 export enum WorkspaceSelection {
@@ -128,7 +131,7 @@ export const Workspaces = ({ user, counter }: any) => {
   // each time the component is rendered
   const debounceRefreshWorkspace = React.useCallback(debounce((text) => {
     filterText.current = text;
-    setState({...state, items: null});
+    setState({ ...state, items: null });
     refreshWorkspaces();
   }, 500), []);
 
@@ -164,14 +167,28 @@ export const Workspaces = ({ user, counter }: any) => {
             onChange={handleChange}
           >
             {user ?
-              <Tab id="your-all-workspaces-tab" value={WorkspaceSelection.USER} label={user.isAdmin ?
+              <Tab id="your-all-workspaces-tab" 
+              value={WorkspaceSelection.USER} 
+              className={classes.tab}
+              label={user.isAdmin ?
                 <>All workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</> :
                 <>Your workspaces{selection.current === WorkspaceSelection.USER && <Chip size="small" color="primary" label={state.total} />}</>}
               />
               : null
             }
-            <Tab value={WorkspaceSelection.FEATURED} label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED && <Chip size="small" color="primary" label={state.total} />}</>} />
-            <Tab value={WorkspaceSelection.PUBLIC} label={<>Public workspaces{selection.current === WorkspaceSelection.PUBLIC && <Chip size="small" color="primary" label={state.total} />}</>} />
+            <Tab
+              value={WorkspaceSelection.FEATURED}
+              className={classes.tab}
+              label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED &&
+                <Chip size="small" color="primary" label={state.total} />}</>}
+            />
+            <Tab 
+            value={WorkspaceSelection.PUBLIC}
+            className={classes.tab}
+              label={<>
+                Public workspaces{selection.current === WorkspaceSelection.PUBLIC &&
+                  <Chip size="small" color="primary" label={state.total} />}
+              </>} />
           </Tabs>
           <WorkspacesSearch filterChanged={(newTextFilter) =>
             debounceRefreshWorkspace(newTextFilter)
