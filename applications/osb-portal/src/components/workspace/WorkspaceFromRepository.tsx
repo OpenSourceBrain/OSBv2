@@ -320,7 +320,7 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
     )
     case Stage.EDIT_WORKSPACE:
       return <>
-        <WorkspaceEditor workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={handleClose} >
+        <WorkspaceEditor title={"Create new workspace"} open={true} workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={handleClose} >
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
       </WorkspaceEditor>
       </>
