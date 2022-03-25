@@ -41,15 +41,16 @@ def get_description(uri=None, repository_type=None, **kwargs):
 def get_metadata(uri=None, repository_type=None, **kwargs):
     """Get description for repository"""
     try:
+        contexts = repository_service.get_contexts(uri, repository_type)
         adapter = repository_service.get_repository_adapter(
             repository_type=repository_type, uri=uri
         )
-        contexts = repository_service.get_contexts(uri, repository_type)
         retval = {}
-        # get default information
         for c in contexts:
+            retval[c] = {}
             retval[c]["description"] = adapter.get_description(c)
             retval[c]["keywords"] = adapter.get_tags(c)
+
         return retval, 200
     except Exception as e:
         return str(e), 500
