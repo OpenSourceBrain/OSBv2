@@ -74,6 +74,10 @@ class RepositoryService {
     return this.workspacesApi.getContexts({ uri, repositoryType });
   }
 
+  async getRepositoryMetadata(uri: string, repositoryType: RepositoryType): Promise<any> {
+    return this.workspacesApi.getMetadata({ uri, repositoryType });
+  }
+
   async addRepository(repository: OSBRepository) {
     repository.contentTypes = repository.contentTypesList.join(',');
     repository.autoSync = Boolean(repository.autoSync);

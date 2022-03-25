@@ -544,6 +544,11 @@ paths:
         schema:
           $ref: "#/components/schemas/RepositoryType"
         required: true
+      - in: query
+        name: context
+        schema:
+          type: string
+        required: true
     get:
       summary: Used to retrieve keywords for a repository.
       operationId: get_keywords
@@ -573,6 +578,11 @@ paths:
         schema:
           $ref: "#/components/schemas/RepositoryType"
         required: true
+      - in: query
+        name: context
+        schema:
+          type: string
+        required: true
     get:
       summary: Used to retrieve description for a repository.
       operationId: get_description
@@ -584,35 +594,6 @@ paths:
             application/json:
               schema:
                 type: string
-        404:
-          description: The repository was not found.
-      tags:
-        - rest
-  /osbrepository/metadata:
-    parameters:
-      - in: query
-        name: uri
-        schema:
-          type: string
-        required: true
-      - in: query
-        name: repository_type
-        schema:
-          $ref: "#/components/schemas/RepositoryType"
-        required: true
-    get:
-      summary: Used to retrieve metadata for a repository.
-      operationId: get_metadata
-      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
-      responses:
-        200:
-          description: The metadata for repository.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
         404:
           description: The repository was not found.
       tags:
