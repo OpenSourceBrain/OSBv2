@@ -466,7 +466,17 @@ export const RepositoryPage = (props: any) => {
         </Box>
       </Box>
 
-      {user && <WorkspaceEditor title={"Create new workspace"} open={showWorkspaceEditor} workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0}>
+      {
+      /*
+       * Here we must use `&& showWorkspaceEditor` so that the
+       * `WorkspaceEditor` component is rendered afresh each time. If we don't
+       * do this, the states in the `WorkspaceEditor` component like
+       * `workspaceForm` are initialised only once with the value of
+       * `workspace` prop---at the initial render---and then do not track the
+       * value of the `workpace` prop.
+       */
+      }
+      {user && showWorkspaceEditor && <WorkspaceEditor title={"Create new workspace"} open={showWorkspaceEditor} workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0}>
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
       </WorkspaceEditor>
       }
