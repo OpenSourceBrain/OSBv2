@@ -160,11 +160,13 @@ export default (props: WorkspaceActionsMenuProps) => {
 
         </NestedMenuItem>
       </Menu>
-        <WorkspaceEditor
-          open={editWorkspaceOpen}
-          title={"Edit workspace: " + props.workspace.name}
-          closeHandler={handleCloseEditWorkspace}
-          workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+      {editWorkspaceOpen &&
+      <WorkspaceEditor
+        open={editWorkspaceOpen}
+        title={"Edit workspace: " + props.workspace.name}
+        closeHandler={handleCloseEditWorkspace}
+        workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+      }
       <OSBLoader active={cloneInProgress} fullscreen={true} handleClose={handleCloseMenu} messages={["Cloning workspace. Please wait."]} />
       <Snackbar classes={{  root: classes.snackbar }} open={cloneComplete} onClose={() => setCloneComplete(false)} message="Workspace cloned" anchorOrigin={{"vertical": "bottom", "horizontal": "left"}}
         autoHideDuration={5000}
