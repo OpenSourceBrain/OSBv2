@@ -305,12 +305,7 @@ class OsbrepositoryService(BaseModelService):
         osbrepository = OSBRepository.from_dict(body)
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
-        # Logic to add default tags from the remote repository
-        tags = osbrepository_helper.get_tags(osbrepository)
-        if tags:
-            for tag in tags:
-                osbrepository.tags.append(Tag(tag=tag))
-        
+
         body['tags'] = osbrepository.to_dict().get('tags', [])
         self.map_entity(body)
         return super().post(body)
