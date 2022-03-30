@@ -466,12 +466,19 @@ export const RepositoryPage = (props: any) => {
         </Box>
       </Box>
 
-      {user &&
-        <OSBDialog title="Create a new workspace" open={showWorkspaceEditor} closeAction={openDialog} maxWidth="md">
-          {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
-
-          <WorkspaceEditor workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} />
-        </OSBDialog>
+      {
+      /*
+       * Here we must use `&& showWorkspaceEditor` so that the
+       * `WorkspaceEditor` component is rendered afresh each time. If we don't
+       * do this, the states in the `WorkspaceEditor` component like
+       * `workspaceForm` are initialised only once with the value of
+       * `workspace` prop---at the initial render---and then do not track the
+       * value of the `workpace` prop.
+       */
+      }
+      {user && showWorkspaceEditor && <WorkspaceEditor title={"Create new workspace"} open={showWorkspaceEditor} workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0}>
+        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
+      </WorkspaceEditor>
       }
       {user && <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
         {checked.length > 0 &&

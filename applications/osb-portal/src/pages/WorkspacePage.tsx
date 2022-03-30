@@ -268,7 +268,7 @@ export const WorkspacePage = (props: any) => {
           </Box>
         </Box>
 
-        {canEdit && <WorkspaceEditor
+        {canEdit && editWorkspaceOpen && <WorkspaceEditor
           open={editWorkspaceOpen}
           title={"Edit workspace: " + workspace.name}
           closeHandler={handleCloseEditWorkspace}

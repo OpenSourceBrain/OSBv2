@@ -366,15 +366,15 @@ class WorkspaceresourceService(BaseModelService):
         return True
 
     def get(self, id_):
-        workspace_resource = super().get(id_)
-
+        workspace_resource: WorkspaceResourceEntity = super().get(id_)
+        workspace_resource = workspace_resource.to_dict()
         if len(workspace_resource) > 2:
             workspace_resource.update(
                 {"origin": json.loads(workspace_resource.get("origin"))})
-        return workspace_resource
+        return WorkspaceResource.from_dict(workspace_resource)
 
     def delete(self, id_):
-        workspace_resource = WorkspaceResource.from_dict(self.get(id_))
+        workspace_resource = self.get(id_)
         super().delete(id_)
         from workspaces.helpers.etl_helpers import delete_workspace_resource
         delete_workspace_resource(workspace_resource)
