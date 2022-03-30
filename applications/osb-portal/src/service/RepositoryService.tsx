@@ -74,8 +74,12 @@ class RepositoryService {
     return this.workspacesApi.getContexts({ uri, repositoryType });
   }
 
-  async getRepositoryMetadata(uri: string, repositoryType: RepositoryType): Promise<any> {
-    return this.workspacesApi.getMetadata({ uri, repositoryType });
+  async getRepositoryKeywords(uri: string, repositoryType: RepositoryType, context: string): Promise<string[]> {
+    return this.workspacesApi.getKeywords({ uri, repositoryType, context });
+  }
+
+  async getRepositoryDescription(uri: string, repositoryType: RepositoryType, context: string): Promise<string> {
+    return this.workspacesApi.getDescription({ uri, repositoryType, context });
   }
 
   async addRepository(repository: OSBRepository) {
