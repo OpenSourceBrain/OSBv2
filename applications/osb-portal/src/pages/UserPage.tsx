@@ -219,8 +219,8 @@ export const UserPage = (props: any) => {
       <Box bgcolor={bgDarkest} className={`${classes.root} verticalFill`} width="100vw" display="flex" justifyContent="center">
         <Divider light={true} variant="fullWidth" />
         <Container maxWidth="xl" className="verticalFit">
-          <Grid container={true} spacing={6} className="verticalFit">
-            <Grid item={true} sm={4} lg={3} className={`verticalFit ${classes.profileInformation}`} >
+          <Grid container={true} spacing={6} >
+            <Grid item={true} sm={4} lg={3} className={`${classes.profileInformation}`} >
               <Avatar alt="user-profile-avatar" src={user.avatar}>
                 {user.firstName.charAt(0) + user.lastName.charAt(0)}
               </Avatar>
