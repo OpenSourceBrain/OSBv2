@@ -1,12 +1,14 @@
 import json
 
 from cloudharness import log as logger
+from workspaces.models.osb_repository import OSBRepository
+
 
 
 from workspaces.service.osbrepository.adapters import DandiAdapter, FigShareAdapter, GitHubAdapter
 
 
-def get_repository_adapter(osbrepository=None, repository_type=None, uri=None, *args, **kwargs):
+def get_repository_adapter(osbrepository: OSBRepository=None, repository_type=None, uri=None, *args, **kwargs):
     if osbrepository is not None:
         repository_type = osbrepository.repository_type
         uri = osbrepository.uri
@@ -40,23 +42,21 @@ def get_description(osbrepository, context=None):
 
 
 def get_tags(osbrepository, context=None):
-    repository_service = get_repository_adapter(osbrepository=osbrepository)
+    repository_adapter = get_repository_adapter(osbrepository=osbrepository)
     if not context:
         context = osbrepository.default_context
-    return repository_service.get_tags(context)
+    return repository_adapter.get_tags(context)
 
 
-def copy_resource(workspace_resource):
-    import workspaces.repository as repos
-    origin = json.loads(workspace_resource.origin)
-    osbrepository = repos.OSBRepositoryRepository().get(
-        id=origin.get("osbrepository_id"))
-    repository_adapter = get_repository_adapter(osbrepository=osbrepository)
-    repository_adapter.copy_resource(workspace_resource, origin)
+# def copy_resource(workspace_resource):
+#     origin = json.loads(workspace_resource.origin)
+#     osbrepository = repos.OSBRepositoryRepository().get(id=origin.get("osbrepository_id"))
+#     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
+#     repository_adapter.copy_resource(workspace_resource, origin)
 
 
 def create_copy_task(workspace_id, osbrepository_id, name, path):
-    import workspaces.repository as repos
-    osbrepository = repos.OSBRepositoryRepository().get(id=osbrepository_id)
+    from workspaces.repository.model_repository import OSBRepositoryRepository
+    osbrepository = OSBRepositoryRepository().get(id=osbrepository_id)
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
     return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, path=path)

@@ -1,0 +1,8 @@
+harness:
+  sentry: false
+  dependencies:
+    soft:
+      - accounts-api
+      - workspaces
+      - netpyne
+

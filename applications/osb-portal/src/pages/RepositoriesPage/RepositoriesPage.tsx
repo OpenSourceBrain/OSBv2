@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
+import debounce from "lodash/debounce";
 
 import Box from "@material-ui/core/Box";
 
@@ -21,12 +22,11 @@ import SearchIcon from "@material-ui/icons/Search";
 
 
 import { EditRepoDialog } from "../../components";
-import { OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
+import { Tag, OSBRepository, RepositoryContentType } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from './styles';
-import { Repositories } from "../../components/index";
-import MainMenu from "../../components/menu/MainMenu";
+import { Repositories, MainMenu } from "../../components/index";
 import OSBPagination from "../../components/common/OSBPagination";
 import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
 import { FormControl, FormControlLabel, FormGroup, InputAdornment } from "@material-ui/core";
@@ -51,6 +51,9 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   });
 
   const [searchTagOptions, setSearchTagOptions] = useState([]);
+  const [tagPage, setTagPage] = React.useState(1);
+  const [totalTagPages, setTotalTagPages] = React.useState(0);
+  const [tagSearchValue, setTagSearchValue] = React.useState("");
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const openDialog = () => setDialogOpen(true);
@@ -128,14 +131,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     }
   }, [page, searchFilterValues]);
 
-  React.useEffect(() => {
-    RepositoryService.getAllTags().then((tagsInformation) => {
-      const tags = tagsInformation.tags.map(tagObject => {
-        return tagObject.tag;
-      });
-      setSearchTagOptions(tags);
-    });
-  }, [])
+  React.useEffect(() => handleTagInput(""), [])
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     let repositoryTypes: string[] = [];
@@ -153,6 +149,44 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setSearchFilterValues({ ...searchFilterValues, types: repositoryTypes });
   }
 
+  const debouncedHandleSearchFilter = React.useCallback(debounce((newTextFilter: string) => {
+    setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+  }, 500), []);
+
+  /* This function handles changes to the input in the Autocomplete tag box.
+   *
+   * Initially, when the autocomplete box is populated, no text is provided to
+   * filter tags on, so we get only the first set of tags from the API. If the
+   * user enters some value, we only fetch tags using the provided text as a
+   * filter.
+   *
+   * The function also takes the tag page number as argument, which is used to
+   * implement infinite scroll
+   */
+  const handleTagInput = (value?: any, tagpage?: number) => {
+      setTagSearchValue(value);
+      debouncedTagInputUpdate(value, tagpage);
+  }
+
+  const debouncedTagInputUpdate = React.useCallback(debounce((value?: any, tagpage?: number) => {
+    let query: any;
+    if ((value !== "") && (value !== undefined)){
+      query = "tag__like=" + value;
+    }
+    RepositoryService.getAllTags(tagpage, undefined, query).then((tagsInformation) => {
+      const tags = tagsInformation.tags.map(tagObject => {
+        return tagObject.tag;
+      });
+      setTagPage(tagsInformation.pagination.currentPage);
+      setTotalTagPages(tagsInformation.pagination.numberOfPages);
+      if (tagpage !== undefined) {
+        setSearchTagOptions(searchTagOptions.concat(tags.sort((a: string, b: string) => a.localeCompare(b))));
+      }
+      else {
+        setSearchTagOptions(tags.sort((a: string, b: string) => a.localeCompare(b)));
+      }
+    });
+  }, 500), []);
 
   return (
     <>
@@ -202,10 +236,16 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             >
               <Typography component="label" className={classes.label}>Tags</Typography>
               <Autocomplete
+                value={searchFilterValues.tags}
+                inputValue={tagSearchValue}
                 multiple={true}
                 options={searchTagOptions}
                 freeSolo={true}
+                onInputChange={(event, value) => {
+                  handleTagInput(value);
+                }}
                 onChange={(event, value) => setSearchFilterValues({ ...searchFilterValues, tags: value })}
+                onClose={(event, reason) => handleTagInput("")}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
                     <Chip variant="outlined" label={option} size="small" {...getTagProps({ index })} key={option} />
@@ -214,6 +254,17 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 renderInput={(params) => (
                   <><SearchIcon /><TextField InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} fullWidth={true} {...params} variant="filled" /></>
                 )}
+                ListboxProps={{
+                  onScroll: (event: React.SyntheticEvent) => {
+                    const listboxNode = event.currentTarget;
+                    if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+
+                      if (tagPage < totalTagPages){
+                        handleTagInput(tagSearchValue, tagPage + 1);
+                      }
+                    }
+                  }
+                }}
               />
               <FormControl component="fieldset" >
                 <FormGroup>
@@ -225,7 +276,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
               </FormControl>
             </Popover>
 
-            <RepositoriesSearch filterChanged={(newTextFilter) => setSearchFilterValues({ ...searchFilterValues, text: newTextFilter })} />
+            <RepositoriesSearch filterChanged={(newTextFilter) => debouncedHandleSearchFilter(newTextFilter)} />
             {user && (
               <>
                 <Divider orientation="vertical" flexItem={true} className={classes.divider} />
@@ -247,7 +298,15 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
         {repositories ?
           <Box className="verticalFill" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Repositories repositories={repositories} handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)} refreshRepositories={() => updateList(tabValue)} />
+            <Repositories
+            repositories={repositories}
+            refreshRepositories={() => updateList(tabValue)}
+            searchFilterValues={searchFilterValues}
+            handleRepositoryClick={(repositoryId: number) => openRepoUrl(repositoryId)}
+            handleTagClick={ (tag: Tag) => searchFilterValues.tags.includes(tag.tag) ? null : setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.concat(tag.tag)}) }
+            handleTagUnclick={ (tag: Tag) => setSearchFilterValues({ ...searchFilterValues, tags: searchFilterValues.tags.filter(t => t !== tag.tag) })}
+            handleTypeClick={(type: string) => setSearchFilterValues({...searchFilterValues, types: searchFilterValues.types.concat(type)})}
+            handleTypeUnclick={(type: string) => setSearchFilterValues({...searchFilterValues, types: searchFilterValues.types.filter(t => t !== type)})}/>
             {
               totalPages > 1 ?
                 <OSBPagination totalPages={totalPages} handlePageChange={handlePageChange} color="primary" showFirstButton={true} showLastButton={true} />

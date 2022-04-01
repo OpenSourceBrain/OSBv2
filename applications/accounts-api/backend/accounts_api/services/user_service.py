@@ -3,6 +3,7 @@ from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient
 from cloudharness import log
+# from cloudharness.models import User as CHUser # Cloudharness 2.0.0
 
 class UserNotFound(Exception): pass
 

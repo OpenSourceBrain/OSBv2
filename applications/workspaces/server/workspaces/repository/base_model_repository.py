@@ -1,4 +1,6 @@
-"""Model Repository class"""
+"""
+Base CRUD logic for application models
+"""
 
 import re
 
@@ -6,7 +8,7 @@ from cloudharness import log as logger
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
 
-from .database import db
+from ..database import db
 from .models import *
 
 
@@ -14,13 +16,14 @@ class BaseModelRepository:
     """Generic base class for handling REST API endpoints."""
 
     model = None
-    calculated_fields = None
+
     defaults = None
     search_qs = None
 
     def __init__(self, model=None):
         if model:
             self.model = model
+        
 
     def _get(self, id):
         """
@@ -33,15 +36,8 @@ class BaseModelRepository:
             repository record of the model
         """
         if id is not None:
-            obj = self.model.query.get(id)
-            return self._calculated_fields_populate(obj)
+            return self.model.query.get(id)
         return None
-
-    def _calculated_fields_populate(self, obj):
-        if self.calculated_fields:
-            for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj))
-        return obj
 
     def _post_get(self, new_obj):
         if hasattr(self, "post_get"):
@@ -87,6 +83,8 @@ class BaseModelRepository:
                     setattr(cur_obj, key, getattr(new_obj, key))
         return cur_obj
 
+    
+
     def _create_filter(self, field, comparator, value, entity=None):
         """
         Helper function for creating the criterion for SQL Alchemy
@@ -118,7 +116,7 @@ class BaseModelRepository:
         elif comparator in ("!", "not"):
             return field != value
         elif comparator == "like":
-            # field = func.lower(field)
+            # ilike makes the search case insensitive
             return field.ilike("%" + value + "%")
         else:
             return field == value
@@ -190,12 +188,10 @@ class BaseModelRepository:
         else:
             sqs = self._get_qs(*args, **kwargs)
         objects = sqs.paginate(page, per_page, True)
-        total_pages = objects.pages
-        for obj in objects.items:
-            self._calculated_fields_populate(obj)
+
         return objects
 
-    def post(self, body):
+    def post(self, body, do_pre=True, do_post=True):
         """Save an object to the repository."""
         new_obj = self.model.from_dict(**body)
         if new_obj.id is not None:
@@ -206,20 +202,22 @@ class BaseModelRepository:
             new_obj.id = None
 
         if "timestamp_created" in self.model.__dict__:
-            setattr(new_obj, "timestamp_created", func.now())
+            new_obj.timestamp_created = func.now()
 
         if "timestamp_updated" in self.model.__dict__:
-            setattr(new_obj, "timestamp_updated", func.now())
+            new_obj.timestamp_updated = func.now()
 
         if self.defaults:
             for fld, default in self.defaults.items():
                 setattr(new_obj, fld, default)
         try:
             # trigger post operation
-            new_obj = self._pre_commit(new_obj)
+            if do_pre:
+                new_obj = self._pre_commit(new_obj)
             db.session.add(new_obj)
             db.session.commit()
-            new_obj = self._post_commit(new_obj)
+            if do_post:
+                new_obj = self._post_commit(new_obj)
         except IntegrityError as e:
             raise e
         else:
@@ -257,9 +255,11 @@ class BaseModelRepository:
 
     def delete(self, id):
         """Delete an object from the repository."""
-        result = self.model.query.filter_by(id=id).delete()
+        result = self.model.query.filter_by(id=id).first()
+    
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
+        db.session.delete(result)
         return db.session.commit()
 
     def __str__(self):

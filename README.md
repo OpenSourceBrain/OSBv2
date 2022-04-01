@@ -43,6 +43,10 @@ To manually create the helm chart to use on any Kubernetes deployment, run:
 harness-deployment cloud-harness . 
 ```
 ### Cluster setup
+
+Kubernetes 1.19+ is supported (v1 spec)
+
+#### Cert-manager
 The cert-manager must be installed in order to use letsencrypt generated certificates
 
 To check if cert-manager is installed, run:
@@ -58,12 +62,13 @@ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/relea
 
 See also https://cert-manager.io/docs/installation/kubernetes/.
 
+#### CSI driver
+
+On google cloud, the **Compute Engine persistent disk CSI Driver** must be enabled in order for the volume cloning to work.
 
 ### Install and upgrade with Helm
 
 1. Create the namespace `kubectl create ns osb2`
-1. Create the namespace `kubectl create ns argo-workflows`
-
 1. Run  `helm install osb2 deployment/helm  --namespace osb2` to install.
 1. Run `kubectl create rolebinding osb-admin-default --clusterrole=admin --serviceaccount=osb2:default -n osb2` to allow workflows to run on namespace osb2
 
@@ -92,8 +97,6 @@ Enable the ingress addon:
 
 ```
 minikube addons enable ingress
-
-
 ```
 
 Create the namespace `kubectl create ns osblocal`

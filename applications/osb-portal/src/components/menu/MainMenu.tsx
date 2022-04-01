@@ -26,9 +26,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const MainMenu = () => {
+export const MainMenu = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
+
+  const handleDialogOpen = () => {
+    props.openDialog();
+  };
   return (
 
     <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper" justifyContent="space-between">
@@ -38,7 +42,7 @@ export const MainMenu = () => {
           className={classes.button + " " + classes.firstButton}
           items={[
             { label: "Documentation", callback: () => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html") },
-            { label: "About", callback: () => alert("Open Source Brain v2") },
+            { label: "About", callback: handleDialogOpen },
           ]}
         />
         <MainMenuItem

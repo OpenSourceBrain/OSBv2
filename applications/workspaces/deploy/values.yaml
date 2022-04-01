@@ -39,11 +39,12 @@ harness:
     soft:
       - events
       - common
-      - accounts
       - workflows
       - notifications
+      
     hard:
       - argo
+      - accounts
   database:
     auto: false
     name: workspaces-postgres-host
@@ -55,3 +56,4 @@ harness:
     password: secret
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
+workspace_size: 2Gi

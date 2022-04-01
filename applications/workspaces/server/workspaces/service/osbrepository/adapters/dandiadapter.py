@@ -43,12 +43,11 @@ class DandiAdapter:
 
     def getFolderContents(self, context, path_prefix):
         uri = f"{self.api_url}/dandisets/{self.dandiset_id}/versions/{context}/assets/paths/?path_prefix={path_prefix}"
-        return uri, self.get_json(uri)
+        return uri, self.get_json(uri)['results']
 
     def getFiles(self, tree, context, path_prefix=""):
         logger.debug(f"getFiles for {path_prefix}")
         path, contents = self.getFolderContents(context, path_prefix)
-        contents = contents["results"]
         if "files" in contents:
             for key2, dandi_file in contents["files"].items():
                 # we save the version in the url query param for later usage in the download task

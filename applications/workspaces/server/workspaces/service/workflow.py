@@ -1,8 +1,10 @@
 import uuid
 
 from cloudharness import log as logger
-from workspaces.utils import get_pvc_name
+
+import workspaces.repository as repos
 import workspaces.service.events as events
+from workspaces.service.model_service import WorkspaceService
 
 try:
     from cloudharness.workflows import operations, tasks
@@ -44,7 +46,7 @@ def delete_resource(workspace_resource, pvc_name, resource_path: str):
 
 
 def run_copy_tasks(workspace_id, tasks):
-    pvc_name = get_pvc_name(workspace_id)
+    pvc_name = WorkspaceService.get_pvc_name(workspace_id)
     shared_directory = f"{pvc_name}:/project_download"
     op = operations.SimpleDagOperation(
         f"osb-copy-tasks-job",
@@ -59,7 +61,7 @@ def run_copy_tasks(workspace_id, tasks):
 
 
 def create_task(image_name, workspace_id, **kwargs):
-    pvc_name = get_pvc_name(workspace_id)
+    pvc_name = WorkspaceService.get_pvc_name(workspace_id)
     shared_directory = f"{pvc_name}:/project_download"
     return tasks.CustomTask(
         name=f"{image_name}-{str(uuid.uuid4())[:8]}",
@@ -83,3 +85,29 @@ def create_scan_task(workspace_id, **kwargs):
         queue=events.UPDATE_WORKSPACES_RESOURCE_QUEUE,
         **kwargs,
     )
+
+def clone_workspaces_content(source_ws_id, dest_ws_id):
+    source_pvc_name = WorkspaceService.get_pvc_name(source_ws_id)
+    dest_pvc_name = WorkspaceService.get_pvc_name(dest_ws_id)
+    source_volume = f"{source_pvc_name}:/source"
+    dest_volume = f"{dest_pvc_name}:/project_download"
+
+    copy_task = tasks.BashTask(
+        name=f"clone-workspace-data",
+        source="sleep 1 && cp -R /source/* /project_download"
+    )
+
+    scan_task = create_scan_task(dest_ws_id)
+
+    op = operations.PipelineOperation(
+        basename="osb-clone-workspace-job",
+        tasks=(
+            copy_task,
+            scan_task,
+        ),
+        ttl_strategy=ttl_strategy,
+        pod_context=operations.PodExecutionContext(
+            "workspace", dest_ws_id, True),
+    )
+    op.volumes=(source_volume, dest_volume)
+    workflow = op.execute()

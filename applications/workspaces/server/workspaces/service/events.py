@@ -3,13 +3,14 @@ from cloudharness import log
 from cloudharness.events.client import EventClient
 from flask import current_app
 
-import workspaces.repository.model_repository as repos
+
 
 DOWNLOAD_FILE_QUEUE = "osb-download-file-queue"
 UPDATE_WORKSPACES_RESOURCE_QUEUE = "osb-update-workspace-resources"
 
 
 def update_workspace_resources(event_client, app, message):
+    import workspaces.repository.model_repository as repos
     log.info(f"Got message: {message}")
     workspace_id = message["workspace_id"]
     # remove /project_download/ (mount point of the pvc) from the path

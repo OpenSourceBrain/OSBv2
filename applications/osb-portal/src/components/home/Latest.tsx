@@ -26,17 +26,18 @@ export const Latest = () => {
      </Typography>
       <Box mt={3} flexGrow="1"  >
         <Typography>
-          This is a beta release of version 2.0 of the Open Source Brain platform, which is under active development and testing.
+          This is a <strong>beta release of version 2.0</strong> of the Open Source Brain platform, which is under active development and testing.
+          See the <Link href="https://docs.opensourcebrain.org/OSBv2/Overview.html">documentation</Link> for more details.
         </Typography>
         <br />
         <Typography>
-          <strong>User accounts, data and workspaces are subject to change without notice.</strong>
+          <strong>User accounts, data and workspaces are subject to change without notice!</strong>
         </Typography>
         <br />
         <Typography>
           For now please use the live <Link href="http://opensourcebrain.org">OSBv1 platform</Link>, <Link href="http://nwbexplorer.opensourcebrain.org">NWB Explorer</Link> or <Link href="http://netpyne.opensourcebrain.org">NetPyNE</Link>.
 
-          Please <Link href="http://opensourcebrain.org/docs#How_To_Contact_Us">get in contact</Link> if you would like to help with user testing.
+          Please <Link href="https://docs.opensourcebrain.org/General/Contacts.html">get in contact</Link> if you would like to help with user testing.
         </Typography>
 
       </Box>

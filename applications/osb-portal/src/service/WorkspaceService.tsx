@@ -9,7 +9,9 @@ import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, R
 import { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 import { Page } from "../types/model";
 
+import SearchFilter from '../types/searchFilter';
 
+const PER_PAGE_DEFAULT = 10;
 const workspacesApiUri = '/proxy/workspaces/api';
 
 class WorkspaceService {
@@ -28,8 +30,12 @@ class WorkspaceService {
 
   async getWorkspace(id: number): Promise<Workspace> {
     const wsigr: WorkspaceIdGetRequest = { id };
-    let ws = null;
-    await this.workspacesApi.workspaceIdGet(wsigr).then(result => ws = mapWorkspace(result));
+
+    const result = await this.workspacesApi.workspaceIdGet(wsigr);
+    if (!result) {
+      throw new Error("Workspace not found")
+    }
+    const ws = mapWorkspace(result);
     if (!ws) {
       throw new Error("Workspace not found")
     }
@@ -59,6 +65,32 @@ class WorkspaceService {
     return null;
   }
 
+  async fetchWorkspacesByFilter(isPublic: boolean = false, isFeatured: boolean = false, page: number = 1, filter: SearchFilter, size: number = PER_PAGE_DEFAULT): Promise<any>  {
+    const params: any = {};
+    if (isPublic) {
+      params.publicable = 'true';
+    }
+    if (isFeatured) {
+      params.featured = 'true';
+    }
+
+    if (filter.text) {
+      params.name__like = filter.text
+    }
+    // The workspace page does not have a separate tag filter, so the search text is used for all query fields
+    const nameAndSummaryQuery = Object.keys(params).map(k => `${k}=${params[k]}`).join("+")
+    const tags = !filter.text ? '' : filter.text;
+
+    const response: InlineResponse200 = await this.workspacesApi.workspaceGet(
+      {
+        page,
+        q: nameAndSummaryQuery,
+        perPage: size,
+        tags,
+      });
+    return { items: response.workspaces.map(mapWorkspace), totalPages: response.pagination.numberOfPages, total: response.pagination.total };
+  }
+
   async createOrUpdateWorkspace(ws: Workspace): Promise<any> {
     if (!ws.description) {
       ws.description = ws.name;
@@ -74,12 +106,16 @@ class WorkspaceService {
     return this.workspacesApi.workspacePost(wspr);
   }
 
+  async cloneWorkspace(workspaceId: number) {
+    return this.workspacesApi.workspacesControllersWorkspaceControllerWorkspaceClone({ id: workspaceId });
+  }
+
   private mapWorkspaceToApi(ws: Workspace): ApiWorkspace {
     return { ...ws, resources: ws.resources && ws.resources.map(mapPostUrlResource), timestampCreated: undefined, timestampUpdated: undefined, user: undefined };
   }
 
   async deleteWorkspace(workspaceId: number) {
-    this.workspacesApi.workspaceIdDelete({ id: workspaceId });
+    return this.workspacesApi.workspaceIdDelete({ id: workspaceId });
   }
 
   async updateWorkspace(workspace: Workspace) {
