@@ -467,6 +467,14 @@ paths:
             example: experimental+modeling
           required: false
           description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
+        - in: query
+          name: user_id
+          schema:
+            type: string
+            example: ccfbe969-f7e2-4191-80c4-821dc5a97a28
+            nullable: true
+          required: false
+          description: The id of the owner user to filter with
       responses:
         200:
           description: Return all available repositories

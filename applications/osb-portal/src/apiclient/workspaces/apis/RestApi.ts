@@ -66,6 +66,7 @@ export interface OsbrepositoryGetRequest {
     q?: string | null;
     tags?: string | null;
     types?: string | null;
+    userId?: string | null;
 }
 
 export interface OsbrepositoryIdDeleteRequest {
@@ -310,6 +311,10 @@ export class RestApi extends runtime.BaseAPI {
 
         if (requestParameters.types !== undefined) {
             queryParameters['types'] = requestParameters.types;
+        }
+
+        if (requestParameters.userId !== undefined) {
+            queryParameters['user_id'] = requestParameters.userId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
