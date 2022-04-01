@@ -306,6 +306,9 @@ export const RepositoryPage = (props: any) => {
       // For dandi, the URL is: repo/version
       case "dandi":
         return repository.uri + "/" + repository.defaultContext;
+      // For figshare, there does not seem to be a version specific URL
+      case "figshare":
+        return repository.uri
       default:
         return "#"
     }
