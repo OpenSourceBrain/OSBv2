@@ -381,7 +381,7 @@ export const EditRepoDialog = ({
             >
               <MenuItem value={RepositoryContentType.Experimental}>
                 <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Experimental)} />
-                <ListItemText primary="NWB Experimental Data" />
+                <ListItemText primary="Experimental Data" />
               </MenuItem>
               <MenuItem value={RepositoryContentType.Modeling}>
                 <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Modeling)} />
