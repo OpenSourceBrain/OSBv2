@@ -101,7 +101,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         osbrepository.tags = TagRepository().get_tags_daos(osbrepository.tags)
         return super().pre_commit(osbrepository)
 
-    def search_qs(self, filter=None, q=None, tags=None, types=None):
+    def search_qs(self, filter=None, q=None, tags=None, types=None, user_id=None):
         q_base = self.model.query
         if tags:
             q_base = q_base.join(self.model.tags).filter(
@@ -110,9 +110,12 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
             q_base = q_base.filter(
                 or_(*[self._create_filter(*f) for f in filter]))
 
-        if types:
+        if types is not None:
             q_base = q_base.filter(
                 or_(self.model.content_types.ilike(f"%{t}%") for t in types.split("+")))
+
+        if user_id is not None:
+            q_base = q_base.filter_by(user_id=user_id)
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
 

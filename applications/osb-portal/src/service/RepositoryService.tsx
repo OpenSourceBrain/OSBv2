@@ -33,8 +33,8 @@ class RepositoryService {
     this.workspacesApi = new workspaceApi.RestApi(new Configuration({ basePath: workspacesApiUri, accessToken: token }));
   }
 
-  async getRepositories(page: number, size = PER_PAGE_DEFAULT): Promise<OSBRepository[]> {
-    return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size })).osbrepositories;
+  async getRepositories(page: number, size = PER_PAGE_DEFAULT, userId: string = null): Promise<OSBRepository[]> {
+    return (await this.workspacesApi.osbrepositoryGet({ page, perPage: size, userId })).osbrepositories;
   }
 
   async getRepositoriesByFilter(page: number, filter: SearchFilter, size = PER_PAGE_DEFAULT): Promise<RepositoriesListAndPaginationDetails> {

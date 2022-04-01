@@ -32,3 +32,5 @@ test-requirements.txt
 **/__main__.py
 **/__init__.py
 **/encoder.py
+openapi
+**/controllers

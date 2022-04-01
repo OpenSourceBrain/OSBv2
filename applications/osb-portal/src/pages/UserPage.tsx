@@ -187,7 +187,7 @@ export const UserPage = (props: any) => {
       setWorkspaces(workspacesRetrieved.items);
     },
     (e) => { setError(e) });
-    RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS).then((repositoriesRetrieved) => {
+    RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, userId).then((repositoriesRetrieved) => {
       setRepositories(repositoriesRetrieved);
     },
     (e) => { setError(e) });
