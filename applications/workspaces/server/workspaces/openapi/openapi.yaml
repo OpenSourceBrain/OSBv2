@@ -91,7 +91,7 @@ paths:
           required: false
           description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
       responses:
-        200:
+        "200":
           description: Return all available workspaces
           content:
             application/json:
@@ -116,15 +116,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Workspace"
+              $ref: '#/components/schemas/Workspace'
       responses:
-        201:
+        "201":
           description: Save successful.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Workspace"
-        400:
+                $ref: '#/components/schemas/Workspace'
+        "400":
           description: The Workspace already exists.
   /workspace/{id}:
     parameters:
@@ -139,13 +139,13 @@ paths:
         - {}
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The workspace.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Workspace"
-        404:
+                $ref: '#/components/schemas/Workspace'
+        "404":
           description: The workspace was not found.
       tags:
         - rest
@@ -161,13 +161,13 @@ paths:
             schema:
               $ref: "#/components/schemas/Workspace"
       responses:
-        200:
+        "200":
           description: The workspace was updated.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Workspace"
-        404:
+                $ref: '#/components/schemas/Workspace'
+        "404":
           description: The workspace was not found.
       tags:
         - rest
@@ -176,9 +176,9 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The workspace was deleted.
-        404:
+        "404":
           description: The workspace was not found.
       tags:
         - rest
@@ -204,11 +204,11 @@ paths:
                 resourceorigins:
                   type: array
                   items:
-                    $ref: "#/components/schemas/ResourceOrigin"
+                    $ref: '#/components/schemas/ResourceOrigin'
       responses:
-        200:
+        "200":
           description: The workspace was updated with the thumbnail.
-        404:
+        "404":
           description: The workspace was not found or the thumbnail was not specified
       tags:
         - rest
@@ -226,13 +226,13 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The workspace was cloned.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Workspace"
-        404:
+                $ref: '#/components/schemas/Workspace'
+        "404":
           description: The workspace was not found
       tags:
         - rest
@@ -259,9 +259,9 @@ paths:
                   type: string
                   format: binary
       responses:
-        200:
+        "200":
           description: The workspace was updated with the thumbnail.
-        404:
+        "404":
           description: The workspace was not found or the thumbnail was not specified
       tags:
         - rest
@@ -288,9 +288,9 @@ paths:
                   type: string
                   format: binary
       responses:
-        200:
+        "200":
           description: The image was added to the workspace.
-        404:
+        "404":
           description: The workspace was not found or the image was not specified
       tags:
         - rest
@@ -314,9 +314,9 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The Workspace Image is successfully deleted from the workspace.
-        404:
+        "404":
           description: The workspace was not found.
       tags:
         - rest
@@ -335,15 +335,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WorkspaceResource"
+              $ref: '#/components/schemas/WorkspaceResource'
       responses:
-        201:
+        "201":
           description: Save successful.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkspaceResource"
-        400:
+                $ref: '#/components/schemas/WorkspaceResource'
+        "400":
           description: The WorkspaceResource already exists.
 
   /workspaceresource/{id}:
@@ -358,13 +358,13 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The WorkspaceResource.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkspaceResource"
-        404:
+                $ref: '#/components/schemas/WorkspaceResource'
+        "404":
           description: The WorkspaceResource was not found.
       tags:
         - rest
@@ -378,15 +378,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WorkspaceResource"
+              $ref: '#/components/schemas/WorkspaceResource'
       responses:
-        200:
+        "200":
           description: The WorkspaceResource was updated.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkspaceResource"
-        404:
+                $ref: '#/components/schemas/WorkspaceResource'
+        "404":
           description: The WorkspaceResource was not found.
       tags:
         - rest
@@ -395,12 +395,12 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The WorkspaceResource was deleted.
-        404:
+        "404":
           description: The WorkspaceResource was not found.
       tags:
-        - rest
+      - rest
 
   /workspaceresource/{id}/open:
     parameters:
@@ -416,9 +416,9 @@ paths:
         - bearerAuth: []
       operationId: workspaces.controllers.workspace_resource_controller.open
       responses:
-        200:
+        "200":
           description: The WorkspaceResource was updated.
-        404:
+        "404":
           description: The WorkspaceResource was not found.
       tags:
         - rest
@@ -476,7 +476,7 @@ paths:
           required: false
           description: The id of the owner user to filter with
       responses:
-        200:
+        "200":
           description: Return all available repositories
           content:
             application/json:
@@ -501,15 +501,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OSBRepository"
+              $ref: '#/components/schemas/OSBRepository'
       responses:
-        201:
+        "201":
           description: Save successful.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OSBRepository"
-        400:
+                $ref: '#/components/schemas/OSBRepository'
+        "400":
           description: The OSB repository already exists.
   /osbrepository/context:
     parameters:
@@ -540,6 +540,72 @@ paths:
           description: The repository was not found.
       tags:
         - rest
+  /osbrepository/keywords:
+    parameters:
+      - in: query
+        name: uri
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: repository_type
+        schema:
+          $ref: '#/components/schemas/RepositoryType'
+        required: true
+      - in: query
+        name: context
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Used to retrieve keywords for a repository.
+      operationId: get_keywords
+      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      responses:
+        "200":
+          description: The keywords for repository.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "404":
+          description: The repository was not found.
+      tags:
+        - rest
+  /osbrepository/description:
+    parameters:
+      - in: query
+        name: uri
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: repository_type
+        schema:
+          $ref: '#/components/schemas/RepositoryType'
+        required: true
+      - in: query
+        name: context
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Used to retrieve description for a repository.
+      operationId: get_description
+      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      responses:
+        "200":
+          description: The description for repository.
+          content:
+            application/json:
+              schema:
+                type: string
+        "404":
+          description: The repository was not found.
+      tags:
+        - rest
   /osbrepository/{id}:
     parameters:
       - in: path
@@ -557,13 +623,13 @@ paths:
       # x-openapi-router-controller: workspaces.controllers.osbrepository_controller
       # operationId: get
       responses:
-        200:
+        "200":
           description: The repository.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/OSBRepository"
-        404:
+        "404":
           description: The repository was not found.
       tags:
         - rest
@@ -579,13 +645,13 @@ paths:
             schema:
               $ref: "#/components/schemas/OSBRepository"
       responses:
-        200:
+        "200":
           description: The workspace was updated.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/OSBRepository"
-        404:
+        "404":
           description: The workspace was not found.
       tags:
         - rest
@@ -594,9 +660,9 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The OSBRepository was deleted.
-        404:
+        "404":
           description: The OSBRepository was not found.
       tags:
         - rest
@@ -630,7 +696,7 @@ paths:
           required: false
           description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
-        200:
+        "200":
           description: Return all available volumestorages
           content:
             application/json:
@@ -657,13 +723,13 @@ paths:
             schema:
               $ref: "#/components/schemas/VolumeStorage"
       responses:
-        201:
+        "201":
           description: Save successful.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/VolumeStorage"
-        400:
+        "400":
           description: The VolumeStorage already exists.
   /volumestorage/{id}:
     parameters:
@@ -675,13 +741,13 @@ paths:
     get:
       summary: Used to retrieve an volumestorage from the repository.
       responses:
-        200:
+        "200":
           description: The volumestorage.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/VolumeStorage"
-        404:
+        "404":
           description: The volumestorage was not found.
       tags:
         - rest
@@ -697,13 +763,13 @@ paths:
             schema:
               $ref: "#/components/schemas/VolumeStorage"
       responses:
-        200:
+        "200":
           description: The volumestorage was updated.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/VolumeStorage"
-        404:
+        "404":
           description: The volumestorage was not found.
       tags:
         - rest
@@ -712,9 +778,9 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The volumestorage was deleted.
-        404:
+        "404":
           description: The volumestorage was not found.
       tags:
         - rest
@@ -747,7 +813,7 @@ paths:
           required: false
           description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
       responses:
-        200:
+        "200":
           description: Return all available tags
           content:
             application/json:
@@ -774,13 +840,13 @@ paths:
             schema:
               $ref: "#/components/schemas/Tag"
       responses:
-        201:
+        "201":
           description: Save successful.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-        400:
+        "400":
           description: The Tag already exists.
   /tag/{id}:
     parameters:
@@ -792,13 +858,13 @@ paths:
     get:
       summary: Used to retrieve an tag from the repository.
       responses:
-        200:
+        "200":
           description: The tag.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-        404:
+        "404":
           description: The tag was not found.
       tags:
         - rest
@@ -814,13 +880,13 @@ paths:
             schema:
               $ref: "#/components/schemas/Tag"
       responses:
-        200:
+        "200":
           description: The tag was updated.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-        404:
+        "404":
           description: The tag was not found.
       tags:
         - rest
@@ -829,9 +895,9 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        200:
+        "200":
           description: The tag was deleted.
-        404:
+        "404":
           description: The tag was not found.
       tags:
         - rest

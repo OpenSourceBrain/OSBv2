@@ -60,6 +60,12 @@ export interface GetContextsRequest {
     repositoryType: RepositoryType;
 }
 
+export interface GetMetadataRequest {
+    uri: string;
+    repositoryType: RepositoryType;
+    context: string;
+}
+
 export interface OsbrepositoryGetRequest {
     page?: number;
     perPage?: number;
@@ -327,6 +333,108 @@ export class RestApi extends runtime.BaseAPI {
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse2001FromJSON(jsonValue));
+    }
+
+    /**
+     * Used to retrieve the description of a repository.
+     */
+    async getDescriptionRaw(requestParameters: GetMetadataRequest): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling getDescription.');
+        }
+
+        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
+            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling getDescription.');
+        }
+
+        if (requestParameters.context === null || requestParameters.context === undefined) {
+            throw new runtime.RequiredError('context','Required parameter requestParameters.context was null or undefined when calling getDescription.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
+        }
+
+        if (requestParameters.repositoryType !== undefined) {
+            queryParameters['repository_type'] = requestParameters.repositoryType;
+        }
+
+        if (requestParameters.context !== undefined) {
+            queryParameters['context'] = requestParameters.context;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/osbrepository/description`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+
+    /**
+     * Used to retrieve description of a repository.
+     */
+    async getDescription(requestParameters: GetMetadataRequest): Promise<string> {
+        const response = await this.getDescriptionRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Used to retrieve keywords for a repository.
+     */
+    async getKeywordsRaw(requestParameters: GetMetadataRequest): Promise<runtime.ApiResponse<Array<string>>> {
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling getKeywords.');
+        }
+
+        if (requestParameters.repositoryType === null || requestParameters.repositoryType === undefined) {
+            throw new runtime.RequiredError('repositoryType','Required parameter requestParameters.repositoryType was null or undefined when calling getKeywords.');
+        }
+
+        if (requestParameters.context === null || requestParameters.context === undefined) {
+            throw new runtime.RequiredError('context','Required parameter requestParameters.context was null or undefined when calling getKeywords.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
+        }
+
+        if (requestParameters.repositoryType !== undefined) {
+            queryParameters['repository_type'] = requestParameters.repositoryType;
+        }
+
+        if (requestParameters.context !== undefined) {
+            queryParameters['context'] = requestParameters.context;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/osbrepository/keywords`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+
+    /**
+     * Used to retrieve keywords/topics of a repository.
+     */
+    async getKeywords(requestParameters: GetMetadataRequest): Promise<Array<string>> {
+        const response = await this.getKeywordsRaw(requestParameters);
+        return await response.value();
     }
 
     /**

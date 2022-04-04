@@ -177,15 +177,10 @@ export const EditRepoDialog = ({
     userId: user.id,
   });
 
-  React.useEffect(() => {
-    setFormValues({ ...repository, userId: user.id });
-  }, [repository]);
-
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
-  const repositoryTags = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
 
-  const [defaultTags, setDefaultTags] = useState(repositoryTags);
+  const [uri, setUri] = useState<string>();
 
   const [error, setError] = useState({
     uri: '',
@@ -194,6 +189,17 @@ export const EditRepoDialog = ({
     name: '',
   });
 
+  const setRepositoryTags = (tags: string[]) => {
+    const arrayOfTags: Tag[] = [];
+    tags.forEach(tag => arrayOfTags.push({ tag }));
+    setFormValues({ ...formValues, tags: arrayOfTags });
+  };
+
+  React.useEffect(() => {
+    setFormValues({ ...repository, userId: user.id });
+    const repositoryTags: string[] = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
+    setRepositoryTags(repositoryTags);
+  }, [repository]);
 
 
   const handleClose = () => {
@@ -206,11 +212,13 @@ export const EditRepoDialog = ({
     setError({ ...error, [key]: !value });
   };
 
+  // Needs debouncing
   const handleInputUri = (event: any) => {
-    const uri = event.target.value;
+    const value = event?.target?.value || event.text;
+    setUri(value);
 
     handleInput(event, 'uri');
-    RepositoryService.getRepositoryContext(uri, formValues.repositoryType).then(
+    RepositoryService.getRepositoryContext(value, formValues.repositoryType).then(
       (ctxs) => {
 
         setContexts(ctxs);
@@ -220,10 +228,24 @@ export const EditRepoDialog = ({
 
   }
 
-  const setRepositoryTags = (tagsArray: string[]) => {
-    const arrayOfTags: Tag[] = [];
-    tagsArray.forEach(tag => arrayOfTags.push({ tag }));
-    setFormValues({ ...formValues, tags: arrayOfTags });
+  const handleInputContext = (event: any) => {
+    const value = event?.target?.value || event.text;
+    if (uri) {
+      RepositoryService.getRepositoryKeywords(uri, formValues.repositoryType, value).then(
+        (tags) => {
+          /* state updates are asynchronous: can use setRepositoryTags but then
+           * we need to tweak it to also set context in the same state update
+           * to prevent inconsistencies and overwriting */
+          const arrayOfTags: Tag[] = [];
+          tags.forEach(tag => arrayOfTags.push({ tag }));
+          /* fetch other information if required, and update the state all at once */
+          setFormValues({ ...formValues, tags: arrayOfTags, defaultContext: value });
+
+        },
+        () => setError({ ...error, uri: "Could not get tags" })
+      )
+
+    }
   }
 
   const addOrUpdateRepository = () => {
@@ -244,16 +266,6 @@ export const EditRepoDialog = ({
           (r) => {
             setLoading(false);
             handleClose();
-            setFormValues({
-              ...RepositoryService.EMPTY_REPOSITORY,
-              userId: user.id,
-            });
-            setError({
-              uri: '',
-              defaultContext: '',
-              contentTypesList: '',
-              name: '',
-            });
             const obj: any = r;
             // Computed fields are not updated: remove so that the repo can be merged by the caller
             Object.keys(r).forEach(key => obj[key] === undefined ? delete obj[key] : {});
@@ -354,8 +366,8 @@ export const EditRepoDialog = ({
           <FormControl variant="outlined" fullWidth={true} error={Boolean(error.defaultContext)}>
             <Select
               value={formValues.defaultContext}
-              defaultValue={'master'}
-              onChange={(e) => handleInput(e, "defaultContext")}
+              defaultValue={'main'}
+              onChange={(e) => handleInputContext(e)}
               IconComponent={KeyboardArrowDownIcon}
 
             >
@@ -400,7 +412,6 @@ export const EditRepoDialog = ({
             multiple={true}
             freeSolo={true}
             options={tagOptions.map(t => t.tag)}
-            defaultValue={defaultTags}
             onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
@@ -410,6 +421,7 @@ export const EditRepoDialog = ({
             renderInput={(params) => (
               <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
             )}
+            value={formValues.tags && formValues.tags.map((tagObject) => tagObject.tag)}
           />
         </Box>
 
