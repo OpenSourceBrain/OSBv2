@@ -123,7 +123,7 @@ class FigShareAdapter:
         # username / password are optional and future usage,
         # e.g. for accessing non public repos
         return workflow.create_copy_task(
-            image_name="workspaces-figshare-copy",
+            image_name="workflows-extract-download",
             workspace_id=workspace_id,
             name=name,
             folder=folder,
