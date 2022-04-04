@@ -327,9 +327,7 @@ export const EditRepoDialog = ({
                 onChange={(e) => handleInput(e, "repositoryType")}
                 IconComponent={KeyboardArrowDownIcon}
               >
-                {Object.values(RepositoryType)
-                  .filter((t) => t === RepositoryType.Github || t === RepositoryType.Dandi) // TODO remove when all repo types are available
-                  .map((repositoryType) => (
+                {Object.values(RepositoryType).map((repositoryType) => (
                     <MenuItem key={repositoryType} value={repositoryType}>
                       {repositoryType}
                     </MenuItem>
@@ -362,7 +360,7 @@ export const EditRepoDialog = ({
         </Box>
         {contexts && <Box className="form-group">
 
-          <Typography component="label">Default Branch</Typography>
+          <Typography component="label">Default Branch/Version</Typography>
           <FormControl variant="outlined" fullWidth={true} error={Boolean(error.defaultContext)}>
             <Select
               value={formValues.defaultContext}
@@ -395,7 +393,7 @@ export const EditRepoDialog = ({
             >
               <MenuItem value={RepositoryContentType.Experimental}>
                 <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Experimental)} />
-                <ListItemText primary="NWB Experimental Data" />
+                <ListItemText primary="Experimental Data" />
               </MenuItem>
               <MenuItem value={RepositoryContentType.Modeling}>
                 <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Modeling)} />
