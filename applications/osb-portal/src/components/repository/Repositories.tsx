@@ -232,21 +232,21 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={3} lg={2} >
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} >
               <Box
                 className="col"
                 display="flex"
                 alignItems="center"
               >
-                {!showSimpleVersion && <Button
+                <Button
                   onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
                 >
                   { /* TODO: use Icons once we have themed icons for Figshare/Dandi */ }
                   {Resources[repository.repositoryType] || repository.repositoryType}
-                </Button>}
+                </Button>
               </Box>
-            </Grid>
-            <Grid item={true} xs={12} sm={3} lg={4}
+            </Grid>}
+            <Grid item={true} xs={12} sm={3} lg={showSimpleVersion ? 5 : 4}
               ref={gridRef}>
               <Box className="col" onClick={(e: any) => { console.log(e); if (e.target.tagName.toLowerCase() !== 'a') props.handleRepositoryClick(repository.id) }}>
                 < Typography component="strong" >
@@ -329,7 +329,7 @@ export default (props: RepositoriesProps) => {
                 {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
               </Box>
             </Grid>
-            <Grid item={true} xs={12} sm={3} lg={1} >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={1} >
               <Box
                 className="col"
                 display="flex"
