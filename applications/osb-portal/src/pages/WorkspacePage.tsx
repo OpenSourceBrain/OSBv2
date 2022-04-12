@@ -16,7 +16,7 @@ import ArrowRight from "@material-ui/icons/ArrowRight";
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
 import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
-import { Workspace, WorkspaceResource } from "../types/workspace";
+import { Workspace, WorkspaceResource, OSBApplications } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import MarkdownViewer from "../components/common/MarkdownViewer";
@@ -145,53 +145,48 @@ export const WorkspacePage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const [workspace, setWorkspace] = React.useState<Workspace>(null);
+  const workspace = props.workspace;
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
   const [error, setError] = React.useState<any>(null);
+  let options;
 
-  React.useEffect(() => {
-    WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
-      setWorkspace(ws);
-    },
-    (e) => {setError(e)});
-  }, [refresh]);
+
+  const PREFIX_TEXT = "Open with "
+  if (!workspace) {
+    props.selectWorkspace(workspaceId);
+  } else {
+    const apps = workspace ? workspace.lastOpen.type.application.name ? [PREFIX_TEXT + workspace.lastOpen.type.application.name] : [] : null;
+    for (const app of Object.keys(OSBApplications)) {
+        if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
+            apps.push(PREFIX_TEXT + OSBApplications[app].name);
+        }
+      }
+    options = apps;
+  }
+
 
   if (error) {
     throw error;
   }
   const handleCloseEditWorkspace = () => {
-
-    WorkspaceService.getWorkspace(parseInt(workspaceId, 10)).then((ws) => {
-      setWorkspace(ws);
+      props.refreshWorkspace(workspaceId)
       setEditWorkspaceOpen(false);
-    },
-    (e) => {setError(e)});
   }
 
   const handleResourceClick = (resource: WorkspaceResource) => {
     openWithApp(resource.type.application.name);
   }
 
-  const OPEN_NWB = 'OPEN WITH NWB EXPLORER';
-  const OPEN_JUPYTER = 'OPEN WITH JUPYTER LAB';
-  const OPEN_NETPYNE = 'OPEN WITH NETPYNE';
-  const options = [OPEN_NWB, OPEN_JUPYTER, OPEN_NETPYNE];
 
+  // open application that is default for selected resource,
+  // or option selected from app selection drop down
   const openWithApp = (selectedOption: string) => {
-    let app;
-    switch (selectedOption) {
-      case OPEN_NETPYNE:
-        app = 'netpyne';
-        break;
-      case OPEN_JUPYTER:
-        app = 'jupyter';
-        break;
-      default:
-        app = 'nwbexplorer'
-        break;
+    for (const app of Object.keys(OSBApplications)) {
+      if ((PREFIX_TEXT + OSBApplications[app].name).includes(selectedOption)) {
+        history.push(`/workspace/open/${workspaceId}/${app}`);
+      }
     }
-    history.push(`/workspace/open/${workspaceId}/${app}`);
   }
 
   const canEdit = canEditWorkspace(props.user, workspace);
@@ -231,7 +226,7 @@ export const WorkspacePage = (props: any) => {
               <Typography>Resources</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} refreshWorkspacePage={() => { setRefresh(!refresh) }} openResource={handleResourceClick} />
+              <WorkspaceInteractions workspace={workspace} open={true} user={props.user} openResource={handleResourceClick} />
             </AccordionDetails>
           </Accordion>
 
@@ -273,14 +268,12 @@ export const WorkspacePage = (props: any) => {
           </Box>
         </Box>
 
-        {canEdit && editWorkspaceOpen && <OSBDialog
-          title={"Edit workspace " + workspace.name}
+        {canEdit && editWorkspaceOpen && <WorkspaceEditor
           open={editWorkspaceOpen}
-          closeAction={handleCloseEditWorkspace}
-          maxWidth="md"
-        >
-          <WorkspaceEditor workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
-        </OSBDialog>}
+          title={"Edit workspace: " + workspace.name}
+          closeHandler={handleCloseEditWorkspace}
+          workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+        }
       </>}
     </Box>
   )

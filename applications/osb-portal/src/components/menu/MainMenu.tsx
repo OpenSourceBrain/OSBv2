@@ -42,6 +42,7 @@ export const MainMenu = (props: any) => {
           className={classes.button + " " + classes.firstButton}
           items={[
             { label: "Documentation", callback: () => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html") },
+            { label: "Chat", callback: () => window.open("https://matrix.to/#/%23OpenSourceBrain_community:gitter.im?utm_source=gitter") },
             { label: "About", callback: handleDialogOpen },
           ]}
         />

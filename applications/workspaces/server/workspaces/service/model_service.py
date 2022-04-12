@@ -164,7 +164,7 @@ class WorkspaceService(BaseModelService):
 
     def get_workspace_volume_size(self, ws: Workspace):
         # Place to change whenever we implement user or workspace based sizing
-        return get_configuration('workspaces').workspace_size
+        return get_configuration('workspaces').conf['workspace_size']
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):
@@ -302,16 +302,10 @@ class OsbrepositoryService(BaseModelService):
 
     @send_event(message_type="osbrepository", operation="create")
     def post(self, body):
-        osbrepository = OSBRepository.from_dict(body)
+        osbrepository = OSBRepository.from_dict(body) # Validate
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
-        # Logic to add default tags from the remote repository
-        tags = osbrepository_helper.get_tags(osbrepository)
-        if tags:
-            for tag in tags:
-                osbrepository.tags.append(Tag(tag=tag))
-        
-        body['tags'] = osbrepository.to_dict().get('tags', [])
+
         self.map_entity(body)
         return super().post(body)
 
@@ -366,15 +360,15 @@ class WorkspaceresourceService(BaseModelService):
         return True
 
     def get(self, id_):
-        workspace_resource = super().get(id_)
-
+        workspace_resource: WorkspaceResourceEntity = super().get(id_)
+        workspace_resource = workspace_resource.to_dict()
         if len(workspace_resource) > 2:
             workspace_resource.update(
                 {"origin": json.loads(workspace_resource.get("origin"))})
-        return workspace_resource
+        return WorkspaceResource.from_dict(workspace_resource)
 
     def delete(self, id_):
-        workspace_resource = WorkspaceResource.from_dict(self.get(id_))
+        workspace_resource = self.get(id_)
         super().delete(id_)
         from workspaces.helpers.etl_helpers import delete_workspace_resource
         delete_workspace_resource(workspace_resource)
