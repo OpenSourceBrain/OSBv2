@@ -56,4 +56,11 @@ harness:
     password: secret
     datavolume: /opt/data/
     pgdata: /opt/data/pgdata
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 200m
+      limits:          
+        memory: "256Mi"
+        cpu: "500m"
 workspace_size: 2Gi

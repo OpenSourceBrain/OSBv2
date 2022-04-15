@@ -73,11 +73,12 @@ spec:
           - containerPort: {{ .Values.apps.workspaces.harness.database.port }}
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "200m"
+            memory: {{ .Values.apps.workspaces.harness.database.resources.requests.memory }}
+            cpu: {{ .Values.apps.workspaces.harness.database.resources.requests.cpu }}
           limits:
-            memory: "256Mi"
-            cpu: "500m"
+            memory: {{ .Values.apps.workspaces.harness.database.resources.limits.memory }}
+            cpu: {{ .Values.apps.workspaces.harness.database.resources.limits.cpu }}
+  
         volumeMounts:
         - name: workspaces-db
           mountPath: {{ .Values.apps.workspaces.harness.database.datavolume }}
