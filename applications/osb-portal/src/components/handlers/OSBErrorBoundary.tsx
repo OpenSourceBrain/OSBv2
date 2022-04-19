@@ -64,6 +64,7 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
             <Alert severity="error" key={1}><div className="errorAlertDiv" key={"div-1"} >{this.state.message}</div></Alert>
             </DialogContent>
             <DialogActions>
+              <Button href="https://status.opensourcebrain.org/" target="_blank">Check system status</Button>
               <Button href="https://github.com/OpenSourceBrain/OSBv2/issues/new" target="_blank">Report error</Button>
               <Button variant="outlined" color="primary" onClick={() => window.open("/", "_self")}>Return to homepage</Button>
             </DialogActions>
