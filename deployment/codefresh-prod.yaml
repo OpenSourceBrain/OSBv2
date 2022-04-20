@@ -76,15 +76,6 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-frontend-build:
-        stage: publish
-        type: push
-        title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_cloudharness-flask:
         stage: publish
         type: push
@@ -121,47 +112,11 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_sentry:
-        stage: publish
-        type: push
-        title: Sentry
-        candidate: '${{REGISTRY}}/osb/sentry:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_jupyterhub:
         stage: publish
         type: push
         title: Jupyterhub
         candidate: '${{REGISTRY}}/osb/jupyterhub:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_samples:
-        stage: publish
-        type: push
-        title: Samples
-        candidate: '${{REGISTRY}}/osb/samples:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_samples-print-file:
-        stage: publish
-        type: push
-        title: Samples print file
-        candidate: '${{REGISTRY}}/osb/samples-print-file:${{DEPLOYMENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_samples-sum:
-        stage: publish
-        type: push
-        title: Samples sum
-        candidate: '${{REGISTRY}}/osb/samples-sum:${{DEPLOYMENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
