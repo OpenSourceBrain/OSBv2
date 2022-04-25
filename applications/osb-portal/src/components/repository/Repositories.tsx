@@ -232,20 +232,6 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} >
-              <Box
-                className="col"
-                display="flex"
-                alignItems="center"
-              >
-                <Button
-                  onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
-                >
-                  { /* TODO: use Icons once we have themed icons for Figshare/Dandi */ }
-                  {Resources[repository.repositoryType] || repository.repositoryType}
-                </Button>
-              </Box>
-            </Grid>}
             <Grid item={true} xs={12} sm={3} lg={showSimpleVersion ? 5 : 4}
               ref={gridRef}>
               <Box className="col" onClick={(e: any) => { console.log(e); if (e.target.tagName.toLowerCase() !== 'a') props.handleRepositoryClick(repository.id) }}>
@@ -270,6 +256,20 @@ export default (props: RepositoriesProps) => {
                 <Typography>
                   {repository?.user?.firstName} {repository?.user?.lastName}
                 </Typography>
+              </Box>
+            </Grid>}
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} >
+              <Box
+                className="col"
+                display="flex"
+                alignItems="center"
+              >
+                <Button
+                  onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
+                >
+                  { /* TODO: use Icons once we have themed icons for Figshare/Dandi */ }
+                  {Resources[repository.repositoryType] || repository.repositoryType}
+                </Button>
               </Box>
             </Grid>}
 
