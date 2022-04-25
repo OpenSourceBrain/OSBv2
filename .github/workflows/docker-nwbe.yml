@@ -1,0 +1,20 @@
+name: Docker Image Build NWB Explorer
+
+on:
+  push:
+    branches: [ master, dev*, feature/docker_builds_gha ]
+  pull_request:
+    branches: [ master, dev*, feature/docker_builds_gha ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        cd applications/nwb-explorer
+        docker build -t mynwbosb -f Dockerfile --no-cache .
