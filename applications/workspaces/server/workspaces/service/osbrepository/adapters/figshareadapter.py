@@ -120,10 +120,16 @@ class FigShareAdapter:
         name = name if name != "/" else self.osbrepository.name
         # no file tree in FigShare
         folder = self.osbrepository.name
+
+        # download everything: the handler will fetch the complete file list
+        # and download them all
+        if not path or path == "/":
+            path = self.article_id
+
         # username / password are optional and future usage,
         # e.g. for accessing non public repos
         return workflow.create_copy_task(
-            image_name="workflows-extract-download",
+            image_name="workspaces-figshare-copy",
             workspace_id=workspace_id,
             name=name,
             folder=folder,

@@ -2,3 +2,17 @@ harness:
   sentry: false
   database:
     size: 10Gi
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 10m
+  deployment:
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 10m
+      limits:
+        memory: 512Mi
+        cpu: 1500m
+
+    
