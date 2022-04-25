@@ -1,4 +1,4 @@
-name: Docker Image Build NWB Explorer
+name: Docker Image Build Jupyterlab
 
 on:
   push:
@@ -16,8 +16,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        cd applications/nwb-explorer
-        docker build -t mynwbosb -f Dockerfile --no-cache .
+        cd applications/jupyterlab
+        docker build -t myjlab -f Dockerfile --no-cache .
     - name: Info on Docker image sizes
       run: |
         docker images
