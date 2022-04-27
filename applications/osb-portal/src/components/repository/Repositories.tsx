@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
         width: ".5rem",
         height: "auto",
       },
+      "& .repo-user": {
+        width: theme.spacing(3),
+        height: "3.0ex"
+      },
       [theme.breakpoints.down("xs")]: {
         paddingTop: theme.spacing(0),
         paddingBottom: theme.spacing(0),
@@ -251,11 +255,22 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1}>
               <Box className="col">
-                <Typography>
-                  {repository?.user?.firstName} {repository?.user?.lastName}
-                </Typography>
+                {
+                  // TODO: use user avatar, but repository.user does not include an avatar property
+                }
+                <Chip
+                  avatar={
+                  <Avatar alt="user-profile-avatar"
+                    className="repo-user"
+                  >
+                    {repository.user.firstName.charAt(0) + repository.user.lastName.charAt(0)}
+                  </Avatar>
+                  }
+                  label={repository?.user?.firstName + " " + repository?.user?.lastName}
+                  onClick={() => window.open(`/user/${repository?.user?.id}`, "_self") }
+                />
               </Box>
             </Grid>}
             {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} >
