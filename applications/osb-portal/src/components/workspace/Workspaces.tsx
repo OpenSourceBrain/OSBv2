@@ -80,7 +80,7 @@ export const Workspaces = ({ user, counter }: any) => {
     switch (selection.current) {
       case WorkspaceSelection.PUBLIC: {
         if (filterText.current !== "") {
-          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current }).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current, tags: [filterText.current] }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(true, false, page).then(update, (e) => setError(true));
         }
@@ -88,7 +88,7 @@ export const Workspaces = ({ user, counter }: any) => {
       }
       case WorkspaceSelection.FEATURED: {
         if (filterText.current !== "") {
-          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current }).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current, tags: [filterText.current] }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(true, true, page).then(update, (e) => setError(true));
         }
@@ -96,7 +96,7 @@ export const Workspaces = ({ user, counter }: any) => {
       }
       default: {
         if (filterText.current !== "") {
-          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current }).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current, tags: [filterText.current] }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(false, false, page).then(update, (e) => setError(true));
         }
