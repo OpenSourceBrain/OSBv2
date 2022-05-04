@@ -42,14 +42,14 @@ def map_user(kc_user) -> User:
                      for k in kc_user['attributes'] if kc_user['attributes'][k] and len(k) > len('profile--') and k.startswith('profile--') }
     try:
         user.avatar = kc_user['attributes'].get('avatar', [None])[0]
-    except IndexError:
-        # no avatar is set
+    except (IndexError, TypeError):
+        # no avatar is set or is empty
         pass
     user.registration_date = datetime.fromtimestamp(kc_user['createdTimestamp'] / 1000)
     try:
         user.website = kc_user['attributes'].get('website', [None])[0]
-    except IndexError:
-        # no website is set
+    except (IndexError, TypeError):
+        # no website is set or is empty
         pass
 
     if 'userGroups' in kc_user:
