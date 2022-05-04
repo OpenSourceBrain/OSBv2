@@ -18,6 +18,8 @@ import { User } from "../../apiclient/accounts";
 import { updateUser } from "../../service/UserService";
 import OSBDialog from "../common/OSBDialog";
 import Tooltip from "@material-ui/core/Tooltip";
+import LanguageIcon from '@material-ui/icons/Language';
+import GroupIcon from '@material-ui/icons/Group';
 
 const GITHUB_PROFILE = 'github';
 const BITBUCKET_PROFILE = 'bitbucket';
@@ -208,7 +210,7 @@ export default (props: UserEditProps) => {
                         <TextField error={error.website} helperText={error.website} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={userProfileForm.website} placeholder="Website link" InputProps={{
                             startAdornment: (
                                 <Box className={classes.inputIconBox}>
-                                    <LinkIcon fontSize="small" />
+                                    <LanguageIcon fontSize="small" />
                                 </Box>
                             )
                         }} />
@@ -224,7 +226,7 @@ export default (props: UserEditProps) => {
                                     startAdornment: (
                                         <Box className={classes.inputIconBox}>
                                             {
-                                                profileType === GITHUB_PROFILE ? <GitHubIcon fontSize="small" /> : profileType === BITBUCKET_PROFILE ? <BitBucketIcon /> : profileType === TWITTER_PROFILE ? <TwitterIcon fontSize="small" /> : <LinkIcon fontSize="small" />
+                                                profileType === GITHUB_PROFILE ? <GitHubIcon fontSize="small" /> : profileType === BITBUCKET_PROFILE ? <BitBucketIcon /> : profileType === TWITTER_PROFILE ? <TwitterIcon fontSize="small" /> : profileType === ICNF_PROFILE ? <GroupIcon fontSize="small" /> : <LinkIcon fontSize="small" />
                                             }
                                         </Box>
                                     )

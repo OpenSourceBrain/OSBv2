@@ -15,6 +15,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import LinkIcon from "@material-ui/icons/Link";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import TwitterIcon from '@material-ui/icons/Twitter';
+import LanguageIcon from '@material-ui/icons/Language';
+import GroupIcon from '@material-ui/icons/Group';
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
 import EmailIcon from "@material-ui/icons/Email";
@@ -22,6 +25,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ShowMoreText from "react-show-more-text";
+import Tooltip from '@material-ui/core/Tooltip';
 
 import MarkdownViewer from "../components/common/MarkdownViewer";
 import { MainMenu } from "../components/index";
@@ -203,7 +207,7 @@ export const UserPage = (props: any) => {
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
   }
-  const { icnf, bitbucket, github, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
+  const { icnf, bitbucket, github, twitter, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
   const handleUpdateUser = (u: User) => {
     setUser(u);
@@ -234,12 +238,13 @@ export const UserPage = (props: any) => {
               </Box>
 
               {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">
-                {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.website}>Website</Link></Typography>}
+                {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LanguageIcon fontSize="small" /><Tooltip title="Website"><Link href={user.website}>{user.website}</Link></Tooltip></Typography>}
 
-                {icnf && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={icnf}>INCF Profile</Link></Typography>}
-                {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>Github Profile</Link></Typography>}
-                {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>Bitbucket profile</Link></Typography>}
-                {Object.keys(otherProfiles).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={otherProfiles[k]}>{k} profile</Link></Typography>)}
+                {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Tooltip title="GitHub"><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>@{ github.includes('github.com') ? github.replace(/\/$/, '').split("/").pop() : github }</Link></Tooltip></Typography>}
+                {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Tooltip title="BitBucket"><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>@{ bitbucket.includes('bitbucket.org') ? bitbucket.replace(/\/$/, '').split("/").pop() : bitbucket }</Link></Tooltip></Typography>}
+                {twitter && <Typography component="p" variant="body2" gutterBottom={true}><TwitterIcon fontSize="small" /><Tooltip title="Twitter"><Link href={twitter.includes('twitter.com') ? twitter : 'https://twitter.com/' + twitter}>@{ twitter.includes('twitter.com') ? twitter.replace(/\/$/, '').split("/").pop() : twitter }</Link></Tooltip></Typography>}
+                {icnf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="GitHub"><Link href={icnf}>INCF</Link></Tooltip></Typography>}
+                {Object.keys(otherProfiles).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
               </Box>}
 
               {user.groups && <Box className="groups" width="100%">
