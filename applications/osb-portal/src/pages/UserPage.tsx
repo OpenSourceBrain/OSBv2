@@ -244,7 +244,7 @@ export const UserPage = (props: any) => {
                 {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Tooltip title="BitBucket"><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>@{ bitbucket.includes('bitbucket.org') ? bitbucket.replace(/\/$/, '').split("/").pop() : bitbucket }</Link></Tooltip></Typography>}
                 {twitter && <Typography component="p" variant="body2" gutterBottom={true}><TwitterIcon fontSize="small" /><Tooltip title="Twitter"><Link href={twitter.includes('twitter.com') ? twitter : 'https://twitter.com/' + twitter}>@{ twitter.includes('twitter.com') ? twitter.replace(/\/$/, '').split("/").pop() : twitter }</Link></Tooltip></Typography>}
                 {icnf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="GitHub"><Link href={icnf}>INCF</Link></Tooltip></Typography>}
-                {Object.keys(otherProfiles).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
+                {Object.keys(otherProfiles).filter((k) => (otherProfiles[k] !== "")).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
               </Box>}
 
               {user.groups && <Box className="groups" width="100%">
