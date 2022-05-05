@@ -201,7 +201,7 @@ export const UserPage = (props: any) => {
     throw error;
   }
 
-  if (!user) {
+  if (!user || (user.profiles === undefined)) {
     return null;
   }
   const openRepoUrl = (repositoryId: number) => {
