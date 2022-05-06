@@ -19,13 +19,41 @@ import OSBDialog from "../common/OSBDialog";
 import Tooltip from "@material-ui/core/Tooltip";
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
+import BusinessIcon from '@material-ui/icons/Business';
 
-const GITHUB_PROFILE = 'GitHub';
-const BITBUCKET_PROFILE = 'BitBucket';
-const TWITTER_PROFILE = 'Twitter';
-const ORCID_PROFILE = 'ORCID';
-const NEUROTREE_PROFILE = 'Neurotree';
-const ICNF_PROFILE = 'ICNF';
+// This order is followed when data is displayed
+const profileMeta: {[key: string]: {[key: string]: any}} = {
+    'affiliation': {
+        'text': 'Affiliation',
+        'icon': BusinessIcon,
+        'prefix': 'https://..',
+    },
+    'github': {
+        'text': 'GitHub',
+        'icon': GitHubIcon,
+        'prefix': 'https://github.com/',
+    },
+    'bitbucket': {
+        'text': 'BitBucket',
+        'icon': BitBucketIcon,
+        'prefix': 'https://bitbucket.com/'
+    },
+    'twitter': {
+        'text': 'Twitter',
+        'icon': TwitterIcon,
+        'prefix': 'https://twitter.com/'
+    },
+    'incf': {
+        'text': 'INCF',
+        'icon': GroupIcon,
+        'prefix': 'https://incf.org/'
+    },
+    'orcid': {
+        'text': 'ORCID',
+        'icon': GroupIcon,
+        'prefix': 'https://orcid.org/'
+    },
+}
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -68,18 +96,10 @@ export default (props: UserEditProps) => {
     const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
     const [newLinkInformation, setNewLinkInformation] = React.useState<{ linkFor: string, link: string }>({ linkFor: '', link: '' });
 
-
-    const profiles: any = {
-        [GITHUB_PROFILE.toLowerCase()]: null,
-        [BITBUCKET_PROFILE.toLowerCase()]: null,
-        [TWITTER_PROFILE.toLowerCase()]: null,
-        [ORCID_PROFILE.toLowerCase()]: null,
-        [ICNF_PROFILE.toLowerCase()]: null,
-        [NEUROTREE_PROFILE.toLowerCase()]: null,
-        ...props.user.profiles
-    };
-
-
+    /* Construct profiles dict from meta and what's provided by user */
+    const temp : any = {};
+    Object.keys(profileMeta).map((k) => (temp[k] = null));
+    const profiles = { ...temp, ...props.user.profiles };
 
     const setWebsiteURLField = (e: any) => {
         const value = e.target.value;
@@ -197,7 +217,7 @@ export default (props: UserEditProps) => {
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Links</Typography>
                     <Tooltip title="Website link">
-                        <TextField error={props.error.website} helperText={props.error.website} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={props.profileForm.website} placeholder="Website link" InputProps={{
+                        <TextField error={props.error.website} helperText={props.error.website} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={props.profileForm.website} placeholder="https://.." InputProps={{
                             startAdornment: (
                                 <Box className={classes.inputIconBox}>
                                     <LanguageIcon fontSize="small" />
@@ -206,25 +226,25 @@ export default (props: UserEditProps) => {
                         }} />
                     </Tooltip>
                     {
-                        /* Here the tooltip text is being taken from the keys, which are all lower case
-                         * So one cannot write the tooltips in the correct case here without using more checks.
-                         *
-                         * TODO: make the keys in correct case.
-                         * https://github.com/OpenSourceBrain/OSBv2/issues/479
-                         */
                         Object.entries(profiles).map((profile => {
                             const profileType = profile[0];
+                            let profileTypeText = profileType
+                            let profileTypeIcon: any = React.createElement(LinkIcon, { fontSize: "small" });
+                            let profileTypePrefix = "";
+
+                            if (profileType in profileMeta) {
+                                profileTypeText = profileMeta[profileType].text;
+                                profileTypeIcon = React.createElement(profileMeta[profileType].icon,  { fontSize: "small" });
+                                profileTypePrefix = profileMeta[profileType].prefix;
+                            }
                             const profileLinkOrId = profile[1];
-                            return <Tooltip key={profileType} title={`${profileType} link`}><TextField error={props.error[profileType]} helperText={props.error[profileType]} key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
-                                placeholder={`${profileType} profile link`}
+
+                            return <Tooltip key={profileType} title={`${profileTypeText} link`}><TextField error={props.error[profileType]} helperText={props.error[profileType]} key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
+                                placeholder={profileTypePrefix}
                                 onChange={(event) => { handleProfileLinkChange(profileType, event.target.value) }}
                                 InputProps={{
                                     startAdornment: (
-                                        <Box className={classes.inputIconBox}>
-                                            {
-                                                profileType === GITHUB_PROFILE.toLowerCase() ? <GitHubIcon fontSize="small" /> : profileType === BITBUCKET_PROFILE.toLowerCase() ? <BitBucketIcon /> : profileType === TWITTER_PROFILE.toLowerCase() ? <TwitterIcon fontSize="small" /> : profileType === ICNF_PROFILE.toLowerCase() || profileType === ORCID_PROFILE.toLowerCase() ? <GroupIcon fontSize="small" /> : <LinkIcon fontSize="small" />
-                                            }
-                                        </Box>
+                                        <Box className={classes.inputIconBox}> { profileTypeIcon } </Box>
                                     )
                                 }} /></Tooltip>
                         }))

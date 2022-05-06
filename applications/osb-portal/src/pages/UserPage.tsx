@@ -21,6 +21,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
 import EmailIcon from "@material-ui/icons/Email";
+import BusinessIcon from '@material-ui/icons/Business';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -214,7 +215,7 @@ export const UserPage = (props: any) => {
     history.push(`/repositories/${repositoryId}`);
   }
   /* the keys are stored in lower case */
-  const { icnf, bitbucket, github, twitter, orcid, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
+  const { affiliation, incf, bitbucket, github, twitter, orcid, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
   const handleUpdateUser = (u: User) => {
     setLoading(true);
@@ -257,10 +258,11 @@ export const UserPage = (props: any) => {
               {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">
                 {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LanguageIcon fontSize="small" /><Tooltip title="Website"><Link href={user.website}>{user.website}</Link></Tooltip></Typography>}
 
+                {affiliation && <Typography component="p" variant="body2" gutterBottom={true}><BusinessIcon fontSize="small" /><Tooltip title="Affiliation"><Link href={ affiliation }>{ affiliation }</Link></Tooltip></Typography>}
                 {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Tooltip title="GitHub"><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>@{ github.includes('github.com') ? github.replace(/\/$/, '').split("/").pop() : github }</Link></Tooltip></Typography>}
                 {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Tooltip title="BitBucket"><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>@{ bitbucket.includes('bitbucket.org') ? bitbucket.replace(/\/$/, '').split("/").pop() : bitbucket }</Link></Tooltip></Typography>}
                 {twitter && <Typography component="p" variant="body2" gutterBottom={true}><TwitterIcon fontSize="small" /><Tooltip title="Twitter"><Link href={twitter.includes('twitter.com') ? twitter : 'https://twitter.com/' + twitter}>@{ twitter.includes('twitter.com') ? twitter.replace(/\/$/, '').split("/").pop() : twitter }</Link></Tooltip></Typography>}
-                {icnf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="INCF"><Link href={icnf}>INCF</Link></Tooltip></Typography>}
+                {incf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="INCF"><Link href={incf}>INCF</Link></Tooltip></Typography>}
                 {orcid && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="ORCID"><Link href={orcid}>ORCID</Link></Tooltip></Typography>}
                 {Object.keys(otherProfiles).filter((k) => (otherProfiles[k] !== "")).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
               </Box>}
