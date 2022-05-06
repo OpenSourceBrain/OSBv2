@@ -40,7 +40,7 @@ import Container from "@material-ui/core/Container";
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
-import { getUser } from "../service/UserService";
+import { getUser, updateUser } from "../service/UserService";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -176,6 +176,10 @@ export const UserPage = (props: any) => {
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
   const [error, setError] = React.useState<any>(null);
+  const [formError, setFormError] = React.useState<any>({});
+  const [userProfileForm, setUserProfileForm] = React.useState<any>({});
+  delete userProfileForm.groups;
+  const [loading, setLoading] = React.useState(false);
 
   const handleTabChange = (event: React.SyntheticEvent, newTabValue: number) => {
     setTabValue(newTabValue);
@@ -186,7 +190,7 @@ export const UserPage = (props: any) => {
   }
 
   React.useEffect(() => {
-    getUser(userId).then(u => { setUser(u); });
+    getUser(userId).then(u => { setUser(u); setUserProfileForm({ ...u }); });
     workspaceService.fetchWorkspacesByFilter(false, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
       setWorkspaces(workspacesRetrieved.items);
     },
@@ -201,18 +205,31 @@ export const UserPage = (props: any) => {
     throw error;
   }
 
-  if (!user) {
+  if (!user || (user.profiles === undefined)) {
     return null;
   }
+
+
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
   }
-  const { icnf, bitbucket, github, twitter, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
+  /* the keys are stored in lower case */
+  const { icnf, bitbucket, github, twitter, orcid, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
   const handleUpdateUser = (u: User) => {
-    setUser(u);
+    setLoading(true);
     setProfileEditDialogOpen(false);
-    window.location.reload();
+    setUser(u);
+    updateUser(userProfileForm).then((updatedUser) => {
+      console.log('user should be updated');
+      setLoading(false);
+      window.location.reload();
+    }).catch((err) => {
+      setLoading(false);
+      console.log('error updating user', err);
+      setError({ ...error, general: `An error occurred updating the user. Please try again later.` })
+    });
+
   }
 
   return (
@@ -243,8 +260,9 @@ export const UserPage = (props: any) => {
                 {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Tooltip title="GitHub"><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>@{ github.includes('github.com') ? github.replace(/\/$/, '').split("/").pop() : github }</Link></Tooltip></Typography>}
                 {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Tooltip title="BitBucket"><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>@{ bitbucket.includes('bitbucket.org') ? bitbucket.replace(/\/$/, '').split("/").pop() : bitbucket }</Link></Tooltip></Typography>}
                 {twitter && <Typography component="p" variant="body2" gutterBottom={true}><TwitterIcon fontSize="small" /><Tooltip title="Twitter"><Link href={twitter.includes('twitter.com') ? twitter : 'https://twitter.com/' + twitter}>@{ twitter.includes('twitter.com') ? twitter.replace(/\/$/, '').split("/").pop() : twitter }</Link></Tooltip></Typography>}
-                {icnf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="GitHub"><Link href={icnf}>INCF</Link></Tooltip></Typography>}
-                {Object.keys(otherProfiles).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
+                {icnf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="INCF"><Link href={icnf}>INCF</Link></Tooltip></Typography>}
+                {orcid && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="ORCID"><Link href={orcid}>ORCID</Link></Tooltip></Typography>}
+                {Object.keys(otherProfiles).filter((k) => (otherProfiles[k] !== "")).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
               </Box>}
 
               {user.groups && <Box className="groups" width="100%">
@@ -298,9 +316,25 @@ export const UserPage = (props: any) => {
         </Container>
 
       </Box>
-      {props.user && props.user.id === user.id && <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)}>
-        <UserEditor user={user} closeHandler={handleUpdateUser} />
+      {props.user && props.user.id === user.id && profileEditDialogOpen && <OSBDialog open={true} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)} actions={
+          <React.Fragment>
+            <Button color="primary" onClick={() => setProfileEditDialogOpen(false)}>Cancel</Button> <Button variant="contained" color="primary" onClick={handleUpdateUser}>Save Changes</Button>
+          </React.Fragment>
+        } >
+        <UserEditor user={user} profileForm={userProfileForm} setProfileForm={setUserProfileForm} error={formError} setError={setFormError}/>
       </OSBDialog>}
+      {loading &&
+        <CircularProgress
+          size={24}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: -12,
+            marginLeft: -12,
+          }}
+        />
+      }
     </Box >
   )
 }

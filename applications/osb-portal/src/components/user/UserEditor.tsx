@@ -15,18 +15,17 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import { AddIcon, BitBucketIcon } from "../icons";
 import { bgLight, paragraph } from "../../theme";
 import { User } from "../../apiclient/accounts";
-import { updateUser } from "../../service/UserService";
 import OSBDialog from "../common/OSBDialog";
 import Tooltip from "@material-ui/core/Tooltip";
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
 
-const GITHUB_PROFILE = 'github';
-const BITBUCKET_PROFILE = 'bitbucket';
-const TWITTER_PROFILE = 'twitter';
-const ORCID_PROFILE = 'orcid';
-const NEUROTREE_PROFILE = 'neurotree';
-const ICNF_PROFILE = 'icnf';
+const GITHUB_PROFILE = 'GitHub';
+const BITBUCKET_PROFILE = 'BitBucket';
+const TWITTER_PROFILE = 'Twitter';
+const ORCID_PROFILE = 'ORCID';
+const NEUROTREE_PROFILE = 'Neurotree';
+const ICNF_PROFILE = 'ICNF';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -57,30 +56,29 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 interface UserEditProps {
-    closeHandler: (updatedUser: User) => void;
     user: User;
+    profileForm: any;
+    setProfileForm: any;
+    error: any;
+    setError: any;
 }
 
 export default (props: UserEditProps) => {
     const classes = useStyles();
-    const [userProfileForm, setUserProfileForm] = React.useState<any>({ ...props.user });
-    delete userProfileForm.groups;
-    const [loading, setLoading] = React.useState(false);
     const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
     const [newLinkInformation, setNewLinkInformation] = React.useState<{ linkFor: string, link: string }>({ linkFor: '', link: '' });
 
 
     const profiles: any = {
-        [GITHUB_PROFILE]: null,
-        [BITBUCKET_PROFILE]: null,
-        [TWITTER_PROFILE]: null,
-        [ORCID_PROFILE]: null,
-        [ICNF_PROFILE]: null,
-        [NEUROTREE_PROFILE]: null,
+        [GITHUB_PROFILE.toLowerCase()]: null,
+        [BITBUCKET_PROFILE.toLowerCase()]: null,
+        [TWITTER_PROFILE.toLowerCase()]: null,
+        [ORCID_PROFILE.toLowerCase()]: null,
+        [ICNF_PROFILE.toLowerCase()]: null,
+        [NEUROTREE_PROFILE.toLowerCase()]: null,
         ...props.user.profiles
     };
 
-    const [error, setError] = React.useState<any>({});
 
 
     const setWebsiteURLField = (e: any) => {
@@ -90,10 +88,10 @@ export default (props: UserEditProps) => {
                 const _ = new URL(value);
             }
 
-            setUserProfileForm({ ...userProfileForm, website: value });
-            setError({ ...error, website: undefined });
+            props.setProfileForm({ ...props.profileForm, website: value });
+            props.setError({ ...props.error, website: undefined });
         } catch (_) {
-            setError({ ...error, website: "Invalid URL" });
+            props.setError({ ...props.error, website: "Invalid URL" });
         }
     }
 
@@ -103,34 +101,34 @@ export default (props: UserEditProps) => {
             if (value) {
                 const _ = new URL(value);
             }
-            setError({ ...error, avatar: undefined });
-            setUserProfileForm({ ...userProfileForm, avatar: value });
+            props.setError({ ...props.error, avatar: undefined });
+            props.setProfileForm({ ...props.profileForm, avatar: value });
         } catch (_) {
-            setError({ ...error, avatar: "Invalid URL" });
+            props.setError({ ...props.error, avatar: "Invalid URL" });
         }
     }
 
     const setProfileDisplayName = (e: any) => {
-        setUserProfileForm({ ...userProfileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ')[1] : null });
+        props.setProfileForm({ ...props.profileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ')[1] : null });
     }
 
     const setProfileUserName = (e: any) => {
         const value = e.target.value;
         if (!value) {
-            setError({ ...error, username: "Username cannot be empty" });
+            props.setError({ ...props.error, username: "Username cannot be empty" });
         } else {
-            setUserProfileForm({ ...userProfileForm, username: e.target.value });
-            setError({ ...error, username: undefined });
+            props.setProfileForm({ ...props.profileForm, username: e.target.value });
+            props.setError({ ...props.error, username: undefined });
         }
     }
 
     const setProfileEmailAddress = (e: any) => {
         const value = e.target.value;
         if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)) {
-            setError({ ...error, email: "Invalid Email" });
+            props.setError({ ...props.error, email: "Invalid Email" });
         } else {
-            setUserProfileForm({ ...userProfileForm, email: e.target.value });
-            setError({ ...error, email: undefined });
+            props.setProfileForm({ ...props.profileForm, email: e.target.value });
+            props.setError({ ...props.error, email: undefined });
         }
 
     }
@@ -140,10 +138,15 @@ export default (props: UserEditProps) => {
             if (value) {
                 const _ = new URL(value);
             }
-            setError({ ...error, [profileType]: undefined });
-            setUserProfileForm({ ...userProfileForm, profiles: { ...userProfileForm.profiles, [profileType]: value } });
+            props.setError({ ...props.error, [profileType]: undefined });
+            /* TODO: if the value is "", we should remove this new profile
+             * completely Can be done here by removing the profileType from the
+             * dict, but also requires updates to the backend to remove the key
+             * completely, and not just leave it empty.
+             */
+            props.setProfileForm({ ...props.profileForm, profiles: { ...props.profileForm.profiles, [profileType]: value } });
         } catch (_) {
-            setError({ ...error, [profileType]: `Please enter your ${profileType} profile address` });
+            props.setError({ ...props.error, [profileType]: `Please enter your ${profileType} profile address` });
         }
 
 
@@ -154,38 +157,25 @@ export default (props: UserEditProps) => {
         handleProfileLinkChange(newLinkInformation.linkFor, newLinkInformation.link);
     }
 
-    const handleUserUpdate = (e: any) => {
-        setLoading(true);
-        updateUser(userProfileForm).then((updatedUser) => {
-            console.log('user should be updated');
-            setLoading(false);
-            props.closeHandler(updatedUser);
-        }).catch((err) => {
-            setLoading(false);
-            console.log('error updating user', err);
-            setError({ ...error, general: `An error occurred updating the user. Please try again later.` })
-        })
-    }
-
     return (
         <>
             <Box p={3}>
                 <Box display="flex" flexDirection="row" mb={1}>
-                    <Avatar className={classes.avatar} alt="user-profile-avatar" src={userProfileForm.avatar}>
-                        {userProfileForm.firstName?.charAt(0) + userProfileForm.lastName?.charAt(0)}
+                    <Avatar className={classes.avatar} alt="user-profile-avatar" src={props.profileForm.avatar}>
+                        {props.profileForm.firstName?.charAt(0) + props.profileForm.lastName?.charAt(0)}
                     </Avatar>
                     <Box width="100%">
                         <Typography component="label" variant="h6">Profile picture URL</Typography>
-                        <TextField error={error.avatar} helperText={error.avatar} id="profilePictureURL" fullWidth={true} onChange={setProfileURLField} variant="outlined" defaultValue={userProfileForm.avatar} />
+                        <TextField error={props.error.avatar} helperText={props.error.avatar} id="profilePictureURL" fullWidth={true} onChange={setProfileURLField} variant="outlined" defaultValue={props.profileForm.avatar} />
                     </Box>
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Display Name</Typography>
-                    <TextField error={error.firstName} helperText={error.firstName} fullWidth={true} onChange={setProfileDisplayName} variant="outlined" defaultValue={userProfileForm.firstName + ' ' + userProfileForm.lastName} />
+                    <TextField error={props.error.firstName} helperText={props.error.firstName} fullWidth={true} onChange={setProfileDisplayName} variant="outlined" defaultValue={props.profileForm.firstName + ' ' + props.profileForm.lastName} />
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Username</Typography>
-                    <TextField error={error.username} helperText={error.username} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={userProfileForm.username} InputProps={{
+                    <TextField error={props.error.username} helperText={props.error.username} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={props.profileForm.username} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <AlternateEmail fontSize="small" />
@@ -195,7 +185,7 @@ export default (props: UserEditProps) => {
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Email address</Typography>
-                    <TextField error={error.email} helperText={error.email} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileEmailAddress} variant="outlined" defaultValue={userProfileForm.email} InputProps={{
+                    <TextField error={props.error.email} helperText={props.error.email} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileEmailAddress} variant="outlined" defaultValue={props.profileForm.email} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <EmailIcon fontSize="small" />
@@ -207,7 +197,7 @@ export default (props: UserEditProps) => {
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Links</Typography>
                     <Tooltip title="Website link">
-                        <TextField error={error.website} helperText={error.website} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={userProfileForm.website} placeholder="Website link" InputProps={{
+                        <TextField error={props.error.website} helperText={props.error.website} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" onChange={setWebsiteURLField} variant="outlined" defaultValue={props.profileForm.website} placeholder="Website link" InputProps={{
                             startAdornment: (
                                 <Box className={classes.inputIconBox}>
                                     <LanguageIcon fontSize="small" />
@@ -216,17 +206,23 @@ export default (props: UserEditProps) => {
                         }} />
                     </Tooltip>
                     {
+                        /* Here the tooltip text is being taken from the keys, which are all lower case
+                         * So one cannot write the tooltips in the correct case here without using more checks.
+                         *
+                         * TODO: make the keys in correct case.
+                         * https://github.com/OpenSourceBrain/OSBv2/issues/479
+                         */
                         Object.entries(profiles).map((profile => {
                             const profileType = profile[0];
                             const profileLinkOrId = profile[1];
-                            return <Tooltip title={`${profileType} link`}><TextField error={error[profileType]} helperText={error[profileType]} key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
+                            return <Tooltip key={profileType} title={`${profileType} link`}><TextField error={props.error[profileType]} helperText={props.error[profileType]} key={profileType} className={classes.textFieldWithIcon} fullWidth={true} margin="dense" variant="outlined" defaultValue={profileLinkOrId}
                                 placeholder={`${profileType} profile link`}
                                 onChange={(event) => { handleProfileLinkChange(profileType, event.target.value) }}
                                 InputProps={{
                                     startAdornment: (
                                         <Box className={classes.inputIconBox}>
                                             {
-                                                profileType === GITHUB_PROFILE ? <GitHubIcon fontSize="small" /> : profileType === BITBUCKET_PROFILE ? <BitBucketIcon /> : profileType === TWITTER_PROFILE ? <TwitterIcon fontSize="small" /> : profileType === ICNF_PROFILE ? <GroupIcon fontSize="small" /> : <LinkIcon fontSize="small" />
+                                                profileType === GITHUB_PROFILE.toLowerCase() ? <GitHubIcon fontSize="small" /> : profileType === BITBUCKET_PROFILE.toLowerCase() ? <BitBucketIcon /> : profileType === TWITTER_PROFILE.toLowerCase() ? <TwitterIcon fontSize="small" /> : profileType === ICNF_PROFILE.toLowerCase() || profileType === ORCID_PROFILE.toLowerCase() ? <GroupIcon fontSize="small" /> : <LinkIcon fontSize="small" />
                                             }
                                         </Box>
                                     )
@@ -241,21 +237,7 @@ export default (props: UserEditProps) => {
             </Box>
 
             <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
-                {error.general && <Typography color="error">{error.general}</Typography>}
-                <Button color="primary" onClick={props.closeHandler}>Cancel</Button>
-                <Button variant="contained" color="primary" disabled={loading || Object.values(error).filter(v => v).length > 0} onClick={handleUserUpdate}>Save Changes</Button>
-                {loading &&
-                    <CircularProgress
-                        size={24}
-                        style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            marginTop: -12,
-                            marginLeft: -12,
-                        }}
-                    />
-                }
+                {props.error.general && <Typography color="error">{props.error.general}</Typography>}
             </Box>
             <OSBDialog open={addLinkDialogOpen} title="Add new link" closeAction={() => setAddLinkDialogOpen(false)}>
                 <Box p={3}>
