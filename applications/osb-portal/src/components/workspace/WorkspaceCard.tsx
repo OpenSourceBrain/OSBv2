@@ -163,7 +163,7 @@ export const WorkspaceCard = (props: Props) => {
             {" "}{formatDate(workspace.timestampUpdated)}
           </Typography>
           <Typography variant="caption" className={classes.ellipses}>
-            {defaultResource && defaultResource.type.application.name},{" "}
+            {defaultResource && defaultResource.type.application.name}
           </Typography>
         </CardContent>
       </Card >
