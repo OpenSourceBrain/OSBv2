@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     maxWidth: "33%"
+  },
+  progress: {
+    paddingTop: theme.spacing(2),
+    maxWidth: "33%",
+    margin: "auto"
   }
 }))
 
@@ -205,7 +210,7 @@ export const Workspaces = ({ user, counter }: any) => {
       } */}
 
       {
-        !workspaces && <Box mt={2}>
+        !workspaces && <Box mt={2} className={classes.progress}>
 
           <CircularProgress />
         </Box>
@@ -218,7 +223,7 @@ export const Workspaces = ({ user, counter }: any) => {
             dataLength={workspaceList.length}
             next={fetchMoreWorkspaces}
             hasMore={page < totalPages}
-            loader={<CircularProgress size="small" />}
+            loader={<CircularProgress />}
             scrollableTarget="workspace-box"
           >
 
