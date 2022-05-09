@@ -12,6 +12,7 @@ import Chip from "@material-ui/core/Chip";
 import FolderIcon from "@material-ui/icons/Folder";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
+
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
@@ -150,8 +151,19 @@ export const WorkspaceCard = (props: Props) => {
             </TagTooltip>}
           </Link>
           <Typography variant="caption" className={classes.ellipses}>
+            <Link
+              color="inherit"
+              href={`/user/${workspace.user.id}`}
+              target="_blank"
+            >
+            {workspace.user.firstName + " " + workspace.user.lastName}
+            </Link>
+          </Typography>
+          <Typography variant="caption" className={classes.ellipses}>
+            {" "}{formatDate(workspace.timestampUpdated)}
+          </Typography>
+          <Typography variant="caption" className={classes.ellipses}>
             {defaultResource && defaultResource.type.application.name},{" "}
-            {formatDate(workspace.timestampUpdated)}
           </Typography>
         </CardContent>
       </Card >
