@@ -192,7 +192,7 @@ export const UserPage = (props: any) => {
 
   React.useEffect(() => {
     getUser(userId).then(u => { setUser(u); setUserProfileForm({ ...u }); });
-    workspaceService.fetchWorkspacesByFilter(false, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
+    workspaceService.fetchWorkspacesByFilter(true, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
       setWorkspaces(workspacesRetrieved.items);
     },
     (e) => { setError(e) });
