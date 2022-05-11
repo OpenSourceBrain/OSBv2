@@ -218,7 +218,7 @@ export const Workspaces = ({ user, counter }: any) => {
             dataLength={workspaceList.length}
             next={fetchMoreWorkspaces}
             hasMore={page < totalPages}
-            loader={<CircularProgress />}
+            loader={<Box display="flex" mt={1} flex={1} justifyContent="center" width="100%"><CircularProgress /></Box>}
             scrollableTarget="workspace-box"
           >
 
