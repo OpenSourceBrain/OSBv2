@@ -31,11 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     maxWidth: "33%"
-  },
-  progress: {
-    paddingTop: theme.spacing(2),
-    maxWidth: "33%",
-    margin: "auto"
   }
 }))
 
@@ -210,13 +205,13 @@ export const Workspaces = ({ user, counter }: any) => {
       } */}
 
       {
-        !workspaces && <Box mt={2} className={classes.progress}>
+        !workspaces && <Box mt={2} flex={1} display="flex" alignContent="center" alignItems="center" justifyContent="center">
 
           <CircularProgress />
         </Box>
       }
 
-      <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
+      { workspaces && <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
         <Box pb={1} className="scrollbar" id="workspace-box">
 
           <InfiniteScroll
@@ -234,7 +229,7 @@ export const Workspaces = ({ user, counter }: any) => {
           </InfiniteScroll>
         </Box>
 
-      </Box>
+      </Box> }
     </>
   );
 };
