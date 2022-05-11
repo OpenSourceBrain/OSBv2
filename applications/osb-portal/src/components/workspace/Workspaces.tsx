@@ -205,20 +205,20 @@ export const Workspaces = ({ user, counter }: any) => {
       } */}
 
       {
-        !workspaces && <Box mt={2}>
+        !workspaces && <Box mt={2} flex={1} display="flex" alignContent="center" alignItems="center" justifyContent="center">
 
           <CircularProgress />
         </Box>
       }
 
-      <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
+      { workspaces && <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
         <Box pb={1} className="scrollbar" id="workspace-box">
 
           <InfiniteScroll
             dataLength={workspaceList.length}
             next={fetchMoreWorkspaces}
             hasMore={page < totalPages}
-            loader={<CircularProgress size="small" />}
+            loader={<Box display="flex" mt={1} flex={1} justifyContent="center" width="100%"><CircularProgress /></Box>}
             scrollableTarget="workspace-box"
           >
 
@@ -229,7 +229,7 @@ export const Workspaces = ({ user, counter }: any) => {
           </InfiniteScroll>
         </Box>
 
-      </Box>
+      </Box> }
     </>
   );
 };
