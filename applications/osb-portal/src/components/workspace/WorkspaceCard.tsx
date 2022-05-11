@@ -18,6 +18,7 @@ import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
 import WorkspaceActionsMenu from "./WorkspaceActionsMenu";
 import { bgDarkest, paragraph, textColor } from "../../theme";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 interface Props {
   workspace: Workspace;
@@ -61,10 +62,25 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     width: "100%",
-    display: "block",
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
+    
+  },
+  user: {
+    "& *": {
+      lineHeight: "1em",
+      marginRight: "0.3em"
+    },
+    marginBottom: "0.4em",
+    marginTop: "0.4em"
+  },
+  captions: {
+    display: "flex",
+    justifyContent: "space-between",
+    
   },
   link: {
-    lineHeight: "0",
     display: "flex",
     width: "fit-content",
     maxWidth: "100%",
@@ -150,21 +166,22 @@ export const WorkspaceCard = (props: Props) => {
               <LocalOfferIcon fontSize="small" className={classes.localOfferIcon} />
             </TagTooltip>}
           </Link>
-          <Typography variant="caption" className={classes.ellipses}>
-            <Link
+          <Typography variant="caption" className={`${classes.user} ${classes.ellipses}`}>
+           <span>by</span>
+             <Link
               color="inherit"
               href={`/user/${workspace.user.id}`}
               target="_blank"
             >
+            
             {workspace.user.firstName + " " + workspace.user.lastName}
             </Link>
           </Typography>
-          <Typography variant="caption" className={classes.ellipses}>
-            {" "}{formatDate(workspace.timestampUpdated)}
+
+          <Typography variant="caption" className={`${classes.captions} ${classes.ellipses}`}>
+            <span>{formatDate(workspace.timestampUpdated)}</span> <span>{defaultResource && defaultResource.type.application.name}</span>
           </Typography>
-          <Typography variant="caption" className={classes.ellipses}>
-            {defaultResource && defaultResource.type.application.name}
-          </Typography>
+
         </CardContent>
       </Card >
     </>
