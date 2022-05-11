@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignContent: "center",
     alignItems: "center",
-    
+
   },
   user: {
     "& *": {
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   captions: {
     display: "flex",
     justifyContent: "space-between",
-    
+
   },
   link: {
     display: "flex",
@@ -173,7 +173,7 @@ export const WorkspaceCard = (props: Props) => {
               href={`/user/${workspace.user.id}`}
               target="_blank"
             >
-            
+
             {workspace.user.firstName + " " + workspace.user.lastName}
             </Link>
           </Typography>
