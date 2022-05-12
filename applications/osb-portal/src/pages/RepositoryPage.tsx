@@ -321,9 +321,9 @@ export const RepositoryPage = (props: any) => {
         <Box className="subheader" paddingX={3} justifyContent="space-between"  >
           <Box>
             <Box display="flex" alignItems="center">
-              <ArrowBackIcon onClick={() => history.goBack()} />
+              <ArrowBackIcon onClick={() => history.push("/repositories")} />
               <Typography component="h1" color="primary">
-                <Typography component="span" onClick={history.goBack}>All repositories</Typography>
+                <Typography component="span" onClick={() => history.push("/repositories")}>All repositories</Typography>
                 {repository ? <Typography component="span">{repository.name}</Typography> : null}
               </Typography>
             </Box>
