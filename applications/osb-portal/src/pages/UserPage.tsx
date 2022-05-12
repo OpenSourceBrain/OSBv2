@@ -200,7 +200,7 @@ export const UserPage = (props: any) => {
       setRepositories(repositoriesRetrieved);
     },
     (e) => { setError(e) });
-  }, []);
+  }, [userId]);
 
   if (error) {
     throw error;
