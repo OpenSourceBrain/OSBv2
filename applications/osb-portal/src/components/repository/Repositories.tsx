@@ -265,7 +265,7 @@ export default (props: RepositoriesProps) => {
                   <Avatar alt="user-profile-avatar"
                     className="repo-user"
                   >
-                    {repository.user.firstName.charAt(0) + repository.user.lastName.charAt(0)}
+                    {(repository.user.firstName.length > 0 && repository.user.firstName.charAt(0)) + (repository.user.lastName.length > 0 && repository.user.lastName.charAt(0))}
                   </Avatar>
                   }
                   label={repository?.user?.firstName + " " + repository?.user?.lastName}

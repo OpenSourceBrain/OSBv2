@@ -244,7 +244,7 @@ export const UserPage = (props: any) => {
           <Grid container={true} spacing={6} >
             <Grid item={true} sm={4} lg={3} className={`${classes.profileInformation}`} >
               <Avatar alt="user-profile-avatar" src={user.avatar}>
-                {user.firstName.charAt(0) + user.lastName.charAt(0)}
+                {(user.firstName.length > 0 && user.firstName.charAt(0)) + (user.lastName.length > 0 && user.lastName.charAt(0))}
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
