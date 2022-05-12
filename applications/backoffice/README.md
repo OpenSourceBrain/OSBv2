@@ -1,5 +1,5 @@
-# OSB portal app (www)
-The OSB portal app is the entrypoint of the OSBv2 platform. It serves the portal website.
+# OSB admin (backoffice) app (www)
+The OSB admin/backoffice app is for administrators to manage the OSB platform.
 
 ## Get started
 
