@@ -18,7 +18,6 @@ export default (props: any) => {
   const classes = useStyles();
 
   return <>
-    
     <Box p={1}>
      Home
     </Box>

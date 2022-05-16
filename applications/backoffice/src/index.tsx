@@ -11,12 +11,12 @@ import { initErrorHandler } from './service/ErrorHandleService';
 
 
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('main')
-  );
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('main')
+);
 
 
 

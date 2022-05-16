@@ -12,8 +12,6 @@ const callAPIMiddlewareFn: Middleware = ({ getState }: { getState: () => RootSta
 
 
   switch (action.type) {
-
-    
     default:
       return next(action);
     //

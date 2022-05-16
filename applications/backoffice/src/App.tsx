@@ -12,6 +12,7 @@ import theme from "./theme";
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  // tslint:disable-next-line:no-empty-interface
   interface DefaultTheme extends Theme {}
 }
 
@@ -34,6 +35,7 @@ export const App = (props: any) => {
   const classes = useStyles();
 
   return (
+    // tslint:disable-next-line:jsx-boolean-value
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
 
@@ -48,7 +50,6 @@ export const App = (props: any) => {
                       <HomePage />
                     </Route>
                   </Switch>
-         
               </div>
             </Router>
           }
