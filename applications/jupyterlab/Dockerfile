@@ -60,7 +60,7 @@ RUN pip install pynwb ipywidgets seaborn --no-cache-dir # nwbwidgets  # v big in
 ####  Machine learning libs
 
 # Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
-RUN pip install torch==1.8.0+cpu -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
+RUN pip install torch==1.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
 
 # For MDF
 RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
@@ -100,5 +100,9 @@ RUN mkdir -p .jupyter/lab
 RUN ln -s /opt/workspace .jupyter/lab/workspaces
 
 COPY conf/ .jupyter/lab/user-settings/@jupyterlab
+
+USER root
+RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
+
 
 WORKDIR /opt/workspace
