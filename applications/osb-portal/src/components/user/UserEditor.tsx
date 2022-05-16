@@ -129,7 +129,8 @@ export default (props: UserEditProps) => {
     }
 
     const setProfileDisplayName = (e: any) => {
-        props.setProfileForm({ ...props.profileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ')[1] : null });
+        // The first word is the first name, and everything else is the second name
+        props.setProfileForm({ ...props.profileForm, firstName: e.target.value.split(' ')[0], lastName: e.target.value.split(' ').length > 1 ? e.target.value.split(' ').slice(1).join(" ") : null });
     }
 
     const setProfileUserName = (e: any) => {
