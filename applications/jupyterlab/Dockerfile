@@ -40,6 +40,16 @@ RUN pip install arbor --no-cache-dir
 # Brian
 RUN pip install brian2 brian2tools --no-cache-dir
 
+# PyNN
+RUN pip install pynn==0.10.0 --no-cache-dir
+
+# elephant
+RUN pip install elephant --no-cache-dir
+
+# LFPy
+RUN apt-get install libopenmpi-dev -y
+RUN pip install lfpy --no-cache-dir
+
 
 
 ####  NWB
@@ -50,7 +60,7 @@ RUN pip install pynwb ipywidgets seaborn --no-cache-dir # nwbwidgets  # v big in
 ####  Machine learning libs
 
 # Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
-RUN pip install torch==1.8.0+cpu -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
+RUN pip install torch==1.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
 
 # For MDF
 RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
@@ -65,6 +75,11 @@ RUN pip install sklearn # Required for some Neuromatch Academy material
 
 RUN apt-get install octave octave-statistics -y
 RUN pip install octave_kernel --no-cache-dir
+
+
+####  Final updates
+
+RUN pip install --upgrade numpy  # Removes some issues with LFPy...
 
 
 ################################################################################
@@ -85,5 +100,9 @@ RUN mkdir -p .jupyter/lab
 RUN ln -s /opt/workspace .jupyter/lab/workspaces
 
 COPY conf/ .jupyter/lab/user-settings/@jupyterlab
+
+USER root
+RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
+
 
 WORKDIR /opt/workspace
