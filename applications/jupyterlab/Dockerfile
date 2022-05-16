@@ -40,6 +40,16 @@ RUN pip install arbor --no-cache-dir
 # Brian
 RUN pip install brian2 brian2tools --no-cache-dir
 
+# PyNN
+RUN pip install pynn==0.10.0 --no-cache-dir
+
+# elephant
+RUN pip install elephant --no-cache-dir
+
+# LFPy
+RUN apt-get install libopenmpi-dev -y
+RUN pip install lfpy --no-cache-dir
+
 
 
 ####  NWB
@@ -65,6 +75,11 @@ RUN pip install sklearn # Required for some Neuromatch Academy material
 
 RUN apt-get install octave octave-statistics -y
 RUN pip install octave_kernel --no-cache-dir
+
+
+####  Final updates
+
+RUN pip install --upgrade numpy  # Removes some issues with LFPy...
 
 
 ################################################################################
