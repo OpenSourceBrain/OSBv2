@@ -51,6 +51,11 @@ RUN apt-get install libopenmpi-dev -y
 RUN pip install lfpy --no-cache-dir
 
 
+####  Octave etc.
+
+RUN apt-get install octave octave-statistics -y
+RUN pip install octave_kernel --no-cache-dir
+
 
 ####  NWB
 
@@ -69,12 +74,8 @@ RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
 #RUN pip install modeci_mdf==0.3.3 # big jump in size of image...
 
 RUN pip install sklearn # Required for some Neuromatch Academy material
+RUN pip install fasttext # Required for some Neuromatch Academy material
 
-
-####  Octave etc.
-
-RUN apt-get install octave octave-statistics -y
-RUN pip install octave_kernel --no-cache-dir
 
 
 ####  Final updates
