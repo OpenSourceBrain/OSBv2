@@ -22,8 +22,8 @@ export default (props: any) => {
         <Grid item={true} xs={12} sm={8} md={8}>
           <DialogContentText>
           To use workspaces you need an Open Source Brain v2.0 account.
-          If you already have one please sign in, if not create one for free.
-          Workspaces will let you save your own models and data, run simulations and analysis.
+          If you already have one, please sign in, if not create one for free.
+          Workspaces will let you save your own models and data, and run simulations and analyses.
           </DialogContentText>
         </Grid>
         <Grid item={true}>
