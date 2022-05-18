@@ -77,6 +77,12 @@ RUN pip install sklearn # Required for some Neuromatch Academy material
 RUN pip install fasttext # Required for some Neuromatch Academy material
 
 
+####  TVB etc.
+
+RUN pip install tvb-library --no-cache-dir
+RUN pip install tvb-data
+RUN pip install ipympl --no-cache-dir
+
 
 ####  Final updates
 
