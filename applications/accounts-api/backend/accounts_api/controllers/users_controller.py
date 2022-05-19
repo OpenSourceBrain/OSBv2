@@ -44,11 +44,11 @@ def get_users(query={}):
     :param query: user filter
     :type query: str
 
-    :rtype: list[User]
+    :rtype: {}
     """
 
     try:
-        return user_service.get_users(query)
+        return {'users': user_service.get_users(query)}
     # TODO: better handle exceptions
     except Exception as e:
         return "Error"
