@@ -64,9 +64,9 @@ paths:
                 type: object
                 properties:
                   users:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/User'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
           description: Get list of users
       tags:
       - users
