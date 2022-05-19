@@ -42,6 +42,28 @@ paths:
       operationId: ready
       summary: Test if application is ready to take requests
   /users:
+    get:
+      summary: Get list of users based on query
+      operationId: get_users
+      parameters:
+      - description: query filter
+        in: query
+        name: query_string
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: Get list of users
+      tags:
+      - users
+      x-openapi-router-controller: accounts_api.controllers.users_controller
     post:
       requestBody:
         content:
