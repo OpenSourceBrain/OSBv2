@@ -10,3 +10,4 @@ harness:
       - workflows
       - jupyterhub
       - jupyterlab
+      - backoffice

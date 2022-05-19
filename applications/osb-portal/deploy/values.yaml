@@ -29,3 +29,4 @@ harness:
       - jupyterhub
       - jupyterlab
       - notifications
+      - backoffice
