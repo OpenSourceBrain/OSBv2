@@ -18,6 +18,7 @@ import {
     User,
     UserFromJSON,
     UserToJSON,
+    InlineResponse200FromJSON,
 } from '../models';
 
 export interface CreateUserRequest {
@@ -102,6 +103,34 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async getUser(requestParameters: GetUserRequest): Promise<User> {
         const response = await this.getUserRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Get all users
+     * TODO: allow filtering
+     */
+    async getUsersRaw(): Promise<runtime.JSONApiResponse<any>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse200FromJSON(jsonValue));
+    }
+
+    /**
+     * Get all users
+     * TODO: allow filtering
+     */
+    async getUsers(): Promise<User> {
+        const response = await this.getUsersRaw();
         return await response.value();
     }
 
