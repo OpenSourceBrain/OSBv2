@@ -42,7 +42,9 @@ def get_users(query: str) -> typing.List[User]:
         raise Exception("Unhandled Keycloak exception") from e
     all_users = []
     for kc_user in kc_users:
-        all_users.append(map_user(kc_user))
+        auser = map_user(kc_user)
+        auser.email = None  # strip out the e-mail address
+        all_users.append(auser)
 
     return all_users
 
