@@ -59,6 +59,12 @@ export default (props: any) => {
     })
   }
 
+  const getUserWorkspaces = (userid: string) => {
+    return workspaces.filter((workspace: any) => {
+      return workspace.owner.id === userid;
+    })
+  }
+
   React.useEffect(() => {
     fetchInfo();
   }, [ ]);
@@ -102,7 +108,7 @@ export default (props: any) => {
                 </TableCell>
                 <TableCell><Link href={`${getHostname()}/user/${user.id}`}>{user.username}</Link></TableCell>
                 <TableCell>N/A</TableCell>
-                <TableCell>N/A</TableCell>
+                <TableCell>{`${getUserWorkspaces(user.id).length}`}</TableCell>
                 <TableCell>{`${getUserRepos(user.id).length}`}</TableCell>
               </TableRow>
             ))}
