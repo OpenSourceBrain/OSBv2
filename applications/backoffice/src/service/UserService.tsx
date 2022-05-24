@@ -29,7 +29,7 @@ export async function getUser(userid: string): Promise<User> {
   return usersApi.getUser({ userid });
 }
 
-export async function getUsers(): Promise<User> {
+export async function getUsers(): Promise<User[]> {
   return usersApi.getUsers();
 }
 

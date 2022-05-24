@@ -110,7 +110,7 @@ export class UsersApi extends runtime.BaseAPI {
      * Get all users
      * TODO: allow filtering
      */
-    async getUsersRaw(): Promise<runtime.JSONApiResponse<any>> {
+    async getUsersRaw(): Promise<runtime.ApiResponse<User[]>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -122,14 +122,14 @@ export class UsersApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse200FromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse200FromJSON(jsonValue).users);
     }
 
     /**
      * Get all users
      * TODO: allow filtering
      */
-    async getUsers(): Promise<User> {
+    async getUsers(): Promise<User[]> {
         const response = await this.getUsersRaw();
         return await response.value();
     }
