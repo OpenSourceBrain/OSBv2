@@ -19,24 +19,30 @@ RUN rm -Rf node_modules
 FROM jupyter/base-notebook:hub-1.4.2
 ENV NB_UID=jovyan
 ENV FOLDER=netpyne
-ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
-ENV NETPYNE_CORE_BRANCH_TAG=osbv2
-
-COPY --from=jsbuild --chown=1000:1000 $FOLDER $FOLDER
-WORKDIR $FOLDER
+# ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+# ENV NETPYNE_CORE_BRANCH_TAG=osbv2
 
 USER root
 
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip git make libtool g++ -qq pkg-config libfreetype6-dev libpng-dev libopenmpi-dev -y
+RUN conda install python=3.7 -y
+USER jovyan
+
+WORKDIR $FOLDER
+COPY --from=jsbuild --chown=1000:1000 $FOLDER/requirements.txt requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir --prefer-binary
+
+COPY --from=jsbuild --chown=1000:1000 $FOLDER .
+
+
 
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
 
-RUN conda install python=3.7 -y
 #RUN conda install pandas=0.23.4 -y
-RUN pip install -r requirements.txt --no-cache-dir --prefer-binary
+
 RUN jupyter nbextension install --py --symlink --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
@@ -44,21 +50,22 @@ RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
 RUN python utilities/install.py --npm-skip --workspace=
 
-# Install specific version of NetPyNE
-RUN pip uninstall netpyne -y
-RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
-RUN cd netpyne ; python setup.py install; cd -
-
+# # Install specific version of NetPyNE
+# RUN pip uninstall netpyne -y
+# RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
+# RUN cd netpyne ; python setup.py install; cd -
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
+
+
+USER root
 COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 
 # ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
 # and thus removes the frame ancestor cors settings
 RUN rm -f ~/.jupyter/*.json
-
 RUN chown $NB_UID .
 RUN chown $NB_UID /opt
 USER $NB_UID
