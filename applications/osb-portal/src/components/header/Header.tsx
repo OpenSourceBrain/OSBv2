@@ -82,7 +82,8 @@ export const Header = (props: any) => {
   };
 
   const handleMyAccount = () => {
-    history.push(`/user/${user.id}`)
+    history.push(`/user/${user.id}`);
+    setMenuOpen(false);
   }
 
   const headerText =

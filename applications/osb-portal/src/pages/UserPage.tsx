@@ -15,13 +15,18 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import LinkIcon from "@material-ui/icons/Link";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import TwitterIcon from '@material-ui/icons/Twitter';
+import LanguageIcon from '@material-ui/icons/Language';
+import GroupIcon from '@material-ui/icons/Group';
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
 import EmailIcon from "@material-ui/icons/Email";
+import BusinessIcon from '@material-ui/icons/Business';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ShowMoreText from "react-show-more-text";
+import Tooltip from '@material-ui/core/Tooltip';
 
 import MarkdownViewer from "../components/common/MarkdownViewer";
 import { MainMenu } from "../components/index";
@@ -36,7 +41,7 @@ import Container from "@material-ui/core/Container";
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
-import { getUser } from "../service/UserService";
+import { getUser, updateUser } from "../service/UserService";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -172,6 +177,10 @@ export const UserPage = (props: any) => {
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
   const [error, setError] = React.useState<any>(null);
+  const [formError, setFormError] = React.useState<any>({});
+  const [userProfileForm, setUserProfileForm] = React.useState<any>({});
+  delete userProfileForm.groups;
+  const [loading, setLoading] = React.useState(false);
 
   const handleTabChange = (event: React.SyntheticEvent, newTabValue: number) => {
     setTabValue(newTabValue);
@@ -182,8 +191,8 @@ export const UserPage = (props: any) => {
   }
 
   React.useEffect(() => {
-    getUser(userId).then(u => { setUser(u); });
-    workspaceService.fetchWorkspaces(false, false, 1, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
+    getUser(userId).then(u => { setUser(u); setUserProfileForm({ ...u }); });
+    workspaceService.fetchWorkspacesByFilter(true, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
       setWorkspaces(workspacesRetrieved.items);
     },
     (e) => { setError(e) });
@@ -191,24 +200,37 @@ export const UserPage = (props: any) => {
       setRepositories(repositoriesRetrieved);
     },
     (e) => { setError(e) });
-  }, []);
+  }, [userId]);
 
   if (error) {
     throw error;
   }
 
-  if (!user) {
+  if (!user || (user.profiles === undefined)) {
     return null;
   }
+
+
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
   }
-  const { icnf, bitbucket, github, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
+  /* the keys are stored in lower case */
+  const { affiliation, incf, bitbucket, github, twitter, orcid, ...otherProfiles } = (user.profiles as unknown) as { [k: string]: string };
 
   const handleUpdateUser = (u: User) => {
-    setUser(u);
+    setLoading(true);
     setProfileEditDialogOpen(false);
-    window.location.reload();
+    setUser(u);
+    updateUser(userProfileForm).then((updatedUser) => {
+      console.log('user should be updated');
+      setLoading(false);
+      window.location.reload();
+    }).catch((err) => {
+      setLoading(false);
+      console.log('error updating user', err);
+      setError({ ...error, general: `An error occurred updating the user. Please try again later.` })
+    });
+
   }
 
   return (
@@ -222,7 +244,7 @@ export const UserPage = (props: any) => {
           <Grid container={true} spacing={6} >
             <Grid item={true} sm={4} lg={3} className={`${classes.profileInformation}`} >
               <Avatar alt="user-profile-avatar" src={user.avatar}>
-                {user.firstName.charAt(0) + user.lastName.charAt(0)}
+                {(user.firstName.length > 0 && user.firstName.charAt(0)) + (user.lastName.length > 0 && user.lastName.charAt(0))}
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
@@ -234,12 +256,15 @@ export const UserPage = (props: any) => {
               </Box>
 
               {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">
-                {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={user.website}>Website</Link></Typography>}
+                {user.website && <Typography component="p" variant="body2" gutterBottom={true}><LanguageIcon fontSize="small" /><Tooltip title="Website"><Link href={user.website}>{user.website}</Link></Tooltip></Typography>}
 
-                {icnf && <Typography component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={icnf}>INCF Profile</Link></Typography>}
-                {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>Github Profile</Link></Typography>}
-                {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>Bitbucket profile</Link></Typography>}
-                {Object.keys(otherProfiles).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Link href={otherProfiles[k]}>{k} profile</Link></Typography>)}
+                {affiliation && <Typography component="p" variant="body2" gutterBottom={true}><BusinessIcon fontSize="small" /><Tooltip title="Affiliation"><Link href={ affiliation }>{ affiliation }</Link></Tooltip></Typography>}
+                {github && <Typography component="p" variant="body2" gutterBottom={true}><GitHubIcon fontSize="small" /><Tooltip title="GitHub"><Link href={github.includes('github.com') ? github : 'https://github.com/' + github}>@{ github.includes('github.com') ? github.replace(/\/$/, '').split("/").pop() : github }</Link></Tooltip></Typography>}
+                {bitbucket && <Typography component="p" variant="body2" gutterBottom={true}><BitBucketIcon fontSize="small" /><Tooltip title="BitBucket"><Link href={bitbucket.includes('bitbucket.org') ? bitbucket : 'https://bitbucket.org/' + bitbucket}>@{ bitbucket.includes('bitbucket.org') ? bitbucket.replace(/\/$/, '').split("/").pop() : bitbucket }</Link></Tooltip></Typography>}
+                {twitter && <Typography component="p" variant="body2" gutterBottom={true}><TwitterIcon fontSize="small" /><Tooltip title="Twitter"><Link href={twitter.includes('twitter.com') ? twitter : 'https://twitter.com/' + twitter}>@{ twitter.includes('twitter.com') ? twitter.replace(/\/$/, '').split("/").pop() : twitter }</Link></Tooltip></Typography>}
+                {incf && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="INCF"><Link href={incf}>INCF</Link></Tooltip></Typography>}
+                {orcid && <Typography component="p" variant="body2" gutterBottom={true}><GroupIcon fontSize="small" /><Tooltip title="ORCID"><Link href={orcid}>ORCID</Link></Tooltip></Typography>}
+                {Object.keys(otherProfiles).filter((k) => (otherProfiles[k] !== "")).map(k => <Typography key={k} component="p" variant="body2" gutterBottom={true}><LinkIcon fontSize="small" /><Tooltip title={(k.charAt(0).toUpperCase() + k.slice(1))}><Link href={otherProfiles[k]}>{(k.charAt(0).toUpperCase() + k.slice(1))}</Link></Tooltip></Typography>)}
               </Box>}
 
               {user.groups && <Box className="groups" width="100%">
@@ -293,9 +318,25 @@ export const UserPage = (props: any) => {
         </Container>
 
       </Box>
-      {props.user && props.user.id === user.id && <OSBDialog open={profileEditDialogOpen} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)}>
-        <UserEditor user={user} closeHandler={handleUpdateUser} />
+      {props.user && props.user.id === user.id && profileEditDialogOpen && <OSBDialog open={true} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)} actions={
+          <React.Fragment>
+            <Button color="primary" onClick={() => setProfileEditDialogOpen(false)}>Cancel</Button> <Button variant="contained" color="primary" onClick={handleUpdateUser}>Save Changes</Button>
+          </React.Fragment>
+        } >
+        <UserEditor user={user} profileForm={userProfileForm} setProfileForm={setUserProfileForm} error={formError} setError={setFormError}/>
       </OSBDialog>}
+      {loading &&
+        <CircularProgress
+          size={24}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: -12,
+            marginLeft: -12,
+          }}
+        />
+      }
     </Box >
   )
 }

@@ -1,0 +1,20 @@
+harness:
+  subdomain: admin
+  secured: true
+  deployment:
+    auto: true
+    port: 80
+  service:
+    auto: true
+    port: 80
+  sentry: true
+  use_services:
+    - name: workspaces
+    - name: common
+    - name: accounts-api
+  dependencies:
+    soft:
+      - accounts
+      - accounts-api
+      - common
+      - workspaces

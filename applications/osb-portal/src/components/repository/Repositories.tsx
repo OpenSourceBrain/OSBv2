@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
         width: ".5rem",
         height: "auto",
       },
+      "& .repo-user": {
+        width: theme.spacing(3),
+        height: "3.0ex"
+      },
       [theme.breakpoints.down("xs")]: {
         paddingTop: theme.spacing(0),
         paddingBottom: theme.spacing(0),
@@ -232,7 +236,7 @@ export default (props: RepositoriesProps) => {
             spacing={0}
             key={repository.id}
           >
-            <Grid item={true} xs={12} sm={3} lg={5}
+            <Grid item={true} xs={12} sm={3} lg={showSimpleVersion ? 5 : 4}
               ref={gridRef}>
               <Box className="col" onClick={(e: any) => { console.log(e); if (e.target.tagName.toLowerCase() !== 'a') props.handleRepositoryClick(repository.id) }}>
                 < Typography component="strong" >
@@ -251,11 +255,36 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1}>
               <Box className="col">
-                <Typography>
-                  {repository?.user?.firstName} {repository?.user?.lastName}
-                </Typography>
+                {
+                  // TODO: use user avatar, but repository.user does not include an avatar property
+                }
+                <Chip
+                  avatar={
+                  <Avatar alt="user-profile-avatar"
+                    className="repo-user"
+                  >
+                    {(repository.user.firstName.length > 0 && repository.user.firstName.charAt(0)) + (repository.user.lastName.length > 0 && repository.user.lastName.charAt(0))}
+                  </Avatar>
+                  }
+                  label={repository?.user?.firstName + " " + repository?.user?.lastName}
+                  onClick={() => window.open(`/user/${repository?.user?.id}`, "_self") }
+                />
+              </Box>
+            </Grid>}
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} >
+              <Box
+                className="col"
+                display="flex"
+                alignItems="center"
+              >
+                <Button
+                  onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
+                >
+                  { /* TODO: use Icons once we have themed icons for Figshare/Dandi */ }
+                  {Resources[repository.repositoryType] || repository.repositoryType}
+                </Button>
               </Box>
             </Grid>}
 
@@ -310,26 +339,19 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
             }
-            <Grid item={true} xs={12} sm={2} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
+            <Grid item={true} xs={12} sm={3} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
               <Box display="flex" alignItems="center" flexWrap="wrap">
                 {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
               </Box>
             </Grid>
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={showSimpleVersion ? 1 : 2} >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={1} >
               <Box
                 className="col"
                 display="flex"
                 flex={1}
                 alignItems="center"
               >
-                {!showSimpleVersion && <Button
-                  variant="outlined"
-                  onClick={() => { openRepoUrl(repository.uri); props.handleRepositoryClick(repository.id); }}
-                >
-                  View on {Resources[repository.repositoryType] || repository.repositoryType}
-                </Button>}
                 <Avatar src="/images/arrow_right.svg" onClick={() => props.handleRepositoryClick(repository.id)} />
-
               </Box>
               {props.user && !showSimpleVersion && <Box className={classes.repositoryActionsBox}>
                 <RepositoryActionsMenu repository={repository} user={props.user} onAction={props.refreshRepositories} />
