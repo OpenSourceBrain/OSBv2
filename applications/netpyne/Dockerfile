@@ -9,7 +9,7 @@ RUN rm -Rf .git
 COPY overrides/geppetto/GeppettoConfiguration.json $FOLDER/webapp/GeppettoConfiguration.json
 
 WORKDIR $FOLDER/webapp
-RUN yarn
+RUN yarn install  --network-timeout 1000000000
 RUN yarn build-dev
 
 RUN rm -Rf node_modules
