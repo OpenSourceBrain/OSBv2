@@ -1,20 +1,19 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
-ENV BRANCH_TAG=osb2
+ENV BRANCH_TAG=osb2-dev
 ENV FOLDER=netpyne
-RUN echo "no-cache7"
+RUN echo "no-cache 10"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
 COPY overrides/geppetto/GeppettoConfiguration.json $FOLDER/webapp/GeppettoConfiguration.json
 
 WORKDIR $FOLDER/webapp
-RUN npm ci
-RUN npm run build-dev
-#Remove node_modules, need to keep the geppetto client
-RUN mv node_modules/@geppettoengine .
-RUN rm -Rf node_modules/*
-RUN mv @geppettoengine node_modules
+RUN yarn
+RUN yarn build-dev
+
+RUN rm -Rf node_modules
+
 
 ###
 FROM jupyter/base-notebook:hub-1.4.2
@@ -28,10 +27,9 @@ WORKDIR $FOLDER
 
 USER root
 
-RUN ls -la webapp/node_modules
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
-    apt-get install python3-tk vim nano unzip git make libtool g++ -qq pkg-config libfreetype6-dev libpng-dev
+    apt-get install python3-tk vim nano unzip git make libtool g++ -qq pkg-config libfreetype6-dev libpng-dev libopenmpi-dev -y
 
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
