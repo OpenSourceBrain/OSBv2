@@ -1,5 +1,5 @@
 import * as React from "react";
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -22,7 +22,7 @@ import RepositoryService from "../service/RepositoryService";
 
 import SearchFilter from '../types/searchFilter';
 
-const BIG_NUMBER_OF_ITEMS = 1000;
+const BIG_NUMBER_OF_ITEMS = 5000;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,17 +31,17 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export const HomePage = (props: any) => {
+export default (props: any) => {
   const classes = useStyles();
   const [ users, setUsers ] = React.useState<any[]>(null);
   const [ workspaces, setWorkspaces ] = React.useState<any>(null);
   const [ repositories, setRepositories ] = React.useState<any>(null);
-  const [ token, setToken ] = React.useState<string>(null);
-
-  setToken(Cookies.get('access_token'))
-  initApis(token);
 
   const fetchInfo = () => {
+    // Initialise APIs with token
+    const token = Cookies.get('accessToken');
+    initApis(token);
+
     /* Does not require logging in */
     getUsers().then((userlist) => {
       setUsers(userlist);
@@ -66,13 +66,17 @@ export const HomePage = (props: any) => {
 
   const getUserWorkspaces = (userid: string) => {
     return workspaces.filter((workspace: any) => {
-      return workspace.owner.id === userid;
+      return workspace.user.id === userid;
     })
   }
 
   React.useEffect(() => {
     fetchInfo();
   }, [ ]);
+
+  if (users === null){
+    return null
+  }
 
   // Get hostname without sub-domain
   const getHostname = () => {
@@ -106,7 +110,7 @@ export const HomePage = (props: any) => {
                   <TableCell component="th" scope="row">
                     {auser.firstName + "" + auser.lastName}
                   </TableCell>
-                  <TableCell><Link href={`${getHostname()}/user/${auser.id}`}>{auser.username}</Link></TableCell>
+                  <TableCell><Link target="_blank" href={`${getHostname()}/user/${auser.id}`}>{auser.username}</Link></TableCell>
                   <TableCell>N/A</TableCell>
                   <TableCell>{`${getUserWorkspaces(auser.id).length}`}</TableCell>
                   <TableCell>{`${getUserRepos(auser.id).length}`}</TableCell>
