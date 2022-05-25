@@ -1,4 +1,5 @@
 import * as React from "react";
+import Cookies from 'js-cookie';
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -14,7 +15,7 @@ import Link from '@mui/material/Link';
 
 import makeStyles from '@mui/styles/makeStyles';
 
-import { getUsers } from  "../service/UserService";
+import { initApis, getUsers } from  "../service/UserService";
 import { UserInfo } from '../types/user';
 import WorkspaceService from "../service/WorkspaceService"
 import RepositoryService from "../service/RepositoryService";
@@ -35,19 +36,12 @@ export const HomePage = (props: any) => {
   const [ users, setUsers ] = React.useState<any[]>(null);
   const [ workspaces, setWorkspaces ] = React.useState<any>(null);
   const [ repositories, setRepositories ] = React.useState<any>(null);
+  const [ token, setToken ] = React.useState<string>(null);
 
-  const user = props.user;
-
-  const handleUserLogin = () => {
-    props.login();
-  };
-  const handleUserLogout = () => {
-    props.logout();
-  };
-
+  setToken(Cookies.get('access_token'))
+  initApis(token);
 
   const fetchInfo = () => {
-    if ((user !== null) && (user.isAdmin)) {
     /* Does not require logging in */
     getUsers().then((userlist) => {
       setUsers(userlist);
@@ -62,7 +56,6 @@ export const HomePage = (props: any) => {
     RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, null).then((repositoryList) => {
       setRepositories(repositoryList);
     })
-    }
   };
 
   const getUserRepos = (userid: string) => {
@@ -88,19 +81,9 @@ export const HomePage = (props: any) => {
     return "https://" + hostname.join('.');
   }
 
-  const headerText =
-    user !== null ? (
-      <>Hi {user.firstName}<Link component="button" onClick={handleUserLogout}>(logout)</Link></>
-    ) : (
-      <>
-        This page is for admins only. Please <Link component="button" onClick={handleUserLogin}> Sign in </Link>
-      </>
-    );
-
   // TODO: allow table sorting by fields
   // https://mui.com/material-ui/react-table/#sorting-amp-selecting
   const table =
-    user !== null && user.isAdmin && (
       <>
         Summary: {`${users.length} users, ${workspaces.length} workspaces, and ${repositories.length} repositories.`}
         <TableContainer component={Paper}>
@@ -133,11 +116,9 @@ export const HomePage = (props: any) => {
           </Table>
         </TableContainer>
       </>
-    )
 
   return <>
     <Box p={1}>
-      {headerText}
       {table}
     </Box>
   </>
