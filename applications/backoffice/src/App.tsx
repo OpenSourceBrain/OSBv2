@@ -5,9 +5,9 @@ import { CssBaseline } from "@mui/material";
 
 import makeStyles from '@mui/styles/makeStyles';
 
-import HomePage from "./pages/HomePage";
 import theme from "./theme";
 
+import { HomePage } from "./components/index";
 
 
 declare module '@mui/styles/defaultTheme' {

@@ -30,13 +30,24 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default (props: any) => {
+export const HomePage = (props: any) => {
   const classes = useStyles();
   const [ users, setUsers ] = React.useState<any[]>(null);
   const [ workspaces, setWorkspaces ] = React.useState<any>(null);
   const [ repositories, setRepositories ] = React.useState<any>(null);
 
+  const user = props.user;
+
+  const handleUserLogin = () => {
+    props.login();
+  };
+  const handleUserLogout = () => {
+    props.logout();
+  };
+
+
   const fetchInfo = () => {
+    if ((user !== null) && (user.isAdmin)) {
     /* Does not require logging in */
     getUsers().then((userlist) => {
       setUsers(userlist);
@@ -51,6 +62,7 @@ export default (props: any) => {
     RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, null).then((repositoryList) => {
       setRepositories(repositoryList);
     })
+    }
   };
 
   const getUserRepos = (userid: string) => {
@@ -69,10 +81,6 @@ export default (props: any) => {
     fetchInfo();
   }, [ ]);
 
-  if (!users) {
-    return null;
-  }
-
   // Get hostname without sub-domain
   const getHostname = () => {
     const hostname = window.location.hostname.split('.');
@@ -80,41 +88,57 @@ export default (props: any) => {
     return "https://" + hostname.join('.');
   }
 
+  const headerText =
+    user !== null ? (
+      <>Hi {user.firstName}<Link component="button" onClick={handleUserLogout}>(logout)</Link></>
+    ) : (
+      <>
+        This page is for admins only. Please <Link component="button" onClick={handleUserLogin}> Sign in </Link>
+      </>
+    );
+
   // TODO: allow table sorting by fields
   // https://mui.com/material-ui/react-table/#sorting-amp-selecting
+  const table =
+    user !== null && user.isAdmin && (
+      <>
+        Summary: {`${users.length} users, ${workspaces.length} workspaces, and ${repositories.length} repositories.`}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Username</TableCell>
+                <TableCell>Groups</TableCell>
+                <TableCell>Workspaces</TableCell>
+                <TableCell>Repositories</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users && users.map((auser: UserInfo) => (
+                <TableRow
+                  key={auser.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {auser.firstName + "" + auser.lastName}
+                  </TableCell>
+                  <TableCell><Link href={`${getHostname()}/user/${auser.id}`}>{auser.username}</Link></TableCell>
+                  <TableCell>N/A</TableCell>
+                  <TableCell>{`${getUserWorkspaces(auser.id).length}`}</TableCell>
+                  <TableCell>{`${getUserRepos(auser.id).length}`}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>
+    )
 
   return <>
     <Box p={1}>
-      Summary: {`${users.length} users, ${workspaces.length} workspaces, and ${repositories.length} repositories.`}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Groups</TableCell>
-              <TableCell>Workspaces</TableCell>
-              <TableCell>Repositories</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users && users.map((user: UserInfo) => (
-              <TableRow
-                key={user.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {user.firstName + "" + user.lastName}
-                </TableCell>
-                <TableCell><Link href={`${getHostname()}/user/${user.id}`}>{user.username}</Link></TableCell>
-                <TableCell>N/A</TableCell>
-                <TableCell>{`${getUserWorkspaces(user.id).length}`}</TableCell>
-                <TableCell>{`${getUserRepos(user.id).length}`}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {headerText}
+      {table}
     </Box>
   </>
 };
