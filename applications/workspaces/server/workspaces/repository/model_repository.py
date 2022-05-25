@@ -41,6 +41,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         workspace = self._get(id)
         return workspace
 
+    def check(self):
+        self.model.query.count()
+
     def search_qs(self, filter=None, q=None, tags=None, user_id=None, show_all=False, *args, **kwargs):
         q_base = self.model.query
         if filter is not None:

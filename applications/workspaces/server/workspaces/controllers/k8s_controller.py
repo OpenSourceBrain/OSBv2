@@ -2,7 +2,7 @@ import connexion
 import six
 
 from workspaces import util
-
+from workspaces.repository import WorkspaceRepository
 
 def live():  # noqa: E501
     """Test if application is healthy
@@ -12,7 +12,8 @@ def live():  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+    
+    return ready()
 
 
 def ready():  # noqa: E501
@@ -23,4 +24,6 @@ def ready():  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+    
+    WorkspaceRepository().check()
+    return "ok"
