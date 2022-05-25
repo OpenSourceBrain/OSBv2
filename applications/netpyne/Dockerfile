@@ -2,7 +2,7 @@ FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
 ENV BRANCH_TAG=osb2-dev
 ENV FOLDER=netpyne
-RUN echo "no-cache 14"
+RUN echo "no-cache 19"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -28,7 +28,7 @@ RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip git make libtool g++ -qq pkg-config libfreetype6-dev libpng-dev libopenmpi-dev -y
 RUN conda install python=3.7 -y
-USER jovyan
+
 
 WORKDIR $FOLDER
 COPY --from=jsbuild --chown=1000:1000 $FOLDER/requirements.txt requirements.txt
