@@ -56,6 +56,8 @@ paths:
         required: false
         schema:
           type: string
+      security:
+      - bearerAuth: []
       responses:
         "200":
           content:
