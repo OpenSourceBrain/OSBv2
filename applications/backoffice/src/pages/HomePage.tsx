@@ -40,22 +40,24 @@ export default (props: any) => {
   const fetchInfo = () => {
     // Initialise APIs with token
     const token = Cookies.get('accessToken');
-    initApis(token);
+    if (token !== "undefined") {
+      initApis(token);
 
-    /* Does not require logging in */
-    getUsers().then((userlist) => {
-      setUsers(userlist);
-    });
+      /* Does not require logging in */
+      getUsers().then((userlist) => {
+        setUsers(userlist);
+      });
 
-    /* Requires user to be logged in, and to be admin to see all workspaces */
-    WorkspaceService.fetchWorkspaces(null, null, 1, BIG_NUMBER_OF_ITEMS).then((workspaceList) => {
-      setWorkspaces(workspaceList.items);
-    })
+      /* Requires user to be logged in, and to be admin to see all workspaces */
+      WorkspaceService.fetchWorkspaces(null, null, 1, BIG_NUMBER_OF_ITEMS).then((workspaceList) => {
+        setWorkspaces(workspaceList.items);
+      })
 
-    /* Does not require logging in */
-    RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, null).then((repositoryList) => {
-      setRepositories(repositoryList);
-    })
+      /* Does not require logging in */
+      RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, null).then((repositoryList) => {
+        setRepositories(repositoryList);
+      })
+    }
   };
 
   const getUserRepos = (userid: string) => {
@@ -75,7 +77,9 @@ export default (props: any) => {
   }, [ ]);
 
   if (users === null){
-    return null
+    return <>
+      Error: Could not fetch information. Please login and retry.
+    </>
   }
 
   // Get hostname without sub-domain
