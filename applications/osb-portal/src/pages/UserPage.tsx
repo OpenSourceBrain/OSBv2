@@ -225,14 +225,14 @@ export const UserPage = (props: any) => {
       const tempWorkspaces: Workspace[] = publicWorkspaces.filter((pws) => {
         return pws.id === ws.id
       });
+
       if (tempWorkspaces.length > 0) {
         return false;
       }
 
-      return publicWorkspaces.indexOf(ws) === -1;
+      return true;
     });
 
-    console.log(`${privateWorkspaces.length}`);
     return privateWorkspaces;
   }
 
