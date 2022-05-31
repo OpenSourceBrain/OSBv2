@@ -47,11 +47,7 @@ def get_users(query={}):
     :rtype: {}
     """
 
-    try:
-        return {'users': user_service.get_users(query)}
-    # TODO: better handle exceptions
-    except Exception as e:
-        return "Error"
+    return {'users': user_service.get_users(query)}
 
 
 def update_user(userid, user=None):  # noqa: E501
