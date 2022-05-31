@@ -305,7 +305,7 @@ export const UserPage = (props: any) => {
 
             <Grid item={true} sm={8} lg={9} className={`verticalFit ${classes.repositoriesAndWorkspaces}`}>
               <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs" variant="standard">
-                <Tab label={<>Workspaces<Chip size="small" color="primary" label={publicWorkspaces.length} /></>} {...a11yProps(0)} />
+                <Tab label={<>Public Workspaces<Chip size="small" color="primary" label={publicWorkspaces.length} /></>} {...a11yProps(0)} />
                 {
                   props.user.id === user.id && <Tab label={<>Private Workspaces<Chip size="small" color="primary" label={getPrivateWorkspaces().length} /></>} {...a11yProps(1)} />
                 }
