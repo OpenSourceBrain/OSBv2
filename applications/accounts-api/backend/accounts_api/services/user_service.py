@@ -3,6 +3,7 @@ from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient
 from cloudharness import log
+import typing
 # from cloudharness.models import User as CHUser # Cloudharness 2.0.0
 
 class UserNotFound(Exception): pass
@@ -31,6 +32,21 @@ def get_user(userid: str) -> User:
         log.error("Error checking user", exc_info=True)
         user.email = None
     return user
+
+
+def get_users(query: str) -> typing.List[User]:
+    try:
+        client = AuthClient()
+        kc_users = client.get_users(query)
+    except KeycloakError as e:
+        raise Exception("Unhandled Keycloak exception") from e
+    all_users = []
+    for kc_user in kc_users:
+        auser = map_user(kc_user)
+        auser.email = None  # strip out the e-mail address
+        all_users.append(auser)
+
+    return all_users
 
 
 def map_user(kc_user) -> User:
