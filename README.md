@@ -114,6 +114,7 @@ You do not need to run the port-forwarding commands on the local deployment.
 
 Here, you can modify the argument of the `-e` option to select what environment you want to deploy.
 These correspond to the files from the `osb-portal/deploy` directory.
+So, selecting the environment will load specific overriding configuration files (like `[APP_NAME]/deploy/values-[ENV].yaml`) specific to the environment.
 
 If you only want to run the back-end in the minikube deployment, change the `osb-portal` to `workspaces`.
 You can then use `npm start:minikube` to point `npm` to the local minikube back-end.
