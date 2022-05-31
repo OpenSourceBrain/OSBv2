@@ -196,7 +196,7 @@ export default (props: UserEditProps) => {
                 </Box>
                 <Box mb={1} mt={1}>
                     <Typography component="label" variant="h6">Username</Typography>
-                    <TextField error={props.error.username} helperText={props.error.username} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={props.profileForm.username} InputProps={{
+                    <TextField disabled={true} error={props.error.username} helperText={props.error.username} className={classes.textFieldWithIcon} fullWidth={true} onChange={setProfileUserName} variant="outlined" defaultValue={props.profileForm.username} InputProps={{
                         startAdornment: (
                             <Box className={classes.inputIconBox}>
                                 <AlternateEmail fontSize="small" />

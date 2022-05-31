@@ -38,6 +38,18 @@ def get_user(userid):  # noqa: E501
         return "User not found", 404
 
 
+def get_users(query={}):
+    """get all users
+
+    :param query: user filter
+    :type query: str
+
+    :rtype: {}
+    """
+
+    return {'users': user_service.get_users(query)}
+
+
 def update_user(userid, user=None):  # noqa: E501
     """get_user
 
