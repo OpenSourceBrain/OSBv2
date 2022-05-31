@@ -12,6 +12,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
+import { DataGrid, GridColDef, GridValueGetterParams  } from '@mui/x-data-grid';
 
 import makeStyles from '@mui/styles/makeStyles';
 
@@ -26,7 +27,7 @@ const BIG_NUMBER_OF_ITEMS = 5000;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    overflow: "hidden",
+    overflow: "auto",
   },
 
 }));
@@ -83,46 +84,84 @@ export default (props: any) => {
   }
 
   // Get hostname without sub-domain
-  const getHostname = () => {
+  const getHostname = (subdomain: string) => {
     const hostname = window.location.hostname.split('.');
     hostname.shift();
-    return "https://" + hostname.join('.');
+    if (subdomain === "") {
+      return "https://" + hostname.join('.');
+    }
+    else {
+      return "https://" + subdomain + "." + hostname.join('.');
+      }
   }
 
-  // TODO: allow table sorting by fields
-  // https://mui.com/material-ui/react-table/#sorting-amp-selecting
+  // for links to profiles
+  const osbProfile = "/user/";
+  const keycloakProfile = "/auth/admin/master/console/#/realms/osblocal/users/"
+
+  const getDataGridData = () => {
+    const gridData: any = [];
+    users.forEach((auser) => {
+      const arow: any = {
+        id: auser.id,
+        name: auser.firstName + " " + auser.lastName,
+        username: auser.username,
+        registration_date: auser.registrationDate,
+        groups: auser.groups,
+        workspaces: getUserWorkspaces(auser.id).length,
+        repositories: getUserRepos(auser.id).length
+      }
+      gridData.push(arow);
+    })
+
+    console.log(`${JSON.stringify(gridData)}`)
+    return gridData;
+  }
+
+  const dataColumns: GridColDef[] = [
+    {
+      field: 'id', headerName: 'ID', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${keycloakProfile}${param.value}`} target="_blank"> KeyCloak </Link></>},
+      minWidth: 50, flex: 2,
+    },
+    {
+      field: 'name', headerName: 'Name',
+      minWidth: 50, flex: 2,
+    },
+    {
+      field: 'username', headerName: 'Username',
+      minWidth: 50, flex: 2,
+    },
+    {
+      field: 'registration_date', headerName: 'Registration date',
+      minWidth: 50, flex: 4,
+    },
+    {
+      field: 'groups', headerName: 'Groups',
+      minWidth: 50, flex: 2,
+    },
+    {
+      field: 'workspaces', headerName: 'Workspaces',
+      minWidth: 50, flex: 1,
+    },
+    {
+      field: 'repositories', headerName: 'Repositories',
+      minWidth: 50, flex: 1,
+    }
+  ]
+
   const table =
       <>
         Summary: { `${users.length} users` } { workspaces !== null ? ` ${workspaces.length} workspaces,` : "? workspaces," } { repositories !== null ? ` and ${repositories.length} repositories.` : "? repositories." }
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>Groups</TableCell>
-                <TableCell>Workspaces</TableCell>
-                <TableCell>Repositories</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users && users.map((auser: UserInfo) => (
-                <TableRow
-                  key={auser.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {auser.firstName + " " + auser.lastName}
-                  </TableCell>
-                  <TableCell><Link target="_blank" href={`${getHostname()}/user/${auser.id}`}>{auser.username}</Link></TableCell>
-                  <TableCell>N/A</TableCell>
-                  <TableCell>{ workspaces !== null ? `${getUserWorkspaces(auser.id).length}` : "?" }</TableCell>
-                  <TableCell>{ repositories !== null ? `${getUserRepos(auser.id).length}` : "?" }</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {workspaces !== null && repositories !== null &&
+          <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+              rows={getDataGridData()}
+              columns={dataColumns}
+              pageSize={20}
+              rowsPerPageOptions={[20, 50, 100]}
+            />
+          </div>
+        }
       </>
 
   return <>
