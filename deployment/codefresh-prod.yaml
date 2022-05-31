@@ -247,6 +247,15 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_backoffice:
+        stage: publish
+        type: push
+        title: Backoffice
+        candidate: '${{REGISTRY}}/osb/backoffice:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_nwb-explorer:
         stage: publish
         type: push
