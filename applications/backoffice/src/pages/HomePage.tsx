@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import { DataGrid, GridColDef, GridValueGetterParams  } from '@mui/x-data-grid';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import makeStyles from '@mui/styles/makeStyles';
 
@@ -37,6 +38,7 @@ export default (props: any) => {
   const [ users, setUsers ] = React.useState<any[]>(null);
   const [ workspaces, setWorkspaces ] = React.useState<any>(null);
   const [ repositories, setRepositories ] = React.useState<any>(null);
+  const [ error, setError ] = React.useState<any>(null);
 
   const fetchInfo = () => {
     // Initialise APIs with token
@@ -47,17 +49,20 @@ export default (props: any) => {
       /* Does not require logging in */
       getUsers().then((userlist) => {
         setUsers(userlist);
-      });
+        setError(null);
+      }, (e) => setError(e));
 
       /* Requires user to be logged in, and to be admin to see all workspaces */
       WorkspaceService.fetchWorkspaces(null, null, 1, BIG_NUMBER_OF_ITEMS).then((workspaceList) => {
         setWorkspaces(workspaceList.items);
-      })
+        setError(null);
+      }, (e) => setError(e))
 
       /* Does not require logging in */
       RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, null).then((repositoryList) => {
         setRepositories(repositoryList);
-      })
+        setError(null);
+      }, (e) => setError(e))
     }
   };
 
@@ -76,12 +81,6 @@ export default (props: any) => {
   React.useEffect(() => {
     fetchInfo();
   }, [ ]);
-
-  if (users === null){
-    return <>
-      Error: Could not fetch information. Please login and retry.
-    </>
-  }
 
   // Get hostname without sub-domain
   const getHostname = (subdomain: string) => {
@@ -151,22 +150,21 @@ export default (props: any) => {
 
   const table =
       <>
-        Summary: { `${users.length} users` } { workspaces !== null ? ` ${workspaces.length} workspaces,` : "? workspaces," } { repositories !== null ? ` and ${repositories.length} repositories.` : "? repositories." }
-        {workspaces !== null && repositories !== null &&
-          <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-              rows={getDataGridData()}
-              columns={dataColumns}
-              pageSize={20}
-              rowsPerPageOptions={[20, 50, 100]}
-            />
-          </div>
-        }
       </>
 
   return <>
-    <Box p={1}>
-      {table}
-    </Box>
+    { (error !== null) ? <>"An error occured: " { error }</> : (users === null || workspaces === null || repositories === null) ? <CircularProgress /> :
+      <Box p={1}>
+        Summary: { `${users.length} users` } { workspaces !== null ? ` ${workspaces.length} workspaces,` : "? workspaces," } { repositories !== null ? ` and ${repositories.length} repositories.` : "? repositories." }
+        <div style={{ height: 400, width: '100%' }}>
+          <DataGrid
+            rows={getDataGridData()}
+            columns={dataColumns}
+            pageSize={20}
+            rowsPerPageOptions={[20, 50, 100]}
+          />
+        </div>
+      </Box>
+    }
   </>
 };
