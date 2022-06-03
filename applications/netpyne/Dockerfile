@@ -13,9 +13,9 @@ RUN yarn install  --network-timeout 1000000000
 RUN yarn build-dev
 
 
-RUN mv node_modules/@geppettoengine .
+RUN mv node_modules/@metacell .
 RUN rm -Rf node_modules/*
-RUN mv @geppettoengine node_modules
+RUN mv @metacell node_modules
 
 ###
 FROM jupyter/base-notebook:hub-1.4.2
