@@ -93,7 +93,7 @@ export default (props: any) => {
   // https://mui.com/material-ui/react-table/#sorting-amp-selecting
   const table =
       <>
-        Summary: {`${users.length} users, ${workspaces.length} workspaces, and ${repositories.length} repositories.`}
+        Summary: { `${users.length} users` } { workspaces !== null ? ` ${workspaces.length} workspaces,` : "? workspaces," } { repositories !== null ? ` and ${repositories.length} repositories.` : "? repositories." }
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -112,12 +112,12 @@ export default (props: any) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {auser.firstName + "" + auser.lastName}
+                    {auser.firstName + " " + auser.lastName}
                   </TableCell>
                   <TableCell><Link target="_blank" href={`${getHostname()}/user/${auser.id}`}>{auser.username}</Link></TableCell>
                   <TableCell>N/A</TableCell>
-                  <TableCell>{`${getUserWorkspaces(auser.id).length}`}</TableCell>
-                  <TableCell>{`${getUserRepos(auser.id).length}`}</TableCell>
+                  <TableCell>{ workspaces !== null ? `${getUserWorkspaces(auser.id).length}` : "?" }</TableCell>
+                  <TableCell>{ repositories !== null ? `${getUserRepos(auser.id).length}` : "?" }</TableCell>
                 </TableRow>
               ))}
             </TableBody>
