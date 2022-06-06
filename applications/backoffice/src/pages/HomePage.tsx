@@ -113,7 +113,6 @@ export default (props: any) => {
       gridData.push(arow);
     })
 
-    console.log(`${JSON.stringify(gridData)}`)
     return gridData;
   }
 
