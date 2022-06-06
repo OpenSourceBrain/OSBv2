@@ -107,7 +107,7 @@ export default (props: any) => {
 
   const dataColumns: GridColDef[] = [
     {
-      field: 'id', headerName: 'ID', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${keycloakProfile}${param.value}`} target="_blank"> KeyCloak </Link></>},
+      field: 'id', headerName: 'Profile', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${keycloakProfile}${param.value}`} target="_blank"> KeyCloak </Link></>},
       minWidth: 50, flex: 2,
     },
     {
