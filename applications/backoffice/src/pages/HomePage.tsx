@@ -1,10 +1,7 @@
 import * as React from "react";
 import Cookies from 'js-cookie'
 
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -15,8 +12,6 @@ import { initApis, getUsers } from  "../service/UserService";
 import { UserInfo } from '../types/user';
 import WorkspaceService from "../service/WorkspaceService"
 import RepositoryService from "../service/RepositoryService";
-
-import SearchFilter from '../types/searchFilter';
 
 const BIG_NUMBER_OF_ITEMS = 5000;
 
