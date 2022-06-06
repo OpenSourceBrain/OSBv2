@@ -83,9 +83,23 @@ export default (props: any) => {
       }
   }
 
+  const getKeyCloakProfile = () => {
+    const hostname = window.location.hostname;
+    let realm = ""
+    if (hostname.indexOf("local") !== -1) {
+      realm = "osblocal"
+    }
+    else if (hostname.indexOf("dev")) {
+      realm = "osb2dev"
+    }
+    else {
+      realm = "osb2"
+    }
+    return "/auth/admin/master/console/#/realms/" + realm + "/users/";
+  }
+
   // for links to profiles
   const osbProfile = "/user/";
-  const keycloakProfile = "/auth/admin/master/console/#/realms/osblocal/users/"
 
   const getDataGridData = () => {
     const gridData: any = [];
@@ -107,7 +121,7 @@ export default (props: any) => {
 
   const dataColumns: GridColDef[] = [
     {
-      field: 'id', headerName: 'Profile', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${keycloakProfile}${param.value}`} target="_blank"> KeyCloak </Link></>},
+      field: 'id', headerName: 'Profile', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${getKeyCloakProfile()}${param.value}`} target="_blank"> KeyCloak </Link></>},
       minWidth: 50, flex: 2,
     },
     {
