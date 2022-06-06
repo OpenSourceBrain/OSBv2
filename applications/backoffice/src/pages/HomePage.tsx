@@ -152,7 +152,7 @@ export default (props: any) => {
 
   return <>
     { (error !== null) ? <>"An error occured: " { error }</> : (users === null || workspaces === null || repositories === null) ? <CircularProgress /> :
-      <Box p={1}>
+    <Box p={1} style={{ height: '100%' }}>
         Summary: { `${users.length} users` } { workspaces !== null ? ` ${workspaces.length} workspaces,` : "? workspaces," } { repositories !== null ? ` and ${repositories.length} repositories.` : "? repositories." }
         <div style={{ height: '100%', width: '100%' }}>
           <DataGrid
