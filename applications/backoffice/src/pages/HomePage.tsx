@@ -4,12 +4,6 @@ import Cookies from 'js-cookie'
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from '@mui/material/Typography';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import { DataGrid, GridColDef, GridValueGetterParams  } from '@mui/x-data-grid';
@@ -146,10 +140,6 @@ export default (props: any) => {
       minWidth: 50, flex: 1,
     }
   ]
-
-  const table =
-      <>
-      </>
 
   return <>
     { (error !== null) ? <>"An error occured: " { error }</> : (users === null || workspaces === null || repositories === null) ? <CircularProgress /> :
