@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
-import { DataGrid, GridColDef, GridValueGetterParams  } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import makeStyles from '@mui/styles/makeStyles';
