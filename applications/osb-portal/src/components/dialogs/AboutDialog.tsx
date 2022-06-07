@@ -83,6 +83,21 @@ export const AboutContent = (props: any) => {
               target="_blank">
               Wellcome
           </Link>.
+          The source code is available on
+          {' '}
+          <Link
+            href="https://github.com/OpenSourceBrain/OSBv2/"
+            target="_blank">
+            GitHub
+          </Link>
+          {' '}
+          under the
+          {' '}
+          <Link
+            href="https://github.com/OpenSourceBrain/OSBv2/blob/develop/LICENSE"
+            target="_blank">
+            MIT License
+          </Link>.
         </Typography>
         <Link href="http://www.metacell.us" target="_blank">
           <img
