@@ -18,6 +18,7 @@ import ExpansionPanelSummary from "@material-ui/core/AccordionSummary";
 import ExpansionPanelDetails from "@material-ui/core/AccordionDetails";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Tooltip from '@material-ui/core/Tooltip';
+import Link from "@material-ui/core/Link";
 import Chip from '@material-ui/core/Chip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
@@ -205,7 +206,8 @@ export default (props: WorkspaceProps | any) => {
             <Typography
               variant="h4"
               className={classes.flexCenter}>
-              {workspace.name}<Tooltip style={{ marginLeft: '0.3em' }} title="Resources are special files that can be opened with applications supported by Open Source Brain. To see all your files, and upload non-resource files, please open the workspace in the JupyterLab application.">
+              {workspace.name}<Tooltip interactive={true} style={{ marginLeft: '0.3em' }} title={
+                <>Resources are special files that can be opened with applications supported by Open Source Brain. To see all your files, and upload non-resource files, please open the workspace in the JupyterLab application. <Link href="https://docs.opensourcebrain.org/OSBv2/Workspaces.html" target="_blank">Learn more...</Link></>}>
                 <InfoOutlinedIcon fontSize="small"/>
               </Tooltip>
               {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="You do not have permissions to modify this workspace."><ReadOnlyIcon fontSize="small" /></Tooltip>}
