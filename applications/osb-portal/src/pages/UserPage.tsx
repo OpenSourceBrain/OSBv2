@@ -197,7 +197,7 @@ export const UserPage = (props: any) => {
       setPublicWorkspaces(workspacesRetrieved.items);
     },
     (e) => { setError(e) });
-    if (props.user && props.user.id === userId) {
+    if (props.user && (props.user.id === userId || props.user.isAdmin)) {
       workspaceService.fetchWorkspacesByFilter(false, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
         setAllWorkspaces(workspacesRetrieved.items);
       },
@@ -273,11 +273,11 @@ export const UserPage = (props: any) => {
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
-              {props.user && props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
+              {props.user && (props.user.id === user.id || props.user.isAdmin) && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
 
               <Box display="flex" flexDirection="row" color={paragraph}>
                 {publicWorkspaces ? <><FolderOpenIcon fontSize="small" />{publicWorkspaces.length} workspaces</> : <CircularProgress size="1rem" />}
-                {props.user && props.user.id === user.id && allWorkspaces ? <> ({getPrivateWorkspaces().length} private) </> : <> </> }
+                {props.user && (props.user.id === user.id || props.user.isAdmin) && allWorkspaces ? <> ({getPrivateWorkspaces().length} private) </> : <> </> }
                 {repositories ? <><FiberManualRecordIcon className={classes.dot} fontSize="small" /><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} repositories</> : <CircularProgress size="1rem" />}
               </Box>
 
@@ -306,7 +306,7 @@ export const UserPage = (props: any) => {
             <Grid item={true} sm={8} lg={9} className={`verticalFit ${classes.repositoriesAndWorkspaces}`}>
               <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs" variant="standard">
                 <Tab label={<>Public Workspaces<Chip size="small" color="primary" label={publicWorkspaces.length} /></>} {...a11yProps(0)} />
-                {props.user && props.user.id === user.id && <Tab label={<>Private Workspaces<Chip size="small" color="primary" label={getPrivateWorkspaces().length} /></>} {...a11yProps(1)} />}
+                {props.user && (props.user.id === user.id || props.user.isAdmin) && <Tab label={<>Private Workspaces<Chip size="small" color="primary" label={getPrivateWorkspaces().length} /></>} {...a11yProps(1)} />}
                 <Tab label={<>Repositories<Chip size="small" color="primary" label={repositories.length} /></>} {...a11yProps(2)} />
               </Tabs>
 
@@ -323,7 +323,7 @@ export const UserPage = (props: any) => {
                   </Grid>
                 </TabPanel>
 
-                {props.user && props.user.id === user.id &&
+                {props.user && (props.user.id === user.id || props.user.isAdmin) &&
                 <TabPanel value={tabValue} index={1}>
                   <Grid container={true} spacing={1}>
                     {getPrivateWorkspaces().map(ws => {
@@ -337,7 +337,7 @@ export const UserPage = (props: any) => {
                 </TabPanel>
                 }
 
-                <TabPanel value={tabValue} index={props.user && props.user.id === user.id ? 2 : 1}>
+                <TabPanel value={tabValue} index={(props.user && (props.user.id === user.id || props.user.isAdmin)) ? 2 : 1}>
                   <Grid container={true} spacing={1}>
                     {repositories.map(repo => {
                       return (
@@ -359,7 +359,7 @@ export const UserPage = (props: any) => {
         </Container>
 
       </Box>
-      {props.user && props.user.id === user.id && profileEditDialogOpen && <OSBDialog open={true} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)} actions={
+      {props.user && (props.user.id === user.id || props.user.isAdmin) && profileEditDialogOpen && <OSBDialog open={true} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)} actions={
           <React.Fragment>
             <Button color="primary" onClick={() => setProfileEditDialogOpen(false)}>Cancel</Button> <Button variant="contained" color="primary" onClick={handleUpdateUser}>Save Changes</Button>
           </React.Fragment>
