@@ -169,7 +169,8 @@ const BIG_NUMBER_OF_ITEMS = 1000;
 export const UserPage = (props: any) => {
   const [tabValue, setTabValue] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
-  const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
+  const [publicWorkspaces, setPublicWorkspaces] = React.useState<Workspace[]>([]);
+  const [allWorkspaces, setAllWorkspaces] = React.useState<Workspace[]>([]);
   const [profileEditDialogOpen, setProfileEditDialogOpen] = React.useState(false);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [user, setUser] = React.useState<User>(null);
@@ -193,9 +194,15 @@ export const UserPage = (props: any) => {
   React.useEffect(() => {
     getUser(userId).then(u => { setUser(u); setUserProfileForm({ ...u }); });
     workspaceService.fetchWorkspacesByFilter(true, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
-      setWorkspaces(workspacesRetrieved.items);
+      setPublicWorkspaces(workspacesRetrieved.items);
     },
     (e) => { setError(e) });
+    if (props.user && (props.user.id === userId || props.user.isAdmin)) {
+      workspaceService.fetchWorkspacesByFilter(false, false, 1, { user_id: `${userId}` }, BIG_NUMBER_OF_ITEMS).then((workspacesRetrieved) => {
+        setAllWorkspaces(workspacesRetrieved.items);
+      },
+      (e) => { setError(e) });
+    }
     RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, userId).then((repositoriesRetrieved) => {
       setRepositories(repositoriesRetrieved);
     },
@@ -210,6 +217,24 @@ export const UserPage = (props: any) => {
     return null;
   }
 
+
+  const getPrivateWorkspaces = () => {
+    // remove public workspaces from the list of all workspaces
+    const privateWorkspaces: Workspace[] = allWorkspaces.filter((ws: Workspace) => {
+
+      const tempWorkspaces: Workspace[] = publicWorkspaces.filter((pws) => {
+        return pws.id === ws.id
+      });
+
+      if (tempWorkspaces.length > 0) {
+        return false;
+      }
+
+      return true;
+    });
+
+    return privateWorkspaces;
+  }
 
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
@@ -248,11 +273,12 @@ export const UserPage = (props: any) => {
               </Avatar>
               <Typography className="name" component="h1" variant="h1">{user.firstName + " " + user.lastName}</Typography>
               <Typography className="username" component="p" variant="body2">{user.username}</Typography>
-              {props.user && props.user.id === user.id && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
+              {props.user && (props.user.id === user.id || props.user.isAdmin) && <Button variant="outlined" color="primary" onClick={() => setProfileEditDialogOpen(true)}>Edit My Profile</Button>}
 
               <Box display="flex" flexDirection="row" color={paragraph}>
-                {repositories ? <><AccountTreeOutlinedIcon fontSize="small" />{workspaces.length} workspaces <FiberManualRecordIcon className={classes.dot} fontSize="small" /></> : <CircularProgress size="1rem" />}
-                {workspaces ? <><FolderOpenIcon fontSize="small" />{repositories.length} repositories</> : <CircularProgress size="1rem" />}
+                {publicWorkspaces ? <><FolderOpenIcon fontSize="small" />{publicWorkspaces.length} workspaces</> : <CircularProgress size="1rem" />}
+                {props.user && (props.user.id === user.id || props.user.isAdmin) && allWorkspaces ? <> ({getPrivateWorkspaces().length} private) </> : <> </> }
+                {repositories ? <><FiberManualRecordIcon className={classes.dot} fontSize="small" /><AccountTreeOutlinedIcon fontSize="small" />{repositories.length} repositories</> : <CircularProgress size="1rem" />}
               </Box>
 
               {(user.profiles || user.website) && <Box className="links" display="flex" flexDirection="column" width="100%">
@@ -279,14 +305,15 @@ export const UserPage = (props: any) => {
 
             <Grid item={true} sm={8} lg={9} className={`verticalFit ${classes.repositoriesAndWorkspaces}`}>
               <Tabs value={tabValue} onChange={handleTabChange} textColor="primary" indicatorColor="primary" aria-label="tabs" variant="standard">
-                <Tab label={<>Workspaces<Chip size="small" color="primary" label={workspaces.length} /></>} {...a11yProps(0)} />
-                <Tab label={<>Repositories<Chip size="small" color="primary" label={repositories.length} /></>} {...a11yProps(1)} />
+                <Tab label={<>Public Workspaces<Chip size="small" color="primary" label={publicWorkspaces.length} /></>} {...a11yProps(0)} />
+                {props.user && (props.user.id === user.id || props.user.isAdmin) && <Tab label={<>Private Workspaces<Chip size="small" color="primary" label={getPrivateWorkspaces().length} /></>} {...a11yProps(1)} />}
+                <Tab label={<>Repositories<Chip size="small" color="primary" label={repositories.length} /></>} {...a11yProps(2)} />
               </Tabs>
 
               <Box className="scrollbar" height="100%">
                 <TabPanel value={tabValue} index={0}>
                   <Grid container={true} spacing={1}>
-                    {workspaces.map(ws => {
+                    {publicWorkspaces.map(ws => {
                       return (
                         <Grid item={true} key={ws.id} xs={12} sm={6} md={4} lg={4} xl={3}>
                           <WorkspaceCard workspace={ws} />
@@ -296,7 +323,21 @@ export const UserPage = (props: any) => {
                   </Grid>
                 </TabPanel>
 
+                {props.user && (props.user.id === user.id || props.user.isAdmin) &&
                 <TabPanel value={tabValue} index={1}>
+                  <Grid container={true} spacing={1}>
+                    {getPrivateWorkspaces().map(ws => {
+                      return (
+                        <Grid item={true} key={ws.id} xs={12} sm={6} md={4} lg={4} xl={3}>
+                          <WorkspaceCard workspace={ws} />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </TabPanel>
+                }
+
+                <TabPanel value={tabValue} index={(props.user && (props.user.id === user.id || props.user.isAdmin)) ? 2 : 1}>
                   <Grid container={true} spacing={1}>
                     {repositories.map(repo => {
                       return (
@@ -318,7 +359,7 @@ export const UserPage = (props: any) => {
         </Container>
 
       </Box>
-      {props.user && props.user.id === user.id && profileEditDialogOpen && <OSBDialog open={true} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)} actions={
+      {props.user && (props.user.id === user.id || props.user.isAdmin) && profileEditDialogOpen && <OSBDialog open={true} title="Edit My Profile" closeAction={() => setProfileEditDialogOpen(false)} actions={
           <React.Fragment>
             <Button color="primary" onClick={() => setProfileEditDialogOpen(false)}>Cancel</Button> <Button variant="contained" color="primary" onClick={handleUpdateUser}>Save Changes</Button>
           </React.Fragment>
