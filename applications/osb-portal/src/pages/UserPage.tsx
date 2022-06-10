@@ -105,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
   repositoriesAndWorkspaces: {
     paddingTop: `${theme.spacing(7) - 23}px !important`,
     flexDirection: 'column',
+    paddingBottom: "0px !important",
     '& .repo-paper': {
       backgroundColor: bgLightestShade,
       padding: theme.spacing(3),
@@ -266,7 +267,7 @@ export const UserPage = (props: any) => {
       <Box bgcolor={bgDarkest} className={`${classes.root} verticalFill`} width="100vw" display="flex" justifyContent="center">
         <Divider light={true} variant="fullWidth" />
         <Container maxWidth="xl" className="verticalFit">
-          <Grid container={true} spacing={6} >
+          <Grid container={true} spacing={6} className="verticalFill" >
             <Grid item={true} sm={4} lg={3} className={`${classes.profileInformation}`} >
               <Avatar alt="user-profile-avatar" src={user.avatar}>
                 {(user.firstName.length > 0 && user.firstName.charAt(0)) + (user.lastName.length > 0 && user.lastName.charAt(0))}
