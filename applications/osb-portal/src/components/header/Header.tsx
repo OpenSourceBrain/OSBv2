@@ -85,6 +85,10 @@ export const Header = (props: any) => {
     history.push(`/user/${user.id}`);
     setMenuOpen(false);
   }
+  const handleAccountHelp = () => {
+    window.open("https://docs.opensourcebrain.org/OSBv2/User_Accounts.html")
+    setMenuOpen(false);
+  }
 
   const headerText =
     user === null ? (
@@ -98,6 +102,7 @@ export const Header = (props: any) => {
             <ClickAwayListener onClickAway={handleMenuClose}>
               <MenuList autoFocusItem={menuOpen} id="user-menu">
                 {<MenuItem onClick={handleMyAccount}>My account</MenuItem>}
+                {<MenuItem onClick={handleAccountHelp}>Account help</MenuItem>}
                 {/* <MenuItem>Settings</MenuItem> */}
                 <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
