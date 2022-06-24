@@ -119,7 +119,7 @@ class GitHubAdapter:
         import workspaces.service.workflow as workflow
         name = name if name != "/" else self.osbrepository.name
         folder = self.osbrepository.name + \
-            path.replace(self.download_base_url + "branches", "")
+            path.replace(self.download_base_url, "").replace("/branches/", "/").replace("/tags/", "/")
         folder = folder[: folder.rfind("/")]
         # username / password are optional and future usage,
         # e.g. for accessing non public repos

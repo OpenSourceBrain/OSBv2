@@ -202,7 +202,7 @@ export const EditRepoDialog = ({
   }, [repository]);
 
   React.useEffect(() => {
-    if(uri) {
+    if (uri) {
       RepositoryService.getRepositoryContext(uri, formValues.repositoryType).then(
         (ctxs) => {
           setContexts(ctxs);
@@ -210,11 +210,11 @@ export const EditRepoDialog = ({
         () => setError({ ...error, uri: "Invalid url" })
       )
     }
-    
+
   }, [uri]);
 
 
-  
+
 
 
   const handleClose = () => {
@@ -233,7 +233,7 @@ export const EditRepoDialog = ({
     setUri(value);
     setError({ ...error, uri: null })
     handleInput(event, 'uri');
-    
+
 
   }
 
@@ -337,10 +337,10 @@ export const EditRepoDialog = ({
                 IconComponent={KeyboardArrowDownIcon}
               >
                 {Object.values(RepositoryType).map((repositoryType) => (
-                    <MenuItem key={repositoryType} value={repositoryType}>
-                      {repositoryType}
-                    </MenuItem>
-                  ))}
+                  <MenuItem key={repositoryType} value={repositoryType}>
+                    {repositoryType}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
 
