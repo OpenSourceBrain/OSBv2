@@ -175,6 +175,15 @@ steps:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-figshare-copy:
+        stage: publish
+        type: push
+        title: Workspaces figshare copy
+        candidate: '${{REGISTRY}}/osb/workspaces-figshare-copy:${{DEPLOYMENT_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - latest
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_workspaces-scan-workspace:
         stage: publish
         type: push

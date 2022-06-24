@@ -37,11 +37,11 @@ export const Banner = (props: any) => {
   };
 
   const text1 =
-    user === null ? "Welcome to the Open Source Brain v2.0 preview" : `Welcome back ${user.firstName}`;
+    user === null ? "Welcome to the Open Source Brain v2.0 beta release!" : `Welcome back ${user.firstName}`;
   const text2 =
     user === null
-      ? "Coming soon, with model creation through NetPyNE, NWB data exploration and interactive JupyterLab based development sessions"
-      : "Let's do some science.";
+      ? "Featuring model creation through NetPyNE, NWB data exploration and interactive JupyterLab based development sessions"
+      : "Let's do some science!";
 
   return (
     <Box className={classes.mainFeaturedPost}>

@@ -306,6 +306,9 @@ export const RepositoryPage = (props: any) => {
       // For dandi, the URL is: repo/version
       case "dandi":
         return repository.uri + "/" + repository.defaultContext;
+      // For figshare, there does not seem to be a version specific URL
+      case "figshare":
+        return repository.uri
       default:
         return "#"
     }
@@ -318,9 +321,9 @@ export const RepositoryPage = (props: any) => {
         <Box className="subheader" paddingX={3} justifyContent="space-between"  >
           <Box>
             <Box display="flex" alignItems="center">
-              <ArrowBackIcon onClick={() => history.goBack()} />
+              <ArrowBackIcon onClick={() => history.push("/repositories")} />
               <Typography component="h1" color="primary">
-                <Typography component="span" onClick={history.goBack}>All repositories</Typography>
+                <Typography component="span" onClick={() => history.push("/repositories")}>All repositories</Typography>
                 {repository ? <Typography component="span">{repository.name}</Typography> : null}
               </Typography>
             </Box>
@@ -360,7 +363,7 @@ export const RepositoryPage = (props: any) => {
                     </Typography>
                     {
                       repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                        Added by {`${repository.user.firstName} ${repository.user.lastName}`} {repository.timestampCreated && ` on ${repository.timestampCreated.toDateString()}`}
+                        Added by {<Link href={`/user/${repository?.user?.id}`}> {repository.user.firstName + " " + repository.user.lastName}</Link> } {repository.timestampCreated && ` on ${repository.timestampCreated.toDateString()}`}
                       </Typography>
                     }
                     {

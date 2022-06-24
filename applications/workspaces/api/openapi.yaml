@@ -467,6 +467,14 @@ paths:
             example: experimental+modeling
           required: false
           description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
+        - in: query
+          name: user_id
+          schema:
+            type: string
+            example: ccfbe969-f7e2-4191-80c4-821dc5a97a28
+            nullable: true
+          required: false
+          description: The id of the owner user to filter with
       responses:
         200:
           description: Return all available repositories
@@ -528,6 +536,72 @@ paths:
                 type: array
                 items:
                   type: string
+        404:
+          description: The repository was not found.
+      tags:
+        - rest
+  /osbrepository/keywords:
+    parameters:
+      - in: query
+        name: uri
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: repository_type
+        schema:
+          $ref: "#/components/schemas/RepositoryType"
+        required: true
+      - in: query
+        name: context
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Used to retrieve keywords for a repository.
+      operationId: get_keywords
+      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      responses:
+        200:
+          description: The keywords for repository.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        404:
+          description: The repository was not found.
+      tags:
+        - rest
+  /osbrepository/description:
+    parameters:
+      - in: query
+        name: uri
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: repository_type
+        schema:
+          $ref: "#/components/schemas/RepositoryType"
+        required: true
+      - in: query
+        name: context
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Used to retrieve description for a repository.
+      operationId: get_description
+      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+      responses:
+        200:
+          description: The description for repository.
+          content:
+            application/json:
+              schema:
+                type: string
         404:
           description: The repository was not found.
       tags:

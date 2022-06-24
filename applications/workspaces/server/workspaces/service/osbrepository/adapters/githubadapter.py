@@ -106,7 +106,9 @@ class GitHubAdapter:
             return ""
 
     def get_tags(self, context):
-        return []
+        """Topics/keywords"""
+        tags = self.get_json(self.api_url + "topics")
+        return tags["names"]
 
     def create_copy_task(self, workspace_id, name, path):
         # download the resource

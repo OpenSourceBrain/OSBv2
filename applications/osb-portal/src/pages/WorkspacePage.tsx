@@ -12,6 +12,7 @@ import AppsIcon from "@material-ui/icons/Apps";
 import PersonIcon from "@material-ui/icons/Person";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import ArrowRight from "@material-ui/icons/ArrowRight";
+import Link from "@material-ui/core/Link";
 
 import { OSBSplitButton } from "../components/common/OSBSpliButton";
 import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
@@ -238,7 +239,7 @@ export const WorkspacePage = (props: any) => {
           <Box bgcolor={bgRegular} minHeight="20vh" display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={1} className={classes.workspaceInformation}>
             <Typography component="h1" variant="h1">{workspace.name}</Typography>
             <Box display="flex" flexDirection="row" color={paragraph} mb={2} alignItems="center">
-              {(workspace.user && (workspace.user.firstName || workspace.user.lastName)) ? <Typography component="span" variant="subtitle2"><PersonIcon fontSize="small" /> By {workspace.user.firstName + ' ' + workspace.user.lastName}</Typography> : null}
+              {(workspace.user && (workspace.user.firstName || workspace.user.lastName)) ? <Typography component="span" variant="subtitle2"><PersonIcon fontSize="small" /> By{<Link href={`/user/${workspace.user.id}`}>{workspace.user.firstName + " " + workspace.user.lastName}</Link>}</Typography> : null}
               {workspace.timestampUpdated && <Typography component="span" variant="subtitle2"><CalendarTodayIcon fontSize="small" /> Last Updated on {workspace.timestampUpdated.toDateString()}</Typography>}
             </Box>
             <Box>{workspace.tags && workspace.tags.map(tagObject => { return <Chip label={tagObject.tag} key={tagObject.id} /> })}</Box>

@@ -80,7 +80,7 @@ export const Workspaces = ({ user, counter }: any) => {
     switch (selection.current) {
       case WorkspaceSelection.PUBLIC: {
         if (filterText.current !== "") {
-          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current }).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspacesByFilter(true, false, page, { text: filterText.current, tags: [filterText.current] }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(true, false, page).then(update, (e) => setError(true));
         }
@@ -88,7 +88,7 @@ export const Workspaces = ({ user, counter }: any) => {
       }
       case WorkspaceSelection.FEATURED: {
         if (filterText.current !== "") {
-          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current }).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspacesByFilter(true, true, page, { text: filterText.current, tags: [filterText.current] }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(true, true, page).then(update, (e) => setError(true));
         }
@@ -96,7 +96,7 @@ export const Workspaces = ({ user, counter }: any) => {
       }
       default: {
         if (filterText.current !== "") {
-          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current }).then(update, (e) => setError(true));
+          workspaceService.fetchWorkspacesByFilter(false, false, page, { text: filterText.current, tags: [filterText.current] }).then(update, (e) => setError(true));
         } else {
           workspaceService.fetchWorkspaces(false, false, page).then(update, (e) => setError(true));
         }
@@ -205,20 +205,20 @@ export const Workspaces = ({ user, counter }: any) => {
       } */}
 
       {
-        !workspaces && <Box mt={2}>
+        !workspaces && <Box mt={2} flex={1} display="flex" alignContent="center" alignItems="center" justifyContent="center">
 
           <CircularProgress />
         </Box>
       }
 
-      <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
+      { workspaces && <Box className={`verticalFit card-container ${classes.cardContainer}`} mt={2}>
         <Box pb={1} className="scrollbar" id="workspace-box">
 
           <InfiniteScroll
             dataLength={workspaceList.length}
             next={fetchMoreWorkspaces}
             hasMore={page < totalPages}
-            loader={<CircularProgress size="small" />}
+            loader={<Box display="flex" mt={1} flex={1} justifyContent="center" width="100%"><CircularProgress /></Box>}
             scrollableTarget="workspace-box"
           >
 
@@ -229,7 +229,7 @@ export const Workspaces = ({ user, counter }: any) => {
           </InfiniteScroll>
         </Box>
 
-      </Box>
+      </Box> }
     </>
   );
 };

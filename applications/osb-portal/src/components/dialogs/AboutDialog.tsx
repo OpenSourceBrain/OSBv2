@@ -27,13 +27,14 @@ export const AboutContent = (props: any) => {
   const classes = useStyles();
   const logoOSB = "/images/osb-logo-full.png";
   const logoMetaCell = "/images/metacell_new.png";
+  const logoWellcome = "/images/wellcome.png";
 
   return(
     <Paper className={classes.paper}>
       <img width="250" src={logoOSB} />
       <Box m={1}>
         <Link variant="h5" style={{ display: 'block' }} href="https://github.com/OpenSourceBrain/OSBv2" target="_blank">
-          Open Source Brain v2.0.
+          Open Source Brain v2.0
         </Link>
       </Box>
 
@@ -67,7 +68,21 @@ export const AboutContent = (props: any) => {
             target="_blank">
             Silver Lab at University College London
           </Link>
-          {' '} in collaboration with:
+          {' '}
+          in collaboration with
+          {' '}
+          <Link
+            href="http://metacell.us"
+            target="_blank">
+            MetaCell
+          </Link>
+          , and is funded by
+            {' '}
+            <Link
+              href="https://wellcome.org/"
+              target="_blank">
+              Wellcome
+          </Link>.
         </Typography>
         <Link href="http://www.metacell.us" target="_blank">
           <img
@@ -76,6 +91,15 @@ export const AboutContent = (props: any) => {
               padding: '10px',
             }}
             src={logoMetaCell}
+          />
+        </Link>
+        <Link href="https://wellcome.org/" target="_blank">
+          <img
+            style={{
+              width: 80,
+              padding: '10px',
+            }}
+            src={logoWellcome}
           />
         </Link>
       </Box>

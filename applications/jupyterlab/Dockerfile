@@ -3,10 +3,13 @@ USER root
 
 
 RUN apt-get update
+
+####  General packages via apt-get
+
 RUN apt-get install graphviz -y
 RUN apt-get install openjdk-11-jre-headless -y
 
-RUN apt-get install git vim htop -y      # git and general utilities
+RUN apt-get install git vim htop ncdu -y      # git and general utilities
 RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON`s nrnivmodl
 
 ################################################################################
@@ -31,33 +34,59 @@ RUN cd netpyne ; python setup.py install; cd -
 
 ####  Other simulators
 
-# Brian
-RUN pip install brian2 brian2tools --no-cache-dir
-
 # Arbor
 RUN pip install arbor --no-cache-dir
 
+# Brian
+RUN pip install brian2 brian2tools --no-cache-dir
 
-####  NWB
+# PyNN
+RUN pip install pynn==0.10.0 --no-cache-dir
 
-RUN pip install pynwb ipywidgets --no-cache-dir # nwbwidgets seaborn # v big increase in size...
+# elephant
+RUN pip install elephant --no-cache-dir
 
-
-####  Machine learning libs
-
-RUN pip install torch==1.8.0 --no-cache-dir
-RUN pip install git+https://github.com/SheffieldML/GPy.git@devel # for MDF
-
-# For MDF
-RUN pip install dask==2.30.0 distributed==2.30.1 protobuf==3.17.0
-RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
-#RUN pip install modeci_mdf==0.3.3 # big jump in size of image...
+# LFPy
+RUN apt-get install libopenmpi-dev -y
+RUN pip install lfpy --no-cache-dir
 
 
 ####  Octave etc.
 
-#RUN apt-get install octave -y
-#RUN pip install octave_kernel --no-cache-dir
+RUN apt-get install octave octave-statistics -y
+RUN pip install octave_kernel --no-cache-dir
+
+
+####  NWB
+
+RUN pip install pynwb ipywidgets seaborn --no-cache-dir # nwbwidgets  # v big increase in size...
+
+
+####  Machine learning libs
+
+# Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
+RUN pip install torch==1.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
+
+# For MDF
+RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
+RUN pip install dask==2.30.0 distributed==2.30.1 protobuf==3.17.0
+RUN pip install git+https://github.com/SheffieldML/GPy.git@devel
+#RUN pip install modeci_mdf==0.3.3 # big jump in size of image...
+
+RUN pip install sklearn # Required for some Neuromatch Academy material
+RUN pip install fasttext # Required for some Neuromatch Academy material
+
+
+####  TVB etc.
+
+RUN pip install tvb-library --no-cache-dir
+RUN pip install tvb-data
+RUN pip install ipympl --no-cache-dir
+
+
+####  Final updates
+
+RUN pip install --upgrade numpy  # Removes some issues with LFPy...
 
 
 ################################################################################
@@ -78,5 +107,9 @@ RUN mkdir -p .jupyter/lab
 RUN ln -s /opt/workspace .jupyter/lab/workspaces
 
 COPY conf/ .jupyter/lab/user-settings/@jupyterlab
+
+USER root
+RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
+
 
 WORKDIR /opt/workspace
