@@ -180,7 +180,7 @@ export const EditRepoDialog = ({
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
 
-  const [uri, setUri] = useState<string>();
+  const [uri, setUri] = useState<string>(repository?.uri);
 
   const [error, setError] = useState({
     uri: '',
@@ -201,6 +201,21 @@ export const EditRepoDialog = ({
     setRepositoryTags(repositoryTags);
   }, [repository]);
 
+  React.useEffect(() => {
+    if(uri) {
+      RepositoryService.getRepositoryContext(uri, formValues.repositoryType).then(
+        (ctxs) => {
+          setContexts(ctxs);
+        },
+        () => setError({ ...error, uri: "Invalid url" })
+      )
+    }
+    
+  }, [uri]);
+
+
+  
+
 
   const handleClose = () => {
     setDialogOpen(false);
@@ -216,15 +231,9 @@ export const EditRepoDialog = ({
   const handleInputUri = (event: any) => {
     const value = event?.target?.value || event.text;
     setUri(value);
-
+    setError({ ...error, uri: null })
     handleInput(event, 'uri');
-    RepositoryService.getRepositoryContext(value, formValues.repositoryType).then(
-      (ctxs) => {
-
-        setContexts(ctxs);
-      },
-      () => setError({ ...error, uri: "Invalid url" })
-    )
+    
 
   }
 
