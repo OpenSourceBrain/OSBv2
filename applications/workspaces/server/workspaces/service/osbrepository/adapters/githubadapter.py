@@ -1,11 +1,11 @@
+import os
 import base64
 import requests
+
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
 
-
 from workspaces.models import GITRepositoryResource, RepositoryResourceNode
-
 from .utils import add_to_tree
 
 
@@ -56,14 +56,18 @@ class GitHubAdapter:
         tags = self.get_json(self.api_url + "tags?per_page=100")
         return [context["name"] for context in branches + tags]
 
+    def is_context_branch(self, context):
+        return requests.get(self.api_url + "branches/" + context ).status_code == 200
+
     def get_resources(self, context):
         contents = self.get_json(
             f"{self.api_url}git/trees/{context}?recursive=1")
-
+        path = os.path.join(
+            self.download_base_url, "branches" if self.is_context_branch(context) else "tags", context)
         tree = RepositoryResourceNode(
             resource=GITRepositoryResource(
                 name="/",
-                path=f"{self.download_base_url}branches/{context}",
+                path=path,
                 osbrepository_id=self.osbrepository.id,
                 ref=context,
             ),
