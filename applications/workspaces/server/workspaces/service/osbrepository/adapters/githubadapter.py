@@ -52,8 +52,8 @@ class GitHubAdapter:
                 f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
 
     def get_contexts(self):
-        branches = self.get_json(self.api_url + "branches")
-        tags = self.get_json(self.api_url + "tags")
+        branches = self.get_json(self.api_url + "branches?per_page=100")
+        tags = self.get_json(self.api_url + "tags?per_page=100")
         return [context["name"] for context in branches + tags]
 
     def get_resources(self, context):
