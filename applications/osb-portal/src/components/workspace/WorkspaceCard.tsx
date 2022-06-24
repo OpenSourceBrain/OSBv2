@@ -61,8 +61,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    width: "100%",
-    display: "flex",
+    width: "auto",
     alignContent: "center",
     alignItems: "center",
 
@@ -152,6 +151,7 @@ export const WorkspaceCard = (props: Props) => {
         </Box>
 
         <CardContent>
+        <Tooltip title={workspace.name}>
           <Link
             href={`/workspace/${workspace.id}`}
             color="inherit"
@@ -166,6 +166,7 @@ export const WorkspaceCard = (props: Props) => {
               <LocalOfferIcon fontSize="small" className={classes.localOfferIcon} />
             </TagTooltip>}
           </Link>
+          </Tooltip>
           <Typography variant="caption" className={`${classes.user} ${classes.ellipses}`}>
            <span>by</span>
              <Link
