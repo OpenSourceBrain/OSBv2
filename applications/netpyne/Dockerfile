@@ -70,13 +70,14 @@ COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_conf
 RUN rm -f ~/.jupyter/*.json
 RUN chown $NB_UID .
 RUN chown $NB_UID /opt
+RUN chown $NB_UID `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'`
 USER $NB_UID
 
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
 RUN ln -s /opt/workspace workspace
-RUN chown $NB_UID `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'`
+
 
 EXPOSE 8888
 
