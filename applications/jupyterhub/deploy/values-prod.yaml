@@ -5,5 +5,5 @@ singleuser:
     limit: 1
     guarantee: 0.5
   memory:
-    limit: 2G
+    limit: 2.5G
     guarantee: 1.5G
