@@ -76,6 +76,7 @@ USER $NB_UID
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
 RUN ln -s /opt/workspace workspace
+RUN chown $NB_UID `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'`
 
 EXPOSE 8888
 
