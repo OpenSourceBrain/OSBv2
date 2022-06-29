@@ -70,7 +70,7 @@ COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_conf
 RUN rm -f ~/.jupyter/*.json
 RUN chown $NB_UID .
 RUN chown $NB_UID /opt
-RUN chown $NB_UID `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'`
+RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
 USER $NB_UID
 
 # sym link workspace pvc to $FOLDER
