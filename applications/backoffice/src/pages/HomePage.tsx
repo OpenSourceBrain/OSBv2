@@ -85,15 +85,12 @@ export default (props: any) => {
 
   const getKeyCloakProfile = () => {
     const hostname = window.location.hostname;
-    let realm = ""
-    if (hostname.indexOf("local") !== -1) {
+    let realm = "osbv2"
+    if (hostname.includes("local")) {
       realm = "osblocal"
     }
-    else if (hostname.indexOf("dev")) {
+    else if (hostname.includes("dev")) {
       realm = "osb2dev"
-    }
-    else {
-      realm = "osb2"
     }
     return "/auth/admin/master/console/#/realms/" + realm + "/users/";
   }
