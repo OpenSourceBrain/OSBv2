@@ -5,7 +5,7 @@ harness:
     port: 80
     name: proxy-public
   jupyterhub:
-    args: ["--port=8000", "--NotebookApp.default_url=/geppetto", "--library=netpyne_ui", "--NotebookApp.notebook_dir=/opt/workspace", "--NotebookApp.disable_check_xsrf=True"]
+    args: ["--NotebookApp.default_url=/geppetto", "--library=netpyne_ui", "--NotebookApp.notebook_dir=/opt/workspace", "--NotebookApp.disable_check_xsrf=True"]
     applicationHook: "osb_jupyter.change_pod_manifest"
     extraConfig:
       timing: |
