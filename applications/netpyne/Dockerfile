@@ -78,7 +78,7 @@ USER $NB_UID
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
 RUN ln -s /opt/workspace workspace
-
+ENV NEURON_HOME=/opt/conda
 
 EXPOSE 8888
 
