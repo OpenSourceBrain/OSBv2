@@ -28,3 +28,5 @@ controller:
         key: node.kubernetes.io/unreachable
         operator: Exists
         tolerationSeconds: 300    
+      ttlStrategy:
+        secondsAfterCompletion: 84600
