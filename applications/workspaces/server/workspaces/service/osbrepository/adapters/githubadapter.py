@@ -59,11 +59,15 @@ class GitHubAdapter:
     def is_context_branch(self, context):
         return requests.get(self.api_url + "branches/" + context ).status_code == 200
 
+    def get_context_base_path(self, context):
+        return os.path.join(
+            self.download_base_url, "branches" if self.is_context_branch(context) else "tags", context)
+
     def get_resources(self, context):
         contents = self.get_json(
             f"{self.api_url}git/trees/{context}?recursive=1")
-        path = os.path.join(
-            self.download_base_url, "branches" if self.is_context_branch(context) else "tags", context)
+        path = self.get_context_base_path(context)
+
         tree = RepositoryResourceNode(
             resource=GITRepositoryResource(
                 name="/",
@@ -73,8 +77,9 @@ class GitHubAdapter:
             ),
             children=[],
         )
+        base_path = self.get_context_base_path(context)
         for git_obj in contents["tree"]:
-            download_url = f"{self.download_base_url}branches/{context}/{git_obj['path']}"
+            download_url = f"{base_path}/{git_obj['path']}"
             add_to_tree(
                 tree=tree,
                 tree_path=git_obj["path"].split("/"),
@@ -119,7 +124,7 @@ class GitHubAdapter:
         import workspaces.service.workflow as workflow
         name = name if name != "/" else self.osbrepository.name
         folder = self.osbrepository.name + \
-            path.replace(self.download_base_url, "").replace("/branches/", "/").replace("/tags/", "/")
+            path.replace(self.download_base_url, "").replace("branches/", "/").replace("tags/", "/")
         folder = folder[: folder.rfind("/")]
         # username / password are optional and future usage,
         # e.g. for accessing non public repos
