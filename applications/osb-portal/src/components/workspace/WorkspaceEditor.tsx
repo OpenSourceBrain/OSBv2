@@ -229,7 +229,7 @@ export default (props: WorkspaceEditProps) => {
   const setTypeField = (e: any) => {
     // publicable if 1
     // featured if 2 
-    setWorkspaceForm({ ...workspaceForm, shareType: e.target.value ,publicable:e.target.value===1,featured:e.target.value===2});
+    setWorkspaceForm({ ...workspaceForm, shareType: e.target.value ,publicable:e.target.value===1,featured:e.target.value==2});
   };
   const [loading, setLoading] = React.useState(false);
 
@@ -317,9 +317,7 @@ export default (props: WorkspaceEditProps) => {
                 width: 200,
               }}
             >
-              <MenuItem value={0}>
-                Private
-              </MenuItem>
+              <MenuItem value={0}>Private</MenuItem>
               <MenuItem value={1}>Public</MenuItem>
               <MenuItem value={2}>Featured</MenuItem>
             </Select>
