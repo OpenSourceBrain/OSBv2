@@ -50,7 +50,7 @@ def get_users(query: str) -> typing.List[User]:
 
 
 def map_user(kc_user) -> User:
-    user = User.from_dict(kc_user)
+    user = User.from_dict(kc_user._raw_dict)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
 
