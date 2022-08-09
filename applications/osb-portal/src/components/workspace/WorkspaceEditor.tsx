@@ -24,6 +24,7 @@ import MarkdownViewer from "../common/MarkdownViewer";
 import Chip from "@material-ui/core/Chip";
 
 import { Workspace } from "../../types/workspace";
+import { UserInfo } from "../../types/user";
 import { Tag } from "../../apiclient/workspaces";
 import WorkspaceService from "../../service/WorkspaceService";
 import OSBDialog from "../common/OSBDialog";
@@ -86,6 +87,7 @@ interface WorkspaceEditProps {
   children?: any;
   title: string;
   open: boolean;
+  user: UserInfo;
 }
 
 const dropAreaStyle = (error: any) => ({
@@ -118,6 +120,8 @@ export default (props: WorkspaceEditProps) => {
   const classes = useStyles();
 
   const { workspace } = props;
+  const { user } = props;
+  console.log("user: ", user);
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
     ...props.workspace,
   });
@@ -223,6 +227,7 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({ ...workspaceForm, tags: arrayOfTags });
   };
   const setTypeField = (e: any) => {
+    console.log("value: ", e.target.value);
     // publicable if 1
     // featured if 2
     setWorkspaceForm({
@@ -311,16 +316,18 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4}>
+            <Typography component="label" variant="h6">
+              Visibility
+            </Typography>
             <Select
               value={workspaceForm.shareType}
               onChange={setTypeField}
-              style={{
-                width: 200,
-              }}
+              fullWidth={true}
+              variant="outlined"
             >
               <MenuItem value={0}>Private</MenuItem>
               <MenuItem value={1}>Public</MenuItem>
-              <MenuItem value={2}>Featured</MenuItem>
+              {user.isAdmin && <MenuItem value={2}>Featured</MenuItem>}
             </Select>
           </Box>
 
