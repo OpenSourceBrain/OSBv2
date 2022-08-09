@@ -47,22 +47,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      cloudharness-django-debian:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-django-debian/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/cloudharness-django-debian
-        title: Cloudharness django debian
-        working_directory: ./cloud-harness
       cloudharness-base:
         type: build
         stage: build
@@ -111,59 +95,27 @@ steps:
         image_name: osb/cloudharness-base-debian
         title: Cloudharness base debian
         working_directory: ./cloud-harness
-      cloudharness-django:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-django/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/cloudharness-django
-        title: Cloudharness django
-        working_directory: ./cloud-harness
-      cloudharness-fastapi:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-fastapi/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/cloudharness-fastapi
-        title: Cloudharness fastapi
-        working_directory: ./cloud-harness
-      cloudharness-fastapi-debian:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: infrastructure/base-images/cloudharness-fastapi-debian/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - NAMESPACE=${{NAMESPACE}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/cloudharness-fastapi-debian
-        title: Cloudharness fastapi debian
-        working_directory: ./cloud-harness
   build_static_images:
     title: Build static images
     type: parallel
     stage: build
     steps:
+      cloudharness-django-debian:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-django-debian
+        title: Cloudharness django debian
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-django-debian
       cloudharness-flask:
         type: build
         stage: build
@@ -180,6 +132,54 @@ steps:
         image_name: osb/cloudharness-flask
         title: Cloudharness flask
         working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
+      cloudharness-django:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-django
+        title: Cloudharness django
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-django
+      cloudharness-fastapi:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-fastapi
+        title: Cloudharness fastapi
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-fastapi
+      cloudharness-fastapi-debian:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - NAMESPACE=${{NAMESPACE}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-fastapi-debian
+        title: Cloudharness fastapi debian
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-fastapi-debian
   build_application_images:
     type: parallel
     stage: build
@@ -602,14 +602,6 @@ steps:
     type: parallel
     stage: publish
     steps:
-      publish_cloudharness-django-debian:
-        stage: publish
-        type: push
-        title: Cloudharness django debian
-        candidate: '${{REGISTRY}}/osb/cloudharness-django-debian:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_cloudharness-base:
         stage: publish
         type: push
@@ -634,6 +626,22 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_cloudharness-django-debian:
+        stage: publish
+        type: push
+        title: Cloudharness django debian
+        candidate: '${{REGISTRY}}/osb/cloudharness-django-debian:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_cloudharness-flask:
+        stage: publish
+        type: push
+        title: Cloudharness flask
+        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_cloudharness-django:
         stage: publish
         type: push
@@ -655,14 +663,6 @@ steps:
         type: push
         title: Cloudharness fastapi debian
         candidate: '${{REGISTRY}}/osb/cloudharness-fastapi-debian:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-flask:
-        stage: publish
-        type: push
-        title: Cloudharness flask
-        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
