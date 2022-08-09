@@ -17,6 +17,9 @@ harness:
     - name: common
     - name: accounts-api
   dependencies:
+    build:
+      - cloudharness-base
+      - cloudharness-frontend-build
     soft:
       - accounts
       - accounts-api
