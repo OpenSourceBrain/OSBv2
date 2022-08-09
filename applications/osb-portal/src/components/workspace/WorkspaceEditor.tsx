@@ -121,7 +121,6 @@ export default (props: WorkspaceEditProps) => {
 
   const { workspace } = props;
   const { user } = props;
-  console.log("user: ", user);
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
     ...props.workspace,
   });
