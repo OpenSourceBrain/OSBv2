@@ -27,7 +27,7 @@ interface WorkspaceActionsMenuProps {
   deleteWorkspace?: (wsId: number) => void;
   refreshWorkspaces: () => void;
   user?: UserInfo;
-  isWorkspaceOpen: boolean
+  isWorkspaceOpen:boolean
 }
 
 const useStyles = makeStyles((theme) => ({
