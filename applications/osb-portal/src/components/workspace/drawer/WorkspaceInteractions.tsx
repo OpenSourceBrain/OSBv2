@@ -214,7 +214,7 @@ export default (props: WorkspaceProps | any) => {
             </Typography>
 
             <Box p={2}>
-              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
+              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} isWorkspaceOpen={true}/>
             </Box>
             <Menu
               id="simple-menu"
@@ -270,7 +270,7 @@ export default (props: WorkspaceProps | any) => {
           {props.workspace.name}
 
           <IconButton>
-            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} isWorkspaceOpen={true} />
           </IconButton>
         </div>
       </>
