@@ -232,7 +232,7 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({
       ...workspaceForm,
       shareType: e.target.value,
-      publicable: e.target.value === 1,
+      publicable: e.target.value >= 1,
       featured: e.target.value === 2,
     });
   };
