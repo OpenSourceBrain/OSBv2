@@ -482,7 +482,7 @@ export const RepositoryPage = (props: any) => {
        * value of the `workpace` prop.
        */
       }
-      {user && showWorkspaceEditor && <WorkspaceEditor title={"Create new workspace"} open={showWorkspaceEditor} workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0}>
+      {user && showWorkspaceEditor && <WorkspaceEditor title={"Create new workspace"} open={showWorkspaceEditor} workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} user={user}>
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
       </WorkspaceEditor>
       }
