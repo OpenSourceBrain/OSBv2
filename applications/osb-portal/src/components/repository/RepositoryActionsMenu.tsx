@@ -19,8 +19,8 @@ interface RepositoryActionsMenuProps {
 export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
+  
   const canEdit = canEditRepository(props.user, props.repository);
-  const { user } = props;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,10 +43,12 @@ export default (props: RepositoryActionsMenuProps) => {
     props.onAction(r);
   }
 
+  const isRenderable = canEdit || false; // for future updates 
+
   return (
     <>
       {
-        user.isAdmin && <><IconButton size="small" onClick={handleClick}>
+        isRenderable && <><IconButton size="small" onClick={handleClick}>
           <Icons.Dots style={{ fontSize: "1rem", transform: 'rotate(90deg)' }} />
         </IconButton>
           <Menu
