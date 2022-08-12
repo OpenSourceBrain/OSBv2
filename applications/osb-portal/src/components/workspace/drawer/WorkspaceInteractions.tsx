@@ -270,7 +270,7 @@ export default (props: WorkspaceProps | any) => {
           {props.workspace.name}
 
           <IconButton>
-            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} isWorkspaceOpen={true} />
+            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} />
           </IconButton>
         </div>
       </>
