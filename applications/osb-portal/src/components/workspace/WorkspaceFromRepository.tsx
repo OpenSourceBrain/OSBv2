@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
 export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { close: () => any, workspaceCreatedCallback: (refresh?: boolean, workspace?: Workspace) => void }) => {
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
-  const user = useSelector((state:RootState)=>state.user)
+  const user = useSelector((state: RootState) => state.user)
   const classes = useStyles();
   const [selectedRepository, setSelectedRepository] = React.useState(null);
 

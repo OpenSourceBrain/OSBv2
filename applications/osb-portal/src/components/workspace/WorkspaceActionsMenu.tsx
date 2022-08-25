@@ -27,7 +27,7 @@ interface WorkspaceActionsMenuProps {
   deleteWorkspace?: (wsId: number) => void;
   refreshWorkspaces: () => void;
   user?: UserInfo;
-  isWorkspaceOpen:boolean
+  isWorkspaceOpen: boolean
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -166,7 +166,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         open={editWorkspaceOpen}
         title={"Edit workspace: " + props.workspace.name}
         closeHandler={handleCloseEditWorkspace}
-        workspace={props.workspace} 
+        workspace={props.workspace}
         onLoadWorkspace={handleCloseEditWorkspace} user={props.user} />
       }
       <OSBLoader active={cloneInProgress} fullscreen={true} handleClose={handleCloseMenu} messages={["Cloning workspace. Please wait."]} />
