@@ -147,6 +147,7 @@ export const WorkspacePage = (props: any) => {
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace = props.workspace;
+  const user = props.user;
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
   const [error, setError] = React.useState<any>(null);
@@ -273,7 +274,7 @@ export const WorkspacePage = (props: any) => {
           open={editWorkspaceOpen}
           title={"Edit workspace: " + workspace.name}
           closeHandler={handleCloseEditWorkspace}
-          workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+          workspace={workspace} onLoadWorkspace={handleCloseEditWorkspace} user={user}/>
         }
       </>}
     </Box>

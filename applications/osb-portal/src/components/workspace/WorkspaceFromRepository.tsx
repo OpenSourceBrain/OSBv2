@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography, Box, Button, Grid, CircularProgress
@@ -22,6 +23,7 @@ import {
   bgDarker,
 } from "../../theme";
 import Link from "@material-ui/core/Link";
+import {RootState} from "../../store/rootReducer"
 
 export interface WorkspaceTemplate {
   title: string;
@@ -131,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
 export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { close: () => any, workspaceCreatedCallback: (refresh?: boolean, workspace?: Workspace) => void }) => {
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
-
+  const user = useSelector((state: RootState) => state.user)
   const classes = useStyles();
   const [selectedRepository, setSelectedRepository] = React.useState(null);
 
@@ -320,7 +322,7 @@ export const WorkspaceFromRepository = ({ close, workspaceCreatedCallback }: { c
     )
     case Stage.EDIT_WORKSPACE:
       return <>
-        <WorkspaceEditor title={"Create new workspace"} open={true} workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={handleClose} >
+        <WorkspaceEditor title={"Create new workspace"} open={true} workspace={defaultWorkspace} onLoadWorkspace={onWorkspaceCreated} closeHandler={handleClose} user={user} >
         {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
       </WorkspaceEditor>
       </>

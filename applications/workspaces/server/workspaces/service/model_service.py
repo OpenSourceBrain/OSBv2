@@ -38,7 +38,7 @@ from workspaces.utils import dao_entity2dict
 def rm_null_values(dikt):
     tmp = {}
     for k, v in dikt.items():  # remove null fields from dict
-        if v:
+        if v is not None:
             tmp.update({k: v})
     return tmp
 

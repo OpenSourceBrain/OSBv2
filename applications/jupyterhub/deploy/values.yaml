@@ -32,3 +32,9 @@ singleuser:
       volumeNameTemplate: osb-user-{userid}
     homeMountPath: /opt/user
     extraLabels: {}
+  cpu:
+    limit: 1
+    guarantee: 0.2
+  memory:
+    limit: 1G
+    guarantee: 0.5G

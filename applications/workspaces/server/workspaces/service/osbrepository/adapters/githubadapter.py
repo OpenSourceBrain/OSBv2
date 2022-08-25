@@ -1,11 +1,11 @@
+import os
 import base64
 import requests
+
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
 
-
 from workspaces.models import GITRepositoryResource, RepositoryResourceNode
-
 from .utils import add_to_tree
 
 
@@ -52,25 +52,34 @@ class GitHubAdapter:
                 f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
 
     def get_contexts(self):
-        branches = self.get_json(self.api_url + "branches")
-        tags = self.get_json(self.api_url + "tags")
+        branches = self.get_json(self.api_url + "branches?per_page=100")
+        tags = self.get_json(self.api_url + "tags?per_page=100")
         return [context["name"] for context in branches + tags]
+
+    def is_context_branch(self, context):
+        return requests.get(self.api_url + "branches/" + context ).status_code == 200
+
+    def get_context_base_path(self, context):
+        return os.path.join(
+            self.download_base_url, "branches" if self.is_context_branch(context) else "tags", context)
 
     def get_resources(self, context):
         contents = self.get_json(
             f"{self.api_url}git/trees/{context}?recursive=1")
+        path = self.get_context_base_path(context)
 
         tree = RepositoryResourceNode(
             resource=GITRepositoryResource(
                 name="/",
-                path=f"{self.download_base_url}branches/{context}",
+                path=path,
                 osbrepository_id=self.osbrepository.id,
                 ref=context,
             ),
             children=[],
         )
+        base_path = self.get_context_base_path(context)
         for git_obj in contents["tree"]:
-            download_url = f"{self.download_base_url}branches/{context}/{git_obj['path']}"
+            download_url = f"{base_path}/{git_obj['path']}"
             add_to_tree(
                 tree=tree,
                 tree_path=git_obj["path"].split("/"),
@@ -115,7 +124,7 @@ class GitHubAdapter:
         import workspaces.service.workflow as workflow
         name = name if name != "/" else self.osbrepository.name
         folder = self.osbrepository.name + \
-            path.replace(self.download_base_url + "branches", "")
+            path.replace(self.download_base_url, "").replace("branches/", "/").replace("tags/", "/")
         folder = folder[: folder.rfind("/")]
         # username / password are optional and future usage,
         # e.g. for accessing non public repos

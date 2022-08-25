@@ -27,6 +27,7 @@ interface WorkspaceActionsMenuProps {
   deleteWorkspace?: (wsId: number) => void;
   refreshWorkspaces: () => void;
   user?: UserInfo;
+  isWorkspaceOpen: boolean
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -135,7 +136,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         {canEdit && props.workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
         {props.user && props.user.isAdmin && props.workspace.publicable && !props.workspace.featured && <MenuItem onClick={handleFeaturedWorkspace}>Add to featured</MenuItem>}
         {props.user && props.user.isAdmin && props.workspace.featured && <MenuItem onClick={handleFeaturedWorkspace}>Remove from featured</MenuItem>}
-        <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+        {!props.isWorkspaceOpen && <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>}
         {props.user && <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>}
         <NestedMenuItem
           label="Open with..."
@@ -165,7 +166,8 @@ export default (props: WorkspaceActionsMenuProps) => {
         open={editWorkspaceOpen}
         title={"Edit workspace: " + props.workspace.name}
         closeHandler={handleCloseEditWorkspace}
-        workspace={props.workspace} onLoadWorkspace={handleCloseEditWorkspace} />
+        workspace={props.workspace}
+        onLoadWorkspace={handleCloseEditWorkspace} user={props.user} />
       }
       <OSBLoader active={cloneInProgress} fullscreen={true} handleClose={handleCloseMenu} messages={["Cloning workspace. Please wait."]} />
       <Snackbar classes={{  root: classes.snackbar }} open={cloneComplete} onClose={() => setCloneComplete(false)} message="Workspace cloned" anchorOrigin={{"vertical": "bottom", "horizontal": "left"}}

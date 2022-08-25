@@ -97,8 +97,9 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   }
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(true);
   const { app } = useParams<{ app: string }>();
+  // Keep drawer closed for jupyter by default
+  const [open, setOpen] = React.useState(app === "jupyter" ? false : true);
 
   const [currentResource, setCurrentResource] = React.useState<WorkspaceResource>(!app ? workspace.lastOpen : null);
 

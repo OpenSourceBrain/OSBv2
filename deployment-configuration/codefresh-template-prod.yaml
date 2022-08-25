@@ -1,12 +1,4 @@
 steps:
-  prepare_deployment:
-    title: "Prepare helm chart"
-    image: python:3.7
-    stage: prepare
-    working_directory: .
-    commands:
-      - bash cloud-harness/install.sh
-      - harness-deployment cloud-harness . -m build -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}} -r ${{REGISTRY}} -n ${{NAMESPACE}} -rs ${{REGISTRY_SECRET}} -e prod -i osb-portal
   deployment:
     stage: deploy
     image: codefresh/cfstep-helm:3.6.2
