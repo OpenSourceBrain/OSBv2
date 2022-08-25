@@ -340,51 +340,6 @@ steps:
         image_name: osb/netpyne
         title: Netpyne
         working_directory: ./applications/netpyne
-      netpyne-NetPyNE-UI:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/netpyne-NetPyNE-UI
-        title: Netpyne netpyne ui
-        working_directory: ./applications/netpyne/NetPyNE-UI
-      netpyne-NetPyNE-UI-tests-frontend-e2e:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/netpyne-NetPyNE-UI-tests-frontend-e2e
-        title: Netpyne netpyne ui tests frontend e2e
-        working_directory: ./applications/netpyne/NetPyNE-UI/tests/frontend/e2e
-      netpyne-NetPyNE-UI-k8s:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/netpyne-NetPyNE-UI-k8s
-        title: Netpyne netpyne ui k8s
-        working_directory: ./applications/netpyne/NetPyNE-UI/k8s
       accounts-api:
         type: build
         stage: build
@@ -641,30 +596,6 @@ steps:
         type: push
         title: Netpyne
         candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne-NetPyNE-UI:
-        stage: publish
-        type: push
-        title: Netpyne netpyne ui
-        candidate: '${{REGISTRY}}/osb/netpyne-NetPyNE-UI:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne-NetPyNE-UI-tests-frontend-e2e:
-        stage: publish
-        type: push
-        title: Netpyne netpyne ui tests frontend e2e
-        candidate: '${{REGISTRY}}/osb/netpyne-NetPyNE-UI-tests-frontend-e2e:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne-NetPyNE-UI-k8s:
-        stage: publish
-        type: push
-        title: Netpyne netpyne ui k8s
-        candidate: '${{REGISTRY}}/osb/netpyne-NetPyNE-UI-k8s:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
