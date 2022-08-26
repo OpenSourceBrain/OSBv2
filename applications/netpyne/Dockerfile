@@ -21,8 +21,9 @@ RUN mv @metacell node_modules
 FROM jupyter/base-notebook:hub-1.4.2
 ENV NB_UID=jovyan
 ENV FOLDER=netpyne
-# ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
-# ENV NETPYNE_CORE_BRANCH_TAG=osbv2
+ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+# branch with latest neuroml updates
+ENV NETPYNE_CORE_BRANCH_TAG=osbv2-dev
 
 USER root
 
@@ -53,10 +54,10 @@ RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
 RUN python utilities/install.py --npm-skip --workspace=
 
-# # Install specific version of NetPyNE
-# RUN pip uninstall netpyne -y
-# RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
-# RUN cd netpyne ; python setup.py install; cd -
+# Install specific version of NetPyNE
+RUN pip uninstall netpyne -y
+RUN git clone $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
+RUN cd netpyne ; python setup.py install; cd -
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
