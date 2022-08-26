@@ -19,6 +19,7 @@ interface RepositoryActionsMenuProps {
 export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
+  
   const canEdit = canEditRepository(props.user, props.repository);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -42,22 +43,27 @@ export default (props: RepositoryActionsMenuProps) => {
     props.onAction(r);
   }
 
+  const isRenderable = canEdit || false; // for future updates 
+
   return (
     <>
-      <IconButton size="small" onClick={handleClick}>
-        <Icons.Dots style={{ fontSize: "1rem", transform: 'rotate(90deg)' }} />
-      </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted={true}
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-      >
-        {canEdit && <MenuItem onClick={handleEditRepository}>Edit</MenuItem>}
-      </Menu>
-      {repositoryEditorOpen && <EditRepoDialog user={props.user} title="Edit repository" dialogOpen={repositoryEditorOpen} setDialogOpen={setDialogOpen}
-        onSubmit={handleOnSubmit} repository={props.repository} />}
+      {
+        isRenderable && <><IconButton size="small" onClick={handleClick}>
+          <Icons.Dots style={{ fontSize: "1rem", transform: 'rotate(90deg)' }} />
+        </IconButton>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted={true}
+            open={Boolean(anchorEl)}
+            onClose={handleCloseMenu}
+          >
+            {canEdit && <MenuItem onClick={handleEditRepository}>Edit</MenuItem>}
+          </Menu>
+          {repositoryEditorOpen && <EditRepoDialog user={props.user} title="Edit repository" dialogOpen={repositoryEditorOpen} setDialogOpen={setDialogOpen}
+            onSubmit={handleOnSubmit} repository={props.repository} />}
+        </>
+      }
     </>
   )
 }
