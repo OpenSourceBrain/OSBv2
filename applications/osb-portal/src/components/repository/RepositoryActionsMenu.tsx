@@ -19,7 +19,7 @@ interface RepositoryActionsMenuProps {
 export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
-  
+
   const canEdit = canEditRepository(props.user, props.repository);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -43,7 +43,7 @@ export default (props: RepositoryActionsMenuProps) => {
     props.onAction(r);
   }
 
-  const isRenderable = canEdit || false; // for future updates 
+  const isRenderable = canEdit || false; // for future updates
 
   return (
     <>
