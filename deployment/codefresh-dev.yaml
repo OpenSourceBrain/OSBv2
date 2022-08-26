@@ -33,8 +33,8 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
-    - harness-deployment cloud-harness . -t ${{CF_BUILD_ID}} -d ${{DOMAIN}}
-      -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}} -n ${{NAMESPACE}} -e dev -i osb-portal
+    - harness-deployment cloud-harness . -t ${{CF_BUILD_ID}} -d ${{DOMAIN}} -r ${{REGISTRY}}
+      -rs ${{REGISTRY_SECRET}} -n ${{NAMESPACE}} -e dev -i osb-portal
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
@@ -63,6 +63,21 @@ steps:
         - REGISTRY=${{REGISTRY}}/osb/
         image_name: osb/cloudharness-base
         title: Cloudharness base
+        working_directory: ./cloud-harness
+      cloudharness-frontend-build:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-frontend-build
+        title: Cloudharness frontend build
         working_directory: ./cloud-harness
   build_static_images:
     title: Build static images
@@ -460,6 +475,14 @@ steps:
         type: push
         title: Cloudharness base
         candidate: '${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_cloudharness-frontend-build:
+        stage: publish
+        type: push
+        title: Cloudharness frontend build
+        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
