@@ -206,7 +206,7 @@ export const WorkspacePage = (props: any) => {
             */
           }
           <Box display="flex" alignItems="center" justifyContent="space-between" bgcolor={bgLight} className={classes.workspaceToolbar}>
-            <Box display="flex" onClick={() => history.push('/')}>
+            <Box id='see-all-workspaces-button' display="flex" onClick={() => history.push('/')}>
               <AppsIcon color="primary" fontSize="small" />
               <Typography component="a" color="primary">See all workspaces</Typography>
             </Box>

@@ -33,6 +33,7 @@ export default (props: any) => {
               </Button>
           </Box>
           <Button
+            id='signup'
             variant="contained"
             color="secondary"
             onClick={handleSignup}

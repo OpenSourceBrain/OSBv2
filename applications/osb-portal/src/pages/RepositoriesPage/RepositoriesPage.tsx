@@ -206,8 +206,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 indicatorColor="primary"
                 onChange={handleTabChange}
               >
-                <Tab label="All repositories" />
-                <Tab label="My repositories" />
+                <Tab id='all-repositories-tab' label="All repositories" />
+                <Tab id='my-repositories' label="My repositories" />
               </Tabs>
             ) : (
               <Typography component="h1" color="primary">
@@ -216,7 +216,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             )}
           </Box>
           <Box className={classes.filterAndSearchBox}>
-            <Button aria-describedby={id} variant="contained" onClick={handlePopoverClick} className={classes.filterButton} startIcon={<FilterListIcon />}>
+            <Button id='filter-button' aria-describedby={id} variant="contained" onClick={handlePopoverClick} className={classes.filterButton} startIcon={<FilterListIcon />}>
               <Typography component="label">Filter</Typography>
             </Button>
             <Popover
@@ -236,6 +236,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             >
               <Typography component="label" className={classes.label}>Tags</Typography>
               <Autocomplete
+                id='search-button'
                 value={searchFilterValues.tags}
                 inputValue={tagSearchValue}
                 multiple={true}
@@ -282,6 +283,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 <Divider orientation="vertical" flexItem={true} className={classes.divider} />
                 <Box>
                   <Button
+                    id='add-repository-button'
                     variant="contained"
                     disableElevation={true}
                     color="primary"

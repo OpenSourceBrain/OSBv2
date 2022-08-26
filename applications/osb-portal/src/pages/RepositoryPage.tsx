@@ -330,11 +330,11 @@ export const RepositoryPage = (props: any) => {
           </Box>
 
           <Box>
-            <Button variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
+            <Button id='add-existing-workspace-button' variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
               <AddIcon />
               Add to existing workspace
             </Button>
-            <Button variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
+            <Button id='create-new-workspace-button' variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
               <AddIcon />
               Create new workspace
             </Button>

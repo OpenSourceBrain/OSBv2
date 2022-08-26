@@ -67,7 +67,7 @@ export const WorkspaceToolBox = (props: any) => {
           </Grid>
           <Grid item={true} xs={12} sm={12} md={8} lg={9}>
             <Grid container={true} direction="row" justify="space-between" spacing={5} >
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
+              <Grid id='computational-modeling-item' item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
                   icon={Icons.SquareCirclesIcon}
                   title="Computational modeling"
@@ -77,7 +77,7 @@ export const WorkspaceToolBox = (props: any) => {
 
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
+              <Grid id='data-analysis-item' item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.ChartIcon}
                   title="Data analysis"
@@ -86,7 +86,7 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
+              <Grid id='interactive-development-item' item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
                   icon={Icons.CubeIcon}
                   title="Interactive development"
@@ -95,7 +95,7 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
+              <Grid id='workspace-from-repository-item' item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
                   icon={<FolderOpenIcon />}
                   title="Workspace from repository"

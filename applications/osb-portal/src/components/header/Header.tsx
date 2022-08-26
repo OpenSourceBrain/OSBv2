@@ -92,7 +92,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin} className={classes.button}>
+      <Button id='signin' onClick={handleUserLogin} className={classes.button}>
         Sign in
       </Button>
     ) : (
@@ -101,15 +101,16 @@ export const Header = (props: any) => {
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
               <MenuList autoFocusItem={menuOpen} id="user-menu">
-                {<MenuItem onClick={handleMyAccount}>My account</MenuItem>}
+                {<MenuItem id='my-account-item' onClick={handleMyAccount}>My account</MenuItem>}
                 {<MenuItem onClick={handleAccountHelp}>Account help</MenuItem>}
                 {/* <MenuItem>Settings</MenuItem> */}
-                <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                <MenuItem id='logout' onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
             </ClickAwayListener>
           </Paper>
         </Popper>
         <Button
+          id='user-name-button'
           size="large"
           ref={menuAnchorRef}
           aria-controls={menuOpen ? "user-menu" : undefined}

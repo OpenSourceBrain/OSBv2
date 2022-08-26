@@ -176,13 +176,13 @@ export const Workspaces = ({ user, counter }: any) => {
               />
               : null
             }
-            <Tab
+            <Tab id="featured-tab"
               value={WorkspaceSelection.FEATURED}
               className={classes.tab}
               label={<>Featured workspaces{selection.current === WorkspaceSelection.FEATURED &&
                 <Chip size="small" color="primary" label={state.total} />}</>}
             />
-            <Tab
+            <Tab id="public-tab"
             value={WorkspaceSelection.PUBLIC}
             className={classes.tab}
               label={<>

@@ -58,9 +58,9 @@ export const Banner = (props: any) => {
               <Button variant="outlined">Take the tour</Button>
             }
             {user === null ? (
-              <Button variant="outlined" onClick={handleSignup}>Sign up</Button>
+              <Button id='signup' variant="outlined" onClick={handleSignup}>Sign up</Button>
             ) : null}
-            <Button variant="outlined" onClick={() => history.push('/repositories')}>View repositories</Button>
+            <Button id='view-repositories-button' variant="outlined" onClick={() => history.push('/repositories')}>View repositories</Button>
             <Button variant="outlined" onClick={() => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html")}>More information</Button>
           </Box>
         </Box>
