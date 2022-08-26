@@ -24,18 +24,6 @@ COPY --from=base libraries/client/cloudharness_cli /libraries/client/cloudharnes
 RUN pip install -e /libraries/cloudharness-common
 RUN pip install -e /libraries/client/cloudharness_cli
 
-# COPY --from=base libraries/cloudharness-common/requirements.txt /libraries/cloudharness-common/requirements.txt
-# RUN pip install -r /libraries/cloudharness-common/requirements.txt
-# COPY --from=base libraries/client/cloudharness_cli/requirements.txt /libraries/client/cloudharness_cli/requirements.txt
-# RUN pip install -r /libraries/client/cloudharness_cli/requirements.txt
-
-# COPY --from=base /libraries/models /libraries/models
-# COPY --from=base /libraries /libraries
-
-# RUN pip install -e /libraries/models
-# RUN pip install -e /libraries/cloudharness-common
-# RUN pip install -e /libraries/client/cloudharness_cli
-
 COPY src /usr/src/app
 
 RUN pip install -e /usr/src/app/harness_jupyter

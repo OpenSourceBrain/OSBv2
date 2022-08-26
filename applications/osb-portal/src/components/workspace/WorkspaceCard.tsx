@@ -122,7 +122,7 @@ export const WorkspaceCard = (props: Props) => {
         {!props.hideMenu &&
           <CardActions className={classes.actions}>
             <WorkspaceActionsMenu user={props.user} workspace={workspace}
-              updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} />
+              updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={props.refreshWorkspaces} isWorkspaceOpen={false} />
           </CardActions>
         }
 
