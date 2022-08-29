@@ -28,12 +28,12 @@ export default (props: any) => {
         </Grid>
         <Grid item={true}>
           <Box mr={2}>
-            <Button id='signin-button' onClick={handleUserLogin} autoFocus={true}>
+            <Button id='signin-dialog-button' onClick={handleUserLogin} autoFocus={true}>
               Sign In
               </Button>
           </Box>
           <Button
-            id='signup-button'
+            id='signup-dialog-button'
             variant="contained"
             color="secondary"
             onClick={handleSignup}
