@@ -43,7 +43,7 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
 
 
     return (
-        <Grid id='osb-split-button' container={true} direction="column" alignItems="center">
+        <Grid id='osb-application-chooser-button' container={true} direction="column" alignItems="center">
             <Grid item={true} xs={12}>
                 <ButtonGroup
                     variant="contained"

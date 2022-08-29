@@ -314,7 +314,7 @@ export const EditRepoDialog = ({
 
   return (
     <Dialog
-      id='repository-dialog-window'
+      id='repository-edit-dialog'
       open={dialogOpen}
       onClose={handleClose}
       className={classes.root}
