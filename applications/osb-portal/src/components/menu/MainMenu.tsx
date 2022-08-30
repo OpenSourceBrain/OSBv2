@@ -35,7 +35,7 @@ export const MainMenu = (props: any) => {
   };
   return (
 
-    <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper" justifyContent="space-between">
+    <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper" justifyContent="space-between" id='main-menu'>
       <Box display="flex" flexWrap="wrap" p={0}>
         <MainMenuItem
           title="OSB"

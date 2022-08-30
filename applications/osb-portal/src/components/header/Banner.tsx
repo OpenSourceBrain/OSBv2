@@ -44,7 +44,7 @@ export const Banner = (props: any) => {
       : "Let's do some science!";
 
   return (
-    <Box className={classes.mainFeaturedPost}>
+    <Box className={classes.mainFeaturedPost} id='banner-card'>
       <Box className={classes.mainFeaturedPostContent}>
         <Box>
           <Typography component="h2" variant="h1" gutterBottom={true}>
@@ -58,9 +58,9 @@ export const Banner = (props: any) => {
               <Button variant="outlined">Take the tour</Button>
             }
             {user === null ? (
-              <Button id='signup-button' variant="outlined" onClick={handleSignup}>Sign up</Button>
+              <Button variant="outlined" onClick={handleSignup}>Sign up</Button>
             ) : null}
-            <Button id='view-repositories-button' variant="outlined" onClick={() => history.push('/repositories')}>View repositories</Button>
+            <Button variant="outlined" onClick={() => history.push('/repositories')}>View repositories</Button>
             <Button variant="outlined" onClick={() => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html")}>More information</Button>
           </Box>
         </Box>

@@ -314,7 +314,7 @@ export const EditRepoDialog = ({
 
   return (
     <Dialog
-      id='repository-edit-dialog'
+      id='repository-edit-modal'
       open={dialogOpen}
       onClose={handleClose}
       className={classes.root}
@@ -333,7 +333,7 @@ export const EditRepoDialog = ({
           <Box className="wrap">
             <FormControl variant="outlined">
               <Select
-                id='repository-source-input-element'
+                className='repository-source-input-element'
                 value={formValues.repositoryType}
                 onChange={(e) => handleInput(e, "repositoryType")}
                 IconComponent={KeyboardArrowDownIcon}
@@ -347,7 +347,7 @@ export const EditRepoDialog = ({
             </FormControl>
 
             <TextField
-              id='repository-url-input-element'
+              className='repository-url-input-element'
               fullWidth={true}
               placeholder="Repository URL"
               variant="outlined"
@@ -362,7 +362,7 @@ export const EditRepoDialog = ({
         <Box className="form-group">
           <Typography component="label">Name</Typography>
           <TextField
-            id='repository-name-input-element'
+            className='repository-name-input-element'
             fullWidth={true}
             variant="outlined"
             error={Boolean(error.name)}
@@ -398,7 +398,7 @@ export const EditRepoDialog = ({
           <Typography component="label">Type</Typography>
           <FormControl variant="outlined" fullWidth={true} error={Boolean(error.contentTypesList)}>
             <Select
-              id='repository-type-input-element'
+              className='repository-type-input-element'
               value={formValues.contentTypesList}
               multiple={true}
               onChange={(e) => handleInput(e, "contentTypesList")}
@@ -421,7 +421,7 @@ export const EditRepoDialog = ({
         <Box className="form-group">
           <Typography component="label">Tags</Typography>
           <Autocomplete
-            id='repository-tags-input-element'
+            className='repository-tags-input-element'
             multiple={true}
             freeSolo={true}
             options={tagOptions.map(t => t.tag)}
@@ -444,7 +444,6 @@ export const EditRepoDialog = ({
           </Typography>
 
           <MDEditor
-            id='repository-description-input-element'
             defaultValue={repository?.summary}
             onChange={(e) => handleInput(e, "summary")}
             view={{ html: false, menu: true, md: true }}
@@ -457,7 +456,7 @@ export const EditRepoDialog = ({
           Cancel
         </Button>
         <Button
-          id='repository-add-button'
+          className='repository-add-button'
           variant="contained"
           disableElevation={true}
           disabled={Object.values(error).filter(e => e).length !== 0}

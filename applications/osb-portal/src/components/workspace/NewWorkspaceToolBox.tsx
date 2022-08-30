@@ -57,7 +57,7 @@ export const WorkspaceToolBox = (props: any) => {
   return (
     <>
 
-      <Box>
+      <Box id='new-workspace-create-toolbox'>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
           <Grid item={true} sm={12} md={4} lg={3}>
             <Typography component="h2" variant="h5" className={classes.toolBoxHeading}>

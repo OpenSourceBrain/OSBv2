@@ -59,7 +59,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   const classes = useStyles();
 
   return (
-    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true} maxWidth={maxWidth}>
+    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true} maxWidth={maxWidth} id='common-dialog'>
       <DialogTitle disableTypography={true}>
         <Box display="flex" justifyContent="space-between">
           {title}

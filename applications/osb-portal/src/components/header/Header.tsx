@@ -92,7 +92,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button id='signin-button' onClick={handleUserLogin} className={classes.button}>
+      <Button onClick={handleUserLogin} className={classes.button}>
         Sign in
       </Button>
     ) : (
@@ -110,7 +110,6 @@ export const Header = (props: any) => {
           </Paper>
         </Popper>
         <Button
-          id='user-menu-open-button'
           size="large"
           ref={menuAnchorRef}
           aria-controls={menuOpen ? "user-menu" : undefined}
@@ -133,7 +132,7 @@ export const Header = (props: any) => {
 
   return (
     <React.Fragment>
-      <Toolbar className={classes.toolbar}>
+      <Toolbar className={classes.toolbar} id='header'>
         <Box display="flex">
           <a href="/" onClick={handleToggleDrawer}>
             <img
