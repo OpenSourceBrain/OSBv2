@@ -314,10 +314,9 @@ export const EditRepoDialog = ({
 
   return (
     <Dialog
-      id='repository-edit-modal'
       open={dialogOpen}
       onClose={handleClose}
-      className={classes.root}
+      className={`${classes.root} repository-edit-modal`}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth={true}

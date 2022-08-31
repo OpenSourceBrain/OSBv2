@@ -33,7 +33,9 @@ export const App = (props: any) => {
         {!props.error &&
           <Router>
             <div className={classes.mainContainer}>
-              <Header />
+              <div id='header'>
+                <Header />
+              </div>
 
               <OSBErrorBoundary>
                 <Switch>

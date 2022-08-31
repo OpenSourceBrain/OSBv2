@@ -232,12 +232,12 @@ export default (props: RepositoriesProps) => {
         {props.repositories.map((repository) => (
           <Grid
             container={true}
-            className="row"
+            className="repos-list row"
             spacing={0}
             key={repository.id}
           >
             <Grid item={true} xs={12} sm={3} lg={showSimpleVersion ? 5 : 4}
-              ref={gridRef}>
+              ref={gridRef} className='name-repo-list-item'>
               <Box className="col" onClick={(e: any) => { console.log(e); if (e.target.tagName.toLowerCase() !== 'a') props.handleRepositoryClick(repository.id) }}>
                 < Typography component="strong" >
                   {repository.name}
@@ -255,7 +255,7 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
 
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1}>
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={2} lg={1} className='avatar-repo-list-item'>
               <Box className="col">
                 {
                   // TODO: use user avatar, but repository.user does not include an avatar property
@@ -273,7 +273,7 @@ export default (props: RepositoriesProps) => {
                 />
               </Box>
             </Grid>}
-            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} >
+            {!showSimpleVersion && <Grid item={true} xs={12} sm={3} lg={2} className='url-repo-list-item'>
               <Box
                 className="col"
                 display="flex"
@@ -289,6 +289,7 @@ export default (props: RepositoriesProps) => {
             </Grid>}
 
             {<Grid item={true} xs={12} sm={showSimpleVersion ? 3 : 2} lg={showSimpleVersion ? 4 : 3}
+              className='tags-repo-list-item'
               >
               <Box
                 display="flex"
@@ -339,12 +340,12 @@ export default (props: RepositoriesProps) => {
               </Box>
             </Grid>
             }
-            <Grid item={true} xs={12} sm={3} lg={1} onClick={() => props.handleRepositoryClick(repository.id)}>
+            <Grid item={true} xs={12} sm={3} lg={1} onClick={() => props.handleRepositoryClick(repository.id)} className='gitBranch-repo-list-item'>
               <Box display="flex" alignItems="center" flexWrap="wrap">
                 {repository.defaultContext && <Chip avatar={<CodeBranchIcon />} key={repository.defaultContext} label={repository.defaultContext} />}
               </Box>
             </Grid>
-            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={1} >
+            <Grid item={true} xs={12} sm={showSimpleVersion ? 1 : 3} lg={1} className='arrow-repo-list-item' >
               <Box
                 className="col"
                 display="flex"

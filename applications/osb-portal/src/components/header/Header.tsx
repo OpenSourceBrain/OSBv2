@@ -132,7 +132,7 @@ export const Header = (props: any) => {
 
   return (
     <React.Fragment>
-      <Toolbar className={classes.toolbar} id='header'>
+      <Toolbar className={classes.toolbar}>
         <Box display="flex">
           <a href="/" onClick={handleToggleDrawer}>
             <img

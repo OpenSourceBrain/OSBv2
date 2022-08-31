@@ -33,27 +33,35 @@ export default (props: any) => {
         <Grid item={true} xs={12} sm={12} md={6} direction="column" className="verticalFill">
           <Box display="flex" >
             <Paper className={classes.paper} elevation={0}>
-              <Banner />
+              <div id='homepage-banner'>
+                <Banner />
+              </div>
             </Paper>
           </Box>
           <Box mt={2} display="flex">
             <Paper className={classes.paper} elevation={0}>
               <Box p={3} >
-                <WorkspaceToolBox />
+                <div id='create-new-workspace-toolbox'>
+                  <WorkspaceToolBox />
+                </div>
               </Box>
             </Paper>
           </Box>
           <Box mt={2} display="flex" flexGrow="1">
             <Paper elevation={0} className="verticalFill">
               <Box p={3} className="verticalFill">
-                <Latest />
+                <div id='info-disclaimer-box'>
+                  <Latest />
+                </div>
               </Box>
             </Paper>
           </Box>
         </Grid>
         <Grid item={true} xs={12} sm={12} md={6} alignItems="stretch" className="verticalFill">
           <Box pl={2} width={1} className="verticalFit" >
-            <Workspaces />
+            <div id='workspaces-list'>
+              <Workspaces />
+            </div>
           </Box>
         </Grid>
       </Grid>

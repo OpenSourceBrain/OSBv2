@@ -44,7 +44,7 @@ export const Banner = (props: any) => {
       : "Let's do some science!";
 
   return (
-    <Box className={classes.mainFeaturedPost} id='banner-card'>
+    <Box className={classes.mainFeaturedPost}>
       <Box className={classes.mainFeaturedPostContent}>
         <Box>
           <Typography component="h2" variant="h1" gutterBottom={true}>

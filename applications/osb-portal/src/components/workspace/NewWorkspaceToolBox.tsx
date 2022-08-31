@@ -57,7 +57,7 @@ export const WorkspaceToolBox = (props: any) => {
   return (
     <>
 
-      <Box id='new-workspace-create-toolbox'>
+      <Box>
         <Grid container={true} alignItems="center" justify="center" spacing={5}>
           <Grid item={true} sm={12} md={4} lg={3}>
             <Typography component="h2" variant="h5" className={classes.toolBoxHeading}>
@@ -69,6 +69,7 @@ export const WorkspaceToolBox = (props: any) => {
             <Grid container={true} direction="row" justify="space-between" spacing={5} >
               <Grid id='computational-modeling-item' item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
+                  className='computational-modelling-create-workspace-item'
                   icon={Icons.SquareCirclesIcon}
                   title="Computational modeling"
                   template={WorkspaceTemplateType.network}
@@ -79,6 +80,7 @@ export const WorkspaceToolBox = (props: any) => {
               </Grid>
               <Grid id='data-analysis-item' item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
+                  className='data-analysis-create-workspace-item'
                   icon={Icons.ChartIcon}
                   title="Data analysis"
                   template={WorkspaceTemplateType.explorer}
@@ -88,6 +90,7 @@ export const WorkspaceToolBox = (props: any) => {
               </Grid>
               <Grid id='interactive-development-item' item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
+                  className='interactive-development-create-workspace-item'
                   icon={Icons.CubeIcon}
                   title="Interactive development"
                   template={WorkspaceTemplateType.playground}
@@ -97,6 +100,7 @@ export const WorkspaceToolBox = (props: any) => {
               </Grid>
               <Grid id='workspace-from-repository-item' item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
+                  className='from-repository-create-workspace-item'
                   icon={<FolderOpenIcon />}
                   title="Workspace from repository"
                   template={null}
