@@ -38,9 +38,9 @@ RUN pip install cython --no-cache-dir
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
 
-COPY --from=clone --chown=$NB_UID:$NB_UID $FOLDER/requirements.txt requirements.txt
+COPY --from=clone $FOLDER/requirements.txt requirements.txt
 RUN pip install -r requirements.txt --no-cache-dir
-COPY --from=clone --chown=$NB_UID:$NB_UID $FOLDER .
+COPY --from=clone $FOLDER .
 
 
 
