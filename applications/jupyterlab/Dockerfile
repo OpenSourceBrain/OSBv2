@@ -26,11 +26,10 @@ RUN pip install neuron --no-cache-dir
 ENV NEURON_HOME=/opt/conda
 
 # Install specific version of NetPyNE
-# ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
-# ENV NETPYNE_CORE_BRANCH_TAG=osbv2
-# RUN git clone --depth=1 $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
-# RUN cd netpyne ; python setup.py install; cd -
-RUN pip install netpyne
+ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
+ENV NETPYNE_CORE_BRANCH_TAG=osbv2
+RUN git clone --depth=1 $NETPYNE_CORE_REPO -b $NETPYNE_CORE_BRANCH_TAG
+RUN cd netpyne ; python setup.py install; cd -
 
 ####  Other simulators
 
@@ -84,9 +83,21 @@ RUN pip install tvb-data
 RUN pip install ipympl --no-cache-dir
 
 
+####  General Python packages
+
+RUN pip install plotly
+RUN jupyter labextension install plotlywidget
+
+
 ####  Final updates
 
 RUN pip install --upgrade numpy  # Removes some issues with LFPy...
+
+
+### Some aliases
+
+RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \nalias jnml="java -classpath /opt/conda/lib/python3.9/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML"\n' >> ~/.bashrc
+RUN cat ~/.bashrc
 
 
 ################################################################################

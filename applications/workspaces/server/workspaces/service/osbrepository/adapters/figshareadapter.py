@@ -61,6 +61,9 @@ class FigShareAdapter:
         except Exception as e:
             raise FigShareException("Unexpected error:", sys.exc_info()[0])
 
+    def get_base_uri(self):
+        return self.uri
+
     def get_contexts(self):
         result = self.get_json(
             f"{self.api_url}/articles/{self.article_id}/versions")
