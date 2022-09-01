@@ -80,6 +80,9 @@ class DandiAdapter:
                         )
                     )
 
+    def get_base_uri(self):
+        return f"https://dandiarchive.org/dandiset/{self.dandiset_id}"
+
     def get_contexts(self):
         versions = self.get_json(
             f"{self.api_url}/dandisets/{self.dandiset_id}/versions")["results"]

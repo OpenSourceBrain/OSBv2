@@ -51,6 +51,9 @@ class GitHubAdapter:
             raise Exception(
                 f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
 
+    def get_base_uri(self):
+        return self.uri
+
     def get_contexts(self):
         branches = self.get_json(self.api_url + "branches?per_page=100")
         tags = self.get_json(self.api_url + "tags?per_page=100")
