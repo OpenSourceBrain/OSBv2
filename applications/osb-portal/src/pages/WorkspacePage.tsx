@@ -158,7 +158,7 @@ export const WorkspacePage = (props: any) => {
   if (!workspace) {
     props.selectWorkspace(workspaceId);
   } else {
-    const apps = workspace ? workspace.lastOpen.type.application.name ? [PREFIX_TEXT + workspace.lastOpen.type.application.name] : [] : null;
+    const apps = workspace ? workspace.lastOpen?.type?.application?.name ? [PREFIX_TEXT + workspace.lastOpen.type.application.name] : [] : null;
     for (const app of Object.keys(OSBApplications)) {
         if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
             apps.push(PREFIX_TEXT + OSBApplications[app].name);
