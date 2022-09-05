@@ -19,7 +19,6 @@ export default (props: any) => {
     <Box className="verticalFill">
       <Divider variant="fullWidth" />
       <WorkspaceDrawer app={app} />
-
     </Box>
   );
 };

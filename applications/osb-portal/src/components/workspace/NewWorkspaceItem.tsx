@@ -86,13 +86,14 @@ interface ItemProps {
   template?: WorkspaceTemplateType | string,
   user: UserInfo;
   refreshWorkspaces: () => null;
+  className:string;
 }
 
 
 
 
 export const NewWorkspaceItem = (props: ItemProps) => {
-  const { user, template, title, refreshWorkspaces } = props;
+  const { user, template, title, refreshWorkspaces ,className} = props;
 
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
@@ -123,7 +124,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
 
 
   return (
-    <>
+    <div className={className}>
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
           <Box style={{ marginBottom: "0.2em" }} >
@@ -151,7 +152,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
           <WorkspaceFromRepository close={() => setNewWorkspaceOpen(false) } workspaceCreatedCallback={onWorkspaceCreated}/>
         )
       }
-    </>
+    </div>
   );
 };
 

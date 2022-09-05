@@ -282,6 +282,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                 <Divider orientation="vertical" flexItem={true} className={classes.divider} />
                 <Box>
                   <Button
+                    id='add-repository-button'
                     variant="contained"
                     disableElevation={true}
                     color="primary"

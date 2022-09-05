@@ -118,7 +118,6 @@ let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
   const classes = useStyles();
-
   const { workspace } = props;
   const { user } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
@@ -255,6 +254,7 @@ export default (props: WorkspaceEditProps) => {
               Cancel
             </Button>
             <Button
+              id='create-a-new-workspace-button'
               className={classes.actionButton}
               variant="contained"
               color="primary"
