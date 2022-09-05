@@ -1,0 +1,60 @@
+pyneuroml
+pyelectro
+git+https://github.com/NeuralEnsemble/neurotune.git
+
+####  NEURON & NetPyNE
+neuron
+
+# Install specific version of NetPyNE
+git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
+
+####  Other simulators
+
+# Arbor
+arbor
+
+# Brian
+brian2
+brian2tools
+
+# PyNN
+pynn==0.10.0
+
+# elephant
+elephant
+
+# LFPy
+lfpy
+
+####  Octave etc.
+octave_kernel
+
+####  Machine learning libs
+
+# Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
+-f https://download.pytorch.org/whl/torch_stable.html
+torch==1.11.0+cpu
+
+# For MDF
+git+https://github.com/SheffieldML/GPy.git@devel
+dask==2.30.0
+distributed==2.30.1
+protobuf==3.17.0
+git+https://github.com/SheffieldML/GPy.git@devel
+#modeci_mdf==0.3.3 # big jump in size of image...
+
+sklearn # Required for some Neuromatch Academy material
+fasttext # Required for some Neuromatch Academy material
+
+
+####  TVB etc.
+tvb-library
+tvb-data
+ipympl
+
+
+####  General Python packages
+plotly
+
+####  Final updates
+numpy  # Removes some issues with LFPy...
