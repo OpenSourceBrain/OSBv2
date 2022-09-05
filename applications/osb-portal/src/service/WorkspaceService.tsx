@@ -154,9 +154,11 @@ class WorkspaceService {
 }
 
 function mapWorkspace(workspace: ApiWorkspace): Workspace {
-  const defaultResourceId = workspace.lastOpenedResourceId || workspace?.resources[0]?.id;
+  const defaultResourceId = workspace.lastOpenedResourceId || (workspace?.resources[0]?.id && workspace?.resources[0]?.id > 0);
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
-  const lastOpen: WorkspaceResource = defaultResourceId ? mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) : { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
+  const lastOpen: WorkspaceResource = defaultResourceId ?
+   mapResource(workspace.resources.find(resource => resource.id === defaultResourceId)) :
+   { workspaceId: workspace.id, name: "Generic", type: SampleResourceTypes.g };
   const tags: Tag[] = workspace.tags;
   const timestampUpdated: Date = workspace.timestampUpdated;
   const user: User = workspace.user;
