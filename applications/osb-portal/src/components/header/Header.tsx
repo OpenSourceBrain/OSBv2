@@ -100,11 +100,11 @@ export const Header = (props: any) => {
         <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
-              <MenuList autoFocusItem={menuOpen} id="user-menu">
-                {<MenuItem onClick={handleMyAccount}>My account</MenuItem>}
-                {<MenuItem onClick={handleAccountHelp}>Account help</MenuItem>}
+              <MenuList autoFocusItem={menuOpen} className="user-menu">
+                {<MenuItem className='my-account-menu-item' onClick={handleMyAccount}>My account</MenuItem>}
+                {<MenuItem className='account-help-menu-item' onClick={handleAccountHelp}>Account help</MenuItem>}
                 {/* <MenuItem>Settings</MenuItem> */}
-                <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                <MenuItem className='logout-menu-item' onClick={handleUserLogout}>Logout</MenuItem>
               </MenuList>
             </ClickAwayListener>
           </Paper>

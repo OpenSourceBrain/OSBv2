@@ -67,8 +67,9 @@ export const WorkspaceToolBox = (props: any) => {
           </Grid>
           <Grid item={true} xs={12} sm={12} md={8} lg={9}>
             <Grid container={true} direction="row" justify="space-between" spacing={5} >
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
+              <Grid id='computational-modeling-item' item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
+                  className='computational-modelling-create-workspace-item'
                   icon={Icons.SquareCirclesIcon}
                   title="Computational modeling"
                   template={WorkspaceTemplateType.network}
@@ -77,8 +78,9 @@ export const WorkspaceToolBox = (props: any) => {
 
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
+              <Grid id='data-analysis-item' item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
+                  className='data-analysis-create-workspace-item'
                   icon={Icons.ChartIcon}
                   title="Data analysis"
                   template={WorkspaceTemplateType.explorer}
@@ -86,8 +88,9 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
+              <Grid id='interactive-development-item' item={true} xs={12} sm={3} className={classes.justifyCenter}>
                 <WorkspaceItem
+                  className='interactive-development-create-workspace-item'
                   icon={Icons.CubeIcon}
                   title="Interactive development"
                   template={WorkspaceTemplateType.playground}
@@ -95,8 +98,9 @@ export const WorkspaceToolBox = (props: any) => {
                   refreshWorkspaces={props.refreshWorkspaces}
                 />
               </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
+              <Grid id='workspace-from-repository-item' item={true} xs={12} sm={3} className={classes.justifyCenter} >
                 <WorkspaceItem
+                  className='from-repository-create-workspace-item'
                   icon={<FolderOpenIcon />}
                   title="Workspace from repository"
                   template={null}

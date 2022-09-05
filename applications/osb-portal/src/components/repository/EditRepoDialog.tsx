@@ -316,7 +316,7 @@ export const EditRepoDialog = ({
     <Dialog
       open={dialogOpen}
       onClose={handleClose}
-      className={classes.root}
+      className={`${classes.root} repository-edit-modal`}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth={true}
@@ -332,6 +332,7 @@ export const EditRepoDialog = ({
           <Box className="wrap">
             <FormControl variant="outlined">
               <Select
+                className='repository-source-input-element'
                 value={formValues.repositoryType}
                 onChange={(e) => handleInput(e, "repositoryType")}
                 IconComponent={KeyboardArrowDownIcon}
@@ -345,6 +346,7 @@ export const EditRepoDialog = ({
             </FormControl>
 
             <TextField
+              className='repository-url-input-element'
               fullWidth={true}
               placeholder="Repository URL"
               variant="outlined"
@@ -359,6 +361,7 @@ export const EditRepoDialog = ({
         <Box className="form-group">
           <Typography component="label">Name</Typography>
           <TextField
+            className='repository-name-input-element'
             fullWidth={true}
             variant="outlined"
             error={Boolean(error.name)}
@@ -394,6 +397,7 @@ export const EditRepoDialog = ({
           <Typography component="label">Type</Typography>
           <FormControl variant="outlined" fullWidth={true} error={Boolean(error.contentTypesList)}>
             <Select
+              className='repository-type-input-element'
               value={formValues.contentTypesList}
               multiple={true}
               onChange={(e) => handleInput(e, "contentTypesList")}
@@ -416,6 +420,7 @@ export const EditRepoDialog = ({
         <Box className="form-group">
           <Typography component="label">Tags</Typography>
           <Autocomplete
+            className='repository-tags-input-element'
             multiple={true}
             freeSolo={true}
             options={tagOptions.map(t => t.tag)}
@@ -450,6 +455,7 @@ export const EditRepoDialog = ({
           Cancel
         </Button>
         <Button
+          className='repository-add-button'
           variant="contained"
           disableElevation={true}
           disabled={Object.values(error).filter(e => e).length !== 0}

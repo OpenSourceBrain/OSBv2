@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     textTransform: "uppercase",
     padding: '5px',
     fontSize: '0.75rem',
-  },
+  }
 }));
 
 export const MainMenu = (props: any) => {
@@ -34,8 +34,7 @@ export const MainMenu = (props: any) => {
     props.openDialog();
   };
   return (
-
-    <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper" justifyContent="space-between">
+    <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper" justifyContent="space-between" className='main-menu'>
       <Box display="flex" flexWrap="wrap" p={0}>
         <MainMenuItem
           title="OSB"
