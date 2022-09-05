@@ -14,14 +14,33 @@ RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURO
 
 ################################################################################
 
-####  NeuroML etc.
+#### Install needed linux packages
 
+# LFPy
+RUN apt-get install libopenmpi-dev -y
+
+####  Octave etc.
+RUN apt-get install octave octave-statistics -y
+
+# Invalidate build cache to install latest of libopenmpi and octave and pip packages
+# doing it here and repeat the apt-get will still use the cache for the dependencies
+ARG NOCACHE
+
+# LFPy
+RUN apt-get install libopenmpi-dev -y
+
+####  Octave etc.
+RUN apt-get install octave octave-statistics -y
+
+#### Change to "user" mode and install the python packages
+USER jovyan
+
+####  NeuroML etc.
 RUN pip install pyneuroml pyelectro --no-cache-dir
 RUN pip install git+https://github.com/NeuralEnsemble/neurotune.git --no-cache-dir
 
 
 ####  NEURON & NetPyNE
-
 RUN pip install neuron --no-cache-dir
 ENV NEURON_HOME=/opt/conda
 
@@ -46,18 +65,13 @@ RUN pip install pynn==0.10.0 --no-cache-dir
 RUN pip install elephant --no-cache-dir
 
 # LFPy
-RUN apt-get install libopenmpi-dev -y
 RUN pip install lfpy --no-cache-dir
 
-
 ####  Octave etc.
-
-RUN apt-get install octave octave-statistics -y
 RUN pip install octave_kernel --no-cache-dir
 
 
 ####  NWB
-
 RUN pip install pynwb ipywidgets seaborn --no-cache-dir # nwbwidgets  # v big increase in size...
 
 
@@ -77,41 +91,43 @@ RUN pip install fasttext # Required for some Neuromatch Academy material
 
 
 ####  TVB etc.
-
 RUN pip install tvb-library --no-cache-dir
 RUN pip install tvb-data
 RUN pip install ipympl --no-cache-dir
 
 
 ####  General Python packages
-
 RUN pip install plotly
 RUN jupyter labextension install plotlywidget
 
 
 ####  Final updates
-
 RUN pip install --upgrade numpy  # Removes some issues with LFPy...
 
 
-### Some aliases
+##############
 
+USER root
+
+### Some aliases
 RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \nalias jnml="java -classpath /opt/conda/lib/python3.9/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML"\n' >> ~/.bashrc
 RUN cat ~/.bashrc
 
 
 ################################################################################
 
+USER root
+
 COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
-RUN chown jovyan /opt
-RUN chown -R jovyan /opt/conda  # give user permission to update existing packages
+# RUN chown jovyan /opt
+# RUN chown -R jovyan /opt/conda  # give user permission to update existing packages
 
+RUN mkdir -p /opt/workspace && chown jovyan /opt/workspace
+RUN mkdir -p /opt/home && chown jovyan /opt/home
 
 USER jovyan
 # sym link workspace pvc to $FOLDER
-RUN mkdir -p /opt/workspace
-RUN mkdir -p /opt/home
 RUN ln -s /opt/workspace workspace
 
 RUN mkdir -p .jupyter/lab
@@ -120,7 +136,6 @@ RUN ln -s /opt/workspace .jupyter/lab/workspaces
 COPY conf/ .jupyter/lab/user-settings/@jupyterlab
 
 USER root
-RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
-
+# RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
 
 WORKDIR /opt/workspace
