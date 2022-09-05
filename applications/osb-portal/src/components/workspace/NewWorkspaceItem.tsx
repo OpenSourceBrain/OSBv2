@@ -86,14 +86,14 @@ interface ItemProps {
   template?: WorkspaceTemplateType | string,
   user: UserInfo;
   refreshWorkspaces: () => null;
-  className:string;
+  className: string;
 }
 
 
 
 
 export const NewWorkspaceItem = (props: ItemProps) => {
-  const { user, template, title, refreshWorkspaces ,className} = props;
+  const { user, template, title, refreshWorkspaces , className} = props;
 
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
