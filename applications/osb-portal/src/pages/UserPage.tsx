@@ -318,7 +318,7 @@ export const UserPage = (props: any) => {
                     {publicWorkspaces.map(ws => {
                       return (
                         <Grid item={true} key={ws.id} xs={12} sm={6} md={4} lg={4} xl={3}>
-                          <WorkspaceCard workspace={ws} />
+                          <WorkspaceCard workspace={ws} user={currentUser} />
                         </Grid>
                       );
                     })}
