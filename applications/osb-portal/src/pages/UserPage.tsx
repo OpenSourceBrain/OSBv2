@@ -248,7 +248,7 @@ export const UserPage = (props: any) => {
   const handleUpdateUser = (u: User) => {
     setLoading(true);
     setProfileEditDialogOpen(false);
-    updateUser(userProfileForm).then((updatedUser) => { 
+    updateUser(userProfileForm).then((updatedUser) => {
       setUser(updatedUser);
       setLoading(false);
     }).catch((err) => {
@@ -371,7 +371,7 @@ export const UserPage = (props: any) => {
       {loading &&
         <CircularProgress
           size={24}
-          
+
         />
       }
     </Box >
