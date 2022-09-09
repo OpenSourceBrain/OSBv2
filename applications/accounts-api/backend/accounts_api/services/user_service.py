@@ -50,7 +50,7 @@ def get_users(query: str) -> typing.List[User]:
 
 
 def map_user(kc_user) -> User:
-    user = User.from_dict(kc_user._raw_dict)
+    user = kc_user if isinstance(kc_user, dict) else User.from_dict(kc_user._raw_dict)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
 
@@ -73,7 +73,7 @@ def map_user(kc_user) -> User:
     return user
 
 
-def update_user(userid, user: User):
+def update_user(userid, user: User):    
     client = AuthClient()
 
     try:
@@ -85,7 +85,7 @@ def update_user(userid, user: User):
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'attributes': {
-                **current_user.get('attributes', {}),
+                **(current_user.get('attributes') or {}),
                 **({('profile--' + k): user.profiles[k] for k in user.profiles} if user.profiles else {}),
                 'avatar': user.avatar,
                 'website': user.website
@@ -93,7 +93,7 @@ def update_user(userid, user: User):
         }
 
         admin_client.update_user(userid,  updated_user)
-        return map_user({**current_user, **updated_user})
+        return get_user(userid)
     except KeycloakError as e:
         if e.response_code == 404:
             raise UserNotFound(userid)

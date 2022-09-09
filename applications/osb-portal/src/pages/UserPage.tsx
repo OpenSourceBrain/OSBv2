@@ -246,14 +246,12 @@ export const UserPage = (props: any) => {
   const handleUpdateUser = (u: User) => {
     setLoading(true);
     setProfileEditDialogOpen(false);
-    setUser(u);
-    updateUser(userProfileForm).then((updatedUser) => {
-      console.log('user should be updated');
+    updateUser(userProfileForm).then((updatedUser) => { 
+      setUser(updatedUser);
       setLoading(false);
-      window.location.reload();
     }).catch((err) => {
       setLoading(false);
-      console.log('error updating user', err);
+      console.error('error updating user', err);
       setError({ ...error, general: `An error occurred updating the user. Please try again later.` })
     });
 
@@ -370,13 +368,7 @@ export const UserPage = (props: any) => {
       {loading &&
         <CircularProgress
           size={24}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            marginTop: -12,
-            marginLeft: -12,
-          }}
+          
         />
       }
     </Box >
