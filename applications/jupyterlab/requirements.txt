@@ -29,6 +29,12 @@ lfpy
 ####  Octave etc.
 octave_kernel
 
+####  NWB
+pynwb
+ipywidgets
+seaborn
+# nwbwidgets
+
 ####  Machine learning libs
 
 # Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
