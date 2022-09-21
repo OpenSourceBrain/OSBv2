@@ -98,11 +98,9 @@ describe("OSB v2 Smoke Tests", () => {
         selectors.WORKSPACE_DESCRIPTION_SELECTOR,
         "Workspace created by the Automated Smoke tests"
       );
-      await page.waitForTimeout(ONE_SECOND);
 
       await page.waitForTimeout(ONE_SECOND);
-
-      await page.click('#create-a-new-workspace-button')
+      await page.click(selectors.CREATE_NEW_WORKSPACE_SELECTOR)
       await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
       await page.waitForSelector(selectors.YOUR_WORKSPACES_SELECTOR);
 
@@ -123,7 +121,7 @@ describe("OSB v2 Smoke Tests", () => {
       await page.waitForTimeout(ONE_SECOND);
       await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
       await page.waitForTimeout(ONE_SECOND);
-      await page.click("#featured-tab");
+      await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
       await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
       await page.waitForTimeout(ONE_SECOND);
       const featuredWorkspaces = await page.evaluate(
@@ -213,7 +211,7 @@ describe("OSB v2 Smoke Tests", () => {
       await page.waitForTimeout(ONE_SECOND);
       await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
       await page.waitForTimeout(ONE_SECOND);
-      await page.click("#featured-tab");
+      await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
       await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
       await page.waitForTimeout(ONE_SECOND);
 
@@ -303,7 +301,7 @@ describe("OSB v2 Smoke Tests", () => {
       await page.waitForTimeout(ONE_SECOND);
       await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
       await page.waitForTimeout(ONE_SECOND);
-      await page.click("#featured-tab");
+      await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
       await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
       await page.waitForTimeout(ONE_SECOND);
       const featuredWorkspaces = await page.evaluate(
@@ -430,17 +428,6 @@ describe("OSB v2 Smoke Tests", () => {
       });
       await page.waitForSelector(selectors.WORKSPACES_SELECTOR);
 
-      // await page.goto("https://notebooks.v2dev.opensourcebrain.org/hub/home");
-
-      // await page.evaluate(() => {
-      //   let map = document.getElementsByClassName(
-      //     "stop-server btn btn-xs btn-danger"
-      //   ) as HTMLCollectionOf<HTMLElement>;
-      //   for (let i = 0; i < map.length; i++) {
-      //     map[i].click();
-      //   }
-      // });
-      // await page.waitForTimeout(ONE_SECOND*5);
     });
 
     

@@ -9,6 +9,7 @@ export const ALL_YOUR_WORKSPACES_TAB_SELECTOR = "#your-all-workspaces-tab";
 export const FEATURE_WORKSPACES_TAB_SELECTOR = "#featured-tab";
 export const YOUR_WORKSPACES_SELECTOR = 'div[class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1"]';
 export const CREATE_WORKSPACE_SELECTOR = '#computational-modeling-item';
+export const CREATE_NEW_WORKSPACE_SELECTOR = '#create-a-new-workspace-button'
 export const WORKSPACE_CREATION_BOX_SELECTOR = 'div[class="MuiDialogContent-root"]';
 export const WORKSPACE_NAME_SELECTOR = "#workspaceName";
 export const WORKSPACE_TAGS_SELECTOR = 'input[class="MuiInputBase-input MuiFilledInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiFilledInput-inputAdornedEnd"]';
