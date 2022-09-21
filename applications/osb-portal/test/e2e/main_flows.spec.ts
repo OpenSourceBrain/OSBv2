@@ -295,6 +295,97 @@ describe("OSB v2 Smoke Tests", () => {
       }
     });
 
+    test("Open workspace with Jupyter Lab", async () => {
+      console.log("Opening workspace with Jupyter Lab");
+
+      await page.waitForTimeout(ONE_SECOND);
+      await page.click(selectors.OSB_LOGO_SELECTOR);
+      await page.waitForTimeout(ONE_SECOND);
+      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
+      await page.waitForTimeout(ONE_SECOND);
+      await page.click("#featured-tab");
+      await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
+      await page.waitForTimeout(ONE_SECOND);
+      const featuredWorkspaces = await page.evaluate(
+        () =>
+          document.querySelectorAll(
+            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
+          ).length
+      );
+      await page.click(selectors.OSB_LOGO_SELECTOR);
+      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
+
+      if (featuredWorkspaces != 0) {
+        await page.waitForTimeout(ONE_SECOND);
+        await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
+        await page.waitForTimeout(ONE_SECOND);
+        await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
+        await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
+        await page.click(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
+        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
+        expect(page.url()).toContain("/workspace/");
+        await page.waitForTimeout(ONE_SECOND);
+        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
+        await page.waitForTimeout(ONE_SECOND);
+        await page.evaluate(() => {
+          let map = document.getElementsByClassName(
+            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+          ) as HTMLCollectionOf<HTMLElement>;
+          for (let i = 0; i < map.length; i++) {
+            map[i].innerText == "Open with JupyterLab" && map[i].click();
+          }
+        });
+
+        console.log("Loading Jupyter Lab");
+
+        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
+        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR, {
+          timeout: ONE_MINUTE,
+        });
+        expect(page.url()).toContain("/jupyter");
+        const elementHandle = await page.waitForSelector(
+          selectors.APPLICATION_FRAME_SELECTOR
+        );
+        const frame = await elementHandle.contentFrame();
+        await frame.waitForSelector(selectors.JUPYTER_CONTENT_SELECTOR, {
+          timeout: TWO_MINUTES * 1.5,
+        });
+
+        console.log("Jupyter Lab loaded");
+
+      } else {
+        
+        await page.click(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
+        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
+        expect(page.url()).toContain("/workspace/");
+        await page.waitForTimeout(ONE_SECOND);
+        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
+        await page.waitForTimeout(ONE_SECOND);
+        await page.evaluate(() => {
+          let map = document.getElementsByClassName(
+            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+          ) as HTMLCollectionOf<HTMLElement>;
+          for (let i = 0; i < map.length; i++) {
+            map[i].innerText == "Open with JupyterLab" && map[i].click();
+          }
+        });
+        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
+        expect(page.url()).toContain("/jupyter");
+
+        console.log("Loading Jupyter Lab");
+
+        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR);
+        const elementHandle = await page.waitForSelector(
+          selectors.APPLICATION_FRAME_SELECTOR
+        );
+        const frame = await elementHandle.contentFrame();
+        await frame.waitForSelector(selectors.JUPYTER_CONTENT_SELECTOR, {
+          timeout: TWO_MINUTES * 1.5,
+        });
+
+        console.log("Jupyter Lab loaded");
+      }
+    });
 
 
 
