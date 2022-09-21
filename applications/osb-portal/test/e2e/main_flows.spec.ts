@@ -47,6 +47,43 @@ describe("OSB v2 Smoke Tests", () => {
       await page.waitForTimeout(ONE_SECOND * 2);
     });
 
+    test("Log in", async () => {
+      console.log("Attempting login on", page.url());
+
+      await page.evaluate(() => {
+        let map = document.getElementsByClassName(
+          "MuiButton-label"
+        ) as HTMLCollectionOf<HTMLElement>;
+        for (let i = 0; i < map.length; i++) {
+          map[i].innerText == "Sign in" && map[i].click();
+        }
+      });
+
+      await page.waitForSelector(selectors.USERNAME_SELECTOR);
+      await page.waitForSelector(selectors.PASSWORD_SELECTOR);
+      expect(page.url()).toContain("accounts.");
+      await page.type(
+        selectors.USERNAME_SELECTOR,
+        process.env.USERNAME || "simao_user_osb" 
+      );
+      await page.type(
+        selectors.PASSWORD_SELECTOR,
+        process.env.PASSWORD || "metacell" 
+      );
+      await page.click(selectors.LOGIN_BUTTON_SELECTOR);
+      await page.waitForSelector(selectors.ALL_YOUR_WORKSPACES_TAB_SELECTOR);
+  
+      await page.waitForSelector(selectors.YOUR_WORKSPACES_SELECTOR);
+      const privateWorkspaces_beforeadding = await page.evaluate(
+        () =>
+          document.querySelectorAll(
+            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
+          ).length
+      );
+      expect(privateWorkspaces_beforeadding).toBe(0);
+    });
+
+
 
     
   } else {
