@@ -416,6 +416,32 @@ describe("OSB v2 Smoke Tests", () => {
       expect(privateWorkspaces).toBe(0);
     });
 
+    test("Logout", async () => {
+      console.log("Logging out");
+
+      await page.click(selectors.USER_MENU_SELECTOR);
+      await page.evaluate(() => {
+        let map = document.getElementsByClassName(
+          "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+        ) as HTMLCollectionOf<HTMLElement>;
+        for (let i = 0; i < 3; i++) {
+          map[i].textContent == "Logout" && map[i].click();
+        }
+      });
+      await page.waitForSelector(selectors.WORKSPACES_SELECTOR);
+
+      // await page.goto("https://notebooks.v2dev.opensourcebrain.org/hub/home");
+
+      // await page.evaluate(() => {
+      //   let map = document.getElementsByClassName(
+      //     "stop-server btn btn-xs btn-danger"
+      //   ) as HTMLCollectionOf<HTMLElement>;
+      //   for (let i = 0; i < map.length; i++) {
+      //     map[i].click();
+      //   }
+      // });
+      // await page.waitForTimeout(ONE_SECOND*5);
+    });
 
     
   } else {
