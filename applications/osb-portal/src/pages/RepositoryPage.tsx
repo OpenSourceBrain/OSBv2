@@ -9,28 +9,42 @@ import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import LinkIcon from '@material-ui/icons/Link';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LinkIcon from "@material-ui/icons/Link";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Link from "@material-ui/core/Link";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import { Chip, DialogContent, DialogTitle, Accordion, AccordionSummary, AccordionDetails } from "@material-ui/core";
+import {
+  Chip,
+  DialogContent,
+  DialogTitle,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import { OSBRepository, RepositoryResourceNode, RepositoryContentType } from "../apiclient/workspaces";
+import {
+  OSBRepository,
+  RepositoryResourceNode,
+  RepositoryContentType,
+} from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
-import OSBDialog from '../components/common/OSBDialog';
+import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor, MainMenu } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
-import { ExistingWorkspaceEditor as ExistingWorkspaceSelector, ExistingWorkspaceEditorActions } from "../components/workspace/ExistingWorkspaceSelector";
+import {
+  ExistingWorkspaceEditor as ExistingWorkspaceSelector,
+  ExistingWorkspaceEditorActions,
+} from "../components/workspace/ExistingWorkspaceSelector";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { UserInfo } from "../types/user";
-import MarkdownViewer from "../components/common/MarkdownViewer"
+import MarkdownViewer from "../components/common/MarkdownViewer";
 import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
 import Resources from "../components/repository/resources";
 
@@ -45,7 +59,6 @@ import {
 } from "../theme";
 import { CodeBranchIcon } from "../components/icons";
 
-
 const useStyles = makeStyles((theme) => ({
   infoIcon: {
     fontSize: "small",
@@ -53,31 +66,31 @@ const useStyles = makeStyles((theme) => ({
     color: paragraph,
   },
   linkButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    backgroundColor: 'black',
-    textTransform: 'none',
+    backgroundColor: "black",
+    textTransform: "none",
     "& .MuiButton-label": {
-      color: 'white',
-      fontSize: '0.7rem',
+      color: "white",
+      fontSize: "0.7rem",
     },
     "&:hover": {
-      backgroundColor: 'black',
+      backgroundColor: "black",
     },
   },
   previewBox: {
     padding: theme.spacing(3),
     border: `3px solid #1e1e1e`,
     backgroundColor: "#191919",
-    minHeight: 300
+    minHeight: 300,
   },
   repositoryResourceBrowserBox: {
-    width: '100%',
+    width: "100%",
   },
   repositoryInformation: {
     marginBottom: theme.spacing(1),
     "& .MuiAccordionSummary-root": {
-      flexDirection: 'row',
+      flexDirection: "row",
       paddingLeft: `${theme.spacing(1)}px !important`,
     },
     "& .MuiAccordionDetails-root": {
@@ -86,17 +99,17 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiChip-root": {
       margin: `5px 5px ${theme.spacing(1)}px 0px`,
-      backgroundColor: '#3c3c3c',
+      backgroundColor: "#3c3c3c",
       color: paragraph,
-      textTransform: 'capitalize',
+      textTransform: "capitalize",
     },
     "& .repo-chip": {
       color: textColor,
-      textTransform: 'none',
+      textTransform: "none",
     },
   },
   root: {
-    maxHeight: '100%',
+    maxHeight: "100%",
     backgroundColor: bgDarkest,
     "& .MuiCheckbox-colorSecondary": {
       color: checkBoxColor,
@@ -107,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     "& .main-content": {
       padding: theme.spacing(3),
       "& .MuiGrid-container": {
-        height: `calc(100% + ${theme.spacing(5)}px)`
+        height: `calc(100% + ${theme.spacing(5)}px)`,
       },
       "& .flex-grow-1": {
         flexGrow: 1,
@@ -173,9 +186,8 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  }
+  },
 }));
-
 
 const defaultWorkspace: Workspace = {
   resources: [],
@@ -183,8 +195,8 @@ const defaultWorkspace: Workspace = {
   shareType: null,
   name: "",
   description: null,
-  user: null
-}
+  user: null,
+};
 
 let confirmationDialogTitle = "";
 let confirmationDialogContent = "";
@@ -196,24 +208,30 @@ export const RepositoryPage = (props: any) => {
   const history = useHistory();
   const [repository, setRepository] = React.useState<OSBRepository>(null);
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
-  const [showConfirmationDialog, setShowConfirmationDialog] = React.useState(false);
-  const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] = React.useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] =
+    React.useState(false);
+  const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] =
+    React.useState(false);
   const [selectedWorkspace, setSelectedWorkspace] = React.useState<Workspace>();
-  const [showUserNotLoggedInAlert, setShowUserNotLoggedInAlert] = React.useState(false);
+  const [showUserNotLoggedInAlert, setShowUserNotLoggedInAlert] =
+    React.useState(false);
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
   const [error, setError] = React.useState<any>(null);
 
-
   const classes = useStyles();
 
   React.useEffect(() => {
-    RepositoryService.getRepository(+repositoryId).then((repo) => {
-      setRepository(repo);
-    },
-    (e) => {setError(e)});
+    RepositoryService.getRepository(+repositoryId).then(
+      (repo) => {
+        setRepository(repo);
+      },
+      (e) => {
+        setError(e);
+      }
+    );
   }, []);
 
   if (error) {
@@ -226,7 +244,7 @@ export const RepositoryPage = (props: any) => {
       setChecked([]);
       setRefresh(!refresh);
     }
-  }
+  };
 
   const openExistingWorkspaceDialog = () => {
     setShowExisitngWorkspaceEditor(!showExistingWorkspaceEditor);
@@ -234,69 +252,88 @@ export const RepositoryPage = (props: any) => {
       setChecked([]);
       setRefresh(!refresh);
     }
-  }
+  };
 
   const confirmAction = (dialogTitle: string, dialogContent: string) => {
     confirmationDialogTitle = dialogTitle;
     confirmationDialogContent = dialogContent;
     setShowConfirmationDialog(true);
-  }
+  };
 
   const setCheckedChips = (newChecked: RepositoryResourceNode[]) => {
     setChecked(newChecked);
-  }
+  };
 
   const handleChipDelete = (key: string) => {
-    const checkedChips = checked.filter(item => item.resource.path !== key);
+    const checkedChips = checked.filter((item) => item.resource.path !== key);
     setCheckedChips(checkedChips);
     setRefresh(!refresh);
-  }
+  };
 
   const getDefaultWorkspaceName = () => {
     if (checked.length === 1) {
-      return checked[0].resource.name.substring(0, checked[0].resource.name.lastIndexOf('.')) || checked[0].resource.name;
-    }
-    else {
+      return (
+        checked[0].resource.name.substring(
+          0,
+          checked[0].resource.name.lastIndexOf(".")
+        ) || checked[0].resource.name
+      );
+    } else {
       return repository?.name;
     }
-  }
+  };
 
   const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
     const toImport = checked.length ? checked : [repository.contextResources];
-    WorkspaceService.importResourcesToWorkspace(ws.id, toImport.map(c => c.resource)).then(() => {
-      setShowWorkspaceEditor(false);
-      setWorkspaceLink(`/workspace/${ws.id}`);
-      confirmAction("Success", "New workspace created!");
-    }).catch((e) => {
-      setShowWorkspaceEditor(false);
-      confirmAction("Error", "There was an error creating the new workspace.");
-    });
+    WorkspaceService.importResourcesToWorkspace(
+      ws.id,
+      toImport.map((c) => c.resource)
+    )
+      .then(() => {
+        setShowWorkspaceEditor(false);
+        setWorkspaceLink(`/workspace/${ws.id}`);
+        confirmAction("Success", "New workspace created!");
+      })
+      .catch((e) => {
+        setShowWorkspaceEditor(false);
+        confirmAction(
+          "Error",
+          "There was an error creating the new workspace."
+        );
+      });
     setRefresh(!refresh);
     setChecked([]);
-  }
+  };
 
   const setWorkspace = (ws: Workspace) => {
     setSelectedWorkspace(ws);
-  }
+  };
 
   const addToExistingWorkspace = () => {
     setLoading(true);
     const toImport = checked.length ? checked : [repository.contextResources];
-    WorkspaceService.importResourcesToWorkspace(selectedWorkspace.id, toImport.map(c => c.resource)).then(() => {
-      setSelectedWorkspace(null);
-      confirmAction("Success", "Resources added to workspace!");
-      setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
-      setLoading(false);
-      setShowExisitngWorkspaceEditor(false);
-    }).catch((e) => {
-      confirmAction("Error", "There was an error adding the resources to the workspace");
-      setLoading(false);
-      setShowExisitngWorkspaceEditor(false);
-    });
+    WorkspaceService.importResourcesToWorkspace(
+      selectedWorkspace.id,
+      toImport.map((c) => c.resource)
+    )
+      .then(() => {
+        setSelectedWorkspace(null);
+        confirmAction("Success", "Resources added to workspace!");
+        setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
+        setLoading(false);
+        setShowExisitngWorkspaceEditor(false);
+      })
+      .catch((e) => {
+        confirmAction(
+          "Error",
+          "There was an error adding the resources to the workspace"
+        );
+        setLoading(false);
+        setShowExisitngWorkspaceEditor(false);
+      });
     setRefresh(!refresh);
     setChecked([]);
-  }
-
+  };
 
   const getRepoURL = () => {
     switch (repository.repositoryType) {
@@ -308,90 +345,180 @@ export const RepositoryPage = (props: any) => {
         return repository.uri + "/" + repository.defaultContext;
       // For figshare, there does not seem to be a version specific URL
       case "figshare":
-        return repository.uri
+        return repository.uri;
       default:
-        return "#"
+        return "#";
     }
-  }
+  };
 
   return (
     <>
       <MainMenu />
       <Box className={`${classes.root} verticalFit`}>
-        <Box className="subheader" paddingX={3} justifyContent="space-between"  >
+        <Box className="subheader" paddingX={3} justifyContent="space-between">
           <Box>
             <Box display="flex" alignItems="center">
               <ArrowBackIcon onClick={() => history.push("/repositories")} />
               <Typography component="h1" color="primary">
-                <Typography component="span" onClick={() => history.push("/repositories")}>All repositories</Typography>
-                {repository ? <Typography component="span">{repository.name}</Typography> : null}
+                <Typography
+                  component="span"
+                  onClick={() => history.push("/repositories")}
+                >
+                  All repositories
+                </Typography>
+                {repository ? (
+                  <Typography component="span">{repository.name}</Typography>
+                ) : null}
               </Typography>
             </Box>
           </Box>
 
           <Box>
-            <Button id='add-existing-workspace-button' variant="outlined" disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
+            <Button
+              id="add-existing-workspace-button"
+              variant="outlined"
+              disableElevation={true}
+              color="secondary"
+              style={{ borderColor: "white" }}
+              onClick={() => {
+                user
+                  ? openExistingWorkspaceDialog()
+                  : setShowUserNotLoggedInAlert(true);
+              }}
+            >
               <AddIcon />
               Add to existing workspace
             </Button>
-            <Button id='create-new-workspace-button' variant="contained" disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
+            <Button
+              id="create-new-workspace-button"
+              variant="contained"
+              disableElevation={true}
+              color="primary"
+              onClick={() => {
+                user ? openDialog() : setShowUserNotLoggedInAlert(true);
+              }}
+            >
               <AddIcon />
               Create new workspace
             </Button>
-            <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({ ...repository, ...r })} />
+            <RepositoryActionsMenu
+              user={user}
+              repository={repository}
+              onAction={(r: OSBRepository) =>
+                r && setRepository({ ...repository, ...r })
+              }
+            />
           </Box>
-
         </Box>
 
         <Box className="main-content verticalFit">
-          {repository ?
+          {repository ? (
             <Grid container={true} spacing={5} className="verticalFill">
               <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box className="flex-grow-1 scrollbar" maxWidth="100%" position="relative">
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Typography component="h2" variant="h2" className="primary-heading" style={{ width: "100%" }}>
-                      Overview <Tooltip interactive={true} title={
-                        <>Repositories provide views of files in public resources that have been indexed in OSBv2 by users. Use the Repository Contents pane on the right to select files from this repository to add to your workspaces. <Link href="https://docs.opensourcebrain.org/OSBv2/Repositories.html" target="_blank">Learn more...</Link></>}>
-                        <InfoOutlinedIcon className={classes.infoIcon}/>
+                <Box
+                  className="flex-grow-1 scrollbar"
+                  maxWidth="100%"
+                  position="relative"
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography
+                      component="h2"
+                      variant="h2"
+                      className="primary-heading"
+                      style={{ width: "100%" }}
+                    >
+                      Overview{" "}
+                      <Tooltip
+                        interactive={true}
+                        title={
+                          <>
+                            Repositories provide views of files in public
+                            resources that have been indexed in OSBv2 by users.
+                            Use the Repository Contents pane on the right to
+                            select files from this repository to add to your
+                            workspaces.{" "}
+                            <Link
+                              href="https://docs.opensourcebrain.org/OSBv2/Repositories.html"
+                              target="_blank"
+                            >
+                              Learn more...
+                            </Link>
+                          </>
+                        }
+                      >
+                        <InfoOutlinedIcon className={classes.infoIcon} />
                       </Tooltip>
-
                     </Typography>
                   </Box>
                   <Box className={classes.repositoryInformation}>
-
                     <Typography component="h1" variant="h1">
                       {repository.name}
                     </Typography>
-                    {
-                      repository.user && (repository.user.firstName || repository.user.lastName) && <Typography component="p" variant="body2">
-                        Added by {<Link href={`/user/${repository?.user?.id}`}> {repository.user.firstName + " " + repository.user.lastName}</Link> } {repository.timestampCreated && ` on ${repository.timestampCreated.toDateString()}`}
-                      </Typography>
-                    }
-                    {
-                      repository.summary && <Typography component="p" variant="body2">
+                    {repository.user &&
+                      (repository.user.firstName ||
+                        repository.user.lastName) && (
+                        <Typography component="p" variant="body2">
+                          Added by{" "}
+                          {
+                            <Link href={`/user/${repository?.user?.id}`}>
+                              {" "}
+                              {repository.user.firstName +
+                                " " +
+                                repository.user.lastName}
+                            </Link>
+                          }{" "}
+                          {repository.timestampCreated &&
+                            ` on ${repository.timestampCreated.toDateString()}`}
+                        </Typography>
+                      )}
+                    {repository.summary && (
+                      <Typography component="p" variant="body2">
                         <MarkdownViewer text={repository.summary} />
                       </Typography>
-                    }
+                    )}
                     <Box>
-                      {
-                        repository.contentTypesList.map(type => {
-                          return <Chip
+                      {repository.contentTypesList.map((type) => {
+                        return (
+                          <Chip
                             className="repo-chip"
                             size="small"
-                            avatar={<FiberManualRecordIcon color={type === RepositoryContentType.Experimental ? "primary" : "secondary"} />}
+                            avatar={
+                              <FiberManualRecordIcon
+                                color={
+                                  type === RepositoryContentType.Experimental
+                                    ? "primary"
+                                    : "secondary"
+                                }
+                              />
+                            }
                             key={type}
                             label={type}
                           />
-                        })
-                      }
-                      {
-                        repository.defaultContext && <Chip className="repo-chip" size="small" avatar={<CodeBranchIcon />} label={repository.defaultContext} key={repository.defaultContext} />
-                      }
-                      {
-                        repository.tags.map(tagObject => {
-                          return <Chip className="repo-chip" size="small" label={tagObject.tag} key={tagObject.id} />
-                        })
-                      }
+                        );
+                      })}
+                      {repository.defaultContext && (
+                        <Chip
+                          className="repo-chip"
+                          size="small"
+                          avatar={<CodeBranchIcon />}
+                          label={repository.defaultContext}
+                          key={repository.defaultContext}
+                        />
+                      )}
+                      {repository.tags.map((tagObject) => {
+                        return (
+                          <Chip
+                            className="repo-chip"
+                            size="small"
+                            label={tagObject.tag}
+                            key={tagObject.id}
+                          />
+                        );
+                      })}
                     </Box>
 
                     <Accordion>
@@ -400,119 +527,218 @@ export const RepositoryPage = (props: any) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography component="p" variant="body1">More Info</Typography>
+                        <Typography component="p" variant="body1">
+                          More Info
+                        </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-
-                        {
-                          repository.id && <Typography component="p" variant="body2">
+                        {repository.id && (
+                          <Typography component="p" variant="body2">
                             Id: {repository.id}
                           </Typography>
-                        }
+                        )}
                         <Typography component="p" variant="body2">
-                          Repository type: {repository.repositoryType.charAt(0).toUpperCase() + repository.repositoryType.slice(1)}
+                          Repository type:{" "}
+                          {repository.repositoryType.charAt(0).toUpperCase() +
+                            repository.repositoryType.slice(1)}
                         </Typography>
-                        {
-                          repository.defaultContext && <Typography component="p" variant="body2">
+                        {repository.defaultContext && (
+                          <Typography component="p" variant="body2">
                             Context: {repository.defaultContext}
                           </Typography>
-                        }
-                        {
-                          repository.timestampCreated && <Typography component="p" variant="body2">
-                            Created: {repository.timestampCreated.toDateString()}
+                        )}
+                        {repository.timestampCreated && (
+                          <Typography component="p" variant="body2">
+                            Created:{" "}
+                            {repository.timestampCreated.toDateString()}
                           </Typography>
-                        }
-
+                        )}
                       </AccordionDetails>
                     </Accordion>
                   </Box>
                   <Box position="relative" mt="2">
-                    <Button href={getRepoURL()} target="_blank" className={classes.linkButton} variant="contained" size="small" endIcon={<LinkIcon />}>
-                      View on {Resources[repository.repositoryType] || repository.repositoryType}
+                    <Button
+                      href={getRepoURL()}
+                      target="_blank"
+                      className={classes.linkButton}
+                      variant="contained"
+                      size="small"
+                      endIcon={<LinkIcon />}
+                    >
+                      View on{" "}
+                      {Resources[repository.repositoryType] ||
+                        repository.repositoryType}
                     </Button>
-                    <Typography component="h2" variant="h2" className="primary-heading">
+                    <Typography
+                      component="h2"
+                      variant="h2"
+                      className="primary-heading"
+                    >
                       Repository preview
                     </Typography>
                     <Paper className={`verticalFit ${classes.previewBox}`}>
-                      <MarkdownViewer text={repository.description} repository={repository} />
+                      <MarkdownViewer
+                        text={repository.description}
+                        repository={repository}
+                      />
                     </Paper>
                   </Box>
                 </Box>
               </Grid>
               <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box className={`verticalFit ${classes.repositoryResourceBrowserBox}`}>
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Typography component="h2" variant="h2" style={{ width: "100%" }}>
-                      Repository contents <Tooltip interactive={true} title={
-                        <>{`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${Resources[repository.repositoryType] || repository.repositoryType}.`} <Link href="https://docs.opensourcebrain.org/OSBv2/Repositories.html" target="_blank">Learn more...</Link>
-                        </>}>
-                        <InfoOutlinedIcon className={classes.infoIcon}/>
+                <Box
+                  className={`verticalFit ${classes.repositoryResourceBrowserBox}`}
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography
+                      component="h2"
+                      variant="h2"
+                      style={{ width: "100%" }}
+                    >
+                      Repository contents{" "}
+                      <Tooltip
+                        interactive={true}
+                        title={
+                          <>
+                            {`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${
+                              Resources[repository.repositoryType] ||
+                              repository.repositoryType
+                            }.`}{" "}
+                            <Link
+                              href="https://docs.opensourcebrain.org/OSBv2/Repositories.html"
+                              target="_blank"
+                            >
+                              Learn more...
+                            </Link>
+                          </>
+                        }
+                      >
+                        <InfoOutlinedIcon className={classes.infoIcon} />
                       </Tooltip>
                     </Typography>
                   </Box>
                   <Box className="verticalFit">
-                    <RepositoryResourceBrowser repository={repository} checkedChanged={setCheckedChips} refresh={refresh} />
+                    <RepositoryResourceBrowser
+                      repository={repository}
+                      checkedChanged={setCheckedChips}
+                      refresh={refresh}
+                    />
                   </Box>
                 </Box>
               </Grid>
-
             </Grid>
-            : (
-              <CircularProgress
-                size={48}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: -24,
-                  marginLeft: -24,
-                }}
-              />
-            )}
+          ) : (
+            <CircularProgress
+              size={48}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: -24,
+                marginLeft: -24,
+              }}
+            />
+          )}
         </Box>
       </Box>
 
-      {
-      /*
+      {/*
        * Here we must use `&& showWorkspaceEditor` so that the
        * `WorkspaceEditor` component is rendered afresh each time. If we don't
        * do this, the states in the `WorkspaceEditor` component like
        * `workspaceForm` are initialised only once with the value of
        * `workspace` prop---at the initial render---and then do not track the
        * value of the `workpace` prop.
-       */
-      }
-      {user && showWorkspaceEditor && <WorkspaceEditor title={"Create new workspace"} open={showWorkspaceEditor} workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }} onLoadWorkspace={onWorkspaceCreated} closeHandler={openDialog} filesSelected={checked.length > 0} user={user}>
-        {checked.length > 0 && <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />}
-      </WorkspaceEditor>
-      }
-      {user && <OSBDialog title="Add to existing workspace" open={showExistingWorkspaceEditor} closeAction={openExistingWorkspaceDialog} actions={<ExistingWorkspaceEditorActions disabled={!selectedWorkspace || loading} closeAction={openExistingWorkspaceDialog} onAddClick={addToExistingWorkspace} />}>
-        {checked.length > 0 &&
-          <OSBChipList chipItems={checked} onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)} />
-        }
-        <ExistingWorkspaceSelector setWorkspace={(ws: Workspace) => setWorkspace(ws)} loading={loading} />
-      </OSBDialog>}
+       */}
+      {user && showWorkspaceEditor && (
+        <WorkspaceEditor
+          title={"Create new workspace"}
+          open={showWorkspaceEditor}
+          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }}
+          onLoadWorkspace={onWorkspaceCreated}
+          closeHandler={openDialog}
+          filesSelected={checked.length > 0}
+          user={user}
+        >
+          {checked.length > 0 && (
+            <OSBChipList
+              chipItems={checked}
+              onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)}
+            />
+          )}
+        </WorkspaceEditor>
+      )}
+      {user && (
+        <OSBDialog
+          title="Add to existing workspace"
+          open={showExistingWorkspaceEditor}
+          closeAction={openExistingWorkspaceDialog}
+          actions={
+            <ExistingWorkspaceEditorActions
+              disabled={!selectedWorkspace || loading}
+              closeAction={openExistingWorkspaceDialog}
+              onAddClick={addToExistingWorkspace}
+            />
+          }
+        >
+          {checked.length > 0 && (
+            <OSBChipList
+              chipItems={checked}
+              onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)}
+            />
+          )}
+          <ExistingWorkspaceSelector
+            setWorkspace={(ws: Workspace) => setWorkspace(ws)}
+            loading={loading}
+          />
+        </OSBDialog>
+      )}
 
-      <OSBDialog title="Please login or sign up" open={showUserNotLoggedInAlert} closeAction={() => setShowUserNotLoggedInAlert(false)}>
+      <OSBDialog
+        title="Please login or sign up"
+        open={showUserNotLoggedInAlert}
+        closeAction={() => setShowUserNotLoggedInAlert(false)}
+      >
         <NewWorkspaceAskUser />
       </OSBDialog>
 
       {/* Confirm to user if workspace creation/modification was successful */}
-      {
-        showConfirmationDialog && <Dialog open={showConfirmationDialog}
-          onClose={() => setShowConfirmationDialog(false)}>
+      {showConfirmationDialog && (
+        <Dialog
+          open={showConfirmationDialog}
+          onClose={() => setShowConfirmationDialog(false)}
+        >
           <DialogTitle>{confirmationDialogTitle}</DialogTitle>
           <DialogContent>{confirmationDialogContent}</DialogContent>
           <DialogActions>
-            <Button color="primary" onClick={() => { setChecked([]); setShowConfirmationDialog(false) }}>Close</Button>
-            {workspaceLink && <Button color="primary" variant="contained">
-              <Link href={workspaceLink} target="_blank" color="secondary" underline="none">
-                Go to workspace
-              </Link>
-            </Button>}
+            <Button
+              color="primary"
+              onClick={() => {
+                setChecked([]);
+                setShowConfirmationDialog(false);
+              }}
+            >
+              Close
+            </Button>
+            {workspaceLink && (
+              <Button color="primary" variant="contained">
+                <Link
+                  href={workspaceLink}
+                  target="_blank"
+                  color="secondary"
+                  underline="none"
+                >
+                  Go to workspace
+                </Link>
+              </Button>
+            )}
           </DialogActions>
         </Dialog>
-      }
+      )}
     </>
   );
 };

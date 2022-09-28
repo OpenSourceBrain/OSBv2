@@ -6,7 +6,7 @@ import { IconButton } from "@material-ui/core";
 import * as Icons from "../icons";
 
 import { EditRepoDialog } from "./../index";
-import { canEditRepository } from '../../service/UserService';
+import { canEditRepository } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
 import { OSBRepository } from "../../apiclient/workspaces";
 
@@ -24,33 +24,36 @@ export default (props: RepositoryActionsMenuProps) => {
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleEditRepository = () => {
     setRepositoryEditorOpen(true);
     handleCloseMenu();
-  }
+  };
 
   const setDialogOpen = () => {
     setRepositoryEditorOpen(!repositoryEditorOpen);
-  }
+  };
 
   const handleOnSubmit = (r: OSBRepository) => {
     props.onAction(r);
-  }
+  };
 
   const isRenderable = canEdit || false; // for future updates
 
   return (
     <>
-      {
-        isRenderable && <><IconButton size="small" onClick={handleClick}>
-          <Icons.Dots style={{ fontSize: "1rem", transform: 'rotate(90deg)' }} />
-        </IconButton>
+      {isRenderable && (
+        <>
+          <IconButton size="small" onClick={handleClick}>
+            <Icons.Dots
+              style={{ fontSize: "1rem", transform: "rotate(90deg)" }}
+            />
+          </IconButton>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -58,12 +61,22 @@ export default (props: RepositoryActionsMenuProps) => {
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}
           >
-            {canEdit && <MenuItem onClick={handleEditRepository}>Edit</MenuItem>}
+            {canEdit && (
+              <MenuItem onClick={handleEditRepository}>Edit</MenuItem>
+            )}
           </Menu>
-          {repositoryEditorOpen && <EditRepoDialog user={props.user} title="Edit repository" dialogOpen={repositoryEditorOpen} setDialogOpen={setDialogOpen}
-            onSubmit={handleOnSubmit} repository={props.repository} />}
+          {repositoryEditorOpen && (
+            <EditRepoDialog
+              user={props.user}
+              title="Edit repository"
+              dialogOpen={repositoryEditorOpen}
+              setDialogOpen={setDialogOpen}
+              onSubmit={handleOnSubmit}
+              repository={props.repository}
+            />
+          )}
         </>
-      }
+      )}
     </>
-  )
-}
+  );
+};

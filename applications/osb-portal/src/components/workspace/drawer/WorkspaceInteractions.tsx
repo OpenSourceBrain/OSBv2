@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
@@ -17,38 +17,41 @@ import ExpansionPanel from "@material-ui/core/Accordion";
 import ExpansionPanelSummary from "@material-ui/core/AccordionSummary";
 import ExpansionPanelDetails from "@material-ui/core/AccordionDetails";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 import Link from "@material-ui/core/Link";
-import Chip from '@material-ui/core/Chip';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem'
+import Chip from "@material-ui/core/Chip";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 import VolumePathBrowser from "./VolumePathBrowser";
 import { ShareIcon } from "../../icons";
-import { ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
+import {
+  ResourceStatus,
+  Workspace,
+  WorkspaceResource,
+} from "../../../types/workspace";
 import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
-import { canEditWorkspace } from '../../../service/UserService';
+import { canEditWorkspace } from "../../../service/UserService";
 import { primaryColor } from "../../../theme";
 import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
 import { UserInfo } from "../../../types/user";
-
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
     maxWidth: 400,
   },
   expansionPanel: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     "& .MuiCollapse-container": {
-      height: '100%',
+      height: "100%",
       "& .MuiCollapse-wrapper": {
-        height: 'inherit',
+        height: "inherit",
         "& .MuiCollapse-wrapperInner": {
-          height: 'inherit',
+          height: "inherit",
           "& div[role=region]": {
-            height: 'inherit',
+            height: "inherit",
           },
         },
       },
@@ -87,21 +90,21 @@ const useStyles = makeStyles((theme) => ({
     textOrientation: "mixed",
     transform: "rotate(-180deg)",
     margin: "auto",
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   rotate180: {
     transform: "rotate(-180deg)",
   },
   treePadding: {
-    paddingLeft: theme.spacing(2)
+    paddingLeft: theme.spacing(2),
   },
   workspaceName: {
     color: primaryColor,
     fontWeight: 700,
   },
   dialogTitle: {
-    fontWeight: 'normal',
+    fontWeight: "normal",
   },
 }));
 
@@ -109,16 +112,13 @@ interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
   refreshWorkspace?: () => void;
-  updateWorkspace: (ws: Workspace) => null,
-  deleteWorkspace: (wsId: number) => null,
-  user: UserInfo,
+  updateWorkspace: (ws: Workspace) => null;
+  deleteWorkspace: (wsId: number) => null;
+  user: UserInfo;
   [propName: string]: any;
-  openResource: (r: WorkspaceResource) => any
+  openResource: (r: WorkspaceResource) => any;
   refreshWorkspacePage?: () => void;
 }
-
-
-
 
 export default (props: WorkspaceProps | any) => {
   const { workspace } = props;
@@ -132,31 +132,32 @@ export default (props: WorkspaceProps | any) => {
 
   const showAddResource = () => {
     setAddResourceOpen(true);
-  }
+  };
 
   const setAddResourceClosed = () => {
     setAddResourceOpen(false);
-  }
+  };
 
   const handleWorkspaceRefresh = () => {
     props.refreshWorkspace(workspace.id);
     if ("refreshWorkspacePage" in props) {
       props.refreshWorkspacePage();
     }
-  }
+  };
 
   const handleResourceAdded = () => {
     setAddResourceOpen(false);
-    handleWorkspaceRefresh()
-  }
-
-  const [expanded, setExpanded] = React.useState<string | false>('workspace');
-
-  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    if (!anchorEl) {
-      setExpanded(newExpanded ? panel : false);
-    }
+    handleWorkspaceRefresh();
   };
+
+  const [expanded, setExpanded] = React.useState<string | false>("workspace");
+
+  const handleChange =
+    (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
+      if (!anchorEl) {
+        setExpanded(newExpanded ? panel : false);
+      }
+    };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -170,120 +171,184 @@ export default (props: WorkspaceProps | any) => {
   const handlePublicWorkspace = () => {
     props.updateWorkspace({ ...workspace, publicable: true });
     handleShareClose();
-  }
+  };
 
   const handlePrivateWorkspace = () => {
     props.updateWorkspace({ ...workspace, publicable: false });
     handleShareClose();
-  }
-
+  };
 
   const dialogTitle = (
     <>
       <span className={classes.dialogTitle}>
-        Add resources to<span className={classes.workspaceName}> Workspace {workspace.name}</span>
+        Add resources to
+        <span className={classes.workspaceName}>
+          {" "}
+          Workspace {workspace.name}
+        </span>
       </span>
     </>
-  )
+  );
 
   const deleteWorkspace = (wid: number) => {
-
     props.deleteWorkspace(wid);
-    history.push("/")
-  }
+    history.push("/");
+  };
 
-  return (<>
-
-    {props.open ? (
-      <>
-        <ExpansionPanel className={`${classes.expansionPanel} verticalFill`} elevation={0} expanded={expanded === 'workspace' || true} onChange={handleChange('workspace')}>
-          <ExpansionPanelSummary
-          // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
+  return (
+    <>
+      {props.open ? (
+        <>
+          <ExpansionPanel
+            className={`${classes.expansionPanel} verticalFill`}
+            elevation={0}
+            expanded={expanded === "workspace" || true}
+            onChange={handleChange("workspace")}
           >
-            {
-            // TODO: when cloning workspaces has been implemented, update tooltip to tell users they can clone workspace to make modifications */
-            }
-            <Typography
-              variant="h4"
-              className={classes.flexCenter}>
-              {workspace.name}<Tooltip interactive={true} style={{ marginLeft: '0.3em' }} title={
-                <>Resources are special files that can be opened with applications supported by Open Source Brain. To see all your files, and upload non-resource files, please open the workspace in the JupyterLab application. <Link href="https://docs.opensourcebrain.org/OSBv2/Workspaces.html" target="_blank">Learn more...</Link></>}>
-                <InfoOutlinedIcon fontSize="small"/>
-              </Tooltip>
-              {!canEdit && <Tooltip style={{ marginLeft: '0.3em' }} title="You do not have permissions to modify this workspace."><ReadOnlyIcon fontSize="small" /></Tooltip>}
-            </Typography>
-
-            <Box p={2}>
-              <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} isWorkspaceOpen={true}/>
-            </Box>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted={true}
-              open={Boolean(anchorEl)}
-              onClose={handleShareClose}
-            >
-              {props.user && !workspace.publicable && <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>}
-              {props.user && workspace.publicable && <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>}
-            </Menu>
-          </ExpansionPanelSummary>
-
-          <ExpansionPanelDetails className="verticalFit">
-            <Divider />
-            {canEdit && <ListItem button={true} onClick={showAddResource} className={classes.treePadding}>
-              <ListItemIcon style={{ paddingLeft: 0 }}>
-                <AddIcon style={{ fontSize: "1.3rem" }} />
-              </ListItemIcon>
-              <ListItemText primary={"Add resource"} />
-            </ListItem>}
-            <Divider />
-            <WorkspaceResourceBrowser
-              workspace={workspace}
-              refreshWorkspace={handleWorkspaceRefresh}
-              openResource={props.openResource}
-            />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        {false && // TODO user shared space back when available
-          <ExpansionPanel elevation={0}>
             <ExpansionPanelSummary
-              expandIcon={<ArrowUpIcon />}
+            // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
             >
-              <Typography variant="h4" className={classes.flexCenter}>User shared space</Typography>
+              {
+                // TODO: when cloning workspaces has been implemented, update tooltip to tell users they can clone workspace to make modifications */
+              }
+              <Typography variant="h4" className={classes.flexCenter}>
+                {workspace.name}
+                <Tooltip
+                  interactive={true}
+                  style={{ marginLeft: "0.3em" }}
+                  title={
+                    <>
+                      Resources are special files that can be opened with
+                      applications supported by Open Source Brain. To see all
+                      your files, and upload non-resource files, please open the
+                      workspace in the JupyterLab application.{" "}
+                      <Link
+                        href="https://docs.opensourcebrain.org/OSBv2/Workspaces.html"
+                        target="_blank"
+                      >
+                        Learn more...
+                      </Link>
+                    </>
+                  }
+                >
+                  <InfoOutlinedIcon fontSize="small" />
+                </Tooltip>
+                {!canEdit && (
+                  <Tooltip
+                    style={{ marginLeft: "0.3em" }}
+                    title="You do not have permissions to modify this workspace."
+                  >
+                    <ReadOnlyIcon fontSize="small" />
+                  </Tooltip>
+                )}
+              </Typography>
+
+              <Box p={2}>
+                <WorkspaceActionsMenu
+                  workspace={workspace}
+                  user={props.user}
+                  updateWorkspace={props.updateWorkspace}
+                  deleteWorkspace={deleteWorkspace}
+                  refreshWorkspaces={handleWorkspaceRefresh}
+                  isWorkspaceOpen={true}
+                />
+              </Box>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted={true}
+                open={Boolean(anchorEl)}
+                onClose={handleShareClose}
+              >
+                {props.user && !workspace.publicable && (
+                  <MenuItem onClick={handlePublicWorkspace}>
+                    Make public
+                  </MenuItem>
+                )}
+                {props.user && workspace.publicable && (
+                  <MenuItem onClick={handlePrivateWorkspace}>
+                    Make private
+                  </MenuItem>
+                )}
+              </Menu>
             </ExpansionPanelSummary>
 
-            <ExpansionPanelDetails>
-              <VolumePathBrowser
-                volumeId={null/* TODO get from logged user */}
-                path="/"
+            <ExpansionPanelDetails className="verticalFit">
+              <Divider />
+              {canEdit && (
+                <ListItem
+                  button={true}
+                  onClick={showAddResource}
+                  className={classes.treePadding}
+                >
+                  <ListItemIcon style={{ paddingLeft: 0 }}>
+                    <AddIcon style={{ fontSize: "1.3rem" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"Add resource"} />
+                </ListItem>
+              )}
+              <Divider />
+              <WorkspaceResourceBrowser
+                workspace={workspace}
+                refreshWorkspace={handleWorkspaceRefresh}
+                openResource={props.openResource}
               />
             </ExpansionPanelDetails>
           </ExpansionPanel>
-        }
+          {false && ( // TODO user shared space back when available
+            <ExpansionPanel elevation={0}>
+              <ExpansionPanelSummary expandIcon={<ArrowUpIcon />}>
+                <Typography variant="h4" className={classes.flexCenter}>
+                  User shared space
+                </Typography>
+              </ExpansionPanelSummary>
 
-      </>) :
-      <>
-        <div className={classes.closedText}>
-          {canEdit && <IconButton onClick={showAddResource}>
-            <AddIcon style={{ fontSize: "1.3rem" }} />
-          </IconButton>}
-          {props.workspace.name}
+              <ExpansionPanelDetails>
+                <VolumePathBrowser
+                  volumeId={null /* TODO get from logged user */}
+                  path="/"
+                />
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          )}
+        </>
+      ) : (
+        <>
+          <div className={classes.closedText}>
+            {canEdit && (
+              <IconButton onClick={showAddResource}>
+                <AddIcon style={{ fontSize: "1.3rem" }} />
+              </IconButton>
+            )}
+            {props.workspace.name}
 
-          <IconButton>
-            <WorkspaceActionsMenu workspace={workspace} user={props.user} updateWorkspace={props.updateWorkspace} deleteWorkspace={props.deleteWorkspace} refreshWorkspaces={handleWorkspaceRefresh} isWorkspaceOpen={true} />
-          </IconButton>
-        </div>
-      </>
-    }
-    <OSBDialog
-      title={dialogTitle}
-      open={addResourceOpen}
-      closeAction={() => setAddResourceOpen(false)
-      }
-      maxWidth="md"
-    >
-      {canEdit && <AddResourceForm workspace={workspace} onResourceAdded={handleResourceAdded} onSubmit={setAddResourceClosed} />}
-    </OSBDialog>
-  </>);
-
+            <IconButton>
+              <WorkspaceActionsMenu
+                workspace={workspace}
+                user={props.user}
+                updateWorkspace={props.updateWorkspace}
+                deleteWorkspace={props.deleteWorkspace}
+                refreshWorkspaces={handleWorkspaceRefresh}
+                isWorkspaceOpen={true}
+              />
+            </IconButton>
+          </div>
+        </>
+      )}
+      <OSBDialog
+        title={dialogTitle}
+        open={addResourceOpen}
+        closeAction={() => setAddResourceOpen(false)}
+        maxWidth="md"
+      >
+        {canEdit && (
+          <AddResourceForm
+            workspace={workspace}
+            onResourceAdded={handleResourceAdded}
+            onSubmit={setAddResourceClosed}
+          />
+        )}
+      </OSBDialog>
+    </>
+  );
 };

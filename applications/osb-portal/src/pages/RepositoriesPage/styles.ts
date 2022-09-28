@@ -27,13 +27,13 @@ export default makeStyles((theme) => ({
       "& .MuiTabs-root": {
         height: "auto",
         marginBottom: -12,
-        fontSize: "1rem"
+        fontSize: "1rem",
       },
       "& .MuiTab-root": {
         paddingLeft: 0,
         paddingRight: 0,
         marginRight: theme.spacing(2),
-        paddingBottom: 16
+        paddingBottom: 16,
       },
       "& .MuiButton-contained": {
         [theme.breakpoints.down("sm")]: {
@@ -63,13 +63,13 @@ export default makeStyles((theme) => ({
   },
   paginationBar: {
     padding: theme.spacing(2),
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     "& .MuiPagination-root": {
       "& .MuiPagination-ul": {
         "& li": {
           "& .MuiPaginationItem-root": {
-            color: 'white',
+            color: "white",
           },
         },
       },
@@ -80,28 +80,28 @@ export default makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   filterAndSearchBox: {
-    display: 'flex',
-    '& .MuiInputBase-root': {
+    display: "flex",
+    "& .MuiInputBase-root": {
       marginRight: theme.spacing(1),
       marginLeft: theme.spacing(1),
-      height: 'fit-content',
+      height: "fit-content",
     },
     "& .MuiTextField-root": {
-      minWidth: '20vw',
+      minWidth: "20vw",
     },
   },
   filterButton: {
-    textTransform: 'capitalize',
-    '& :hover': {
-      backgroundColor: 'transparent',
+    textTransform: "capitalize",
+    "& :hover": {
+      backgroundColor: "transparent",
     },
-    minWidth: 'fit-content !important',
+    minWidth: "fit-content !important",
     backgroundColor: bgLightestShade,
-    '& .MuiButton-label': {
+    "& .MuiButton-label": {
       color: `${paragraph} !important`,
     },
-    '& .MuiTouchRipple-root:hover': {
-      backgroundColor: 'transparent',
+    "& .MuiTouchRipple-root:hover": {
+      backgroundColor: "transparent",
     },
   },
   label: {
@@ -109,23 +109,23 @@ export default makeStyles((theme) => ({
     fontWeight: 700,
   },
   popover: {
-    '& .MuiPaper-root': {
-      minWidth: '350px !important',
+    "& .MuiPaper-root": {
+      minWidth: "350px !important",
       padding: theme.spacing(3),
       "& .MuiSvgIcon-root": {
         cursor: "pointer",
       },
-      '& .MuiAutocomplete-root': {
-        display: 'flex',
-        alignItems: 'center',
+      "& .MuiAutocomplete-root": {
+        display: "flex",
+        alignItems: "center",
         paddingTop: 0,
         paddingBottom: 0,
         marginBottom: theme.spacing(1),
-        '& .MuiSvgIcon-root': {
+        "& .MuiSvgIcon-root": {
           marginLeft: theme.spacing(1),
           color: paragraph,
         },
-        '& .MuiInputBase-root': {
+        "& .MuiInputBase-root": {
           paddingLeft: 0,
         },
       },

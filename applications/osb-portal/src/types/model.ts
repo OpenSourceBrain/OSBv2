@@ -1,5 +1,5 @@
-import { FeaturedType } from './global'
-import { Workspace } from './workspace';
+import { FeaturedType } from "./global";
+import { Workspace } from "./workspace";
 
 // Model object
 export interface Model {
@@ -11,7 +11,7 @@ export interface Model {
 }
 
 export interface Page<T> {
-  items: T[],
-  totalPages: number,
-  total: number,
+  items: T[];
+  totalPages: number;
+  total: number;
 }

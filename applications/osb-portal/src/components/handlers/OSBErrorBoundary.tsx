@@ -1,11 +1,11 @@
-import React from 'react';
-import * as Sentry from '@sentry/react';
-import Alert from '@material-ui/lab/Alert';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import * as Sentry from "@sentry/react";
+import Alert from "@material-ui/lab/Alert";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 
 interface OwnState {
   eventId: string;
@@ -15,18 +15,21 @@ interface OwnState {
 
 const ERROR_MESSAGES: any = {
   // 401
-  "UNAUTHORIZED": "Oops. This resource could not be accessed. Please check that you are logged in and have the necessary permissions to access this content.",
+  UNAUTHORIZED:
+    "Oops. This resource could not be accessed. Please check that you are logged in and have the necessary permissions to access this content.",
   // 403
-  "FORBIDDEN": "Oops. This resource could not be accessed. Please check that you have the necessary permissions to access this content.",
+  FORBIDDEN:
+    "Oops. This resource could not be accessed. Please check that you have the necessary permissions to access this content.",
   // 404
-  "NOT FOUND": "Oops. This resource could not be found. Please check the URL you are trying to access and try again.",
-}
+  "NOT FOUND":
+    "Oops. This resource could not be found. Please check the URL you are trying to access and try again.",
+};
 
 class OSBErrorBoundary extends React.Component<{}, OwnState> {
   public state: OwnState = {
     eventId: null,
     hasError: null,
-    message: null
+    message: null,
   };
 
   constructor(props: any) {
@@ -41,7 +44,8 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
     Sentry.withScope((scope: any) => {
       scope.setExtras(errorInfo);
 
-      let message = "Oops. Something went wrong. Please report this error to us.";
+      let message =
+        "Oops. Something went wrong. Please report this error to us.";
       if (error.status && error.status < 500) {
         message = ERROR_MESSAGES[error.statusText] || error.statusText;
       } else {
@@ -51,25 +55,42 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
     });
   }
 
-
-
   render() {
     if (this.state.hasError) {
       // render fallback UI
       return (
         <>
           <Dialog open={true}>
-            <DialogTitle  id="alert-dialog-title" title="Error" />
+            <DialogTitle id="alert-dialog-title" title="Error" />
             <DialogContent>
-            <Alert severity="error" key={1}><div className="errorAlertDiv" key={"div-1"} >{this.state.message}</div></Alert>
+              <Alert severity="error" key={1}>
+                <div className="errorAlertDiv" key={"div-1"}>
+                  {this.state.message}
+                </div>
+              </Alert>
             </DialogContent>
             <DialogActions>
-              <Button href="https://status.opensourcebrain.org/" target="_blank">Check system status</Button>
-              <Button href="https://github.com/OpenSourceBrain/OSBv2/issues/new" target="_blank">Report error</Button>
-              <Button variant="outlined" color="primary" onClick={() => window.open("/", "_self")}>Return to homepage</Button>
+              <Button
+                href="https://status.opensourcebrain.org/"
+                target="_blank"
+              >
+                Check system status
+              </Button>
+              <Button
+                href="https://github.com/OpenSourceBrain/OSBv2/issues/new"
+                target="_blank"
+              >
+                Report error
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => window.open("/", "_self")}
+              >
+                Return to homepage
+              </Button>
             </DialogActions>
           </Dialog>
-
         </>
       );
     }
@@ -79,4 +100,4 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
   }
 }
 
-export default OSBErrorBoundary
+export default OSBErrorBoundary;
