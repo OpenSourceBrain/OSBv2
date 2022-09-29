@@ -1,6 +1,7 @@
 FROM node:15 as clone
 ENV BRANCH_TAG="osb2"
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
+RUN echo "cache 2022-09-30"
 RUN git clone $REPO -b $BRANCH_TAG
 RUN rm -Rf .git
 
@@ -8,7 +9,7 @@ FROM node:15 as jsbuild
 
 
 ENV FOLDER=nwb-explorer
-RUN echo "cache 2022-08-26"
+
 
 
 WORKDIR $FOLDER/webapp

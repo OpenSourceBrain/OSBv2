@@ -25,6 +25,7 @@ import {
   Workspace,
   WorkspaceResource,
   OSBApplications,
+  OSBApplication,
 } from "../types/workspace";
 import OSBDialog from "../components/common/OSBDialog";
 import { WorkspaceEditor, WorkspaceInteractions } from "../components";
@@ -149,28 +150,14 @@ export const WorkspacePage = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const workspace = props.workspace;
+  const workspace: Workspace = props.workspace;
   const user = props.user;
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [refresh, setRefresh] = React.useState(true);
   const [error, setError] = React.useState<any>(null);
-  let options;
 
-  const PREFIX_TEXT = "Open with ";
   if (!workspace) {
     props.selectWorkspace(workspaceId);
-  } else {
-    const apps = workspace
-      ? workspace.lastOpen?.type?.application?.name
-        ? [PREFIX_TEXT + workspace.lastOpen.type.application.name]
-        : []
-      : null;
-    for (const app of Object.keys(OSBApplications)) {
-      if (!apps.includes(PREFIX_TEXT + OSBApplications[app].name)) {
-        apps.push(PREFIX_TEXT + OSBApplications[app].name);
-      }
-    }
-    options = apps;
   }
 
   if (error) {
@@ -182,17 +169,13 @@ export const WorkspacePage = (props: any) => {
   };
 
   const handleResourceClick = (resource: WorkspaceResource) => {
-    openWithApp(resource.type.application.name);
+    openWithApp(resource.type.application);
   };
 
   // open application that is default for selected resource,
   // or option selected from app selection drop down
-  const openWithApp = (selectedOption: string) => {
-    for (const app of Object.keys(OSBApplications)) {
-      if ((PREFIX_TEXT + OSBApplications[app].name).includes(selectedOption)) {
-        history.push(`/workspace/open/${workspaceId}/${app}`);
-      }
-    }
+  const openWithApp = (selectedOption: OSBApplication) => {
+    history.push(`/workspace/open/${workspaceId}/${selectedOption.code}`);
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
@@ -235,7 +218,10 @@ export const WorkspacePage = (props: any) => {
                       Edit
                     </Button>
                   )}
-                  <OSBSplitButton options={options} handleClick={openWithApp} />
+                  <OSBSplitButton
+                    defaultSelected={workspace.defaultApplication}
+                    handleClick={openWithApp}
+                  />
                 </Box>
               </Box>
               {/*

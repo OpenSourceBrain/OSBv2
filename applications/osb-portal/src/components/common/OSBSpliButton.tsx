@@ -9,23 +9,28 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
+import { OSBApplication, OSBApplications } from "../../types/workspace";
 
 interface OSBSplitButtonProps {
-  options: string[];
-  handleClick: (selectedItem: string) => void;
+  defaultSelected: OSBApplication;
+  handleClick: (selectedItem: OSBApplication) => void;
 }
 
 export const OSBSplitButton = (props: OSBSplitButtonProps) => {
   const [open, setOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selected, setSelected] = useState(
+    props.defaultSelected ?? OSBApplications.jupyter
+  );
   const anchorRef = useRef(null);
 
+  const options = Object.values(OSBApplications);
+
   const handleItemClick = () => {
-    props.handleClick(props.options[selectedIndex]);
+    props.handleClick(OSBApplications[selected.code]);
   };
 
-  const handleMenuItemClick = (index: number) => {
-    setSelectedIndex(index);
+  const handleMenuItemClick = (app: OSBApplication) => {
+    setSelected(app);
     setOpen(false);
   };
 
@@ -49,9 +54,7 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
           ref={anchorRef}
           aria-label="split button"
         >
-          <Button onClick={handleItemClick}>
-            {props.options[selectedIndex]}
-          </Button>
+          <Button onClick={handleItemClick}>Open with {selected.name}</Button>
           <Button
             color="primary"
             aria-controls={open ? "split-button-menu" : undefined}
@@ -81,12 +84,12 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList id="split-button-menu">
-                    {props.options.map((option: string, index: number) => (
+                    {options.map((option: OSBApplication, index: number) => (
                       <MenuItem
-                        key={option}
-                        selected={index === selectedIndex}
+                        key={option.subdomain}
+                        selected={option === selected}
                         onClick={() => {
-                          handleMenuItemClick(index);
+                          handleMenuItemClick(option);
                         }}
                       >
                         {option}

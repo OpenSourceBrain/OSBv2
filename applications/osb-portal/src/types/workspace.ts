@@ -10,6 +10,7 @@ import { UserInfo } from "./user";
 export interface OSBApplication {
   name: string;
   subdomain: string;
+  code: string;
 }
 
 export enum ResourceStatus {
@@ -35,9 +36,9 @@ export interface ResourceType {
 }
 
 export const OSBApplications: { [id: string]: OSBApplication } = {
-  jupyter: { name: "JupyterLab", subdomain: "notebooks" },
-  nwbexplorer: { name: "NWB Explorer", subdomain: "nwbexplorer" },
-  netpyne: { name: "NetPyNE", subdomain: "netpyne" },
+  jupyter: { name: "JupyterLab", subdomain: "notebooks", code: "jupyter" },
+  nwbexplorer: { name: "NWB Explorer", subdomain: "nwbexplorer", code: "nwbexplorer" },
+  netpyne: { name: "NetPyNE", subdomain: "netpyne", code: "netpyne" },
 };
 
 export const SampleResourceTypes = {
@@ -74,4 +75,5 @@ export interface Workspace {
   owner?: UserInfo;
   tags?: Tag[];
   [other: string]: any;
+  defaultApplication?: OSBApplication
 }

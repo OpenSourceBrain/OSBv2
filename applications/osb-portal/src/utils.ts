@@ -1,3 +1,5 @@
+import { OSBApplication } from "./types/workspace";
+
 declare var window: any;
 
 export function formatDate(date: Date) {
@@ -8,11 +10,19 @@ export function formatDate(date: Date) {
 }
 
 export function getBaseDomain() {
-  if (window.process && window.process?.env?.DOMAIN) {
+  if (window.APP_DOMAIN) {
     // Dev
-    return window.process.env.DOMAIN;
+    return window.APP_DOMAIN;
   }
   return window.location.host.includes("www.")
     ? window.location.host.split(".").slice(1).join(".")
     : window.location.host; // remove the first part of the hostname
+}
+
+export function getApplicationDomain(app: OSBApplication) {
+  if (window.APP_DOMAIN) {
+    // Dev
+    return window.APP_DOMAIN;
+  }
+  return `${app.subdomain}.${getBaseDomain()}`
 }

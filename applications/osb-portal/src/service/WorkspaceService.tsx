@@ -262,6 +262,11 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
       ? FeaturedType.Public
       : FeaturedType.Private,
     volume: "1",
+    defaultApplication: lastOpen
+      ? lastOpen.type.application
+      : resources
+      ? resources[0]?.type?.application
+      : OSBApplications.jupyter,
   };
 }
 

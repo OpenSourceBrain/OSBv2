@@ -8,14 +8,12 @@ parserOptions:
   ecmaFeatures:
     jsx: true
 plugins:
-  - jest
   - react
   - react-hooks
 settings:
   react:
     version: detect
 env:
-  jest/globals: true
   browser: true
   es6: true
   node: true
@@ -27,8 +25,6 @@ rules:
     - 2
     - allowNamedFunctions: false
       allowUnboundThis: false
-  jest/no-disabled-tests: 2
-  jest/no-focused-tests: 2
   react/prop-types: 0
   react/forbid-prop-types: 0
   react/no-unused-prop-types: 0
