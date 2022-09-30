@@ -114,13 +114,14 @@ const useStyles = makeStyles((theme: any) => ({
     },
     "& .inner-description": {
       maxWidth: 850,
+      minWidth: "50vw",
+      flex: 1,
     },
     "& hr": {
       marginTop: theme.spacing(4),
       marginBottom: theme.spacing(4),
     },
     "& .MuiTypography-root": {
-      textAlign: "center",
       marginBottom: theme.spacing(1),
 
       [theme.breakpoints.down("xs")]: {
