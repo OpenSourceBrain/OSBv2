@@ -52,7 +52,8 @@ const OSBTreeItem = (props: {
     openResource,
     lastOpenResourceId,
   } = props;
-  const canOpenFile: boolean = resource.status === ResourceStatus.available;
+  const canOpenFile: boolean =
+    resource.status === ResourceStatus.available && !active;
   const [waiting, setWaiting] = React.useState(
     resource.status === ResourceStatus.pending
   );
