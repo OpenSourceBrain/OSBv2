@@ -91,6 +91,7 @@ export const WorkspaceFrame = (props: {
         `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`
       );
     }
+    openResource();
   }, [currentResource]);
 
   const getResourceToOpen = () => {
