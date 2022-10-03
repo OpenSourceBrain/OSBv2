@@ -23,6 +23,7 @@ hub:
       c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost localhost:3000 *.osb.local *.metacell.us *.opensourcebrain.org *.v2.opensourcebrain.org"}}
     spawner: >-
       c.Spawner.args = []
+  namedServerLimitPerUser: 3
 singleuser:
   storage:
     type: dynamic
