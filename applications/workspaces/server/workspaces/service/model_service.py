@@ -47,6 +47,10 @@ class NotAuthorized(Exception):
     pass
 
 
+class NotAllowed(Exception):
+    pass
+
+
 class UserService():
     def get(self, user_id):
 
@@ -131,9 +135,6 @@ class BaseModelService:
         raise NotImplementedError(
             f"Authorization not implemented for {self.__class__.__name__}")
 
-    
-
-    
 
 class WorkspaceService(BaseModelService):
     repository = WorkspaceRepository()
@@ -144,11 +145,24 @@ class WorkspaceService(BaseModelService):
     @staticmethod
     def get_pvc_name(workspace_id):
         return f"workspace-{workspace_id}"
+    
+    def check_max_num_workspaces_per_user(self, user_id=None):
+        if not user_id:
+            user_id = keycloak_user_id()
+        # check if max number of ws per user limit is reached
+        num_ws_current_user = self.repository.search(user_id=user_id).total
+        max_num_ws_current_user = Config.MAX_NUMBER_WORKSPACES_PER_USER
+        if num_ws_current_user >= max_num_ws_current_user:
+            raise NotAllowed(
+                f"Max number of {max_num_ws_current_user} workspaces " \
+                 "limit exceeded"
+            )
 
     @send_event(message_type="workspace", operation="create")
     def post(self, body):
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
+        self.check_max_num_workspaces_per_user(body['user_id'])
         for r in body.get("resources", []):
             r.update({"origin": json.dumps(r.get("origin"))})
         workspace = Workspace.from_dict(body) # Validate
@@ -168,6 +182,8 @@ class WorkspaceService(BaseModelService):
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):
+        user_id = keycloak_user_id()
+        self.check_max_num_workspaces_per_user(user_id)
         from workspaces.service.workflow import clone_workspaces_content
         workspace = self.get(workspace_id)
         if workspace is None:
@@ -177,7 +193,7 @@ class WorkspaceService(BaseModelService):
         cloned = dict(
             name=f"Clone of {workspace['name']}",
             tags=workspace['tags'],
-            user_id=keycloak_user_id(),
+            user_id=user_id,
             
             description=workspace['description'],
             publicable=False,

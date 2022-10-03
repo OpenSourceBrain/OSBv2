@@ -126,6 +126,8 @@ paths:
                 $ref: "#/components/schemas/Workspace"
         400:
           description: The Workspace already exists.
+        405:
+          description: Not allowed to create a new workspace
   /workspace/{id}:
     parameters:
       - in: path

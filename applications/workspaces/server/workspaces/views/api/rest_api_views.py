@@ -2,6 +2,7 @@ import workspaces.service.osbrepository as repository_service
 
 from workspaces.service.model_service import (
     NotAuthorized,
+    NotAllowed,
     OsbrepositoryService,
     VolumestorageService,
     WorkspaceService,
@@ -15,6 +16,12 @@ from workspaces.views.base_model_view import BaseModelView
 
 class WorkspaceView(BaseModelView):
     service = WorkspaceService()
+    
+    def post(self, body):
+        try:
+            super().post(body)
+        except NotAllowed:
+            return "Not allowed", 405
 
 
 class OsbrepositoryView(BaseModelView):
