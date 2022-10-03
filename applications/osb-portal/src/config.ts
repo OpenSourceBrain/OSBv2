@@ -1,4 +1,3 @@
-
 export const CONFIGURATION = {
-    "appName": "osb-portal"
+  appName: "osb-portal",
 };

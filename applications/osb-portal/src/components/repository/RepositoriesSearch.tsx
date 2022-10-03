@@ -38,11 +38,7 @@ interface RepositoriesSearchProps {
 }
 
 export default (props: RepositoriesSearchProps) => {
-
   const classes = useStyles();
-
-
-
 
   return (
     <TextField
@@ -50,8 +46,9 @@ export default (props: RepositoriesSearchProps) => {
       fullWidth={true}
       placeholder="Search"
       className={classes.textField}
-      onChange={(e) => { props.filterChanged(e.target.value.toLowerCase()); }}
-
+      onChange={(e) => {
+        props.filterChanged(e.target.value.toLowerCase());
+      }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -61,4 +58,4 @@ export default (props: RepositoriesSearchProps) => {
       }}
     />
   );
-}
+};

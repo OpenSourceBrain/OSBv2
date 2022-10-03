@@ -254,7 +254,7 @@ export default (props: WorkspaceEditProps) => {
               Cancel
             </Button>
             <Button
-              id='create-a-new-workspace-button'
+              id="create-a-new-workspace-button"
               className={classes.actionButton}
               variant="contained"
               color="primary"

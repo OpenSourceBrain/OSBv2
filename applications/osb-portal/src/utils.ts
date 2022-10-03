@@ -1,10 +1,28 @@
+import { OSBApplication } from "./types/workspace";
+
+declare var window: any;
+
 export function formatDate(date: Date) {
-  return date.toLocaleDateString("en-UK", { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleDateString("en-UK", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export function getBaseDomain() {
-  if (process?.env?.DOMAIN) { // Dev
-    return process.env.DOMAIN
+  if (window.APP_DOMAIN) {
+    // Dev
+    return window.APP_DOMAIN;
   }
-  return window.location.host.includes('www.') ? window.location.host.split('.').slice(1).join('.') : window.location.host  // remove the first part of the hostname
+  return window.location.host.includes("www.")
+    ? window.location.host.split(".").slice(1).join(".")
+    : window.location.host; // remove the first part of the hostname
+}
+
+export function getApplicationDomain(app: OSBApplication) {
+  if (window.APP_DOMAIN) {
+    // Dev
+    return window.APP_DOMAIN;
+  }
+  return `${app.subdomain}.${getBaseDomain()}`
 }

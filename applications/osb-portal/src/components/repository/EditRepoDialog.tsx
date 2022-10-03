@@ -8,8 +8,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ClearIcon from "@material-ui/icons/Clear";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
 import Chip from "@material-ui/core/Chip";
 import { Autocomplete } from "@material-ui/lab";
 
@@ -22,10 +22,9 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
-import MDEditor from 'react-markdown-editor-lite';
+import MDEditor from "react-markdown-editor-lite";
 // import style manually
-import 'react-markdown-editor-lite/lib/index.css';
-
+import "react-markdown-editor-lite/lib/index.css";
 
 import {
   bgLight,
@@ -43,7 +42,6 @@ import {
   Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -161,7 +159,7 @@ export const EditRepoDialog = ({
   repository = RepositoryService.EMPTY_REPOSITORY,
   title = "Add repository",
   user,
-  tags: tagOptions
+  tags: tagOptions,
 }: {
   dialogOpen: boolean;
   onSubmit: (r: OSBRepository) => any;
@@ -169,7 +167,7 @@ export const EditRepoDialog = ({
   repository?: OSBRepository;
   title: string;
   user: UserInfo;
-  tags: Tag[]
+  tags: Tag[];
 }) => {
   const classes = useStyles();
   const [formValues, setFormValues] = useState({
@@ -183,39 +181,40 @@ export const EditRepoDialog = ({
   const [uri, setUri] = useState<string>(repository?.uri);
 
   const [error, setError] = useState({
-    uri: '',
-    defaultContext: '',
-    contentTypesList: '',
-    name: '',
+    uri: "",
+    defaultContext: "",
+    contentTypesList: "",
+    name: "",
   });
 
   const setRepositoryTags = (tags: string[]) => {
     const arrayOfTags: Tag[] = [];
-    tags.forEach(tag => arrayOfTags.push({ tag }));
+    tags.forEach((tag) => arrayOfTags.push({ tag }));
     setFormValues({ ...formValues, tags: arrayOfTags });
   };
 
   React.useEffect(() => {
     setFormValues({ ...repository, userId: user.id });
-    const repositoryTags: string[] = repository && repository.tags ? repository.tags.map((tagObject) => tagObject.tag) : [];
+    const repositoryTags: string[] =
+      repository && repository.tags
+        ? repository.tags.map((tagObject) => tagObject.tag)
+        : [];
     setRepositoryTags(repositoryTags);
   }, [repository]);
 
   React.useEffect(() => {
     if (uri) {
-      RepositoryService.getRepositoryContext(uri, formValues.repositoryType).then(
+      RepositoryService.getRepositoryContext(
+        uri,
+        formValues.repositoryType
+      ).then(
         (ctxs) => {
           setContexts(ctxs);
         },
         () => setError({ ...error, uri: "Invalid url" })
-      )
+      );
     }
-
   }, [uri]);
-
-
-
-
 
   const handleClose = () => {
     setDialogOpen(false);
@@ -231,41 +230,49 @@ export const EditRepoDialog = ({
   const handleInputUri = (event: any) => {
     const value = event?.target?.value || event.text;
     setUri(value);
-    setError({ ...error, uri: null })
-    handleInput(event, 'uri');
-
-
-  }
+    setError({ ...error, uri: null });
+    handleInput(event, "uri");
+  };
 
   const handleInputContext = (event: any) => {
     const value = event?.target?.value || event.text;
     if (uri) {
-      RepositoryService.getRepositoryKeywords(uri, formValues.repositoryType, value).then(
+      RepositoryService.getRepositoryKeywords(
+        uri,
+        formValues.repositoryType,
+        value
+      ).then(
         (tags) => {
           /* state updates are asynchronous: can use setRepositoryTags but then
            * we need to tweak it to also set context in the same state update
            * to prevent inconsistencies and overwriting */
           const arrayOfTags: Tag[] = [];
-          tags.forEach(tag => arrayOfTags.push({ tag }));
+          tags.forEach((tag) => arrayOfTags.push({ tag }));
           /* fetch other information if required, and update the state all at once */
-          setFormValues({ ...formValues, tags: arrayOfTags, defaultContext: value });
-
+          setFormValues({
+            ...formValues,
+            tags: arrayOfTags,
+            defaultContext: value,
+          });
         },
         () => setError({ ...error, uri: "Could not get tags" })
-      )
-
+      );
     }
-  }
+  };
 
   const addOrUpdateRepository = () => {
-    console.log('original repository', repository);
+    console.log("original repository", repository);
     const errors = {
-      name: !formValues.name ? 'Name must be set' : '',
-      uri: !formValues.uri ? 'URL must be set' : '',
-      defaultContext: !formValues.defaultContext ? 'Please select one value from the list' : '',
+      name: !formValues.name ? "Name must be set" : "",
+      uri: !formValues.uri ? "URL must be set" : "",
+      defaultContext: !formValues.defaultContext
+        ? "Please select one value from the list"
+        : "",
       contentTypesList:
         Boolean(formValues.contentTypesList) &&
-          formValues.contentTypesList.length === 0 ? 'Please select at least one value' : '',
+        formValues.contentTypesList.length === 0
+          ? "Please select at least one value"
+          : "",
     };
     setError(errors);
     if (!Object.values(errors).find((e) => e)) {
@@ -277,37 +284,45 @@ export const EditRepoDialog = ({
             handleClose();
             const obj: any = r;
             // Computed fields are not updated: remove so that the repo can be merged by the caller
-            Object.keys(r).forEach(key => obj[key] === undefined ? delete obj[key] : {});
+            Object.keys(r).forEach((key) =>
+              obj[key] === undefined ? delete obj[key] : {}
+            );
             onSubmit(r);
           },
           (e) => {
             setLoading(false);
-            e.json().then((m: any) => console.error(m))
+            e.json().then((m: any) => console.error(m));
             throw new Error("Error submitting the repository");
           }
         );
-      }
-      else {
+      } else {
         const putRequestRepository: OSBRepository = {
           ...formValues,
-          user: undefined
+          user: undefined,
         };
-        console.log('sending this repository', putRequestRepository);
-        RepositoryService.updateRepository(putRequestRepository).then((r: OSBRepository) => {
-          setLoading(false);
-          setDialogOpen(false);
-          const obj: any = r;
-          // Computed fields are not updated: remove so that the repo can be merged by the caller
-          Object.keys(r).forEach(key => obj[key] === undefined ? delete obj[key] : {});
-          onSubmit(r);
-        }, (e) => {
-          setLoading(false);
-          e.json().then((m: any) => console.error(m.description, m.trace))
-        }).catch((e) => {
-          console.error(e)
-          setLoading(false);
-          throw new Error("Error updating the repository");
-        })
+        console.log("sending this repository", putRequestRepository);
+        RepositoryService.updateRepository(putRequestRepository)
+          .then(
+            (r: OSBRepository) => {
+              setLoading(false);
+              setDialogOpen(false);
+              const obj: any = r;
+              // Computed fields are not updated: remove so that the repo can be merged by the caller
+              Object.keys(r).forEach((key) =>
+                obj[key] === undefined ? delete obj[key] : {}
+              );
+              onSubmit(r);
+            },
+            (e) => {
+              setLoading(false);
+              e.json().then((m: any) => console.error(m.description, m.trace));
+            }
+          )
+          .catch((e) => {
+            console.error(e);
+            setLoading(false);
+            throw new Error("Error updating the repository");
+          });
       }
     }
   };
@@ -332,7 +347,7 @@ export const EditRepoDialog = ({
           <Box className="wrap">
             <FormControl variant="outlined">
               <Select
-                className='repository-source-input-element'
+                className="repository-source-input-element"
                 value={formValues.repositoryType}
                 onChange={(e) => handleInput(e, "repositoryType")}
                 IconComponent={KeyboardArrowDownIcon}
@@ -346,7 +361,7 @@ export const EditRepoDialog = ({
             </FormControl>
 
             <TextField
-              className='repository-url-input-element'
+              className="repository-url-input-element"
               fullWidth={true}
               placeholder="Repository URL"
               variant="outlined"
@@ -354,62 +369,81 @@ export const EditRepoDialog = ({
               onChange={handleInputUri}
               value={formValues.uri}
             />
-
           </Box>
-          <FormHelperText error={Boolean(error.uri)}>{error.uri}</FormHelperText>
+          <FormHelperText error={Boolean(error.uri)}>
+            {error.uri}
+          </FormHelperText>
         </Box>
         <Box className="form-group">
           <Typography component="label">Name</Typography>
           <TextField
-            className='repository-name-input-element'
+            className="repository-name-input-element"
             fullWidth={true}
             variant="outlined"
             error={Boolean(error.name)}
             onChange={(e) => handleInput(e, "name")}
             value={formValues.name}
           />
-          <FormHelperText error={Boolean(error.name)}>{error.name}</FormHelperText>
+          <FormHelperText error={Boolean(error.name)}>
+            {error.name}
+          </FormHelperText>
         </Box>
-        {contexts && <Box className="form-group">
-
-          <Typography component="label">Default Branch/Version</Typography>
-          <FormControl variant="outlined" fullWidth={true} error={Boolean(error.defaultContext)}>
-            <Select
-              value={formValues.defaultContext}
-              defaultValue={'main'}
-              onChange={(e) => handleInputContext(e)}
-              IconComponent={KeyboardArrowDownIcon}
-
+        {contexts && (
+          <Box className="form-group">
+            <Typography component="label">Default Branch/Version</Typography>
+            <FormControl
+              variant="outlined"
+              fullWidth={true}
+              error={Boolean(error.defaultContext)}
             >
-              {
-                contexts.map((c) => <MenuItem key={c} value={c}>
-                  {c}
-                </MenuItem>
-                )
-              }
-            </Select>
-            <FormHelperText>{error.defaultContext}</FormHelperText>
-          </FormControl>
-        </Box>
-        }
+              <Select
+                value={formValues.defaultContext}
+                defaultValue={"main"}
+                onChange={(e) => handleInputContext(e)}
+                IconComponent={KeyboardArrowDownIcon}
+              >
+                {contexts.map((c) => (
+                  <MenuItem key={c} value={c}>
+                    {c}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>{error.defaultContext}</FormHelperText>
+            </FormControl>
+          </Box>
+        )}
 
         <Box className="form-group">
           <Typography component="label">Type</Typography>
-          <FormControl variant="outlined" fullWidth={true} error={Boolean(error.contentTypesList)}>
+          <FormControl
+            variant="outlined"
+            fullWidth={true}
+            error={Boolean(error.contentTypesList)}
+          >
             <Select
-              className='repository-type-input-element'
+              className="repository-type-input-element"
               value={formValues.contentTypesList}
               multiple={true}
               onChange={(e) => handleInput(e, "contentTypesList")}
               IconComponent={KeyboardArrowDownIcon}
-              renderValue={(selected) => (selected as string[]).join(', ')}
+              renderValue={(selected) => (selected as string[]).join(", ")}
             >
               <MenuItem value={RepositoryContentType.Experimental}>
-                <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Experimental)} />
+                <Checkbox
+                  color="primary"
+                  checked={formValues.contentTypesList.includes(
+                    RepositoryContentType.Experimental
+                  )}
+                />
                 <ListItemText primary="Experimental Data" />
               </MenuItem>
               <MenuItem value={RepositoryContentType.Modeling}>
-                <Checkbox color="primary" checked={formValues.contentTypesList.includes(RepositoryContentType.Modeling)} />
+                <Checkbox
+                  color="primary"
+                  checked={formValues.contentTypesList.includes(
+                    RepositoryContentType.Modeling
+                  )}
+                />
                 <ListItemText primary="Modeling" />
               </MenuItem>
             </Select>
@@ -420,20 +454,33 @@ export const EditRepoDialog = ({
         <Box className="form-group">
           <Typography component="label">Tags</Typography>
           <Autocomplete
-            className='repository-tags-input-element'
+            className="repository-tags-input-element"
             multiple={true}
             freeSolo={true}
-            options={tagOptions.map(t => t.tag)}
+            options={tagOptions.map((t) => t.tag)}
             onChange={(event, value) => setRepositoryTags(value)}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+                <Chip
+                  variant="outlined"
+                  label={option}
+                  {...getTagProps({ index })}
+                  key={option}
+                />
               ))
             }
             renderInput={(params) => (
-              <TextField InputProps={{ disableUnderline: true }} fullWidth={true} {...params} variant="filled" />
+              <TextField
+                InputProps={{ disableUnderline: true }}
+                fullWidth={true}
+                {...params}
+                variant="filled"
+              />
             )}
-            value={formValues.tags && formValues.tags.map((tagObject) => tagObject.tag)}
+            value={
+              formValues.tags &&
+              formValues.tags.map((tagObject) => tagObject.tag)
+            }
           />
         </Box>
 
@@ -455,14 +502,14 @@ export const EditRepoDialog = ({
           Cancel
         </Button>
         <Button
-          className='repository-add-button'
+          className="repository-add-button"
           variant="contained"
           disableElevation={true}
-          disabled={Object.values(error).filter(e => e).length !== 0}
+          disabled={Object.values(error).filter((e) => e).length !== 0}
           onClick={addOrUpdateRepository}
           color="primary"
         >
-          {repository === RepositoryService.EMPTY_REPOSITORY ? 'Add' : 'Save'}
+          {repository === RepositoryService.EMPTY_REPOSITORY ? "Add" : "Save"}
         </Button>
         {loading && (
           <CircularProgress

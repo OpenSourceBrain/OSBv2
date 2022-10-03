@@ -8,5 +8,5 @@ export enum ResourceType {
   Model = "NetPyNE",
   Experiment = "NWB Explorer",
   Generic = "Jupyter Lab",
-  Folder = "Folder"
+  Folder = "Folder",
 }

@@ -4,7 +4,6 @@ import lessToJs from 'less-vars-to-js';
 
 import './css/mui.less';
 import './css/main.less';
-import { Hidden } from '@material-ui/core';
 
 // Read the less file in as string: using the raw-loader to override the default loader
 const lessFile = require('!!raw-loader!./css/variables.less').default;
@@ -53,8 +52,6 @@ const theme = {
     },
 
     h2: {
-      fontSize: '1.1rem',
-      fontWeight: 700,
       fontWeight: "bold",
       marginBottom: spacing[3],
       lineHeight: "1.25rem",
@@ -79,7 +76,6 @@ const theme = {
     },
     h6: {
       lineHeight: 1,
-      fontWeight: 400,
       color: bgInputs,
       fontSize: '0.8rem',
       marginBottom: '0.3rem',
@@ -91,7 +87,6 @@ const theme = {
       fontSize: '1rem'
     },
     subtitle2: {
-      fontWeight: 400,
       lineHeight: 1,
       fontSize: '0.9em',
       marginBottom: '0.3rem',
@@ -112,16 +107,16 @@ const theme = {
         },
         
          
-          "& .MuiChip-avatar": {
-            width: ".63rem",
-            height: ".63rem",
-            "&.MuiSvgIcon-colorPrimary": {
-              color: teal,
-            },
-            "&.MuiSvgIcon-colorSecondary": {
-              color: purple,
-            },
+        "& .MuiChip-avatar": {
+          width: ".63rem",
+          height: ".63rem",
+          "&.MuiSvgIcon-colorPrimary": {
+            color: teal,
           },
+          "&.MuiSvgIcon-colorSecondary": {
+            color: purple,
+          },
+        },
         
       },
       labelSmall: {
@@ -205,9 +200,9 @@ const theme = {
         padding: gutter / 2
       },
       containedPrimary: {
-          '&:hover': {
-            backgroundColor: primaryColor,
-          },
+        '&:hover': {
+          backgroundColor: primaryColor,
+        },
       },
     },
     MuiMenuItem: {
@@ -316,7 +311,7 @@ const theme = {
         paddingBottom: '10px',
         borderRadius: inputRadius,
         '& div:first-child': {
-            paddingBottom: '0px',
+          paddingBottom: '0px',
         },
         '& .MuiInputBase-root': {
           paddingTop: '0px !important',
