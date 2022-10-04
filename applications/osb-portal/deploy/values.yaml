@@ -33,3 +33,9 @@ harness:
       - jupyterlab
       - notifications
       - backoffice
+  test:
+    e2e:
+      enabled: true
+      smoketest: true
+      ignoreRequestErrors: false
+      ignoreConsoleErrors: false
