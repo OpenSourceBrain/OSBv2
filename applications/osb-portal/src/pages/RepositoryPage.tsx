@@ -351,8 +351,7 @@ export const RepositoryPage = (props: any) => {
     return repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0
   }
 
-  return (
-    <>
+  return (<>
       <MainMenu />
       <Box className={`${classes.root} verticalFit`}>
         <Box className="subheader" paddingX={3} justifyContent="space-between">
@@ -386,6 +385,7 @@ export const RepositoryPage = (props: any) => {
             <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({ ...repository, ...r })} />
             </Box>
           </Tooltip>
+          </Box>
 
         <Box className="main-content verticalFit">
           {repository ? (
