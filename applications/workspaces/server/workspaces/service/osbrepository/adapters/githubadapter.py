@@ -5,7 +5,7 @@ import requests
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
 
-from workspaces.models import GITRepositoryResource, RepositoryResourceNode
+from workspaces.models import GITRepositoryResource, RepositoryResourceNode, RepositoryInfo
 from .utils import add_to_tree
 
 
@@ -117,7 +117,10 @@ class GitHubAdapter:
                 "unable to get the description from github, %", str(e))
             return ""
 
-    def get_tags(self, context):
+    def get_info(self) -> RepositoryInfo:
+        return RepositoryInfo(name=self.uri.split("/")[-1], contexts=self.get_contexts(), tags=self.get_tags(), summary="")
+
+    def get_tags(self, context=None):
         """Topics/keywords"""
         tags = self.get_json(self.api_url + "topics")
         return tags["names"]

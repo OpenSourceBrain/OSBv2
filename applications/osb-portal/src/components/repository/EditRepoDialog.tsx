@@ -39,9 +39,11 @@ import RepositoryService from "../../service/RepositoryService";
 import {
   OSBRepository,
   RepositoryContentType,
+  RepositoryInfo,
   Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
+import { TagFaces } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -204,15 +206,31 @@ export const EditRepoDialog = ({
 
   React.useEffect(() => {
     if (uri) {
-      RepositoryService.getRepositoryContext(
+      setLoading(true);
+      setError({ ...error, uri: undefined });
+      RepositoryService.getRepositoryInfo(
         uri,
         formValues.repositoryType
       ).then(
-        (ctxs) => {
-          setContexts(ctxs);
+        (info: RepositoryInfo) => {
+          setContexts(info.contexts);
+          setFormValues({
+            ...formValues,
+            tags: info.tags.map((tag) => ({tag})),
+            defaultContext: info.contexts[0],
+            summary: info.summary,
+            name: info.name
+            
+          });
+          setLoading(false);
         },
-        () => setError({ ...error, uri: "Invalid url" })
+        () => {
+          setError({ ...error, uri: "Invalid url" });
+          setLoading(false);
+        }
       );
+
+      
     }
   }, [uri]);
 
@@ -236,28 +254,7 @@ export const EditRepoDialog = ({
 
   const handleInputContext = (event: any) => {
     const value = event?.target?.value || event.text;
-    if (uri) {
-      RepositoryService.getRepositoryKeywords(
-        uri,
-        formValues.repositoryType,
-        value
-      ).then(
-        (tags) => {
-          /* state updates are asynchronous: can use setRepositoryTags but then
-           * we need to tweak it to also set context in the same state update
-           * to prevent inconsistencies and overwriting */
-          const arrayOfTags: Tag[] = [];
-          tags.forEach((tag) => arrayOfTags.push({ tag }));
-          /* fetch other information if required, and update the state all at once */
-          setFormValues({
-            ...formValues,
-            tags: arrayOfTags,
-            defaultContext: value,
-          });
-        },
-        () => setError({ ...error, uri: "Could not get tags" })
-      );
-    }
+    
   };
 
   const addOrUpdateRepository = () => {
@@ -490,7 +487,8 @@ export const EditRepoDialog = ({
           </Typography>
 
           <MDEditor
-            defaultValue={repository?.summary}
+            defaultValue={formValues.summary || repository?.summary}
+            value={formValues.summary}
             onChange={(e) => handleInput(e, "summary")}
             view={{ html: false, menu: true, md: true }}
             renderHTML={(text: string) => <MarkdownViewer text={text} />}
