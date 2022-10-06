@@ -32,12 +32,12 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
-    - harness-deployment cloud-harness . -n test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+    - harness-deployment cloud-harness . -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
       -t ${{CF_BUILD_ID}} -d ${{CF_SHORT_REVISION}}.${{DOMAIN}} -r ${{REGISTRY}} -rs
       ${{REGISTRY_SECRET}} -e test -N -i osb-portal
   prepare_deployment_view:
     commands:
-    - helm template ./deployment/helm --debug -n test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+    - helm template ./deployment/helm --debug -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
     environment:
     - ACTION=auth
     - KUBE_CONTEXT=test-${{CF_BUILD_ID}}
@@ -115,22 +115,6 @@ steps:
         image_name: osb/test-e2e
         title: Test e2e
         working_directory: ./cloud-harness/test/test-e2e
-      test-api:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
-        image_name: osb/test-api
-        title: Test api
-        working_directory: ./cloud-harness/test/test-api
   build_application_images:
     type: parallel
     stage: build
@@ -468,7 +452,7 @@ steps:
     fail_fast: false
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
-    - kubectl create ns test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+    - kubectl create ns test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
   deployment:
     stage: deploy
     type: helm
@@ -477,9 +461,9 @@ steps:
     arguments:
       helm_version: 3.6.2
       chart_name: deployment/helm
-      release_name: test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+      release_name: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
       kube_context: '${{CLUSTER_NAME}}'
-      namespace: test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+      namespace: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
       chart_version: '${{CF_BUILD_ID}}'
       cmd_ps: --wait --timeout 600s
       custom_value_files:
@@ -491,7 +475,7 @@ steps:
     image: codefresh/kubectl
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
-    - kubectl config set-context --current --namespace=test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+    - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
     - kubectl -n test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}} rollout status deployment/notifications
     - kubectl -n test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts
     - kubectl -n test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}} rollout status deployment/volumemanager
@@ -557,4 +541,4 @@ hooks:
     image: codefresh/kubectl
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
-    - kubectl delete ns test-${{CF_REPO_NAME}}-${{CF_SHORT_REVISION}}
+    - kubectl delete ns test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
