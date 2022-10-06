@@ -113,20 +113,12 @@ export const WorkspaceFrame = (props: {
       const fileName: string =
         WORKSPACE_BASE_DIRECTORY +
         WorkspaceResourceService.getResourcePath(resource);
-      WorkspaceResourceService.workspacesControllerWorkspaceResourceOpen(
-        resource.id
-      )
-        .then(() => {
+      
           iFrame.contentWindow.postMessage(
             { type: "LOAD_RESOURCE", payload: fileName },
             "*"
           );
-        })
-        .catch(() => {
-          console.error(
-            "Error opening resource, openResource function failed!"
-          );
-        });
+    
     }
   };
 
