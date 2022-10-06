@@ -476,38 +476,68 @@ steps:
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
     - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/notifications
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/volumemanager
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/common
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/events
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/workflows
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/workspaces
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts-api
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/osb-portal
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/backoffice
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/notifications
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/volumemanager
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/common
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/events
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workflows
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workspaces
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts-api
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/osb-portal
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/backoffice
     - sleep 60
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/notifications
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/volumemanager
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/common
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/events
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/workflows
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/workspaces
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts-api
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/osb-portal
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/backoffice
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/notifications
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/volumemanager
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/common
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/events
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workflows
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workspaces
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts-api
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/osb-portal
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/backoffice
     - sleep 60
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/notifications
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/volumemanager
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/common
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/events
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/workflows
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/workspaces
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/accounts-api
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/osb-portal
-    - kubectl -n test-${{NAMESPACE_BASE}}-${{CF_SHORT_REVISION}} rollout status deployment/backoffice
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/notifications
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/volumemanager
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/common
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/events
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workflows
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workspaces
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts-api
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/osb-portal
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/backoffice
     - sleep 60
     hooks:
       on_fail:
