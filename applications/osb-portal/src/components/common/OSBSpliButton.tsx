@@ -92,7 +92,7 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
                           handleMenuItemClick(option);
                         }}
                       >
-                        {option.name}
+                        Open with {option.name}
                       </MenuItem>
                     ))}
                   </MenuList>
