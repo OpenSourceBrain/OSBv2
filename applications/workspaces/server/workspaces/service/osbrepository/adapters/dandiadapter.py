@@ -80,7 +80,8 @@ class DandiAdapter:
                     )
 
     def get_info(self) -> RepositoryInfo:
-        base_info = self.get_json(f"{self.api_url}/dandisets/{self.dandiset_id}")["most_recent_published_version"]
+        resp = self.get_json(f"{self.api_url}/dandisets/{self.dandiset_id}")
+        base_info = resp["most_recent_published_version"] or resp["draft_version"]
         detailed_info= self._get_dandi_info(base_info["version"])
         return RepositoryInfo(name=base_info["name"], contexts=self.get_contexts(), tags=detailed_info["metadata"].get("keywords", []), summary=detailed_info["metadata"].get("description", ""))
 
