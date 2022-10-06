@@ -554,7 +554,12 @@ steps:
     image: '${{test-e2e}}'
     commands:
     - yarn test
-    scale: {}
+    scale:
+      osb-portal_e2e_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
+        environment:
+        - APP_URL=https://www.${{CF_SHORT_REVISION}}.${{DOMAIN}}
     hooks:
       on_fail:
         exec:
