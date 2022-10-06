@@ -26,7 +26,12 @@ import {
   AccordionDetails,
 } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import { OSBRepository, RepositoryResourceNode, RepositoryContentType, RepositoryType } from "../apiclient/workspaces";
+import {
+  OSBRepository,
+  RepositoryResourceNode,
+  RepositoryContentType,
+  RepositoryType,
+} from "../apiclient/workspaces";
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from "../components/common/OSBDialog";
@@ -348,10 +353,13 @@ export const RepositoryPage = (props: any) => {
   };
 
   const canAddToWorkspace = () => {
-    return repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0
-  }
+    return (
+      repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0
+    );
+  };
 
-  return (<>
+  return (
+    <>
       <MainMenu />
       <Box className={`${classes.root} verticalFit`}>
         <Box className="subheader" paddingX={3} justifyContent="space-between">
@@ -372,20 +380,53 @@ export const RepositoryPage = (props: any) => {
             </Box>
           </Box>
 
-          <Tooltip title={ !canAddToWorkspace() ? "Before adding, please first select the resource(s)" : ""}>
+          <Tooltip
+            title={
+              !canAddToWorkspace()
+                ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                : ""
+            }
+          >
             <Box>
-              <Button id='add-existing-workspace-button' variant="outlined" disabled={!canAddToWorkspace()} disableElevation={true} color="secondary" style={{ borderColor: 'white' }} onClick={() => { user ? openExistingWorkspaceDialog() : setShowUserNotLoggedInAlert(true) }}>
+              <Button
+                id="add-existing-workspace-button"
+                variant="outlined"
+                disabled={!canAddToWorkspace()}
+                disableElevation={true}
+                color="secondary"
+                style={{ borderColor: "white" }}
+                onClick={() => {
+                  user
+                    ? openExistingWorkspaceDialog()
+                    : setShowUserNotLoggedInAlert(true);
+                }}
+              >
                 <AddIcon />
                 Add to existing workspace
               </Button>
-              <Button id='create-new-workspace-button' variant="contained" disabled={!canAddToWorkspace()} disableElevation={true} color="primary" onClick={() => { user ? openDialog() : setShowUserNotLoggedInAlert(true) }}>
+              <Button
+                id="create-new-workspace-button"
+                variant="contained"
+                disabled={!canAddToWorkspace()}
+                disableElevation={true}
+                color="primary"
+                onClick={() => {
+                  user ? openDialog() : setShowUserNotLoggedInAlert(true);
+                }}
+              >
                 <AddIcon />
                 Create new workspace
               </Button>
-            <RepositoryActionsMenu user={user} repository={repository} onAction={(r: OSBRepository) => r && setRepository({ ...repository, ...r })} />
+              <RepositoryActionsMenu
+                user={user}
+                repository={repository}
+                onAction={(r: OSBRepository) =>
+                  r && setRepository({ ...repository, ...r })
+                }
+              />
             </Box>
           </Tooltip>
-          </Box>
+        </Box>
 
         <Box className="main-content verticalFit">
           {repository ? (
