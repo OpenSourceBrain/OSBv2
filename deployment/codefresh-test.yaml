@@ -532,21 +532,6 @@ steps:
           commands:
           - echo "Waiting 30 minutes before deleting the namespace"
           - sleep 1800
-  tests_api:
-    stage: qa
-    title: Api tests
-    working_directory: /home/test
-    image: '${{test-api}}'
-    commands:
-    - echo $APP_NAME
-    scale: {}
-    hooks:
-      on_fail:
-        exec:
-          image: alpine
-          commands:
-          - echo "Waiting 30 minutes before deleting the namespace"
-          - sleep 1800
   tests_e2e:
     stage: qa
     title: End to end tests
