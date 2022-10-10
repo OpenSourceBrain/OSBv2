@@ -16,7 +16,7 @@ describe("OSB v2 Smoke Tests", () => {
     beforeAll(async () => {
       browser = await puppeteer.launch({
         args: ["--no-sandbox", `--window-size=1600,700`],
-        headless: process.env.HEADLESS ?? true,
+        headless: true,
         defaultViewport: {
           width: 1600,
           height: 700,
