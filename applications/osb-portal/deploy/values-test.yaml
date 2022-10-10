@@ -1,0 +1,5 @@
+harness:
+  accounts:
+    users:
+    - username: testuser
+      email: testuser@opensourcebrain.org
