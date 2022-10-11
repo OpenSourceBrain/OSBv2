@@ -3,3 +3,5 @@ harness:
     users:
     - username: testuser
       email: testuser@opensourcebrain.org
+      clientRoles: []
+      realmRoles: []

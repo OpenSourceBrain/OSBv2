@@ -6,5 +6,4 @@ harness:
       - workspaces
       - jupyterhub
       - notifications
-      - nwb-explorer
 
