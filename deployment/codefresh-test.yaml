@@ -539,18 +539,12 @@ steps:
     - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
       deployment/backoffice
     - sleep 60
-    hooks:
-      on_fail:
-        exec:
-          image: alpine
-          commands:
-          - echo "Waiting 30 minutes before deleting the namespace"
-          - sleep 1800
   tests_e2e:
     stage: qa
     title: End to end tests
     working_directory: /home/test
     image: '${{test-e2e}}'
+    fail_fast: false
     commands:
     - yarn test
     scale:
@@ -559,13 +553,28 @@ steps:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
         - APP_URL=https://www.${{CF_SHORT_REVISION}}.${{DOMAIN}}
+        - USERNAME=testuser
+        - PASSWORD=test
     hooks:
       on_fail:
         exec:
           image: alpine
           commands:
-          - echo "Waiting 30 minutes before deleting the namespace"
-          - sleep 1800
+          - cf_export  FAILED=failed
+  approval:
+    type: pending-approval
+    stage: qa
+    title: Approve with failed tests
+    description: The pipeline will fail after ${{WAIT_ON_FAIL}} minutes
+    timeout:
+      timeUnit: minutes
+      duration: '${{WAIT_ON_FAIL}}'
+      finalState: denied
+    when:
+      condition:
+        all:
+          error: '"${{FAILED}}" == "failed"'
+          wait_on_fail: '${{WAIT_ON_FAIL}}'
 hooks:
   on_finish:
     image: codefresh/kubectl

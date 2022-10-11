@@ -34,6 +34,8 @@ describe("OSB v2 Smoke Tests", () => {
         })
         .catch(() => {});
 
+      console.log("Env", process.env);
+
       await page.waitForSelector(selectors.WORKSPACES_SELECTOR);
     });
 
