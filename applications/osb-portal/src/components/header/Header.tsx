@@ -89,7 +89,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin} className={classes.button}>
+      <Button onClick={handleUserLogin} className={`sign-in ${classes.button}`}>
         Sign in
       </Button>
     ) : (
@@ -132,7 +132,7 @@ export const Header = (props: any) => {
           aria-haspopup="true"
           onClick={handleMenuToggle}
           startIcon={<PersonIcon fontSize="large" />}
-          className={classes.button}
+          className={`${classes.button} user-menu-btn`}
         >
           {user.username}
         </Button>

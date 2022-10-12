@@ -116,7 +116,7 @@ export const WorkspaceCard = (props: Props) => {
 
   return (
     <>
-      <Card className={classes.card} elevation={0}>
+      <Card className={`${classes.card} workspace-card`} elevation={0}>
         {!props.hideMenu && (
           <CardActions className={classes.actions}>
             <WorkspaceActionsMenu
@@ -159,12 +159,12 @@ export const WorkspaceCard = (props: Props) => {
           </Link>
         </Box>
 
-        <CardContent>
+        <CardContent className="workspace-content">
           <Tooltip title={workspace.name}>
             <Link
               href={`/workspace/${workspace.id}`}
               color="inherit"
-              className={classes.link}
+              className={`${classes.link} workspace-page-link`}
             >
               <Typography
                 component="h2"

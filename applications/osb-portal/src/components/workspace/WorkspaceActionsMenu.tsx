@@ -124,52 +124,53 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-      <IconButton size="small" onClick={handleClick}>
+      <IconButton className="btn-workspace-actions" size="small" onClick={handleClick}>
         <Icons.Dots style={{ fontSize: "1rem" }} />
       </IconButton>
       <Menu
-        id="simple-menu"
+        id="workspace-actions-menu"
         anchorEl={anchorEl}
         keepMounted={true}
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        {canEdit && <MenuItem onClick={handleEditWorkspace}>Edit</MenuItem>}
-        {canEdit && <MenuItem onClick={handleDeleteWorkspace}>Delete</MenuItem>}
+        {canEdit && <MenuItem className="edit-workspace" onClick={handleEditWorkspace}>Edit</MenuItem>}
+        {canEdit && <MenuItem className="delete-workspace" onClick={handleDeleteWorkspace}>Delete</MenuItem>}
         {canEdit && !props.workspace.publicable && (
-          <MenuItem onClick={handlePublicWorkspace}>Make public</MenuItem>
+          <MenuItem className="make-public-workspace" onClick={handlePublicWorkspace}>Make public</MenuItem>
         )}
         {canEdit && props.workspace.publicable && (
-          <MenuItem onClick={handlePrivateWorkspace}>Make private</MenuItem>
+          <MenuItem className="make-private-workspace" onClick={handlePrivateWorkspace}>Make private</MenuItem>
         )}
         {props.user &&
           props.user.isAdmin &&
           props.workspace.publicable &&
           !props.workspace.featured && (
-            <MenuItem onClick={handleFeaturedWorkspace}>
+            <MenuItem className="add-featured-workspace" onClick={handleFeaturedWorkspace}>
               Add to featured
             </MenuItem>
           )}
         {props.user && props.user.isAdmin && props.workspace.featured && (
-          <MenuItem onClick={handleFeaturedWorkspace}>
+          <MenuItem className="remove-featured-workspace" onClick={handleFeaturedWorkspace}>
             Remove from featured
           </MenuItem>
         )}
         {!props.isWorkspaceOpen && (
-          <MenuItem onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>Open workspace</MenuItem>
         )}
         {props.user && (
           <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
         )}
-        <NestedMenuItem label="Open with..." parentMenuOpen={true}>
-          {Object.keys(OSBApplications).map((item) => (
+        <NestedMenuItem className="open-with" label="Open with..." parentMenuOpen={true}>
+          {Object.keys(OSBApplications).map((appCode) => (
             <MenuItem
-              key={item}
+              key={appCode}
+              className={appCode}
               onClick={(e) => {
-                handleOpenWorkspaceWithApp(item);
+                handleOpenWorkspaceWithApp(appCode);
               }}
             >
-              {OSBApplications[item].name}
+              {OSBApplications[appCode].name}
             </MenuItem>
           ))}
         </NestedMenuItem>

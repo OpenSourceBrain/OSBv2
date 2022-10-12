@@ -11,429 +11,209 @@ let page: any;
 let browser: any;
 jest.setTimeout(TEN_MINUTES);
 
-describe("OSB v2 Smoke Tests", () => {
-  if (!process.env.SKIP_SMOKETEST) {
-    beforeAll(async () => {
-      browser = await puppeteer.launch({
-        args: ["--no-sandbox", `--window-size=1600,700`],
-        headless: true,
-        defaultViewport: {
-          width: 1600,
-          height: 700,
-        },
+const WORKSPACE_LOAD_TIMEOUT = TWO_MINUTES * 1.5;
+
+const getCurrentWorkpaces: () => Promise<Array<any>> = async () => {
+  const pageFrame = page.mainFrame();
+  return await pageFrame.$$(
+      "#workspaces-list .workspace-content"
+    )
+};
+
+const testApplication =
+  (appName: string, appSelectors: Array<string>, url: string) => async () => {
+    console.log("Opening workspace with", appName);
+    await page.waitForSelector(selectors.OSB_LOGO);
+    await page.click(selectors.OSB_LOGO);
+
+    await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
+
+    // Try to open an already existing workspace
+    await page.waitForSelector(selectors.FEATURE_WORKSPACES_TAB);
+    await page.click(selectors.FEATURE_WORKSPACES_TAB);
+
+    await page.waitForSelector(selectors.WORKSPACES);
+    const featuredWorkspaces = await getCurrentWorkpaces();
+
+
+    // Try to open an already existing workspace to speed up
+
+    if (featuredWorkspaces.length > 0) {
+      await page.click(".workspace-page-link");
+    } else {
+      await page.waitForTimeout(ONE_SECOND);
+      await page.click(selectors.ALL_YOUR_WORKSPACES_TAB);
+
+      await page.waitForSelector(selectors.WORKSPACES, {
+        timeout: ONE_SECOND,
       });
+      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
+      await page.click(selectors.SMOKE_TEST_WORKSPACE);
+    }
 
-      page = await browser.newPage();
-      console.log(
-        "Checking page",
-        process.env.APP_URL || "https://v2dev.opensourcebrain.org/"
-      );
-      await page
-        .goto(process.env.APP_URL || "https://v2dev.opensourcebrain.org/", {
-          waitUntil: "networkidle0",
-        })
-        .catch(() => {});
+    await page.waitForSelector(selectors.OPENED_WORKSPACE);
+    expect(page.url()).toContain("/workspace/");
 
-      console.log("Env", process.env);
+    await page.waitForSelector(selectors.SELECT_APPLICATION);
+    await page.click(selectors.SELECT_APPLICATION);
 
-      await page.waitForSelector(selectors.WORKSPACES_SELECTOR);
-    });
-
-    afterAll(() => {
-        browser.close();
-    });
-
-    test("Home Page", async () => {
-      await page.click(selectors.PUBLIC_WORKSPACES_SELECTOR);
-      await page.waitForSelector(selectors.WORKSPACES_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND * 2);
-    });
-
-    test("Log in", async () => {
-      console.log("Attempting login on", page.url());
-
-      await page.evaluate(() => {
-        let map = document.getElementsByClassName(
-          "MuiButton-label"
-        ) as HTMLCollectionOf<HTMLElement>;
-        for (let i = 0; i < map.length; i++) {
-          map[i].innerText == "Sign in" && map[i].click();
-        }
-      });
-
-      await page.waitForSelector(selectors.USERNAME_SELECTOR);
-      await page.waitForSelector(selectors.PASSWORD_SELECTOR);
-      expect(page.url()).toContain("accounts.");
-      await page.type(
-        selectors.USERNAME_SELECTOR,
-        process.env.USERNAME || "simao_user_osb" 
-      );
-      await page.type(
-        selectors.PASSWORD_SELECTOR,
-        process.env.PASSWORD || "metacell" 
-      );
-      await page.click(selectors.LOGIN_BUTTON_SELECTOR);
-      await page.waitForSelector(selectors.ALL_YOUR_WORKSPACES_TAB_SELECTOR);
-  
-      await page.waitForSelector(selectors.YOUR_WORKSPACES_SELECTOR);
-      const privateWorkspaces_beforeadding = await page.evaluate(
-        () =>
-          document.querySelectorAll(
-            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
-          ).length
-      );
-      expect(privateWorkspaces_beforeadding).toBe(0);
-    });
-
-    test("Create workspace", async () => {
-      console.log("Creating workspace");
-
-      await page.click(selectors.CREATE_WORKSPACE_SELECTOR);
-      await page.waitForSelector(selectors.WORKSPACE_CREATION_BOX_SELECTOR);
-      await page.type(
-        selectors.WORKSPACE_NAME_SELECTOR,
-        "Smoke Test Workspace"
-      );
-      await page.type(selectors.WORKSPACE_TAGS_SELECTOR, "Test");
-      await page.keyboard.press("Enter");
-      await page.type(
-        selectors.WORKSPACE_DESCRIPTION_SELECTOR,
-        "Workspace created by the Automated Smoke tests"
-      );
-
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.CREATE_NEW_WORKSPACE_SELECTOR)
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-      await page.waitForSelector(selectors.YOUR_WORKSPACES_SELECTOR);
-
-      const privateWorkspaces = await page.evaluate(
-        () =>
-          document.querySelectorAll(
-            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
-          ).length
-      );
-      expect(privateWorkspaces).toBe(1);
-    });
-
-    test("Open workspace with NWB Explorer", async () => {
-      console.log("Opening workspace with NWB Explorer");
-
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
-      await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      const featuredWorkspaces = await page.evaluate(
-        () =>
-          document.querySelectorAll(
-            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
-          ).length
-      );
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-
-      if (featuredWorkspaces != 0) {
-        await page.waitForTimeout(ONE_SECOND);
-        await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
-        await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-        await page.click(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
-        expect(page.url()).toContain("/workspace/");
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.evaluate(() => {
-          let map = document.getElementsByClassName(
-            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-          ) as HTMLCollectionOf<HTMLElement>;
-          for (let i = 0; i < map.length; i++) {
-            map[i].innerText == "Open with NWB Explorer" && map[i].click();
-          }
-        });
-
-        console.log("Loading NWB Explorer");
-
-        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
-        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR, {
-          timeout: ONE_MINUTE,
-        });
-        expect(page.url()).toContain("/nwbexplorer");
-        const elementHandle = await page.waitForSelector(
-          selectors.APPLICATION_FRAME_SELECTOR
-        );
-        const frame = await elementHandle.contentFrame();
-        await frame.waitForSelector(selectors.NWB_INPUT_FIELD_SELECTOR, {
-          timeout: TWO_MINUTES * 1.5,
-        });
-
-        console.log("NWB Explorer loaded");
-      } else {
-        await page.click(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
-        expect(page.url()).toContain("/workspace/");
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.evaluate(() => {
-          let map = document.getElementsByClassName(
-            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-          ) as HTMLCollectionOf<HTMLElement>;
-          for (let i = 0; i < map.length; i++) {
-            map[i].innerText == "Open with NWB Explorer" && map[i].click();
-          }
-        });
-        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
-        expect(page.url()).toContain("/nwbexplorer");
-
-        console.log("Loading NWB Explorer");
-
-        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR);
-        const elementHandle = await page.waitForSelector(
-          selectors.APPLICATION_FRAME_SELECTOR
-        );
-        const frame = await elementHandle.contentFrame();
-        await frame.waitForSelector(selectors.NWB_INPUT_FIELD_SELECTOR, {
-          timeout: TWO_MINUTES * 1.5,
-        });
-
-        console.log("NWB Explorer loaded");
+    await page.mainFrame().$$eval("#split-button-menu li", (choices: Array<HTMLElement>, appName: string) => choices.forEach((choice: HTMLElement) => {
+      
+      if (choice?.innerText?.includes(appName)) {
+        console.log("Choosing app", appName)
+        choice.click();
       }
+    }, appName), appName);
+
+
+    console.log("Loading", appName);
+
+    await page.click(selectors.OPEN_WITH_APPLICATION);
+    await page.waitForSelector(selectors.APPLICATION_FRAME, {
+      timeout: ONE_SECOND,
     });
-
-    test("Open workspace with NetPyNE", async () => {
-      console.log("Opening workspace with NetPyNE");
-
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
-      await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-
-      const featuredWorkspaces = await page.evaluate(
-        () =>
-          document.querySelectorAll(
-            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
-          ).length
-      );
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-
-      if (featuredWorkspaces != 0) {
-        await page.waitForTimeout(ONE_SECOND);
-        await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
-        await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-        await page.click(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
-        expect(page.url()).toContain("/workspace/");
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.evaluate(() => {
-          let map = document.getElementsByClassName(
-            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-          ) as HTMLCollectionOf<HTMLElement>;
-          for (let i = 0; i < map.length; i++) {
-            map[i].innerText == "Open with NetPyNE" && map[i].click();
-          }
-        });
-        console.log("Loading NetPyNE");
-
-        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
-        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR, {
-          timeout: ONE_MINUTE,
-        });
-        expect(page.url()).toContain("/netpyne");
-        const elementHandle = await page.waitForSelector(
-          selectors.APPLICATION_FRAME_SELECTOR
-        );
-        const frame = await elementHandle.contentFrame();
-        await frame.waitForSelector(selectors.NETPYNE_CELL_BUTTON_SELECTOR, {
-          timeout: TWO_MINUTES * 1.5,
-        });
-
-        console.log("NetPyNE loaded");
-      } else {
-        await page.click(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
-        expect(page.url()).toContain("/workspace/");
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.evaluate(() => {
-          let map = document.getElementsByClassName(
-            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-          ) as HTMLCollectionOf<HTMLElement>;
-          for (let i = 0; i < map.length; i++) {
-            map[i].innerText == "Open with NetPyNE" && map[i].click();
-          }
-        });
-        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
-        expect(page.url()).toContain("/netpyne");
-
-        console.log("Loading NetPyNE");
-
-        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR);
-        const elementHandle = await page.waitForSelector(
-          selectors.APPLICATION_FRAME_SELECTOR
-        );
-        const frame = await elementHandle.contentFrame();
-        await frame.waitForSelector(selectors.NETPYNE_CELL_BUTTON_SELECTOR, {
-          timeout: TWO_MINUTES * 1.5,
-        });
-
-        console.log("NetPyNE loaded");
+    expect(page.url()).toContain(url);
+    const elementHandle = await page.waitForSelector(
+      selectors.APPLICATION_FRAME,
+      {
+        timeout: ONE_SECOND,
       }
-    });
-
-    test("Open workspace with Jupyter Lab", async () => {
-      console.log("Opening workspace with Jupyter Lab");
-
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
-      await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-      await page.waitForTimeout(ONE_SECOND);
-      const featuredWorkspaces = await page.evaluate(
-        () =>
-          document.querySelectorAll(
-            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
-          ).length
-      );
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-
-      if (featuredWorkspaces != 0) {
-        await page.waitForTimeout(ONE_SECOND);
-        await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.FEATURE_WORKSPACES_TAB_SELECTOR);
-        await page.waitForSelector(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-        await page.click(selectors.NEURO_ML2_WORKSPACE_SELECTOR);
-        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
-        expect(page.url()).toContain("/workspace/");
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.evaluate(() => {
-          let map = document.getElementsByClassName(
-            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-          ) as HTMLCollectionOf<HTMLElement>;
-          for (let i = 0; i < map.length; i++) {
-            map[i].innerText == "Open with JupyterLab" && map[i].click();
-          }
+    );
+    const frame = await elementHandle.contentFrame();
+    for(const appSelector of appSelectors) {
+      if(!frame.isDetached()) {
+        await frame.waitForSelector(appSelector, {
+          timeout: WORKSPACE_LOAD_TIMEOUT,
         });
-
-        console.log("Loading Jupyter Lab");
-
-        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
-        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR, {
-          timeout: ONE_MINUTE,
-        });
-        expect(page.url()).toContain("/jupyter");
-        const elementHandle = await page.waitForSelector(
-          selectors.APPLICATION_FRAME_SELECTOR
-        );
-        const frame = await elementHandle.contentFrame();
-        await frame.waitForSelector(selectors.JUPYTER_CONTENT_SELECTOR, {
-          timeout: TWO_MINUTES * 1.5,
-        });
-
-        console.log("Jupyter Lab loaded");
-
-      } else {
-        
-        await page.click(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-        await page.waitForSelector(selectors.OPENED_WORKSPACE_SELECTOR);
-        expect(page.url()).toContain("/workspace/");
-        await page.waitForTimeout(ONE_SECOND);
-        await page.click(selectors.SELECT_APPLICATION_SELECTOR);
-        await page.waitForTimeout(ONE_SECOND);
-        await page.evaluate(() => {
-          let map = document.getElementsByClassName(
-            "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-          ) as HTMLCollectionOf<HTMLElement>;
-          for (let i = 0; i < map.length; i++) {
-            map[i].innerText == "Open with JupyterLab" && map[i].click();
-          }
-        });
-        await page.click(selectors.OPEN_WITH_APPLICATION_SELECTOR);
-        expect(page.url()).toContain("/jupyter");
-
-        console.log("Loading Jupyter Lab");
-
-        await page.waitForSelector(selectors.APPLICATION_FRAME_SELECTOR);
-        const elementHandle = await page.waitForSelector(
-          selectors.APPLICATION_FRAME_SELECTOR
-        );
-        const frame = await elementHandle.contentFrame();
-        await frame.waitForSelector(selectors.JUPYTER_CONTENT_SELECTOR, {
-          timeout: TWO_MINUTES * 1.5,
-        });
-
-        console.log("Jupyter Lab loaded");
       }
-    });
-
-
-
-    test("Delete created workspace", async () => {
-      console.log("Deleting created workspace");
-
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.OSB_LOGO_SELECTOR);
-      await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE_SELECTOR);
-      await page.click(selectors.WORKSPACE_OPTIONS_SELECTOR);
-      await page.waitForSelector(selectors.WORKSPACE_OPTIONS_LIST_SELECTOR);
-      await page.evaluate(() => {
-        let map = document.getElementsByClassName(
-          "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-        ) as HTMLCollectionOf<HTMLElement>;
-        for (let i = 0; i < 5; i++) {
-          map[i].textContent == "Delete" && map[i].click();
-        }
-      });
-      await page.waitForTimeout(ONE_SECOND);
-      await page.waitForSelector(selectors.YOUR_WORKSPACES_SELECTOR);
-      const privateWorkspaces = await page.evaluate(
-        () =>
-          document.querySelectorAll(
-            'div[class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-4 MuiGrid-grid-md-6 MuiGrid-grid-lg-4 MuiGrid-grid-xl-3"]'
-          ).length
-      );
-      expect(privateWorkspaces).toBe(0);
-    });
-
-    test("Logout", async () => {
-      console.log("Logging out");
-
-      await page.click(selectors.USER_MENU_SELECTOR);
-      await page.evaluate(() => {
-        let map = document.getElementsByClassName(
-          "MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
-        ) as HTMLCollectionOf<HTMLElement>;
-        for (let i = 0; i < 3; i++) {
-          map[i].textContent == "Logout" && map[i].click();
-        }
-      });
-      await page.waitForSelector(selectors.WORKSPACES_SELECTOR);
-
-    });
-
+    }
     
-  } else {
-    test("Skip Smoke test", async () => {});
-  }
+
+    console.log(appName, "loaded");
+  };
+
+describe("OSB v2 Smoke Tests", () => {
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      args: [
+        "--no-sandbox",
+        `--window-size=1600,1000`,
+        "--ignore-certificate-errors"
+      ],
+      headless: true,
+      defaultViewport: {
+        width: 1600,
+        height: 1000,
+      },
+    });
+
+    page = await browser.newPage();
+    console.log(
+      "Checking page",
+      process.env.APP_URL || "https://v2dev.opensourcebrain.org/"
+    );
+    await page
+      .goto(process.env.APP_URL || "https://v2dev.opensourcebrain.org/", {
+        waitUntil: "networkidle0",
+      })
+      .catch(() => {});
+
+    console.log("Env", process.env);
+
+    await page.waitForSelector(selectors.WORKSPACES);
+  });
+
+  afterAll(() => {
+    browser.close();
+  });
+
+  test("Home Page", async () => {
+    await page.click(selectors.PUBLIC_WORKSPACES);
+    await page.waitForSelector(selectors.WORKSPACES);
+  });
+
+  test("Log in", async () => {
+    console.log("Attempting login on", page.url());
+    await page.waitForSelector(selectors.LOGIN_BTN);
+    await page.click(selectors.LOGIN_BTN);
+
+    await page.waitForSelector(selectors.USERNAME);
+    await page.waitForSelector(selectors.PASSWORD);
+    expect(page.url()).toContain("accounts.");
+    await page.type(
+      selectors.USERNAME,
+      process.env.USERNAME || "simao_user_osb"
+    );
+    await page.type(selectors.PASSWORD, process.env.PASSWORD || "metacell");
+    await page.click(selectors.LOGIN_BUTTON);
+    await page.waitForSelector(selectors.ALL_YOUR_WORKSPACES_TAB);
+
+    await page.waitForSelector(selectors.YOUR_WORKSPACES);
+  });
+
+  test("Create workspace", async () => {
+    console.log("Creating workspace");
+
+    await page.click(selectors.CREATE_WORKSPACE);
+    await page.waitForSelector(selectors.WORKSPACE_CREATION_BOX);
+    const privateWorkspacesBefore = await getCurrentWorkpaces();
+    await page.type(selectors.WORKSPACE_NAME, "Smoke Test Workspace");
+    await page.type(selectors.WORKSPACE_TAGS, "Test");
+    await page.keyboard.press("Enter");
+    await page.type(
+      selectors.WORKSPACE_DESCRIPTION,
+      "Workspace created by the Automated Smoke tests"
+    );
+    await page.waitForSelector(selectors.CREATE_NEW_WORKSPACE, ONE_SECOND);
+    await page.click(selectors.CREATE_NEW_WORKSPACE);
+    await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
+    await page.waitForSelector(selectors.YOUR_WORKSPACES);
+    const privateWorkspacesAfter = await getCurrentWorkpaces();
+    expect(privateWorkspacesAfter.length).toBe(
+      privateWorkspacesBefore.length + 1
+    );
+  });
+
+  test(
+    "Open workspace with NWB Explorer",
+    testApplication("NWB Explorer", [selectors.NWB_APP], "/nwbexplorer")
+  );
+
+  test("Open workspace with NetPyNE", testApplication("NetPyNE", [
+    selectors.NETPYNE_CELL_BUTTON,
+    selectors.NETPYNE_MAIN_CONTAINER], "/netpyne"));
+
+  test("Open workspace with Jupyter Lab", testApplication("JupyterLab", [
+      selectors.JUPYTER_CONTENT], "/jupyter"));
+
+  test("Delete created workspace", async () => {
+    console.log("Deleting created workspace");
+
+    await page.click(selectors.OSB_LOGO);
+    await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
+    
+    let menuBtn;
+    while(menuBtn = await page.mainFrame().$(selectors.WORKSPACE_OPTIONS_BTN)) {
+      
+
+      await menuBtn.click();
+      await page.waitForSelector(".delete-workspace", {timeout: ONE_SECOND});
+      await page.evaluate(() => document.querySelector<HTMLElement>(".delete-workspace")?.click()); // page.click does not work on the popover
+      await page.waitForSelector(".delete-workspace", {hidden: true});
+    }
+        
+      
+    
+
+
+  });
+
+  test("Logout", async () => {
+    console.log("Logging out");
+    await page.click(selectors.USER_MENU);
+    await page.waitForSelector(selectors.LOGOUT_ACTION, {
+      timeout: ONE_SECOND * 4,
+    });
+    await page.waitForSelector(selectors.WORKSPACES);
+  });
 });

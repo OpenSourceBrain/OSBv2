@@ -54,13 +54,14 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
           ref={anchorRef}
           aria-label="split button"
         >
-          <Button onClick={handleItemClick}>Open with {selected.name}</Button>
+          <Button className={`open-workspace`} onClick={handleItemClick}>Open with {selected.name}</Button>
           <Button
             color="primary"
             aria-controls={open ? "split-button-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
             aria-label="select merge strategy"
             aria-haspopup="menu"
+            className="split-button-control"
             onClick={handleToggle}
           >
             <ArrowDropDownIcon />
