@@ -13,6 +13,6 @@ openapi-generator-cli generate -i openapi.yaml -g python-flask -o ../server -c c
 
 ## Frontend:
 ```
-openapi-generator-cli generate -i openapi.yaml -g typescript-axios -o rest -c config.json
+openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o ../../osb-portal/src/apiclient/workspaces -c config.json
 
 

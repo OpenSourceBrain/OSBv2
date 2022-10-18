@@ -18,6 +18,7 @@ models/OSBRepositoryBase.ts
 models/OSBRepositoryEntity.ts
 models/Pagination.ts
 models/RepositoryContentType.ts
+models/RepositoryInfo.ts
 models/RepositoryResource.ts
 models/RepositoryResourceBase.ts
 models/RepositoryResourceBaseAllOf.ts

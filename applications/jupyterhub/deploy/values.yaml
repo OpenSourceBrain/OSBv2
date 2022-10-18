@@ -20,7 +20,7 @@ hub:
       c.Spawner.port = 8000
       c.Spawner.http_timeout = 300
       c.Spawner.start_timeout = 300
-      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost *.osb.local *.opensourcebrain.org *.v2.opensourcebrain.org"}}
+      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost localhost:3000 *.osb.local *.opensourcebrain.org *.v2.opensourcebrain.org"}}
     spawner: >-
       c.Spawner.args = []
   namedServerLimitPerUser: 3

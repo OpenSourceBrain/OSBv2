@@ -44,3 +44,4 @@ from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
+from workspaces.models.repository_info import RepositoryInfo

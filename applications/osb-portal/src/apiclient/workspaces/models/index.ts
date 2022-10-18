@@ -14,6 +14,7 @@ export * from './OSBRepositoryBase';
 export * from './OSBRepositoryEntity';
 export * from './Pagination';
 export * from './RepositoryContentType';
+export * from './RepositoryInfo';
 export * from './RepositoryResource';
 export * from './RepositoryResourceBase';
 export * from './RepositoryResourceBaseAllOf';

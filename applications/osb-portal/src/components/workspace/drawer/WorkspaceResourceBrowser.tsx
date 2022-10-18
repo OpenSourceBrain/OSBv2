@@ -30,9 +30,9 @@ const openFileResource =
     openResource(resource);
     return workspaceResourceService
       .workspacesControllerWorkspaceResourceOpen(resource.id)
-      .then(() => {
-        refreshWorkspace();
-      })
+      .then(
+        refreshWorkspace
+      )
       .catch(() => {
         console.error("Error opening resource, ResourceOpen function failed!");
       });

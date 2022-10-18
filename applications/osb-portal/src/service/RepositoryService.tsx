@@ -9,6 +9,7 @@ import {
   RepositoryType,
   InlineResponse2001,
   InlineResponse2003,
+  RepositoryInfo,
   OsbrepositoryIdPutRequest,
 } from "../apiclient/workspaces";
 import SearchFilter from "../types/searchFilter";
@@ -114,19 +115,11 @@ class RepositoryService {
     return this.workspacesApi.osbrepositoryIdGet({ id });
   }
 
-  async getRepositoryContext(
+  async getRepositoryInfo(
     uri: string,
     repositoryType: RepositoryType
-  ): Promise<string[]> {
-    return this.workspacesApi.getContexts({ uri, repositoryType });
-  }
-
-  async getRepositoryKeywords(
-    uri: string,
-    repositoryType: RepositoryType,
-    context: string
-  ): Promise<string[]> {
-    return this.workspacesApi.getKeywords({ uri, repositoryType, context });
+  ): Promise<RepositoryInfo> {
+    return this.workspacesApi.getInfo({ uri, repositoryType });
   }
 
   async getRepositoryDescription(

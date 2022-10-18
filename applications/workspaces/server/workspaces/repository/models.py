@@ -5,7 +5,6 @@ import datetime
 import typing
 
 import sqlalchemy
-import typing_extensions
 from sqlalchemy import orm
 
 from open_alchemy import models
@@ -13,7 +12,7 @@ from open_alchemy import models
 Base = models.Base  # type: ignore
 
 
-class _WorkspaceEntityDictBase(typing_extensions.TypedDict, total=True):
+class _WorkspaceEntityDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
@@ -39,7 +38,7 @@ class WorkspaceEntityDict(_WorkspaceEntityDictBase, total=False):
     tags: typing.Sequence["TagDict"]
 
 
-class TWorkspaceEntity(typing_extensions.Protocol):
+class TWorkspaceEntity(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -183,7 +182,7 @@ class TWorkspaceEntity(typing_extensions.Protocol):
 WorkspaceEntity: typing.Type[TWorkspaceEntity] = models.WorkspaceEntity  # type: ignore
 
 
-class _WorkspaceCollaboratorDictBase(typing_extensions.TypedDict, total=True):
+class _WorkspaceCollaboratorDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     user_id: str
@@ -195,7 +194,7 @@ class WorkspaceCollaboratorDict(_WorkspaceCollaboratorDictBase, total=False):
     id: int
 
 
-class TWorkspaceCollaborator(typing_extensions.Protocol):
+class TWorkspaceCollaborator(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -277,7 +276,7 @@ class TWorkspaceCollaborator(typing_extensions.Protocol):
 WorkspaceCollaborator: typing.Type[TWorkspaceCollaborator] = models.WorkspaceCollaborator  # type: ignore
 
 
-class _WorkspaceImageDictBase(typing_extensions.TypedDict, total=True):
+class _WorkspaceImageDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     image: str
@@ -289,7 +288,7 @@ class WorkspaceImageDict(_WorkspaceImageDictBase, total=False):
     id: int
 
 
-class TWorkspaceImage(typing_extensions.Protocol):
+class TWorkspaceImage(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -371,7 +370,7 @@ class TWorkspaceImage(typing_extensions.Protocol):
 WorkspaceImage: typing.Type[TWorkspaceImage] = models.WorkspaceImage  # type: ignore
 
 
-class _WorkspaceResourceEntityDictBase(typing_extensions.TypedDict, total=True):
+class _WorkspaceResourceEntityDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
@@ -391,7 +390,7 @@ class WorkspaceResourceEntityDict(_WorkspaceResourceEntityDictBase, total=False)
     timestamp_last_opened: typing.Optional[str]
 
 
-class TWorkspaceResourceEntity(typing_extensions.Protocol):
+class TWorkspaceResourceEntity(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -517,7 +516,7 @@ class TWorkspaceResourceEntity(typing_extensions.Protocol):
 WorkspaceResourceEntity: typing.Type[TWorkspaceResourceEntity] = models.WorkspaceResourceEntity  # type: ignore
 
 
-class _VolumeStorageDictBase(typing_extensions.TypedDict, total=True):
+class _VolumeStorageDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
@@ -529,7 +528,7 @@ class VolumeStorageDict(_VolumeStorageDictBase, total=False):
     id: int
 
 
-class TVolumeStorage(typing_extensions.Protocol):
+class TVolumeStorage(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -611,7 +610,7 @@ class TVolumeStorage(typing_extensions.Protocol):
 VolumeStorage: typing.Type[TVolumeStorage] = models.VolumeStorage  # type: ignore
 
 
-class _OSBRepositoryEntityDictBase(typing_extensions.TypedDict, total=True):
+class _OSBRepositoryEntityDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     name: str
@@ -633,7 +632,7 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     tags: typing.Sequence["TagDict"]
 
 
-class TOSBRepositoryEntity(typing_extensions.Protocol):
+class TOSBRepositoryEntity(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -761,14 +760,14 @@ class TOSBRepositoryEntity(typing_extensions.Protocol):
 OSBRepositoryEntity: typing.Type[TOSBRepositoryEntity] = models.OSBRepositoryEntity  # type: ignore
 
 
-class TagDict(typing_extensions.TypedDict, total=False):
+class TagDict(typing.TypedDict, total=False):
     """TypedDict for properties that are not required."""
 
     id: int
     tag: typing.Optional[str]
 
 
-class TTag(typing_extensions.Protocol):
+class TTag(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -850,14 +849,14 @@ class TTag(typing_extensions.Protocol):
 Tag: typing.Type[TTag] = models.Tag  # type: ignore
 
 
-class WorkspaceTagDict(typing_extensions.TypedDict, total=True):
+class WorkspaceTagDict(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     workspace_id: int
     tag_id: int
 
 
-class TWorkspaceTag(typing_extensions.Protocol):
+class TWorkspaceTag(typing.Protocol):
     """
     SQLAlchemy model protocol.
 
@@ -937,14 +936,14 @@ class TWorkspaceTag(typing_extensions.Protocol):
 WorkspaceTag: typing.Type[TWorkspaceTag] = models.WorkspaceTag  # type: ignore
 
 
-class OsbrepositoryTagDict(typing_extensions.TypedDict, total=True):
+class OsbrepositoryTagDict(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
     osbrepository_id: int
     tag_id: int
 
 
-class TOsbrepositoryTag(typing_extensions.Protocol):
+class TOsbrepositoryTag(typing.Protocol):
     """
     SQLAlchemy model protocol.
 

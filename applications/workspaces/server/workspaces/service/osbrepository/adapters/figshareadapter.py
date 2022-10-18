@@ -1,10 +1,9 @@
 import re
 import sys
 import requests
-import concurrent.futures
 
 from cloudharness import log as logger
-from workspaces.models import FigshareRepositoryResource, RepositoryResourceNode
+from workspaces.models import FigshareRepositoryResource, RepositoryResourceNode, RepositoryInfo
 
 from .utils import add_to_tree
 
@@ -63,6 +62,11 @@ class FigShareAdapter:
 
     def get_base_uri(self):
         return self.uri
+
+    def get_info(self) -> RepositoryInfo:
+        info = self.get_json(
+            f"{self.api_url}/articles/{self.article_id}")
+        return RepositoryInfo(name=info["title"], contexts=self.get_contexts(), tags=info["tags"], summary=info.get("description", ""))
 
     def get_contexts(self):
         result = self.get_json(

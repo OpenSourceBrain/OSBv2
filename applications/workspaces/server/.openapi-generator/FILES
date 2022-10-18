@@ -21,6 +21,7 @@ workspaces/models/osb_repository_base.py
 workspaces/models/osb_repository_entity.py
 workspaces/models/pagination.py
 workspaces/models/repository_content_type.py
+workspaces/models/repository_info.py
 workspaces/models/repository_resource.py
 workspaces/models/repository_resource_base.py
 workspaces/models/repository_resource_base_all_of.py

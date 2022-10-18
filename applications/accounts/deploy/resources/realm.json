@@ -1,3 +1,31 @@
+
+{{- define "deploy_accounts_utils.role" }}
+{
+  "id": {{ uuidv4 | quote }},
+  "name": {{ .role| quote }},
+  "composite": false,
+  "clientRole": true,
+  "containerId": {{ .app.harness.name | quote }},
+  "attributes": {}
+}
+{{- end}}
+{{- define "deploy_accounts_utils.user" }}
+    {
+        "username": {{ .user.username | quote }},
+        "email": {{ .user.email | default .user.username | quote }},
+        "enabled": true,
+        "credentials": [
+            {
+                "type": "password",
+                "value": {{ .user.passwword | default "test" | quote }}
+            }
+        ],
+        "realmRoles": {{ .user.realmRoles | toJson }},
+        "clientRoles": {
+            {{ .app.harness.name | quote }}: {{ .user.clientRoles | toJson }}
+        } 
+    }
+    {{- end}}
 {
         "id": {{ .Values.namespace | quote }},
         "realm": {{ .Values.namespace | quote }},
@@ -15,6 +43,15 @@
         "duplicateEmailsAllowed": false,
         "resetPasswordAllowed": true,
         "editUsernameAllowed": true,
+        "users": [
+            {{- range $app := .Values.apps }}
+              {{- if (hasKey $app.harness "accounts")  }}
+                {{- range $i, $user := $app.harness.accounts.users }}{{if $i}},{{end}}
+                {{ include "deploy_accounts_utils.user" (dict "root" $ "app" $app "user" $user) }}
+                {{- end }}
+              {{- end }}
+            {{- end }}
+        ],
         "roles": {
             "realm": [
                 {
@@ -43,7 +80,19 @@
                     "containerId": {{ .Values.namespace | quote }},
                     "attributes": {}
                 }
-            ]
+            ],
+            "client": {
+            {{- range $app := .Values.apps }}
+              {{- if (hasKey $app.harness "accounts")  }}
+                {{ $app.harness.name | quote }}: [
+                {{- range $i, $role := $app.harness.accounts.roles }}
+                {{if $i}},{{end}}
+                {{ include "deploy_accounts_utils.role" (dict "root" $ "app" $app "role" $role) }}
+                {{- end }}
+                ]
+              {{- end }}
+            {{- end }}
+            }
         },
         "clients": [
             {
@@ -81,6 +130,44 @@
                     "microprofile-jwt"
                 ]
             },
+            {{- range $app := .Values.apps }}
+            {
+                "id": {{ $app.harness.name | quote }},
+                "clientId": {{ $app.harness.name | quote }},
+                "name": {{ $app.harness.name | quote }},
+                "surrogateAuthRequired": false,
+                "enabled": true,
+                "alwaysDisplayInConsole": false,
+                "clientAuthenticatorType": "client-secret",
+                "secret": {{ randAlphaNum 20 | quote }},
+                "redirectUris": [
+                  "*"
+                ],
+                "webOrigins": [
+                  "*",
+                  "+"
+                ],
+                "notBefore": 0,
+                "bearerOnly": false,
+                "consentRequired": false,
+                "standardFlowEnabled": true,
+                "implicitFlowEnabled": false,
+                "directAccessGrantsEnabled": true,
+                "serviceAccountsEnabled": false,
+                "publicClient": true,
+                "frontchannelLogout": false,
+                "protocol": "openid-connect",
+                "attributes": {
+                  "backchannel.logout.session.required": "true",
+                  "backchannel.logout.revoke.offline.tokens": "false"
+                },
+                "authenticationFlowBindingOverrides": {},
+                "fullScopeAllowed": true,
+                "nodeReRegistrationTimeout": -1,
+                "defaultClientScopes": [],
+                "optionalClientScopes": []
+              },
+              {{- end }}
             {
                 "id": "111caf43-3d26-484d-8dc9-7fa911ac221c",
                 "clientId": {{ .Values.apps.accounts.webclient.id | quote }},
