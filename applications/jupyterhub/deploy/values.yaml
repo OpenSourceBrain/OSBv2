@@ -38,3 +38,11 @@ singleuser:
   memory:
     limit: 1G
     guarantee: 0.5G
+prePuller:
+
+  # hook relates to the hook-image-awaiter Job and hook-image-puller DaemonSet
+  hook:
+    enabled: false
+  continuous:
+    enabled: false
+  pullProfileListImages: false
