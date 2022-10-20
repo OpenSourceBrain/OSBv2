@@ -9,9 +9,9 @@ import {
 
 let page: any;
 let browser: any;
-jest.setTimeout(TEN_MINUTES);
+jest.setTimeout(TEN_MINUTES* 2);
 
-const WORKSPACE_LOAD_TIMEOUT = TWO_MINUTES * 1.5;
+const WORKSPACE_LOAD_TIMEOUT = ONE_MINUTE * 5;
 
 const getCurrentWorkpaces: () => Promise<Array<any>> = async () => {
   const pageFrame = page.mainFrame();
