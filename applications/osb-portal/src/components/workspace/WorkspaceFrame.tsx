@@ -94,31 +94,23 @@ export const WorkspaceFrame = (props: {
     openResource();
   }, [currentResource]);
 
-  const getResourceToOpen = () => {
-    if (currentResource != null) {
-      if (!app || currentResource.type.application === OSBApplications[app]) {
-        return currentResource;
-      }
-    } else {
-      return workspace.resources[workspace.resources.length - 1];
-    }
-  };
+
 
   const openResource = async () => {
-    const resource: WorkspaceResource = getResourceToOpen();
+    const resource: WorkspaceResource = currentResource;
     const iFrame = document.getElementById(
       "workspace-frame"
     ) as HTMLIFrameElement;
-    if (resource.status === ResourceStatus.available) {
+
+    if (resource && resource.status === ResourceStatus.available) {
       const fileName: string =
         WORKSPACE_BASE_DIRECTORY +
         WorkspaceResourceService.getResourcePath(resource);
-      
-          iFrame.contentWindow.postMessage(
-            { type: "LOAD_RESOURCE", payload: fileName },
-            "*"
-          );
-    
+
+      iFrame.contentWindow.postMessage(
+        { type: "LOAD_RESOURCE", payload: fileName },
+        "*"
+      );
     }
   };
 
