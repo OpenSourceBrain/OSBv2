@@ -9,9 +9,9 @@ import {
 
 let page: any;
 let browser: any;
-jest.setTimeout(TEN_MINUTES* 2);
+jest.setTimeout(TEN_MINUTES* 4);
 
-const WORKSPACE_LOAD_TIMEOUT = ONE_MINUTE * 5;
+const WORKSPACE_LOAD_TIMEOUT = TEN_MINUTES;
 
 const getCurrentWorkpaces: () => Promise<Array<any>> = async () => {
   const pageFrame = page.mainFrame();
@@ -80,6 +80,10 @@ const testApplication =
       }
     );
     const frame = await elementHandle.contentFrame();
+    await frame.waitForSelector(selectors.SPAWN, {
+      timeout: ONE_MINUTE,
+    });
+    
     for(const appSelector of appSelectors) {
       if(!frame.isDetached()) {
         await frame.waitForSelector(appSelector, {
@@ -100,7 +104,7 @@ describe("OSB v2 Smoke Tests", () => {
         `--window-size=1600,1000`,
         "--ignore-certificate-errors"
       ],
-      headless: true,
+      headless: !process.env.DISPLAY,
       defaultViewport: {
         width: 1600,
         height: 1000,
@@ -168,6 +172,7 @@ describe("OSB v2 Smoke Tests", () => {
     await page.click(selectors.CREATE_NEW_WORKSPACE);
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
     await page.waitForSelector(selectors.YOUR_WORKSPACES);
+    await page.waitForSelector(".workspace-card");
     const privateWorkspacesAfter = await getCurrentWorkpaces();
     expect(privateWorkspacesAfter.length).toBe(
       privateWorkspacesBefore.length + 1
@@ -179,12 +184,14 @@ describe("OSB v2 Smoke Tests", () => {
     testApplication("NWB Explorer", [selectors.NWB_APP], "/nwbexplorer")
   );
 
+  test("Open workspace with Jupyter Lab", testApplication("JupyterLab", [
+    selectors.JUPYTER_CONTENT], "/jupyter"));
+
   test("Open workspace with NetPyNE", testApplication("NetPyNE", [
     selectors.NETPYNE_CELL_BUTTON,
     selectors.NETPYNE_MAIN_CONTAINER], "/netpyne"));
 
-  test("Open workspace with Jupyter Lab", testApplication("JupyterLab", [
-      selectors.JUPYTER_CONTENT], "/jupyter"));
+
 
   test("Delete created workspace", async () => {
     console.log("Deleting created workspace");
