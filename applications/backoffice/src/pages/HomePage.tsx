@@ -29,11 +29,10 @@ export default (props: any) => {
   const [ repositories, setRepositories ] = React.useState<any>(null);
   const [ error, setError ] = React.useState<any>(null);
 
-  const hostname = window.location.hostname;
   let realm = "osb2"
-  if (hostname.includes("local")) {
+  if (window.location.hostname.includes("local")) {
     realm = "osblocal"
-  } else if (hostname.includes("dev")) {
+  } else if (window.location.hostname.includes("dev")) {
     realm = "osb2dev"
   }
 
@@ -92,7 +91,7 @@ export default (props: any) => {
   }
 
   const keycloakBaseUrl = React.useMemo(() => {
-    
+
     return "/auth/admin/master/console/#/realms/" + realm + "/users/";
   }, [realm]);
 
@@ -119,7 +118,7 @@ export default (props: any) => {
 
   const dataColumns: GridColDef[] = [
     {
-      field: 'id', headerName: 'Profile', renderCell: (param: any) => 
+      field: 'id', headerName: 'Profile', renderCell: (param: any) =>
       <>
         <Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>
         &nbsp;|&nbsp;
