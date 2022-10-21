@@ -140,7 +140,7 @@ export const WorkspaceFromRepository = ({
 
   const user = useSelector((state: RootState) => state.user);
   const classes = useStyles();
-  const [selectedRepository, setSelectedRepository] = React.useState(null);
+  const [selectedRepository, setSelectedRepository] = React.useState<OSBRepository>(null);
 
   enum Stage {
     SELECT_REPO,
@@ -287,13 +287,14 @@ export const WorkspaceFromRepository = ({
         <Box className={classes.repositoriesList}>
           <Repositories
             repositories={repositories}
-            handleRepositoryClick={(repositoryId) => {
-              setSelectedRepository(repositoryId);
+            handleRepositoryClick={(repository) => {
+              setSelectedRepository(repository);
               setStage(Stage.SELECT_FILES);
             }}
             showSimpleVersion={true}
             searchRepositories={true}
             filterChanged={setFilter}
+            
           />
           {totalPages > 1 ? (
             <OSBPagination
@@ -351,7 +352,7 @@ export const WorkspaceFromRepository = ({
       return returnDialoged(<SelectRepository />);
     case Stage.SELECT_FILES:
       return returnDialoged(
-        <SelectFilesFromRepository repositoryId={selectedRepository} />
+        <SelectFilesFromRepository repositoryId={selectedRepository.id} />
       );
     case Stage.EDIT_WORKSPACE:
       return (
@@ -359,7 +360,7 @@ export const WorkspaceFromRepository = ({
           <WorkspaceEditor
             title={"Create new workspace"}
             open={true}
-            workspace={defaultWorkspace}
+            workspace={{...defaultWorkspace, name: selectedRepository.name, tags: selectedRepository.tags}}
             onLoadWorkspace={onWorkspaceCreated}
             closeHandler={handleClose}
             user={user}
