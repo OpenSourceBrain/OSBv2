@@ -105,8 +105,9 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
     if (workspace.lastOpen != null) {
       if (!app || workspace.lastOpen.type.application === OSBApplications[app]) {
         return workspace.lastOpen;
-      }
-    } else if (app) {
+      } 
+    }
+   if (app) {
       return workspace.resources.find(
         (resource) =>
           resource.type.application === OSBApplications[app] &&
@@ -150,6 +151,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
             <WorkspaceInteractions
               workspace={workspace}
               open={open}
+              currentResource={currentResource}
               openResource={setCurrentResource}
             />
           </div>
