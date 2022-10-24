@@ -557,7 +557,6 @@ steps:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
         - APP_URL=https://www.${{CF_SHORT_REVISION}}.${{DOMAIN}}
-        - DISPLAY=:0
         - USERNAME=testuser
         - PASSWORD=test
     hooks:

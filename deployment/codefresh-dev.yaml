@@ -100,6 +100,21 @@ steps:
         image_name: osb/cloudharness-flask
         title: Cloudharness flask
         working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
+      test-e2e:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/test-e2e
+        title: Test e2e
+        working_directory: ./cloud-harness/test/test-e2e
   build_application_images:
     type: parallel
     stage: build
@@ -446,7 +461,11 @@ steps:
       cmd_ps: --wait --timeout 600s
       custom_value_files:
       - ./deployment/helm/values.yaml
-      custom_values: []
+      custom_values:
+      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
     image: codefresh/cfstep-helm:3.6.2
     environment:
     - CHART_REF=./deployment/helm
@@ -458,6 +477,98 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
+  wait_deployment:
+    stage: qa
+    title: Wait deployment to be ready
+    image: codefresh/kubectl
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/notifications
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/volumemanager
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/common
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/events
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workflows
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workspaces
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts-api
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/osb-portal
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/backoffice
+    - sleep 60
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/notifications
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/volumemanager
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/common
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/events
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workflows
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workspaces
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts-api
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/osb-portal
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/backoffice
+    - sleep 60
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/notifications
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/volumemanager
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/common
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/events
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workflows
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/workspaces
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/accounts-api
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/osb-portal
+    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
+      deployment/backoffice
+    - sleep 60
+    when:
+      condition:
+        all:
+          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
+  tests_e2e:
+    stage: qa
+    title: End to end tests
+    working_directory: /home/test
+    image: '${{test-e2e}}'
+    fail_fast: false
+    commands:
+    - yarn test
+    scale:
+      osb-portal_e2e_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
+        environment:
+        - APP_URL=https://www.${{CF_SHORT_REVISION}}.${{DOMAIN}}
+    when:
+      condition:
+        all:
+          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
   approval:
     type: pending-approval
     stage: publish
@@ -571,6 +682,22 @@ steps:
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/osb/workflows:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_test-e2e:
+        stage: publish
+        type: push
+        title: Test e2e
+        candidate: '${{REGISTRY}}/osb/test-e2e:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_test-api:
+        stage: publish
+        type: push
+        title: Test api
+        candidate: '${{REGISTRY}}/osb/test-api:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
