@@ -1,11 +1,11 @@
-import * as puppeteer from "puppeteer";
-import * as selectors from "./selectors";
-import {
+const puppeteer = require("puppeteer");
+const selectors = require("./selectors");
+const {
   ONE_SECOND,
   ONE_MINUTE,
   TWO_MINUTES,
   TEN_MINUTES,
-} from "./time_constants";
+} = require("./time_constants");
 
 let page: any;
 let browser: any;
@@ -25,6 +25,7 @@ const testApplication =
     console.log("Opening workspace with", appName);
     await page.waitForSelector(selectors.OSB_LOGO);
     await page.click(selectors.OSB_LOGO);
+    
 
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
 
@@ -80,9 +81,12 @@ const testApplication =
       }
     );
     const frame = await elementHandle.contentFrame();
+    
     await frame.waitForSelector(selectors.SPAWN, {
       timeout: ONE_MINUTE,
     });
+
+    
     
     for(const appSelector of appSelectors) {
       if(!frame.isDetached()) {
@@ -111,20 +115,28 @@ describe("OSB v2 Smoke Tests", () => {
       },
     });
 
-    page = await browser.newPage();
     console.log(
       "Checking page",
       process.env.APP_URL || "https://v2dev.opensourcebrain.org/"
     );
+
+    
+  });
+
+  beforeEach(async () => {
+    page = await browser.newPage();
+    
     await page
       .goto(process.env.APP_URL || "https://v2dev.opensourcebrain.org/", {
         waitUntil: "networkidle0",
       })
       .catch(() => {});
 
-    console.log("Env", process.env);
-
     await page.waitForSelector(selectors.WORKSPACES);
+  });
+
+  afterEach(async () => {
+    await page.close();
   });
 
   afterAll(() => {
@@ -173,10 +185,7 @@ describe("OSB v2 Smoke Tests", () => {
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
     await page.waitForSelector(selectors.YOUR_WORKSPACES);
     await page.waitForSelector(".workspace-card");
-    const privateWorkspacesAfter = await getCurrentWorkpaces();
-    expect(privateWorkspacesAfter.length).toBe(
-      privateWorkspacesBefore.length + 1
-    );
+    await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
   });
 
   test(
@@ -195,8 +204,6 @@ describe("OSB v2 Smoke Tests", () => {
 
   test("Delete created workspace", async () => {
     console.log("Deleting created workspace");
-
-    await page.click(selectors.OSB_LOGO);
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
     
     let menuBtn;
@@ -204,16 +211,17 @@ describe("OSB v2 Smoke Tests", () => {
       
 
       await menuBtn.click();
-      await page.waitForSelector(".delete-workspace", {timeout: ONE_SECOND});
+      await page.waitForSelector(".delete-workspace", {timeout: ONE_SECOND * 5});
       await page.evaluate(() => document.querySelector<HTMLElement>(".delete-workspace")?.click()); // page.click does not work on the popover
       await page.waitForSelector(".delete-workspace", {hidden: true});
+      await page.waitForTimeout(ONE_SECOND);
     }
         
       
     
 
 
-  });
+   });
 
   test("Logout", async () => {
     console.log("Logging out");
