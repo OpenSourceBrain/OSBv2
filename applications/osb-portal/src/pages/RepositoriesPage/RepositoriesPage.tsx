@@ -417,8 +417,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
               repositories={repositories}
               refreshRepositories={() => updateList(tabValue)}
               searchFilterValues={searchFilterValues}
-              handleRepositoryClick={(repositoryId: number) =>
-                openRepoUrl(repositoryId)
+              handleRepositoryClick={(repository: OSBRepository) =>
+                openRepoUrl(repository.id)
               }
               handleTagClick={(tag: Tag) =>
                 searchFilterValues.tags.includes(tag.tag)
