@@ -642,22 +642,6 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_test-e2e:
-        stage: publish
-        type: push
-        title: Test e2e
-        candidate: '${{REGISTRY}}/osb/test-e2e:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_test-api:
-        stage: publish
-        type: push
-        title: Test api
-        candidate: '${{REGISTRY}}/osb/test-api:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_workspaces-figshare-copy:
         stage: publish
         type: push
