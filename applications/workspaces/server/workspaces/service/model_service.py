@@ -149,14 +149,15 @@ class WorkspaceService(BaseModelService):
     def check_max_num_workspaces_per_user(self, user_id=None):
         if not user_id:
             user_id = keycloak_user_id()
-        # check if max number of ws per user limit is reached
-        num_ws_current_user = self.repository.search(user_id=user_id).total
-        max_num_ws_current_user = Config.MAX_NUMBER_WORKSPACES_PER_USER
-        if num_ws_current_user >= max_num_ws_current_user:
-            raise NotAllowed(
-                f"Max number of {max_num_ws_current_user} workspaces " \
-                 "limit exceeded"
-            )
+        if not get_auth_client().user_has_realm_role(user_id=user_id, role="administrator"):
+            # for non admin users check if max number of ws per user limit is reached
+            num_ws_current_user = self.repository.search(user_id=user_id).total
+            max_num_ws_current_user = Config.MAX_NUMBER_WORKSPACES_PER_USER
+            if num_ws_current_user >= max_num_ws_current_user:
+                raise NotAllowed(
+                    f"Max number of {max_num_ws_current_user} workspaces " \
+                    "limit exceeded"
+                )
 
     @send_event(message_type="workspace", operation="create")
     def post(self, body):
