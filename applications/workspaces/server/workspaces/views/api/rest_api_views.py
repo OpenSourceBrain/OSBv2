@@ -19,7 +19,7 @@ class WorkspaceView(BaseModelView):
     
     def post(self, body):
         try:
-            super().post(body)
+            return super().post(body)
         except NotAllowed:
             return "Not allowed", 405
 
