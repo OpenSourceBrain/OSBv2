@@ -3,6 +3,7 @@ from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient
 from cloudharness import log
+import typing
 # from cloudharness.models import User as CHUser # Cloudharness 2.0.0
 
 class UserNotFound(Exception): pass
@@ -33,8 +34,23 @@ def get_user(userid: str) -> User:
     return user
 
 
+def get_users(query: str) -> typing.List[User]:
+    try:
+        client = AuthClient()
+        kc_users = client.get_users(query)
+    except KeycloakError as e:
+        raise Exception("Unhandled Keycloak exception") from e
+    all_users = []
+    for kc_user in kc_users:
+        auser = map_user(kc_user)
+        auser.email = None  # strip out the e-mail address
+        all_users.append(auser)
+
+    return all_users
+
+
 def map_user(kc_user) -> User:
-    user = User.from_dict(kc_user)
+    user = kc_user if isinstance(kc_user, dict) else User.from_dict(kc_user._raw_dict)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
 
@@ -57,7 +73,7 @@ def map_user(kc_user) -> User:
     return user
 
 
-def update_user(userid, user: User):
+def update_user(userid, user: User):    
     client = AuthClient()
 
     try:
@@ -69,7 +85,7 @@ def update_user(userid, user: User):
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'attributes': {
-                **current_user.get('attributes', {}),
+                **(current_user.get('attributes') or {}),
                 **({('profile--' + k): user.profiles[k] for k in user.profiles} if user.profiles else {}),
                 'avatar': user.avatar,
                 'website': user.website
@@ -77,7 +93,7 @@ def update_user(userid, user: User):
         }
 
         admin_client.update_user(userid,  updated_user)
-        return map_user({**current_user, **updated_user})
+        return get_user(userid)
     except KeycloakError as e:
         if e.response_code == 404:
             raise UserNotFound(userid)

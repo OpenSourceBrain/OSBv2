@@ -11,15 +11,12 @@ import IconButton from "@material-ui/core/IconButton";
 
 import * as Icons from "../icons";
 
-import {
-  checkBoxColor,
-  bgDarker,
-} from "../../theme";
+import { checkBoxColor, bgDarker } from "../../theme";
 
 interface DialogProps {
   open: boolean;
   title: string | React.ReactNode;
-  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl"
+  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
 }
@@ -46,7 +43,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   title,
   children,
   actions,
-  maxWidth
+  maxWidth,
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -59,11 +56,22 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   const classes = useStyles();
 
   return (
-    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true} maxWidth={maxWidth}>
+    <Dialog
+      className={classes.dialog}
+      onClose={handleClose}
+      open={open}
+      fullWidth={true}
+      maxWidth={maxWidth}
+    >
       <DialogTitle disableTypography={true}>
         <Box display="flex" justifyContent="space-between">
           {title}
-          <IconButton className={classes.closeIcon} aria-label="close" onClick={handleClose} style={{ padding: 0 }} >
+          <IconButton
+            className={classes.closeIcon}
+            aria-label="close"
+            onClick={handleClose}
+            style={{ padding: 0 }}
+          >
             <Icons.CloseIcon fontSize="small" />
           </IconButton>
         </Box>

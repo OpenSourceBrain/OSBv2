@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:11.0.3
+FROM quay.io/keycloak/keycloak:16.1.0
 
 # add kubectl
 USER root
@@ -7,3 +7,6 @@ USER jboss
 
 # Customize keycloak look
 COPY themes/custom /opt/jboss/keycloak/themes/custom
+
+# keycloak kafka listener plugin
+COPY plugins/metacell-admin-event-listener-bundle-1.0.0.ear /opt/jboss/keycloak/standalone/deployments/

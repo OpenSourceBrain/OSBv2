@@ -1,3 +1,4 @@
+from cloudharness import log
 import workspaces.service.osbrepository as repository_service
 
 
@@ -35,4 +36,17 @@ def get_description(uri=None, repository_type=None, **kwargs):
         description = adapter.get_description(contexts[0])
         return description, 200
     except Exception as e:
+        return str(e), 500
+
+def get_info(uri=None, repository_type=None):
+    """Get description for repository"""
+    try:
+        adapter = repository_service.get_repository_adapter(
+            repository_type=repository_type, uri=uri
+        )
+
+        info = adapter.get_info()
+        return info, 200
+    except Exception as e:
+        log.error("Error getting repo info", exc_info=True)
         return str(e), 500

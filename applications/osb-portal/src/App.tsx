@@ -6,7 +6,16 @@ import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
 import HomePage from "./pages/HomePage";
 import theme from "./theme";
 
-import { Header, AboutDialog, WorkspaceOpenPage, ProtectedRoute, RepositoriesPage, RepositoryPage, WorkspacePage, UserPage } from "./components/index";
+import {
+  Header,
+  AboutDialog,
+  WorkspaceOpenPage,
+  ProtectedRoute,
+  RepositoriesPage,
+  RepositoryPage,
+  WorkspacePage,
+  UserPage,
+} from "./components/index";
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -17,7 +26,7 @@ const useStyles = makeStyles(() => ({
     [theme.breakpoints.up("md")]: {
       height: "100vh",
       overflow: "hidden",
-    }
+    },
   },
 }));
 
@@ -25,15 +34,16 @@ export const App = (props: any) => {
   const classes = useStyles();
 
   return (
-
     <ThemeProvider theme={theme}>
       <OSBErrorBoundary>
         <CssBaseline />
         <AboutDialog />
-        {!props.error &&
+        {!props.error && (
           <Router>
             <div className={classes.mainContainer}>
-              <Header />
+              <div id="header">
+                <Header />
+              </div>
 
               <OSBErrorBoundary>
                 <Switch>
@@ -43,10 +53,16 @@ export const App = (props: any) => {
                   <Route exact={true} path="/workspace/:workspaceId">
                     <WorkspacePage />
                   </Route>
-                  <ProtectedRoute exact={true} path="/workspace/open/:workspaceId/:app">
+                  <ProtectedRoute
+                    exact={true}
+                    path="/workspace/open/:workspaceId/:app"
+                  >
                     <WorkspaceOpenPage />
                   </ProtectedRoute>
-                  <ProtectedRoute exact={true} path="/workspace/open/:workspaceId">
+                  <ProtectedRoute
+                    exact={true}
+                    path="/workspace/open/:workspaceId"
+                  >
                     <WorkspaceOpenPage />
                   </ProtectedRoute>
                   <Route exact={true} path="/repositories">
@@ -62,9 +78,8 @@ export const App = (props: any) => {
               </OSBErrorBoundary>
             </div>
           </Router>
-        }
+        )}
       </OSBErrorBoundary>
     </ThemeProvider>
-
   );
 };

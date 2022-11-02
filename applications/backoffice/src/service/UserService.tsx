@@ -29,6 +29,9 @@ export async function getUser(userid: string): Promise<User> {
   return usersApi.getUser({ userid });
 }
 
+export async function getUsers(): Promise<User[]> {
+  return usersApi.getUsers();
+}
 
 export async function updateUser(user: User): Promise<User> {
   return usersApi.updateUser({ userid: user.id, requestBody: user });

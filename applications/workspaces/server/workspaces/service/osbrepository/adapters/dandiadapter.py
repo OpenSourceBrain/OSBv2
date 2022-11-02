@@ -2,9 +2,8 @@ import re
 import requests
 import sys
 import concurrent.futures
-
 from cloudharness import log as logger
-from workspaces.models import DandiRepositoryResource, RepositoryResource, RepositoryResourceNode
+from workspaces.models import DandiRepositoryResource, RepositoryResource, RepositoryResourceNode, RepositoryInfo
 from .utils import add_to_tree
 
 MAX_WORKERS = 20
@@ -79,6 +78,15 @@ class DandiAdapter:
                             path_prefix=new_path_prefix,
                         )
                     )
+
+    def get_info(self) -> RepositoryInfo:
+        resp = self.get_json(f"{self.api_url}/dandisets/{self.dandiset_id}")
+        base_info = resp["most_recent_published_version"] or resp["draft_version"]
+        detailed_info= self._get_dandi_info(base_info["version"])
+        return RepositoryInfo(name=base_info["name"], contexts=self.get_contexts(), tags=detailed_info["metadata"].get("keywords", []), summary=detailed_info["metadata"].get("description", ""))
+
+    def get_base_uri(self):
+        return f"https://dandiarchive.org/dandiset/{self.dandiset_id}"
 
     def get_contexts(self):
         versions = self.get_json(

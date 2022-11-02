@@ -7,3 +7,4 @@ skaffold.yaml
 /deployment.yaml
 .pytest_cache
 /.overrides
+.hypothesis

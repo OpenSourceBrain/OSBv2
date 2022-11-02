@@ -44,17 +44,15 @@ const useStyles = makeStyles((theme) => ({
   logoChip: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     borderRadius: 2,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     fontSize: 9,
     padding: 3,
-    lineHeight: '1em',
+    lineHeight: "1em",
     marginTop: 3,
     fontWeight: 700,
-    marginLeft: '1em',
-    alignSelf: 'flex-start'
-
-
-  }
+    marginLeft: "1em",
+    alignSelf: "flex-start",
+  },
 }));
 
 export const Header = (props: any) => {
@@ -73,7 +71,6 @@ export const Header = (props: any) => {
 
   const user = props.user;
 
-
   const handleUserLogin = () => {
     props.login();
   };
@@ -84,11 +81,15 @@ export const Header = (props: any) => {
   const handleMyAccount = () => {
     history.push(`/user/${user.id}`);
     setMenuOpen(false);
-  }
+  };
+  const handleAccountHelp = () => {
+    window.open("https://docs.opensourcebrain.org/OSBv2/User_Accounts.html");
+    setMenuOpen(false);
+  };
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin} className={classes.button}>
+      <Button onClick={handleUserLogin} className={`sign-in ${classes.button}`}>
         Sign in
       </Button>
     ) : (
@@ -96,10 +97,30 @@ export const Header = (props: any) => {
         <Popper open={Boolean(menuOpen)} anchorEl={menuAnchorRef.current}>
           <Paper>
             <ClickAwayListener onClickAway={handleMenuClose}>
-              <MenuList autoFocusItem={menuOpen} id="user-menu">
-                {<MenuItem onClick={handleMyAccount}>My account</MenuItem>}
+              <MenuList autoFocusItem={menuOpen} className="user-menu">
+                {
+                  <MenuItem
+                    className="my-account-menu-item"
+                    onClick={handleMyAccount}
+                  >
+                    My account
+                  </MenuItem>
+                }
+                {
+                  <MenuItem
+                    className="account-help-menu-item"
+                    onClick={handleAccountHelp}
+                  >
+                    Account help
+                  </MenuItem>
+                }
                 {/* <MenuItem>Settings</MenuItem> */}
-                <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                <MenuItem
+                  className="logout-menu-item"
+                  onClick={handleUserLogout}
+                >
+                  Logout
+                </MenuItem>
               </MenuList>
             </ClickAwayListener>
           </Paper>
@@ -111,7 +132,7 @@ export const Header = (props: any) => {
           aria-haspopup="true"
           onClick={handleMenuToggle}
           startIcon={<PersonIcon fontSize="large" />}
-          className={classes.button}
+          className={`${classes.button} user-menu-btn`}
         >
           {user.username}
         </Button>
@@ -136,9 +157,8 @@ export const Header = (props: any) => {
               title={title}
               height="25"
             />
-
           </a>
-          <sup className={classes.logoChip} >beta</sup>
+          <sup className={classes.logoChip}>beta</sup>
         </Box>
         <Box>
           {/* <IconButton>

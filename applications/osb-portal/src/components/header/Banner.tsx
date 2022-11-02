@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -37,7 +37,9 @@ export const Banner = (props: any) => {
   };
 
   const text1 =
-    user === null ? "Welcome to the Open Source Brain v2.0 beta release!" : `Welcome back ${user.firstName}`;
+    user === null
+      ? "Welcome to the Open Source Brain v2.0 beta release!"
+      : `Welcome back ${user.firstName}`;
   const text2 =
     user === null
       ? "Featuring model creation through NetPyNE, NWB data exploration and interactive JupyterLab based development sessions"
@@ -54,14 +56,30 @@ export const Banner = (props: any) => {
             {text2}
           </Typography>
           <Box display="flex" pt={1} flexDirection="row">
-            {'' && // TODO temporarily disabled
+            {"" && ( // TODO temporarily disabled
               <Button variant="outlined">Take the tour</Button>
-            }
+            )}
             {user === null ? (
-              <Button variant="outlined" onClick={handleSignup}>Sign up</Button>
+              <Button variant="outlined" onClick={handleSignup}>
+                Sign up
+              </Button>
             ) : null}
-            <Button variant="outlined" onClick={() => history.push('/repositories')}>View repositories</Button>
-            <Button variant="outlined" onClick={() => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html")}>More information</Button>
+            <Button
+              variant="outlined"
+              onClick={() => history.push("/repositories")}
+            >
+              View repositories
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() =>
+                window.open(
+                  "https://docs.opensourcebrain.org/OSBv2/Overview.html"
+                )
+              }
+            >
+              More information
+            </Button>
           </Box>
         </Box>
       </Box>
