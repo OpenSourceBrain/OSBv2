@@ -1,17 +1,17 @@
-import * as puppeteer from "puppeteer";
-import * as selectors from "./selectors";
-import {
+const puppeteer = require("puppeteer");
+const selectors = require("./selectors");
+const {
   ONE_SECOND,
   ONE_MINUTE,
   TWO_MINUTES,
   TEN_MINUTES,
-} from "./time_constants";
+} = require("./time_constants");
 
 let page: any;
 let browser: any;
-jest.setTimeout(TEN_MINUTES);
+jest.setTimeout(TEN_MINUTES* 4);
 
-const WORKSPACE_LOAD_TIMEOUT = TWO_MINUTES * 1.5;
+const WORKSPACE_LOAD_TIMEOUT = TEN_MINUTES;
 
 const getCurrentWorkpaces: () => Promise<Array<any>> = async () => {
   const pageFrame = page.mainFrame();
@@ -25,6 +25,7 @@ const testApplication =
     console.log("Opening workspace with", appName);
     await page.waitForSelector(selectors.OSB_LOGO);
     await page.click(selectors.OSB_LOGO);
+    
 
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
 
@@ -80,6 +81,13 @@ const testApplication =
       }
     );
     const frame = await elementHandle.contentFrame();
+    
+    await frame.waitForSelector(selectors.SPAWN, {
+      timeout: ONE_MINUTE,
+    });
+
+    
+    
     for(const appSelector of appSelectors) {
       if(!frame.isDetached()) {
         await frame.waitForSelector(appSelector, {
@@ -100,27 +108,35 @@ describe("OSB v2 Smoke Tests", () => {
         `--window-size=1600,1000`,
         "--ignore-certificate-errors"
       ],
-      headless: true,
+      headless: !process.env.PUPPETEER_DISPLAY,
       defaultViewport: {
         width: 1600,
         height: 1000,
       },
     });
 
-    page = await browser.newPage();
     console.log(
       "Checking page",
       process.env.APP_URL || "https://v2dev.opensourcebrain.org/"
     );
+
+    
+  });
+
+  beforeEach(async () => {
+    page = await browser.newPage();
+    
     await page
       .goto(process.env.APP_URL || "https://v2dev.opensourcebrain.org/", {
         waitUntil: "networkidle0",
       })
       .catch(() => {});
 
-    console.log("Env", process.env);
-
     await page.waitForSelector(selectors.WORKSPACES);
+  });
+
+  afterEach(async () => {
+    await page.close();
   });
 
   afterAll(() => {
@@ -168,10 +184,8 @@ describe("OSB v2 Smoke Tests", () => {
     await page.click(selectors.CREATE_NEW_WORKSPACE);
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
     await page.waitForSelector(selectors.YOUR_WORKSPACES);
-    const privateWorkspacesAfter = await getCurrentWorkpaces();
-    expect(privateWorkspacesAfter.length).toBe(
-      privateWorkspacesBefore.length + 1
-    );
+    await page.waitForSelector(".workspace-card");
+    await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
   });
 
   test(
@@ -179,17 +193,17 @@ describe("OSB v2 Smoke Tests", () => {
     testApplication("NWB Explorer", [selectors.NWB_APP], "/nwbexplorer")
   );
 
+  test("Open workspace with Jupyter Lab", testApplication("JupyterLab", [
+    selectors.JUPYTER_CONTENT], "/jupyter"));
+
   test("Open workspace with NetPyNE", testApplication("NetPyNE", [
     selectors.NETPYNE_CELL_BUTTON,
     selectors.NETPYNE_MAIN_CONTAINER], "/netpyne"));
 
-  test("Open workspace with Jupyter Lab", testApplication("JupyterLab", [
-      selectors.JUPYTER_CONTENT], "/jupyter"));
+
 
   test("Delete created workspace", async () => {
     console.log("Deleting created workspace");
-
-    await page.click(selectors.OSB_LOGO);
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
     
     let menuBtn;
@@ -197,16 +211,17 @@ describe("OSB v2 Smoke Tests", () => {
       
 
       await menuBtn.click();
-      await page.waitForSelector(".delete-workspace", {timeout: ONE_SECOND});
+      await page.waitForSelector(".delete-workspace", {timeout: ONE_SECOND * 5});
       await page.evaluate(() => document.querySelector<HTMLElement>(".delete-workspace")?.click()); // page.click does not work on the popover
       await page.waitForSelector(".delete-workspace", {hidden: true});
+      await page.waitForTimeout(ONE_SECOND);
     }
         
       
     
 
 
-  });
+   });
 
   test("Logout", async () => {
     console.log("Logging out");
