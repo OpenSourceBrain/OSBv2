@@ -5,7 +5,6 @@ stages:
 - unittest
 - deploy
 - qa
-- publish
 steps:
   main_clone:
     title: Clone main repository
@@ -33,14 +32,15 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
-    - harness-deployment cloud-harness . -t ${{CF_BUILD_ID}} -d ${{DOMAIN}} -r ${{REGISTRY}}
-      -rs ${{REGISTRY_SECRET}} -n ${{NAMESPACE}} -e dev -i osb-portal
+    - harness-deployment cloud-harness . -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+      -t ${{CF_BUILD_ID}} -d ${{CF_SHORT_REVISION}}.${{DOMAIN}} -r ${{REGISTRY}} -rs
+      ${{REGISTRY_SECRET}} -e local-test-minimal -N -i argo -i osb-portal
   prepare_deployment_view:
     commands:
-    - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
+    - helm template ./deployment/helm --debug -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
     environment:
     - ACTION=auth
-    - KUBE_CONTEXT=${{NAMESPACE}}
+    - KUBE_CONTEXT=test-${{CF_BUILD_ID}}
     image: codefresh/cfstep-helm:3.6.2
     stage: prepare
     title: View helm chart
@@ -135,22 +135,6 @@ steps:
         image_name: osb/accounts
         title: Accounts
         working_directory: ./.overrides/applications/accounts
-      volumemanager:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        image_name: osb/volumemanager
-        title: Volumemanager
-        working_directory: ./cloud-harness/applications/volumemanager/server
       jupyterhub:
         type: build
         stage: build
@@ -340,21 +324,6 @@ steps:
         image_name: osb/workspaces
         title: Workspaces
         working_directory: ./applications/workspaces/server
-      netpyne:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/netpyne
-        title: Netpyne
-        working_directory: ./applications/netpyne
       accounts-api:
         type: build
         stage: build
@@ -386,7 +355,7 @@ steps:
         image_name: osb/osb-portal
         title: Osb portal
         working_directory: ./applications/osb-portal
-      backoffice:
+      jupyterlab-minimal:
         type: build
         stage: build
         tag: '${{CF_BUILD_ID}}'
@@ -398,39 +367,16 @@ steps:
         - DOMAIN=${{DOMAIN}}
         - NOCACHE=${{CF_BUILD_ID}}
         - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/backoffice
-        title: Backoffice
-        working_directory: ./applications/backoffice
-      nwb-explorer:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/nwb-explorer
-        title: Nwb explorer
-        working_directory: ./applications/nwb-explorer
-      jupyterlab:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/jupyterlab
-        title: Jupyterlab
-        working_directory: ./applications/jupyterlab
+        image_name: osb/jupyterlab-minimal
+        title: Jupyterlab minimal
+        working_directory: ./applications/jupyterlab-minimal
+  prepare_cluster:
+    stage: deploy
+    image: codefresh/kubectl
+    fail_fast: false
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl create ns test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
   deployment:
     stage: deploy
     type: helm
@@ -439,29 +385,19 @@ steps:
     arguments:
       helm_version: 3.6.2
       chart_name: deployment/helm
-      release_name: '${{NAMESPACE}}'
+      release_name: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
       kube_context: '${{CLUSTER_NAME}}'
-      namespace: '${{NAMESPACE}}'
+      namespace: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
       chart_version: '${{CF_BUILD_ID}}'
-      cmd_ps: --wait --timeout 600s
+      cmd_ps: --timeout 600s
       custom_value_files:
       - ./deployment/helm/values.yaml
       custom_values:
       - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
       - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_accounts_harness_secrets_api__user__password=${{API__USER__PASSWORD}}
       - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
       - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
-    image: codefresh/cfstep-helm:3.6.2
-    environment:
-    - CHART_REF=./deployment/helm
-    - RELEASE_NAME=${{NAMESPACE}}
-    - KUBE_CONTEXT=${{CLUSTER_NAME}}
-    - NAMESPACE=${{NAMESPACE}}
-    - CHART_VERSION=${{DEPLOYMENT_PUBLISH_TAG}}
-    - HELM_REPO_USE_HTTP=false
-    - HELM_REPO_CONTEXT_PATH=
-    - TIMEOUT=600s
-    - VALUESFILE_values=./deployment/helm/values.yaml
   build_test_images:
     title: Build test images
     type: parallel
@@ -498,32 +434,22 @@ steps:
         image_name: osb/test-api
         title: Test api
         working_directory: ./cloud-harness
-    when:
-      condition:
-        all:
-          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
   wait_deployment:
     stage: qa
     title: Wait deployment to be ready
     image: codefresh/kubectl
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
-    - kubectl config set-context --current --namespace=${{NAMESPACE}}
+    - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
     - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/accounts
-    - kubectl rollout status deployment/volumemanager
     - kubectl rollout status deployment/common
     - kubectl rollout status deployment/events
     - kubectl rollout status deployment/workflows
     - kubectl rollout status deployment/workspaces
     - kubectl rollout status deployment/accounts-api
     - kubectl rollout status deployment/osb-portal
-    - kubectl rollout status deployment/backoffice
     - sleep 60
-    when:
-      condition:
-        all:
-          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
   tests_api:
     stage: qa
     title: Api tests
@@ -538,23 +464,25 @@ steps:
         - '${{CF_REPO_NAME}}/.overrides/applications/common:/home/test'
         - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
         environment:
-        - APP_URL=https://common.${{DOMAIN}}/api
+        - APP_URL=https://common.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api
         commands:
         - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
-          https://common.${{DOMAIN}}/api -c all
+          https://common.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api -c all
       workflows_api_test:
         volumes:
         - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
         - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
         environment:
-        - APP_URL=https://workflows.${{DOMAIN}}/api
+        - APP_URL=https://workflows.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api
         commands:
         - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
-          https://workflows.${{DOMAIN}}/api -c all
-    when:
-      condition:
-        all:
-          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
+          https://workflows.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api -c all
+    hooks:
+      on_fail:
+        exec:
+          image: alpine
+          commands:
+          - cf_export  FAILED=failed
   tests_e2e:
     stage: qa
     title: End to end tests
@@ -568,217 +496,43 @@ steps:
         volumes:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
-        - APP_URL=https://www.${{DOMAIN}}
-    when:
-      condition:
-        all:
-          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
+        - APP_URL=https://www.${{CF_SHORT_REVISION}}.${{DOMAIN}}
+        - USERNAME=testuser
+        - PASSWORD=test
+    hooks:
+      on_fail:
+        exec:
+          image: alpine
+          commands:
+          - cf_export  FAILED=failed
   approval:
     type: pending-approval
-    stage: publish
-    title: Approve build
-    description: Approve build release and tagging
+    stage: qa
+    title: Approve with failed tests
+    description: The pipeline will fail after ${{WAIT_ON_FAIL}} minutes
     timeout:
-      duration: 168
+      timeUnit: minutes
+      duration: '${{WAIT_ON_FAIL}}'
       finalState: denied
-  publish:
-    type: parallel
-    stage: publish
-    steps:
-      publish_cloudharness-base:
-        stage: publish
-        type: push
-        title: Cloudharness base
-        candidate: '${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-frontend-build:
-        stage: publish
-        type: push
-        title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-flask:
-        stage: publish
-        type: push
-        title: Cloudharness flask
-        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_notifications:
-        stage: publish
-        type: push
-        title: Notifications
-        candidate: '${{REGISTRY}}/osb/notifications:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts:
-        stage: publish
-        type: push
-        title: Accounts
-        candidate: '${{REGISTRY}}/osb/accounts:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_volumemanager:
-        stage: publish
-        type: push
-        title: Volumemanager
-        candidate: '${{REGISTRY}}/osb/volumemanager:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterhub:
-        stage: publish
-        type: push
-        title: Jupyterhub
-        candidate: '${{REGISTRY}}/osb/jupyterhub:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_common:
-        stage: publish
-        type: push
-        title: Common
-        candidate: '${{REGISTRY}}/osb/common:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_events:
-        stage: publish
-        type: push
-        title: Events
-        candidate: '${{REGISTRY}}/osb/events:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-send-result-event:
-        stage: publish
-        type: push
-        title: Workflows send result event
-        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-download:
-        stage: publish
-        type: push
-        title: Workflows extract download
-        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-notify-queue:
-        stage: publish
-        type: push
-        title: Workflows notify queue
-        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows:
-        stage: publish
-        type: push
-        title: Workflows
-        candidate: '${{REGISTRY}}/osb/workflows:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-figshare-copy:
-        stage: publish
-        type: push
-        title: Workspaces figshare copy
-        candidate: '${{REGISTRY}}/osb/workspaces-figshare-copy:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-scan-workspace:
-        stage: publish
-        type: push
-        title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-github-copy:
-        stage: publish
-        type: push
-        title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-dandi-copy:
-        stage: publish
-        type: push
-        title: Workspaces dandi copy
-        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces:
-        stage: publish
-        type: push
-        title: Workspaces
-        candidate: '${{REGISTRY}}/osb/workspaces:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
-        stage: publish
-        type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts-api:
-        stage: publish
-        type: push
-        title: Accounts api
-        candidate: '${{REGISTRY}}/osb/accounts-api:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_osb-portal:
-        stage: publish
-        type: push
-        title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_backoffice:
-        stage: publish
-        type: push
-        title: Backoffice
-        candidate: '${{REGISTRY}}/osb/backoffice:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
-        stage: publish
-        type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterlab:
-        stage: publish
-        type: push
-        title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
     when:
       condition:
         all:
-          whenVarExists: includes("${{DEPLOYMENT_PUBLISH_TAG}}", "{{DEPLOYMENT_PUBLISH_TAG}}")
-            == false
+          error: '"${{FAILED}}" == "failed"'
+          wait_on_fail: '${{WAIT_ON_FAIL}}'
+  dummy_end:
+    title: Dummy step
+    description: Without this, the on_finish hook is executed before the approval
+      step
+    image: python:3.9.10
+    stage: qa
+    when:
+      condition:
+        all:
+          error: '"${{FAILED}}" == "failed"'
+          wait_on_fail: '${{WAIT_ON_FAIL}}'
+hooks:
+  on_finish:
+    image: codefresh/kubectl
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl delete ns test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}

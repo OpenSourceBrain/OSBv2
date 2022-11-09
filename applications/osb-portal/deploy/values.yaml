@@ -33,7 +33,6 @@ harness:
       - jupyterlab
       - notifications
       - backoffice
-      - nfsserver
   test:
     e2e:
       enabled: true
