@@ -136,13 +136,13 @@ interface WorkspaceProps {
   workspace: Workspace;
   refreshWorkspace: () => void;
   openResource: (r: WorkspaceResource) => any;
+  currentResource: WorkspaceResource
 }
 
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
-  const { workspace, refreshWorkspace, openResource } = props;
+  const { workspace, refreshWorkspace, openResource, currentResource } = props;
 
-  const lastOpenResourceId =
-    workspace.lastOpen !== null ? workspace.lastOpen.id : -1;
+  const lastOpenResourceId = currentResource?.id ?? -1;
   const resources = workspace.resources.filter(
     (resource) => resource.id !== undefined
   );

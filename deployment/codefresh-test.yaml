@@ -100,21 +100,6 @@ steps:
         image_name: osb/cloudharness-flask
         title: Cloudharness flask
         working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
-      test-e2e:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/test-e2e
-        title: Test e2e
-        working_directory: ./cloud-harness/test/test-e2e
   build_application_images:
     type: parallel
     stage: build
@@ -465,10 +450,34 @@ steps:
       kube_context: '${{CLUSTER_NAME}}'
       namespace: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
       chart_version: '${{CF_BUILD_ID}}'
-      cmd_ps: --wait --timeout 600s
+      cmd_ps: --timeout 600s
       custom_value_files:
       - ./deployment/helm/values.yaml
-      custom_values: []
+      custom_values:
+      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
+  build_test_images:
+    title: Build test images
+    type: parallel
+    stage: qa
+    steps:
+      test-e2e:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/test-e2e
+        title: Test e2e
+        working_directory: ./cloud-harness/test/test-e2e
   wait_deployment:
     stage: qa
     title: Wait deployment to be ready
@@ -476,68 +485,16 @@ steps:
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
     - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/notifications
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/accounts
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/volumemanager
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/common
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/events
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/workflows
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/workspaces
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/accounts-api
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/osb-portal
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/backoffice
-    - sleep 60
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/notifications
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/accounts
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/volumemanager
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/common
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/events
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/workflows
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/workspaces
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/accounts-api
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/osb-portal
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/backoffice
-    - sleep 60
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/notifications
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/accounts
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/volumemanager
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/common
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/events
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/workflows
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/workspaces
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/accounts-api
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/osb-portal
-    - kubectl -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}} rollout status
-      deployment/backoffice
+    - kubectl rollout status deployment/notifications
+    - kubectl rollout status deployment/accounts
+    - kubectl rollout status deployment/volumemanager
+    - kubectl rollout status deployment/common
+    - kubectl rollout status deployment/events
+    - kubectl rollout status deployment/workflows
+    - kubectl rollout status deployment/workspaces
+    - kubectl rollout status deployment/accounts-api
+    - kubectl rollout status deployment/osb-portal
+    - kubectl rollout status deployment/backoffice
     - sleep 60
   tests_e2e:
     stage: qa

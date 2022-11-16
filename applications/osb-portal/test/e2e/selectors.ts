@@ -29,3 +29,4 @@ export const NETPYNE_CELL_BUTTON = "#selectCellButton";
 export const APPLICATION_FRAME = '#workspace-frame'
 export const NWB_APP = "#main-container-inner";
 export const JUPYTER_CONTENT = '#jp-main-dock-panel';
+export const SPAWN = ".spawn-container"

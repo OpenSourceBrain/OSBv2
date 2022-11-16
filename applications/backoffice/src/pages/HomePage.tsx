@@ -29,6 +29,13 @@ export default (props: any) => {
   const [ repositories, setRepositories ] = React.useState<any>(null);
   const [ error, setError ] = React.useState<any>(null);
 
+  let realm = "osb2"
+  if (window.location.hostname.includes("local")) {
+    realm = "osblocal"
+  } else if (window.location.hostname.includes("dev")) {
+    realm = "osb2dev"
+  }
+
   const fetchInfo = () => {
     // Initialise APIs with token
     const token = Cookies.get('accessToken');
@@ -83,17 +90,10 @@ export default (props: any) => {
       }
   }
 
-  const getKeyCloakProfile = () => {
-    const hostname = window.location.hostname;
-    let realm = "osbv2"
-    if (hostname.includes("local")) {
-      realm = "osblocal"
-    }
-    else if (hostname.includes("dev")) {
-      realm = "osb2dev"
-    }
+  const keycloakBaseUrl = React.useMemo(() => {
+
     return "/auth/admin/master/console/#/realms/" + realm + "/users/";
-  }
+  }, [realm]);
 
   // for links to profiles
   const osbProfile = "/user/";
@@ -118,7 +118,12 @@ export default (props: any) => {
 
   const dataColumns: GridColDef[] = [
     {
-      field: 'id', headerName: 'Profile', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${getKeyCloakProfile()}${param.value}`} target="_blank"> KeyCloak </Link></>},
+      field: 'id', headerName: 'Profile', renderCell: (param: any) =>
+      <>
+        <Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>
+        &nbsp;|&nbsp;
+        <Link href={`${getHostname("accounts")}${keycloakBaseUrl}${param.value}`} target="_blank"> KeyCloak </Link>
+      </>,
       minWidth: 50, flex: 2,
     },
     {

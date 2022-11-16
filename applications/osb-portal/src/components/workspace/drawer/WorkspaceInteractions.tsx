@@ -118,6 +118,7 @@ interface WorkspaceProps {
   [propName: string]: any;
   openResource: (r: WorkspaceResource) => any;
   refreshWorkspacePage?: () => void;
+  currentResource: WorkspaceResource;
 }
 
 export default (props: WorkspaceProps | any) => {
@@ -290,6 +291,7 @@ export default (props: WorkspaceProps | any) => {
               <Divider />
               <WorkspaceResourceBrowser
                 workspace={workspace}
+                currentResource={props.currentResource}
                 refreshWorkspace={handleWorkspaceRefresh}
                 openResource={props.openResource}
               />

@@ -43,7 +43,8 @@ import {
   Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
-import { TagFaces } from "@material-ui/icons";
+
+const DEFAULT_CONTEXTS = ["main", "master"]
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -217,7 +218,7 @@ export const EditRepoDialog = ({
           setFormValues({
             ...formValues,
             tags: info.tags.map((tag) => ({tag})),
-            defaultContext: info.contexts[0],
+            defaultContext: info.contexts.find((c => DEFAULT_CONTEXTS.includes(c))) || info.contexts[0],
             summary: info.summary,
             name: info.name
             
@@ -254,7 +255,7 @@ export const EditRepoDialog = ({
 
   const handleInputContext = (event: any) => {
     const value = event?.target?.value || event.text;
-    
+    setFormValues({...formValues, defaultContext: value})
   };
 
   const addOrUpdateRepository = () => {
