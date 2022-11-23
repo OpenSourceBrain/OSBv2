@@ -31,6 +31,7 @@ singleuser:
     dynamic:
       pvcNameTemplate: osb-user-{userid}
       volumeNameTemplate: osb-user-{userid}
+      storageClass: "{{namespace}}-nfs-client"
     homeMountPath: /opt/user
     extraLabels: {}
   cpu:
