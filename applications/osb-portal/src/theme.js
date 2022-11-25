@@ -1,5 +1,5 @@
 
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { adaptV4Theme, createTheme } from '@mui/material/styles';
 import lessToJs from 'less-vars-to-js';
 
 import './css/mui.less';
@@ -27,7 +27,7 @@ const theme = {
   darkMode: true,
   spacing,
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: {
       main: primaryColor,
       dark: secondaryColor,
@@ -332,4 +332,4 @@ const theme = {
   },
 }
 
-export default createMuiTheme(theme);
+export default createTheme(adaptV4Theme(theme));

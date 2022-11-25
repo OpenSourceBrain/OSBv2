@@ -1,15 +1,15 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import Chip from "@material-ui/core/Chip";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ShowMoreText from "react-show-more-text";
 
 import {
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: ".88rem",
       letterSpacing: "0.01rem",
       color: paragraph,
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down('sm')]: {
         marginBottom: theme.spacing(1),
       },
     },
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(3),
         height: "3.0ex",
       },
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down('sm')]: {
         paddingTop: theme.spacing(0),
         paddingBottom: theme.spacing(0),
       },
@@ -149,13 +149,13 @@ const useStyles = makeStyles((theme) => ({
             justifyContent: "flex-end",
             flexDirection: "row",
             alignItems: "center",
-            [theme.breakpoints.down("md")]: {
+            [theme.breakpoints.down('lg')]: {
               paddingLeft: 0,
             },
-            [theme.breakpoints.down("xs")]: {
+            [theme.breakpoints.down('sm')]: {
               marginTop: theme.spacing(2),
             },
-            [theme.breakpoints.down("sm")]: {
+            [theme.breakpoints.down('md')]: {
               "& .MuiButton-outlined": {
                 flexGrow: 1,
               },
@@ -163,7 +163,7 @@ const useStyles = makeStyles((theme) => ({
           },
         },
       },
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down('md')]: {
         paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(1),
       },
@@ -172,7 +172,7 @@ const useStyles = makeStyles((theme) => ({
   repositoryActionsBox: {
     display: "flex",
     "& .MuiButtonBase-root": {
-      minWidth: `${theme.spacing(2)}px !important`,
+      minWidth: `${theme.spacing(2)} !important`,
     },
     "& .MuiIconButton-root": {
       marginLeft: theme.spacing(1),

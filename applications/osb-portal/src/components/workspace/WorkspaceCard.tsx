@@ -1,23 +1,24 @@
 import * as React from "react";
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import Chip from "@material-ui/core/Chip";
-import FolderIcon from "@material-ui/icons/Folder";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import Chip from "@mui/material/Chip";
+import FolderIcon from "@mui/icons-material/Folder";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
 import WorkspaceActionsMenu from "./WorkspaceActionsMenu";
 import { bgDarkest, paragraph, textColor } from "../../theme";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 interface Props {
   workspace: Workspace;
@@ -114,115 +115,113 @@ export const WorkspaceCard = (props: Props) => {
   const defaultResource =
     workspace.lastOpen || workspace.resources[workspace.resources.length - 1];
 
-  return (
-    <>
-      <Card className={`${classes.card} workspace-card`} elevation={0}>
-        {!props.hideMenu && (
-          <CardActions className={classes.actions}>
-            <WorkspaceActionsMenu
-              user={props.user}
-              workspace={workspace}
-              updateWorkspace={props.updateWorkspace}
-              deleteWorkspace={props.deleteWorkspace}
-              refreshWorkspaces={props.refreshWorkspaces}
-              isWorkspaceOpen={false}
-            />
-          </CardActions>
-        )}
+  return <>
+    <Card className={`${classes.card} workspace-card`} elevation={0}>
+      {!props.hideMenu && (
+        <CardActions className={classes.actions}>
+          <WorkspaceActionsMenu
+            user={props.user}
+            workspace={workspace}
+            updateWorkspace={props.updateWorkspace}
+            deleteWorkspace={props.deleteWorkspace}
+            refreshWorkspaces={props.refreshWorkspaces}
+            isWorkspaceOpen={false}
+          />
+        </CardActions>
+      )}
 
-        <Box
-          className={classes.imageContainer}
-          justifyContent="center"
-          alignItems="center"
-          display="flex"
-        >
+      <Box
+        className={classes.imageContainer}
+        justifyContent="center"
+        alignItems="center"
+        display="flex"
+      >
+        <Link
+          href={`/workspace/${workspace.id}`}
+          color="inherit"
+          className={classes.link}
+          underline="hover">
+          {!workspace.thumbnail ? (
+            <FolderIcon className={classes.imageIcon} />
+          ) : (
+            <img
+              src={
+                "/proxy/workspaces/" +
+                workspace.thumbnail +
+                "?v=" +
+                workspace.timestampUpdated.getMilliseconds()
+              }
+              className={classes.image}
+              title={openTitle}
+              alt={openTitle}
+            />
+          )}
+        </Link>
+      </Box>
+
+      <CardContent className="workspace-content">
+        <Tooltip title={workspace.name}>
           <Link
             href={`/workspace/${workspace.id}`}
             color="inherit"
-            className={classes.link}
-          >
-            {!workspace.thumbnail ? (
-              <FolderIcon className={classes.imageIcon} />
-            ) : (
-              <img
-                src={
-                  "/proxy/workspaces/" +
-                  workspace.thumbnail +
-                  "?v=" +
-                  workspace.timestampUpdated.getMilliseconds()
-                }
-                className={classes.image}
-                title={openTitle}
-                alt={openTitle}
-              />
+            className={`${classes.link} workspace-page-link`}
+            underline="hover">
+            <Typography
+              component="h2"
+              variant="h4"
+              className={classes.ellipses}
+            >
+              {workspace.name}
+            </Typography>
+            {workspace.tags.length > 0 && (
+              <TagTooltip
+                title={workspace.tags.map((tagObject) => {
+                  return (
+                    <Chip
+                      size="small"
+                      label={tagObject.tag}
+                      key={tagObject.id}
+                      className={classes.chip}
+                    />
+                  );
+                })}
+                arrow={true}
+                placement="top"
+              >
+                <LocalOfferIcon
+                  fontSize="small"
+                  className={classes.localOfferIcon}
+                />
+              </TagTooltip>
             )}
           </Link>
-        </Box>
+        </Tooltip>
+        <Typography
+          variant="caption"
+          className={`${classes.user} ${classes.ellipses}`}
+        >
+          <span>by</span>
+          <Link
+            color="inherit"
+            href={`/user/${workspace.user.id}`}
+            target="_blank"
+            underline="hover">
+            {workspace.user.firstName + " " + workspace.user.lastName}
+          </Link>
+        </Typography>
 
-        <CardContent className="workspace-content">
-          <Tooltip title={workspace.name}>
-            <Link
-              href={`/workspace/${workspace.id}`}
-              color="inherit"
-              className={`${classes.link} workspace-page-link`}
-            >
-              <Typography
-                component="h2"
-                variant="h4"
-                className={classes.ellipses}
-              >
-                {workspace.name}
-              </Typography>
-              {workspace.tags.length > 0 && (
-                <TagTooltip
-                  title={workspace.tags.map((tagObject) => {
-                    return (
-                      <Chip
-                        size="small"
-                        label={tagObject.tag}
-                        key={tagObject.id}
-                        className={classes.chip}
-                      />
-                    );
-                  })}
-                  arrow={true}
-                  placement="top"
-                >
-                  <LocalOfferIcon
-                    fontSize="small"
-                    className={classes.localOfferIcon}
-                  />
-                </TagTooltip>
-              )}
-            </Link>
-          </Tooltip>
-          <Typography
-            variant="caption"
-            className={`${classes.user} ${classes.ellipses}`}
-          >
-            <span>by</span>
-            <Link
-              color="inherit"
-              href={`/user/${workspace.user.id}`}
-              target="_blank"
-            >
-              {workspace.user.firstName + " " + workspace.user.lastName}
-            </Link>
-          </Typography>
-
-          <Typography
-            variant="caption"
-            className={`${classes.captions} ${classes.ellipses}`}
-          >
-            <span>{formatDate(workspace.timestampUpdated)}</span>{" "}
-            <span>
-              {defaultResource && defaultResource.type.application.name}
-            </span>
-          </Typography>
-        </CardContent>
-      </Card>
-    </>
-  );
+        <Typography
+          variant="caption"
+          className={`${classes.captions} ${classes.ellipses}`}
+        >
+          <span>{formatDate(workspace.timestampUpdated)}</span>{" "}
+          <span>
+            {defaultResource && defaultResource.type.application.name}
+          </span>
+        </Typography>
+      </CardContent>
+    </Card>
+  </>;
 };
 
 export default WorkspaceCard;

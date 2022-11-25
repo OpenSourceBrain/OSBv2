@@ -1,12 +1,12 @@
 import React from "react";
 import OSBDialog from "../common/OSBDialog";
-import Typography from "@material-ui/core/Typography";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
-import Icon from "@material-ui/core/Icon";
+import Typography from "@mui/material/Typography";
+import DialogTitle from "@mui/material/DialogTitle";
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Icon from "@mui/material/Icon";
 import { secondaryColor, bgLight } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ export const AboutContent = (props: any) => {
           style={{ display: "block" }}
           href="https://github.com/OpenSourceBrain/OSBv2"
           target="_blank"
-        >
+          underline="hover">
           Open Source Brain v2.0
         </Link>
       </Box>
@@ -55,7 +55,7 @@ export const AboutContent = (props: any) => {
           <Link
             href="https://docs.opensourcebrain.org/OSBv2/Overview.html"
             target="_blank"
-          >
+            underline="hover">
             documentation
           </Link>{" "}
           for more information.
@@ -65,34 +65,34 @@ export const AboutContent = (props: any) => {
       <Box m={1}>
         <Typography variant="body2" color={secondaryColor}>
           OSBv2 is being developed by the{" "}
-          <Link href="http://silverlab.org/" target="_blank">
+          <Link href="http://silverlab.org/" target="_blank" underline="hover">
             Silver Lab at University College London
           </Link>{" "}
           in collaboration with{" "}
-          <Link href="http://metacell.us" target="_blank">
+          <Link href="http://metacell.us" target="_blank" underline="hover">
             MetaCell
           </Link>
           , and is funded by{" "}
-          <Link href="https://wellcome.org/" target="_blank">
+          <Link href="https://wellcome.org/" target="_blank" underline="hover">
             Wellcome
           </Link>
           . The source code is available on{" "}
           <Link
             href="https://github.com/OpenSourceBrain/OSBv2/"
             target="_blank"
-          >
+            underline="hover">
             GitHub
           </Link>{" "}
           under the{" "}
           <Link
             href="https://github.com/OpenSourceBrain/OSBv2/blob/develop/LICENSE"
             target="_blank"
-          >
+            underline="hover">
             MIT License
           </Link>
           .
         </Typography>
-        <Link href="http://www.metacell.us" target="_blank">
+        <Link href="http://www.metacell.us" target="_blank" underline="hover">
           <img
             style={{
               width: 150,
@@ -101,7 +101,7 @@ export const AboutContent = (props: any) => {
             src={logoMetaCell}
           />
         </Link>
-        <Link href="https://wellcome.org/" target="_blank">
+        <Link href="https://wellcome.org/" target="_blank" underline="hover">
           <img
             style={{
               width: 80,

@@ -1,12 +1,13 @@
 import * as React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
 
-import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
+import ArrowUpIcon from "@mui/icons-material/ArrowDropUp";
 
-import TreeView from "@material-ui/lab/TreeView";
-import TreeItem from "@material-ui/lab/TreeItem";
-import ArrowDownIcon from "@material-ui/icons/ArrowDropDown";
+import TreeView from "@mui/lab/TreeView";
+import TreeItem from "@mui/lab/TreeItem";
+import ArrowDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { FileLinkIcon, LoadingIcon, FolderIcon } from "../../icons";
 

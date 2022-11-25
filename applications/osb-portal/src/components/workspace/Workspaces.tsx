@@ -1,15 +1,16 @@
 import * as React from "react";
 import debounce from "lodash/debounce";
 
-import { makeStyles, styled } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { styled } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from "@mui/material/Grid";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 
 import { WorkspaceCard } from "..";
 import { Workspace } from "../../types/workspace";
