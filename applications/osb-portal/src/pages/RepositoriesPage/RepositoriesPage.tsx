@@ -2,23 +2,23 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import debounce from "lodash/debounce";
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Divider from "@material-ui/core/Divider";
-import Checkbox from "@material-ui/core/Checkbox";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import Chip from "@material-ui/core/Chip";
-import Popover from "@material-ui/core/Popover";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import CircularProgress from "@mui/material/CircularProgress";
+import Divider from "@mui/material/Divider";
+import Checkbox from "@mui/material/Checkbox";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from "@mui/material/TextField";
+import Chip from "@mui/material/Chip";
+import Popover from "@mui/material/Popover";
 import searchFilter from "../../types/searchFilter";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import SearchIcon from "@material-ui/icons/Search";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
 
 import { EditRepoDialog } from "../../components";
 import {
@@ -37,7 +37,7 @@ import {
   FormControlLabel,
   FormGroup,
   InputAdornment,
-} from "@material-ui/core";
+} from "@mui/material";
 
 enum RepositoriesTab {
   all,
@@ -222,266 +222,264 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     []
   );
 
-  return (
-    <>
-      <MainMenu />
-      <Box className={`${classes.root} verticalFit`}>
-        <Box className="subheader" paddingX={3} justifyContent="space-between">
-          <Box>
-            {user ? (
-              <Tabs
-                value={tabValue}
-                textColor="primary"
-                indicatorColor="primary"
-                onChange={handleTabChange}
-              >
-                <Tab label="All repositories" />
-                <Tab label="My repositories" />
-              </Tabs>
-            ) : (
-              <Typography component="h1" color="primary">
-                All repositories
-              </Typography>
-            )}
-          </Box>
-          <Box className={classes.filterAndSearchBox}>
-            <Button
-              aria-describedby={id}
-              variant="contained"
-              onClick={handlePopoverClick}
-              className={classes.filterButton}
-              startIcon={<FilterListIcon />}
+  return <>
+    <MainMenu />
+    <Box className={`${classes.root} verticalFit`}>
+      <Box className="subheader" paddingX={3} justifyContent="space-between">
+        <Box>
+          {user ? (
+            <Tabs
+              value={tabValue}
+              textColor="primary"
+              indicatorColor="primary"
+              onChange={handleTabChange}
             >
-              <Typography component="label">Filter</Typography>
-            </Button>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              className={classes.popover}
-              onClose={handlePopoverClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <Typography component="label" className={classes.label}>
-                Tags
-              </Typography>
-              <Autocomplete
-                value={searchFilterValues.tags}
-                inputValue={tagSearchValue}
-                multiple={true}
-                options={searchTagOptions}
-                freeSolo={true}
-                onInputChange={(event, value) => {
-                  handleTagInput(value);
-                }}
-                onChange={(event, value) =>
-                  setSearchFilterValues({ ...searchFilterValues, tags: value })
-                }
-                onClose={(event, reason) => handleTagInput("")}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      variant="outlined"
-                      label={option}
-                      size="small"
-                      {...getTagProps({ index })}
-                      key={option}
-                    />
-                  ))
-                }
-                renderInput={(params) => (
-                  <>
-                    <SearchIcon />
-                    <TextField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                      fullWidth={true}
-                      {...params}
-                      variant="filled"
-                    />
-                  </>
-                )}
-                ListboxProps={{
-                  onScroll: (event: React.SyntheticEvent) => {
-                    const listboxNode = event.currentTarget;
-                    if (
-                      listboxNode.scrollTop + listboxNode.clientHeight ===
-                      listboxNode.scrollHeight
-                    ) {
-                      if (tagPage < totalTagPages) {
-                        handleTagInput(tagSearchValue, tagPage + 1);
-                      }
-                    }
-                  },
-                }}
-              />
-              <FormControl component="fieldset">
-                <FormGroup>
-                  <Typography component="label" className={classes.label}>
-                    Types
-                  </Typography>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="primary"
-                        checked={searchFilterValues.types.includes(
-                          RepositoryContentType.Experimental
-                        )}
-                        onChange={handleInput}
-                        name={RepositoryContentType.Experimental}
-                      />
-                    }
-                    label="Experimental"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="primary"
-                        checked={searchFilterValues.types.includes(
-                          RepositoryContentType.Modeling
-                        )}
-                        onChange={handleInput}
-                        name={RepositoryContentType.Modeling}
-                      />
-                    }
-                    label="Modeling"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="primary"
-                        checked={searchFilterValues.types.includes(
-                          "Development"
-                        )}
-                        onChange={handleInput}
-                        name="Development"
-                      />
-                    }
-                    label="Development"
-                  />
-                </FormGroup>
-              </FormControl>
-            </Popover>
-
-            <RepositoriesSearch
-              filterChanged={(newTextFilter) =>
-                debouncedHandleSearchFilter(newTextFilter)
-              }
-            />
-            {user && (
-              <>
-                <Divider
-                  orientation="vertical"
-                  flexItem={true}
-                  className={classes.divider}
-                />
-                <Box>
-                  <Button
-                    id="add-repository-button"
-                    variant="contained"
-                    disableElevation={true}
-                    color="primary"
-                    onClick={openDialog}
-                  >
-                    <AddIcon />
-                    Add repository
-                  </Button>
-                </Box>
-              </>
-            )}
-          </Box>
+              <Tab label="All repositories" />
+              <Tab label="My repositories" />
+            </Tabs>
+          ) : (
+            <Typography component="h1" color="primary">
+              All repositories
+            </Typography>
+          )}
         </Box>
-
-        {repositories ? (
-          <Box
-            className="verticalFill"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+        <Box className={classes.filterAndSearchBox}>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            onClick={handlePopoverClick}
+            className={classes.filterButton}
+            startIcon={<FilterListIcon />}
+          >
+            <Typography component="label">Filter</Typography>
+          </Button>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            className={classes.popover}
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
             }}
           >
-            <Repositories
-              repositories={repositories}
-              refreshRepositories={() => updateList(tabValue)}
-              searchFilterValues={searchFilterValues}
-              handleRepositoryClick={(repository: OSBRepository) =>
-                openRepoUrl(repository.id)
+            <Typography component="label" className={classes.label}>
+              Tags
+            </Typography>
+            <Autocomplete
+              value={searchFilterValues.tags}
+              inputValue={tagSearchValue}
+              multiple={true}
+              options={searchTagOptions}
+              freeSolo={true}
+              onInputChange={(event, value) => {
+                handleTagInput(value);
+              }}
+              onChange={(event, value) =>
+                setSearchFilterValues({ ...searchFilterValues, tags: value })
               }
-              handleTagClick={(tag: Tag) =>
-                searchFilterValues.tags.includes(tag.tag)
-                  ? null
-                  : setSearchFilterValues({
-                      ...searchFilterValues,
-                      tags: searchFilterValues.tags.concat(tag.tag),
-                    })
+              onClose={(event, reason) => handleTagInput("")}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    size="small"
+                    {...getTagProps({ index })}
+                    key={option}
+                  />
+                ))
               }
-              handleTagUnclick={(tag: Tag) =>
-                setSearchFilterValues({
-                  ...searchFilterValues,
-                  tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
-                })
-              }
-              handleTypeClick={(type: string) =>
-                setSearchFilterValues({
-                  ...searchFilterValues,
-                  types: searchFilterValues.types.concat(type),
-                })
-              }
-              handleTypeUnclick={(type: string) =>
-                setSearchFilterValues({
-                  ...searchFilterValues,
-                  types: searchFilterValues.types.filter((t) => t !== type),
-                })
-              }
+              renderInput={(params) => (
+                <>
+                  <SearchIcon />
+                  <TextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    fullWidth={true}
+                    {...params}
+                    variant="filled"
+                  />
+                </>
+              )}
+              ListboxProps={{
+                onScroll: (event: React.SyntheticEvent) => {
+                  const listboxNode = event.currentTarget;
+                  if (
+                    listboxNode.scrollTop + listboxNode.clientHeight ===
+                    listboxNode.scrollHeight
+                  ) {
+                    if (tagPage < totalTagPages) {
+                      handleTagInput(tagSearchValue, tagPage + 1);
+                    }
+                  }
+                },
+              }}
             />
-            {totalPages > 1 ? (
-              <OSBPagination
-                totalPages={totalPages}
-                handlePageChange={handlePageChange}
-                color="primary"
-                showFirstButton={true}
-                showLastButton={true}
-              />
-            ) : null}
-          </Box>
-        ) : (
-          <CircularProgress
-            size={48}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              marginTop: -24,
-              marginLeft: -24,
-            }}
+            <FormControl variant="standard" component="fieldset">
+              <FormGroup>
+                <Typography component="label" className={classes.label}>
+                  Types
+                </Typography>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={searchFilterValues.types.includes(
+                        RepositoryContentType.Experimental
+                      )}
+                      onChange={handleInput}
+                      name={RepositoryContentType.Experimental}
+                    />
+                  }
+                  label="Experimental"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={searchFilterValues.types.includes(
+                        RepositoryContentType.Modeling
+                      )}
+                      onChange={handleInput}
+                      name={RepositoryContentType.Modeling}
+                    />
+                  }
+                  label="Modeling"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={searchFilterValues.types.includes(
+                        "Development"
+                      )}
+                      onChange={handleInput}
+                      name="Development"
+                    />
+                  }
+                  label="Development"
+                />
+              </FormGroup>
+            </FormControl>
+          </Popover>
+
+          <RepositoriesSearch
+            filterChanged={(newTextFilter) =>
+              debouncedHandleSearchFilter(newTextFilter)
+            }
           />
-        )}
+          {user && (
+            <>
+              <Divider
+                orientation="vertical"
+                flexItem={true}
+                className={classes.divider}
+              />
+              <Box>
+                <Button
+                  id="add-repository-button"
+                  variant="contained"
+                  disableElevation={true}
+                  color="primary"
+                  onClick={openDialog}
+                >
+                  <AddIcon />
+                  Add repository
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
       </Box>
 
-      {user && dialogOpen && (
-        <EditRepoDialog
-          user={user}
-          title="Add repository"
-          dialogOpen={dialogOpen}
-          setDialogOpen={setDialogOpen}
-          onSubmit={() => updateList(tabValue)}
+      {repositories ? (
+        <Box
+          className="verticalFill"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <Repositories
+            repositories={repositories}
+            refreshRepositories={() => updateList(tabValue)}
+            searchFilterValues={searchFilterValues}
+            handleRepositoryClick={(repository: OSBRepository) =>
+              openRepoUrl(repository.id)
+            }
+            handleTagClick={(tag: Tag) =>
+              searchFilterValues.tags.includes(tag.tag)
+                ? null
+                : setSearchFilterValues({
+                    ...searchFilterValues,
+                    tags: searchFilterValues.tags.concat(tag.tag),
+                  })
+            }
+            handleTagUnclick={(tag: Tag) =>
+              setSearchFilterValues({
+                ...searchFilterValues,
+                tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
+              })
+            }
+            handleTypeClick={(type: string) =>
+              setSearchFilterValues({
+                ...searchFilterValues,
+                types: searchFilterValues.types.concat(type),
+              })
+            }
+            handleTypeUnclick={(type: string) =>
+              setSearchFilterValues({
+                ...searchFilterValues,
+                types: searchFilterValues.types.filter((t) => t !== type),
+              })
+            }
+          />
+          {totalPages > 1 ? (
+            <OSBPagination
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+              color="primary"
+              showFirstButton={true}
+              showLastButton={true}
+            />
+          ) : null}
+        </Box>
+      ) : (
+        <CircularProgress
+          size={48}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            marginTop: -24,
+            marginLeft: -24,
+          }}
         />
       )}
-    </>
-  );
+    </Box>
+
+    {user && dialogOpen && (
+      <EditRepoDialog
+        user={user}
+        title="Add repository"
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        onSubmit={() => updateList(tabValue)}
+      />
+    )}
+  </>;
 };
 
 export default RepositoriesPage;

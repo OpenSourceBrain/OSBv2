@@ -1,13 +1,13 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
 
-import DialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
 
 import * as Icons from "../icons";
 
@@ -63,7 +63,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
       fullWidth={true}
       maxWidth={maxWidth}
     >
-      <DialogTitle disableTypography={true}>
+      <DialogTitle>
         <Box display="flex" justifyContent="space-between">
           {title}
           <IconButton
@@ -71,7 +71,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
             aria-label="close"
             onClick={handleClose}
             style={{ padding: 0 }}
-          >
+            size="large">
             <Icons.CloseIcon fontSize="small" />
           </IconButton>
         </Box>

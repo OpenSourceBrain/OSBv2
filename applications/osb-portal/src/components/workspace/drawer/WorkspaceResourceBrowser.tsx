@@ -1,15 +1,15 @@
 import * as React from "react";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import clsx from "clsx";
-import { IconButton } from "@material-ui/core";
-import ArrowUpIcon from "@material-ui/icons/ArrowDropUp";
-import Typography from "@material-ui/core/Typography";
-import TreeView from "@material-ui/lab/TreeView";
-import TreeItem from "@material-ui/lab/TreeItem";
-import ArrowDownIcon from "@material-ui/icons/ArrowDropDown";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Tooltip from "@material-ui/core/Tooltip";
+import { IconButton } from "@mui/material";
+import ArrowUpIcon from "@mui/icons-material/ArrowDropUp";
+import Typography from "@mui/material/Typography";
+import TreeView from "@mui/lab/TreeView";
+import TreeItem from "@mui/lab/TreeItem";
+import ArrowDownIcon from "@mui/icons-material/ArrowDropDown";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CircularProgress from "@mui/material/CircularProgress";
+import Tooltip from "@mui/material/Tooltip";
 
 import {
   ResourceStatus,

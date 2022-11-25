@@ -1,14 +1,15 @@
 import * as React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-import BackupIcon from "@material-ui/icons/Backup";
-import LinkIcon from "@material-ui/icons/Link";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import BackupIcon from "@mui/icons-material/Backup";
+import LinkIcon from "@mui/icons-material/Link";
 
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import workspaceResourceService, {
@@ -19,7 +20,7 @@ import {
   RepositoryResourceNode,
 } from "../../apiclient/workspaces";
 import { Workspace } from "../../types/workspace";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import RepositoryService from "../../service/RepositoryService";
 import {
   bgLighter,
@@ -408,7 +409,7 @@ export default (props: WorkspaceEditProps) => {
           <Grid
             container={true}
             spacing={2}
-            justify="flex-start"
+            justifyContent="flex-start"
             alignItems="stretch"
             direction="column"
           >

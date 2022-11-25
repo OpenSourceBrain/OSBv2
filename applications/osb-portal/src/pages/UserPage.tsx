@@ -1,32 +1,33 @@
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { makeStyles, styled } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import Paper from "@material-ui/core/Paper";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import LinkIcon from "@material-ui/icons/Link";
-import FolderOpenIcon from "@material-ui/icons/FolderOpen";
-import GitHubIcon from "@material-ui/icons/GitHub";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import LanguageIcon from "@material-ui/icons/Language";
-import GroupIcon from "@material-ui/icons/Group";
-import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
+import { styled } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinkIcon from "@mui/icons-material/Link";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import LanguageIcon from "@mui/icons-material/Language";
+import GroupIcon from "@mui/icons-material/Group";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
-import EmailIcon from "@material-ui/icons/Email";
-import BusinessIcon from "@material-ui/icons/Business";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import EmailIcon from "@mui/icons-material/Email";
+import BusinessIcon from "@mui/icons-material/Business";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import ShowMoreText from "react-show-more-text";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 
 import MarkdownViewer from "../components/common/MarkdownViewer";
 import { MainMenu } from "../components/index";
@@ -43,8 +44,8 @@ import {
   paragraph,
   textColor,
 } from "../theme";
-import Divider from "@material-ui/core/Divider";
-import Container from "@material-ui/core/Container";
+import Divider from "@mui/material/Divider";
+import Container from "@mui/material/Container";
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   profileInformation: {
-    paddingTop: `${theme.spacing(6)}px !important`,
+    paddingTop: `${theme.spacing(6)} !important`,
     flexDirection: "column",
     "& .MuiSvgIcon-root": {
       marginRight: "5px",
@@ -110,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   repositoriesAndWorkspaces: {
-    paddingTop: `${theme.spacing(7) - 23}px !important`,
+    paddingTop: `calc(${theme.spacing(7)} - 23px) !important`,
     flexDirection: "column",
     paddingBottom: "0px !important",
     "& .repo-paper": {
@@ -403,7 +404,7 @@ export const UserPage = (props: any) => {
                     >
                       <LanguageIcon fontSize="small" />
                       <Tooltip title="Website">
-                        <Link href={user.website}>{user.website}</Link>
+                        <Link href={user.website} underline="hover">{user.website}</Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -416,7 +417,7 @@ export const UserPage = (props: any) => {
                     >
                       <BusinessIcon fontSize="small" />
                       <Tooltip title="Affiliation">
-                        <Link href={affiliation}>{affiliation}</Link>
+                        <Link href={affiliation} underline="hover">{affiliation}</Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -434,7 +435,7 @@ export const UserPage = (props: any) => {
                               ? github
                               : "https://github.com/" + github
                           }
-                        >
+                          underline="hover">
                           @
                           {github.includes("github.com")
                             ? github.replace(/\/$/, "").split("/").pop()
@@ -457,7 +458,7 @@ export const UserPage = (props: any) => {
                               ? bitbucket
                               : "https://bitbucket.org/" + bitbucket
                           }
-                        >
+                          underline="hover">
                           @
                           {bitbucket.includes("bitbucket.org")
                             ? bitbucket.replace(/\/$/, "").split("/").pop()
@@ -480,7 +481,7 @@ export const UserPage = (props: any) => {
                               ? twitter
                               : "https://twitter.com/" + twitter
                           }
-                        >
+                          underline="hover">
                           @
                           {twitter.includes("twitter.com")
                             ? twitter.replace(/\/$/, "").split("/").pop()
@@ -497,7 +498,7 @@ export const UserPage = (props: any) => {
                     >
                       <GroupIcon fontSize="small" />
                       <Tooltip title="INCF">
-                        <Link href={incf}>INCF</Link>
+                        <Link href={incf} underline="hover">INCF</Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -509,7 +510,7 @@ export const UserPage = (props: any) => {
                     >
                       <GroupIcon fontSize="small" />
                       <Tooltip title="ORCID">
-                        <Link href={orcid}>ORCID</Link>
+                        <Link href={orcid} underline="hover">ORCID</Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -524,7 +525,7 @@ export const UserPage = (props: any) => {
                       >
                         <LinkIcon fontSize="small" />
                         <Tooltip title={k.charAt(0).toUpperCase() + k.slice(1)}>
-                          <Link href={otherProfiles[k]}>
+                          <Link href={otherProfiles[k]} underline="hover">
                             {k.charAt(0).toUpperCase() + k.slice(1)}
                           </Link>
                         </Tooltip>

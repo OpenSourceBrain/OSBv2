@@ -1,9 +1,11 @@
 import * as React from "react";
 
-import { Typography, Grid, Box } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import { Typography, Grid, Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import { Theme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
+import DialogContentText from "@mui/material/DialogContentText";
 
 export default (props: any) => {
   const handleUserLogin = () => {
@@ -15,7 +17,7 @@ export default (props: any) => {
 
   return (
     <Box p={4}>
-      <Grid container={true} justify="space-between" alignItems="flex-end">
+      <Grid container={true} justifyContent="space-between" alignItems="flex-end">
         <Grid item={true} xs={12} sm={8} md={8}>
           <DialogContentText>
             To use workspaces you need an Open Source Brain v2.0 account. If you

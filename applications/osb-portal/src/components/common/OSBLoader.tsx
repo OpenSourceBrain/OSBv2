@@ -1,13 +1,13 @@
 // Derived from https://raw.githubusercontent.com/MetaCell/geppetto-meta/master/geppetto.js/geppetto-ui/src/loader/Loader.js
 
 import React, { Component, Fragment } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import makeStyles from '@mui/styles/makeStyles';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import { primaryColor } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -89,10 +89,10 @@ export default (props: OSBLoaderProps) => {
     children
   ) : (
     <Grid container={true} spacing={1}>
-      <Grid container={true} item={true} spacing={3} xs={12} justify="center">
+      <Grid container={true} item={true} spacing={3} xs={12} justifyContent="center">
         <Grid item={true}>{progress}</Grid>
       </Grid>
-      <Grid container={true} item={true} spacing={3} xs={12} justify="center">
+      <Grid container={true} item={true} spacing={3} xs={12} justifyContent="center">
         <Grid item={true}>{typedMessage}</Grid>
       </Grid>
     </Grid>

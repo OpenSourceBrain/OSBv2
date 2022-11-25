@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Typography,
   Box,
   Button,
   Grid,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Repositories } from "../index";
 import { WorkspaceEditor } from "./../index";
@@ -23,7 +23,7 @@ import WorkspaceService from "../../service/WorkspaceService";
 import { Workspace, OSBApplication } from "../../types/workspace";
 import OSBDialog from "../common/OSBDialog";
 import { fontColor, bgInputs, radius, bgLight, bgDarker } from "../../theme";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import { RootState } from "../../store/rootReducer";
 
 export interface WorkspaceTemplate {
@@ -40,7 +40,7 @@ export enum WorkspaceTemplateType {
 
 const useStyles = makeStyles((theme) => ({
   helperDialogText: {
-    padding: `0px ${theme.spacing(1)}px ${theme.spacing(1)}px`,
+    padding: `0px ${theme.spacing(1)} ${theme.spacing(1)}`,
     fontSize: "0.9rem",
   },
   info: {
@@ -310,7 +310,7 @@ export const WorkspaceFromRepository = ({
             <Grid item={true}>
               <Typography component="h6" className={classes.helperDialogText}>
                 If you can't find what you're looking for, go{" "}
-                <Link href="/repositories">here</Link> to explore all the OSB
+                <Link href="/repositories" underline="hover">here</Link> to explore all the OSB
                 repositories, or add a new one.
               </Typography>
             </Grid>

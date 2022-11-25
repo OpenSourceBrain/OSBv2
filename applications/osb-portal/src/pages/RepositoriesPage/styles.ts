@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 
 import {
   bgLightest,
@@ -36,7 +36,7 @@ export default makeStyles((theme) => ({
         paddingBottom: 16,
       },
       "& .MuiButton-contained": {
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down('md')]: {
           paddingLeft: 0,
           paddingRight: 0,
           minWidth: "2.25rem",
@@ -49,7 +49,7 @@ export default makeStyles((theme) => ({
         },
         "& .MuiButton-label": {
           color: fontColor,
-          [theme.breakpoints.down("xs")]: {
+          [theme.breakpoints.down('sm')]: {
             fontSize: 0,
           },
         },

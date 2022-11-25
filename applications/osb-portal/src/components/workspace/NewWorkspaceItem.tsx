@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Typography, Box, Button } from "@material-ui/core";
+import { Typography, Box, Button } from "@mui/material";
 
 import { NewWorkspaceAskUser } from "..";
 import { WorkspaceEditor } from "./../index";

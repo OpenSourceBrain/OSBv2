@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Pagination from "@material-ui/lab/Pagination";
-import { makeStyles } from "@material-ui/core/styles";
+import Pagination from '@mui/material/Pagination';
+import makeStyles from '@mui/styles/makeStyles';
 import theme from "../../theme";
 
 type sizes = "small" | "medium" | "large";

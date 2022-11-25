@@ -1,24 +1,24 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Avatar from "@material-ui/core/Avatar";
-import AlternateEmail from "@material-ui/icons/AlternateEmail";
-import EmailIcon from "@material-ui/icons/Email";
-import LinkIcon from "@material-ui/icons/Link";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import GitHubIcon from "@material-ui/icons/GitHub";
+import makeStyles from '@mui/styles/makeStyles';
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import Avatar from "@mui/material/Avatar";
+import AlternateEmail from "@mui/icons-material/AlternateEmail";
+import EmailIcon from "@mui/icons-material/Email";
+import LinkIcon from "@mui/icons-material/Link";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { AddIcon, BitBucketIcon } from "../icons";
 import { bgLight, paragraph } from "../../theme";
 import { User } from "../../apiclient/accounts";
 import OSBDialog from "../common/OSBDialog";
-import Tooltip from "@material-ui/core/Tooltip";
-import LanguageIcon from "@material-ui/icons/Language";
-import GroupIcon from "@material-ui/icons/Group";
-import BusinessIcon from "@material-ui/icons/Business";
+import Tooltip from "@mui/material/Tooltip";
+import LanguageIcon from "@mui/icons-material/Language";
+import GroupIcon from "@mui/icons-material/Group";
+import BusinessIcon from "@mui/icons-material/Business";
 
 // This order is followed when data is displayed
 const profileMeta: { [key: string]: { [key: string]: any } } = {
@@ -197,241 +197,239 @@ export default (props: UserEditProps) => {
     );
   };
 
-  return (
-    <>
-      <Box p={3}>
-        <Box display="flex" flexDirection="row" mb={1}>
-          <Avatar
-            className={classes.avatar}
-            alt="user-profile-avatar"
-            src={props.profileForm.avatar}
-          >
-            {props.profileForm.firstName?.charAt(0) +
-              props.profileForm.lastName?.charAt(0)}
-          </Avatar>
-          <Box width="100%">
-            <Typography component="label" variant="h6">
-              Profile picture URL
-            </Typography>
-            <TextField
-              error={props.error.avatar}
-              helperText={props.error.avatar}
-              id="profilePictureURL"
-              fullWidth={true}
-              onChange={setProfileURLField}
-              variant="outlined"
-              defaultValue={props.profileForm.avatar}
-            />
-          </Box>
-        </Box>
-        <Box mb={1} mt={1}>
+  return <>
+    <Box p={3}>
+      <Box display="flex" flexDirection="row" mb={1}>
+        <Avatar
+          className={classes.avatar}
+          alt="user-profile-avatar"
+          src={props.profileForm.avatar}
+        >
+          {props.profileForm.firstName?.charAt(0) +
+            props.profileForm.lastName?.charAt(0)}
+        </Avatar>
+        <Box width="100%">
           <Typography component="label" variant="h6">
-            Display Name
+            Profile picture URL
           </Typography>
           <TextField
-            error={props.error.firstName}
-            helperText={props.error.firstName}
+            error={props.error.avatar}
+            helperText={props.error.avatar}
+            id="profilePictureURL"
             fullWidth={true}
-            onChange={setProfileDisplayName}
+            onChange={setProfileURLField}
             variant="outlined"
-            defaultValue={
-              props.profileForm.firstName + " " + props.profileForm.lastName
-            }
+            defaultValue={props.profileForm.avatar}
           />
         </Box>
-        <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Username
-          </Typography>
+      </Box>
+      <Box mb={1} mt={1}>
+        <Typography component="label" variant="h6">
+          Display Name
+        </Typography>
+        <TextField
+          error={props.error.firstName}
+          helperText={props.error.firstName}
+          fullWidth={true}
+          onChange={setProfileDisplayName}
+          variant="outlined"
+          defaultValue={
+            props.profileForm.firstName + " " + props.profileForm.lastName
+          }
+        />
+      </Box>
+      <Box mb={1} mt={1}>
+        <Typography component="label" variant="h6">
+          Username
+        </Typography>
+        <TextField
+          disabled={true}
+          error={props.error.username}
+          helperText={props.error.username}
+          className={classes.textFieldWithIcon}
+          fullWidth={true}
+          onChange={setProfileUserName}
+          variant="outlined"
+          defaultValue={props.profileForm.username}
+          InputProps={{
+            startAdornment: (
+              <Box className={classes.inputIconBox}>
+                <AlternateEmail fontSize="small" />
+              </Box>
+            ),
+          }}
+        />
+      </Box>
+      <Box mb={1} mt={1}>
+        <Typography component="label" variant="h6">
+          Email address
+        </Typography>
+        <TextField
+          error={props.error.email}
+          helperText={props.error.email}
+          className={classes.textFieldWithIcon}
+          fullWidth={true}
+          onChange={setProfileEmailAddress}
+          variant="outlined"
+          defaultValue={props.profileForm.email}
+          InputProps={{
+            startAdornment: (
+              <Box className={classes.inputIconBox}>
+                <EmailIcon fontSize="small" />
+              </Box>
+            ),
+          }}
+        />
+        <Typography
+          component="span"
+          variant="h6"
+          style={{ fontWeight: "normal" }}
+        >
+          Your email address is private. Other users can't see it.
+        </Typography>
+      </Box>
+      <Box mb={1} mt={1}>
+        <Typography component="label" variant="h6">
+          Links
+        </Typography>
+        <Tooltip title="Website link">
           <TextField
-            disabled={true}
-            error={props.error.username}
-            helperText={props.error.username}
+            error={props.error.website}
+            helperText={props.error.website}
             className={classes.textFieldWithIcon}
             fullWidth={true}
-            onChange={setProfileUserName}
+            margin="dense"
+            onChange={setWebsiteURLField}
             variant="outlined"
-            defaultValue={props.profileForm.username}
+            defaultValue={props.profileForm.website}
+            placeholder="https://.."
             InputProps={{
               startAdornment: (
                 <Box className={classes.inputIconBox}>
-                  <AlternateEmail fontSize="small" />
+                  <LanguageIcon fontSize="small" />
                 </Box>
               ),
             }}
           />
-        </Box>
-        <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Email address
-          </Typography>
-          <TextField
-            error={props.error.email}
-            helperText={props.error.email}
-            className={classes.textFieldWithIcon}
-            fullWidth={true}
-            onChange={setProfileEmailAddress}
-            variant="outlined"
-            defaultValue={props.profileForm.email}
-            InputProps={{
-              startAdornment: (
-                <Box className={classes.inputIconBox}>
-                  <EmailIcon fontSize="small" />
-                </Box>
-              ),
-            }}
-          />
-          <Typography
-            component="span"
-            variant="h6"
-            style={{ fontWeight: "normal" }}
-          >
-            Your email address is private. Other users can't see it.
-          </Typography>
-        </Box>
-        <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Links
-          </Typography>
-          <Tooltip title="Website link">
-            <TextField
-              error={props.error.website}
-              helperText={props.error.website}
-              className={classes.textFieldWithIcon}
-              fullWidth={true}
-              margin="dense"
-              onChange={setWebsiteURLField}
-              variant="outlined"
-              defaultValue={props.profileForm.website}
-              placeholder="https://.."
-              InputProps={{
-                startAdornment: (
-                  <Box className={classes.inputIconBox}>
-                    <LanguageIcon fontSize="small" />
-                  </Box>
-                ),
-              }}
-            />
-          </Tooltip>
-          {Object.entries(profiles).map((profile) => {
-            const profileType = profile[0];
-            let profileTypeText = profileType;
-            let profileTypeIcon: any = React.createElement(LinkIcon, {
-              fontSize: "small",
-            });
-            let profileTypePrefix = "";
+        </Tooltip>
+        {Object.entries(profiles).map((profile) => {
+          const profileType = profile[0];
+          let profileTypeText = profileType;
+          let profileTypeIcon: any = React.createElement(LinkIcon, {
+            fontSize: "small",
+          });
+          let profileTypePrefix = "";
 
-            if (profileType in profileMeta) {
-              profileTypeText = profileMeta[profileType].text;
-              profileTypeIcon = React.createElement(
-                profileMeta[profileType].icon,
-                { fontSize: "small" }
-              );
-              profileTypePrefix = profileMeta[profileType].prefix;
-            }
-            const profileLinkOrId = profile[1];
-
-            return (
-              <Tooltip key={profileType} title={`${profileTypeText} link`}>
-                <TextField
-                  error={props.error[profileType]}
-                  helperText={props.error[profileType]}
-                  key={profileType}
-                  className={classes.textFieldWithIcon}
-                  fullWidth={true}
-                  margin="dense"
-                  variant="outlined"
-                  defaultValue={profileLinkOrId}
-                  placeholder={profileTypePrefix}
-                  onChange={(event) => {
-                    handleProfileLinkChange(profileType, event.target.value);
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <Box className={classes.inputIconBox}>
-                        {" "}
-                        {profileTypeIcon}{" "}
-                      </Box>
-                    ),
-                  }}
-                />
-              </Tooltip>
+          if (profileType in profileMeta) {
+            profileTypeText = profileMeta[profileType].text;
+            profileTypeIcon = React.createElement(
+              profileMeta[profileType].icon,
+              { fontSize: "small" }
             );
-          })}
-        </Box>
-        <Box>
-          <Button
-            variant="outlined"
-            color="primary"
-            fullWidth={true}
-            onClick={() => setAddLinkDialogOpen(true)}
-          >
-            <AddIcon /> Add link
-          </Button>
-        </Box>
-      </Box>
+            profileTypePrefix = profileMeta[profileType].prefix;
+          }
+          const profileLinkOrId = profile[1];
 
-      <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
-        {props.error.general && (
-          <Typography color="error">{props.error.general}</Typography>
-        )}
+          return (
+            <Tooltip key={profileType} title={`${profileTypeText} link`}>
+              <TextField
+                error={props.error[profileType]}
+                helperText={props.error[profileType]}
+                key={profileType}
+                className={classes.textFieldWithIcon}
+                fullWidth={true}
+                margin="dense"
+                variant="outlined"
+                defaultValue={profileLinkOrId}
+                placeholder={profileTypePrefix}
+                onChange={(event) => {
+                  handleProfileLinkChange(profileType, event.target.value);
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <Box className={classes.inputIconBox}>
+                      {" "}
+                      {profileTypeIcon}{" "}
+                    </Box>
+                  ),
+                }}
+              />
+            </Tooltip>
+          );
+        })}
       </Box>
-      <OSBDialog
-        open={addLinkDialogOpen}
-        title="Add new link"
-        closeAction={() => setAddLinkDialogOpen(false)}
-      >
-        <Box p={3}>
-          <TextField
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
-            onChange={(e) =>
-              setNewLinkInformation({
-                ...newLinkInformation,
-                linkFor: e.target.value.replace(/\s+/g, ""),
-              })
-            }
-            placeholder="What is this link for?"
-          />
-          <TextField
-            className={classes.textFieldWithIcon}
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
-            onChange={(e) =>
-              setNewLinkInformation({
-                ...newLinkInformation,
-                link: e.target.value,
-              })
-            }
-            placeholder="Link"
-            InputProps={{
-              startAdornment: (
-                <Box className={classes.inputIconBox}>
-                  <LinkIcon fontSize="small" />
-                </Box>
-              ),
-            }}
-          />
-        </Box>
-        <Box textAlign="right" bgcolor={bgLight} mt={1} p={2}>
-          <Button color="primary" onClick={() => setAddLinkDialogOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            disabled={
-              newLinkInformation.linkFor.length < 0 ||
-              newLinkInformation.link.length < 0
-            }
-            variant="contained"
-            color="primary"
-            onClick={addNewProfileLink}
-          >
-            Add new link
-          </Button>
-        </Box>
-      </OSBDialog>
-    </>
-  );
+      <Box>
+        <Button
+          variant="outlined"
+          color="primary"
+          fullWidth={true}
+          onClick={() => setAddLinkDialogOpen(true)}
+        >
+          <AddIcon /> Add link
+        </Button>
+      </Box>
+    </Box>
+
+    <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
+      {props.error.general && (
+        <Typography color="error">{props.error.general}</Typography>
+      )}
+    </Box>
+    <OSBDialog
+      open={addLinkDialogOpen}
+      title="Add new link"
+      closeAction={() => setAddLinkDialogOpen(false)}
+    >
+      <Box p={3}>
+        <TextField
+          fullWidth={true}
+          margin="normal"
+          variant="outlined"
+          onChange={(e) =>
+            setNewLinkInformation({
+              ...newLinkInformation,
+              linkFor: e.target.value.replace(/\s+/g, ""),
+            })
+          }
+          placeholder="What is this link for?"
+        />
+        <TextField
+          className={classes.textFieldWithIcon}
+          fullWidth={true}
+          margin="normal"
+          variant="outlined"
+          onChange={(e) =>
+            setNewLinkInformation({
+              ...newLinkInformation,
+              link: e.target.value,
+            })
+          }
+          placeholder="Link"
+          InputProps={{
+            startAdornment: (
+              <Box className={classes.inputIconBox}>
+                <LinkIcon fontSize="small" />
+              </Box>
+            ),
+          }}
+        />
+      </Box>
+      <Box textAlign="right" bgcolor={bgLight} mt={1} p={2}>
+        <Button color="primary" onClick={() => setAddLinkDialogOpen(false)}>
+          Cancel
+        </Button>
+        <Button
+          disabled={
+            newLinkInformation.linkFor.length < 0 ||
+            newLinkInformation.link.length < 0
+          }
+          variant="contained"
+          color="primary"
+          onClick={addNewProfileLink}
+        >
+          Add new link
+        </Button>
+      </Box>
+    </OSBDialog>
+  </>;
 };

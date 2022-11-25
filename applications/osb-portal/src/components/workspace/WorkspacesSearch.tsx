@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import Box from "@material-ui/core/Box";
-import SearchIcon from "@material-ui/icons/Search";
+import makeStyles from '@mui/styles/makeStyles';
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import SearchIcon from "@mui/icons-material/Search";
 import { bgLightestShade, paragraph } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -60,21 +60,19 @@ export default (props: WorkspacesSearchProps) => {
     setSearch(e.target.value);
     props.filterChanged(e.target.value.toLowerCase());
   };
-  return (
-    <>
-      {searchToggled && (
-        <TextField
-          id="standard-start-adornment"
-          fullWidth={false}
-          placeholder="Search"
-          className={classes.input}
-          defaultValue={search}
-          onChange={onSearchChange}
-        />
-      )}
-      <IconButton className={classes.button} onClick={toggleSearch}>
-        <SearchIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
+  return <>
+    {searchToggled && (
+      <TextField
+        variant="standard"
+        id="standard-start-adornment"
+        fullWidth={false}
+        placeholder="Search"
+        className={classes.input}
+        defaultValue={search}
+        onChange={onSearchChange} />
+    )}
+    <IconButton className={classes.button} onClick={toggleSearch} size="large">
+      <SearchIcon fontSize="small" />
+    </IconButton>
+  </>;
 };
