@@ -29,6 +29,11 @@ harness:
       limits:
         memory: 512Mi
         cpu: 1500m
+  quotas:
+    # sets the max number of workspaces per user
+    quota-ws-max: 5
+    # sets the storage dedicated to a single workspace in Gb units (float)
+    quota-ws-storage-max: 1
   secrets:
     github-user:
     github-token:

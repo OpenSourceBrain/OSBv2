@@ -31,6 +31,7 @@ from workspaces.repository.models import TWorkspaceEntity, WorkspaceResourceEnti
 from workspaces.service import osbrepository as osbrepository_helper
 from workspaces.service.kubernetes import create_volume
 from workspaces.service.auth import get_auth_client, keycloak_user_id
+from workspaces.service.user_quota_service import get_pvc_size, get_max_workspaces_for_user
 
 from workspaces.utils import dao_entity2dict
 
@@ -152,7 +153,7 @@ class WorkspaceService(BaseModelService):
         if not get_auth_client().user_has_realm_role(user_id=user_id, role="administrator"):
             # for non admin users check if max number of ws per user limit is reached
             num_ws_current_user = self.repository.search(user_id=user_id).total
-            max_num_ws_current_user = Config.MAX_NUMBER_WORKSPACES_PER_USER
+            max_num_ws_current_user = get_max_workspaces_for_user()
             if num_ws_current_user >= max_num_ws_current_user:
                 raise NotAllowed(
                     f"Max number of {max_num_ws_current_user} workspaces " \
@@ -179,7 +180,8 @@ class WorkspaceService(BaseModelService):
 
     def get_workspace_volume_size(self, ws: Workspace):
         # Place to change whenever we implement user or workspace based sizing
-        return get_configuration('workspaces').conf['workspace_size']
+        user_id = keycloak_user_id()
+        return get_pvc_size(user_id)
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):
