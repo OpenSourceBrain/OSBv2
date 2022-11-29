@@ -1,4 +1,4 @@
-import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest } from "../apiclient/workspaces/apis";
+import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest } from "../apiclient/workspaces";
 
 import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';

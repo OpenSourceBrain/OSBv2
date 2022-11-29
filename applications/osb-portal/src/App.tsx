@@ -16,7 +16,7 @@ import {
   RepositoryPage,
   WorkspacePage,
   UserPage,
-} from "./components/index";
+} from "./components";
 
 
 declare module '@mui/styles/defaultTheme' {
@@ -36,6 +36,10 @@ const useStyles = makeStyles(() => ({
       overflow: "hidden",
     },
   },
+  appHeader: {
+    height: '30px',
+    borderBottom: '1px solid #434343',
+  }
 }));
 
 export const App = (props: any) => {
@@ -50,7 +54,7 @@ export const App = (props: any) => {
           {!props.error && (
             <Router>
               <div className={classes.mainContainer}>
-                <div id="header">
+                <div id="header" className={classes.appHeader}>
                   <Header />
                 </div>
 

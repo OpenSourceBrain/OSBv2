@@ -16,6 +16,7 @@ import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspacePage from "../pages/WorkspacePage";
 import workspaceEditor from "./workspace/WorkspaceEditor";
 import editRepoDialog from "../components/repository/EditRepoDialog";
+import HomePageDrawer from '../components/MainDrawer'
 
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
@@ -170,3 +171,7 @@ export const ProtectedRoute = connect(
   mapUserStateToProps,
   dispatchUserProps
 )(protectedRoute);
+export const HomePageSider = connect(
+  mapUserStateToProps,
+  dispatchUserProps
+)(HomePageDrawer);

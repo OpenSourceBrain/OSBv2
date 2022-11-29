@@ -16,7 +16,6 @@ import {
   radius,
 } from "../../theme";
 import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
-import { white } from "material-ui/styles/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -119,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
             paddingLeft: ".5rem",
           },
         },
-        "&:first-child": {
+        "&:first-of-type": {
           color: fontColor,
         },
       },

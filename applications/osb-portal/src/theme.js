@@ -13,7 +13,7 @@ vars.gutter = vars.gutter.replace('px', '') * 1;
 
 export const {
   primaryColor, secondaryColor, font, fontColor, linkColor, teal, purple, bgLightest, paragraph, bgLightestShade,
-  bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius, checkBoxColor, bgLighter, textColor, inputRadius
+  bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius, checkBoxColor, bgLighter, textColor, inputRadius, headerBg
 } = vars;
 
 const verticalFill = {
@@ -105,8 +105,8 @@ const theme = {
         label: {
           fontSize: '0.8rem',
         },
-        
-         
+
+
         "& .MuiChip-avatar": {
           width: ".63rem",
           height: ".63rem",
@@ -117,7 +117,7 @@ const theme = {
             color: purple,
           },
         },
-        
+
       },
       labelSmall: {
         paddingLeft: "0.8em",
@@ -137,7 +137,7 @@ const theme = {
         border: 'none !important',
         boxShadow: 'none !important',
       },
-    
+
       root: { color: fontColor }
 
     },
@@ -247,6 +247,7 @@ const theme = {
       },
       paper: {
         ...verticalFill,
+        top: 'initial',
         'div:only-child': {
           ...verticalFill,
         }
@@ -286,12 +287,12 @@ const theme = {
         border: 0,
         minWidth: 'auto',
 
-        '&:first-child': {
+        '&:first-of-type': {
           borderRight: 'none',
         },
-        
+
       },
-     
+
     },
     MuiToolbar: {
       root: {
@@ -302,7 +303,7 @@ const theme = {
       root: {
         border: `1px solid ${bgLightest}`,
       }
-      
+
     },
     MuiAutocomplete: {
       root: {
@@ -310,7 +311,7 @@ const theme = {
         paddingTop: '10px',
         paddingBottom: '10px',
         borderRadius: inputRadius,
-        '& div:first-child': {
+        '& div:first-of-type': {
           paddingBottom: '0px',
         },
         '& .MuiInputBase-root': {

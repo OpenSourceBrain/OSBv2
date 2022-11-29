@@ -1,84 +1,73 @@
 import * as React from "react";
 
-import { Grid, Paper } from "@mui/material";
-import Box from "@mui/material/Box";
-
-import makeStyles from '@mui/styles/makeStyles';
-import { Latest } from "../components/home/Latest";
-import { MainMenu } from "../components";
+//components
+import {Box, Grid, Paper} from "@mui/material";
 
 import {
-  Header,
-  Banner,
-  WorkspaceDrawer,
+  HomePageSider,
   Workspaces,
-  WorkspaceToolBox,
 } from "../components";
+
+
+//style
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     overflow: "hidden",
+    borderRadius: 0
   },
+  toolbar: {
+    ...theme.mixins.toolbar,
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3)
+  }
 }));
 
-export default (props: any) => {
+export const HomePage = (props: any) => {
+
   const classes = useStyles();
 
   return (
-    <>
-      <MainMenu />
-      <Box p={1} className="verticalFit">
-        <Grid container={true} className="verticalFill">
-          <Grid
-            item={true}
-            xs={12}
-            sm={12}
-            md={6}
-            direction="column"
-            className="verticalFill"
-          >
-            <Box display="flex">
-              <Paper className={classes.paper} elevation={0}>
-                <div id="homepage-banner">
-                  <Banner />
+      <>
+        <Box className="verticalFit">
+          <Grid container={true} className="verticalFill">
+            <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={2}
+                direction="column"
+                className="verticalFill"
+            >
+              <Box pl={2} width={1} className="verticalFit">
+                <HomePageSider />
+              </Box>
+            </Grid>
+            <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={10}
+                alignItems="stretch"
+                className="verticalFill"
+            >
+              <Box width={1} className="verticalFit">
+                <div id="workspaces-list" className="verticalFit">
+                  <Workspaces />
                 </div>
-              </Paper>
-            </Box>
-            <Box mt={2} display="flex">
-              <Paper className={classes.paper} elevation={0}>
-                <Box p={3}>
-                  <div id="create-new-workspace-toolbox">
-                    <WorkspaceToolBox />
-                  </div>
-                </Box>
-              </Paper>
-            </Box>
-            <Box mt={2} display="flex" flexGrow="1">
-              <Paper elevation={0} className="verticalFill">
-                <Box p={3} className="verticalFill">
-                  <div id="info-disclaimer-box">
-                    <Latest />
-                  </div>
-                </Box>
-              </Paper>
-            </Box>
+              </Box>
+            </Grid>
           </Grid>
-          <Grid
-            item={true}
-            xs={12}
-            sm={12}
-            md={6}
-            alignItems="stretch"
-            className="verticalFill"
-          >
-            <Box pl={2} width={1} className="verticalFit">
-              <div id="workspaces-list" className="verticalFit">
-                <Workspaces />
-              </div>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+        </Box>
+      </>
   );
 };
+
+export default HomePage

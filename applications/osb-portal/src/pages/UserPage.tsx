@@ -30,7 +30,7 @@ import ShowMoreText from "react-show-more-text";
 import Tooltip from "@mui/material/Tooltip";
 
 import MarkdownViewer from "../components/common/MarkdownViewer";
-import { MainMenu } from "../components/index";
+import { MainMenu } from "../components";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";

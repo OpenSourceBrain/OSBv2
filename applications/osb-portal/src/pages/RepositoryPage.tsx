@@ -35,7 +35,7 @@ import {
 import RepositoryService from "../service/RepositoryService";
 import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
 import OSBDialog from "../components/common/OSBDialog";
-import { WorkspaceEditor, MainMenu } from "../components/index";
+import { WorkspaceEditor, MainMenu } from "../components";
 import OSBChipList from "../components/common/OSBChipList";
 import { NewWorkspaceAskUser } from "../components";
 import {
@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
               paddingLeft: ".5rem",
             },
           },
-          "&:first-child": {
+          "&:first-of-type": {
             color: fontColor,
           },
         },
@@ -449,7 +449,6 @@ export const RepositoryPage = (props: any) => {
                   >
                     Overview{" "}
                     <Tooltip
-                      interactive={true}
                       title={
                         <>
                           Repositories provide views of files in public
@@ -617,7 +616,6 @@ export const RepositoryPage = (props: any) => {
                   >
                     Repository contents{" "}
                     <Tooltip
-                      interactive={true}
                       title={
                         <>
                           {`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${

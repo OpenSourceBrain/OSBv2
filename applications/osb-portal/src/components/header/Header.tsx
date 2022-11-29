@@ -5,14 +5,21 @@ import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListe
 import makeStyles from '@mui/styles/makeStyles';
 import PersonIcon from "@mui/icons-material/Person";
 
+import {
+  headerBg,
+  secondaryColor
+} from "../../theme";
+
 const title = "Open Source Brain";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: headerBg,
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     justifyContent: "space-between",
+    minHeight: '30px',
+    height: '30px'
   },
   toolbarTitle: {
     flex: 1,
@@ -31,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     textTransform: "none",
+    color: secondaryColor,
+    padding: 0
   },
   logoChip: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -44,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "1em",
     alignSelf: "flex-start",
   },
+  logoContainer: {
+    display: 'flex'
+  }
 }));
 
 export const Header = (props: any) => {
@@ -141,20 +153,17 @@ export const Header = (props: any) => {
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         <Box display="flex">
-          <a href="/" onClick={handleToggleDrawer}>
+          <a href="/" onClick={handleToggleDrawer} className={classes.logoContainer}>
             <img
               src="/images/osb-logo-full.png"
               alt={title}
               title={title}
-              height="25"
+              height="20"
             />
           </a>
           <sup className={classes.logoChip}>beta</sup>
         </Box>
         <Box>
-          {/* <IconButton>
-              <SearchIcon />
-            </IconButton> */}
           {headerText}
         </Box>
       </Toolbar>
