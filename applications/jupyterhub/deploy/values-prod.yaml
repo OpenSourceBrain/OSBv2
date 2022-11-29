@@ -27,3 +27,5 @@ singleuser:
   memory:
     limit: 1.5G
     guarantee: 0.5G
+legacyusermax: 445
+legacyworkspacemax: 465

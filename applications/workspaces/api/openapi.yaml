@@ -121,7 +121,7 @@ paths:
                     description: Save successful.
                 '400':
                     description: The Workspace already exists.
-                405:
+                '405':
                     description: Not allowed to create a new workspace
             security:
                 -

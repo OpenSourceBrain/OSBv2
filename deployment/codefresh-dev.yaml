@@ -104,6 +104,21 @@ steps:
     type: parallel
     stage: build
     steps:
+      nfsserver:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/nfsserver
+        title: Nfsserver
+        working_directory: ./cloud-harness/applications/nfsserver
       notifications:
         type: build
         stage: build
@@ -606,6 +621,14 @@ steps:
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nfsserver:
+        stage: publish
+        type: push
+        title: Nfsserver
+        candidate: '${{REGISTRY}}/osb/nfsserver:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

@@ -46,7 +46,7 @@ harness:
       - common
       - workflows
       - notifications
-      
+      - nfsserver
     hard:
       - argo
       - accounts
