@@ -16,7 +16,6 @@ import {
   radius,
 } from "../../theme";
 import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
-import { white } from "material-ui/styles/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
