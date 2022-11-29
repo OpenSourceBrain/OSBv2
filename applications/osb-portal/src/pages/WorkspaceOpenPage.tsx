@@ -1,6 +1,6 @@
 import * as React from "react";
-import Divider from "@material-ui/core/Divider";
-import Box from "@material-ui/core/Box";
+import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
 
 import { WorkspaceDrawer } from "../components";

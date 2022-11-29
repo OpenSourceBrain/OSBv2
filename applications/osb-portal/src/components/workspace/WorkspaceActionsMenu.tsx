@@ -1,14 +1,14 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import makeStyles from '@mui/styles/makeStyles';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import NestedMenuItem from "material-ui-nested-menu-item";
-import Button from "@material-ui/core/Button";
-import { IconButton } from "@material-ui/core";
-import Snackbar from "@material-ui/core/Snackbar";
+import Button from "@mui/material/Button";
+import { IconButton } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
 import * as Icons from "../icons";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
 import OSBDialog from "../common/OSBDialog";

@@ -2,9 +2,9 @@ import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import gfm from "remark-gfm";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
 import {
   bgRegular,
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
       },
       "& p img": {
         maxWidth: "30vw",
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down('md')]: {
           maxWidth: "75vw",
         },
       },

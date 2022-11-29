@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import makeStyles from '@mui/styles/makeStyles';
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
 
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "@mui/icons-material/Search";
 import { bgLightestShade, paragraph } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +42,7 @@ export default (props: RepositoriesSearchProps) => {
 
   return (
     <TextField
+      variant="standard"
       id="standard-start-adornment"
       fullWidth={true}
       placeholder="Search"
@@ -55,7 +56,6 @@ export default (props: RepositoriesSearchProps) => {
             <SearchIcon />
           </InputAdornment>
         ),
-      }}
-    />
+      }} />
   );
 };

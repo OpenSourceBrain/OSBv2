@@ -1,18 +1,9 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 
-import {
-  Toolbar,
-  Box,
-  Button,
-  Paper,
-  Popper,
-  MenuItem,
-  MenuList,
-  ClickAwayListener,
-  makeStyles,
-} from "@material-ui/core";
-import PersonIcon from "@material-ui/icons/Person";
+import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import PersonIcon from "@mui/icons-material/Person";
 
 const title = "Open Source Brain";
 

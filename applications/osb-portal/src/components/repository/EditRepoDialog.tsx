@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import ClearIcon from "@material-ui/icons/Clear";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
-import { Autocomplete } from "@material-ui/lab";
+import makeStyles from '@mui/styles/makeStyles';
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import ClearIcon from "@mui/icons-material/Clear";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CircularProgress from "@mui/material/CircularProgress";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
+import Chip from "@mui/material/Chip";
+import { Autocomplete } from '@mui/material';
 
 import {
   Box,
@@ -21,7 +21,7 @@ import {
   MenuItem,
   TextField,
   FormHelperText,
-} from "@material-ui/core";
+} from "@mui/material";
 import MDEditor from "react-markdown-editor-lite";
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
         "&:not(.MuiTextField-root)": {
           width: "9rem",
           flexShrink: 0,
-          [theme.breakpoints.down("sm")]: {
+          [theme.breakpoints.down('md')]: {
             width: "100%",
             marginBottom: ".5rem",
           },
@@ -345,11 +345,11 @@ export const EditRepoDialog = ({
           <Box className="wrap">
             <FormControl variant="outlined">
               <Select
+                variant="standard"
                 className="repository-source-input-element"
                 value={formValues.repositoryType}
                 onChange={(e) => handleInput(e, "repositoryType")}
-                IconComponent={KeyboardArrowDownIcon}
-              >
+                IconComponent={KeyboardArrowDownIcon}>
                 {Object.values(RepositoryType).map((repositoryType) => (
                   <MenuItem key={repositoryType} value={repositoryType}>
                     {repositoryType}
@@ -395,11 +395,11 @@ export const EditRepoDialog = ({
               error={Boolean(error.defaultContext)}
             >
               <Select
+                variant="standard"
                 value={formValues.defaultContext}
                 defaultValue={"main"}
                 onChange={(e) => handleInputContext(e)}
-                IconComponent={KeyboardArrowDownIcon}
-              >
+                IconComponent={KeyboardArrowDownIcon}>
                 {contexts.map((c) => (
                   <MenuItem key={c} value={c}>
                     {c}
@@ -419,13 +419,13 @@ export const EditRepoDialog = ({
             error={Boolean(error.contentTypesList)}
           >
             <Select
+              variant="standard"
               className="repository-type-input-element"
               value={formValues.contentTypesList}
               multiple={true}
               onChange={(e) => handleInput(e, "contentTypesList")}
               IconComponent={KeyboardArrowDownIcon}
-              renderValue={(selected) => (selected as string[]).join(", ")}
-            >
+              renderValue={(selected) => (selected as string[]).join(", ")}>
               <MenuItem value={RepositoryContentType.Experimental}>
                 <Checkbox
                   color="primary"

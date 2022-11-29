@@ -1,14 +1,14 @@
 import * as React from "react";
-import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
-import Icon from "@material-ui/core/Icon";
-import { WatchLater } from "@material-ui/icons";
+import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
+import Icon from "@mui/material/Icon";
+import { WatchLater } from "@mui/icons-material";
 export {
   Close as CloseIcon,
   Add as AddIcon,
   Share as ShareIcon,
   Link as FileLinkIcon,
   MoreHoriz as Dots,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 export const CircleIcon = (props: SvgIconProps) => (
   <SvgIcon viewBox="0 0 15 15" {...props}>

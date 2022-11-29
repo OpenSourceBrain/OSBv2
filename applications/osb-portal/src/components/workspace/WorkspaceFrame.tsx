@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { AnyAction, Dispatch } from "redux";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Workspace,
   WorkspaceResource,

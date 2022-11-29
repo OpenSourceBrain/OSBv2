@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Chip from "@material-ui/core/Chip";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 
 import { RepositoryResourceNode } from "../../apiclient/workspaces";
 import { bgInputs, bgLight } from "../../theme";
