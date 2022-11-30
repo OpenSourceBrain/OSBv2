@@ -42,11 +42,11 @@ export const HomePage = (props: any) => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={2}
+                md={3}
                 direction="column"
                 className="verticalFill"
             >
-              <Box pl={2} width={1} className="verticalFit">
+              <Box width={1} className="verticalFit">
                 <HomePageSider />
               </Box>
             </Grid>
@@ -54,7 +54,7 @@ export const HomePage = (props: any) => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={10}
+                md={9}
                 alignItems="stretch"
                 className="verticalFill"
             >

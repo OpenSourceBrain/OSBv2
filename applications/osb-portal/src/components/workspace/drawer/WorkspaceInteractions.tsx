@@ -215,7 +215,6 @@ export default (props: WorkspaceProps | any) => {
             <Typography variant="h4" className={classes.flexCenter}>
               {workspace.name}
               <Tooltip
-                interactive={true}
                 style={{ marginLeft: "0.3em" }}
                 title={
                   <>

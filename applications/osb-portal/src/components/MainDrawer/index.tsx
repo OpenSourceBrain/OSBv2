@@ -5,7 +5,9 @@ import {makeStyles, useTheme} from '@mui/styles';
 import {
     bgRegular,
     bgDarkest,
-    secondaryColor
+    secondaryColor,
+    drawerText,
+    linkColor
 } from "../../theme";
 
 //hooks
@@ -16,56 +18,61 @@ import {
     ListItem,
     ListItemIcon,
     List,
-    Divider,
     ListItemText,
     Toolbar,
     Drawer,
     Typography,
     IconButton,
     ListSubheader,
-    Avatar
+    Box,
+    Button
 } from "@mui/material";
 
 //icons
-import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
-import EmailIcon from "@mui/icons-material/Email";
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import PublicIcon from '@mui/icons-material/Public'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
-import icons from '../../assets/icons'
-const {Test} = icons
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 //types
 import { UserInfo } from "../../types/user";
+import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
+    drawerContent: {
+        width: '100%'
+    },
     root: {
         display: "flex",
-        '& .MuiDrawer-paper' : {
-            top: 'initial',
-            width: '15rem',
-            borderRight: `1px solid ${bgRegular}`,
-            backgroundColor: bgDarkest
-        },
         '& .MuiListSubheader-root' : {
             backgroundColor: 'transparent',
             '& .MuiTypography-root': {
                 textTransform: 'uppercase',
                 fontWeight: 600,
-                fontSize: '12px'
+                fontSize: '0.909rem'
             },
         },
         '& .MuiList-root': {
             '& .MuiButtonBase-root': {
                 '& .MuiListItemIcon-root' :{
-                    width: 'auto',
+                    minWidth: 'auto',
                     marginRight: '0.875rem',
 
                     '& .MuiSvgIcon-root' : {
-                        fontSize: '14px'
+                        fontSize: '1.3rem',
+                        color: drawerText,
                     }
                 } ,
                 '& .MuiListItemText-root' :{
                     '& .MuiTypography-root' : {
-                        fontSize: '14px'
+                        fontSize: '1rem',
+                        color: drawerText,
+                        fontWeight: 500,
                     }
                 }
             }
@@ -78,14 +85,47 @@ const useStyles = makeStyles(theme => ({
         },
     },
     toolbar: {
-        ...theme.mixins.toolbar,
-        [theme.breakpoints.down("sm")]: {
-            display: "none"
-        }
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     helloText: {
         fontWeight: 700,
         fontSize: '14px'
+    },
+    drawer: {
+        flexShrink: 0,
+        whiteSpace: "nowrap",
+        display: "flex",
+    },
+    drawerOpen: {
+        top: "initial",
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    drawerClose: {
+        top: "initial",
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        overflowX: "hidden",
+        width: "100%",
+        "& .verticalFit": {
+            display: "block",
+        },
+    },
+    drawerPaper: {
+        position: "static",
+        flex: 1,
+        display: "flex",
+        bottom: 0,
+        paddingTop: theme.spacing(1),
+        justifyContent: "space-between",
+        borderRight: `1px solid ${bgRegular}`,
+        backgroundColor: bgDarkest
     },
 }));
 
@@ -95,7 +135,7 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
 
-    const text= user ? `Welcome back ${user.firstName}` :  "Lets do some science!"
+    const text= user ? `Welcome back, ${user.firstName}` :  "Lets do some science!"
 
     const toggleDrawer = event => {
         if (
@@ -127,59 +167,96 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
             </Typography>
          </Toolbar>
         }
+        <Box
+            display="flex"
+            alignItems="stretch"
+            flex="1"
+            className="verticalFill"
+        >
         <Drawer
             variant={isMdUp ? "permanent" : "temporary"}
             anchor="left"
-            open={open}
             onClose={toggleDrawer}
-            className={classes.root}
+            elevation={0}
+            open={open}
+            className={clsx(classes.drawer, classes.root, {
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+            })}
+            classes={{
+                paper: clsx(classes.drawerPaper, classes.root, {
+                    [classes.drawerOpen]: open,
+                    [classes.drawerClose]: !open,
+                }),
+            }}
         >
-            <Toolbar>
-                <Typography className={classes.helloText} variant="body2" color={secondaryColor}>
-                 {text}
-                </Typography>
+            <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+                <Toolbar className={classes.toolbar}>
+                    <Typography className={classes.helloText} variant="body2" color={secondaryColor}>
+                        {text}
+                    </Typography>
+                    {
+                        !isMdUp ?
+                        <IconButton onClick={toggleDrawer}>
+                            <CloseIcon />
+                        </IconButton> : null
+                    }
+                </Toolbar>
+                <List subheader={
+                    <ListSubheader>
+                        <Typography mb={1} mt={2}>Dashboard</Typography>
+                    </ListSubheader>}>
+                    <ListItem button selected={true}>
+                        <ListItemIcon>
+                            <FolderOpenIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Workspaces' />
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <PublicIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Repositories' />
+                    </ListItem>
+                </List>
+                <List subheader={
+                    <ListSubheader>
+                        <Typography mb={1} mt={4}>Support</Typography>
+                    </ListSubheader>}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <InfoOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Learn more about OSB' />
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <DescriptionOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='What’s new in OSB' />
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <HelpOutlineOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Help Center' />
+                    </ListItem>
+                </List>
+            </div>
+            <Toolbar className={classes.toolbar}>
+                <Button
+                  sx={{
+                    width: '100%',
+                    textTransform: 'none',
+                    borderRadius: 2,
+                    backgroundColor: linkColor,
+                    fontWeight: 600,
+                    fontSize: '1.091rem'
+                  }}
+                 variant="contained" endIcon={<ArrowDropDownIcon />}>Create new</Button>
             </Toolbar>
-            <List subheader={
-                <ListSubheader>
-                 <Typography mb={1}  component="p" variant="h5">Dashboard</Typography>
-                </ListSubheader>}>
-                <ListItem button component='a' href='/'>
-                    <ListItemIcon>
-                        <Avatar src={Test} variant={"square"} />
-                    </ListItemIcon>
-                    <ListItemText primary='Workspaces' />
-                </ListItem>
-                <ListItem button component='a' href='/repositories'>
-                    <ListItemIcon>
-                        <EmailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Repositories' />
-                </ListItem>
-            </List>
-            <List subheader={
-                <ListSubheader>
-                    <Typography mb={1}  component="p" variant="h5">Support</Typography>
-                </ListSubheader>}>
-                <ListItem button>
-                    <ListItemIcon>
-                        <EmailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Learn more about OSB' />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <EmailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='What’s new in OSB' />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <EmailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Help Center' />
-                </ListItem>
-            </List>
         </Drawer>
+        </Box>
     </>
     );
 };
