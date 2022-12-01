@@ -124,6 +124,16 @@ const useStyles = makeStyles(theme => ({
             display: "block",
         },
     },
+    drawerPaper: {
+        position: "static",
+        flex: 1,
+        display: "flex",
+        bottom: 0,
+        paddingTop: theme.spacing(1),
+        justifyContent: "space-between",
+        borderRight: `1px solid ${bgRegular}`,
+        backgroundColor: bgDarkest
+    },
 }));
 
 export const MainDrawer = ({ user }: { user: UserInfo }) => {
@@ -182,6 +192,12 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                 [classes.drawerOpen]: open,
                 [classes.drawerClose]: !open,
             })}
+            classes={{
+                paper: clsx(classes.drawerPaper, classes.root, {
+                    [classes.drawerOpen]: open,
+                    [classes.drawerClose]: !open,
+                }),
+            }}
         >
             <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
                 <Toolbar className={classes.toolbar}>
