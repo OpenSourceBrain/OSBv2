@@ -3,8 +3,6 @@ import * as React from "react";
 import {makeStyles, useTheme} from '@mui/styles';
 
 import {
-    bgRegular,
-    bgDarkest,
     secondaryColor,
     drawerText,
     linkColor,
@@ -29,6 +27,7 @@ import {
     Box,
     Button,
 } from "@mui/material";
+import CreateModal from '../common/CreateModal'
 
 //icons
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -131,10 +130,14 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
+
     const history = useHistory();
 
-    console.log(history)
     const text= user ? `Welcome back, ${user.firstName}` :  "Lets do some science!"
+
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
 
     const toggleDrawer = event => {
         if (
@@ -246,10 +249,12 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     fontWeight: 600,
                     fontSize: '0.857rem'
                   }}
-                 variant="contained" endIcon={<ArrowDropDownIcon />}>Create new</Button>
+                 variant="contained" endIcon={<ArrowDropDownIcon />} onClick={handleOpenModal}>Create new</Button>
             </Toolbar>
         </Drawer>
+
         </Box>
+        <CreateModal open={openModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} />
     </>
     );
 };
