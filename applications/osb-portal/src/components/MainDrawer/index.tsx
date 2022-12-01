@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
             '& .MuiTypography-root': {
                 textTransform: 'uppercase',
                 fontWeight: 600,
-                fontSize: '0.909rem'
+                fontSize: '0.714rem'
             },
         },
         '& .MuiList-root': {
@@ -64,13 +64,13 @@ const useStyles = makeStyles(theme => ({
                     marginRight: '0.875rem',
 
                     '& .MuiSvgIcon-root' : {
-                        fontSize: '1.3rem',
+                        fontSize: '1rem',
                         color: drawerText,
                     }
                 } ,
                 '& .MuiListItemText-root' :{
                     '& .MuiTypography-root' : {
-                        fontSize: '1rem',
+                        fontSize: '0.857rem',
                         color: drawerText,
                         fontWeight: 500,
                     }
@@ -206,7 +206,7 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={2}>Dashboard</Typography>
                     </ListSubheader>}>
-                    <ListItem button selected={true}>
+                    <ListItem button>
                         <ListItemIcon>
                             <FolderOpenIcon />
                         </ListItemIcon>
@@ -251,7 +251,7 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     borderRadius: 2,
                     backgroundColor: linkColor,
                     fontWeight: 600,
-                    fontSize: '1.091rem'
+                    fontSize: '0.857rem'
                   }}
                  variant="contained" endIcon={<ArrowDropDownIcon />}>Create new</Button>
             </Toolbar>

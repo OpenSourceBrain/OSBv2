@@ -12,12 +12,12 @@ import {
   AboutDialog,
   WorkspaceOpenPage,
   ProtectedRoute,
-  RepositoriesPage,
   RepositoryPage,
   WorkspacePage,
   UserPage,
 } from "./components";
 
+import {RepositoriesPage} from "./pages/RepositoriesNew";
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

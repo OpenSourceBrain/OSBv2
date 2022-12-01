@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     '& .MuiTypography-root': {
-      fontSize: '1.091rem',
+      fontSize: '0.857rem',
       fontWeight: 700,
     }
   }
