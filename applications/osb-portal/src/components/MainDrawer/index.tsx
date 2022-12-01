@@ -7,7 +7,9 @@ import {
     bgDarkest,
     secondaryColor,
     drawerText,
-    linkColor
+    linkColor,
+    selectedMenuItemBg,
+    primaryColor
 } from "../../theme";
 
 //hooks
@@ -25,7 +27,7 @@ import {
     IconButton,
     ListSubheader,
     Box,
-    Button
+    Button,
 } from "@mui/material";
 
 //icons
@@ -42,6 +44,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 //types
 import { UserInfo } from "../../types/user";
 import clsx from "clsx";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     drawerContent: {
@@ -58,6 +61,10 @@ const useStyles = makeStyles(theme => ({
             },
         },
         '& .MuiList-root': {
+            '& .Mui-selected': {
+                background: selectedMenuItemBg,
+                borderLeft: `2px solid ${primaryColor}`
+            },
             '& .MuiButtonBase-root': {
                 '& .MuiListItemIcon-root' :{
                     minWidth: 'auto',
@@ -134,7 +141,9 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
+    const history = useHistory();
 
+    console.log(history)
     const text= user ? `Welcome back, ${user.firstName}` :  "Lets do some science!"
 
     const toggleDrawer = event => {
@@ -206,13 +215,13 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={2}>Dashboard</Typography>
                     </ListSubheader>}>
-                    <ListItem button component='a' href='/'>
+                    <ListItem button component='a' href='/' selected={history.location.pathname === '/' || history.location.pathname.includes('workspaces')}>
                         <ListItemIcon>
                             <FolderOpenIcon />
                         </ListItemIcon>
                         <ListItemText primary='Workspaces' />
                     </ListItem>
-                    <ListItem button component='a' href='/repositories'>
+                    <ListItem button component='a' href='/repositories' selected={history.location.pathname.includes('repositories')}>
                         <ListItemIcon>
                             <PublicIcon />
                         </ListItemIcon>
