@@ -206,13 +206,13 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={2}>Dashboard</Typography>
                     </ListSubheader>}>
-                    <ListItem button>
+                    <ListItem button component='a' href='/'>
                         <ListItemIcon>
                             <FolderOpenIcon />
                         </ListItemIcon>
                         <ListItemText primary='Workspaces' />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component='a' href='/repositories'>
                         <ListItemIcon>
                             <PublicIcon />
                         </ListItemIcon>
