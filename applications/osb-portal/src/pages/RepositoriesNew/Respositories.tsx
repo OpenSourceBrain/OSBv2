@@ -191,14 +191,14 @@ return (
                 }}
             >
                 <TableContainer className={classes.repositoryData}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table aria-label="simple table">
                         <TableBody>
                             {repositories.map((row) => (
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell style={{ width: 300 }} component="th" scope="row">
+                                    <TableCell style={{ minWidth: 300 }} component="th" scope="row">
                                         <Box className="col">
                                             <Typography  component="strong">{row.name}</Typography>
                                             {row.summary && (
@@ -216,8 +216,8 @@ return (
                                             )}
                                         </Box>
                                     </TableCell>
-                                    <TableCell style={{ width: 100 }}>{row.user.username}</TableCell>
-                                    <TableCell style={{ width: 100 }}>
+                                    <TableCell style={{ minWidth: 100 }}>{row.user.username}</TableCell>
+                                    <TableCell style={{ minWidth: 100 }}>
                                         <Button
                                             sx={{textTransform: 'capitalize'}}
                                             endIcon={<OpenInNewIcon />}
@@ -226,7 +226,7 @@ return (
                                             {row.repositoryType}
                                         </Button>
                                     </TableCell>
-                                    <TableCell style={{ width: 200 }}>
+                                    <TableCell style={{ minWidth: 200 }}>
                                         <Box mb={'.5'}>
                                             {
                                                 row.contentTypes.split(',').map((type) =>

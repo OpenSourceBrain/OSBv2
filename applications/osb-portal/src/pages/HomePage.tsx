@@ -42,7 +42,8 @@ export const HomePage = (props: any) => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={2}
+                md={3}
+                lg={2}
                 direction="column"
                 className="verticalFill"
             >
@@ -54,7 +55,8 @@ export const HomePage = (props: any) => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={10}
+                md={9}
+                lg={10}
                 alignItems="stretch"
                 className="verticalFill"
             >
