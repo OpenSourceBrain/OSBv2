@@ -15,9 +15,8 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
-import WorkspaceActionsMenu from "./WorkspaceActionsMenu";
+import { WorkspaceActionsMenu } from "..";
 import { bgDarkest, paragraph, textColor } from "../../theme";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 interface Props {
   workspace: Workspace;
@@ -122,9 +121,6 @@ export const WorkspaceCard = (props: Props) => {
             <WorkspaceActionsMenu
               user={props.user}
               workspace={workspace}
-              updateWorkspace={props.updateWorkspace}
-              deleteWorkspace={props.deleteWorkspace}
-              refreshWorkspaces={props.refreshWorkspaces}
               isWorkspaceOpen={false}
             />
           </CardActions>

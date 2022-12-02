@@ -257,7 +257,7 @@ export const UserPage = (props: any) => {
         setError(e);
       }
     );
-  }, [userId]);
+  }, [userId, tabValue, props.workspacesCounter]);
 
   if (error) {
     throw error;
@@ -631,7 +631,10 @@ export const UserPage = (props: any) => {
                           lg={4}
                           xl={3}
                         >
-                          <WorkspaceCard workspace={ws} user={currentUser} />
+                          <WorkspaceCard 
+                            workspace={ws} 
+                            user={currentUser} 
+                            />
                         </Grid>
                       );
                     })}

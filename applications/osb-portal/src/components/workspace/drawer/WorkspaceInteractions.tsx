@@ -34,7 +34,7 @@ import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import { primaryColor } from "../../../theme";
-import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
+import { WorkspaceActionsMenu } from "../..";
 import { UserInfo } from "../../../types/user";
 
 const useStyles = makeStyles((theme) => ({
@@ -248,9 +248,6 @@ export default (props: WorkspaceProps | any) => {
                 <WorkspaceActionsMenu
                   workspace={workspace}
                   user={props.user}
-                  updateWorkspace={props.updateWorkspace}
-                  deleteWorkspace={deleteWorkspace}
-                  refreshWorkspaces={handleWorkspaceRefresh}
                   isWorkspaceOpen={true}
                 />
               </Box>
@@ -328,9 +325,6 @@ export default (props: WorkspaceProps | any) => {
               <WorkspaceActionsMenu
                 workspace={workspace}
                 user={props.user}
-                updateWorkspace={props.updateWorkspace}
-                deleteWorkspace={props.deleteWorkspace}
-                refreshWorkspaces={handleWorkspaceRefresh}
                 isWorkspaceOpen={true}
               />
             </IconButton>
