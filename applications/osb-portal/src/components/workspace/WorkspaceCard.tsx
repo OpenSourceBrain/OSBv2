@@ -33,7 +33,7 @@ interface Props {
 const useStyles = makeStyles((theme) => ({
   card: {
     flex: 1,
-    minHeight: `18em`,
+    minHeight: `17em`,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",

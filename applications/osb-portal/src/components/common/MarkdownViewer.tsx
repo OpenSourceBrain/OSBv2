@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
             paddingLeft: ".5rem",
           },
         },
-        "&:first-child": {
+        "&:first-of-type": {
           color: fontColor,
         },
       },

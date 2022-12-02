@@ -39,7 +39,7 @@ export const Banner = (props: any) => {
   const text1 =
     user === null
       ? "Welcome to the Open Source Brain v2.0 beta release!"
-      : `Welcome back ${user.firstName}`;
+      : `Welcome back, ${user.firstName}`;
   const text2 =
     user === null
       ? "Featuring model creation through NetPyNE, NWB data exploration and interactive JupyterLab based development sessions"

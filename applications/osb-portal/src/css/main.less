@@ -10,9 +10,6 @@
     flex-direction: column;
     align-items: stretch;
     max-height: calc(100%);
-    &.card-container {
-      margin-right: -(@gutter / 4);
-    }
 
     &.card-container,
     .scrollbar {
@@ -21,7 +18,7 @@
       display: flex;
       flex-direction: column;
       max-height: calc(100%);
-     
+
       .scrollbarStyle;
     }
 
@@ -39,7 +36,7 @@
     padding-right: @gutter / 2;
     visibility: hidden;
     overflow: scroll;
-  
+
     &:hover{
       visibility: visible;
     }
@@ -76,17 +73,17 @@
   &::-webkit-scrollbar {
     width: @gutter / 4;
   }
-  
-  
+
+
   &::-webkit-scrollbar-button {
     height: 0;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     border-radius: @radius;
     background: @bgLightest;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
     border-radius: @radius;
@@ -129,7 +126,7 @@ div.rc-md-editor {
   background-color: @bgDarker;
   border: 1px solid @bgLightest;
   border-radius: @inputRadius;
-  
+
 
   .rc-md-navigation .button-wrap .button:hover {
     color: white;

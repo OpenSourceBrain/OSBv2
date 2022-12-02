@@ -16,6 +16,7 @@ import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspacePage from "../pages/WorkspacePage";
 import workspaceEditor from "./workspace/WorkspaceEditor";
 import editRepoDialog from "../components/repository/EditRepoDialog";
+import HomePageDrawer from './MainDrawer/MainDrawer'
 
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
@@ -28,7 +29,7 @@ import { AnyAction, Dispatch } from "redux";
 
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
 import { UserPage as userPage } from "../pages/UserPage";
-import { RepositoriesPage as repositoriesPage } from "../pages/RepositoriesPage";
+import { RepositoriesPage as repositoriesPage } from "../pages/RepositoriesNew/index";
 import repositories from "../components/repository/Repositories";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
@@ -89,7 +90,6 @@ const mapTagsToProps = (state: RootState) => ({
 const mapUserAndTagsToProps = (state: RootState) => ({
   user: state.user,
   tags: state.tags,
- 
 });
 
 const mapAboutDialogToProps = (state: RootState) => ({
@@ -102,6 +102,17 @@ const dispatchAboutDialogProps = {
 const dispatchMainMenuProps = {
   openDialog,
 };
+
+const mapAboutDialogAndUserToProps = (state: RootState) => ({
+  aboutDialog: state.aboutDialog,
+  user: state.user,
+});
+
+const dispatchAboutDialogAndUser = {
+  openDialog,
+  closeDialog,
+  ...dispatchUserProps
+}
 
 export const Workspaces = connect(
   mapWorkspacesStateToProps,
@@ -173,6 +184,11 @@ export const ProtectedRoute = connect(
   mapUserStateToProps,
   dispatchUserProps
 )(protectedRoute);
+
+export const HomePageSider = connect(
+    mapAboutDialogAndUserToProps,
+    dispatchAboutDialogAndUser
+)(HomePageDrawer);
 
 export const WorkspaceActionsMenu = connect(
   null,

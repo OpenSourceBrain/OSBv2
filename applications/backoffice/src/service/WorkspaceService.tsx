@@ -1,4 +1,4 @@
-import { WorkspaceIdGetRequest, WorkspaceGetRequest } from "../apiclient/workspaces/apis/RestApi";
+import { WorkspaceIdGetRequest, WorkspaceGetRequest } from "../apiclient/workspaces";
 
 import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } from "../types/workspace";
 import { FeaturedType } from '../types/global';

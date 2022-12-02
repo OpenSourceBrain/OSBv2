@@ -4,45 +4,34 @@ import { useHistory } from "react-router-dom";
 import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import PersonIcon from "@mui/icons-material/Person";
+import {BetaIcon, OSBLogo} from "../icons";
 
-const title = "Open Source Brain";
+import {
+  headerBg,
+  secondaryColor
+} from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    backgroundColor: theme.palette.background.paper,
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    justifyContent: "space-between",
-  },
-  toolbarTitle: {
-    flex: 1,
-  },
-  toolbarSecondary: {
-    justifyContent: "space-between",
-    overflowX: "auto",
-  },
-  toolbarLink: {
+    backgroundColor: headerBg,
     padding: theme.spacing(1),
-    flexShrink: 0,
-  },
-  wrapIcon: {
-    verticalAlign: "middle",
-    display: "inline-flex",
+    justifyContent: "space-between",
+    minHeight: '1.8rem',
+    height: '1.8rem'
   },
   button: {
     textTransform: "none",
+    color: secondaryColor,
+    padding: 0
   },
-  logoChip: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    borderRadius: 2,
-    textTransform: "uppercase",
-    fontSize: 9,
-    padding: 3,
-    lineHeight: "1em",
-    marginTop: 3,
-    fontWeight: 700,
-    marginLeft: "1em",
-    alignSelf: "flex-start",
+  logoContainer: {
+    display: 'flex',
+    justifyContent: 'start',
+    alignItems: 'center',
+
+    '& .MuiSvgIcon-root': {
+      fontSize: '8.5rem'
+    }
   },
 }));
 
@@ -105,7 +94,6 @@ export const Header = (props: any) => {
                     Account help
                   </MenuItem>
                 }
-                {/* <MenuItem>Settings</MenuItem> */}
                 <MenuItem
                   className="logout-menu-item"
                   onClick={handleUserLogout}
@@ -137,24 +125,15 @@ export const Header = (props: any) => {
     }
   };
 
+  // @ts-ignore
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Box display="flex">
-          <a href="/" onClick={handleToggleDrawer}>
-            <img
-              src="/images/osb-logo-full.png"
-              alt={title}
-              title={title}
-              height="25"
-            />
-          </a>
-          <sup className={classes.logoChip}>beta</sup>
-        </Box>
+        <a href="/" onClick={handleToggleDrawer}  className={classes.logoContainer}>
+          <OSBLogo />
+          <BetaIcon />
+        </a>
         <Box>
-          {/* <IconButton>
-              <SearchIcon />
-            </IconButton> */}
           {headerText}
         </Box>
       </Toolbar>

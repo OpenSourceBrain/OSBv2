@@ -1,16 +1,20 @@
 import * as React from "react";
 import debounce from "lodash/debounce";
 
-import { styled } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
-import Grid from "@mui/material/Grid";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { makeStyles } from '@mui/styles';
+
+//components
+import {
+  Chip,
+  Grid,
+  Tabs,
+  Box,
+  Tab, Typography
+} from "@mui/material";
+
+//icons
 import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Chip from "@mui/material/Chip";
 
 import { WorkspaceCard } from "..";
 import { Workspace } from "../../types/workspace";
@@ -32,7 +36,18 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     maxWidth: "33%",
+    minWidth: 'fit-content',
+    padding: '16px 24px'
   },
+  tabTitle: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& .MuiTypography-root': {
+      fontSize: '0.857rem',
+      fontWeight: 700,
+    }
+  }
 }));
 
 export enum WorkspaceSelection {
@@ -161,7 +176,7 @@ export const Workspaces = ({ user, counter }: any) => {
   const workspaceList = workspaces
     ? workspaces.map((workspace: Workspace, index: number) => {
         return (
-          <Grid item={true} key={index} xs={6} sm={4} md={6} lg={4} xl={3}>
+          <Grid item={true} key={index} xs={6} sm={4} md={4} lg={3} xl={2}>
             <WorkspaceCard workspace={workspace} />
           </Grid>
         );
@@ -187,7 +202,6 @@ export const Workspaces = ({ user, counter }: any) => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          marginBottom="-2px"
         >
           <Tabs
             value={selection.current}
@@ -202,19 +216,19 @@ export const Workspaces = ({ user, counter }: any) => {
                 className={classes.tab}
                 label={
                   user.isAdmin ? (
-                    <>
-                      All workspaces
+                    <div className={classes.tabTitle}>
+                      <Typography>All workspaces</Typography>
                       {selection.current === WorkspaceSelection.USER && (
-                        <Chip
-                          size="small"
-                          color="primary"
-                          label={state.total}
-                        />
+                          <Chip
+                              size="small"
+                              color="primary"
+                              label={state.total}
+                          />
                       )}
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      Your workspaces
+                   <div className={classes.tabTitle}>
+                     <Typography>Your workspaces</Typography>
                       {selection.current === WorkspaceSelection.USER && (
                         <Chip
                           size="small"
@@ -222,7 +236,7 @@ export const Workspaces = ({ user, counter }: any) => {
                           label={state.total}
                         />
                       )}
-                    </>
+                    </div>
                   )
                 }
               />
@@ -232,12 +246,12 @@ export const Workspaces = ({ user, counter }: any) => {
               value={WorkspaceSelection.FEATURED}
               className={classes.tab}
               label={
-                <>
-                  Featured workspaces
+                <div className={classes.tabTitle}>
+                  <Typography>Featured workspaces</Typography>
                   {selection.current === WorkspaceSelection.FEATURED && (
                     <Chip size="small" color="primary" label={state.total} />
                   )}
-                </>
+                </div>
               }
             />
             <Tab
@@ -245,12 +259,12 @@ export const Workspaces = ({ user, counter }: any) => {
               value={WorkspaceSelection.PUBLIC}
               className={classes.tab}
               label={
-                <>
-                  Public workspaces
+                <div className={classes.tabTitle}>
+                  <Typography>Public workspaces</Typography>
                   {selection.current === WorkspaceSelection.PUBLIC && (
                     <Chip size="small" color="primary" label={state.total} />
                   )}
-                </>
+                </div>
               }
             />
           </Tabs>
@@ -261,19 +275,13 @@ export const Workspaces = ({ user, counter }: any) => {
           />
         </Box>
       </Box>
-      {/* {
-        workspaces && <Box mb={2}>
 
-          <Typography variant="subtitle2" style={{ marginTop: "0.5em" }}>
-            {state.total} Workspace{workspaceList.length !== 1 ? 's' : ''}
-          </Typography>
-        </Box>
-      } */}
 
       {!workspaces && (
         <Box
-          mt={2}
           flex={1}
+          px={2}
+          py={2}
           display="flex"
           alignContent="center"
           alignItems="center"
@@ -286,7 +294,8 @@ export const Workspaces = ({ user, counter }: any) => {
       {workspaces && (
         <Box
           className={`verticalFit card-container ${classes.cardContainer}`}
-          mt={2}
+          px={4}
+          py={4}
         >
           <Box pb={1} className="scrollbar" id="workspace-box">
             <InfiniteScroll
@@ -296,8 +305,9 @@ export const Workspaces = ({ user, counter }: any) => {
               loader={
                 <Box
                   display="flex"
-                  mt={1}
                   flex={1}
+                  px={2}
+                  py={2}
                   justifyContent="center"
                   width="100%"
                 >

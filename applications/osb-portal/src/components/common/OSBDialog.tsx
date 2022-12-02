@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 
 import * as Icons from "../icons";
 
-import { checkBoxColor, bgDarker } from "../../theme";
+import { checkBoxColor, bgDarker, secondaryColor } from "../../theme";
 
 interface DialogProps {
   open: boolean;
@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiDialogTitle-root": {
       backgroundColor: bgDarker,
+      marginBottom: 0,
+      color: secondaryColor,
     },
   },
   closeIcon: {

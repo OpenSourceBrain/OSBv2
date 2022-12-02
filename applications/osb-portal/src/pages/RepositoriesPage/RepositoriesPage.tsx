@@ -29,7 +29,7 @@ import {
 import RepositoryService from "../../service/RepositoryService";
 import { UserInfo } from "../../types/user";
 import useStyles from "./styles";
-import { Repositories, MainMenu } from "../../components/index";
+import { Repositories, MainMenu } from "../../components";
 import OSBPagination from "../../components/common/OSBPagination";
 import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
 import {

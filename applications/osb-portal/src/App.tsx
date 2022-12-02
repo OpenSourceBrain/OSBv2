@@ -4,7 +4,7 @@ import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles
 import { CssBaseline } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
-import HomePage from "./pages/HomePage";
+import {HomePage} from "./pages/HomePage";
 import theme from "./theme";
 
 import {
@@ -12,12 +12,11 @@ import {
   AboutDialog,
   WorkspaceOpenPage,
   ProtectedRoute,
-  RepositoriesPage,
   RepositoryPage,
   WorkspacePage,
   UserPage,
-} from "./components/index";
-
+  RepositoriesPage
+} from "./components";
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -36,6 +35,10 @@ const useStyles = makeStyles(() => ({
       overflow: "hidden",
     },
   },
+  appHeader: {
+    height: '30px',
+    borderBottom: '1px solid #434343',
+  }
 }));
 
 export const App = (props: any) => {
@@ -50,7 +53,7 @@ export const App = (props: any) => {
           {!props.error && (
             <Router>
               <div className={classes.mainContainer}>
-                <div id="header">
+                <div id="header" className={classes.appHeader}>
                   <Header />
                 </div>
 

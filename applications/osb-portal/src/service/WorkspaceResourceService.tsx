@@ -1,7 +1,7 @@
 import {
   WorkspaceresourceIdGetRequest,
   WorkspacesControllersWorkspaceResourceControllerOpenRequest,
-} from "../apiclient/workspaces/apis";
+} from "../apiclient/workspaces";
 
 import {
   Configuration,

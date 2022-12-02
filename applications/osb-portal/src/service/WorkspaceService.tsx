@@ -1,7 +1,7 @@
 import {
   WorkspaceIdGetRequest,
   WorkspaceGetRequest,
-} from "../apiclient/workspaces/apis/RestApi";
+} from "../apiclient/workspaces";
 
 import {
   Workspace,
@@ -9,7 +9,7 @@ import {
   OSBApplications,
   SampleResourceTypes,
 } from "../types/workspace";
-import { FeaturedType } from "../types//global";
+import { FeaturedType } from "../types/global";
 
 import * as workspaceApi from "../apiclient/workspaces/apis";
 import {
