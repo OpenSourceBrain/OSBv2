@@ -3,13 +3,13 @@ import * as React from "react";
 import {makeStyles, useTheme} from '@mui/styles';
 
 import {
-    bgRegular,
-    bgDarkest,
-    secondaryColor,
-    drawerText,
-    linkColor,
-    selectedMenuItemBg,
-    primaryColor
+  bgRegular,
+  bgDarkest,
+  secondaryColor,
+  drawerText,
+  linkColor,
+  selectedMenuItemBg,
+  primaryColor
 } from "../../theme";
 
 //hooks
