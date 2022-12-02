@@ -35,7 +35,7 @@ import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import { primaryColor } from "../../../theme";
-import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
+import WorkspaceActionsMenu from "../..";
 import { UserInfo } from "../../../types/user";
 
 const useStyles = makeStyles((theme) => ({
@@ -215,7 +215,7 @@ export default (props: WorkspaceProps | any) => {
             <Typography variant="h4" className={classes.flexCenter}>
               {workspace.name}
               <Tooltip
-                style={{ marginLeft: "0.3em" }}
+                sx={{ marginLeft: "0.3em" }}
                 title={
                   <>
                     Resources are special files that can be opened with
@@ -247,9 +247,6 @@ export default (props: WorkspaceProps | any) => {
               <WorkspaceActionsMenu
                 workspace={workspace}
                 user={props.user}
-                updateWorkspace={props.updateWorkspace}
-                deleteWorkspace={deleteWorkspace}
-                refreshWorkspaces={handleWorkspaceRefresh}
                 isWorkspaceOpen={true}
               />
             </Box>
