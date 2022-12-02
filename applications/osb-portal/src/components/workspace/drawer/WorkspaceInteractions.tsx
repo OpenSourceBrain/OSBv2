@@ -35,7 +35,7 @@ import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import { primaryColor } from "../../../theme";
-import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
+import { WorkspaceActionsMenu } from "../..";
 import { UserInfo } from "../../../types/user";
 
 const useStyles = makeStyles((theme) => ({
@@ -241,6 +241,56 @@ export default (props: WorkspaceProps | any) => {
                 >
                   <ReadOnlyIcon fontSize="small" />
                 </Tooltip>
+                {!canEdit && (
+                  <Tooltip
+                    style={{ marginLeft: "0.3em" }}
+                    title="You do not have permissions to modify this workspace."
+                  >
+                    <ReadOnlyIcon fontSize="small" />
+                  </Tooltip>
+                )}
+              </Typography>
+
+              <Box p={2}>
+                <WorkspaceActionsMenu
+                  workspace={workspace}
+                  user={props.user}
+                  isWorkspaceOpen={true}
+                />
+              </Box>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted={true}
+                open={Boolean(anchorEl)}
+                onClose={handleShareClose}
+              >
+                {props.user && !workspace.publicable && (
+                  <MenuItem onClick={handlePublicWorkspace}>
+                    Make public
+                  </MenuItem>
+                )}
+                {props.user && workspace.publicable && (
+                  <MenuItem onClick={handlePrivateWorkspace}>
+                    Make private
+                  </MenuItem>
+                )}
+              </Menu>
+            </ExpansionPanelSummary>
+
+            <ExpansionPanelDetails className="verticalFit">
+              <Divider />
+              {canEdit && (
+                <ListItem
+                  button={true}
+                  onClick={showAddResource}
+                  className={classes.treePadding}
+                >
+                  <ListItemIcon style={{ paddingLeft: 0 }}>
+                    <AddIcon style={{ fontSize: "1.3rem" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"Add resource"} />
+                </ListItem>
               )}
             </Typography>
 
@@ -248,9 +298,6 @@ export default (props: WorkspaceProps | any) => {
               <WorkspaceActionsMenu
                 workspace={workspace}
                 user={props.user}
-                updateWorkspace={props.updateWorkspace}
-                deleteWorkspace={deleteWorkspace}
-                refreshWorkspaces={handleWorkspaceRefresh}
                 isWorkspaceOpen={true}
               />
             </Box>

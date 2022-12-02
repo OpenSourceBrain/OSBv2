@@ -292,9 +292,9 @@ export default (props: WorkspaceEditProps) => {
     setChecked([]);
   };
 
-  const loadRepository = (repositoryId: number) => {
+  const loadRepository = (repository: OSBRepository) => {
     setRepositoryLoading(true);
-    RepositoryService.getRepository(repositoryId).then((repo) => {
+    RepositoryService.getRepository(repository.id).then((repo) => {
       setRepository(repo);
     });
   };
@@ -492,12 +492,10 @@ export default (props: WorkspaceEditProps) => {
                 <Box className="repositories-list">
                   <Repositories
                     repositories={repositories}
-                    handleRepositoryClick={(repositoryId: number) =>
-                      loadRepository(repositoryId)
-                    }
+                    handleRepositoryClick={loadRepository}
                     showSimpleVersion={true}
                     searchRepositories={true}
-                    filterChanged={(newFilter) => setFilter(newFilter)}
+                    filterChanged={(newFilter) => setFilter({...filter, text: newFilter})}
                   />
                 </Box>
                 {totalPages > 1 ? (
