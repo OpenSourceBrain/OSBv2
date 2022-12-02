@@ -22,12 +22,13 @@ import { bgDarkest, textColor } from "../../theme";
 // TODO: refactor to use redux instead of passing props
 
 interface WorkspaceActionsMenuProps {
-  workspace: Workspace;
-  updateWorkspace?: (ws: Workspace) => null;
+  workspace?: Workspace;
+  updateWorkspace?: (ws: Workspace) => void;
   deleteWorkspace?: (wsId: number) => void;
-  refreshWorkspaces: () => void;
+  refreshWorkspaces?: () => void;
   user?: UserInfo;
-  isWorkspaceOpen: boolean;
+  isWorkspaceOpen?: boolean;
+  [other: string]: any;
 }
 
 const useStyles = makeStyles((theme) => ({

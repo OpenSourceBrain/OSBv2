@@ -14,8 +14,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     backgroundColor: headerBg,
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
+    padding: theme.spacing(1),
     justifyContent: "space-between",
     minHeight: '1.8rem',
     height: '1.8rem'
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
 
     '& .MuiSvgIcon-root': {
-      fontSize: '10.5rem'
+      fontSize: '8.5rem'
     }
   },
 }));

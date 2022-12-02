@@ -33,6 +33,7 @@ import { RepositoriesPage as repositoriesPage } from "../pages/RepositoriesNew/i
 import repositories from "../components/repository/Repositories";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
+import WorkspaceActionsMenuUnbound from "./workspace/WorkspaceActionsMenu";
 
 const mapWorkspacesStateToProps = (state: RootState) => ({
   user: state.user,
@@ -52,6 +53,7 @@ const dispatchWorkspaceProps = {
 
 const mapUserStateToProps = (state: RootState) => ({
   user: state.user,
+  workspacesCounter: state.workspaces.counter
 });
 
 const dispatchUserProps = {
@@ -93,7 +95,6 @@ const mapUserAndTagsToProps = (state: RootState) => ({
 const mapAboutDialogToProps = (state: RootState) => ({
   aboutDialog: state.aboutDialog,
 });
-
 
 const dispatchAboutDialogProps = {
   closeDialog,
@@ -183,7 +184,13 @@ export const ProtectedRoute = connect(
   mapUserStateToProps,
   dispatchUserProps
 )(protectedRoute);
+
 export const HomePageSider = connect(
     mapAboutDialogAndUserToProps,
     dispatchAboutDialogAndUser
 )(HomePageDrawer);
+
+export const WorkspaceActionsMenu = connect(
+  null,
+  dispatchWorkspaceProps
+)(WorkspaceActionsMenuUnbound);
