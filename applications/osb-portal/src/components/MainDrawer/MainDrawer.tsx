@@ -16,19 +16,17 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 //components
-import {
-    ListItem,
-    ListItemIcon,
-    List,
-    ListItemText,
-    Toolbar,
-    Drawer,
-    Typography,
-    IconButton,
-    ListSubheader,
-    Box,
-    Button,
-} from "@mui/material";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import Toolbar from "@mui/material/Toolbar";
+import Drawer from "@mui/material/Drawer";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ListSubheader from "@mui/material/ListSubheader";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 //icons
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -38,13 +36,14 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 //types
 import { UserInfo } from "../../types/user";
 import clsx from "clsx";
 import {useHistory} from "react-router-dom";
+import {AboutDialog} from "../index";
 
 const useStyles = makeStyles(theme => ({
     drawerContent: {
@@ -81,6 +80,12 @@ const useStyles = makeStyles(theme => ({
                         color: drawerText,
                         fontWeight: 500,
                     }
+                },
+                '& .MuiListItemSecondaryAction-root' :{
+                    '& .MuiButtonBase-root': {
+                        fontSize: '1rem',
+                        color: drawerText,
+                    }
                 }
             }
         }
@@ -94,11 +99,12 @@ const useStyles = makeStyles(theme => ({
     toolbar: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        padding: '0 16px'
     },
     helloText: {
         fontWeight: 700,
-        fontSize: '14px'
+        fontSize: '14px',
     },
     drawer: {
         flexShrink: 0,
@@ -136,25 +142,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const MainDrawer = ({ user }: { user: UserInfo }) => {
+export const MainDrawer = (props: any) => {
     const classes = useStyles();
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
     const history = useHistory();
 
-    console.log(history)
-    const text= user ? `Welcome back, ${user.firstName}` :  "Lets do some science!"
+    const isWorkspacesPage = history.location.pathname === '/' || history.location.pathname.includes('workspaces')
+    const isRepositoriesPage = history.location.pathname.includes('repositories')
 
-    const toggleDrawer = event => {
-        if (
-            event.type === "keydown" &&
-            (event.key === "Tab" || event.key === "Shift")
-        ) {
-            return;
-        }
+    const text= props.user ? `Welcome back, ${props.user.username}` :  "Lets do some science!"
 
-        setOpen(!open);
+    const toggleDrawer = () => setOpen(!open);
+
+    const handleDialogOpen = () => {
+        props.openDialog();
     };
 
     return (
@@ -215,13 +218,33 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={2}>Dashboard</Typography>
                     </ListSubheader>}>
-                    <ListItem button component='a' href='/' selected={history.location.pathname === '/' || history.location.pathname.includes('workspaces')}>
+                    <ListItem
+                        button
+                        onClick={() => history.push('/')}
+                        selected={isWorkspacesPage}
+                        secondaryAction={
+                            isWorkspacesPage ?
+                                <IconButton edge="end" aria-label="arrow">
+                                    <KeyboardArrowRightIcon />
+                                </IconButton> : null
+                        }
+                    >
                         <ListItemIcon>
                             <FolderOpenIcon />
                         </ListItemIcon>
                         <ListItemText primary='Workspaces' />
                     </ListItem>
-                    <ListItem button component='a' href='/repositories' selected={history.location.pathname.includes('repositories')}>
+                    <ListItem
+                        button
+                        onClick={() => history.push('/repositories')}
+                        selected={isRepositoriesPage}
+                        secondaryAction={
+                            isRepositoriesPage ?
+                            <IconButton edge="end" aria-label="arrow">
+                                <KeyboardArrowRightIcon />
+                            </IconButton> : null
+                        }
+                    >
                         <ListItemIcon>
                             <PublicIcon />
                         </ListItemIcon>
@@ -232,23 +255,23 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={4}>Support</Typography>
                     </ListSubheader>}>
-                    <ListItem button>
+                    <ListItem button onClick={handleDialogOpen}>
                         <ListItemIcon>
                             <InfoOutlinedIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Learn more about OSB' />
+                        <ListItemText primary='About OSB' />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component='a' href='https://docs.opensourcebrain.org/OSBv2/Overview.html' target='_blank'>
                         <ListItemIcon>
                             <DescriptionOutlinedIcon />
                         </ListItemIcon>
-                        <ListItemText primary='What’s new in OSB' />
+                        <ListItemText primary='Documentation' />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component='a' href='https://matrix.to/#/%23OpenSourceBrain_community:gitter.im?utm_source=gitter' target='_blank'>
                         <ListItemIcon>
                             <HelpOutlineOutlinedIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Help Center' />
+                        <ListItemText primary='Chat' />
                     </ListItem>
                 </List>
             </div>

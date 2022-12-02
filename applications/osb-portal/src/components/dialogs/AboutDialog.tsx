@@ -127,4 +127,3 @@ export const AboutDialog = (props: any) => {
   );
 };
 
-export default AboutDialog;

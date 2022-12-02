@@ -1,20 +1,19 @@
 import * as React from "react";
 
 //components
-import {
-    Box,
-    Tabs,
-    Tab,
-    Typography,
-    TableContainer,
-    Chip,
-    TableRow,
-    TableCell,
-    TableBody,
-    Table,
-    Button,
-    TablePagination
-} from "@mui/material";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Chip from "@mui/material/Chip";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Typography from "@mui/material/Typography";
+import TablePagination from "@mui/material/TablePagination";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
 

@@ -4,7 +4,7 @@ import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles
 import { CssBaseline } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
-import HomePage from "./pages/HomePage";
+import {HomePage} from "./pages/HomePage";
 import theme from "./theme";
 
 import {
@@ -15,9 +15,8 @@ import {
   RepositoryPage,
   WorkspacePage,
   UserPage,
+  RepositoriesPage
 } from "./components";
-
-import {RepositoriesPage} from "./pages/RepositoriesNew";
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
