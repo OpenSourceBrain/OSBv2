@@ -1,33 +1,36 @@
 import * as React from "react";
+import {useHistory} from "react-router-dom";
+
 //theme
 import {makeStyles, useTheme} from '@mui/styles';
+import clsx from "clsx";
 
 import {
-    secondaryColor,
-    drawerText,
-    linkColor,
-    selectedMenuItemBg,
-    primaryColor
+  bgRegular,
+  bgDarkest,
+  secondaryColor,
+  drawerText,
+  linkColor,
+  selectedMenuItemBg,
+  primaryColor
 } from "../../theme";
 
 //hooks
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 //components
-import {
-    ListItem,
-    ListItemIcon,
-    List,
-    ListItemText,
-    Toolbar,
-    Drawer,
-    Typography,
-    IconButton,
-    ListSubheader,
-    Box,
-    Button,
-} from "@mui/material";
-import CreateModal from '../common/CreateModal'
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import Toolbar from "@mui/material/Toolbar";
+import Drawer from "@mui/material/Drawer";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ListSubheader from "@mui/material/ListSubheader";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CreateModal from "../common/CreateModal";
 
 //icons
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -37,13 +40,10 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-//types
-import { UserInfo } from "../../types/user";
-import clsx from "clsx";
-import {useHistory} from "react-router-dom";
+
 
 const useStyles = makeStyles(theme => ({
     drawerContent: {
@@ -80,6 +80,12 @@ const useStyles = makeStyles(theme => ({
                         color: drawerText,
                         fontWeight: 500,
                     }
+                },
+                '& .MuiListItemSecondaryAction-root' :{
+                    '& .MuiButtonBase-root': {
+                        fontSize: '1rem',
+                        color: drawerText,
+                    }
                 }
             }
         }
@@ -93,11 +99,12 @@ const useStyles = makeStyles(theme => ({
     toolbar: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        padding: '0 16px'
     },
     helloText: {
         fontWeight: 700,
-        fontSize: '14px'
+        fontSize: '14px',
     },
     drawer: {
         flexShrink: 0,
@@ -123,9 +130,19 @@ const useStyles = makeStyles(theme => ({
             display: "block",
         },
     },
+    drawerPaper: {
+        position: "static",
+        flex: 1,
+        display: "flex",
+        bottom: 0,
+        paddingTop: theme.spacing(1),
+        justifyContent: "space-between",
+        borderRight: `1px solid ${bgRegular}`,
+        backgroundColor: bgDarkest
+    },
 }));
 
-export const MainDrawer = ({ user }: { user: UserInfo }) => {
+export const MainDrawer = (props: any) => {
     const classes = useStyles();
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
@@ -134,20 +151,18 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
 
     const history = useHistory();
 
-    const text= user ? `Welcome back, ${user.firstName}` :  "Lets do some science!"
+    const isWorkspacesPage = history.location.pathname === '/' || history.location.pathname.includes('workspaces')
+    const isRepositoriesPage = history.location.pathname.includes('repositories')
+
+    const text= props.user ? `Welcome back, ${props.user.username}` :  "Lets do some science!"
 
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
 
-    const toggleDrawer = event => {
-        if (
-            event.type === "keydown" &&
-            (event.key === "Tab" || event.key === "Shift")
-        ) {
-            return;
-        }
+    const toggleDrawer = () => setOpen(!open);
 
-        setOpen(!open);
+    const handleDialogOpen = () => {
+        props.openDialog();
     };
 
     return (
@@ -185,6 +200,12 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                 [classes.drawerOpen]: open,
                 [classes.drawerClose]: !open,
             })}
+            classes={{
+                paper: clsx(classes.drawerPaper, classes.root, {
+                    [classes.drawerOpen]: open,
+                    [classes.drawerClose]: !open,
+                }),
+            }}
         >
             <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
                 <Toolbar className={classes.toolbar}>
@@ -202,13 +223,33 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={2}>Dashboard</Typography>
                     </ListSubheader>}>
-                    <ListItem button component='a' href='/' selected={history.location.pathname === '/' || history.location.pathname.includes('workspaces')}>
+                    <ListItem
+                        button
+                        onClick={() => history.push('/')}
+                        selected={isWorkspacesPage}
+                        secondaryAction={
+                            isWorkspacesPage ?
+                                <IconButton edge="end" aria-label="arrow">
+                                    <KeyboardArrowRightIcon />
+                                </IconButton> : null
+                        }
+                    >
                         <ListItemIcon>
                             <FolderOpenIcon />
                         </ListItemIcon>
                         <ListItemText primary='Workspaces' />
                     </ListItem>
-                    <ListItem button component='a' href='/repositories' selected={history.location.pathname.includes('repositories')}>
+                    <ListItem
+                        button
+                        onClick={() => history.push('/repositories')}
+                        selected={isRepositoriesPage}
+                        secondaryAction={
+                            isRepositoriesPage ?
+                            <IconButton edge="end" aria-label="arrow">
+                                <KeyboardArrowRightIcon />
+                            </IconButton> : null
+                        }
+                    >
                         <ListItemIcon>
                             <PublicIcon />
                         </ListItemIcon>
@@ -219,28 +260,29 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     <ListSubheader>
                         <Typography mb={1} mt={4}>Support</Typography>
                     </ListSubheader>}>
-                    <ListItem button>
+                    <ListItem button onClick={handleDialogOpen}>
                         <ListItemIcon>
                             <InfoOutlinedIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Learn more about OSB' />
+                        <ListItemText primary='About OSB' />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component='a' href='https://docs.opensourcebrain.org/OSBv2/Overview.html' target='_blank'>
                         <ListItemIcon>
                             <DescriptionOutlinedIcon />
                         </ListItemIcon>
-                        <ListItemText primary='What’s new in OSB' />
+                        <ListItemText primary='Documentation' />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component='a' href='https://matrix.to/#/%23OpenSourceBrain_community:gitter.im?utm_source=gitter' target='_blank'>
                         <ListItemIcon>
                             <HelpOutlineOutlinedIcon />
                         </ListItemIcon>
-                        <ListItemText primary='Help Center' />
+                        <ListItemText primary='Chat' />
                     </ListItem>
                 </List>
             </div>
             <Toolbar className={classes.toolbar}>
                 <Button
+                  onClick={handleOpenModal}
                   sx={{
                     width: '100%',
                     textTransform: 'none',
@@ -249,13 +291,12 @@ export const MainDrawer = ({ user }: { user: UserInfo }) => {
                     fontWeight: 600,
                     fontSize: '0.857rem'
                   }}
-                 variant="contained" endIcon={<ArrowDropDownIcon />} onClick={handleOpenModal}>Create new</Button>
+                 variant="contained" endIcon={<ArrowDropDownIcon />}>Create new</Button>
             </Toolbar>
         </Drawer>
-
         </Box>
-        <CreateModal open={openModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} />
-    </>
+         <CreateModal open={openModal} handleCloseModal={handleCloseModal} />
+        </>
     );
 };
 

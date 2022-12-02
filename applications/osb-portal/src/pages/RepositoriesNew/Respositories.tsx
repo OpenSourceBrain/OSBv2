@@ -1,20 +1,19 @@
 import * as React from "react";
 
 //components
-import {
-    Box,
-    Tabs,
-    Tab,
-    Typography,
-    TableContainer,
-    Chip,
-    TableRow,
-    TableCell,
-    TableBody,
-    Table,
-    Button,
-    TablePagination
-} from "@mui/material";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Chip from "@mui/material/Chip";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Typography from "@mui/material/Typography";
+import TablePagination from "@mui/material/TablePagination";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
 
@@ -191,14 +190,14 @@ return (
                 }}
             >
                 <TableContainer className={classes.repositoryData}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table aria-label="simple table">
                         <TableBody>
                             {repositories.map((row) => (
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell style={{ width: 300 }} component="th" scope="row">
+                                    <TableCell style={{ minWidth: 300 }} component="th" scope="row">
                                         <Box className="col">
                                             <Typography  component="strong">{row.name}</Typography>
                                             {row.summary && (
@@ -216,8 +215,8 @@ return (
                                             )}
                                         </Box>
                                     </TableCell>
-                                    <TableCell style={{ width: 100 }}>{row.user.username}</TableCell>
-                                    <TableCell style={{ width: 100 }}>
+                                    <TableCell style={{ minWidth: 100 }}>{row.user.username}</TableCell>
+                                    <TableCell style={{ minWidth: 100 }}>
                                         <Button
                                             sx={{textTransform: 'capitalize'}}
                                             endIcon={<OpenInNewIcon />}
@@ -226,7 +225,7 @@ return (
                                             {row.repositoryType}
                                         </Button>
                                     </TableCell>
-                                    <TableCell style={{ width: 200 }}>
+                                    <TableCell style={{ minWidth: 200 }}>
                                         <Box mb={'.5'}>
                                             {
                                                 row.contentTypes.split(',').map((type) =>
