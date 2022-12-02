@@ -30,7 +30,7 @@ import IconButton from "@mui/material/IconButton";
 import ListSubheader from "@mui/material/ListSubheader";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CreateModal from "../common/CreateModal";
+import CreateWorkspaceDialog from "../common/CreateWorkspaceDialog";
 
 //icons
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -147,7 +147,7 @@ export const MainDrawer = (props: any) => {
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
-    const [openModal, setOpenModal] = React.useState(false);
+    const [openDialog, setOpenDialog] = React.useState(false);
 
     const history = useHistory();
 
@@ -156,8 +156,8 @@ export const MainDrawer = (props: any) => {
 
     const text= props.user ? `Welcome back, ${props.user.username}` :  "Lets do some science!"
 
-    const handleOpenModal = () => setOpenModal(true);
-    const handleCloseModal = () => setOpenModal(false);
+    const handleOpenDialog = () => setOpenDialog(true);
+    const handleCloseDialog = () => setOpenDialog(false);
 
     const toggleDrawer = () => setOpen(!open);
 
@@ -282,7 +282,7 @@ export const MainDrawer = (props: any) => {
             </div>
             <Toolbar className={classes.toolbar}>
                 <Button
-                  onClick={handleOpenModal}
+                  onClick={handleOpenDialog}
                   sx={{
                     width: '100%',
                     textTransform: 'none',
@@ -295,7 +295,7 @@ export const MainDrawer = (props: any) => {
             </Toolbar>
         </Drawer>
         </Box>
-         <CreateModal open={openModal} handleCloseModal={handleCloseModal} />
+         <CreateWorkspaceDialog dialogOpen={openDialog} handleCloseDialog={handleCloseDialog} />
         </>
     );
 };
