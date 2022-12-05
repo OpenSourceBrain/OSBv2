@@ -30,6 +30,8 @@ import IconButton from "@mui/material/IconButton";
 import ListSubheader from "@mui/material/ListSubheader";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import CreateWorkspaceDialog from "../common/CreateWorkspaceDialog";
 
 //icons
@@ -42,7 +44,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -152,6 +153,33 @@ const useStyles = makeStyles(theme => ({
         borderRight: `1px solid ${bgRegular}`,
         backgroundColor: bgDarkest
     },
+    createMenu: {
+        minWidth: '14.62rem',
+        backgroundColor: '#3C3C3C',
+        borderRadius: '6px',
+
+        '& .MuiList-root': {
+            '& .MuiMenuItem-root': {
+                paddingLeft: theme.spacing(3),
+                fontSize: '0.857rem',
+                color: drawerText,
+                fontWeight: 500,
+
+                '& .MuiSvgIcon-root': {
+                    marginRight: theme.spacing(2),
+                    fontSize: '1rem',
+                    color: drawerText,
+                },
+
+                '&:hover': {
+                    color: secondaryColor,
+                    '& .MuiSvgIcon-root': {
+                        color: secondaryColor,
+                    }
+                }
+            },
+        }
+    }
 }));
 
 export const MainDrawer = (props: any) => {
@@ -159,7 +187,10 @@ export const MainDrawer = (props: any) => {
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
-    const [openDialog, setOpenDialog] = React.useState(false);
+    const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const openCreatMenu = Boolean(anchorEl);
 
     const history = useHistory();
 
@@ -168,12 +199,23 @@ export const MainDrawer = (props: any) => {
 
     const text= props.user ? `Welcome back, ${props.user.username}` :  "Lets do some science!"
 
-    const handleOpenDialog = () => setOpenDialog(true);
-    const handleCloseDialog = () => setOpenDialog(false);
+    const handleOpenDialog = (type) => {
+        type === 'workspace' ? setOpenWorkspaceDialog(true) : null
+    };
+
+    const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
+
+    const handleClickCreatMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseCreatMenu = () => {
+        setAnchorEl(null);
+    };
 
     const toggleDrawer = () => setOpen(!open);
 
-    const handleDialogOpen = () => {
+    const handleAboutDialogOpen = () => {
         props.openDialog();
     };
 
@@ -272,7 +314,7 @@ export const MainDrawer = (props: any) => {
                     <ListSubheader>
                         <Typography mb={1} mt={4}>Support</Typography>
                     </ListSubheader>}>
-                    <ListItem button onClick={handleDialogOpen}>
+                    <ListItem button onClick={handleAboutDialogOpen}>
                         <ListItemIcon>
                             <InfoOutlinedIcon />
                         </ListItemIcon>
@@ -294,20 +336,44 @@ export const MainDrawer = (props: any) => {
             </div>
             <Toolbar className={classes.toolbar}>
                 <Button
-                  onClick={handleOpenDialog}
-                  sx={{
-                    width: '100%',
-                    textTransform: 'none',
-                    borderRadius: 2,
-                    backgroundColor: linkColor,
-                    fontWeight: 600,
-                    fontSize: '0.857rem'
-                  }}
-                 variant="contained" endIcon={<ArrowDropDownIcon />}>Create new</Button>
+                    id="demo-positioned-button"
+                    aria-controls={open ? 'demo-positioned-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClickCreatMenu}
+                    sx={{
+                        width: '100%',
+                        textTransform: 'none',
+                        borderRadius: 2,
+                        backgroundColor: linkColor,
+                        fontWeight: 600,
+                        fontSize: '0.857rem'
+                    }}
+                    variant="contained"
+                    endIcon={<ArrowDropDownIcon />}
+                >
+                    Create new
+                </Button>
+                <Menu
+                    id="demo-positioned-menu"
+                    aria-labelledby="demo-positioned-button"
+                    open={openCreatMenu}
+                    onClose={handleCloseCreatMenu}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                    transformOrigin={{ vertical: "top", horizontal: "center" }}
+                    PaperProps={{
+                        className: classes.createMenu
+                    }}
+                >
+                    <MenuItem onClick={() => handleOpenDialog('workspace')}> <FolderOpenIcon />Workspace</MenuItem>
+                    <MenuItem onClick={() => handleOpenDialog('repository')}> <PublicIcon />Repository</MenuItem>
+                </Menu>
+
             </Toolbar>
         </Drawer>
         </Box>
-         <CreateWorkspaceDialog dialogOpen={openDialog} handleCloseDialog={handleCloseDialog} />
+         <CreateWorkspaceDialog dialogOpen={true} handleCloseDialog={handleCloseWorkspaceDialog} />
         </>
     );
 };
