@@ -62,7 +62,19 @@ const useStyles = makeStyles(theme => ({
         '& .MuiList-root': {
             '& .Mui-selected': {
                 background: selectedMenuItemBg,
-                borderLeft: `2px solid ${primaryColor}`
+                borderLeft: `2px solid ${primaryColor}`,
+
+                '& .MuiListItemIcon-root': {
+                    '& .MuiSvgIcon-root' : {
+                        color: secondaryColor,
+                    }
+                },
+
+                '& .MuiListItemText-root' :{
+                    '& .MuiTypography-root' : {
+                        color: secondaryColor,
+                    }
+                }
             },
             '& .MuiButtonBase-root': {
                 '& .MuiListItemIcon-root' :{
@@ -70,7 +82,7 @@ const useStyles = makeStyles(theme => ({
                     marginRight: '0.875rem',
 
                     '& .MuiSvgIcon-root' : {
-                        fontSize: '1rem',
+                        fontSize: '1.143rem',
                         color: drawerText,
                     }
                 } ,
@@ -104,7 +116,7 @@ const useStyles = makeStyles(theme => ({
     },
     helloText: {
         fontWeight: 700,
-        fontSize: '14px',
+        fontSize: '0.857rem',
     },
     drawer: {
         flexShrink: 0,

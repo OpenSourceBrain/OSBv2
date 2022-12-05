@@ -11,7 +11,8 @@ import IconButton from "@mui/material/IconButton";
 
 import * as Icons from "../icons";
 
-import { checkBoxColor, bgDarker, secondaryColor } from "../../theme";
+import { checkBoxColor, bgDarker, secondaryColor, paragraph } from "../../theme";
+import clsx from "clsx";
 
 interface DialogProps {
   open: boolean;
@@ -19,6 +20,7 @@ interface DialogProps {
   maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
+  className?: string
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +39,26 @@ const useStyles = makeStyles((theme) => ({
   closeIcon: {
     color: checkBoxColor,
   },
+  createWorkspaceRepo: {
+    '& .MuiDialogTitle-root': {
+      padding: '3.429rem 3.429rem 1.714rem 3.429rem',
+      textAlign: 'center',
+      fontSize: '1.714rem',
+      fontWeight: 400
+    },
+    '& .MuiSvgIcon-root':{
+      marginBottom: theme.spacing(2)
+    },
+    '& .MuiTypography-caption':{
+        color: paragraph,
+        fontSize: '0.857rem'
+    },
+    '& .MuiButtonBase-root': {
+      '&:hover': {
+        backgroundColor: 'transparent'
+      }
+    }
+  }
 }));
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
@@ -46,6 +68,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   children,
   actions,
   maxWidth,
+  className
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -59,26 +82,15 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
 
   return (
     <Dialog
-      className={classes.dialog}
+      className={className ? clsx(classes.dialog, classes[className]) : classes.dialog}
       onClose={handleClose}
       open={open}
       fullWidth={true}
       maxWidth={maxWidth}
     >
       <DialogTitle>
-        <Box display="flex" justifyContent="space-between">
-          {title}
-          <IconButton
-            className={classes.closeIcon}
-            aria-label="close"
-            onClick={handleClose}
-            style={{ padding: 0 }}
-            size="large">
-            <Icons.CloseIcon fontSize="small" />
-          </IconButton>
-        </Box>
+        {title}
       </DialogTitle>
-
       <DialogContent>{children}</DialogContent>
       {actions ? <DialogActions>{actions}</DialogActions> : null}
     </Dialog>

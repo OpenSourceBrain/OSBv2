@@ -12,8 +12,9 @@ import { bgDarker } from '../../theme'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        padding: '1.143rem 1.714rem',
-        backgroundColor: bgDarker
+        padding: '0 3.429rem 3.429rem 3.429rem',
+        backgroundColor: bgDarker,
+        backgroundImage: 'unset',
     }
 }));
 
@@ -23,10 +24,11 @@ export default ({ dialogOpen, handleCloseDialog }: { dialogOpen: boolean, handle
   return (
       <OSBDialog
           closeAction={() => handleCloseDialog(false)}
-          title=' Create a new workspace'
+          title='Create a new workspace'
           open={dialogOpen}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          className='createWorkspaceRepo'
       >
           <Paper className={classes.paper}>
               <WorkspaceToolBox />

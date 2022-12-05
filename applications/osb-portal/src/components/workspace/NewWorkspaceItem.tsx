@@ -92,7 +92,7 @@ interface ItemProps {
   template?: WorkspaceTemplateType | string;
   user: UserInfo;
   refreshWorkspaces: () => null;
-  className: string;
+  className?: string;
 }
 
 export const NewWorkspaceItem = (props: ItemProps) => {
