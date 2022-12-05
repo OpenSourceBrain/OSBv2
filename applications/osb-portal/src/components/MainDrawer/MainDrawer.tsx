@@ -201,6 +201,7 @@ export const MainDrawer = (props: any) => {
 
     const handleOpenDialog = (type) => {
         type === 'workspace' ? setOpenWorkspaceDialog(true) : null
+        setAnchorEl(null)
     };
 
     const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
@@ -373,7 +374,7 @@ export const MainDrawer = (props: any) => {
             </Toolbar>
         </Drawer>
         </Box>
-         <CreateWorkspaceDialog dialogOpen={true} handleCloseDialog={handleCloseWorkspaceDialog} />
+         <CreateWorkspaceDialog dialogOpen={openWorkspaceDialog} handleClose={handleCloseWorkspaceDialog} />
         </>
     );
 };

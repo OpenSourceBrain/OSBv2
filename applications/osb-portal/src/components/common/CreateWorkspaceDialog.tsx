@@ -12,19 +12,19 @@ import { bgDarker } from '../../theme'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        padding: '0 3.429rem 3.429rem 3.429rem',
         backgroundColor: bgDarker,
         backgroundImage: 'unset',
     }
 }));
 
-export default ({ dialogOpen, handleCloseDialog }: { dialogOpen: boolean, handleCloseDialog: (open: boolean) => any}) => {
+export default ({ dialogOpen, handleClose }: { dialogOpen: boolean, handleClose: (open: boolean) => any}) => {
   const classes = useStyles();
 
   return (
       <OSBDialog
-          closeAction={() => handleCloseDialog(false)}
+          closeAction={() => handleClose(false)}
           title='Create a new workspace'
+          subTitle={<>Quickly create a workspace by choosing <br/> one of the predefined templates</>}
           open={dialogOpen}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"

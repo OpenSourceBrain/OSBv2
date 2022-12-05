@@ -1,18 +1,25 @@
 import * as React from "react";
-import makeStyles from '@mui/styles/makeStyles';
 
+//components
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-
+import Typography from "@mui/material/Typography";
 import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
 
-import { checkBoxColor, bgDarker, secondaryColor, paragraph } from "../../theme";
+//icons
+import CloseIcon from '@mui/icons-material/Close';
+
+//style
+import makeStyles from '@mui/styles/makeStyles';
+import { checkBoxColor, bgDarker, secondaryColor, paragraph, lightText, dialogBoxShadow } from "../../theme";
 import clsx from "clsx";
 
 interface DialogProps {
   open: boolean;
   title: string | React.ReactNode;
+  subTitle: string | React.ReactNode;
   maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
@@ -21,27 +28,39 @@ interface DialogProps {
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
-    padding: 0,
+    padding: '2rem',
+    backgroundColor: bgDarker,
+    backgroundImage: 'unset',
+    boxShadow: dialogBoxShadow,
+    borderRadius: '16px',
+
     "& .MuiDialogContent-root": {
       padding: 0,
-      backgroundColor: bgDarker,
     },
     "& .MuiDialogTitle-root": {
-      backgroundColor: bgDarker,
-      marginBottom: 0,
+      marginBottom: '1.572rem',
+      padding: 0,
       color: secondaryColor,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      '& .MuiButtonBase-root': {
+        alignSelf: 'end',
+        padding: 0,
+
+        '& .MuiSvgIcon-root': {
+          marginBottom: 0,
+        }
+      }
+
     },
   },
   closeIcon: {
     color: checkBoxColor,
   },
   createWorkspaceRepo: {
-    '& .MuiDialogTitle-root': {
-      padding: '3.429rem 3.429rem 1.714rem 3.429rem',
-      textAlign: 'center',
-      fontSize: '1.714rem',
-      fontWeight: 400
-    },
     '& .MuiSvgIcon-root':{
       marginBottom: theme.spacing(2)
     },
@@ -64,7 +83,8 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   children,
   actions,
   maxWidth,
-  className
+  className,
+  subTitle
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -78,14 +98,29 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
 
   return (
     <Dialog
-      className={className ? clsx(classes.dialog, classes[className]) : classes.dialog}
+      PaperProps={{
+        className: className ? clsx(classes.dialog, classes[className]) : classes.dialog
+      }}
       onClose={handleClose}
       open={open}
       fullWidth={true}
       maxWidth={maxWidth}
     >
       <DialogTitle>
-        {title}
+        <IconButton onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+        <Typography component="h1" variant="h1" align='center' sx={{fontWeight: 400}} >
+          {title}
+        </Typography>
+        <Typography
+            component="h5"
+            variant="h5"
+            color={lightText}
+            align='center'
+            sx={{ fontWeight: 400, letterSpacing: '0.02rem', lineHeight: 1.8 }}>
+          {subTitle}
+        </Typography>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
       {actions ? <DialogActions>{actions}</DialogActions> : null}

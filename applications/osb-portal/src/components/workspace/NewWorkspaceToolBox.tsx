@@ -10,26 +10,37 @@ import { UserInfo } from "../../types/user";
 
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
-import {SquareCirclesIcon, ChartIcon, CubeIcon} from "../icons";
+import {
+  ChartIcon,
+  ComputationalModeling,
+  CubeIcon,
+  DataAnalystIcon,
+  WorkspaceFromRepository,
+  WorkspaceIcon
+} from "../icons";
 import {secondaryColor, bgLightest} from '../../theme'
 
 const useStyles = makeStyles((theme) => ({
     itemContainer: {
-      border: '1px solid #4A4A4A',
       borderRadius: '4px',
       width:' 100%',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
-      padding: '26px',
+      alignItems: 'flex-start',
+      padding: '1.857rem 0',
 
       '&:hover': {
-        backgroundColor: bgLightest
+        backgroundColor: bgLightest,
+        borderRadius:  6,
       },
 
       '& .MuiButtonBase-root':{
         color: secondaryColor,
-        padding: 0
+        padding: 0,
+
+        '& .MuiSvgIcon-root': {
+          fontSize: '2rem'
+        }
       }
     }
 }));
@@ -45,8 +56,8 @@ export const WorkspaceToolBox = (props: any) => {
         <Grid item xs={12} lg={6}>
           <Box component="span" className={classes.itemContainer}>
             <WorkspaceItem
-                icon={<SquareCirclesIcon />}
-                title="Computational modeling"
+                icon={<WorkspaceIcon />}
+                title="Empty workspace"
                 template={WorkspaceTemplateType.network}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
@@ -56,7 +67,7 @@ export const WorkspaceToolBox = (props: any) => {
         <Grid item xs={12} lg={6}>
           <Box component="span" className={classes.itemContainer}>
             <WorkspaceItem
-                icon={<ChartIcon />}
+                icon={<DataAnalystIcon />}
                 title="Data analysis"
                 template={WorkspaceTemplateType.explorer}
                 user={user}
@@ -67,7 +78,7 @@ export const WorkspaceToolBox = (props: any) => {
         <Grid item xs={12} lg={6}>
           <Box component="span" className={classes.itemContainer}>
             <WorkspaceItem
-                icon={<CubeIcon />}
+                icon={<ComputationalModeling />}
                 title="Interactive development"
                 template={WorkspaceTemplateType.playground}
                 user={user}
@@ -79,7 +90,7 @@ export const WorkspaceToolBox = (props: any) => {
           <Box component="span" className={classes.itemContainer}>
             <WorkspaceItem
                 className="from-repository-create-workspace-item"
-                icon={<FolderOpenIcon />}
+                icon={<WorkspaceFromRepository />}
                 title="Workspace from repository"
                 template={null}
                 user={user}
