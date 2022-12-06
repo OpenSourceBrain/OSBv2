@@ -2,7 +2,6 @@ import * as React from "react";
 
 import makeStyles from '@mui/styles/makeStyles';
 
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
@@ -11,14 +10,12 @@ import { UserInfo } from "../../types/user";
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
 import {
-  ChartIcon,
   ComputationalModeling,
-  CubeIcon,
   DataAnalystIcon,
   WorkspaceFromRepository,
   WorkspaceIcon
 } from "../icons";
-import {secondaryColor, bgLightest} from '../../theme'
+import {secondaryColor, bgLightest, bgLight, badgeBgLight} from '../../theme'
 
 const useStyles = makeStyles((theme) => ({
     itemContainer: {
@@ -27,11 +24,15 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
-      padding: '1.857rem 0',
+      padding: '1rem 0',
 
       '&:hover': {
         backgroundColor: bgLightest,
         borderRadius:  6,
+
+        '& .MuiSvgIcon-root': {
+            fill: badgeBgLight
+        }
       },
 
       '& .MuiButtonBase-root':{
@@ -39,7 +40,12 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
 
         '& .MuiSvgIcon-root': {
-          fontSize: '2rem'
+          fontSize: '2rem',
+          fill: bgLight
+        },
+
+        '& .MuiTypography-caption': {
+          textTransform: 'uppercase'
         }
       }
     }

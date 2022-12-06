@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 //style
 import makeStyles from '@mui/styles/makeStyles';
-import { checkBoxColor, bgDarker, secondaryColor, paragraph, lightText, dialogBoxShadow } from "../../theme";
+import { checkBoxColor, bgDarker, secondaryColor, paragraph, lightText, drawerText } from "../../theme";
 import clsx from "clsx";
 
 interface DialogProps {
@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '2rem',
     backgroundColor: bgDarker,
     backgroundImage: 'unset',
-    boxShadow: dialogBoxShadow,
     borderRadius: '16px',
 
     "& .MuiDialogContent-root": {
@@ -62,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   createWorkspaceRepo: {
     '& .MuiSvgIcon-root':{
-      marginBottom: theme.spacing(2)
+      marginBottom: theme.spacing(1)
     },
     '& .MuiTypography-caption':{
         color: paragraph,
@@ -108,7 +107,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
     >
       <DialogTitle>
         <IconButton onClick={handleClose}>
-          <CloseIcon />
+          <CloseIcon sx={{color: drawerText}} />
         </IconButton>
         <Typography component="h1" variant="h1" align='center' sx={{fontWeight: 400}} >
           {title}
