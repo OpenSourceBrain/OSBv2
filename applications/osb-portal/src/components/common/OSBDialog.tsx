@@ -109,7 +109,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
         <IconButton onClick={handleClose}>
           <CloseIcon sx={{color: drawerText}} />
         </IconButton>
-        <Typography component="h1" variant="h1" align='center' sx={{fontWeight: 400}} >
+        <Typography component="h1" variant="h1" align='center' sx={{fontWeight: 400, marginBottom: '1.143rem'}} >
           {title}
         </Typography>
         <Typography
