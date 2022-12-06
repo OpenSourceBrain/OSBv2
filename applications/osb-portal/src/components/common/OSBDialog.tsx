@@ -1,42 +1,78 @@
 import * as React from "react";
-import makeStyles from '@mui/styles/makeStyles';
-import Box from "@mui/material/Box";
 
+//components
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-
+import Typography from "@mui/material/Typography";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 
-import * as Icons from "../icons";
+//icons
+import CloseIcon from '@mui/icons-material/Close';
 
-import { checkBoxColor, bgDarker, secondaryColor } from "../../theme";
+//style
+import makeStyles from '@mui/styles/makeStyles';
+import { checkBoxColor, bgDarker, secondaryColor, paragraph, lightText, drawerText } from "../../theme";
+import clsx from "clsx";
 
 interface DialogProps {
   open: boolean;
   title: string | React.ReactNode;
+  subTitle?: string | React.ReactNode;
   maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
+  className?: string
 }
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
-    padding: 0,
+    padding: '2rem',
+    backgroundColor: bgDarker,
+    backgroundImage: 'unset',
+    borderRadius: '16px',
+
     "& .MuiDialogContent-root": {
       padding: 0,
-      backgroundColor: bgDarker,
     },
     "& .MuiDialogTitle-root": {
-      backgroundColor: bgDarker,
-      marginBottom: 0,
+      marginBottom: '1.572rem',
+      padding: 0,
       color: secondaryColor,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      '& .MuiButtonBase-root': {
+        alignSelf: 'end',
+        padding: 0,
+
+        '& .MuiSvgIcon-root': {
+          marginBottom: 0,
+        }
+      }
+
     },
   },
   closeIcon: {
     color: checkBoxColor,
   },
+  createWorkspaceRepo: {
+    '& .MuiSvgIcon-root':{
+      marginBottom: theme.spacing(1)
+    },
+    '& .MuiTypography-caption':{
+        color: paragraph,
+        fontSize: '0.857rem'
+    },
+    '& .MuiButtonBase-root': {
+      '&:hover': {
+        backgroundColor: 'transparent'
+      }
+    }
+  }
 }));
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
@@ -46,6 +82,8 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   children,
   actions,
   maxWidth,
+  className,
+  subTitle
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -59,26 +97,30 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
 
   return (
     <Dialog
-      className={classes.dialog}
+      PaperProps={{
+        className: className ? clsx(classes.dialog, classes[className]) : classes.dialog
+      }}
       onClose={handleClose}
       open={open}
       fullWidth={true}
       maxWidth={maxWidth}
     >
       <DialogTitle>
-        <Box display="flex" justifyContent="space-between">
+        <IconButton onClick={handleClose}>
+          <CloseIcon sx={{color: drawerText}} />
+        </IconButton>
+        <Typography component="h1" variant="h1" align='center' sx={{fontWeight: 400, marginBottom: '1.143rem'}} >
           {title}
-          <IconButton
-            className={classes.closeIcon}
-            aria-label="close"
-            onClick={handleClose}
-            style={{ padding: 0 }}
-            size="large">
-            <Icons.CloseIcon fontSize="small" />
-          </IconButton>
-        </Box>
+        </Typography>
+        <Typography
+            component="h5"
+            variant="h5"
+            color={lightText}
+            align='center'
+            sx={{ fontWeight: 400, letterSpacing: '0.02rem', lineHeight: 1.8 }}>
+          {subTitle}
+        </Typography>
       </DialogTitle>
-
       <DialogContent>{children}</DialogContent>
       {actions ? <DialogActions>{actions}</DialogActions> : null}
     </Dialog>

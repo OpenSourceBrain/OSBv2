@@ -1,46 +1,54 @@
 import * as React from "react";
 
 import makeStyles from '@mui/styles/makeStyles';
-import { Typography, Grid, Paper } from "@mui/material";
 
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 import { UserInfo } from "../../types/user";
-import { ResourceType } from "../../types/global";
 
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
-import * as Icons from "../icons";
+import {
+  ComputationalModeling,
+  DataAnalystIcon,
+  WorkspaceFromRepository,
+  WorkspaceIcon
+} from "../icons";
+import {secondaryColor, bgLightest, bgLight, badgeBgLight} from '../../theme'
 
 const useStyles = makeStyles((theme) => ({
-  iconButton: {
-    width: "2em",
-    height: "2em",
-    padding: 0,
-  },
-  svgIcon: {},
+    itemContainer: {
+      borderRadius: '4px',
+      width:' 100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      padding: '1rem 0',
 
-  dialogButtons: {
-    paddingRight: 0,
-  },
-  toolBoxHeading: {
-    textAlign: "center",
-    [theme.breakpoints.up("md")]: {
-      textAlign: "left",
-    },
-  },
-  justifyCenter: {
-    justifyContent: "center",
-  },
-  cardText: {
-    display: "inline-block",
-    marginRight: "5px",
-    [theme.breakpoints.up("md")]: {
-      display: "block",
-      marginRight: "0",
-    },
-  },
+      '&:hover': {
+        backgroundColor: bgLightest,
+        borderRadius:  6,
+
+        '& .MuiSvgIcon-root': {
+            fill: badgeBgLight
+        }
+      },
+
+      '& .MuiButtonBase-root':{
+        color: secondaryColor,
+        padding: 0,
+
+        '& .MuiSvgIcon-root': {
+          fontSize: '2rem',
+          fill: bgLight
+        },
+
+        '& .MuiTypography-caption': {
+          textTransform: 'uppercase'
+        }
+      }
+    }
 }));
 
 export const WorkspaceToolBox = (props: any) => {
@@ -48,97 +56,53 @@ export const WorkspaceToolBox = (props: any) => {
 
   const user: UserInfo = props.user;
 
-  const type: string = props.type;
-
-  return <>
+  return<>
     <Box>
-      <Grid container={true} alignItems="center" justifyContent="center" spacing={5}>
-        <Grid item={true} sm={12} md={4} lg={3}>
-          <Typography
-            component="h2"
-            variant="h5"
-            className={classes.toolBoxHeading}
-          >
-            <Box component="span" className={classes.cardText}>
-              Create a
-            </Box>
-            <Box component="span" className={classes.cardText}>
-              new workspace
-            </Box>
-          </Typography>
-        </Grid>
-        <Grid item={true} xs={12} sm={12} md={8} lg={9}>
-          <Grid
-            container={true}
-            direction="row"
-            justifyContent="space-between"
-            spacing={5}
-          >
-            <Grid
-              id="computational-modeling-item"
-              item={true}
-              xs={12}
-              sm={3}
-              className={classes.justifyCenter}
-            >
-              <WorkspaceItem
-                className="computational-modelling-create-workspace-item"
-                icon={Icons.SquareCirclesIcon}
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={12} lg={6}>
+          <Box component="span" className={classes.itemContainer}>
+            <WorkspaceItem
+                icon={<WorkspaceIcon />}
                 title="Computational modeling"
                 template={WorkspaceTemplateType.network}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-            <Grid
-              id="data-analysis-item"
-              item={true}
-              xs={12}
-              sm={3}
-              className={classes.justifyCenter}
-            >
-              <WorkspaceItem
-                className="data-analysis-create-workspace-item"
-                icon={Icons.ChartIcon}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Box component="span" className={classes.itemContainer}>
+            <WorkspaceItem
+                icon={<DataAnalystIcon />}
                 title="Data analysis"
                 template={WorkspaceTemplateType.explorer}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-            <Grid
-              id="interactive-development-item"
-              item={true}
-              xs={12}
-              sm={3}
-              className={classes.justifyCenter}
-            >
-              <WorkspaceItem
-                className="interactive-development-create-workspace-item"
-                icon={Icons.CubeIcon}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Box component="span" className={classes.itemContainer}>
+            <WorkspaceItem
+                icon={<ComputationalModeling />}
                 title="Interactive development"
                 template={WorkspaceTemplateType.playground}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-            <Grid
-              id="workspace-from-repository-item"
-              item={true}
-              xs={12}
-              sm={3}
-              className={classes.justifyCenter}
-            >
-              <WorkspaceItem
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Box component="span" className={classes.itemContainer}>
+            <WorkspaceItem
                 className="from-repository-create-workspace-item"
-                icon={<FolderOpenIcon />}
+                icon={<WorkspaceFromRepository />}
                 title="Workspace from repository"
                 template={null}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-              />
-            </Grid>
-          </Grid>
+            />
+          </Box>
         </Grid>
       </Grid>
     </Box>

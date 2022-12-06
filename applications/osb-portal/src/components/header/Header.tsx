@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: headerBg,
     padding: theme.spacing(1),
     justifyContent: "space-between",
-    minHeight: '1.8rem',
-    height: '1.8rem'
+    minHeight: '2.5rem',
+    height: '2.5rem',
+    borderBottom: '1px solid #434343',
   },
   button: {
     textTransform: "none",
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
 
     '& .MuiSvgIcon-root': {
-      fontSize: '8.5rem'
+      fontSize: '9.5rem'
     }
   },
 }));

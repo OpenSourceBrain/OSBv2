@@ -35,10 +35,6 @@ const useStyles = makeStyles(() => ({
       overflow: "hidden",
     },
   },
-  appHeader: {
-    height: '30px',
-    borderBottom: '1px solid #434343',
-  }
 }));
 
 export const App = (props: any) => {
@@ -53,7 +49,7 @@ export const App = (props: any) => {
           {!props.error && (
             <Router>
               <div className={classes.mainContainer}>
-                <div id="header" className={classes.appHeader}>
+                <div id="header">
                   <Header />
                 </div>
 

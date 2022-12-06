@@ -3,11 +3,9 @@ import * as React from "react";
 import { Typography, Box, Button } from "@mui/material";
 
 import { NewWorkspaceAskUser } from "..";
-import { WorkspaceEditor } from "./../index";
+import { WorkspaceEditor } from "../index";
 
 import OSBDialog from "../common/OSBDialog";
-
-import { RepositoryResourceNode } from "../../apiclient/workspaces";
 
 import { UserInfo } from "../../types/user";
 import {
@@ -94,11 +92,11 @@ interface ItemProps {
   template?: WorkspaceTemplateType | string;
   user: UserInfo;
   refreshWorkspaces: () => null;
-  className: string;
+  className?: string;
 }
 
 export const NewWorkspaceItem = (props: ItemProps) => {
-  const { user, template, title, refreshWorkspaces, className } = props;
+  const { user, template, title, refreshWorkspaces, className, icon } = props;
 
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
@@ -128,8 +126,8 @@ export const NewWorkspaceItem = (props: ItemProps) => {
     <div className={className}>
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
-          <Box style={{ marginBottom: "0.2em" }}>{props.icon}</Box>
-          <Typography variant="subtitle1">{title}</Typography>
+          {icon}
+          <Typography variant="subtitle1" sx={{marginBottom: '0.286rem'}}>{title}</Typography>
           <Typography variant="caption">
             {typeof WORKSPACE_TEMPLATES[template] === "undefined"
               ? template
