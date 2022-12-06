@@ -63,7 +63,7 @@ export const WorkspaceToolBox = (props: any) => {
           <Box component="span" className={classes.itemContainer}>
             <WorkspaceItem
                 icon={<WorkspaceIcon />}
-                title="Empty workspace"
+                title="Computational modeling"
                 template={WorkspaceTemplateType.network}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}

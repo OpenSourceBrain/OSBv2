@@ -127,7 +127,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
           {icon}
-          <Typography variant="subtitle1">{title}</Typography>
+          <Typography variant="subtitle1" sx={{marginBottom: '0.286rem'}}>{title}</Typography>
           <Typography variant="caption">
             {typeof WORKSPACE_TEMPLATES[template] === "undefined"
               ? template

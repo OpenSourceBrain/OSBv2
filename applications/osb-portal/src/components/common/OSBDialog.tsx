@@ -19,7 +19,7 @@ import clsx from "clsx";
 interface DialogProps {
   open: boolean;
   title: string | React.ReactNode;
-  subTitle: string | React.ReactNode;
+  subTitle?: string | React.ReactNode;
   maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
