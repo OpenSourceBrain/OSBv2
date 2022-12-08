@@ -14,10 +14,72 @@ import makeStyles from '@mui/styles/makeStyles';
 
 //types
 import {UserInfo} from "../../types/user";
+import {OSBRepository, Tag} from "../../apiclient/workspaces";
+import {useHistory} from "react-router-dom";
+import {useState} from "react";
+import searchFilter from "../../types/searchFilter";
+import RepositoryService from "../../service/RepositoryService";
+import debounce from "lodash/debounce";
 
 const useStyles = makeStyles((theme) => ({}));
 
+enum RepositoriesTab {
+    all,
+    my,
+}
+
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
+    const history = useHistory();
+    const [searchFilterValues, setSearchFilterValues] = useState<searchFilter>({
+        text: undefined,
+        tags: [],
+        types: [],
+    });
+    const [repositories, setRepositories] = React.useState<OSBRepository[]>();
+    const [page, setPage] = React.useState(1);
+    const [total, setTotal] = React.useState(0);
+
+    const [tabValue, setTabValue] = React.useState(RepositoriesTab.all);
+
+    const openRepoUrl = (repositoryId: number) => {
+        history.push(`/repositories/${repositoryId}`);
+    };
+
+    const updateList = (newTabValue: RepositoriesTab = tabValue) => {
+        setRepositories(null);
+        switch (newTabValue) {
+            case RepositoriesTab.all:
+                RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+                    setRepositories(reposDetails.osbrepositories);
+                    setTotal(reposDetails.pagination.total);
+                });
+                break;
+            case RepositoriesTab.my:
+                RepositoryService.getUserRepositoriesDetails(user.id, page).then(
+                    (reposDetails) => {
+                        setRepositories(reposDetails.osbrepositories);
+                        setTotal(reposDetails.pagination.total);
+                    }
+                );
+                break;
+        }
+    };
+
+    const debouncedHandleSearchFilter = React.useCallback(
+        debounce((newTextFilter: string) => {
+            setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+        }, 500),
+        []
+    );
+
+    React.useEffect(() => {
+        RepositoryService.getRepositoriesByFilter(page, searchFilterValues).then((reposDetails) => {
+            setRepositories(reposDetails.osbrepositories);
+            setTotal(reposDetails.pagination.total);
+        });
+    }, [page, searchFilterValues])
+
+
     return (
         <>
             <Box className="verticalFit">
@@ -46,7 +108,48 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                     >
                         <Box width={1} className="verticalFit">
                             <div id="workspaces-list" className="verticalFit">
-                                <Repositories user={user} />
+                                <Repositories
+                                    handleRepositoryClick={(repository: OSBRepository) =>
+                                    openRepoUrl(repository.id)
+                                   }
+                                    handleTagClick={(tag: Tag) =>
+                                        searchFilterValues.tags.includes(tag.tag)
+                                            ? null
+                                            : setSearchFilterValues({
+                                                ...searchFilterValues,
+                                                tags: searchFilterValues.tags.concat(tag.tag),
+                                            })
+                                    }
+                                    handleTagUnclick={(tag: Tag) =>
+                                        setSearchFilterValues({
+                                            ...searchFilterValues,
+                                            tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
+                                        })
+                                    }
+                                    handleTypeClick={(type: string) =>
+                                        setSearchFilterValues({
+                                            ...searchFilterValues,
+                                            types: searchFilterValues.types.concat(type),
+                                        })
+                                    }
+                                    handleTypeUnclick={(type: string) =>
+                                        setSearchFilterValues({
+                                            ...searchFilterValues,
+                                            types: searchFilterValues.types.filter((t) => t !== type),
+                                        })
+                                    }
+                                    user={user}
+                                    setPage={setPage}
+                                    page={page}
+                                    total={total}
+                                    tabValue={tabValue}
+                                    setTabValue={setTabValue}
+                                    setSearchFilterValues={setSearchFilterValues}
+                                    searchFilterValues={searchFilterValues}
+                                    refreshRepositories={() => updateList(tabValue)}
+                                    repositories={repositories}
+                                    debouncedHandleSearchFilter={debouncedHandleSearchFilter}
+                                />
                             </div>
                         </Box>
                     </Grid>

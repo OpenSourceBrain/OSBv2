@@ -5,17 +5,18 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { bgLightestShade, paragraph } from "../../theme";
+import { bgRegular, paragraph, chipTextColor } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    borderRadius: 2,
-    backgroundColor: bgLightestShade,
+    borderRadius: '8px 0px 0px 8px',
+    backgroundColor: bgRegular,
     padding: theme.spacing(1),
+    marginRight: '0.286rem',
     "& .MuiSvgIcon-root": {
       width: "1.25rem",
       borderRadius: 0,
-      color: paragraph,
+      color: chipTextColor,
       height: "auto",
     },
     "& .MuiInput-root": {
@@ -29,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiInputBase-input": {
       padding: theme.spacing(0),
       fontSize: ".88rem",
+      color: chipTextColor,
+      fontWeight: 500
     },
   },
 }));
