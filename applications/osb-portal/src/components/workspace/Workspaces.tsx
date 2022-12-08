@@ -22,6 +22,9 @@ import WorkspacesSearch from "./WorkspacesSearch";
 import workspaceService from "../../service/WorkspaceService";
 
 import { bgLightest as lineColor } from "../../theme";
+import SearchReposWorkspaces from "../common/SearchReposWorkspaces";
+import {useState} from "react";
+import searchFilter from "../../types/searchFilter";
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -68,6 +71,12 @@ export const Workspaces = ({ user, counter }: any) => {
     page: 1,
     totalPages: 0,
     total: null,
+  });
+
+  const [searchFilterValues, setSearchFilterValues] = useState<searchFilter>({
+    text: undefined,
+    tags: [],
+    types: [],
   });
 
   const [error, setError] = React.useState<boolean>(false);
@@ -143,6 +152,13 @@ export const Workspaces = ({ user, counter }: any) => {
     }
   }
 
+  const debouncedHandleSearchFilter = React.useCallback(
+      debounce((newTextFilter: string) => {
+        setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+      }, 500),
+      []
+  );
+
   function showMore() {
     setState({ ...state, page: page + 1 });
   }
@@ -197,82 +213,105 @@ export const Workspaces = ({ user, counter }: any) => {
 
   return (
     <>
-      <Box borderBottom={`2px solid ${lineColor}`}>
+      <Box borderBottom={`2px solid ${lineColor}`} pr='1.714rem'>
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
         >
-          <Tabs
-            value={selection.current}
-            textColor="primary"
-            indicatorColor="primary"
-            onChange={handleChange}
-          >
-            {user ? (
-              <Tab
-                id="your-all-workspaces-tab"
-                value={WorkspaceSelection.USER}
-                className={classes.tab}
-                label={
-                  user.isAdmin ? (
-                    <div className={classes.tabTitle}>
-                      <Typography>All workspaces</Typography>
-                      {selection.current === WorkspaceSelection.USER && (
-                          <Chip
-                              size="small"
-                              color="primary"
-                              label={state.total}
-                          />
-                      )}
-                    </div>
-                  ) : (
-                   <div className={classes.tabTitle}>
-                     <Typography>Your workspaces</Typography>
-                      {selection.current === WorkspaceSelection.USER && (
-                        <Chip
-                          size="small"
-                          color="primary"
-                          label={state.total}
-                        />
-                      )}
-                    </div>
-                  )
-                }
+          <Grid container={true} alignItems="center" className="verticalFill">
+            <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={8}
+                lg={8}
+                className="verticalFill"
+            >
+              <Tabs
+                  value={selection.current}
+                  textColor="primary"
+                  indicatorColor="primary"
+                  onChange={handleChange}
+              >
+                {user ? (
+                    <Tab
+                        id="your-all-workspaces-tab"
+                        value={WorkspaceSelection.USER}
+                        className={classes.tab}
+                        label={
+                          user.isAdmin ? (
+                              <div className={classes.tabTitle}>
+                                <Typography>All workspaces</Typography>
+                                {selection.current === WorkspaceSelection.USER && (
+                                    <Chip
+                                        size="small"
+                                        color="primary"
+                                        label={state.total}
+                                    />
+                                )}
+                              </div>
+                          ) : (
+                              <div className={classes.tabTitle}>
+                                <Typography>Your workspaces</Typography>
+                                {selection.current === WorkspaceSelection.USER && (
+                                    <Chip
+                                        size="small"
+                                        color="primary"
+                                        label={state.total}
+                                    />
+                                )}
+                              </div>
+                          )
+                        }
+                    />
+                ) : null}
+                <Tab
+                    id="featured-tab"
+                    value={WorkspaceSelection.FEATURED}
+                    className={classes.tab}
+                    label={
+                      <div className={classes.tabTitle}>
+                        <Typography>Featured workspaces</Typography>
+                        {selection.current === WorkspaceSelection.FEATURED && (
+                            <Chip size="small" color="primary" label={state.total} />
+                        )}
+                      </div>
+                    }
+                />
+                <Tab
+                    id="public-tab"
+                    value={WorkspaceSelection.PUBLIC}
+                    className={classes.tab}
+                    label={
+                      <div className={classes.tabTitle}>
+                        <Typography>Public workspaces</Typography>
+                        {selection.current === WorkspaceSelection.PUBLIC && (
+                            <Chip size="small" color="primary" label={state.total} />
+                        )}
+                      </div>
+                    }
+                />
+              </Tabs>
+            </Grid>
+            <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={4}
+                lg={4}
+                className="verticalFill"
+            >
+              <SearchReposWorkspaces
+                  searchFilterValues={searchFilterValues}
+                  filterChanged={(newTextFilter) =>
+                      debounceRefreshWorkspace(newTextFilter)
+                  }
+                  debouncedHandleSearchFilter={debouncedHandleSearchFilter}
+                  setSearchFilterValues={setSearchFilterValues}
               />
-            ) : null}
-            <Tab
-              id="featured-tab"
-              value={WorkspaceSelection.FEATURED}
-              className={classes.tab}
-              label={
-                <div className={classes.tabTitle}>
-                  <Typography>Featured workspaces</Typography>
-                  {selection.current === WorkspaceSelection.FEATURED && (
-                    <Chip size="small" color="primary" label={state.total} />
-                  )}
-                </div>
-              }
-            />
-            <Tab
-              id="public-tab"
-              value={WorkspaceSelection.PUBLIC}
-              className={classes.tab}
-              label={
-                <div className={classes.tabTitle}>
-                  <Typography>Public workspaces</Typography>
-                  {selection.current === WorkspaceSelection.PUBLIC && (
-                    <Chip size="small" color="primary" label={state.total} />
-                  )}
-                </div>
-              }
-            />
-          </Tabs>
-          <WorkspacesSearch
-            filterChanged={(newTextFilter) =>
-              debounceRefreshWorkspace(newTextFilter)
-            }
-          />
+            </Grid>
+          </Grid>
         </Box>
       </Box>
 

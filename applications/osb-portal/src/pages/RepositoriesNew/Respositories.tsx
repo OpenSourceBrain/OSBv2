@@ -300,7 +300,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
 
     return (
     <>
-        <Box borderBottom={`2px solid ${lineColor}`} style={{paddingRight: '1.714rem'}}>
+        <Box borderBottom={`2px solid ${lineColor}`} pr='1.714rem'>
             <Box
                 display="flex"
                 justifyContent="space-between"
