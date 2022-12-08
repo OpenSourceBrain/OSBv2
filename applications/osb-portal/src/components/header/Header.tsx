@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
 
     '& .MuiSvgIcon-root': {
-      fontSize: '9.5rem'
+      fontSize: '10.5rem'
     }
   },
 }));

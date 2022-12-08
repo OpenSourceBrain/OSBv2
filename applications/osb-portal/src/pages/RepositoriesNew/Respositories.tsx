@@ -175,6 +175,16 @@ const useStyles = makeStyles((theme) => ({
                 "& .MuiInputBase-root": {
                     paddingLeft: 0,
                 },
+                '& .MuiFilledInput-root': {
+                    '&:hover, &:before': {
+                        backgroundColor: 'transparent',
+                        border: 'none'
+                    },
+                 },
+                '& .Mui-focused': {
+                    backgroundColor: 'transparent',
+                    border: 'none'
+                },
             },
         },
     },
