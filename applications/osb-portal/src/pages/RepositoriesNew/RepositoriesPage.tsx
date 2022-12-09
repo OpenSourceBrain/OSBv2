@@ -28,6 +28,8 @@ enum RepositoriesTab {
     my,
 }
 
+let firstTimeFiltering = true;
+
 export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     const history = useHistory();
     const [searchFilterValues, setSearchFilterValues] = useState<searchFilter>({
@@ -73,12 +75,40 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     );
 
     React.useEffect(() => {
-        RepositoryService.getRepositoriesByFilter(page, searchFilterValues).then((reposDetails) => {
-            setRepositories(reposDetails.osbrepositories);
-            setTotal(reposDetails.pagination.total);
-        });
-    }, [page, searchFilterValues])
-
+        if (
+            searchFilterValues.tags.length === 0 &&
+            searchFilterValues.types.length === 0 &&
+            (typeof searchFilterValues.text === "undefined" ||
+                searchFilterValues.text === "")
+        ) {
+            if (!firstTimeFiltering) {
+                setPage(1);
+            }
+            RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+                setRepositories(reposDetails.osbrepositories);
+                setTotal(reposDetails.pagination.total);
+                firstTimeFiltering = true;
+            });
+        } else {
+            if (firstTimeFiltering) {
+                firstTimeFiltering = false;
+                RepositoryService.getRepositoriesByFilter(1, searchFilterValues).then(
+                    (repos) => {
+                        setRepositories(repos.osbrepositories);
+                        setTotal(repos.pagination.total);
+                    }
+                );
+            } else {
+                RepositoryService.getRepositoriesByFilter(
+                    page,
+                    searchFilterValues
+                ).then((repos) => {
+                    setRepositories(repos.osbrepositories);
+                    setTotal(repos.pagination.total);
+                });
+            }
+        }
+    }, [page, searchFilterValues]);
 
     return (
         <>

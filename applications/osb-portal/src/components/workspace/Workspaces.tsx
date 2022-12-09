@@ -25,6 +25,8 @@ import { bgLightest as lineColor } from "../../theme";
 import SearchReposWorkspaces from "../common/SearchReposWorkspaces";
 import {useState} from "react";
 import searchFilter from "../../types/searchFilter";
+import RepositoryService from "../../service/RepositoryService";
+import {OSBRepository} from "../../apiclient/workspaces";
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -58,20 +60,14 @@ export enum WorkspaceSelection {
   PUBLIC,
   FEATURED,
 }
-
+let firstTimeFiltering = true
 // TODO handle user's vs public workspaces
 export const Workspaces = ({ user, counter }: any) => {
-  const [state, setState] = React.useState<{
-    items: Workspace[];
-    page: number;
-    totalPages: number;
-    total: number;
-  }>({
-    items: null,
-    page: 1,
-    totalPages: 0,
-    total: null,
-  });
+
+  const [workspaces, setWorkspaces] = React.useState<Workspace[]>();
+  const [page, setPage] = React.useState(1);
+  const [total, setTotal] = React.useState(null);
+  const [totalPages, setTotalPages] = React.useState(0);
 
   const [searchFilterValues, setSearchFilterValues] = useState<searchFilter>({
     text: undefined,
@@ -83,74 +79,31 @@ export const Workspaces = ({ user, counter }: any) => {
 
   // need to use useRef because if these are stored as states, they get
   // reinitialised each time the function component re-renders.
-  const filterText = React.useRef<string>("");
   const selection = React.useRef<WorkspaceSelection>(
     user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
 
+  const isPublic = selection.current === WorkspaceSelection.PUBLIC
+  const isFeatured = selection.current === WorkspaceSelection.FEATURED
+
   const classes = useStyles();
 
+  //change workspaces tabs
   function changeSelection(newSelection: WorkspaceSelection) {
-    setState({ ...state, page: 1, items: null, totalPages: 0, total: null });
+    setPage(1)
+    setWorkspaces([])
+    setTotalPages(0)
+    setTotal(0)
     selection.current = newSelection;
   }
 
-  function refreshWorkspaces() {
-    const update = (res: any) => {
-      if (page === 1) {
-        setState({ ...state, ...res });
-      } else {
-        setState({ ...state, ...res, items: [...state.items, ...res.items] });
-      }
-    };
-    switch (selection.current) {
-      case WorkspaceSelection.PUBLIC: {
-        if (filterText.current !== "") {
-          workspaceService
-            .fetchWorkspacesByFilter(true, false, page, {
-              text: filterText.current,
-              tags: [filterText.current],
-            })
-            .then(update, (e) => setError(true));
-        } else {
-          workspaceService
-            .fetchWorkspaces(true, false, page)
-            .then(update, (e) => setError(true));
-        }
-        break;
-      }
-      case WorkspaceSelection.FEATURED: {
-        if (filterText.current !== "") {
-          workspaceService
-            .fetchWorkspacesByFilter(true, true, page, {
-              text: filterText.current,
-              tags: [filterText.current],
-            })
-            .then(update, (e) => setError(true));
-        } else {
-          workspaceService
-            .fetchWorkspaces(true, true, page)
-            .then(update, (e) => setError(true));
-        }
-        break;
-      }
-      default: {
-        if (filterText.current !== "") {
-          workspaceService
-            .fetchWorkspacesByFilter(false, false, page, {
-              text: filterText.current,
-              tags: [filterText.current],
-            })
-            .then(update, (e) => setError(true));
-        } else {
-          workspaceService
-            .fetchWorkspaces(false, false, page)
-            .then(update, (e) => setError(true));
-        }
-        break;
-      }
-    }
-  }
+  const handleChange = (
+      event: React.ChangeEvent<{}>,
+      tabSelected: WorkspaceSelection
+  ) => {
+    changeSelection(tabSelected);
+  };
+
 
   const debouncedHandleSearchFilter = React.useCallback(
       debounce((newTextFilter: string) => {
@@ -159,15 +112,18 @@ export const Workspaces = ({ user, counter }: any) => {
       []
   );
 
-  function showMore() {
-    setState({ ...state, page: page + 1 });
+
+  const fetchMoreWorkspaces = () => {
+    showMore();
+  };
+
+  const showMore = () => {
+    setPage(page+1)
   }
 
-  const { items: workspaces, totalPages, page } = state;
 
-  React.useEffect(() => {
-    refreshWorkspaces();
-  }, [counter, selection.current, page]);
+  console.log(total)
+  console.log(selection.current)
 
   React.useEffect(() => {
     if (error === true) {
@@ -175,41 +131,38 @@ export const Workspaces = ({ user, counter }: any) => {
     }
   }, [error]);
 
-  // For the search filter: debounced to prevent an update each time the user
-  // types a letter.
-  // Must use useCallback so that the function persists between renders.
-  // Otherwise, since this is a function component, the function is redefined
-  // each time the component is rendered
-  const debounceRefreshWorkspace = React.useCallback(
-    debounce((text) => {
-      filterText.current = text;
-      setState({ ...state, items: null });
-      refreshWorkspaces();
-    }, 500),
-    []
-  );
+  React.useEffect(() => {
+    if (
+        searchFilterValues.tags.length === 0 &&
+        searchFilterValues.types.length === 0 &&
+        (typeof searchFilterValues.text === "undefined" ||
+            searchFilterValues.text === "")
+    ) {
+      workspaceService.fetchWorkspaces(isPublic, isFeatured, page).then((workspacesDetails) => {
+        setWorkspaces(workspacesDetails.items)
+        setTotal(workspacesDetails.total);
+      })
+    } else {
+      workspaceService.fetchWorkspacesByFilter(
+          isPublic, isFeatured,
+          page,
+          searchFilterValues
+      ).then((workspacesDetails) => {
+        setWorkspaces(workspacesDetails.items)
+        setTotal(workspacesDetails.total);
+      })
+    }
+  }, [page, searchFilterValues, selection.current]);
 
   const workspaceList = workspaces
-    ? workspaces.map((workspace: Workspace, index: number) => {
+      ? workspaces.map((workspace: Workspace, index: number) => {
         return (
-          <Grid item={true} key={index} xs={6} sm={4} md={4} lg={3} xl={2}>
-            <WorkspaceCard workspace={workspace} />
-          </Grid>
+            <Grid item={true} key={index} xs={6} sm={4} md={4} lg={3} xl={2}>
+              <WorkspaceCard workspace={workspace} />
+            </Grid>
         );
       })
-    : [];
-
-  const handleChange = (
-    event: React.ChangeEvent<{}>,
-    tabSelected: WorkspaceSelection
-  ) => {
-    changeSelection(tabSelected);
-  };
-
-  const fetchMoreWorkspaces = () => {
-    console.log("in fetchMoreWorkspaces");
-    showMore();
-  };
+      : [];
 
   return (
     <>
@@ -247,7 +200,7 @@ export const Workspaces = ({ user, counter }: any) => {
                                     <Chip
                                         size="small"
                                         color="primary"
-                                        label={state.total}
+                                        label={total}
                                     />
                                 )}
                               </div>
@@ -258,7 +211,7 @@ export const Workspaces = ({ user, counter }: any) => {
                                     <Chip
                                         size="small"
                                         color="primary"
-                                        label={state.total}
+                                        label={total}
                                     />
                                 )}
                               </div>
@@ -274,7 +227,7 @@ export const Workspaces = ({ user, counter }: any) => {
                       <div className={classes.tabTitle}>
                         <Typography>Featured workspaces</Typography>
                         {selection.current === WorkspaceSelection.FEATURED && (
-                            <Chip size="small" color="primary" label={state.total} />
+                            <Chip size="small" color="primary" label={total} />
                         )}
                       </div>
                     }
@@ -287,7 +240,7 @@ export const Workspaces = ({ user, counter }: any) => {
                       <div className={classes.tabTitle}>
                         <Typography>Public workspaces</Typography>
                         {selection.current === WorkspaceSelection.PUBLIC && (
-                            <Chip size="small" color="primary" label={state.total} />
+                            <Chip size="small" color="primary" label={total} />
                         )}
                       </div>
                     }
@@ -303,11 +256,10 @@ export const Workspaces = ({ user, counter }: any) => {
                 className="verticalFill"
             >
               <SearchReposWorkspaces
-                  searchFilterValues={searchFilterValues}
                   filterChanged={(newTextFilter) =>
-                      debounceRefreshWorkspace(newTextFilter)
+                      debouncedHandleSearchFilter(newTextFilter)
                   }
-                  debouncedHandleSearchFilter={debouncedHandleSearchFilter}
+                  searchFilterValues={searchFilterValues}
                   setSearchFilterValues={setSearchFilterValues}
               />
             </Grid>

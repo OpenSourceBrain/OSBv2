@@ -20,18 +20,16 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import {FormControl, FormControlLabel, FormGroup, InputAdornment} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import debounce from "lodash/debounce";
+import RepositoryService from "../../service/RepositoryService";
+import {useState} from "react";
 
 
 interface SearchReposWorkspacesProps {
-    searchFilterValues?: searchFilter;
-    filterChanged?: (filter: string) => void;
-    debouncedHandleSearchFilter?: (text: string) => void;
-    setSearchFilterValues?: (searchFilter) => void,
-    debouncedTagInputUpdate?: (value: string, page: number) => void,
-    searchTagOptions?: string[],
-    tagPage?: number,
-    totalTagPages?: number,
-    handleInput?: () => void
+    searchFilterValues: searchFilter;
+    filterChanged: (filter: string) => void;
+    setSearchFilterValues: (searchFilter) => void,
+    isRepositories?: boolean
 }
 
 
@@ -105,23 +103,17 @@ const useStyles = makeStyles((theme) => ({
 
 export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
     const classes = useStyles();
-    const {
-        debouncedHandleSearchFilter,
-        searchFilterValues,
-        setSearchFilterValues,
-        debouncedTagInputUpdate,
-        searchTagOptions,
-        tagPage,
-        totalTagPages,
-        handleInput
-    } = props
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [tagSearchValue, setTagSearchValue] = React.useState("");
+    const [searchTagOptions, setSearchTagOptions] = useState([]);
+    const [tagPage, setTagPage] = React.useState(1);
+    const [totalTagPages, setTotalTagPages] = React.useState(0);
 
     const open = Boolean(anchorEl);
 
     const id = open ? "popover" : undefined;
+
 
     const handlePopoverClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -136,14 +128,54 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
         debouncedTagInputUpdate(value, tagpage);
     };
 
+    const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let repositoryTypes: string[] = [];
+        if (event.target.checked) {
+            repositoryTypes = props?.searchFilterValues.types;
+            repositoryTypes.push(event.target.name);
+        } else {
+            for (const type of props?.searchFilterValues.types) {
+                if (type !== event.target.name) {
+                    repositoryTypes.push(event.target.name);
+                }
+            }
+        }
+        props?.setSearchFilterValues({ ...props?.searchFilterValues, types: repositoryTypes });
+    };
+
+    const debouncedTagInputUpdate = React.useCallback(
+        debounce((value?: any, tagpage?: number) => {
+            let query: any;
+            if (value !== "" && value !== undefined) {
+                query = "tag__like=" + value;
+            }
+            RepositoryService.getAllTags(tagpage, undefined, query).then(
+                (tagsInformation) => {
+                    const tags = tagsInformation.tags.map((tagObject) => {
+                        return tagObject.tag;
+                    });
+                    setTagPage(tagsInformation.pagination.currentPage);
+                    setTotalTagPages(tagsInformation.pagination.numberOfPages);
+                    if (tagpage !== undefined) {
+                        setSearchTagOptions(
+                            searchTagOptions.concat(
+                                tags.sort((a: string, b: string) => a.localeCompare(b))
+                            )
+                        );
+                    } else {
+                        setSearchTagOptions(
+                            tags.sort((a: string, b: string) => a.localeCompare(b))
+                        );
+                    }
+                }
+            );
+        }, 500),
+        []
+    );
 
     return (
        <>
-           <RepositoriesSearch
-               filterChanged={(newTextFilter) =>
-                   debouncedHandleSearchFilter(newTextFilter)
-               }
-           />
+           <RepositoriesSearch filterChanged={props?.filterChanged} />
            <Button
                aria-describedby={id}
                variant="contained"
@@ -172,7 +204,7 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
                    Tags
                </Typography>
                <Autocomplete
-                   value={searchFilterValues.tags}
+                   value={props?.searchFilterValues.tags}
                    inputValue={tagSearchValue}
                    multiple={true}
                    options={searchTagOptions}
@@ -181,7 +213,7 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
                        handleTagInput(value);
                    }}
                    onChange={(event, value) =>
-                       setSearchFilterValues({ ...searchFilterValues, tags: value })
+                       props?.setSearchFilterValues({ ...props?.searchFilterValues, tags: value })
                    }
                    onClose={(event, reason) => handleTagInput("")}
                    renderTags={(value, getTagProps) =>
@@ -226,52 +258,55 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
                        },
                    }}
                />
-               <FormControl variant="standard" component="fieldset">
-                   <FormGroup>
-                       <Typography component="label" className={classes.label}>
-                           Types
-                       </Typography>
-                       <FormControlLabel
-                           control={
-                               <Checkbox
-                                   color="primary"
-                                   checked={searchFilterValues.types.includes(
-                                       RepositoryContentType.Experimental
-                                   )}
-                                   onChange={handleInput}
-                                   name={RepositoryContentType.Experimental}
-                               />
-                           }
-                           label="Experimental"
-                       />
-                       <FormControlLabel
-                           control={
-                               <Checkbox
-                                   color="primary"
-                                   checked={searchFilterValues.types.includes(
-                                       RepositoryContentType.Modeling
-                                   )}
-                                   onChange={handleInput}
-                                   name={RepositoryContentType.Modeling}
-                               />
-                           }
-                           label="Modeling"
-                       />
-                       <FormControlLabel
-                           control={
-                               <Checkbox
-                                   color="primary"
-                                   checked={searchFilterValues.types.includes(
-                                       "Development"
-                                   )}
-                                   onChange={handleInput}
-                                   name="Development"
-                               />
-                           }
-                           label="Development"
-                       />
-                   </FormGroup>
-               </FormControl>
+               {
+                   props?.isRepositories && <FormControl variant="standard" component="fieldset">
+                       <FormGroup>
+                           <Typography component="label" className={classes.label}>
+                               Types
+                           </Typography>
+                           <FormControlLabel
+                               control={
+                                   <Checkbox
+                                       color="primary"
+                                       checked={props?.searchFilterValues.types.includes(
+                                           RepositoryContentType.Experimental
+                                       )}
+                                       onChange={handleInput}
+                                       name={RepositoryContentType.Experimental}
+                                   />
+                               }
+                               label="Experimental"
+                           />
+                           <FormControlLabel
+                               control={
+                                   <Checkbox
+                                       color="primary"
+                                       checked={props?.searchFilterValues.types.includes(
+                                           RepositoryContentType.Modeling
+                                       )}
+                                       onChange={handleInput}
+                                       name={RepositoryContentType.Modeling}
+                                   />
+                               }
+                               label="Modeling"
+                           />
+                           <FormControlLabel
+                               control={
+                                   <Checkbox
+                                       color="primary"
+                                       checked={props?.searchFilterValues.types.includes(
+                                           "Development"
+                                       )}
+                                       onChange={handleInput}
+                                       name="Development"
+                                   />
+                               }
+                               label="Development"
+                           />
+                       </FormGroup>
+                   </FormControl>
+               }
+
            </Popover>
        </>
     );

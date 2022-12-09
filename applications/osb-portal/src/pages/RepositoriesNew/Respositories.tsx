@@ -29,19 +29,11 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import {OSBRepository, RepositoryContentType, Tag} from "../../apiclient/workspaces";
 import {UserInfo} from "../../types/user";
-import RepositoryService from "../../service/RepositoryService";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import searchFilter from "../../types/searchFilter";
 import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
+import SearchReposWorkspaces from "../../components/common/SearchReposWorkspaces";
 import debounce from "lodash/debounce";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import Popover from "@mui/material/Popover";
-import Autocomplete from "@mui/material/Autocomplete";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
-import {FormControl, FormControlLabel, FormGroup, InputAdornment} from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import {useState} from "react";
 
 
 
@@ -211,18 +203,10 @@ export const RepositoriesList = (props: RepositoriesProps) => {
         handleTypeUnclick,
         handleTagUnclick,
         debouncedHandleSearchFilter,
-        searchFilterValues,
-        setSearchFilterValues,
     } = props
 
     const [expanded, setExpanded] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [tagSearchValue, setTagSearchValue] = React.useState("");
-    const [searchTagOptions, setSearchTagOptions] = useState([]);
-    const [tagPage, setTagPage] = React.useState(1);
-    const [totalTagPages, setTotalTagPages] = React.useState(0);
 
-    const open = Boolean(anchorEl);
 
     const handleTabChange = (event: any, newValue: RepositoriesTab) => {
         setTabValue(newValue);
@@ -232,71 +216,11 @@ export const RepositoriesList = (props: RepositoriesProps) => {
         setExpanded(!expanded);
     };
 
-    const id = open ? "popover" : undefined;
-
     const openRepoUrl = (uri: string) => window.open(uri, "_blank");
 
     const handleChangePage = (event: unknown, current: number) => {
         setPage(current)
     }
-
-    const handlePopoverClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handlePopoverClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleTagInput = (value?: any, tagpage?: number) => {
-        setTagSearchValue(value);
-        debouncedTagInputUpdate(value, tagpage);
-    };
-
-    const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let repositoryTypes: string[] = [];
-        if (event.target.checked) {
-            repositoryTypes = searchFilterValues.types;
-            repositoryTypes.push(event.target.name);
-        } else {
-            for (const type of searchFilterValues.types) {
-                if (type !== event.target.name) {
-                    repositoryTypes.push(event.target.name);
-                }
-            }
-        }
-        setSearchFilterValues({ ...searchFilterValues, types: repositoryTypes });
-    };
-
-    const debouncedTagInputUpdate = React.useCallback(
-        debounce((value?: any, tagpage?: number) => {
-            let query: any;
-            if (value !== "" && value !== undefined) {
-                query = "tag__like=" + value;
-            }
-            RepositoryService.getAllTags(tagpage, undefined, query).then(
-                (tagsInformation) => {
-                    const tags = tagsInformation.tags.map((tagObject) => {
-                        return tagObject.tag;
-                    });
-                    setTagPage(tagsInformation.pagination.currentPage);
-                    setTotalTagPages(tagsInformation.pagination.numberOfPages);
-                    if (tagpage !== undefined) {
-                        setSearchTagOptions(
-                            searchTagOptions.concat(
-                                tags.sort((a: string, b: string) => a.localeCompare(b))
-                            )
-                        );
-                    } else {
-                        setSearchTagOptions(
-                            tags.sort((a: string, b: string) => a.localeCompare(b))
-                        );
-                    }
-                }
-            );
-        }, 500),
-        []
-    );
 
     return (
     <>
@@ -344,140 +268,14 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         lg={4}
                         className="verticalFill"
                     >
-                        <RepositoriesSearch
-                            filterChanged={(newTextFilter) =>
-                                debouncedHandleSearchFilter(newTextFilter)
-                            }
-                        />
-                        <Button
-                            aria-describedby={id}
-                            variant="contained"
-                            onClick={handlePopoverClick}
-                            className={classes.filterButton}
-                            startIcon={<FilterListIcon />}
-                        >
-                            <Typography component="label">Filter</Typography>
-                        </Button>
-                        <Popover
-                            id={id}
-                            open={open}
-                            anchorEl={anchorEl}
-                            className={classes.popover}
-                            onClose={handlePopoverClose}
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "left",
-                            }}
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "center",
-                            }}
-                        >
-                            <Typography component="label" className={classes.label}>
-                                Tags
-                            </Typography>
-                            <Autocomplete
-                                value={searchFilterValues.tags}
-                                inputValue={tagSearchValue}
-                                multiple={true}
-                                options={searchTagOptions}
-                                freeSolo={true}
-                                onInputChange={(event, value) => {
-                                    handleTagInput(value);
-                                }}
-                                onChange={(event, value) =>
-                                    setSearchFilterValues({ ...searchFilterValues, tags: value })
-                                }
-                                onClose={(event, reason) => handleTagInput("")}
-                                renderTags={(value, getTagProps) =>
-                                    value.map((option, index) => (
-                                        <Chip
-                                            variant="outlined"
-                                            label={option}
-                                            size="small"
-                                            {...getTagProps({ index })}
-                                            key={option}
-                                        />
-                                    ))
-                                }
-                                renderInput={(params) => (
-                                    <>
-                                        <SearchIcon />
-                                        <TextField
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <SearchIcon />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                            fullWidth={true}
-                                            {...params}
-                                            variant="filled"
-                                        />
-                                    </>
-                                )}
-                                ListboxProps={{
-                                    onScroll: (event: React.SyntheticEvent) => {
-                                        const listboxNode = event.currentTarget;
-                                        if (
-                                            listboxNode.scrollTop + listboxNode.clientHeight ===
-                                            listboxNode.scrollHeight
-                                        ) {
-                                            if (tagPage < totalTagPages) {
-                                                handleTagInput(tagSearchValue, tagPage + 1);
-                                            }
-                                        }
-                                    },
-                                }}
-                            />
-                            <FormControl variant="standard" component="fieldset">
-                                <FormGroup>
-                                    <Typography component="label" className={classes.label}>
-                                        Types
-                                    </Typography>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                color="primary"
-                                                checked={searchFilterValues.types.includes(
-                                                    RepositoryContentType.Experimental
-                                                )}
-                                                onChange={handleInput}
-                                                name={RepositoryContentType.Experimental}
-                                            />
-                                        }
-                                        label="Experimental"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                color="primary"
-                                                checked={searchFilterValues.types.includes(
-                                                    RepositoryContentType.Modeling
-                                                )}
-                                                onChange={handleInput}
-                                                name={RepositoryContentType.Modeling}
-                                            />
-                                        }
-                                        label="Modeling"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                color="primary"
-                                                checked={searchFilterValues.types.includes(
-                                                    "Development"
-                                                )}
-                                                onChange={handleInput}
-                                                name="Development"
-                                            />
-                                        }
-                                        label="Development"
-                                    />
-                                </FormGroup>
-                            </FormControl>
-                        </Popover>
+                      <SearchReposWorkspaces
+                          filterChanged={(newTextFilter) =>
+                              debouncedHandleSearchFilter(newTextFilter)
+                          }
+                          searchFilterValues={props.searchFilterValues}
+                          setSearchFilterValues={props.setSearchFilterValues}
+                          isRepositories={true}
+                      />
                     </Grid>
                 </Grid>
             </Box>
