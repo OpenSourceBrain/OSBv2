@@ -18,8 +18,8 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Alert from '@material-ui/lab/Alert';
 import prettyBytes from "pretty-bytes";
 
 import {
@@ -232,6 +232,7 @@ export default ({
       />
 
       <Box mt={1} className="scrollbar">
+        {!repository.contextResources || !repository.contextResources.children.length && <Alert severity="warning">The content list for this repository is empty. This is likely due to a temporary issue with the {repository.repositoryType} APIs. Please try again later.</Alert> }
         <TableContainer component="div">
           <Table className={classes.list} aria-label="repository resources">
             <TableBody>
