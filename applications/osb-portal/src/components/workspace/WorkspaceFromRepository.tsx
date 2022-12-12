@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import { Repositories } from "../index";
-import { WorkspaceEditor } from "./../index";
+import { WorkspaceEditor } from "../index";
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import OSBChipList from "../common/OSBChipList";
 import OSBPagination from "../common/OSBPagination";
@@ -294,7 +294,7 @@ export const WorkspaceFromRepository = ({
             showSimpleVersion={true}
             searchRepositories={true}
             filterChanged={setFilter}
-            
+
           />
           {totalPages > 1 ? (
             <OSBPagination
