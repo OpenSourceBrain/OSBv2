@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:hub-1.4.2
+FROM jupyter/base-notebook:hub-1.5.0
 USER root
 
 
