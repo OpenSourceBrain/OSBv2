@@ -153,7 +153,6 @@ export const WorkspacePage = (props: any) => {
   const [error, setError] = React.useState<any>(null);
   let options;
 
-
   const PREFIX_TEXT = "Open with "
   if (!workspace) {
     props.selectWorkspace(workspaceId);

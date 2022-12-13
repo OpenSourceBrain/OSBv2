@@ -21,6 +21,8 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const anchorRef = useRef(null);
 
+    console.log("Options: ",props.options)
+
     const handleItemClick = () => {
         props.handleClick(props.options[selectedIndex]);
     }
