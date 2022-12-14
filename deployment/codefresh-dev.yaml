@@ -431,6 +431,15 @@ steps:
         image_name: osb/jupyterlab
         title: Jupyterlab
         working_directory: ./applications/jupyterlab
+  tests_unit:
+    stage: unittest
+    type: parallel
+    steps:
+      workspaces_ut:
+        title: Unit tests for workspaces
+        commands:
+        - pytest /usr/src/app/
+        image: '${{workspaces}}'
   deployment:
     stage: deploy
     type: helm
