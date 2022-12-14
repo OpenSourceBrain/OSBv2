@@ -33,6 +33,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import CreateWorkspaceDialog from "../common/CreateWorkspaceDialog";
+import AddRepoDialog from "../common/AddRepoDialog";
 
 //icons
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -188,6 +189,7 @@ export const MainDrawer = (props: any) => {
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
     const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
+    const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const openCreatMenu = Boolean(anchorEl);
@@ -200,11 +202,12 @@ export const MainDrawer = (props: any) => {
     const text= props.user ? `Welcome back, ${props.user.username}` :  "Lets do some science!"
 
     const handleOpenDialog = (type) => {
-        type === 'workspace' ? setOpenWorkspaceDialog(true) : null
+        type === 'workspace' ? setOpenWorkspaceDialog(true) : type === 'repository' ? setOpenRepoDialog(true) : null
         setAnchorEl(null)
     };
 
     const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
+    const handleCloseRepoDialog = () => setOpenRepoDialog(false);
 
     const handleClickCreatMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -375,6 +378,7 @@ export const MainDrawer = (props: any) => {
         </Drawer>
         </Box>
          <CreateWorkspaceDialog dialogOpen={openWorkspaceDialog} handleClose={handleCloseWorkspaceDialog} />
+         <AddRepoDialog dialogOpen={openRepoDialog} handleClose={handleCloseRepoDialog}/>
         </>
     );
 };
