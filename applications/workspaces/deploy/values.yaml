@@ -68,4 +68,10 @@ harness:
       limits:          
         memory: "256Mi"
         cpu: "500m"
+  test:
+    unit:
+      enabled: true
+      commands:
+      
+      - pytest /usr/src/app/
 workspace_size: 2Gi
