@@ -1,26 +1,22 @@
 import * as React from "react";
 
 // components
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Chip from "@mui/material/Chip";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
-import TablePagination from "@mui/material/TablePagination";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
-import Grid from "@mui/material/Grid";
+import Pagination from "@mui/material/Pagination";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
 
 // style
 import {
-  bgLightest as lineColor,
   paragraph,
   linkColor,
   chipTextColor,
@@ -36,17 +32,16 @@ import makeStyles from "@mui/styles/makeStyles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
+//types
 import {
   OSBRepository,
   RepositoryContentType,
   Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import searchFilter from "../../types/searchFilter";
-import SearchReposWorkspaces from "../../components/common/SearchReposWorkspaces";
-import { Pagination } from "@mui/material";
 
 enum RepositoriesTab {
   all,
@@ -55,7 +50,6 @@ enum RepositoriesTab {
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
-  showSimpleVersion?: boolean;
   handleRepositoryClick: (repository: OSBRepository) => void;
   handleTagClick: (tagObject: Tag) => void;
   handleTagUnclick: (tagObject: Tag) => void;
@@ -66,14 +60,10 @@ interface RepositoriesProps {
   searchRepositories?: boolean;
   filterChanged?: (filter: string) => void;
   refreshRepositories?: () => void;
-  tabValue: RepositoriesTab;
-  setTabValue: (tab: RepositoriesTab) => void;
   setPage: (page: number) => void;
   total: number;
   totalPages: number;
   page: number;
-  debouncedHandleSearchFilter: (text: string) => void;
-  setSearchFilterValues: (searchFilter) => void;
   loading: boolean;
 }
 
@@ -203,8 +193,6 @@ const useStyles = makeStyles((theme) => ({
 export const RepositoriesList = (props: RepositoriesProps) => {
   const classes = useStyles();
   const {
-    tabValue,
-    setTabValue,
     setPage,
     repositories,
     page,
@@ -212,15 +200,11 @@ export const RepositoriesList = (props: RepositoriesProps) => {
     handleTypeClick,
     handleTypeUnclick,
     handleTagUnclick,
-    debouncedHandleSearchFilter,
     totalPages,
     loading,
   } = props;
 
   const [expanded, setExpanded] = React.useState(false);
-  const handleTabChange = (event: any, newValue: RepositoriesTab) => {
-    setTabValue(newValue);
-  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -234,64 +218,6 @@ export const RepositoriesList = (props: RepositoriesProps) => {
 
   return (
     <>
-      <Box borderBottom={`2px solid ${lineColor}`} pr="1.714rem">
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Grid container={true} alignItems="center" className="verticalFill">
-            <Grid
-              item={true}
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              className="verticalFill"
-            >
-              <Tabs
-                value={tabValue}
-                onChange={handleTabChange}
-                textColor="primary"
-                indicatorColor="primary"
-              >
-                <Tab
-                  label={
-                    <div className={classes.tabTitle}>
-                      <Typography>All repositories</Typography>
-                    </div>
-                  }
-                  className={classes.tab}
-                />
-                {props.user && (
-                  <Tab
-                    label={
-                      <div className={classes.tabTitle}>
-                        <Typography>My repositories</Typography>
-                      </div>
-                    }
-                    className={classes.tab}
-                  />
-                )}
-              </Tabs>
-            </Grid>
-            <Grid
-              item={true}
-              xs={12}
-              sm={12}
-              md={4}
-              lg={4}
-              className="verticalFill"
-            >
-              <SearchReposWorkspaces
-                filterChanged={(newTextFilter) =>
-                  debouncedHandleSearchFilter(newTextFilter)
-                }
-                searchFilterValues={props.searchFilterValues}
-                setSearchFilterValues={props.setSearchFilterValues}
-                hasTypes={true}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-
       {loading && (
         <Box
           flex={1}

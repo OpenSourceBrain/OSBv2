@@ -1,16 +1,10 @@
 import * as React from "react";
 import debounce from "lodash/debounce";
 
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 //components
-import {
-  Chip,
-  Grid,
-  Tabs,
-  Box,
-  Tab, Typography
-} from "@mui/material";
+import { Chip, Grid, Tabs, Box, Tab, Typography } from "@mui/material";
 
 //icons
 import CircularProgress from "@mui/material/CircularProgress";
@@ -23,10 +17,10 @@ import workspaceService from "../../service/WorkspaceService";
 
 import { bgLightest as lineColor } from "../../theme";
 import SearchReposWorkspaces from "../common/SearchReposWorkspaces";
-import {useState} from "react";
+import { useState } from "react";
 import searchFilter from "../../types/searchFilter";
 import RepositoryService from "../../service/RepositoryService";
-import {OSBRepository} from "../../apiclient/workspaces";
+import { OSBRepository } from "../../apiclient/workspaces";
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -41,18 +35,18 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     maxWidth: "33%",
-    minWidth: 'fit-content',
-    padding: '16px 24px'
+    minWidth: "fit-content",
+    padding: "16px 24px",
   },
   tabTitle: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    '& .MuiTypography-root': {
-      fontSize: '0.857rem',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "& .MuiTypography-root": {
+      fontSize: "0.857rem",
       fontWeight: 700,
-    }
-  }
+    },
+  },
 }));
 
 export enum WorkspaceSelection {
@@ -60,10 +54,9 @@ export enum WorkspaceSelection {
   PUBLIC,
   FEATURED,
 }
-let firstTimeFiltering = true
+let firstTimeFiltering = true;
 // TODO handle user's vs public workspaces
 export const Workspaces = ({ user, counter }: any) => {
-
   const [workspaces, setWorkspaces] = React.useState<Workspace[]>();
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(null);
@@ -83,47 +76,41 @@ export const Workspaces = ({ user, counter }: any) => {
     user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
 
-  const isPublic = selection.current === WorkspaceSelection.PUBLIC
-  const isFeatured = selection.current === WorkspaceSelection.FEATURED
+  const isPublic = selection.current === WorkspaceSelection.PUBLIC;
+  const isFeatured = selection.current === WorkspaceSelection.FEATURED;
 
   const classes = useStyles();
 
   //change workspaces tabs
   function changeSelection(newSelection: WorkspaceSelection) {
-    setPage(1)
-    setWorkspaces([])
-    setTotalPages(0)
-    setTotal(0)
+    setPage(1);
+    setWorkspaces([]);
+    setTotalPages(0);
+    setTotal(0);
     selection.current = newSelection;
   }
 
   const handleChange = (
-      event: React.ChangeEvent<{}>,
-      tabSelected: WorkspaceSelection
+    event: React.ChangeEvent<{}>,
+    tabSelected: WorkspaceSelection
   ) => {
     changeSelection(tabSelected);
   };
 
-
   const debouncedHandleSearchFilter = React.useCallback(
-      debounce((newTextFilter: string) => {
-        setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
-      }, 500),
-      []
+    debounce((newTextFilter: string) => {
+      setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+    }, 500),
+    []
   );
-
 
   const fetchMoreWorkspaces = () => {
     showMore();
   };
 
   const showMore = () => {
-    setPage(page+1)
-  }
-
-
-  console.log(total)
-  console.log(selection.current)
+    setPage(page + 1);
+  };
 
   React.useEffect(() => {
     if (error === true) {
@@ -133,140 +120,127 @@ export const Workspaces = ({ user, counter }: any) => {
 
   React.useEffect(() => {
     if (
-        searchFilterValues.tags.length === 0 &&
-        searchFilterValues.types.length === 0 &&
-        (typeof searchFilterValues.text === "undefined" ||
-            searchFilterValues.text === "")
+      searchFilterValues.tags.length === 0 &&
+      searchFilterValues.types.length === 0 &&
+      (typeof searchFilterValues.text === "undefined" ||
+        searchFilterValues.text === "")
     ) {
-      workspaceService.fetchWorkspaces(isPublic, isFeatured, page).then((workspacesDetails) => {
-        setWorkspaces(workspacesDetails.items)
-        setTotal(workspacesDetails.total);
-      })
+      workspaceService
+        .fetchWorkspaces(isPublic, isFeatured, page)
+        .then((workspacesDetails) => {
+          setWorkspaces(workspacesDetails.items);
+          setTotal(workspacesDetails.total);
+        });
     } else {
-      workspaceService.fetchWorkspacesByFilter(
-          isPublic, isFeatured,
-          page,
-          searchFilterValues
-      ).then((workspacesDetails) => {
-        setWorkspaces(workspacesDetails.items)
-        setTotal(workspacesDetails.total);
-      })
+      workspaceService
+        .fetchWorkspacesByFilter(isPublic, isFeatured, page, searchFilterValues)
+        .then((workspacesDetails) => {
+          setWorkspaces(workspacesDetails.items);
+          setTotal(workspacesDetails.total);
+        });
     }
   }, [page, searchFilterValues, selection.current]);
 
   const workspaceList = workspaces
-      ? workspaces.map((workspace: Workspace, index: number) => {
+    ? workspaces.map((workspace: Workspace, index: number) => {
         return (
-            <Grid item={true} key={index} xs={6} sm={4} md={4} lg={3} xl={2}>
-              <WorkspaceCard workspace={workspace} />
-            </Grid>
+          <Grid item={true} key={index} xs={6} sm={4} md={4} lg={3} xl={2}>
+            <WorkspaceCard workspace={workspace} />
+          </Grid>
         );
       })
-      : [];
+    : [];
 
   return (
     <>
-      <Box borderBottom={`2px solid ${lineColor}`} pr='1.714rem'>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+      <Box borderBottom={`2px solid ${lineColor}`} pr="1.714rem">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Grid container={true} alignItems="center" className="verticalFill">
             <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={8}
-                lg={8}
-                className="verticalFill"
+              item={true}
+              xs={12}
+              sm={12}
+              md={8}
+              lg={8}
+              className="verticalFill"
             >
               <Tabs
-                  value={selection.current}
-                  textColor="primary"
-                  indicatorColor="primary"
-                  onChange={handleChange}
+                value={selection.current}
+                textColor="primary"
+                indicatorColor="primary"
+                onChange={handleChange}
               >
                 {user ? (
-                    <Tab
-                        id="your-all-workspaces-tab"
-                        value={WorkspaceSelection.USER}
-                        className={classes.tab}
-                        label={
-                          user.isAdmin ? (
-                              <div className={classes.tabTitle}>
-                                <Typography>All workspaces</Typography>
-                                {selection.current === WorkspaceSelection.USER && (
-                                    <Chip
-                                        size="small"
-                                        color="primary"
-                                        label={total}
-                                    />
-                                )}
-                              </div>
-                          ) : (
-                              <div className={classes.tabTitle}>
-                                <Typography>Your workspaces</Typography>
-                                {selection.current === WorkspaceSelection.USER && (
-                                    <Chip
-                                        size="small"
-                                        color="primary"
-                                        label={total}
-                                    />
-                                )}
-                              </div>
-                          )
-                        }
-                    />
+                  <Tab
+                    id="your-all-workspaces-tab"
+                    value={WorkspaceSelection.USER}
+                    className={classes.tab}
+                    label={
+                      user.isAdmin ? (
+                        <div className={classes.tabTitle}>
+                          <Typography>All workspaces</Typography>
+                          {selection.current === WorkspaceSelection.USER && (
+                            <Chip size="small" color="primary" label={total} />
+                          )}
+                        </div>
+                      ) : (
+                        <div className={classes.tabTitle}>
+                          <Typography>Your workspaces</Typography>
+                          {selection.current === WorkspaceSelection.USER && (
+                            <Chip size="small" color="primary" label={total} />
+                          )}
+                        </div>
+                      )
+                    }
+                  />
                 ) : null}
                 <Tab
-                    id="featured-tab"
-                    value={WorkspaceSelection.FEATURED}
-                    className={classes.tab}
-                    label={
-                      <div className={classes.tabTitle}>
-                        <Typography>Featured workspaces</Typography>
-                        {selection.current === WorkspaceSelection.FEATURED && (
-                            <Chip size="small" color="primary" label={total} />
-                        )}
-                      </div>
-                    }
+                  id="featured-tab"
+                  value={WorkspaceSelection.FEATURED}
+                  className={classes.tab}
+                  label={
+                    <div className={classes.tabTitle}>
+                      <Typography>Featured workspaces</Typography>
+                      {selection.current === WorkspaceSelection.FEATURED && (
+                        <Chip size="small" color="primary" label={total} />
+                      )}
+                    </div>
+                  }
                 />
                 <Tab
-                    id="public-tab"
-                    value={WorkspaceSelection.PUBLIC}
-                    className={classes.tab}
-                    label={
-                      <div className={classes.tabTitle}>
-                        <Typography>Public workspaces</Typography>
-                        {selection.current === WorkspaceSelection.PUBLIC && (
-                            <Chip size="small" color="primary" label={total} />
-                        )}
-                      </div>
-                    }
+                  id="public-tab"
+                  value={WorkspaceSelection.PUBLIC}
+                  className={classes.tab}
+                  label={
+                    <div className={classes.tabTitle}>
+                      <Typography>Public workspaces</Typography>
+                      {selection.current === WorkspaceSelection.PUBLIC && (
+                        <Chip size="small" color="primary" label={total} />
+                      )}
+                    </div>
+                  }
                 />
               </Tabs>
             </Grid>
             <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={4}
-                lg={4}
-                className="verticalFill"
+              item={true}
+              xs={12}
+              sm={12}
+              md={4}
+              lg={4}
+              className="verticalFill"
             >
               <SearchReposWorkspaces
-                  filterChanged={(newTextFilter) =>
-                      debouncedHandleSearchFilter(newTextFilter)
-                  }
-                  searchFilterValues={searchFilterValues}
-                  setSearchFilterValues={setSearchFilterValues}
+                filterChanged={(newTextFilter) =>
+                  debouncedHandleSearchFilter(newTextFilter)
+                }
+                searchFilterValues={searchFilterValues}
+                setSearchFilterValues={setSearchFilterValues}
               />
             </Grid>
           </Grid>
         </Box>
       </Box>
-
 
       {!workspaces && (
         <Box

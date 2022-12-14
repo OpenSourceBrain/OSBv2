@@ -39,6 +39,7 @@ interface SearchReposWorkspacesProps {
   filterChanged: (filter: string) => void;
   setSearchFilterValues: (searchFilter) => void;
   hasTypes?: boolean;
+  setLoading?: (loading: boolean) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -131,11 +132,13 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
   };
 
   const handleTagInput = (value?: any, tagpage?: number) => {
+    props.setLoading(true);
     setTagSearchValue(value);
     debouncedTagInputUpdate(value, tagpage);
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.setLoading(true);
     let repositoryTypes = [...props?.searchFilterValues.types];
 
     if (event.target.checked) {
