@@ -45,6 +45,7 @@ export const {
   dialogBoxShadow,
   badgeBgLight,
   lightWhite,
+  cardIconFill,
 } = vars;
 
 const verticalFill = {

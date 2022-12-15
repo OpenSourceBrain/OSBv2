@@ -176,48 +176,8 @@ export const RepositoriesCardIcon = (props: SvgIconProps) => (
   <SvgIcon viewBox="0 0 61 60" {...props}>
     <path
       d="M30.875 0C14.315 0 0.875 13.44 0.875 30C0.875 46.56 14.315 60 30.875 60C47.435 60 60.875 46.56 60.875 30C60.875 13.44 47.435 0 30.875 0ZM6.875 30C6.875 28.17 7.115 26.37 7.505 24.66L21.845 39V42C21.845 45.3 24.545 48 27.845 48V53.79C16.055 52.29 6.875 42.21 6.875 30ZM48.545 46.2C47.765 43.77 45.545 42 42.845 42H39.845V33C39.845 31.35 38.495 30 36.845 30H18.845V24H24.845C26.495 24 27.845 22.65 27.845 21V15H33.845C37.145 15 39.845 12.3 39.845 9V7.77C48.635 11.31 54.875 19.95 54.875 30C54.875 36.24 52.445 41.94 48.545 46.2Z"
-      fill="white"
       fillOpacity="0.8"
     />
-  </SvgIcon>
-);
-
-export const ViewRepositoryCardIcon = (props: SvgIconProps) => (
-  <SvgIcon viewBox="0 0 25 24" {...props}>
-    <rect
-      width="24"
-      height="24"
-      transform="translate(0.25)"
-      fill="url(#paint0_radial_6145_52036)"
-    />
-    <g clipPath="url(#clip0_6145_52036)">
-      <path
-        d="M12.25 8.25C9.75 8.25 7.615 9.805 6.75 12C7.615 14.195 9.75 15.75 12.25 15.75C14.75 15.75 16.885 14.195 17.75 12C16.885 9.805 14.75 8.25 12.25 8.25ZM12.25 14.5C10.87 14.5 9.75 13.38 9.75 12C9.75 10.62 10.87 9.5 12.25 9.5C13.63 9.5 14.75 10.62 14.75 12C14.75 13.38 13.63 14.5 12.25 14.5ZM12.25 10.5C11.42 10.5 10.75 11.17 10.75 12C10.75 12.83 11.42 13.5 12.25 13.5C13.08 13.5 13.75 12.83 13.75 12C13.75 11.17 13.08 10.5 12.25 10.5Z"
-        fill="white"
-        fillOpacity="0.8"
-      />
-    </g>
-    <defs>
-      <radialGradient
-        id="paint0_radial_6145_52036"
-        cx="0"
-        cy="0"
-        r="1"
-        gradientUnits="userSpaceOnUse"
-        gradientTransform="translate(24 -1.90735e-06) rotate(135.909) scale(22.2767)"
-      >
-        <stop />
-        <stop offset="1" stopOpacity="0" />
-      </radialGradient>
-      <clipPath id="clip0_6145_52036">
-        <rect
-          width="12"
-          height="12"
-          fill="white"
-          transform="translate(6.25 6)"
-        />
-      </clipPath>
-    </defs>
   </SvgIcon>
 );
 

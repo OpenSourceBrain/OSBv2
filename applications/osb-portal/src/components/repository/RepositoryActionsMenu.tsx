@@ -3,9 +3,9 @@ import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { IconButton } from "@mui/material";
-import * as Icons from "../icons";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
-import { EditRepoDialog } from "./../index";
+import { EditRepoDialog } from "../index";
 import { canEditRepository } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
 import { OSBRepository } from "../../apiclient/workspaces";
@@ -43,16 +43,12 @@ export default (props: RepositoryActionsMenuProps) => {
     props.onAction(r);
   };
 
-  const isRenderable = canEdit || false; // for future updates
-
   return (
     <>
-      {isRenderable && (
+      {canEdit && (
         <>
           <IconButton size="small" onClick={handleClick}>
-            <Icons.Dots
-              style={{ fontSize: "1rem", transform: "rotate(90deg)" }}
-            />
+            <MoreHorizIcon sx={{ fontSize: "1rem" }} />
           </IconButton>
           <Menu
             id="simple-menu"

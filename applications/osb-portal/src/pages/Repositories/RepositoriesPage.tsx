@@ -1,5 +1,6 @@
 import * as React from "react";
 import debounce from "lodash/debounce";
+import { ReactElement } from "react";
 
 //components
 import Box from "@mui/material/Box";
@@ -8,6 +9,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import Pagination from "@mui/material/Pagination";
 
 import { HomePageSider } from "../../components";
 import RepositoriesCards from "./RepositoriesCards";
@@ -37,25 +39,47 @@ import {
   checkBoxColor,
   bgDarker,
   linkColor,
+  primaryColor,
 } from "../../theme";
-import makeStyles from "@mui/styles/makeStyles";
-
-import clsx from "clsx";
+import styled from "@mui/system/styled";
 
 enum RepositoriesTab {
   all,
   my,
 }
 
-let firstTimeFiltering = true;
+const customButtonStyle = {
+  minWidth: "auto",
+  padding: "5px",
+  backgroundColor: bgRegular,
+  border: "none !important",
+  color: checkBoxColor,
+  borderRadius: "8px",
 
-const useStyles = makeStyles((theme) => ({
-  tab: {
-    maxWidth: "33%",
-    minWidth: "fit-content",
-    padding: "16px 24px",
+  "&:hover": {
+    backgroundColor: bgRegular,
+    color: linkColor,
   },
-  tabTitle: {
+};
+
+const StyledIconButton = styled(IconButton)(() => customButtonStyle);
+
+const StyledActiveIconButton = styled(IconButton)(() => ({
+  ...customButtonStyle,
+  backgroundColor: bgDarker,
+  color: linkColor,
+
+  "&:hover": {
+    backgroundColor: bgDarker,
+  },
+}));
+
+const StyledTabs = styled(Tab)(() => ({
+  maxWidth: "33%",
+  minWidth: "fit-content",
+  padding: "16px 24px",
+
+  "& .tabTitle": {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -64,22 +88,16 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 700,
     },
   },
-  listTypeBtn: {
-    minWidth: "auto",
-    padding: "5px",
-    backgroundColor: bgRegular,
-    border: "none !important",
-    color: checkBoxColor,
-    borderRadius: "8px",
+}));
 
-    "&:hover": {
-      backgroundColor: bgRegular,
-      color: linkColor,
-    },
-  },
-  activeTabBtn: {
-    backgroundColor: bgDarker,
-    color: linkColor,
+const StyledPagination = styled(Pagination)(() => ({
+  display: "flex",
+  justifyContent: "center",
+  padding: ".88rem",
+  borderTop: `1px solid ${lineColor}`,
+
+  "& .Mui-selected": {
+    backgroundColor: primaryColor,
   },
 }));
 
@@ -91,7 +109,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       tags: [],
       types: [],
     });
-  const classes = useStyles();
 
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
@@ -99,7 +116,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [tabValue, setTabValue] = React.useState(RepositoriesTab.all);
-  const [listView, setListView] = React.useState<string>("grid");
+  const [listView, setListView] = React.useState<string>("list");
 
   const isSearchFieldsEmpty =
     searchFilterValues.tags.length === 0 &&
@@ -125,18 +142,15 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   );
 
   const setReposValues = (reposDetails) => {
-    if (listView === "grid" && isSearchFieldsEmpty) {
-      setLoading(false);
-      setRepositories([...repositories, ...reposDetails.osbrepositories]);
-    } else {
-      setRepositories(reposDetails.osbrepositories);
-    }
+    setRepositories(reposDetails.osbrepositories);
     setTotal(reposDetails.pagination.total);
     setTotalPages(reposDetails.pagination.numberOfPages);
     setLoading(false);
   };
 
   const getReposList = (payload?) => {
+    setLoading(true);
+
     if (payload?.searchFilterValues) {
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -165,14 +179,35 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setListView(type);
   };
 
+  const handleChangePage = (event: unknown, current: number) => {
+    setPage(current);
+  };
+
+  const CustomButton = ({
+    listType,
+    Icon,
+  }: {
+    listType: string;
+    Icon: ReactElement;
+  }) => {
+    if (listType === listView) {
+      return (
+        <StyledActiveIconButton onClick={() => changeListView(listType)}>
+          {Icon}
+        </StyledActiveIconButton>
+      );
+    } else {
+      return (
+        <StyledIconButton onClick={() => changeListView(listType)}>
+          {Icon}
+        </StyledIconButton>
+      );
+    }
+  };
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
-      setLoading(true);
-
       getReposList();
     } else {
-      setLoading(true);
-
       getReposList({ searchFilterValues, tabValue });
     }
   }, [page, searchFilterValues, tabValue]);
@@ -205,7 +240,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
           >
             <Box width={1} className="verticalFit">
               <div id="workspaces-list" className="verticalFit">
-                <Box borderBottom={`2px solid ${lineColor}`} pr="1.714rem">
+                <Box borderBottom={`1px solid ${lineColor}`} pr="1.714rem">
                   <Box
                     display="flex"
                     justifyContent="space-between"
@@ -225,22 +260,20 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                         className="verticalFill"
                       >
                         <Tabs value={tabValue} onChange={handleTabChange}>
-                          <Tab
+                          <StyledTabs
                             label={
-                              <div className={classes.tabTitle}>
+                              <div className="tabTitle">
                                 <Typography>All repositories</Typography>
                               </div>
                             }
-                            className={classes.tab}
                           />
                           {user && (
-                            <Tab
+                            <StyledTabs
                               label={
-                                <div className={classes.tabTitle}>
+                                <div className="tabTitle">
                                   <Typography>My repositories</Typography>
                                 </div>
                               }
-                              className={classes.tab}
                             />
                           )}
                         </Tabs>
@@ -263,32 +296,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                           variant="contained"
                           aria-label="Disabled elevation buttons"
                         >
-                          <IconButton
-                            onClick={() => changeListView("grid")}
-                            className={
-                              listView === "grid"
-                                ? clsx(
-                                    classes.listTypeBtn,
-                                    classes.activeTabBtn
-                                  )
-                                : classes.listTypeBtn
-                            }
-                          >
-                            <WindowIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => changeListView("list")}
-                            className={
-                              listView === "list"
-                                ? clsx(
-                                    classes.listTypeBtn,
-                                    classes.activeTabBtn
-                                  )
-                                : classes.listTypeBtn
-                            }
-                          >
-                            <ListIcon />
-                          </IconButton>
+                          <CustomButton Icon={<WindowIcon />} listType="grid" />
+                          <CustomButton Icon={<ListIcon />} listType="list" />
                         </ButtonGroup>
                       </Grid>
                       <Grid
@@ -350,25 +359,26 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                     }
                     searchFilterValues={searchFilterValues}
                     user={user}
-                    setPage={setPage}
-                    page={page}
-                    total={total}
-                    totalPages={totalPages}
                     repositories={repositories}
                     loading={loading}
                   />
                 ) : (
                   <RepositoriesCards
                     user={user}
-                    setPage={setPage}
-                    page={page}
-                    total={total}
-                    totalPages={totalPages}
                     repositories={repositories}
                     loading={loading}
                   />
                 )}
               </div>
+              {repositories && (
+                <StyledPagination
+                  count={totalPages}
+                  page={page}
+                  onChange={handleChangePage}
+                  showFirstButton
+                  showLastButton
+                />
+              )}
             </Box>
           </Grid>
         </Grid>

@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
-import Pagination from "@mui/material/Pagination";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
@@ -23,10 +22,7 @@ import {
   chipBg,
   secondaryColor,
   primaryColor,
-  bgRegular,
-  bgInputs,
 } from "../../theme";
-import makeStyles from "@mui/styles/makeStyles";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -42,11 +38,7 @@ import {
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
-
-enum RepositoriesTab {
-  all,
-  my,
-}
+import styled from "@mui/system/styled";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -57,151 +49,62 @@ interface RepositoriesProps {
   handleTypeUnclick: (type: string) => void;
   searchFilterValues: searchFilter;
   user?: UserInfo;
-  searchRepositories?: boolean;
-  filterChanged?: (filter: string) => void;
-  refreshRepositories?: () => void;
-  setPage: (page: number) => void;
-  total: number;
-  totalPages: number;
-  page: number;
   loading: boolean;
 }
 
-const useStyles = makeStyles((theme) => ({
-  tab: {
-    maxWidth: "33%",
-    minWidth: "fit-content",
-    padding: "16px 24px",
+const StyledTableContainer = styled(TableContainer)(() => ({
+  "& .MuiChip-root": {
+    margin: "0 8px 8px 0",
+    backgroundColor: chipBg,
   },
-  tabTitle: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    "& .MuiTypography-root": {
-      fontSize: "0.857rem",
-      fontWeight: 700,
-    },
+  "& .content-types-tag": {
+    color: chipTextColor,
   },
-  showMoreText: {
-    color: paragraph,
-    marginTop: 8,
-    "& a": {
-      color: linkColor,
-      display: "flex",
-      textDecoration: "none",
-      "& .MuiSvgIcon-root": {
-        color: `${linkColor} !important`,
-      },
-    },
-  },
-  repositoryData: {
-    "& .MuiChip-root": {
-      margin: "0 8px 8px 0",
-      backgroundColor: chipBg,
-    },
-    "& .content-types-tag": {
-      color: chipTextColor,
-    },
-    "& .MuiButtonBase-root": {
-      "&:hover": {
-        backgroundColor: "transparent",
-        color: secondaryColor,
-      },
-    },
-    "& .MuiButton-outlined": {
-      minWidth: "max-content",
-      padding: "8px 12px",
-      textTransform: "inherit",
-      fontSize: "0.857rem",
-      color: secondaryColor,
-      borderRadius: 8,
-      borderWidth: 1,
-
-      "&:hover": {
-        borderColor: primaryColor,
-        color: `${primaryColor} !important`,
-      },
-    },
-  },
-  filterButton: {
-    borderRadius: "0px 8px 8px 0px",
-    textTransform: "capitalize",
+  "& .MuiButtonBase-root": {
     "&:hover": {
       backgroundColor: "transparent",
+      color: secondaryColor,
     },
-    minWidth: "fit-content !important",
-    backgroundColor: bgRegular,
-    "& .MuiTouchRipple-root:hover": {
-      backgroundColor: "transparent",
+  },
+  "& .MuiButton-outlined": {
+    minWidth: "max-content",
+    padding: "8px 12px",
+    textTransform: "inherit",
+    fontSize: "0.857rem",
+    color: secondaryColor,
+    borderRadius: 8,
+    borderWidth: 1,
+
+    "&:hover": {
+      borderColor: primaryColor,
+      color: `${primaryColor} !important`,
     },
+  },
+}));
+
+const StyledShowMoreText = styled(ShowMoreText)(() => ({
+  color: paragraph,
+  marginTop: 8,
+  "& a": {
+    color: linkColor,
+    display: "flex",
+    textDecoration: "none",
     "& .MuiSvgIcon-root": {
-      fontSize: "1.3rem",
-      color: chipTextColor,
+      color: `${linkColor} !important`,
     },
-    "& .MuiTypography-root": {
-      fontSize: "0.857rem",
-      color: chipTextColor,
-      fontWeight: 500,
-    },
-  },
-  popover: {
-    "& .MuiPaper-root": {
-      top: "88px !important",
-      left: "1023px !important",
-      background: chipBg,
-      minWidth: "390px !important",
-      padding: theme.spacing(3),
-      boxShadow: "0px 10px 60px rgba(0, 0, 0, 0.5)",
-      "& .MuiSvgIcon-root": {
-        cursor: "pointer",
-      },
-      "& .MuiAutocomplete-root": {
-        display: "flex",
-        alignItems: "center",
-        paddingTop: 0,
-        paddingBottom: 0,
-        marginBottom: ".88rem",
-        "& .MuiSvgIcon-root": {
-          marginLeft: theme.spacing(1),
-          color: paragraph,
-        },
-        "& .MuiInputBase-root": {
-          paddingLeft: 0,
-        },
-        "& .MuiFilledInput-root": {
-          "&:hover, &:before": {
-            backgroundColor: "transparent",
-            border: "none",
-          },
-        },
-        "& .Mui-focused": {
-          backgroundColor: "transparent",
-          border: "none",
-        },
-      },
-    },
-  },
-  label: {
-    color: bgInputs,
-    fontWeight: 700,
-    fontSize: ".88rem",
-    marginBottom: theme.spacing(1),
-    display: "inline-block",
   },
 }));
 
 export const RepositoriesList = (props: RepositoriesProps) => {
-  const classes = useStyles();
   const {
-    setPage,
     repositories,
-    page,
     handleTagClick,
     handleTypeClick,
     handleTypeUnclick,
     handleTagUnclick,
-    totalPages,
     loading,
+    searchFilterValues,
+    handleRepositoryClick,
   } = props;
 
   const [expanded, setExpanded] = React.useState(false);
@@ -212,13 +115,9 @@ export const RepositoriesList = (props: RepositoriesProps) => {
 
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
 
-  const handleChangePage = (event: unknown, current: number) => {
-    setPage(current);
-  };
-
   return (
     <>
-      {loading && (
+      {loading ? (
         <Box
           flex={1}
           px={2}
@@ -230,9 +129,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
         >
           <CircularProgress />
         </Box>
-      )}
-
-      {!loading && (
+      ) : (
         <Box
           className="verticalFill"
           style={{
@@ -241,7 +138,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
             justifyContent: "space-between",
           }}
         >
-          <TableContainer className={classes.repositoryData}>
+          <StyledTableContainer>
             <Table aria-label="simple table">
               <TableBody>
                 {repositories &&
@@ -258,8 +155,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         <Box className="col">
                           <Typography component="strong">{row.name}</Typography>
                           {row.summary && (
-                            <ShowMoreText
-                              className={classes.showMoreText}
+                            <StyledShowMoreText
                               lines={2}
                               more={
                                 <>
@@ -277,7 +173,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               width={400}
                             >
                               {row.summary}
-                            </ShowMoreText>
+                            </StyledShowMoreText>
                           )}
                         </Box>
                       </TableCell>
@@ -312,8 +208,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               clickable={true}
                               className="content-types-tag"
                               onDelete={
-                                props.searchFilterValues &&
-                                props.searchFilterValues.types.includes(type)
+                                searchFilterValues?.types?.includes(type)
                                   ? () => handleTypeUnclick(type)
                                   : null
                               }
@@ -329,8 +224,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               label={tagObject.tag}
                               clickable={true}
                               onDelete={
-                                props.searchFilterValues &&
-                                props.searchFilterValues.tags.includes(
+                                searchFilterValues?.tags?.includes(
                                   tagObject.tag
                                 )
                                   ? () => handleTagUnclick(tagObject)
@@ -343,7 +237,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                       <TableCell style={{ width: 100 }}>
                         <Button
                           variant="outlined"
-                          onClick={() => props.handleRepositoryClick(row)}
+                          onClick={() => handleRepositoryClick(row)}
                         >
                           Open Details
                         </Button>
@@ -352,19 +246,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                   ))}
               </TableBody>
             </Table>
-            {repositories && (
-              <Pagination
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  margin: "1rem 0",
-                }}
-                count={totalPages}
-                page={page}
-                onChange={handleChangePage}
-              />
-            )}
-          </TableContainer>
+          </StyledTableContainer>
         </Box>
       )}
     </>
