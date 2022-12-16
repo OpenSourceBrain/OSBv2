@@ -46,6 +46,7 @@ export const {
   badgeBgLight,
   lightWhite,
   cardIconFill,
+  lighterWhite,
 } = vars;
 
 const verticalFill = {

@@ -10,6 +10,8 @@ import { canEditRepository } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
 import { OSBRepository } from "../../apiclient/workspaces";
 
+import { lightWhite } from "../../theme";
+
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
   user?: UserInfo;
@@ -48,7 +50,7 @@ export default (props: RepositoryActionsMenuProps) => {
       {canEdit && (
         <>
           <IconButton size="small" onClick={handleClick}>
-            <MoreHorizIcon sx={{ fontSize: "1rem" }} />
+            <MoreHorizIcon sx={{ fontSize: "1rem", color: lightWhite }} />
           </IconButton>
           <Menu
             id="simple-menu"

@@ -364,6 +364,9 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                   />
                 ) : (
                   <RepositoriesCards
+                    handleRepositoryClick={(repository: OSBRepository) =>
+                      openRepoUrl(repository.id)
+                    }
                     user={user}
                     repositories={repositories}
                     loading={loading}

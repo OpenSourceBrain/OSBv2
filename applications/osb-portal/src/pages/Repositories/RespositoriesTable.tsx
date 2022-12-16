@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 
 // components
 import Chip from "@mui/material/Chip";
@@ -22,13 +23,17 @@ import {
   chipBg,
   secondaryColor,
   primaryColor,
+  lighterWhite,
 } from "../../theme";
+import styled from "@mui/system/styled";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+
+import { CodeBranchIcon } from "../../components/icons";
 
 //types
 import {
@@ -38,7 +43,6 @@ import {
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
-import styled from "@mui/system/styled";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -62,7 +66,6 @@ const StyledTableContainer = styled(TableContainer)(() => ({
   },
   "& .MuiButtonBase-root": {
     "&:hover": {
-      backgroundColor: "transparent",
       color: secondaryColor,
     },
   },
@@ -95,6 +98,36 @@ const StyledShowMoreText = styled(ShowMoreText)(() => ({
   },
 }));
 
+const StyledContextButton = styled(Button)(() => ({
+  color: chipTextColor,
+  fontWeight: 400,
+  textTransform: "capitalize",
+  background: chipBg,
+  borderRadius: "16px",
+  maxWidth: "5.5rem",
+  height: "2rem",
+  overflow: "hidden",
+  display: "flex",
+  justifyContent: "flex-start",
+  alightItems: "baseline",
+
+  "& .MuiButton-startIcon": {
+    "& .MuiSvgIcon-root": {
+      fontSize: ".857rem",
+    },
+  },
+
+  "&:hover": {
+    backgroundColor: lighterWhite,
+
+    "& .MuiButton-startIcon": {
+      "& .MuiSvgIcon-root": {
+        color: "white",
+      },
+    },
+  },
+}));
+
 export const RepositoriesList = (props: RepositoriesProps) => {
   const {
     repositories,
@@ -106,6 +139,8 @@ export const RepositoriesList = (props: RepositoriesProps) => {
     searchFilterValues,
     handleRepositoryClick,
   } = props;
+
+  const history = useHistory();
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -177,12 +212,24 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           )}
                         </Box>
                       </TableCell>
-                      <TableCell style={{ minWidth: 100 }}>
-                        {row.user.username}
+                      <TableCell style={{ minWidth: 80 }}>
+                        <Button
+                          sx={{
+                            "&:hover": { backgroundColor: "transparent" },
+                            textTransform: "capitalize",
+                            color: chipTextColor,
+                          }}
+                          onClick={() => history.push(`/user/${row?.user?.id}`)}
+                        >
+                          {row.user.username}
+                        </Button>
                       </TableCell>
                       <TableCell style={{ minWidth: 100 }}>
                         <Button
-                          sx={{ textTransform: "capitalize" }}
+                          sx={{
+                            textTransform: "capitalize",
+                            "&:hover": { backgroundColor: "transparent" },
+                          }}
                           endIcon={<OpenInNewIcon />}
                           onClick={() => openRepoUrl(row.uri)}
                         >
@@ -233,6 +280,11 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                             />
                           ))}
                         </Box>
+                      </TableCell>
+                      <TableCell style={{ minWidth: 100 }}>
+                        <StyledContextButton startIcon={<CodeBranchIcon />}>
+                          <span>{row.defaultContext}</span>
+                        </StyledContextButton>
                       </TableCell>
                       <TableCell style={{ width: 100 }}>
                         <Button
