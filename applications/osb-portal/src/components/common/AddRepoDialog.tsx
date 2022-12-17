@@ -31,19 +31,21 @@ const RepoDialog = styled(Dialog)(({ theme }) => ({
         padding: 0,
         backgroundColor: bgDarker,
         backgroundImage: 'unset',
-        borderRadius: '2px',
+        borderRadius: '0.143rem',
     },
     "& .MuiDialogContent-root": {
-        padding: '0.75rem 1rem',
+        padding: '0.875rem 1rem',
         display: 'grid',
-        gap: '12px'
+        gap: '0.875rem',
+        marginTop: '0.857rem',
+        marginBottom: '1rem',
     },
     "& .MuiDialogTitle-root": {
-        padding: '0.75rem 1rem',
+        padding: '0.857rem 1.143rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottom: `0.0625rem solid ${bgLight}`,
+        borderBottom: `0.071rem solid ${bgLight}`,
         '& .MuiTypography-root': {
             color: secondaryColor,
             fontWeight: 700
@@ -61,25 +63,33 @@ const RepoDialog = styled(Dialog)(({ theme }) => ({
         }
     },
     "& .MuiDialogActions-root": {
-        padding: '1rem',
+        padding: '1.143rem',
         background: bgLightest,
         boxShadow: '0px -5px 30px rgba(0, 0, 0, 0.25)',
-        border: `1px solid ${bgDarkest}`
+        border: `0.071rem solid ${bgDarkest}`
     }
 }));
 
+const RepoButtonGroup = styled(ButtonGroup)(({ theme }) => ({
+    '& .MuiTextField-root': {
+        "& .MuiInputBase-root.MuiOutlinedInput-root": {
+            borderRadius: '0px 2px 2px 0px'
+        },
+    }
+}))
+
 const Label = styled(Typography)(({ theme }) => ({
     fontWeight: 700,
-    fontSize: '12px',
+    fontSize: '0.75rem',
     color: badgeBgLight,
-    marginBottom: '6px'
+    marginBottom: '0.714rem'
 }));
 
 const RepoSelect = styled(Select)(({ theme }) => ({
     background: bgLight,
     borderRadius: '2px',
     color: paragraph,
-    fontSize: '14px'
+    fontSize: '1rem'
 }));
 
 const RepoAutocomplete = styled(Autocomplete)(({ theme }) => ({
@@ -136,23 +146,32 @@ export default ({ dialogOpen, handleClose }: { dialogOpen: boolean, handleClose:
             <DialogContent>
                 <Box>
                     <Label>Source</Label>
-                    <ButtonGroup fullWidth>
+                    <RepoButtonGroup fullWidth>
                         <Select
-                            sx={{ background: bgLight, borderRadius: '2px 0px 0px 2px' }}
+                            sx={{
+                                background: bgLight, borderRadius: '2px 0px 0px 2px', width: '30%',
+                                "& .MuiOutlinedInput-root:hover": {
+                                    "& > fieldset": {
+                                        borderColor: bgLightest
+                                    }
+                                }
+                            }}
                             defaultValue={url}
                             onChange={handleUrlChange}
                             inputProps={{ 'aria-label': 'Without label' }}
-                            IconComponent={(props) => (<ExpandMoreIcon {...props} />)}
+                            IconComponent={(props) => (<ExpandMoreIcon sx={{ fill: paragraph }} {...props} />)}
                         >
                             <MenuItem value='Github'>Github</MenuItem>
                             <MenuItem value='Gitlab'>Gitlab</MenuItem>
                         </Select>
-                        <TextField
-                            placeholder="Repository URL"
-                            fullWidth
-                            sx = {{ border: `1px solid ${paragraph}` }}
-                        />
-                    </ButtonGroup>
+                        <TextField placeholder="Repository URL" fullWidth sx={{
+                            "& .MuiOutlinedInput-root:hover": {
+                                "& > fieldset": {
+                                    borderColor: bgLightest
+                                }
+                            }
+                        }} />
+                    </RepoButtonGroup>
                 </Box>
                 <Box>
                     <Label>Default branch</Label>
@@ -162,7 +181,7 @@ export default ({ dialogOpen, handleClose }: { dialogOpen: boolean, handleClose:
                         onChange={handleBranchChange}
                         displayEmpty
                         inputProps={{ 'aria-label': 'Without label' }}
-                        IconComponent={(props) => (<ExpandMoreIcon {...props} />)}
+                        IconComponent={(props) => (<ExpandMoreIcon sx={{ fill: paragraph }} {...props} />)}
                     >
                         <MenuItem value="">Select branch</MenuItem>
                         <MenuItem value={10}>Main</MenuItem>
@@ -178,7 +197,7 @@ export default ({ dialogOpen, handleClose }: { dialogOpen: boolean, handleClose:
                         defaultValue={type}
                         displayEmpty
                         inputProps={{ 'aria-label': 'Without label' }}
-                        IconComponent={(props) => (<ExpandMoreIcon {...props} />)}
+                        IconComponent={(props) => (<ExpandMoreIcon sx={{ fill: paragraph }} {...props} />)}
                     >
                         <MenuItem value={40}>NWB Experimental data</MenuItem>
                         <MenuItem value={50}>NWB data</MenuItem>
@@ -216,7 +235,7 @@ export default ({ dialogOpen, handleClose }: { dialogOpen: boolean, handleClose:
                     </Placeholder>
                 </Box>
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ mt: '1rem' }}>
                 <Button variant="text">Cancel</Button>
                 <Button variant="contained">Add</Button>
             </DialogActions>
