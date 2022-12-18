@@ -22,8 +22,8 @@ export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
 
-  const canEdit = canEditRepository(props.user, props.repository);
-
+  // const canEdit = canEditRepository(props.user, props.repository);
+  const canEdit = true;
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -49,7 +49,16 @@ export default (props: RepositoryActionsMenuProps) => {
     <>
       {canEdit && (
         <>
-          <IconButton size="small" onClick={handleClick}>
+          <IconButton
+            size="small"
+            onClick={handleClick}
+            sx={{
+              padding: 0,
+              position: "absolute",
+              right: "0.5rem",
+              top: "0.5rem",
+            }}
+          >
             <MoreHorizIcon sx={{ fontSize: "1rem", color: lightWhite }} />
           </IconButton>
           <Menu

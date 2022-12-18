@@ -11,7 +11,6 @@ import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import CardActionArea from "@mui/material/CardActionArea";
 
 import { TagTooltip } from "../../components/workspace/WorkspaceCard";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -49,27 +48,17 @@ interface RepositoriesProps {
 }
 
 const StyledCard = styled(Card)(() => ({
+  position: "relative",
   flex: 1,
-  maxHeight: `14.286em`,
+  height: `15em`,
+  maxHeight: `16em`,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "flex-end",
   borderRadius: "8px",
 
-  "& .actions": {
-    lineHeight: "0",
-    justifyContent: "flex-end",
-    height: "2.5rem",
-
-    "& .MuiSvgIcon-root": {
-      fontSize: "1.5rem",
-      cursor: "pointer",
-    },
-  },
   "& .imageContainer": {
     overflow: "hidden",
-    minHeight: "80px",
-    margin: "0 0 auto",
 
     "& .MuiSvgIcon-root": {
       fontSize: "5em",
@@ -82,20 +71,6 @@ const StyledCard = styled(Card)(() => ({
     maxWidth: "100%",
     justifyContent: "center",
   },
-
-  "&:hover": {
-    cursor: "pointer",
-    "& .imageContainer": {
-      "& .MuiSvgIcon-root": {
-        fill: "white",
-      },
-    },
-
-    "& .workspace-page-link": {
-      textDecoration: "underline",
-      textDecorationColor: "white",
-    },
-  },
 }));
 
 const StyledRepositoryTags = styled(Typography)(() => ({
@@ -105,6 +80,7 @@ const StyledRepositoryTags = styled(Typography)(() => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  width: "100%",
 
   "& .MuiSvgIcon-root": {
     fontSize: ".857rem",
@@ -126,6 +102,45 @@ const StyledRepositoryTags = styled(Typography)(() => ({
     maxWidth: "5.5rem",
     height: "2rem",
     overflow: "hidden",
+  },
+}));
+
+export const StyledSpan = styled("span")(() => ({
+  whiteSpace: "nowrap",
+  maxWidth: "4.5rem",
+  display: "inline-block",
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+}));
+
+export const StyledRepoName = styled(Typography)(() => ({
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  fontSize: "1rem",
+  color: lightWhite,
+  lineHeight: "1.429",
+}));
+
+export const StyledCardContent = styled(CardContent)(() => ({
+  padding: 0,
+  minHeight: "10rem",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-end",
+
+  "&:hover": {
+    cursor: "pointer",
+    "& .imageContainer": {
+      "& .MuiSvgIcon-root": {
+        fill: "white",
+      },
+    },
+
+    "& .workspace-page-link": {
+      textDecoration: "underline",
+      textDecorationColor: "white",
+    },
   },
 }));
 
@@ -159,114 +174,125 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
             {repositories?.map((repository: OSBRepository, index: number) => {
               return (
                 <Grid item key={index} xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <StyledCard
-                    className={`workspace-card`}
-                    elevation={0}
-                    onClick={() => handleRepositoryClick(repository)}
-                  >
-                    <CardActions className="actions">
+                  <StyledCard className={`workspace-card`} elevation={0}>
+                    <StyledCardContent>
                       <RepositoryActionsMenu
                         repository={repository}
                         user={props.user}
                         onAction={() => {}}
                       />
-                    </CardActions>
-                    <Box
-                      className="imageContainer"
-                      justifyContent="center"
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <RepositoriesCardIcon />
-                    </Box>
-                    <CardContent>
-                      <Tooltip title={repository.name}>
-                        <Link
-                          href={`/repository/${repository.id}`}
-                          className={`workspace-page-link`}
-                          underline="none"
-                        >
-                          <Typography
-                            component="h2"
-                            variant="h4"
-                            sx={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              fontSize: "1rem",
-                              color: lightWhite,
-                              lineHeight: "1.429",
-                            }}
-                            mb={"4px"}
-                          >
-                            {repository.name}
-                          </Typography>
-                          {repository.tags.length > 0 && (
-                            <TagTooltip
-                              title={repository.tags.map((tagObject) => {
-                                return (
-                                  <Chip
-                                    color={textColor}
-                                    size="small"
-                                    label={tagObject.tag}
-                                    key={tagObject.id}
-                                    sx={{
-                                      margin: "0px 2px 0px 2px",
-                                      backgroundColor: chipBg,
-                                    }}
-                                  />
-                                );
-                              })}
-                              arrow={true}
-                              placement="top"
-                            >
-                              <LocalOfferIcon
-                                fontSize="small"
-                                sx={{
-                                  color: paragraph,
-                                  fontSize: "1rem",
-                                  alignSelf: "center",
-                                  marginLeft: "5px",
-                                }}
-                              />
-                            </TagTooltip>
-                          )}
-                        </Link>
-                      </Tooltip>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          fontSize: ".857rem",
-                          color: chipTextColor,
-                          lineHeight: 1.143,
-                        }}
-                        mb={"4px"}
+                      <Box
+                        className="imageContainer"
+                        justifyContent="center"
+                        alignItems="center"
+                        display="flex"
+                        mb={2}
+                        onClick={() => handleRepositoryClick(repository)}
                       >
-                        {formatDate(repository.timestampUpdated)}
-                      </Typography>
+                        <RepositoriesCardIcon />
 
-                      <StyledRepositoryTags variant="caption">
-                        <span>
-                          <Button
-                            endIcon={<OpenInNewIcon />}
-                            onClick={() => openRepoUrl(repository.uri)}
+                        {/*========for the future repo thumbnail======*/}
+                        {/*{!repository?.thumbnail ? (*/}
+                        {/*  <RepositoriesCardIcon />*/}
+                        {/*) : (*/}
+                        {/*  <img*/}
+                        {/*    width={"100%"}*/}
+                        {/*    src={""}*/}
+                        {/*    title={repository.name}*/}
+                        {/*    alt={repository.name}*/}
+                        {/*  />*/}
+                        {/*)}*/}
+                      </Box>
+                      <Box sx={{ padding: "0 0.857rem" }}>
+                        <Tooltip title={repository.name}>
+                          <Link
+                            href={`/repository/${repository.id}`}
+                            className={`workspace-page-link`}
+                            underline="none"
                           >
-                            {repository.repositoryType}
-                          </Button>
-                        </span>
+                            <StyledRepoName mb={"4px"}>
+                              {repository.name}
+                            </StyledRepoName>
+                            {repository.tags.length > 0 && (
+                              <TagTooltip
+                                title={repository.tags.map((tagObject) => {
+                                  return (
+                                    <Chip
+                                      color={textColor}
+                                      size="small"
+                                      label={tagObject.tag}
+                                      key={tagObject.id}
+                                      sx={{
+                                        margin: "0px 2px 0px 2px",
+                                        backgroundColor: chipBg,
+                                      }}
+                                    />
+                                  );
+                                })}
+                                arrow={true}
+                                placement="top"
+                              >
+                                <LocalOfferIcon
+                                  fontSize="small"
+                                  sx={{
+                                    color: paragraph,
+                                    fontSize: "1rem",
+                                    alignSelf: "center",
+                                    marginLeft: "5px",
+                                  }}
+                                />
+                              </TagTooltip>
+                            )}
+                          </Link>
+                        </Tooltip>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontSize: ".857rem",
+                            color: chipTextColor,
+                            lineHeight: 1.143,
+                          }}
+                          mb={"4px"}
+                        >
+                          {formatDate(repository.timestampUpdated)}
+                        </Typography>
+                      </Box>
+                    </StyledCardContent>
+                    <CardActions
+                      sx={{ padding: "0.429rem 0.857rem 0.857rem 0.857rem" }}
+                    >
+                      <StyledRepositoryTags variant="caption">
                         <span>
                           <Button
                             sx={{
                               "&:hover": { backgroundColor: "transparent" },
                             }}
+                            endIcon={<OpenInNewIcon />}
+                            onClick={() => openRepoUrl(repository.uri)}
+                          >
+                            <span>{repository.repositoryType}</span>
+                          </Button>
+                        </span>
+                        <span>
+                          <Button
                             className="context"
                             startIcon={<CodeBranchIcon />}
                           >
-                            <span>{repository.defaultContext}</span>
+                            <Tooltip
+                              title={
+                                <span style={{ textTransform: "capitalize" }}>
+                                  {repository.defaultContext}
+                                </span>
+                              }
+                            >
+                              <StyledSpan>
+                                {repository.defaultContext}
+                              </StyledSpan>
+                            </Tooltip>
                           </Button>
                         </span>
                       </StyledRepositoryTags>
-                    </CardContent>
+                    </CardActions>
                   </StyledCard>
                 </Grid>
               );

@@ -11,9 +11,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
+import Tooltip from "@mui/material/Tooltip";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
+import { StyledSpan } from "./RepositoriesCards";
 
 // style
 import {
@@ -283,7 +285,15 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                       </TableCell>
                       <TableCell style={{ minWidth: 100 }}>
                         <StyledContextButton startIcon={<CodeBranchIcon />}>
-                          <span>{row.defaultContext}</span>
+                          <Tooltip
+                            title={
+                              <span style={{ textTransform: "capitalize" }}>
+                                {row.defaultContext}
+                              </span>
+                            }
+                          >
+                            <StyledSpan>{row.defaultContext}</StyledSpan>
+                          </Tooltip>
                         </StyledContextButton>
                       </TableCell>
                       <TableCell style={{ width: 100 }}>
