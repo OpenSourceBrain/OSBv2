@@ -42,6 +42,7 @@ import {
   primaryColor,
 } from "../../theme";
 import styled from "@mui/system/styled";
+import {Chip} from '@mui/material';
 
 enum RepositoriesTab {
   all,
