@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NestedMenuItem from "../common/NestedMenuItems";
@@ -125,7 +125,17 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-      <IconButton className="btn-workspace-actions" size="small" onClick={handleClick}>
+      <IconButton
+        className="btn-workspace-actions"
+        size="small"
+        onClick={handleClick}
+        sx={{
+          padding: 0,
+          position: "absolute",
+          right: "0.5rem",
+          top: "0.5rem",
+        }}
+      >
         <Icons.Dots style={{ fontSize: "1rem" }} />
       </IconButton>
       <Menu
@@ -135,34 +145,67 @@ export default (props: WorkspaceActionsMenuProps) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        {canEdit && <MenuItem className="edit-workspace" onClick={handleEditWorkspace}>Edit</MenuItem>}
-        {canEdit && <MenuItem className="delete-workspace" onClick={handleDeleteWorkspace}>Delete</MenuItem>}
+        {canEdit && (
+          <MenuItem className="edit-workspace" onClick={handleEditWorkspace}>
+            Edit
+          </MenuItem>
+        )}
+        {canEdit && (
+          <MenuItem
+            className="delete-workspace"
+            onClick={handleDeleteWorkspace}
+          >
+            Delete
+          </MenuItem>
+        )}
         {canEdit && !props.workspace.publicable && (
-          <MenuItem className="make-public-workspace" onClick={handlePublicWorkspace}>Make public</MenuItem>
+          <MenuItem
+            className="make-public-workspace"
+            onClick={handlePublicWorkspace}
+          >
+            Make public
+          </MenuItem>
         )}
         {canEdit && props.workspace.publicable && (
-          <MenuItem className="make-private-workspace" onClick={handlePrivateWorkspace}>Make private</MenuItem>
+          <MenuItem
+            className="make-private-workspace"
+            onClick={handlePrivateWorkspace}
+          >
+            Make private
+          </MenuItem>
         )}
         {props.user &&
           props.user.isAdmin &&
           props.workspace.publicable &&
           !props.workspace.featured && (
-            <MenuItem className="add-featured-workspace" onClick={handleFeaturedWorkspace}>
+            <MenuItem
+              className="add-featured-workspace"
+              onClick={handleFeaturedWorkspace}
+            >
               Add to featured
             </MenuItem>
           )}
         {props.user && props.user.isAdmin && props.workspace.featured && (
-          <MenuItem className="remove-featured-workspace" onClick={handleFeaturedWorkspace}>
+          <MenuItem
+            className="remove-featured-workspace"
+            onClick={handleFeaturedWorkspace}
+          >
             Remove from featured
           </MenuItem>
         )}
         {!props.isWorkspaceOpen && (
-          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>Open workspace</MenuItem>
+          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>
+            Open workspace
+          </MenuItem>
         )}
         {props.user && (
           <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
         )}
-        <NestedMenuItem className="open-with" label="Open with..." parentMenuOpen={true}>
+        <NestedMenuItem
+          className="open-with"
+          label="Open with..."
+          parentMenuOpen={true}
+        >
           {Object.keys(OSBApplications).map((appCode) => (
             <MenuItem
               key={appCode}

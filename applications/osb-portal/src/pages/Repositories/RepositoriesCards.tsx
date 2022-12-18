@@ -47,7 +47,7 @@ interface RepositoriesProps {
   handleRepositoryClick: (repository: OSBRepository) => void;
 }
 
-const StyledCard = styled(Card)(() => ({
+export const StyledCard = styled(Card)(() => ({
   position: "relative",
   flex: 1,
   height: `15em`,
@@ -73,7 +73,7 @@ const StyledCard = styled(Card)(() => ({
   },
 }));
 
-const StyledRepositoryTags = styled(Typography)(() => ({
+export const StyledRepositoryTags = styled(Typography)(() => ({
   lineHeight: 1.143,
   fontSize: ".857rem",
   color: chipTextColor,

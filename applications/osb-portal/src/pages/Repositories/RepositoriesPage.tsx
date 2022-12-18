@@ -42,6 +42,7 @@ import {
   primaryColor,
 } from "../../theme";
 import styled from "@mui/system/styled";
+import { Chip } from "@mui/material";
 
 enum RepositoriesTab {
   all,
@@ -62,9 +63,9 @@ const customButtonStyle = {
   },
 };
 
-const StyledIconButton = styled(IconButton)(() => customButtonStyle);
+export const StyledIconButton = styled(IconButton)(() => customButtonStyle);
 
-const StyledActiveIconButton = styled(IconButton)(() => ({
+export const StyledActiveIconButton = styled(IconButton)(() => ({
   ...customButtonStyle,
   backgroundColor: bgDarker,
   color: linkColor,
@@ -74,7 +75,7 @@ const StyledActiveIconButton = styled(IconButton)(() => ({
   },
 }));
 
-const StyledTabs = styled(Tab)(() => ({
+export const StyledTabs = styled(Tab)(() => ({
   maxWidth: "33%",
   minWidth: "fit-content",
   padding: "16px 24px",
@@ -90,13 +91,13 @@ const StyledTabs = styled(Tab)(() => ({
   },
 }));
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
+export const StyledGrid = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     padding: "12px 24px !important",
   },
 }));
 
-const StyledPagination = styled(Pagination)(() => ({
+export const StyledPagination = styled(Pagination)(() => ({
   display: "flex",
   justifyContent: "center",
   padding: ".88rem",
@@ -271,6 +272,11 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                             label={
                               <div className="tabTitle">
                                 <Typography>All repositories</Typography>
+                                <Chip
+                                  size="small"
+                                  color="primary"
+                                  label={total}
+                                />
                               </div>
                             }
                           />
@@ -279,6 +285,11 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                               label={
                                 <div className="tabTitle">
                                   <Typography>My repositories</Typography>
+                                  <Chip
+                                    size="small"
+                                    color="primary"
+                                    label={total}
+                                  />
                                 </div>
                               }
                             />
