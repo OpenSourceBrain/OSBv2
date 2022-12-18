@@ -178,7 +178,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   };
 
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
-    updateList(newValue);
+    setTotal(0);
+    setTabValue(newValue);
   };
 
   const changeListView = (type: string) => {
@@ -268,17 +269,33 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                       >
                         <Tabs value={tabValue} onChange={handleTabChange}>
                           <StyledTabs
+                            value={RepositoriesTab.all}
                             label={
                               <div className="tabTitle">
                                 <Typography>All repositories</Typography>
+                                {tabValue === RepositoriesTab.all && (
+                                  <Chip
+                                    size="small"
+                                    color="primary"
+                                    label={total}
+                                  />
+                                )}
                               </div>
                             }
                           />
                           {user && (
                             <StyledTabs
+                              value={RepositoriesTab.my}
                               label={
                                 <div className="tabTitle">
                                   <Typography>My repositories</Typography>
+                                  {tabValue === RepositoriesTab.my && (
+                                    <Chip
+                                      size="small"
+                                      color="primary"
+                                      label={total}
+                                    />
+                                  )}
                                 </div>
                               }
                             />

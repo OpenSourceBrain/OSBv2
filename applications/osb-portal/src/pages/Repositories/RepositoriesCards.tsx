@@ -190,18 +190,6 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                         onClick={() => handleRepositoryClick(repository)}
                       >
                         <RepositoriesCardIcon />
-
-                        {/*========for the future repo thumbnail======*/}
-                        {/*{!repository?.thumbnail ? (*/}
-                        {/*  <RepositoriesCardIcon />*/}
-                        {/*) : (*/}
-                        {/*  <img*/}
-                        {/*    width={"100%"}*/}
-                        {/*    src={""}*/}
-                        {/*    title={repository.name}*/}
-                        {/*    alt={repository.name}*/}
-                        {/*  />*/}
-                        {/*)}*/}
                       </Box>
                       <Box sx={{ padding: "0 0.857rem" }}>
                         <Tooltip title={repository.name}>
