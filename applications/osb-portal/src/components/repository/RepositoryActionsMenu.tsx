@@ -22,8 +22,8 @@ export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
 
-  // const canEdit = canEditRepository(props.user, props.repository);
-  const canEdit = true;
+  const canEdit = canEditRepository(props.user, props.repository);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
