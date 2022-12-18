@@ -92,6 +92,7 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
 const StyledFilterButton = styled(Button)(({ theme }) => ({
   borderRadius: "0px 8px 8px 0px",
   textTransform: "capitalize",
+  boxShadow: "none",
   "&:hover": {
     backgroundColor: "transparent",
   },

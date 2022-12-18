@@ -250,6 +250,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                       container={true}
                       alignItems="center"
                       className="verticalFill"
+                      spacing={1}
                     >
                       <Grid
                         item={true}
@@ -281,16 +282,17 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                       <Grid
                         item={true}
                         xs={12}
-                        sm={12}
-                        md={1}
-                        lg={1}
-                        className="verticalFill"
+                        sm={8}
+                        md={5}
+                        lg={5}
+                        sx={{ padding: "12px 24px !important" }}
                       >
                         <ButtonGroup
                           sx={{
                             backgroundColor: bgRegular,
                             padding: "4px",
                             borderRadius: "8px",
+                            marginRight: "0.571rem",
                           }}
                           disableElevation
                           variant="contained"
@@ -299,15 +301,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                           <CustomButton Icon={<WindowIcon />} listType="grid" />
                           <CustomButton Icon={<ListIcon />} listType="list" />
                         </ButtonGroup>
-                      </Grid>
-                      <Grid
-                        item={true}
-                        xs={12}
-                        sm={12}
-                        md={4}
-                        lg={4}
-                        className="verticalFill"
-                      >
                         <SearchReposWorkspaces
                           filterChanged={(newTextFilter) =>
                             debouncedHandleSearchFilter(newTextFilter)
