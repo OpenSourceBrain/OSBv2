@@ -245,8 +245,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
             className="verticalFill"
           >
             <Box width={1} className="verticalFit">
-              <div id="workspaces-list" className="verticalFit">
-                <Box borderBottom={`1px solid ${lineColor}`} pr="1.714rem">
+              <div id="repositories-list" className="verticalFit">
+                <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
                   <Box
                     display="flex"
                     justifyContent="space-between"
