@@ -90,6 +90,12 @@ const StyledTabs = styled(Tab)(() => ({
   },
 }));
 
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    padding: "12px 24px !important",
+  },
+}));
+
 const StyledPagination = styled(Pagination)(() => ({
   display: "flex",
   justifyContent: "center",
@@ -279,14 +285,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                           )}
                         </Tabs>
                       </Grid>
-                      <Grid
-                        item={true}
-                        xs={12}
-                        sm={8}
-                        md={5}
-                        lg={5}
-                        sx={{ padding: "12px 24px !important" }}
-                      >
+                      <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
                         <ButtonGroup
                           sx={{
                             backgroundColor: bgRegular,
@@ -310,7 +309,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                           hasTypes={true}
                           setLoading={setLoading}
                         />
-                      </Grid>
+                      </StyledGrid>
                     </Grid>
                   </Box>
                 </Box>
