@@ -42,7 +42,7 @@ import {
   primaryColor,
 } from "../../theme";
 import styled from "@mui/system/styled";
-import { Chip } from "@mui/material";
+import {Chip} from '@mui/material';
 
 enum RepositoriesTab {
   all,
@@ -63,9 +63,9 @@ const customButtonStyle = {
   },
 };
 
-export const StyledIconButton = styled(IconButton)(() => customButtonStyle);
+const StyledIconButton = styled(IconButton)(() => customButtonStyle);
 
-export const StyledActiveIconButton = styled(IconButton)(() => ({
+const StyledActiveIconButton = styled(IconButton)(() => ({
   ...customButtonStyle,
   backgroundColor: bgDarker,
   color: linkColor,
@@ -75,7 +75,7 @@ export const StyledActiveIconButton = styled(IconButton)(() => ({
   },
 }));
 
-export const StyledTabs = styled(Tab)(() => ({
+const StyledTabs = styled(Tab)(() => ({
   maxWidth: "33%",
   minWidth: "fit-content",
   padding: "16px 24px",
@@ -91,13 +91,13 @@ export const StyledTabs = styled(Tab)(() => ({
   },
 }));
 
-export const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledGrid = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     padding: "12px 24px !important",
   },
 }));
 
-export const StyledPagination = styled(Pagination)(() => ({
+const StyledPagination = styled(Pagination)(() => ({
   display: "flex",
   justifyContent: "center",
   padding: ".88rem",
@@ -179,7 +179,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   };
 
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
-    updateList(newValue);
+    setTotal(0);
+    setTabValue(newValue);
   };
 
   const changeListView = (type: string) => {
@@ -269,27 +270,33 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                       >
                         <Tabs value={tabValue} onChange={handleTabChange}>
                           <StyledTabs
+                            value={RepositoriesTab.all}
                             label={
                               <div className="tabTitle">
                                 <Typography>All repositories</Typography>
-                                <Chip
-                                  size="small"
-                                  color="primary"
-                                  label={total}
-                                />
-                              </div>
-                            }
-                          />
-                          {user && (
-                            <StyledTabs
-                              label={
-                                <div className="tabTitle">
-                                  <Typography>My repositories</Typography>
+                                {tabValue === RepositoriesTab.all && (
                                   <Chip
                                     size="small"
                                     color="primary"
                                     label={total}
                                   />
+                                )}
+                              </div>
+                            }
+                          />
+                          {user && (
+                            <StyledTabs
+                              value={RepositoriesTab.my}
+                              label={
+                                <div className="tabTitle">
+                                  <Typography>My repositories</Typography>
+                                  {tabValue === RepositoriesTab.my && (
+                                    <Chip
+                                      size="small"
+                                      color="primary"
+                                      label={total}
+                                    />
+                                  )}
                                 </div>
                               }
                             />
