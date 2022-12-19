@@ -102,6 +102,17 @@ export const StyledRepositoryTags = styled(Typography)(() => ({
     maxWidth: "5.5rem",
     height: "2rem",
     overflow: "hidden",
+    cursor: "default",
+
+    "&:hover": {
+      background: chipBg,
+    },
+  },
+  "& .repoType": {
+    "&:hover": {
+      backgroundColor: "transparent",
+      textDecoration: "underline",
+    },
   },
 }));
 
@@ -250,35 +261,27 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                       sx={{ padding: "0.429rem 0.857rem 0.857rem 0.857rem" }}
                     >
                       <StyledRepositoryTags variant="caption">
-                        <span>
-                          <Button
-                            sx={{
-                              "&:hover": { backgroundColor: "transparent" },
-                            }}
-                            endIcon={<OpenInNewIcon />}
-                            onClick={() => openRepoUrl(repository.uri)}
-                          >
-                            <span>{repository.repositoryType}</span>
-                          </Button>
-                        </span>
-                        <span>
-                          <Button
-                            className="context"
-                            startIcon={<CodeBranchIcon />}
-                          >
-                            <Tooltip
-                              title={
-                                <span style={{ textTransform: "capitalize" }}>
-                                  {repository.defaultContext}
-                                </span>
-                              }
-                            >
-                              <StyledSpan>
+                        <Button
+                          className="repoType"
+                          endIcon={<OpenInNewIcon />}
+                          onClick={() => openRepoUrl(repository.uri)}
+                        >
+                          <span>{repository.repositoryType}</span>
+                        </Button>
+                        <Button
+                          className="context"
+                          startIcon={<CodeBranchIcon />}
+                        >
+                          <Tooltip
+                            title={
+                              <span style={{ textTransform: "capitalize" }}>
                                 {repository.defaultContext}
-                              </StyledSpan>
-                            </Tooltip>
-                          </Button>
-                        </span>
+                              </span>
+                            }
+                          >
+                            <StyledSpan>{repository.defaultContext}</StyledSpan>
+                          </Tooltip>
+                        </Button>
                       </StyledRepositoryTags>
                     </CardActions>
                   </StyledCard>
