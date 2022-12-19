@@ -1,19 +1,19 @@
 import * as React from "react";
+import { ReactElement } from "react";
+import debounce from "lodash/debounce";
 
 //components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-
-import { HomePageSider } from "../components";
-
-//style
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import WindowIcon from "@mui/icons-material/Window";
 import ListIcon from "@mui/icons-material/List";
+import Chip from "@mui/material/Chip";
+import WorkspacesCards from "../components/workspace/WorkspacesCards";
 import SearchReposWorkspaces from "../components/common/SearchReposWorkspaces";
-import { OSBRepository, Tag } from "../apiclient/workspaces";
+import { HomePageSider } from "../components";
 import {
   StyledActiveIconButton,
   StyledGrid,
@@ -21,21 +21,17 @@ import {
   StyledPagination,
   StyledTabs,
 } from "./Repositories/RepositoriesPage";
-import { Chip } from "@mui/material";
-import {
-  bgLightest as lineColor,
-  bgRegular,
-  checkBoxColor,
-  bgDarker,
-  linkColor,
-  primaryColor,
-} from "../theme";
+
+//style
+import { bgLightest as lineColor, bgRegular } from "../theme";
+
+//types
+import { OSBRepository } from "../apiclient/workspaces";
 import { WorkspaceSelection } from "../components/workspace/WorkspacesCards";
-import { ReactElement } from "react";
-import debounce from "lodash/debounce";
 import searchFilter from "../types/searchFilter";
+
+//services
 import workspaceService from "../service/WorkspaceService";
-import WorkspacesCards from "../components/workspace/WorkspacesCards";
 
 export const HomePage = (props: any) => {
   const [searchFilterValues, setSearchFilterValues] =

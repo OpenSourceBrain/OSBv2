@@ -7,17 +7,16 @@ import NestedMenuItem from "../common/NestedMenuItems";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
-import * as Icons from "../icons";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
-import OSBDialog from "../common/OSBDialog";
-import { WorkspaceEditor } from "./../index";
+import { WorkspaceEditor } from "../index";
 import { canEditWorkspace } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
 import WorkspaceService from "../../service/WorkspaceService";
 import OSBLoader from "../common/OSBLoader";
-import { bgDarkest, textColor } from "../../theme";
+import { bgDarkest, textColor, lightWhite } from "../../theme";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 // TODO: refactor to use redux instead of passing props
 
@@ -126,7 +125,6 @@ export default (props: WorkspaceActionsMenuProps) => {
   return (
     <>
       <IconButton
-        className="btn-workspace-actions"
         size="small"
         onClick={handleClick}
         sx={{
@@ -136,7 +134,7 @@ export default (props: WorkspaceActionsMenuProps) => {
           top: "0.5rem",
         }}
       >
-        <Icons.Dots style={{ fontSize: "1rem" }} />
+        <MoreHorizIcon sx={{ fontSize: "1rem", color: lightWhite }} />
       </IconButton>
       <Menu
         id="workspace-actions-menu"
