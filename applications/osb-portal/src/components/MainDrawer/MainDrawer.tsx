@@ -310,7 +310,7 @@ export const MainDrawer = (props: any) => {
                 <ListItemIcon>
                   <FolderOpenIcon />
                 </ListItemIcon>
-                <ListItemText primary="WorkspacesCards" />
+                <ListItemText primary="Workspaces" />
               </ListItem>
               <ListItem
                 button

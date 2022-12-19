@@ -4,19 +4,16 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import { HomePageSider, Workspaces } from "../components";
+import { HomePageSider } from "../components";
 
 //style
-import makeStyles from "@mui/styles/makeStyles";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import WindowIcon from "@mui/icons-material/Window";
 import ListIcon from "@mui/icons-material/List";
 import SearchReposWorkspaces from "../components/common/SearchReposWorkspaces";
-import RepositoriesTable from "./Repositories/RespositoriesTable";
 import { OSBRepository, Tag } from "../apiclient/workspaces";
-import RepositoriesCards from "./Repositories/RepositoriesCards";
 import {
   StyledActiveIconButton,
   StyledGrid,
@@ -24,7 +21,7 @@ import {
   StyledPagination,
   StyledTabs,
 } from "./Repositories/RepositoriesPage";
-import { Chip, Tab } from "@mui/material";
+import { Chip } from "@mui/material";
 import {
   bgLightest as lineColor,
   bgRegular,
@@ -60,10 +57,6 @@ export const HomePage = (props: any) => {
 
   const isPublic = tabValue === WorkspaceSelection.PUBLIC;
   const isFeatured = tabValue === WorkspaceSelection.FEATURED;
-
-  console.log(WorkspaceSelection);
-
-  console.log(tabValue);
 
   const isSearchFieldsEmpty =
     searchFilterValues.tags.length === 0 &&

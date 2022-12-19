@@ -91,7 +91,7 @@ export const WorkspacesCards = (props: any) => {
                         )}
                       </Box>
                       <Box sx={{ padding: "0 0.857rem" }}>
-                        <Tooltip title={workspace.name}>
+                        <Tooltip title={workspace?.name}>
                           <Link
                             href={`/workspace/${workspace.id}`}
                             className={`workspace-page-link`}
