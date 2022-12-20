@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import debounce from "lodash/debounce";
+import { useHistory } from "react-router-dom";
 
 //components
 import Box from "@mui/material/Box";
@@ -26,14 +27,18 @@ import {
 import { bgLightest as lineColor, bgRegular } from "../theme";
 
 //types
-import { OSBRepository } from "../apiclient/workspaces";
+import { Workspace } from "../types/workspace";
 import { WorkspaceSelection } from "../components/workspace/WorkspacesCards";
 import searchFilter from "../types/searchFilter";
 
 //services
 import workspaceService from "../service/WorkspaceService";
+import WorkspacesList from "../components/workspace/WorkspacesTable";
+import { Tag } from "../apiclient/workspaces";
 
 export const HomePage = (props: any) => {
+  const history = useHistory();
+
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
       text: undefined,
@@ -41,7 +46,7 @@ export const HomePage = (props: any) => {
       types: [],
     });
 
-  const [workspaces, setWorkspaces] = React.useState<OSBRepository[]>([]);
+  const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(0);
@@ -60,10 +65,8 @@ export const HomePage = (props: any) => {
     (typeof searchFilterValues.text === "undefined" ||
       searchFilterValues.text === "");
 
-  const updateList = (newTabValue: WorkspaceSelection = tabValue) => {
-    setWorkspaces(null);
-    setTabValue(newTabValue);
-    getWorkspacesList({ newTabValue });
+  const openWorkspaceUrl = (workspaceId: number) => {
+    history.push(`/workspace/${workspaceId}`);
   };
 
   const debouncedHandleSearchFilter = React.useCallback(
@@ -82,8 +85,6 @@ export const HomePage = (props: any) => {
 
   const getWorkspacesList = (payload?) => {
     setLoading(true);
-
-    console.log({ isPublic, isFeatured });
 
     if (payload?.searchFilterValues) {
       workspaceService
@@ -288,7 +289,45 @@ export const HomePage = (props: any) => {
                 {listView === "grid" ? (
                   <WorkspacesCards workspaces={workspaces} loading={loading} />
                 ) : (
-                  <div>list</div>
+                  <WorkspacesList
+                    workspaces={workspaces}
+                    handleWorkspaceClick={(workspace: Workspace) =>
+                      openWorkspaceUrl(workspace.id)
+                    }
+                    handleTagClick={(tag: Tag) =>
+                      searchFilterValues.tags.includes(tag.tag)
+                        ? null
+                        : setSearchFilterValues({
+                            ...searchFilterValues,
+                            tags: searchFilterValues.tags.concat(tag.tag),
+                          })
+                    }
+                    handleTagUnclick={(tag: Tag) =>
+                      setSearchFilterValues({
+                        ...searchFilterValues,
+                        tags: searchFilterValues.tags.filter(
+                          (t) => t !== tag.tag
+                        ),
+                      })
+                    }
+                    handleTypeClick={(type: string) =>
+                      setSearchFilterValues({
+                        ...searchFilterValues,
+                        types: searchFilterValues.types.concat(type),
+                      })
+                    }
+                    handleTypeUnclick={(type: string) =>
+                      setSearchFilterValues({
+                        ...searchFilterValues,
+                        types: searchFilterValues.types.filter(
+                          (t) => t !== type
+                        ),
+                      })
+                    }
+                    searchFilterValues={searchFilterValues}
+                    loading={loading}
+                    user={props?.user}
+                  />
                 )}
               </div>
               {workspaces && (

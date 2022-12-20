@@ -135,12 +135,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     history.push(`/repositories/${repositoryId}`);
   };
 
-  const updateList = (newTabValue: RepositoriesTab = tabValue) => {
-    setRepositories(null);
-    setTabValue(newTabValue);
-    getReposList({ newTabValue });
-  };
-
   const debouncedHandleSearchFilter = React.useCallback(
     debounce((newTextFilter: string) => {
       setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });

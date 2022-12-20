@@ -15,7 +15,6 @@ import { TagTooltip } from "./WorkspaceCard";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { formatDate } from "../../utils";
 import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import {
   StyledCard,
   StyledCardContent,
@@ -72,7 +71,7 @@ export const WorkspacesCards = (props: any) => {
                         alignItems="center"
                         display="flex"
                         mb={2}
-                        // onClick={() => handleRepositoryClick(repository)}
+                        onClick={() => handleWorkspaceClick(workspace)}
                       >
                         {!workspace?.thumbnail ? (
                           <FolderIcon />

@@ -9,25 +9,14 @@ import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import Tooltip from "@mui/material/Tooltip";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import ShowMoreText from "react-show-more-text";
-import { StyledSpan } from "./RepositoriesCards";
+import { StyledSpan } from "../../pages/Repositories/RepositoriesCards";
 
 // style
-import {
-  paragraph,
-  linkColor,
-  chipTextColor,
-  chipBg,
-  secondaryColor,
-  primaryColor,
-  lighterWhite,
-} from "../../theme";
-import styled from "@mui/system/styled";
+import { chipTextColor } from "../../theme";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -35,7 +24,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-import { CodeBranchIcon } from "../../components/icons";
+import { CodeBranchIcon } from "../icons";
 
 //types
 import {
@@ -45,10 +34,16 @@ import {
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
+import {
+  StyledShowMoreText,
+  StyledTableContainer,
+  StyledContextButton,
+} from "../../pages/Repositories/RespositoriesTable";
+import { Workspace } from "../../types/workspace";
 
 interface RepositoriesProps {
-  repositories: OSBRepository[];
-  handleRepositoryClick: (repository: OSBRepository) => void;
+  workspaces: Workspace[];
+  handleWorkspaceClick: (workspace: Workspace) => void;
   handleTagClick: (tagObject: Tag) => void;
   handleTagUnclick: (tagObject: Tag) => void;
   handleTypeClick: (type: string) => void;
@@ -58,88 +53,16 @@ interface RepositoriesProps {
   loading: boolean;
 }
 
-export const StyledTableContainer = styled(TableContainer)(() => ({
-  "& .MuiChip-root": {
-    margin: "0 8px 8px 0",
-    backgroundColor: chipBg,
-  },
-  "& .content-types-tag": {
-    color: chipTextColor,
-  },
-  "& .MuiButtonBase-root": {
-    "&:hover": {
-      color: secondaryColor,
-    },
-  },
-  "& .MuiButton-outlined": {
-    minWidth: "max-content",
-    padding: "8px 12px",
-    textTransform: "inherit",
-    fontSize: "0.857rem",
-    color: secondaryColor,
-    borderRadius: 8,
-    borderWidth: 1,
-
-    "&:hover": {
-      borderColor: primaryColor,
-      color: `${primaryColor} !important`,
-    },
-  },
-}));
-
-export const StyledShowMoreText = styled(ShowMoreText)(() => ({
-  color: paragraph,
-  marginTop: 8,
-  "& a": {
-    color: linkColor,
-    display: "flex",
-    textDecoration: "none",
-    "& .MuiSvgIcon-root": {
-      color: `${linkColor} !important`,
-    },
-  },
-}));
-
-export const StyledContextButton = styled(Button)(() => ({
-  color: chipTextColor,
-  fontWeight: 400,
-  textTransform: "capitalize",
-  background: chipBg,
-  borderRadius: "16px",
-  maxWidth: "5.5rem",
-  height: "2rem",
-  overflow: "hidden",
-  display: "flex",
-  justifyContent: "flex-start",
-  alightItems: "baseline",
-
-  "& .MuiButton-startIcon": {
-    "& .MuiSvgIcon-root": {
-      fontSize: ".857rem",
-    },
-  },
-
-  "&:hover": {
-    backgroundColor: lighterWhite,
-
-    "& .MuiButton-startIcon": {
-      "& .MuiSvgIcon-root": {
-        color: "white",
-      },
-    },
-  },
-}));
-
-export const RepositoriesList = (props: RepositoriesProps) => {
+export const WorkspacesList = (props: RepositoriesProps) => {
   const {
-    repositories,
+    workspaces,
     handleTagClick,
     handleTypeClick,
     handleTypeUnclick,
     handleTagUnclick,
     loading,
     searchFilterValues,
-    handleRepositoryClick,
+    handleWorkspaceClick,
   } = props;
 
   const history = useHistory();
@@ -178,8 +101,8 @@ export const RepositoriesList = (props: RepositoriesProps) => {
           <StyledTableContainer>
             <Table aria-label="simple table">
               <TableBody>
-                {repositories &&
-                  repositories.map((row) => (
+                {workspaces &&
+                  workspaces.map((row) => (
                     <TableRow
                       key={row.id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -299,7 +222,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                       <TableCell style={{ width: 100 }}>
                         <Button
                           variant="outlined"
-                          onClick={() => handleRepositoryClick(row)}
+                          onClick={() => handleWorkspaceClick(row)}
                         >
                           Open Details
                         </Button>
@@ -315,4 +238,4 @@ export const RepositoriesList = (props: RepositoriesProps) => {
   );
 };
 
-export default RepositoriesList;
+export default WorkspacesList;
