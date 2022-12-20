@@ -94,20 +94,6 @@ const StyledRepositoryTags = styled(Typography)(() => ({
     justifyContent: "flex-start",
   },
 
-  "& .context": {
-    alignItems: "baseline",
-    background: chipBg,
-    borderRadius: "16px",
-    padding: "0.286rem 0.857rem",
-    maxWidth: "5.5rem",
-    height: "2rem",
-    overflow: "hidden",
-    cursor: "default",
-
-    "&:hover": {
-      background: chipBg,
-    },
-  },
   "& .repoType": {
     "&:hover": {
       backgroundColor: "transparent",
@@ -116,12 +102,14 @@ const StyledRepositoryTags = styled(Typography)(() => ({
   },
 }));
 
-export const StyledSpan = styled("span")(() => ({
-  whiteSpace: "nowrap",
-  maxWidth: "4.5rem",
-  display: "inline-block",
-  textOverflow: "ellipsis",
+export const StyledContextChip = styled(Chip)(() => ({
+  background: chipBg,
+  borderRadius: "16px",
+  maxWidth: "5.5rem",
   overflow: "hidden",
+  color: chipTextColor,
+  fontSize: "0.857rem",
+  padding: "0.143rem",
 }));
 
 export const StyledRepoName = styled(Typography)(() => ({
@@ -268,20 +256,19 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                         >
                           <span>{repository.repositoryType}</span>
                         </Button>
-                        <Button
-                          className="context"
-                          startIcon={<CodeBranchIcon />}
+
+                        <Tooltip
+                          title={
+                            <span style={{ textTransform: "capitalize" }}>
+                              {repository.defaultContext}
+                            </span>
+                          }
                         >
-                          <Tooltip
-                            title={
-                              <span style={{ textTransform: "capitalize" }}>
-                                {repository.defaultContext}
-                              </span>
-                            }
-                          >
-                            <StyledSpan>{repository.defaultContext}</StyledSpan>
-                          </Tooltip>
-                        </Button>
+                          <StyledContextChip
+                            icon={<CodeBranchIcon />}
+                            label={repository.defaultContext}
+                          />
+                        </Tooltip>
                       </StyledRepositoryTags>
                     </CardActions>
                   </StyledCard>

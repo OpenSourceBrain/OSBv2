@@ -15,7 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
-import { StyledSpan } from "./RepositoriesCards";
+import { StyledContextChip } from "./RepositoriesCards";
 
 // style
 import {
@@ -25,7 +25,6 @@ import {
   chipBg,
   secondaryColor,
   primaryColor,
-  lighterWhite,
 } from "../../theme";
 import styled from "@mui/system/styled";
 
@@ -96,36 +95,6 @@ const StyledShowMoreText = styled(ShowMoreText)(() => ({
     textDecoration: "none",
     "& .MuiSvgIcon-root": {
       color: `${linkColor} !important`,
-    },
-  },
-}));
-
-const StyledContextButton = styled(Button)(() => ({
-  color: chipTextColor,
-  fontWeight: 400,
-  textTransform: "capitalize",
-  background: chipBg,
-  borderRadius: "16px",
-  maxWidth: "5.5rem",
-  height: "2rem",
-  overflow: "hidden",
-  display: "flex",
-  justifyContent: "flex-start",
-  alightItems: "baseline",
-
-  "& .MuiButton-startIcon": {
-    "& .MuiSvgIcon-root": {
-      fontSize: ".857rem",
-    },
-  },
-
-  "&:hover": {
-    backgroundColor: lighterWhite,
-
-    "& .MuiButton-startIcon": {
-      "& .MuiSvgIcon-root": {
-        color: "white",
-      },
     },
   },
 }));
@@ -284,17 +253,20 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         </Box>
                       </TableCell>
                       <TableCell style={{ minWidth: 100 }}>
-                        <StyledContextButton startIcon={<CodeBranchIcon />}>
-                          <Tooltip
-                            title={
-                              <span style={{ textTransform: "capitalize" }}>
-                                {row.defaultContext}
-                              </span>
+                        <Tooltip
+                          title={
+                            <span style={{ textTransform: "capitalize" }}>
+                              {row.defaultContext}
+                            </span>
+                          }
+                        >
+                          <StyledContextChip
+                            icon={
+                              <CodeBranchIcon sx={{ fontSize: ".857rem" }} />
                             }
-                          >
-                            <StyledSpan>{row.defaultContext}</StyledSpan>
-                          </Tooltip>
-                        </StyledContextButton>
+                            label={row.defaultContext}
+                          />
+                        </Tooltip>
                       </TableCell>
                       <TableCell style={{ width: 100 }}>
                         <Button
