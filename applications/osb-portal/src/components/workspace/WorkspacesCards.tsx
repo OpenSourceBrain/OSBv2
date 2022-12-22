@@ -32,7 +32,7 @@ export enum WorkspaceSelection {
 
 export const WorkspacesCards = (props: any) => {
   const { workspaces, loading, handleWorkspaceClick } = props;
-
+  console.log(workspaces);
   return (
     <>
       {loading ? (

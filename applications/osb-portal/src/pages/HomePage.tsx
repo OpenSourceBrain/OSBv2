@@ -278,7 +278,7 @@ export const HomePage = (props: any) => {
                           }
                           searchFilterValues={searchFilterValues}
                           setSearchFilterValues={setSearchFilterValues}
-                          hasTypes={true}
+                          hasTypes={false}
                           setLoading={setLoading}
                         />
                       </StyledGrid>

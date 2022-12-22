@@ -13,7 +13,7 @@ import Table from "@mui/material/Table";
 import Tooltip from "@mui/material/Tooltip";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import { StyledSpan } from "../../pages/Repositories/RepositoriesCards";
+import { StyledContextChip } from "../../pages/Repositories/RepositoriesCards";
 
 // style
 import { chipTextColor } from "../../theme";
@@ -27,21 +27,16 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { CodeBranchIcon } from "../icons";
 
 //types
-import {
-  OSBRepository,
-  RepositoryContentType,
-  Tag,
-} from "../../apiclient/workspaces";
+import { RepositoryContentType, Tag } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
 import {
   StyledShowMoreText,
   StyledTableContainer,
-  StyledContextButton,
 } from "../../pages/Repositories/RespositoriesTable";
 import { Workspace } from "../../types/workspace";
 
-interface RepositoriesProps {
+interface WorkspacesProps {
   workspaces: Workspace[];
   handleWorkspaceClick: (workspace: Workspace) => void;
   handleTagClick: (tagObject: Tag) => void;
@@ -53,7 +48,7 @@ interface RepositoriesProps {
   loading: boolean;
 }
 
-export const WorkspacesList = (props: RepositoriesProps) => {
+export const WorkspacesList = (props: WorkspacesProps) => {
   const {
     workspaces,
     handleTagClick,
@@ -72,8 +67,6 @@ export const WorkspacesList = (props: RepositoriesProps) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  const openRepoUrl = (uri: string) => window.open(uri, "_blank");
 
   return (
     <>
@@ -114,7 +107,7 @@ export const WorkspacesList = (props: RepositoriesProps) => {
                       >
                         <Box className="col">
                           <Typography component="strong">{row.name}</Typography>
-                          {row.summary && (
+                          {row.description && (
                             <StyledShowMoreText
                               lines={2}
                               more={
@@ -132,12 +125,12 @@ export const WorkspacesList = (props: RepositoriesProps) => {
                               expanded={expanded}
                               width={400}
                             >
-                              {row.summary}
+                              {row.description}
                             </StyledShowMoreText>
                           )}
                         </Box>
                       </TableCell>
-                      <TableCell style={{ minWidth: 80 }}>
+                      <TableCell style={{ minWidth: 200 }}>
                         <Button
                           sx={{
                             "&:hover": { backgroundColor: "transparent" },
@@ -146,47 +139,11 @@ export const WorkspacesList = (props: RepositoriesProps) => {
                           }}
                           onClick={() => history.push(`/user/${row?.user?.id}`)}
                         >
-                          {row.user.username}
+                          {row.user.firstName + " " + row.user.lastName}
                         </Button>
                       </TableCell>
-                      <TableCell style={{ minWidth: 100 }}>
-                        <Button
-                          sx={{
-                            textTransform: "capitalize",
-                            "&:hover": { backgroundColor: "transparent" },
-                          }}
-                          endIcon={<OpenInNewIcon />}
-                          onClick={() => openRepoUrl(row.uri)}
-                        >
-                          {row.repositoryType}
-                        </Button>
-                      </TableCell>
+
                       <TableCell style={{ minWidth: 200 }}>
-                        <Box mb={".5"}>
-                          {row.contentTypes.split(",").map((type) => (
-                            <Chip
-                              avatar={
-                                <FiberManualRecordIcon
-                                  color={
-                                    type === RepositoryContentType.Experimental
-                                      ? "primary"
-                                      : "secondary"
-                                  }
-                                />
-                              }
-                              onClick={() => handleTypeClick(type)}
-                              key={type}
-                              label={type}
-                              clickable={true}
-                              className="content-types-tag"
-                              onDelete={
-                                searchFilterValues?.types?.includes(type)
-                                  ? () => handleTypeUnclick(type)
-                                  : null
-                              }
-                            />
-                          ))}
-                        </Box>
                         <Box>
                           {row.tags.map((tagObject) => (
                             <Chip
@@ -207,17 +164,20 @@ export const WorkspacesList = (props: RepositoriesProps) => {
                         </Box>
                       </TableCell>
                       <TableCell style={{ minWidth: 100 }}>
-                        <StyledContextButton startIcon={<CodeBranchIcon />}>
-                          <Tooltip
-                            title={
-                              <span style={{ textTransform: "capitalize" }}>
-                                {row.defaultContext}
-                              </span>
+                        <Tooltip
+                          title={
+                            <span style={{ textTransform: "capitalize" }}>
+                              {row?.defaultApplication?.name}
+                            </span>
+                          }
+                        >
+                          <StyledContextChip
+                            icon={
+                              <CodeBranchIcon sx={{ fontSize: ".857rem" }} />
                             }
-                          >
-                            <StyledSpan>{row.defaultContext}</StyledSpan>
-                          </Tooltip>
-                        </StyledContextButton>
+                            label={row.defaultApplication.name}
+                          />
+                        </Tooltip>
                       </TableCell>
                       <TableCell style={{ width: 100 }}>
                         <Button
