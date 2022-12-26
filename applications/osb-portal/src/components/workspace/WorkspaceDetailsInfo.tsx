@@ -1,91 +1,64 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 //theme
 import { styled } from '@mui/styles';
 
 import {
-    bgRegular,
-    bgDarkest,
-    secondaryColor,
-    drawerText,
-    linkColor,
-    selectedMenuItemBg,
-    primaryColor
+    paragraph,
 } from "../../theme";
 
 //components
-import Drawer from "@mui/material/Drawer";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import List from "@mui/material/List";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import ListSubheader from "@mui/material/ListSubheader";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
 
 //icons
+import PersonIcon from '@mui/icons-material/Person';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CollectionsBookmarkOutlinedIcon from '@mui/icons-material/CollectionsBookmarkOutlined';
 
+const WorkspaceInfoSection = styled(Stack)(({ theme }) => ({
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    '& .MuiTypography-subtitle1': {
+        fontWeight: 600
+    },
+    '& .MuiTypography-body1': {
+        fontSize: '0.857rem',
+        color: paragraph
+    },
+    '& .MuiSvgIcon-root': {
+        color: paragraph
+    }
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
+}))
 const WorkspaceDetailsInfo = () => {
 
-    const [tabValue, setTabValue] = React.useState(0);
-    const handleTabChange = (e, newValue) => {
-        setTabValue(newValue);
-    }
     return (
 
-        <Box sx={{ height: 'calc(100%)', overflow: 'hidden' }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={tabValue} onChange={handleTabChange}>
-                    <Tab label="Workspace" {...a11yProps(0)} />
-                    <Tab label="User Assets" {...a11yProps(1)} />
-                </Tabs>
-            </Box>
-            <TabPanel value={tabValue} index={0}>
-                Item One
-            </TabPanel>
-            <TabPanel value={tabValue} index={1}>
-                Item Two
-            </TabPanel>
+        <Box sx={{ height: '100%', overflow: 'hidden' }} pt={4} pl={2}>
+            <WorkspaceInfoSection spacing={1}>
+                <Typography variant='subtitle1'>Info</Typography>
+                <Stack direction="row" spacing={1}>
+                    <PersonIcon fontSize='small' />
+                    <Typography>By Padraig Gleeson</Typography>
+                </Stack>
+                <Stack direction="row" spacing={1}>
+                    <CalendarTodayIcon fontSize='small' />
+                    <Typography>Last Updated on 01/09/2022</Typography>
+                </Stack>
+                <Stack direction="row" spacing={1}>
+                    <CollectionsBookmarkOutlinedIcon fontSize='small' />
+                    <Typography>Experimental Data</Typography>
+                </Stack>
+            </WorkspaceInfoSection>
+            <WorkspaceInfoSection spacing={1} mt={3}>
+                <Typography variant='subtitle1'>Tags</Typography>
+                <Box>
+                    <Chip label="Experiments" size='small' sx={{mt: 1}}/>
+                    <Chip label="Electrophysiology" size='small' sx={{mt:1}}/>
+                </Box>
+            </WorkspaceInfoSection>
         </Box>
     )
 }

@@ -125,7 +125,7 @@ const WorkspacePage = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
-                                        sx={{ padding: '8px 16px' }}
+                                        sx={{ padding: '0.571rem 1.143rem' }}
                                     >
                                         <GoBackButton variant="text" startIcon={<ChevronLeftIcon />}>All workspaces</GoBackButton>
                                         <Stack display="flex" direction="row" spacing={2}>
@@ -192,7 +192,7 @@ const WorkspacePage = () => {
                                         </Stack>
                                     </Box>
                                 </Box>
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '160px' }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '11rem' }}>
                                     <LockOutlinedIcon />
                                     <Typography sx={{ fontSize: '1.714rem', ml: '1.143rem' }} >My Workspace</Typography>
                                 </Box>
@@ -201,11 +201,11 @@ const WorkspacePage = () => {
                                         <Grid item xs>
                                             <WorkspaceDetails />
                                         </Grid>
-                                        <Grid item xs={7}>
-                                            <Box sx={{ display: 'flex',flexDirection:"column", alignItems: 'center', justifyContent: 'center', height: 'calc(100%)', overflow: 'hidden' }}>
+                                        <Grid item xs={7} alignItems="center" sx={{ padding: '1.714rem 7.143rem' }}>
+                                            <Stack spacing={4}>
                                                 <img src="/images/workspace-banner.png" alt="workspace img" />
                                                 <Divider />
-                                                <Typography>
+                                                <Typography variant="subtitle1" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                                     Maecenas vestibulum id tellus nec facilisis.
                                                     Nullam at feugiat diam. Vestibulum molestie lacinia dignissim.
@@ -225,7 +225,7 @@ const WorkspacePage = () => {
                                                     Etiam dictum nunc vel eros consectetur tincidunt.
                                                     Maecenas sed consequat metus.
                                                 </Typography>
-                                            </Box>
+                                            </Stack>
                                         </Grid>
                                         <Grid item xs>
                                             <WorkspaceDetailsInfo/>
