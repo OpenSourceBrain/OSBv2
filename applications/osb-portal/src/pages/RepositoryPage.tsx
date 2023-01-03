@@ -5,19 +5,24 @@ import { useHistory } from "react-router-dom";
 import { styled } from "@mui/styles";
 import {
   linkColor,
-  bgLightest as lineColor,
   paragraph,
   secondaryColor as white,
   chipBg,
+  bgDarkest
 } from "../theme";
 
 //components
+import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { HomePageSider } from '../components';
 import RepositoryPageBanner from '../components/repository/RepositoryPageBanner';
+import RepositoryPageDetails from '../components/repository/RepositoryPageDetails';
+import {
+  OSBRepository,
+} from "../apiclient/workspaces";
 
 //icons
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -34,30 +39,28 @@ const GoBackButton = styled(Button)(({ theme }) => ({
 
 const AddSelectionButton = styled(Button)(({ theme }) => ({
   color: white,
-  fontSize: '0.875rem',
+  fontSize: '0.857rem',
   textTransform: 'none',
-  borderRadius: '6px',
-  border: `1px solid ${white}`,
+  borderRadius: '0.429rem',
+  border: `0.071rem solid ${white}`,
   "&:hover": {
-    border: `1px solid ${white}`,
+    border: `0.071rem solid ${white}`,
     backgroundColor: 'transparent'
   }
 }));
 
 const NewWorkspaceButton = styled(Button)(({ theme }) => ({
   background: linkColor,
-  border: `1px solid #000`,
+  border: `0.071rem solid #000`,
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  borderRadius: '6px',
-  "& .MuiButton-root": {
-    textTransform: 'none'
-  }
+  borderRadius: '0.429rem',
+  textTransform: 'none'
 }));
 
 const ThreeDotButton = styled(Button)(({ theme }) => ({
   background: chipBg,
-  minWidth: '32px',
-  borderRadius: '6px',
+  minWidth: '2.286rem',
+  borderRadius: '0.429rem',
   boxShadow: 'none',
   "&:hover": {
     background: 'transparent'
@@ -68,6 +71,9 @@ const ThreeDotButton = styled(Button)(({ theme }) => ({
 export const RepositoryPage = (props: any) => {
 
   const history = useHistory();
+
+  const [repository, setRepository] = React.useState<OSBRepository>(null);
+  const repo = true;
 
   return <>
     <Box className='verticalFit'>
@@ -97,7 +103,7 @@ export const RepositoryPage = (props: any) => {
           className="verticalFill"
         >
           <Box width={1} className='verticalFit'>
-            <Box borderBottom={`2px solid ${lineColor}`}>
+            <Box sx={{ background: bgDarkest }}>
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -133,7 +139,21 @@ export const RepositoryPage = (props: any) => {
             </Box>
             <RepositoryPageBanner />
             <Box className='verticalFit'>
-              
+              {
+                repo ? (
+                  <RepositoryPageDetails/>
+                ) :
+                  (<CircularProgress
+                    size={48}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -24,
+                      marginLeft: -24,
+                    }}
+                  />)
+              }
             </Box>
           </Box>
         </Grid>

@@ -14,7 +14,7 @@ vars.gutter = vars.gutter.replace('px', '') * 1;
 export const {
   primaryColor, secondaryColor, font, fontColor, linkColor, teal, purple, bgLightest, paragraph, bgLightestShade,
   bgLight, bgRegular, bgDark, bgDarker, bgDarkest, bgInputs, gutter, radius, checkBoxColor, bgLighter, textColor, inputRadius, headerBg, drawerText, chipTextColor, chipBg, selectedMenuItemBg,
-  lightText, dialogBoxShadow, badgeBgLight, orangeText, workspaceItemBg
+  lightText, dialogBoxShadow, badgeBgLight, orangeText, workspaceItemBg, repoPageContentBg, infoBoxBg, greyishTextColor, grey
 } = vars;
 
 const verticalFill = {
@@ -118,6 +118,21 @@ const theme = {
             color: purple,
           },
         },
+
+        '& .greenStatusDot': {
+          '&.MuiSvgIcon-root': {
+            width: 6,
+            height: 6,
+            color: teal
+          }
+        },
+        '& .purpleStatusDot': {
+          '&.MuiSvgIcon-root': {
+            width:6,
+            height: 6,
+            color: purple
+          }
+        }
 
       },
       labelSmall: {

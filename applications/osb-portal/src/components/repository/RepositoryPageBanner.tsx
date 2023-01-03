@@ -20,7 +20,6 @@ const RepoPageBannerBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    margin: 'auto',
     gap: theme.spacing(2),
     '& .MuiTypography-h1': {
         fontWeight: 400
@@ -32,7 +31,7 @@ const RepoPageBannerBox = styled(Box)(({ theme }) => ({
 }));
 
 const RepositoryPageBanner = () => {
-    return <RepoPageBannerBox>
+    return <RepoPageBannerBox mt={5} mb={5}>
         <Typography variant='h1'>
             NWB Showcase
         </Typography>
@@ -41,27 +40,29 @@ const RepositoryPageBanner = () => {
                 return <Chip label={'testTag'} key={index} />
             })}
         </Box>
-        <Box display='flex' justifyContent='space-evenly' width={1}>
-            <Stack display='flex' direction='row' alignItems='center'>
+        <Stack direction='row' spacing={2}>
+            <Stack direction='row' alignItems='center'>
                 <IconButton>
                     <PersonOutlineIcon fontSize='small' />
                 </IconButton>
-                <Typography variant='body2'>By Padraig Gleeson</Typography>
+                <Typography variant='body2' sx={{ display: 'inline-flex', alignItems: 'baseline'}}>By
+                    <Typography variant='body2' color='primary' sx={{ml: '3px'}}>Padraig Gleeson</Typography>
+                </Typography>
             </Stack>
-            <Stack display='flex' direction='row' alignItems='center'>
+            <Stack direction='row' alignItems='center'>
                 <IconButton>
                     <CalendarTodayOutlinedIcon fontSize='small' />
                 </IconButton>
                 <Typography variant='body2'>Last Updated on September 1, 2021</Typography>
             </Stack>
-            <Stack display='flex' direction='row' alignItems='center'>
+            <Stack direction='row' alignItems='center'>
                 <IconButton>
                     <LinkOutlinedIcon fontSize='small' />
                 </IconButton>
                 <Typography variant='body2'>GitHub</Typography>
             </Stack>
 
-        </Box>
+        </Stack>
     </RepoPageBannerBox>
 };
 
