@@ -210,7 +210,7 @@ export const HomePage = (props: any) => {
                                   </div>
                                 ) : (
                                   <div className="tabTitle">
-                                    <Typography>Your workspaces</Typography>
+                                    <Typography>My workspaces</Typography>
                                     {tabValue === WorkspaceSelection.USER && (
                                       <Chip
                                         size="small"
