@@ -89,7 +89,7 @@ export const WorkspacesCards = (props: any) => {
                           />
                         )}
                       </Box>
-                      <Box sx={{ padding: "0 0.857rem" }}>
+                      <Box sx={{ padding: "0 0.857rem", cursor: "pointer" }}>
                         <Tooltip title={workspace?.name}>
                           <Link
                             href={`/workspace/${workspace.id}`}
@@ -131,19 +131,30 @@ export const WorkspacesCards = (props: any) => {
                             )}
                           </Link>
                         </Tooltip>
-                        <Typography
-                          variant="caption"
+                        <Link
                           sx={{
-                            fontSize: ".857rem",
-                            color: chipTextColor,
-                            lineHeight: 1.143,
+                            "&:hover": {
+                              textDecoration: "underline",
+                              textDecorationColor: chipTextColor,
+                            },
                           }}
-                          mb={"4px"}
+                          underline="none"
+                          href={`/user/${workspace.user.id}`}
                         >
-                          {workspace.user.firstName +
-                            " " +
-                            workspace.user.lastName}
-                        </Typography>
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              fontSize: ".857rem",
+                              color: chipTextColor,
+                              lineHeight: 1.143,
+                            }}
+                            mb={"4px"}
+                          >
+                            {workspace.user.firstName +
+                              " " +
+                              workspace.user.lastName}
+                          </Typography>
+                        </Link>
                       </Box>
                     </StyledCardContent>
                     <CardActions
