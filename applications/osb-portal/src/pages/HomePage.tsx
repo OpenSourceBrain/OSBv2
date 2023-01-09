@@ -56,7 +56,7 @@ export const HomePage = (props: any) => {
   );
   const [listView, setListView] = React.useState<string>("grid");
 
-  const isPublic = tabValue === WorkspaceSelection.PUBLIC;
+  const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
   const isFeatured = tabValue === WorkspaceSelection.FEATURED;
 
   const isSearchFieldsEmpty =
@@ -71,7 +71,11 @@ export const HomePage = (props: any) => {
 
   const debouncedHandleSearchFilter = React.useCallback(
     debounce((newTextFilter: string) => {
-      setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+      setSearchFilterValues({
+        ...searchFilterValues,
+        text: newTextFilter,
+        tags: [newTextFilter],
+      });
     }, 500),
     []
   );
