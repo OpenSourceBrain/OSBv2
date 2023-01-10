@@ -1,44 +1,115 @@
 import * as React from "react";
-import { ReactElement } from "react";
 import debounce from "lodash/debounce";
-import { useHistory } from "react-router-dom";
+import { ReactElement } from "react";
 
 //components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import WindowIcon from "@mui/icons-material/Window";
-import ListIcon from "@mui/icons-material/List";
-import Chip from "@mui/material/Chip";
-import WorkspacesCards from "../components/workspace/WorkspacesCards";
-import SearchReposWorkspaces from "../components/common/SearchReposWorkspaces";
-import { HomePageSider } from "../components";
-import {
-  StyledActiveIconButton,
-  StyledGrid,
-  StyledIconButton,
-  StyledPagination,
-  StyledTabs,
-} from "./Repositories/RepositoriesPage";
+import Pagination from "@mui/material/Pagination";
 
-//style
-import { bgLightest as lineColor, bgRegular } from "../theme";
+import { HomePageSider } from "../../components";
+import RepositoriesCards from "./RepositoriesCards";
+import RepositoriesTable from "./RespositoriesTable";
+import SearchReposWorkspaces from "../../components/common/SearchReposWorkspaces";
+
+//Icons
+import WindowIcon from "@mui/icons-material/Window";
+import IconButton from "@mui/material/IconButton";
+import ListIcon from "@mui/icons-material/List";
 
 //types
-import { Workspace } from "../types/workspace";
-import { WorkspaceSelection } from "../components/workspace/WorkspacesCards";
-import searchFilter from "../types/searchFilter";
+import { UserInfo } from "../../types/user";
+import { OSBRepository, Tag } from "../../apiclient/workspaces";
+import searchFilter from "../../types/searchFilter";
 
-//services
-import workspaceService from "../service/WorkspaceService";
-import WorkspacesList from "../components/workspace/WorkspacesTable";
-import { Tag } from "../apiclient/workspaces";
+//hooks
+import { useHistory } from "react-router-dom";
 
-export const HomePage = (props: any) => {
+//api
+import RepositoryService from "../../service/RepositoryService";
+
+//style
+import {
+  bgLightest as lineColor,
+  bgRegular,
+  checkBoxColor,
+  bgDarker,
+  linkColor,
+  primaryColor,
+} from "../../theme";
+import styled from "@mui/system/styled";
+import { Chip } from "@mui/material";
+
+enum RepositoriesTab {
+  all,
+  my,
+}
+
+const customButtonStyle = {
+  minWidth: "auto",
+  padding: "5px",
+  backgroundColor: bgRegular,
+  border: "none !important",
+  color: checkBoxColor,
+  borderRadius: "8px",
+
+  "&:hover": {
+    backgroundColor: bgRegular,
+    color: linkColor,
+  },
+};
+
+export const StyledIconButton = styled(IconButton)(() => customButtonStyle);
+
+export const StyledActiveIconButton = styled(IconButton)(() => ({
+  ...customButtonStyle,
+  backgroundColor: bgDarker,
+  color: linkColor,
+
+  "&:hover": {
+    backgroundColor: bgDarker,
+  },
+}));
+
+export const StyledTabs = styled(Tab)(() => ({
+  maxWidth: "33%",
+  minWidth: "fit-content",
+  padding: "16px 24px",
+
+  "& .tabTitle": {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "& .MuiTypography-root": {
+      fontSize: "0.857rem",
+      fontWeight: 700,
+    },
+  },
+}));
+
+export const StyledGrid = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    padding: "12px 24px !important",
+  },
+}));
+
+export const StyledPagination = styled(Pagination)(() => ({
+  display: "flex",
+  justifyContent: "center",
+  padding: ".88rem",
+  borderTop: `1px solid ${lineColor}`,
+
+  "& .Mui-selected": {
+    backgroundColor: primaryColor,
+  },
+}));
+
+export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   const history = useHistory();
-
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
       text: undefined,
@@ -46,18 +117,13 @@ export const HomePage = (props: any) => {
       types: [],
     });
 
-  const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
+  const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [tabValue, setTabValue] = React.useState(
-    props.user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
-  );
-  const [listView, setListView] = React.useState<string>("grid");
-
-  const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
-  const isFeatured = tabValue === WorkspaceSelection.FEATURED;
+  const [tabValue, setTabValue] = React.useState(RepositoriesTab.all);
+  const [listView, setListView] = React.useState<string>("list");
 
   const isSearchFieldsEmpty =
     searchFilterValues.tags.length === 0 &&
@@ -65,47 +131,48 @@ export const HomePage = (props: any) => {
     (typeof searchFilterValues.text === "undefined" ||
       searchFilterValues.text === "");
 
-  const openWorkspaceUrl = (workspaceId: number) => {
-    history.push(`/workspace/${workspaceId}`);
+  const openRepoUrl = (repositoryId: number) => {
+    history.push(`/repositories/${repositoryId}`);
   };
 
   const debouncedHandleSearchFilter = React.useCallback(
     debounce((newTextFilter: string) => {
-      setSearchFilterValues({
-        ...searchFilterValues,
-        text: newTextFilter,
-        tags: [newTextFilter],
-      });
+      setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
     }, 500),
     []
   );
 
-  const setWorkspacesValues = (workspacesDetails) => {
-    setWorkspaces(workspacesDetails.items);
-    setTotal(workspacesDetails.total);
-    setTotalPages(workspacesDetails.totalPages);
+  const setReposValues = (reposDetails) => {
+    setRepositories(reposDetails.osbrepositories);
+    setTotal(reposDetails.pagination.total);
+    setTotalPages(reposDetails.pagination.numberOfPages);
     setLoading(false);
   };
 
-  const getWorkspacesList = (payload?) => {
+  const getReposList = (payload?) => {
     setLoading(true);
 
     if (payload?.searchFilterValues) {
-      workspaceService
-        .fetchWorkspacesByFilter(isPublic, isFeatured, page, searchFilterValues)
-        .then((workspacesDetails) => {
-          setWorkspacesValues(workspacesDetails);
-        });
+      RepositoryService.getRepositoriesByFilter(
+        page,
+        payload?.searchFilterValues
+      ).then((reposDetails) => {
+        setReposValues(reposDetails);
+      });
+    } else if (payload?.tabValue) {
+      RepositoryService.getUserRepositoriesDetails(user.id, page).then(
+        (reposDetails) => {
+          setReposValues(reposDetails);
+        }
+      );
     } else {
-      workspaceService
-        .fetchWorkspaces(isPublic, isFeatured, page)
-        .then((workspacesDetails) => {
-          setWorkspacesValues(workspacesDetails);
-        });
+      RepositoryService.getRepositoriesDetails(page).then((reposDetails) => {
+        setReposValues(reposDetails);
+      });
     }
   };
 
-  const handleTabChange = (event: any, newValue: WorkspaceSelection) => {
+  const handleTabChange = (event: any, newValue: RepositoriesTab) => {
     setTotal(0);
     setTabValue(newValue);
   };
@@ -141,9 +208,9 @@ export const HomePage = (props: any) => {
   };
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
-      getWorkspacesList();
+      getReposList();
     } else {
-      getWorkspacesList({ searchFilterValues });
+      getReposList({ searchFilterValues, tabValue });
     }
   }, [page, searchFilterValues, tabValue]);
 
@@ -196,69 +263,38 @@ export const HomePage = (props: any) => {
                         className="verticalFill"
                       >
                         <Tabs value={tabValue} onChange={handleTabChange}>
-                          {props.user ? (
+                          <StyledTabs
+                            value={RepositoriesTab.all}
+                            label={
+                              <div className="tabTitle">
+                                <Typography>All repositories</Typography>
+                                {tabValue === RepositoriesTab.all && (
+                                  <Chip
+                                    size="small"
+                                    color="primary"
+                                    label={total}
+                                  />
+                                )}
+                              </div>
+                            }
+                          />
+                          {user && (
                             <StyledTabs
-                              id="your-all-workspaces-tab"
-                              value={WorkspaceSelection.USER}
+                              value={RepositoriesTab.my}
                               label={
-                                props.user.isAdmin ? (
-                                  <div className="tabTitle">
-                                    <Typography>All workspaces</Typography>
-                                    {tabValue === WorkspaceSelection.USER && (
-                                      <Chip
-                                        size="small"
-                                        color="primary"
-                                        label={total}
-                                      />
-                                    )}
-                                  </div>
-                                ) : (
-                                  <div className="tabTitle">
-                                    <Typography>My workspaces</Typography>
-                                    {tabValue === WorkspaceSelection.USER && (
-                                      <Chip
-                                        size="small"
-                                        color="primary"
-                                        label={total}
-                                      />
-                                    )}
-                                  </div>
-                                )
+                                <div className="tabTitle">
+                                  <Typography>My repositories</Typography>
+                                  {tabValue === RepositoriesTab.my && (
+                                    <Chip
+                                      size="small"
+                                      color="primary"
+                                      label={total}
+                                    />
+                                  )}
+                                </div>
                               }
                             />
-                          ) : null}
-                          <StyledTabs
-                            id="featured-tab"
-                            value={WorkspaceSelection.FEATURED}
-                            label={
-                              <div className="tabTitle">
-                                <Typography>Featured workspaces</Typography>
-                                {tabValue === WorkspaceSelection.FEATURED && (
-                                  <Chip
-                                    size="small"
-                                    color="primary"
-                                    label={total}
-                                  />
-                                )}
-                              </div>
-                            }
-                          />
-                          <StyledTabs
-                            id="public-tab"
-                            value={WorkspaceSelection.PUBLIC}
-                            label={
-                              <div className="tabTitle">
-                                <Typography>Public workspaces</Typography>
-                                {tabValue === WorkspaceSelection.PUBLIC && (
-                                  <Chip
-                                    size="small"
-                                    color="primary"
-                                    label={total}
-                                  />
-                                )}
-                              </div>
-                            }
-                          />
+                          )}
                         </Tabs>
                       </Grid>
                       <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
@@ -282,7 +318,7 @@ export const HomePage = (props: any) => {
                           }
                           searchFilterValues={searchFilterValues}
                           setSearchFilterValues={setSearchFilterValues}
-                          hasTypes={false}
+                          hasTypes={true}
                           setLoading={setLoading}
                         />
                       </StyledGrid>
@@ -290,13 +326,10 @@ export const HomePage = (props: any) => {
                   </Box>
                 </Box>
 
-                {listView === "grid" ? (
-                  <WorkspacesCards workspaces={workspaces} loading={loading} />
-                ) : (
-                  <WorkspacesList
-                    workspaces={workspaces}
-                    handleWorkspaceClick={(workspace: Workspace) =>
-                      openWorkspaceUrl(workspace.id)
+                {listView === "list" ? (
+                  <RepositoriesTable
+                    handleRepositoryClick={(repository: OSBRepository) =>
+                      openRepoUrl(repository.id)
                     }
                     handleTagClick={(tag: Tag) =>
                       searchFilterValues.tags.includes(tag.tag)
@@ -329,12 +362,22 @@ export const HomePage = (props: any) => {
                       })
                     }
                     searchFilterValues={searchFilterValues}
+                    user={user}
+                    repositories={repositories}
                     loading={loading}
-                    user={props?.user}
+                  />
+                ) : (
+                  <RepositoriesCards
+                    handleRepositoryClick={(repository: OSBRepository) =>
+                      openRepoUrl(repository.id)
+                    }
+                    user={user}
+                    repositories={repositories}
+                    loading={loading}
                   />
                 )}
               </div>
-              {workspaces && (
+              {repositories && (
                 <StyledPagination
                   count={totalPages}
                   page={page}
@@ -350,3 +393,5 @@ export const HomePage = (props: any) => {
     </>
   );
 };
+
+export default RepositoriesPage;
