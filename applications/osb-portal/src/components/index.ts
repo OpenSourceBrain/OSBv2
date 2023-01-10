@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { App as app } from "../App";
-import { Workspaces as workspace } from "./workspace/Workspaces";
+import { WorkspacesCards as workspace } from "./workspace/WorkspacesCards";
 import { WorkspaceToolBox as workspacetoolbox } from "./workspace/NewWorkspaceToolBox";
 import workspaceInteractions from "./workspace/drawer/WorkspaceInteractions";
 
