@@ -28,8 +28,10 @@ import newWorkspaceAskUser from "./workspace/NewWorkspaceAskUser";
 import { AnyAction, Dispatch } from "redux";
 
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
+
 import { UserPage as userPage } from "../pages/UserPage";
 import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
+import { HomePage as homePage } from "../pages/HomePage";
 import repositories from "../components/repository/Repositories";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
@@ -123,6 +125,10 @@ export const WorkspaceCard = connect(
   dispatchWorkspaceProps
 )(workspaceCard);
 export const Repositories = connect(mapUserStateToProps)(repositories);
+export const HomePage = connect(
+  mapUserAndTagsToProps,
+  dispatchTagsProps
+)(homePage);
 export const EditRepoDialog = connect(
   mapTagsToProps,
   dispatchTagsProps
@@ -131,7 +137,7 @@ export const WorkspaceToolBox = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspacetoolbox);
-export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner);
+
 export const Header = connect(mapUserStateToProps, {
   ...dispatchUserProps,
   ...dispatchDrawerProps,
@@ -143,7 +149,7 @@ export const WorkspaceDrawer = connect(
 export const WorkspaceInteractions = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
-)(workspaceInteractions) as any;
+)(workspaceInteractions);
 export const WorkspaceEditor = connect(
   mapTagsToProps,
   dispatchTagsProps

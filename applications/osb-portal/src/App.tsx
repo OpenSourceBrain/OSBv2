@@ -1,10 +1,13 @@
 import * as React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles";
+import {
+  ThemeProvider,
+  Theme,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
-import {HomePage} from "./pages/HomePage";
 import theme from "./theme";
 
 import {
@@ -15,14 +18,14 @@ import {
   RepositoryPage,
   WorkspacePage,
   UserPage,
-  RepositoriesPage
+  RepositoriesPage,
+  HomePage,
 } from "./components";
 
-declare module '@mui/styles/defaultTheme' {
+declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
-
 
 const useStyles = makeStyles(() => ({
   mainContainer: {

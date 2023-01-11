@@ -146,7 +146,7 @@ export const HomePage = (props: any) => {
       getWorkspacesList({ searchFilterValues });
     }
   }, [page, searchFilterValues, tabValue]);
-
+  console.log(props.user);
   return (
     <>
       <Box className="verticalFit">
