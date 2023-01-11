@@ -2,7 +2,7 @@ import * as React from "react";
 
 //theme
 import { styled } from "@mui/styles";
-import { bgLightest as lineColor, paragraph, secondaryColor as white, linkColor, chipBg, headerBg as hoverBg} from "../theme";
+import { bgLightest as lineColor, paragraph, secondaryColor as white, linkColor, chipBg, headerBg as hoverBg } from "../theme";
 
 //components
 import Grid from "@mui/material/Grid";
@@ -17,7 +17,10 @@ import Grow from "@mui/material/Grow";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+import Divider from '@mui/material/Divider';
 import { HomePageSider } from "../components";
+import WorkspaceDetails from "../components/workspace/WorkspaceDetailsTabs";
+import WorkspaceDetailsInfo from "../components/workspace/WorkspaceDetailsInfo";
 
 //icons
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -63,7 +66,7 @@ const ThreeDotButton = styled(Button)(({ theme }) => ({
     minWidth: '32px',
     borderRadius: '6px',
     boxShadow: 'none',
-    "&:hover":{
+    "&:hover": {
         background: 'transparent'
     }
 }))
@@ -92,9 +95,9 @@ const WorkspacePage = () => {
     return (
         <>
             <Box className="verticalFit">
-                <Grid container={true} className="verticalFill">
+                <Grid container className="verticalFill">
                     <Grid
-                        item={true}
+                        item
                         xs={12}
                         sm={12}
                         md={3}
@@ -191,7 +194,43 @@ const WorkspacePage = () => {
                                 </Box>
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '160px' }}>
                                     <LockOutlinedIcon />
-                                    <Typography sx={{ fontSize: '1.714rem', ml: '1.143rem'}} >My Workspace</Typography>
+                                    <Typography sx={{ fontSize: '1.714rem', ml: '1.143rem' }} >My Workspace</Typography>
+                                </Box>
+                                <Box className="verticalFit">
+                                    <Grid container sx={{ height: 'calc(100%)', overflow: 'hidden', background: 'rgba(0, 0, 0, 0.25)'}}>
+                                        <Grid item xs>
+                                            <WorkspaceDetails />
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <Box sx={{ display: 'flex',flexDirection:"column", alignItems: 'center', justifyContent: 'center', height: 'calc(100%)', overflow: 'hidden' }}>
+                                                <img src="/images/workspace-banner.png" alt="workspace img" />
+                                                <Divider />
+                                                <Typography>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Maecenas vestibulum id tellus nec facilisis.
+                                                    Nullam at feugiat diam. Vestibulum molestie lacinia dignissim.
+                                                    Sed euismod augue magna. Morbi posuere vulputate viverra.
+                                                    Proin nec risus quis nunc mollis fringilla quis sit amet ante.
+                                                    Aliquam ut nibh consectetur, imperdiet mi et, euismod mi.
+                                                    Vestibulum tristique vel arcu a facilisis.
+                                                    Maecenas tristique felis et nunc elementum aliquam.
+                                                    Etiam dictum nunc vel eros consectetur tincidunt.
+                                                    Maecenas sed consequat metus.
+                                                    Sed euismod augue magna.
+                                                    Morbi posuere vulputate viverra.
+                                                    Proin nec risus quis nunc mollis fringilla quis sit amet ante.
+                                                    Aliquam ut nibh consectetur, imperdiet mi et, euismod mi.
+                                                    Vestibulum tristique vel arcu a facilisis.
+                                                    Maecenas tristique felis et nunc elementum aliquam.
+                                                    Etiam dictum nunc vel eros consectetur tincidunt.
+                                                    Maecenas sed consequat metus.
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs>
+                                            <WorkspaceDetailsInfo/>
+                                        </Grid>
+                                    </Grid>
                                 </Box>
                             </div>
                         </Box>
