@@ -1,0 +1,1146 @@
+apps:
+  accounts:
+    admin: {pass: metacell, role: administrator, user: admin}
+    client: {id: rest-client, secret: 5678eb6e-9e2c-4ee5-bd54-34e7411339e8}
+    enabled: true
+    harness:
+      aliases: []
+      database:
+        auto: true
+        image_ref: null
+        name: keycloak-postgres
+        pass: password
+        postgres:
+          image: postgres:10.4
+          initialdb: auth_db
+          ports:
+          - {name: http, port: 5432}
+        resources:
+          limits: {cpu: 1000m, memory: 2Gi}
+          requests: {cpu: 100m, memory: 512Mi}
+        size: 2Gi
+        type: postgres
+        user: user
+      dependencies:
+        build: []
+        hard: []
+        soft: []
+      deployment:
+        auto: true
+        image: osb/accounts:latest
+        name: accounts
+        port: 8080
+        replicas: 1
+        resources: &id001
+          limits: {cpu: 500m, memory: 1024Mi}
+          requests: {cpu: 10m, memory: 512Mi}
+        volume: null
+      domain: null
+      env:
+      - {name: KEYCLOAK_IMPORT, value: /tmp/realm.json}
+      - {name: KEYCLOAK_USER, value: admin}
+      - {name: KEYCLOAK_PASSWORD, value: metacell}
+      - {name: PROXY_ADDRESS_FORWARDING, value: 'true'}
+      - {name: DB_VENDOR, value: POSTGRES}
+      - {name: DB_ADDR, value: keycloak-postgres}
+      - {name: DB_DATABASE, value: auth_db}
+      - {name: DB_USER, value: user}
+      - {name: DB_PASSWORD, value: password}
+      - {name: JAVA_OPTS, value: '-server -Xms64m -Xmx896m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+          -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman
+          -Djava.awt.headless=true  --add-exports=java.base/sun.nio.ch=ALL-UNNAMED
+          --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED'}
+      name: accounts
+      readinessProbe: {path: /auth/realms/master}
+      resources:
+      - {dst: /tmp/realm.json, name: realm-config, src: realm.json}
+      secrets: {api_user_password: password}
+      secured: false
+      service: {auto: true, name: accounts, port: 8080}
+      subdomain: accounts
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    harvest: true
+    image: osb/accounts:latest
+    name: accounts
+    port: 8080
+    resources: *id001
+    task-images: {}
+    webclient: {id: web-client, secret: 452952ae-922c-4766-b912-7b106271e34b}
+  accounts_api:
+    harness:
+      aliases: []
+      dependencies:
+        build: [cloudharness-base, cloudharness-flask]
+        hard: [accounts]
+        soft: []
+      deployment:
+        auto: true
+        image: osb/accounts-api:latest
+        name: accounts-api
+        port: 8080
+        replicas: 1
+        resources: &id002
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      livenessProbe: {path: /api/live}
+      name: accounts-api
+      readinessProbe: {path: /api/ready}
+      secrets: null
+      secured: false
+      service: {auto: true, name: accounts-api, port: 8080}
+      subdomain: api.accounts
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/accounts-api:latest
+    name: accounts-api
+    port: 8080
+    resources: *id002
+    task-images: {cloudharness-base: 'osb/cloudharness-base:latest', cloudharness-flask: 'osb/cloudharness-flask:latest'}
+  argo:
+    harness:
+      aliases: []
+      dependencies:
+        build: []
+        hard: []
+        soft: []
+      deployment:
+        auto: false
+        image: null
+        name: argo
+        port: 8080
+        replicas: 1
+        resources: &id003
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      name: argo
+      secrets: null
+      secured: true
+      service: {auto: false, name: argo-server, port: 2746}
+      subdomain: argo
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: null
+    name: argo
+    port: 8080
+    resources: *id003
+    serviceaccount: argo-workflows
+    task-images: {}
+  common:
+    harness:
+      aliases: []
+      dependencies:
+        build: [cloudharness-flask]
+        hard: []
+        soft: []
+      deployment:
+        auto: true
+        image: osb/common:latest
+        name: common
+        port: 8080
+        replicas: 1
+        resources: &id004
+          limits: {cpu: 200m, memory: 256Mi}
+          requests: {cpu: 50m, memory: 128Mi}
+        volume: null
+      domain: null
+      env:
+      - {name: SENTRY_DSN, value: 'https://fc2326dc50e34ac2b7188130e173f002@sentry.metacell.us/5'}
+      name: common
+      secrets: null
+      secured: false
+      service: {auto: true, name: common, port: 8080}
+      subdomain: common
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: true
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/common:latest
+    name: common
+    port: 8080
+    resources: *id004
+    task-images: {cloudharness-flask: 'osb/cloudharness-flask:latest'}
+  events:
+    harness:
+      aliases: []
+      dependencies:
+        build: []
+        hard: []
+        soft: []
+      deployment:
+        auto: false
+        image: null
+        name: events
+        port: 8080
+        replicas: 1
+        resources: &id005
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      env:
+      - {name: ZK_HOSTS, value: 'zookeeper:2181'}
+      name: events
+      secrets: null
+      secured: false
+      service: {auto: false, name: events-ui, port: 80}
+      subdomain: events
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: true, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: null
+    kafka:
+      name: bootstrap
+      port: 9092
+      resources:
+        limits: {cpu: 500m, memory: 600Mi}
+        requests: {cpu: 50m, memory: 100Mi}
+      storage: 100Mi
+    name: events
+    port: 8080
+    pzoo:
+      resources:
+        limits: {memory: 500Mi}
+        requests: {cpu: 10m, memory: 100Mi}
+      storage: 1Gi
+    resources: *id005
+    task-images: {}
+    zoo:
+      resources:
+        limits: {memory: 500Mi}
+        requests: {cpu: 10m, memory: 100Mi}
+      storage: 1Gi
+  jupyterhub:
+    cull: {concurrency: 10, enabled: true, every: 60, maxAge: 0, removeNamedServers: true,
+      timeout: 360, users: false}
+    custom: {}
+    debug: {enabled: false}
+    fullnameOverride: ''
+    global: {safeToShowValues: false}
+    harness:
+      aliases: []
+      dependencies:
+        build: [cloudharness-base]
+        hard: []
+        soft: [accounts]
+      deployment:
+        auto: false
+        image: osb/jupyterhub:latest
+        name: jupyterhub
+        port: 8081
+        replicas: 1
+        resources: &id006
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      name: jupyterhub
+      quotas: {quota-storage-max: 1.25, quota-ws-guaranteecpu: 0.2, quota-ws-guaranteemem: 0.5,
+        quota-ws-maxcpu: 1, quota-ws-maxmem: 1, quota-ws-open: 3}
+      secrets: null
+      secured: true
+      service: {auto: false, name: proxy-public, port: 80}
+      subdomain: hub
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    hub:
+      activeServerLimit: null
+      allowNamedServers: true
+      annotations: {}
+      args: []
+      authenticatePrometheus: null
+      baseUrl: /
+      command: []
+      concurrentSpawnLimit: 64
+      config:
+        JupyterHub: {admin_access: true, authenticator_class: ch}
+      consecutiveFailureLimit: 5
+      containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 1000,
+        runAsUser: 1000}
+      cookieSecret: null
+      db:
+        password: null
+        pvc:
+          accessModes: [ReadWriteOnce]
+          annotations: {}
+          selector: {}
+          storage: 1Gi
+          storageClassName: null
+          subPath: null
+        type: sqlite-pvc
+        upgrade: null
+        url: null
+      deploymentStrategy: {type: Recreate}
+      existingSecret: null
+      extraConfig: {spawner: 'c.Spawner.args = []', timing: 'c.Spawner.port = 8000
+
+          c.Spawner.http_timeout = 300
+
+          c.Spawner.start_timeout = 300
+
+          c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy":
+          "frame-ancestors ''self'' localhost localhost:3000 localhost:* *.osb.local
+          *.metacell.us *.opensourcebrain.org *.v2.opensourcebrain.org"}}
+
+          '}
+      extraContainers: []
+      extraEnv: {}
+      extraFiles: {}
+      extraPodSpec: {}
+      extraVolumeMounts: []
+      extraVolumes: []
+      fsGid: 1000
+      image:
+        name: jupyterhub/k8s-hub
+        pullPolicy: null
+        pullSecrets: []
+        tag: 1.1.3
+      initContainers: []
+      labels: {}
+      lifecycle: {}
+      livenessProbe: {enabled: true, failureThreshold: 30, initialDelaySeconds: 300,
+        periodSeconds: 10, timeoutSeconds: 3}
+      namedServerLimitPerUser: null
+      networkPolicy:
+        allowedIngressPorts: []
+        egress:
+        - to:
+          - ipBlock: {cidr: 0.0.0.0/0}
+        enabled: false
+        ingress: []
+        interNamespaceAccessLabels: ignore
+      nodeSelector: {}
+      pdb: {enabled: false, maxUnavailable: null, minAvailable: 1}
+      readinessProbe: {enabled: true, failureThreshold: 1000, initialDelaySeconds: 0,
+        periodSeconds: 2, timeoutSeconds: 1}
+      redirectToServer: null
+      resources: {}
+      service:
+        annotations: {}
+        extraPorts: []
+        loadBalancerIP: null
+        ports: {nodePort: null}
+        type: ClusterIP
+      serviceAccount:
+        annotations: {}
+      services: {}
+      shutdownOnLogout: null
+      templatePaths: []
+      templateVars: {}
+      tolerations: []
+    image: osb/jupyterhub:latest
+    imagePullSecret: {automaticReferenceInjection: true, create: false, email: null,
+      password: null, registry: null, username: null}
+    imagePullSecrets: []
+    ingress:
+      annotations: {}
+      enabled: false
+      hosts: []
+      pathSuffix: null
+      pathType: Prefix
+      tls: []
+    name: jupyterhub
+    nameOverride: null
+    port: 8081
+    prePuller:
+      annotations: {}
+      containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+        runAsUser: 65534}
+      continuous: {enabled: false}
+      extraImages: {}
+      extraTolerations: []
+      hook:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        enabled: false
+        image:
+          name: jupyterhub/k8s-image-awaiter
+          pullPolicy: null
+          pullSecrets: []
+          tag: 1.1.3
+        nodeSelector: {}
+        podSchedulingWaitDuration: 10
+        pullOnlyOnChanges: true
+        resources: {}
+        serviceAccount:
+          annotations: {}
+        tolerations: []
+      pause:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        image:
+          name: k8s.gcr.io/pause
+          pullPolicy: null
+          pullSecrets: []
+          tag: '3.5'
+      pullProfileListImages: false
+      resources: {}
+    proxy:
+      annotations: {}
+      chp:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        defaultTarget: null
+        errorTarget: null
+        extraCommandLineFlags: []
+        extraEnv: {}
+        extraPodSpec: {}
+        image:
+          name: jupyterhub/configurable-http-proxy
+          pullPolicy: null
+          pullSecrets: []
+          tag: 4.5.0
+        livenessProbe: {enabled: true, initialDelaySeconds: 60, periodSeconds: 10}
+        networkPolicy:
+          allowedIngressPorts: [http, https]
+          egress:
+          - to:
+            - ipBlock: {cidr: 0.0.0.0/0}
+          enabled: false
+          ingress: []
+          interNamespaceAccessLabels: ignore
+        nodeSelector: {}
+        pdb: {enabled: false, maxUnavailable: null, minAvailable: 1}
+        readinessProbe: {enabled: true, failureThreshold: 1000, initialDelaySeconds: 0,
+          periodSeconds: 2}
+        resources: {}
+        tolerations: []
+      deploymentStrategy: {rollingUpdate: null, type: Recreate}
+      https:
+        enabled: false
+        hosts: []
+        letsencrypt: {acmeServer: 'https://acme-v02.api.letsencrypt.org/directory',
+          contactEmail: null}
+        manual: {cert: null, key: null}
+        secret: {crt: tls.crt, key: tls.key, name: null}
+        type: letsencrypt
+      labels: {}
+      secretSync:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        image:
+          name: jupyterhub/k8s-secret-sync
+          pullPolicy: null
+          pullSecrets: []
+          tag: 1.1.3
+        resources: {}
+      secretToken: null
+      service:
+        annotations: {}
+        disableHttpPort: false
+        extraPorts: []
+        labels: {}
+        loadBalancerIP: null
+        loadBalancerSourceRanges: []
+        nodePorts: {http: null, https: null}
+        type: NodePort
+      traefik:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        extraDynamicConfig: {}
+        extraEnv: {}
+        extraPodSpec: {}
+        extraPorts: []
+        extraStaticConfig: {}
+        extraVolumeMounts: []
+        extraVolumes: []
+        hsts: {includeSubdomains: false, maxAge: 15724800, preload: false}
+        image:
+          name: traefik
+          pullPolicy: null
+          pullSecrets: []
+          tag: v2.4.11
+        labels: {}
+        networkPolicy:
+          allowedIngressPorts: [http, https]
+          egress:
+          - to:
+            - ipBlock: {cidr: 0.0.0.0/0}
+          enabled: true
+          ingress: []
+          interNamespaceAccessLabels: ignore
+        nodeSelector: {}
+        pdb: {enabled: false, maxUnavailable: null, minAvailable: 1}
+        resources: {}
+        serviceAccount:
+          annotations: {}
+        tolerations: []
+    rbac: {enabled: true}
+    resources: *id006
+    scheduling:
+      corePods:
+        nodeAffinity: {matchNodePurpose: prefer}
+        tolerations:
+        - {effect: NoSchedule, key: hub.jupyter.org/dedicated, operator: Equal, value: core}
+        - {effect: NoSchedule, key: hub.jupyter.org_dedicated, operator: Equal, value: core}
+      podPriority: {defaultPriority: 0, enabled: false, globalDefault: false, userPlaceholderPriority: -10}
+      userPlaceholder:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        enabled: true
+        image:
+          name: k8s.gcr.io/pause
+          pullPolicy: null
+          pullSecrets: []
+          tag: '3.5'
+        replicas: 0
+        resources: {}
+      userPods:
+        nodeAffinity: {matchNodePurpose: prefer}
+        tolerations:
+        - {effect: NoSchedule, key: hub.jupyter.org/dedicated, operator: Equal, value: user}
+        - {effect: NoSchedule, key: hub.jupyter.org_dedicated, operator: Equal, value: user}
+      userScheduler:
+        containerSecurityContext: {allowPrivilegeEscalation: false, runAsGroup: 65534,
+          runAsUser: 65534}
+        enabled: false
+        extraPodSpec: {}
+        image:
+          name: k8s.gcr.io/kube-scheduler
+          pullPolicy: null
+          pullSecrets: []
+          tag: v1.19.13
+        logLevel: 4
+        nodeSelector: {}
+        pdb: {enabled: true, maxUnavailable: 1, minAvailable: null}
+        plugins:
+          score:
+            disabled:
+            - {name: SelectorSpread}
+            - {name: TaintToleration}
+            - {name: PodTopologySpread}
+            - {name: NodeResourcesBalancedAllocation}
+            - {name: NodeResourcesLeastAllocated}
+            - {name: NodePreferAvoidPods}
+            - {name: NodeAffinity}
+            - {name: InterPodAffinity}
+            - {name: ImageLocality}
+            enabled:
+            - {name: NodePreferAvoidPods, weight: 161051}
+            - {name: NodeAffinity, weight: 14631}
+            - {name: InterPodAffinity, weight: 1331}
+            - {name: NodeResourcesMostAllocated, weight: 121}
+            - {name: ImageLocality, weight: 11}
+        replicas: 2
+        resources: {}
+        serviceAccount:
+          annotations: {}
+        tolerations: []
+    singleuser:
+      cloudMetadata: {blockWithIptables: false}
+      cmd: /usr/local/bin/start-singleuser.sh
+      cpu: {guarantee: 0.2, limit: 1}
+      defaultUrl: null
+      events: true
+      extraAnnotations: {}
+      extraContainers: []
+      extraEnv: {}
+      extraFiles: {}
+      extraLabels: {hub.jupyter.org/network-access-hub: 'true'}
+      extraNodeAffinity:
+        preferred: []
+        required: []
+      extraPodAffinity:
+        preferred: []
+        required: []
+      extraPodAntiAffinity:
+        preferred: []
+        required: []
+      extraPodConfig: {}
+      extraResource:
+        guarantees: {}
+        limits: {}
+      extraTolerations: []
+      fsGid: 100
+      image:
+        name: jupyter/base-notebook
+        pullPolicy: null
+        pullSecrets: []
+        tag: hub-1.4.2
+      initContainers: []
+      lifecycleHooks: {}
+      memory: {guarantee: 0.5G, limit: 1G}
+      networkPolicy:
+        allowedIngressPorts: []
+        egress:
+        - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+              except: [169.254.169.254/32]
+        enabled: false
+        ingress: []
+        interNamespaceAccessLabels: ignore
+      networkTools:
+        image:
+          name: jupyterhub/k8s-network-tools
+          pullPolicy: null
+          pullSecrets: []
+          tag: 1.1.3
+      nodeSelector: {}
+      podNameTemplate: null
+      profileList: []
+      serviceAccountName: null
+      startTimeout: 300
+      storage:
+        capacity: 2Mi
+        dynamic:
+          pvcNameTemplate: osb-user-{userid}
+          storageAccessModes: [ReadWriteOnce]
+          storageClass: '{{namespace}}-nfs-client'
+          volumeNameTemplate: osb-user-{userid}
+        extraLabels: {}
+        extraVolumeMounts: []
+        extraVolumes: []
+        homeMountPath: /opt/user
+        static: {pvcName: null, subPath: '{username}'}
+        type: dynamic
+      uid: 1000
+    task-images: {cloudharness-base: 'osb/cloudharness-base:latest'}
+  jupyterlab_minimal:
+    harness:
+      aliases: []
+      dependencies:
+        build: [cloudharness-base]
+        hard: [jupyterhub]
+        soft: []
+      deployment:
+        auto: false
+        image: osb/jupyterlab-minimal:latest
+        name: jupyterlab-minimal
+        port: 8080
+        replicas: 1
+        resources: &id007
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      jupyterhub:
+        applicationHook: osb_jupyter.change_pod_manifest
+        args: [--debug, --NotebookApp.default_url=/lab, --NotebookApp.notebook_dir=/opt/workspace]
+        extraConfig: {timing: 'c.Spawner.port = 8000
+
+            c.Spawner.http_timeout = 300
+
+            c.Spawner.start_timeout = 300
+
+
+            c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy":
+            "frame-ancestors ''self'' localhost:3000 *.osb.local osb.local localhost
+            *.metacell.us *.opensourcebrain.org"}}
+
+            '}
+      name: jupyterlab-minimal
+      secrets: null
+      secured: false
+      service: {auto: false, name: proxy-public, port: 80}
+      subdomain: notebooks
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/jupyterlab-minimal:latest
+    name: jupyterlab-minimal
+    port: 8080
+    resources: *id007
+    task-images: {cloudharness-base: 'osb/cloudharness-base:latest'}
+  nfsserver:
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values: [nfs-server]
+          topologyKey: kubernetes.io/hostname
+    harness:
+      aliases: []
+      dependencies:
+        build: []
+        hard: []
+        soft: []
+      deployment:
+        auto: false
+        image: osb/nfsserver:latest
+        name: nfsserver
+        port: 8080
+        replicas: 1
+        resources: &id008
+          limits: {cpu: 100m, memory: 128Mi}
+          requests: {cpu: 10m, memory: 128Mi}
+        volume: null
+      domain: null
+      name: nfsserver
+      secrets: null
+      secured: false
+      service: {auto: false, name: nfsserver, port: 80}
+      subdomain: nfsserver
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/nfsserver:latest
+    labels: {}
+    leaderElection: {enabled: true}
+    name: nfsserver
+    nameOverride: nfs-provisioner
+    nfs:
+      mountOptions: [nolock, nfsvers=3, local_lock=all]
+      path: /exports
+      reclaimPolicy: Retain
+      server: null
+      useDNS: false
+      volumeName: nfs-subdir-external-provisioner-root
+    nodeSelector: {}
+    podAnnotations: {}
+    podSecurityContext: {}
+    podSecurityPolicy: {enabled: false}
+    port: 8080
+    rbac: {create: true}
+    replicaCount: 1
+    resources: *id008
+    securityContext: {}
+    server: {diskSize: 10Gi}
+    serviceAccount:
+      annotations: {}
+      create: true
+      name: null
+    storageClass:
+      accessModes: ReadWriteOnce
+      allowVolumeExpansion: true
+      annotations: {}
+      archiveOnDelete: true
+      create: true
+      defaultClass: false
+      name: nfs-client
+      onDelete: null
+      pathPattern: null
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+    strategyType: Recreate
+    task-images: {}
+    tolerations: []
+  notifications:
+    harness:
+      aliases: []
+      dependencies:
+        build: [cloudharness-base]
+        hard: []
+        soft: []
+      deployment:
+        auto: true
+        image: osb/notifications:latest
+        name: notifications
+        port: 8080
+        replicas: 1
+        resources: &id009
+          limits: {cpu: 100m, memory: 256Mi}
+          requests: {cpu: 25m, memory: 64Mi}
+        volume: null
+      domain: null
+      events:
+        cdc:
+        - app: workspaces
+          types:
+          - events: [create]
+            name: workspace
+          - events: [create]
+            name: osbrepository
+      name: notifications
+      secrets: {email-password: null, email-user: null}
+      secured: false
+      service: {auto: false, name: notifications, port: 80}
+      subdomain: notifications
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/notifications:latest
+    name: notifications
+    notification:
+      channels:
+        admins: null
+        log:
+          adapter: email
+          backends: [console]
+          from: info@example.com
+          templateFolder: text
+          to: [info@example.com]
+      operations:
+        create:
+          channels: [admins]
+          subject: New {{ message_type }} - {{ domain }}
+          template: model-instance-create
+        delete:
+          channels: [admins]
+          subject: Delete {{ message_type }} - {{ domain }}
+          template: model-instance-delete
+        update:
+          channels: [admins]
+          subject: Update {{ message_type }} - {{ domain }}
+          template: model-instance-update
+    port: 8080
+    resources: *id009
+    task-images: {cloudharness-base: 'osb/cloudharness-base:latest'}
+  osb_portal:
+    harness:
+      accounts:
+        users:
+        - clientRoles: []
+          email: testuser@opensourcebrain.org
+          realmRoles: []
+          username: testuser
+      aliases: []
+      dependencies:
+        build: [cloudharness-base, cloudharness-frontend-build]
+        hard: []
+        soft: [accounts-api, workspaces, jupyterhub, notifications, jupyterlab-minimal]
+      deployment:
+        auto: true
+        image: osb/osb-portal:latest
+        name: osb-portal
+        port: 80
+        replicas: 1
+        resources: &id010
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      name: osb-portal
+      resources:
+      - {dst: /usr/share/nginx/html/keycloak.json, name: keycloak, src: keycloak.json}
+      secrets: null
+      secured: false
+      sentry: false
+      service: {auto: true, name: osb-portal, port: 80}
+      subdomain: www
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: true, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services:
+      - {name: workspaces}
+      - {name: common}
+      - {name: accounts-api}
+    image: osb/osb-portal:latest
+    name: osb-portal
+    port: 80
+    resources: *id010
+    task-images: {cloudharness-base: 'osb/cloudharness-base:latest', cloudharness-frontend-build: 'osb/cloudharness-frontend-build:latest'}
+  workflows:
+    harness:
+      aliases: []
+      dependencies:
+        build: [cloudharness-flask]
+        hard: [argo]
+        soft: []
+      deployment:
+        auto: true
+        image: osb/workflows:latest
+        name: workflows
+        port: 8080
+        replicas: 1
+        resources: &id011
+          limits: {cpu: 500m, memory: 500Mi}
+          requests: {cpu: 10m, memory: 32Mi}
+        volume: null
+      domain: null
+      name: workflows
+      secrets: null
+      secured: false
+      service: {auto: true, name: workflows, port: 8080}
+      subdomain: workflows
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: true
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: []
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/workflows:latest
+    name: workflows
+    port: 8080
+    resources: *id011
+    task-images: {cloudharness-flask: 'osb/cloudharness-flask:latest', workflows-extract-download: 'osb/workflows-extract-download:latest',
+      workflows-notify-queue: 'osb/workflows-notify-queue:latest', workflows-send-result-event: 'osb/workflows-send-result-event:latest'}
+  workspaces:
+    harness:
+      aliases: []
+      database:
+        auto: false
+        datavolume: /opt/data/
+        image: postgres:13
+        image_ref: null
+        initialdb: workspaces
+        name: workspaces-postgres-host
+        pass: metacell
+        password: secret
+        pgdata: /opt/data/pgdata
+        port: 5432
+        postgres:
+          image: postgres:13
+          initialdb: cloudharness
+          ports:
+          - {name: http, port: 5432}
+        resources:
+          limits: {cpu: 500m, memory: 256Mi}
+          requests: {cpu: 200m, memory: 128Mi}
+        size: 1Gi
+        type: postgres
+        user: workspace
+      dependencies:
+        build: [cloudharness-base, cloudharness-flask]
+        hard: [argo, accounts]
+        soft: [events, common, workflows, notifications, nfsserver]
+      deployment:
+        auto: true
+        image: osb/workspaces:latest
+        name: workspaces
+        port: 8080
+        replicas: 1
+        resources: &id012
+          limits: {cpu: 1500m, memory: 512Mi}
+          requests: {cpu: 200m, memory: 128Mi}
+        volume: {mountpath: /usr/src/app/workspaces/static/workspaces, name: workspaces-images,
+          size: 4G}
+      domain: null
+      livenessProbe: {initialDelaySeconds: 5, path: /api/live, periodSeconds: 15}
+      name: workspaces
+      quotas: {quota-ws-max: 5, quota-ws-storage-max: 1}
+      readinessProbe: {initialDelaySeconds: 10, path: /api/ready, periodSeconds: 15}
+      secrets: {github-token: null, github-user: null}
+      secured: false
+      sentry: false
+      service: {auto: true, name: workspaces, port: 8080}
+      subdomain: workspaces
+      test:
+        api:
+          autotest: true
+          checks: [all]
+          enabled: false
+          runParams: []
+        e2e: {enabled: false, ignoreConsoleErrors: false, ignoreRequestErrors: false,
+          smoketest: true}
+        unit:
+          commands: [pytest -c /usr/src/app/]
+          enabled: true
+      uri_role_mapping:
+      - roles: [administrator]
+        uri: /*
+      - {uri: /api/openapi.json, white-listed: true}
+      use_services: []
+    image: osb/workspaces:latest
+    name: workspaces
+    port: 8080
+    resources: *id012
+    task-images: {cloudharness-base: 'osb/cloudharness-base:latest', cloudharness-flask: 'osb/cloudharness-flask:latest',
+      workspaces-dandi-copy: 'osb/workspaces-dandi-copy:latest', workspaces-figshare-copy: 'osb/workspaces-figshare-copy:latest',
+      workspaces-github-copy: 'osb/workspaces-github-copy:latest', workspaces-scan-workspace: 'osb/workspaces-scan-workspace:latest'}
+    workspace_size: 10Mi
+backup:
+  active: false
+  dir: /backups
+  keep_days: '7'
+  keep_months: '6'
+  keep_weeks: '4'
+  resources:
+    limits: {cpu: 50m, memory: 64Mi}
+    requests: {cpu: 25m, memory: 32Mi}
+  schedule: '*/5 * * * *'
+  suffix: .gz
+  volumesize: 2Gi
+domain: osb.local
+env:
+- {name: CH_VERSION, value: 0.0.1}
+- {name: CH_CHART_VERSION, value: 0.0.1}
+- {name: CH_NFSSERVER_SUBDOMAIN, value: nfsserver}
+- {name: CH_NFSSERVER_NAME, value: nfsserver}
+- {name: CH_NOTIFICATIONS_SUBDOMAIN, value: notifications}
+- {name: CH_NOTIFICATIONS_NAME, value: notifications}
+- {name: CH_ACCOUNTS_SUBDOMAIN, value: accounts}
+- {name: CH_ACCOUNTS_NAME, value: accounts}
+- {name: CH_JUPYTERHUB_SUBDOMAIN, value: hub}
+- {name: CH_JUPYTERHUB_NAME, value: jupyterhub}
+- {name: CH_ARGO_SUBDOMAIN, value: argo}
+- {name: CH_ARGO_NAME, value: argo}
+- {name: CH_COMMON_SUBDOMAIN, value: common}
+- {name: CH_COMMON_NAME, value: common}
+- {name: CH_EVENTS_SUBDOMAIN, value: events}
+- {name: CH_EVENTS_NAME, value: events}
+- {name: CH_WORKFLOWS_SUBDOMAIN, value: workflows}
+- {name: CH_WORKFLOWS_NAME, value: workflows}
+- {name: CH_WORKSPACES_SUBDOMAIN, value: workspaces}
+- {name: CH_WORKSPACES_NAME, value: workspaces}
+- {name: CH_ACCOUNTS_API_SUBDOMAIN, value: api.accounts}
+- {name: CH_ACCOUNTS_API_NAME, value: accounts-api}
+- {name: CH_OSB_PORTAL_SUBDOMAIN, value: www}
+- {name: CH_OSB_PORTAL_NAME, value: osb-portal}
+- {name: CH_JUPYTERLAB_MINIMAL_SUBDOMAIN, value: notebooks}
+- {name: CH_JUPYTERLAB_MINIMAL_NAME, value: jupyterlab-minimal}
+- {name: CH_DOMAIN, value: osb.local}
+- {name: CH_IMAGE_REGISTRY, value: ''}
+- {name: CH_IMAGE_TAG, value: latest}
+ingress:
+  enabled: true
+  letsencrypt: {email: filippo@metacell.us}
+  name: cloudharness-ingress
+  ssl_redirect: false
+local: true
+localIp: 172.21.58.243
+mainapp: osb-portal
+name: osb
+namespace: osblocal
+privenv:
+- {name: CH_SECRET, value: In God we trust; all others must bring data. ― W. Edwards
+    Deming}
+registry: {name: '', secret: ''}
+secured_gatekeepers: false
+smtp: {host: smtp.ionos.co.uk, port: 587}
+tag: latest
+task-images: {cloudharness-base: 'osb/cloudharness-base:latest', cloudharness-flask: 'osb/cloudharness-flask:latest',
+  cloudharness-frontend-build: 'osb/cloudharness-frontend-build:latest', workflows-extract-download: 'osb/workflows-extract-download:latest',
+  workflows-notify-queue: 'osb/workflows-notify-queue:latest', workflows-send-result-event: 'osb/workflows-send-result-event:latest',
+  workspaces-dandi-copy: 'osb/workspaces-dandi-copy:latest', workspaces-figshare-copy: 'osb/workspaces-figshare-copy:latest',
+  workspaces-github-copy: 'osb/workspaces-github-copy:latest', workspaces-scan-workspace: 'osb/workspaces-scan-workspace:latest'}
+tls: false

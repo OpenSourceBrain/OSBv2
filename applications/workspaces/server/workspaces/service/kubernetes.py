@@ -11,4 +11,4 @@ import workspaces.repository as repos
 
 def create_volume(name, size="2G"):
     from cloudharness.service import pvc
-    pvc.create_persistent_volume_claim(name, size, log)
+    pvc.create_persistent_volume_claim(name=name, size=size, logger=log, useNFS=True)
