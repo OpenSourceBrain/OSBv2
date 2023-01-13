@@ -61,7 +61,7 @@ export const WorkspaceToolBox = (props: any) => {
       <Box>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span">
+            <StyledContainerBox component="span" id="computational-modeling">
               <WorkspaceItem
                 icon={<WorkspaceIcon />}
                 title="Computational modeling"
@@ -72,7 +72,7 @@ export const WorkspaceToolBox = (props: any) => {
             </StyledContainerBox>
           </Grid>
           <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span">
+            <StyledContainerBox component="span" id="data-analysis">
               <WorkspaceItem
                 icon={<DataAnalystIcon />}
                 title="Data analysis"
@@ -83,7 +83,7 @@ export const WorkspaceToolBox = (props: any) => {
             </StyledContainerBox>
           </Grid>
           <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span">
+            <StyledContainerBox component="span" id="interactive-development">
               <WorkspaceItem
                 icon={<ComputationalModeling />}
                 title="Interactive development"
@@ -94,7 +94,7 @@ export const WorkspaceToolBox = (props: any) => {
             </StyledContainerBox>
           </Grid>
           <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span">
+            <StyledContainerBox component="span" id="workspace-from-repository">
               <WorkspaceItem
                 className="from-repository-create-workspace-item"
                 icon={<WorkspaceFromRepository />}

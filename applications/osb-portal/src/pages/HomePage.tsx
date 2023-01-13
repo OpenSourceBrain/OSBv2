@@ -173,7 +173,7 @@ export const HomePage = (props: any) => {
             className="verticalFill"
           >
             <Box width={1} className="verticalFit">
-              <div id="repositories-list" className="verticalFit">
+              <div id="workspaces-list" className="verticalFit">
                 <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
                   <Box
                     display="flex"

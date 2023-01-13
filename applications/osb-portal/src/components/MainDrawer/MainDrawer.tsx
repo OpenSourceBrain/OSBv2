@@ -380,7 +380,7 @@ export const MainDrawer = (props: any) => {
           </div>
           <Toolbar className={classes.toolbar}>
             <Button
-              id="demo-positioned-button"
+              id="create-new-workspace-repository"
               aria-controls={open ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
@@ -399,8 +399,8 @@ export const MainDrawer = (props: any) => {
               Create new
             </Button>
             <Menu
-              id="demo-positioned-menu"
-              aria-labelledby="demo-positioned-button"
+              id="create-new-workspace-repository-menu"
+              aria-labelledby="create-new-workspace-repository-menu"
               open={openCreatMenu}
               onClose={handleCloseCreatMenu}
               anchorEl={anchorEl}
