@@ -1,15 +1,9 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import makeStyles from '@mui/styles/makeStyles';
-import {
-  Typography,
-  Box,
-  Button,
-  Grid,
-  CircularProgress,
-} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
+import { Typography, Box, Button, Grid, CircularProgress } from "@mui/material";
 
-import { Repositories } from "../index";
+import { RepositoriesList as Repositories } from "../../pages/Repositories/RespositoriesTable";
 import { WorkspaceEditor } from "../index";
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import OSBChipList from "../common/OSBChipList";
@@ -25,6 +19,8 @@ import OSBDialog from "../common/OSBDialog";
 import { fontColor, bgInputs, radius, bgLight, bgDarker } from "../../theme";
 import Link from "@mui/material/Link";
 import { RootState } from "../../store/rootReducer";
+import SearchReposWorkspaces from "../common/SearchReposWorkspaces";
+import RepositoriesSearch from "../repository/RepositoriesSearch";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -140,7 +136,8 @@ export const WorkspaceFromRepository = ({
 
   const user = useSelector((state: RootState) => state.user);
   const classes = useStyles();
-  const [selectedRepository, setSelectedRepository] = React.useState<OSBRepository>(null);
+  const [selectedRepository, setSelectedRepository] =
+    React.useState<OSBRepository>(null);
 
   enum Stage {
     SELECT_REPO,
@@ -284,36 +281,50 @@ export const WorkspaceFromRepository = ({
 
     return repositories ? (
       <>
-        <Box className={classes.repositoriesList}>
-          <Repositories
-            repositories={repositories}
-            handleRepositoryClick={(repository) => {
-              setSelectedRepository(repository);
-              setStage(Stage.SELECT_FILES);
-            }}
-            showSimpleVersion={true}
-            searchRepositories={true}
-            filterChanged={setFilter}
-
-          />
-          {totalPages > 1 ? (
-            <OSBPagination
-              page={page}
-              totalPages={totalPages}
-              handlePageChange={handlePageChange}
-              color="primary"
-              showFirstButton={true}
-              showLastButton={true}
-            />
-          ) : null}
-          <Grid container={true} className={classes.info}>
-            <Grid item={true}>
-              <Typography component="h6" className={classes.helperDialogText}>
-                If you can't find what you're looking for, go{" "}
-                <Link href="/repositories" underline="hover">here</Link> to explore all the OSB
-                repositories, or add a new one.
-              </Typography>
+        <Box width={1} className="verticalFit">
+          <Grid
+            container={true}
+            alignItems="center"
+            className="verticalFill"
+            spacing={1}
+          >
+            <Grid item={true} xs={12} className="verticalFill">
+              <RepositoriesSearch borderRadius={5} filterChanged={setFilter} />
             </Grid>
+            <Grid item={true} xs={12} className="verticalFill">
+              <Box
+                sx={{
+                  width: "100%",
+                  maxHeight: "375px",
+                  overflow: "scroll",
+                  "&::-webkit-scrollbar": {
+                    width: 2,
+                    height: 2,
+                    color: "red",
+                  },
+                }}
+              >
+                <Repositories
+                  repositories={repositories}
+                  handleRepositoryClick={(repository) => {
+                    setSelectedRepository(repository);
+                    setStage(Stage.SELECT_FILES);
+                  }}
+                />
+              </Box>
+            </Grid>
+            {totalPages > 1 ? (
+              <Grid item={true} xs={12} className="verticalFill">
+                <OSBPagination
+                  page={page}
+                  count={totalPages}
+                  onChange={handlePageChange}
+                  showFirstButton={true}
+                  showLastButton={true}
+                  removeTopBorder={true}
+                />
+              </Grid>
+            ) : null}
           </Grid>
         </Box>
       </>
@@ -340,7 +351,6 @@ export const WorkspaceFromRepository = ({
         title="Create new workspace"
         open={true}
         closeAction={handleClose}
-        maxWidth="md"
       >
         {children}
       </OSBDialog>
@@ -360,7 +370,11 @@ export const WorkspaceFromRepository = ({
           <WorkspaceEditor
             title={"Create new workspace"}
             open={true}
-            workspace={{...defaultWorkspace, name: selectedRepository.name, tags: selectedRepository.tags}}
+            workspace={{
+              ...defaultWorkspace,
+              name: selectedRepository.name,
+              tags: selectedRepository.tags,
+            }}
             onLoadWorkspace={onWorkspaceCreated}
             closeHandler={handleClose}
             user={user}

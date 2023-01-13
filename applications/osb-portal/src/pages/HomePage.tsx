@@ -19,7 +19,6 @@ import {
   StyledActiveIconButton,
   StyledGrid,
   StyledIconButton,
-  StyledPagination,
   StyledTabs,
 } from "./Repositories/RepositoriesPage";
 
@@ -35,6 +34,7 @@ import searchFilter from "../types/searchFilter";
 import workspaceService from "../service/WorkspaceService";
 import WorkspacesList from "../components/workspace/WorkspacesTable";
 import { Tag } from "../apiclient/workspaces";
+import OSBPagination from "../components/common/OSBPagination";
 
 export const HomePage = (props: any) => {
   const history = useHistory();
@@ -333,8 +333,8 @@ export const HomePage = (props: any) => {
                   />
                 )}
               </div>
-              {workspaces && (
-                <StyledPagination
+              {workspaces && totalPages > 1 && (
+                <OSBPagination
                   count={totalPages}
                   page={page}
                   onChange={handleChangePage}

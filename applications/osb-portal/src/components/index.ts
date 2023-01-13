@@ -32,7 +32,6 @@ import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
 import { UserPage as userPage } from "../pages/UserPage";
 import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
 import { HomePage as homePage } from "../pages/HomePage";
-import repositories from "../components/repository/Repositories";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
 import WorkspaceActionsMenuUnbound from "./workspace/WorkspaceActionsMenu";
@@ -124,7 +123,6 @@ export const WorkspaceCard = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspaceCard);
-export const Repositories = connect(mapUserStateToProps)(repositories);
 export const HomePage = connect(
   mapUserAndTagsToProps,
   dispatchTagsProps

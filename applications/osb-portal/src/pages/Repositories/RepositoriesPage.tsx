@@ -15,6 +15,8 @@ import { HomePageSider } from "../../components";
 import RepositoriesCards from "./RepositoriesCards";
 import RepositoriesTable from "./RespositoriesTable";
 import SearchReposWorkspaces from "../../components/common/SearchReposWorkspaces";
+import Chip from "@mui/material/Chip";
+import OSBPagination from "../../components/common/OSBPagination";
 
 //Icons
 import WindowIcon from "@mui/icons-material/Window";
@@ -42,7 +44,6 @@ import {
   primaryColor,
 } from "../../theme";
 import styled from "@mui/system/styled";
-import { Chip } from "@mui/material";
 
 enum RepositoriesTab {
   all,
@@ -94,17 +95,6 @@ export const StyledTabs = styled(Tab)(() => ({
 export const StyledGrid = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     padding: "12px 24px !important",
-  },
-}));
-
-export const StyledPagination = styled(Pagination)(() => ({
-  display: "flex",
-  justifyContent: "center",
-  padding: ".88rem",
-  borderTop: `1px solid ${lineColor}`,
-
-  "& .Mui-selected": {
-    backgroundColor: primaryColor,
   },
 }));
 
@@ -377,13 +367,13 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                   />
                 )}
               </div>
-              {repositories && (
-                <StyledPagination
+              {repositories && totalPages > 1 && (
+                <OSBPagination
                   count={totalPages}
                   page={page}
                   onChange={handleChangePage}
-                  showFirstButton
-                  showLastButton
+                  showFirstButton={true}
+                  showLastButton={true}
                 />
               )}
             </Box>

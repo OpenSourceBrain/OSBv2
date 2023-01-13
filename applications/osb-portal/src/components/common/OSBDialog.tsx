@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "16px",
 
     "& .MuiDialogContent-root": {
+      "&::-webkit-scrollbar": {
+        width: 2,
+        height: 2,
+      },
+      backgroundColor: bgDarker,
       padding: 0,
     },
     "& .MuiDialogTitle-root": {

@@ -48,16 +48,17 @@ import searchFilter from "../../types/searchFilter";
 interface RepositoriesProps {
   repositories: OSBRepository[];
   handleRepositoryClick: (repository: OSBRepository) => void;
-  handleTagClick: (tagObject: Tag) => void;
-  handleTagUnclick: (tagObject: Tag) => void;
-  handleTypeClick: (type: string) => void;
-  handleTypeUnclick: (type: string) => void;
-  searchFilterValues: searchFilter;
+  handleTagClick?: (tagObject: Tag) => void;
+  handleTagUnclick?: (tagObject: Tag) => void;
+  handleTypeClick?: (type: string) => void;
+  handleTypeUnclick?: (type: string) => void;
+  searchFilterValues?: searchFilter;
   user?: UserInfo;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const StyledTableContainer = styled(TableContainer)(() => ({
+  overflowX: "inherit",
   "& .MuiChip-root": {
     margin: "0 8px 8px 0",
     backgroundColor: chipBg,
