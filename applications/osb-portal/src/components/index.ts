@@ -24,7 +24,7 @@ import { userLogin, userLogout, userRegister } from "../store/actions/user";
 import { toggleDrawer } from "../store/actions/drawer";
 import { setError } from "../store/actions/error";
 import { openDialog, closeDialog } from "../store/actions/aboutdialog";
-import newWorkspaceAskUser from "./workspace/NewWorkspaceAskUser";
+import { NewWorkspaceAskUser as newWorkspaceAskUser } from "./workspace/NewWorkspaceAskUser";
 import { AnyAction, Dispatch } from "redux";
 
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
@@ -47,7 +47,7 @@ const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   user: state.user,
 });
 
-const dispatchWorkspaceProps = {
+export const dispatchWorkspaceProps = {
   login: userLogin,
   logout: userLogout,
   ...WorkspacesActions,

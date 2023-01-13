@@ -44,6 +44,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import OSBDialog from "../common/OSBDialog";
+import { NewWorkspaceAskUser } from "..";
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
@@ -185,6 +187,7 @@ export const MainDrawer = (props: any) => {
   const [open, setOpen] = React.useState(false);
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [askLoginOpen, setAskLoginOpen] = React.useState(false);
 
   const openCreatMenu = Boolean(anchorEl);
 
@@ -200,8 +203,12 @@ export const MainDrawer = (props: any) => {
     : "Lets do some science!";
 
   const handleOpenDialog = (type) => {
-    type === "workspace" ? setOpenWorkspaceDialog(true) : null;
-    setAnchorEl(null);
+    if (!props.user) {
+      setAskLoginOpen(true);
+    } else {
+      type === "workspace" ? setOpenWorkspaceDialog(true) : null;
+      setAnchorEl(null);
+    }
   };
 
   const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
@@ -219,6 +226,8 @@ export const MainDrawer = (props: any) => {
   const handleAboutDialogOpen = () => {
     props.openDialog();
   };
+
+  const closeAskLogin = () => setAskLoginOpen(false);
 
   return (
     <>
@@ -417,6 +426,14 @@ export const MainDrawer = (props: any) => {
         dialogOpen={openWorkspaceDialog}
         handleClose={handleCloseWorkspaceDialog}
       />
+
+      <OSBDialog
+        title="Create new workspace"
+        open={askLoginOpen}
+        closeAction={closeAskLogin}
+      >
+        <NewWorkspaceAskUser />
+      </OSBDialog>
     </>
   );
 };

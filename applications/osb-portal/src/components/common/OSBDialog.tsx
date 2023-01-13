@@ -9,11 +9,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 
 //icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 //style
-import makeStyles from '@mui/styles/makeStyles';
-import { checkBoxColor, bgDarker, secondaryColor, paragraph, lightText, drawerText } from "../../theme";
+import makeStyles from "@mui/styles/makeStyles";
+import {
+  checkBoxColor,
+  bgDarker,
+  secondaryColor,
+  paragraph,
+  lightText,
+  drawerText,
+} from "../../theme";
 import clsx from "clsx";
 
 interface DialogProps {
@@ -23,56 +30,54 @@ interface DialogProps {
   maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
-  className?: string
+  className?: string;
 }
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
-    padding: '2rem',
+    padding: "2rem",
     backgroundColor: bgDarker,
-    backgroundImage: 'unset',
-    borderRadius: '16px',
+    backgroundImage: "unset",
+    borderRadius: "16px",
 
     "& .MuiDialogContent-root": {
       padding: 0,
     },
     "& .MuiDialogTitle-root": {
-      marginBottom: '1.572rem',
       padding: 0,
       color: secondaryColor,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
 
-      '& .MuiButtonBase-root': {
-        alignSelf: 'end',
+      "& .MuiButtonBase-root": {
+        alignSelf: "end",
         padding: 0,
 
-        '& .MuiSvgIcon-root': {
+        "& .MuiSvgIcon-root": {
           marginBottom: 0,
-        }
-      }
-
+        },
+      },
     },
   },
   closeIcon: {
     color: checkBoxColor,
   },
   createWorkspaceRepo: {
-    '& .MuiSvgIcon-root':{
-      marginBottom: theme.spacing(1)
+    "& .MuiSvgIcon-root": {
+      marginBottom: theme.spacing(1),
     },
-    '& .MuiTypography-caption':{
-        color: paragraph,
-        fontSize: '0.857rem'
+    "& .MuiTypography-caption": {
+      color: paragraph,
+      fontSize: "0.857rem",
     },
-    '& .MuiButtonBase-root': {
-      '&:hover': {
-        backgroundColor: 'transparent'
-      }
-    }
-  }
+    "& .MuiButtonBase-root": {
+      "&:hover": {
+        backgroundColor: "transparent",
+      },
+    },
+  },
 }));
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
@@ -83,7 +88,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   actions,
   maxWidth,
   className,
-  subTitle
+  subTitle,
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -98,7 +103,9 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   return (
     <Dialog
       PaperProps={{
-        className: className ? clsx(classes.dialog, classes[className]) : classes.dialog
+        className: className
+          ? clsx(classes.dialog, classes[className])
+          : classes.dialog,
       }}
       onClose={handleClose}
       open={open}
@@ -107,17 +114,23 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
     >
       <DialogTitle>
         <IconButton onClick={handleClose}>
-          <CloseIcon sx={{color: drawerText}} />
+          <CloseIcon sx={{ color: drawerText }} />
         </IconButton>
-        <Typography component="h1" variant="h1" align='center' sx={{fontWeight: 400, marginBottom: '1.143rem'}} >
+        <Typography
+          component="h1"
+          variant="h1"
+          align="center"
+          sx={{ fontWeight: 400, marginBottom: "1.143rem" }}
+        >
           {title}
         </Typography>
         <Typography
-            component="h5"
-            variant="h5"
-            color={lightText}
-            align='center'
-            sx={{ fontWeight: 400, letterSpacing: '0.02rem', lineHeight: 1.8 }}>
+          component="h5"
+          variant="h5"
+          color={lightText}
+          align="center"
+          sx={{ fontWeight: 400, letterSpacing: "0.02rem", lineHeight: 1.8 }}
+        >
           {subTitle}
         </Typography>
       </DialogTitle>
