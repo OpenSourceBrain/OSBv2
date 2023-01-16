@@ -93,6 +93,12 @@ const mapUserAndTagsToProps = (state: RootState) => ({
   tags: state.tags,
 });
 
+const mapHomePageToProps = (state: RootState) => ({
+  user: state.user,
+  tags: state.tags,
+  counter: state.workspaces?.counter,
+});
+
 const mapAboutDialogToProps = (state: RootState) => ({
   aboutDialog: state.aboutDialog,
 });
@@ -124,7 +130,7 @@ export const WorkspaceCard = connect(
   dispatchWorkspaceProps
 )(workspaceCard);
 export const HomePage = connect(
-  mapUserAndTagsToProps,
+  mapHomePageToProps,
   dispatchTagsProps
 )(homePage);
 export const EditRepoDialog = connect(

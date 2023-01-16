@@ -139,13 +139,15 @@ export const HomePage = (props: any) => {
       );
     }
   };
+
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
       getWorkspacesList();
     } else {
       getWorkspacesList({ searchFilterValues });
     }
-  }, [page, searchFilterValues, tabValue]);
+  }, [page, searchFilterValues, tabValue, props.counter]);
+
   return (
     <>
       <Box className="verticalFit">
