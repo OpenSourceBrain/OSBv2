@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
 //theme
 import { styled } from '@mui/styles';
-import { bgLightest as lineColor, paragraph, secondaryColor as white, linkColor, chipBg, headerBg as hoverBg } from '../../theme';
+import { bgLightest as lineColor, paragraph, secondaryColor as white, linkColor, chipBg, headerBg as hoverBg, bgDarkest } from '../../theme';
 
 //components
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Popper from '@mui/material/Popper';
 import Paper from '@mui/material/Paper';
@@ -15,6 +16,16 @@ import Grow from '@mui/material/Grow';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+import { canEditWorkspace } from "../../service/UserService";
+import { WorkspaceEditor } from '..';
+
+//types
+import {
+    Workspace,
+    WorkspaceResource,
+    OSBApplications,
+    OSBApplication,
+} from "../../types/workspace";
 
 //icons
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -49,9 +60,14 @@ const OpenWithButtonGroup = styled(ButtonGroup)(({ theme }) => ({
     border: `1px solid #000`,
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     borderRadius: '6px',
+    marginRight: '10px',
     '& .MuiButton-root': {
         textTransform: 'none'
-    }
+    },
+    '& .MuiButtonGroup-grouped:not(:last-of-type)': {
+        borderColor: 'none',
+        borderRight: '1px solid rgba(0, 0, 0, 0.2)'
+    },
 }));
 
 const ThreeDotButton = styled(Button)(({ theme }) => ({
@@ -61,13 +77,20 @@ const ThreeDotButton = styled(Button)(({ theme }) => ({
     boxShadow: 'none',
     '&:hover': {
         background: 'transparent'
-    }
+    },
 }));
 
-const WorkspaceNavbar = () => {
+const WorkspaceNavbar = (props: any) => {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
+
+    const history = useHistory();
+    const workspace: Workspace = props.workspace;
+    const { workspaceId } = useParams<{ workspaceId: string }>();
+    const user = props.user;
+    const canEdit = canEditWorkspace(props.user, workspace);
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -83,17 +106,47 @@ const WorkspaceNavbar = () => {
 
         setOpen(false);
     };
+    const handleCloseEditWorkspace = () => {
+        props.refreshWorkspace(workspaceId);
+        setEditWorkspaceOpen(false);
+    };
 
     return (
-        <Box
+        <Grid
             display='flex'
-            justifyContent='space-between'
-            alignItems='center'
-            sx={{ padding: '5px 16px', background: '#2C2C2C' }}
+            container
+            alignItems="center"
+            className="verticalFill"
+            sx={{ padding: '8px 16px', background: bgDarkest }}
         >
-            <GoBackButton variant="text" startIcon={<ChevronLeftIcon />}>All workspaces</GoBackButton>
-            <Stack display="flex" direction="row" spacing={2}>
-                <EditButton variant="outlined">Edit</EditButton>
+            <Grid
+                item
+                xs={12}
+                sm={12}
+                md={7}
+                lg={7}
+            >
+                <GoBackButton variant="text" startIcon={<ChevronLeftIcon />} onClick={() => history.push('/')}>All workspaces</GoBackButton>
+            </Grid>
+            <Grid
+                item
+                xs={12}
+                sm={8}
+                md={5}
+                lg={5}
+                spacing={2}
+                justifyContent='end'
+            >
+                {
+                    canEdit && (
+                        <EditButton
+                            variant="outlined"
+                            onClick={() => setEditWorkspaceOpen(true)}
+                        >
+                            Edit
+                        </EditButton>
+                    )
+                }
                 <OpenWithButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
                     <Button>{options[selectedIndex]}</Button>
                     <Button
@@ -104,7 +157,7 @@ const WorkspaceNavbar = () => {
                         aria-haspopup="menu"
                         onClick={handleToggle}
                     >
-                        <KeyboardArrowDownIcon />
+                        <KeyboardArrowDownIcon fontSize='small' />
                     </Button>
                 </OpenWithButtonGroup>
                 <Popper
@@ -150,11 +203,20 @@ const WorkspaceNavbar = () => {
                     aria-label="more"
                     id="threeDot-button"
                 >
-                    <MoreVertIcon />
+                    <MoreVertIcon fontSize='small' />
                 </ThreeDotButton>
-
-            </Stack>
-        </Box>
+            </Grid>
+            {canEdit && editWorkspaceOpen && (
+                <WorkspaceEditor
+                    open={editWorkspaceOpen}
+                    title={"Edit workspace: " + workspace.name}
+                    closeHandler={handleCloseEditWorkspace}
+                    workspace={workspace}
+                    onLoadWorkspace={handleCloseEditWorkspace}
+                    user={user}
+                />
+            )}
+        </Grid>
     )
 }
 

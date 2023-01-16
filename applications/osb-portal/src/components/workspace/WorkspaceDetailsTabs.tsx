@@ -28,7 +28,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
-import { AreaChartIcon, ViewInArIcon } from '../icons';
+// import { AreaChartIcon, ViewInArIcon } from '../icons';
 
 const SidebarBox = styled(Box)(({ theme }) => ({
     height: 'calc(100%)',
@@ -171,7 +171,7 @@ const WorkspaceDetails = () => {
                         >
                             <SidebarListItemButton key={item}>
                                 <SidebarIconButton>
-                                    <AreaChartIcon fontSize='small' />
+                                    {/* <AreaChartIcon fontSize='small' /> */}
                                 </SidebarIconButton>
                                 <SidebarListItemText primary={`Ferguson ${item}.nwb`} />
                             </SidebarListItemButton>
@@ -205,7 +205,7 @@ const WorkspaceDetails = () => {
                         >
                             <SidebarListItemButton key={item}>
                                 <SidebarIconButton>
-                                    <ViewInArIcon fontSize='small' />
+                                    {/* <ViewInArIcon fontSize='small' /> */}
                                 </SidebarIconButton>
                                 <SidebarListItemText primary='test.json' />
                             </SidebarListItemButton>
