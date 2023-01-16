@@ -18,7 +18,13 @@ import {
 } from "../icons";
 
 //style
-import { secondaryColor, bgLightest, bgLight, badgeBgLight } from "../../theme";
+import {
+  secondaryColor,
+  bgLightest,
+  bgLight,
+  badgeBgLight,
+  lightWhite,
+} from "../../theme";
 import styled from "@mui/system/styled";
 
 const StyledContainerBox = styled(Box)(({ theme }) => ({
@@ -32,9 +38,10 @@ const StyledContainerBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     backgroundColor: bgLightest,
     borderRadius: 6,
-
-    "& .MuiSvgIcon-root": {
-      fill: badgeBgLight,
+    "& .MuiButtonBase-root": {
+      "& .MuiSvgIcon-root": {
+        fill: badgeBgLight,
+      },
     },
   },
 

@@ -79,11 +79,10 @@ const useStyles = makeStyles((theme) => ({
   resourceBrowser: {
     overflow: "hidden",
     borderRadius: radius,
-    backgroundColor: bgLight,
     margin: theme.spacing(2),
     "& .scrollbar": {
       overflow: "auto",
-      maxHeight: "400px",
+      maxHeight: "295px",
       "& .MuiList-root": {
         paddingRight: "1rem",
         marginTop: 0,
@@ -300,7 +299,6 @@ export const WorkspaceFromRepository = ({
                   "&::-webkit-scrollbar": {
                     width: 2,
                     height: 2,
-                    color: "red",
                   },
                 }}
               >

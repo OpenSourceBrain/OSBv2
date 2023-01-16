@@ -52,8 +52,6 @@ export const WorkspacesList = (props: WorkspacesProps) => {
   const {
     workspaces,
     handleTagClick,
-    handleTypeClick,
-    handleTypeUnclick,
     handleTagUnclick,
     loading,
     searchFilterValues,
@@ -105,7 +103,10 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                         component="th"
                         scope="row"
                       >
-                        <Box className="col">
+                        <Box
+                          className="col"
+                          sx={{ display: "flex", flexDirection: "column" }}
+                        >
                           <Typography component="strong">{row.name}</Typography>
                           {row.description && (
                             <StyledShowMoreText

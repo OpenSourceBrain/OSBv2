@@ -103,14 +103,15 @@ export const NewWorkspaceItem = (props: ItemProps) => {
   };
 
   const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
-    document.getElementById("your-all-workspaces-tab").click();
-
+    document.getElementById("your-all-workspaces-tab")?.click();
     setNewWorkspaceOpen(false);
     props.closeMainDialog(false);
     if (refresh) {
       refreshWorkspaces();
     }
   };
+
+  console.log(newWorkspaceOpen);
 
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 

@@ -93,7 +93,7 @@ export const StyledTabs = styled(Tab)(() => ({
 }));
 
 export const StyledGrid = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     padding: "12px 24px !important",
   },
 }));
@@ -139,9 +139,9 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setLoading(false);
   };
 
-  const getReposList = (payload?) => {
+  const getReposList = (payload) => {
     setLoading(true);
-
+    console.log({ payload });
     if (payload?.searchFilterValues) {
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -198,7 +198,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   };
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
-      getReposList();
+      getReposList({ searchFilterValues: null, tabValue });
     } else {
       getReposList({ searchFilterValues, tabValue });
     }

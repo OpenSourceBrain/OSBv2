@@ -55,9 +55,18 @@ export const HomePage = (props: any) => {
     props.user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
   const [listView, setListView] = React.useState<string>("grid");
-
   const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
   const isFeatured = tabValue === WorkspaceSelection.FEATURED;
+
+  const getTabValue = () => {
+    if (tabValue) {
+      return { isPublic, isFeatured };
+    } else {
+      return { isPublic: false, isFeatured: false };
+    }
+  };
+
+  console.log(getTabValue());
 
   const isSearchFieldsEmpty =
     searchFilterValues.tags.length === 0 &&
@@ -90,15 +99,22 @@ export const HomePage = (props: any) => {
   const getWorkspacesList = (payload?) => {
     setLoading(true);
 
+    const tabs = getTabValue();
+
     if (payload?.searchFilterValues) {
       workspaceService
-        .fetchWorkspacesByFilter(isPublic, isFeatured, page, searchFilterValues)
+        .fetchWorkspacesByFilter(
+          tabs.isPublic,
+          tabs.isFeatured,
+          page,
+          searchFilterValues
+        )
         .then((workspacesDetails) => {
           setWorkspacesValues(workspacesDetails);
         });
     } else {
       workspaceService
-        .fetchWorkspaces(isPublic, isFeatured, page)
+        .fetchWorkspaces(tabs.isPublic, tabs.isFeatured, page)
         .then((workspacesDetails) => {
           setWorkspacesValues(workspacesDetails);
         });
@@ -192,7 +208,7 @@ export const HomePage = (props: any) => {
                         item={true}
                         xs={12}
                         sm={12}
-                        md={7}
+                        md={12}
                         lg={7}
                         className="verticalFill"
                       >
@@ -262,7 +278,7 @@ export const HomePage = (props: any) => {
                           />
                         </Tabs>
                       </Grid>
-                      <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
+                      <StyledGrid item={true} xs={12} sm={8} md={12} lg={5}>
                         <ButtonGroup
                           sx={{
                             backgroundColor: bgRegular,

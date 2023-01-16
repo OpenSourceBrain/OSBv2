@@ -1,11 +1,10 @@
 import * as React from "react";
-import { alpha } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
+
+//components
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
@@ -15,69 +14,68 @@ import DialogActions from "@mui/material/DialogActions";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Dropzone from "react-dropzone";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Autocomplete } from "@mui/material";
+import Chip from "@mui/material/Chip";
+import Autocomplete from "@mui/material/Autocomplete";
 import MDEditor from "react-markdown-editor-lite";
+import MarkdownViewer from "../common/MarkdownViewer";
+import OSBDialog from "../common/OSBDialog";
+
+//icons
+import IconButton from "@mui/material/IconButton";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
-import MarkdownViewer from "../common/MarkdownViewer";
-import Chip from "@mui/material/Chip";
+import { alpha } from "@mui/material/styles";
+import styled from "@mui/system/styled";
+import { bgLight, radius, gutter, bgInputs } from "../../theme";
 
+//types
 import { Workspace } from "../../types/workspace";
 import { UserInfo } from "../../types/user";
 import { Tag } from "../../apiclient/workspaces";
+
+//services
 import WorkspaceService from "../../service/WorkspaceService";
-import OSBDialog from "../common/OSBDialog";
 
-import { bgLight, radius, gutter, bgInputs } from "../../theme";
-
-const useStyles = makeStyles((theme) => ({
-  actionButton: {
-    marginLeft: theme.spacing(2),
+const StyledDropZoneBox = styled(Box)(({ theme }) => ({
+  color: bgInputs,
+  border: `2px dashed ${bgInputs}`,
+  borderRadius: 5,
+  padding: 4,
+  "& .MuiTypography-subtitle2": {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
-  actionBox: {
+  "& .MuiButton-outlined": {
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "center",
+    color: bgInputs,
+    borderRadius: radius,
+    border: `2px solid ${bgInputs}`,
+  },
+}));
+
+const StyledImagePreviewSection = styled("section")(() => ({
+  display: "flex",
+  minHeight: "15em",
+  alignItems: "stretch",
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  flex: 1,
+}));
+
+const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  "& .MuiChip-root": {
     backgroundColor: bgLight,
   },
-  outerBox: {
-    marginTop: 0,
-  },
-  dropZoneBox: {
-    color: bgInputs,
-    border: `2px dashed ${bgInputs}`,
-    borderRadius: 5,
-    padding: 4,
-    "& .MuiTypography-subtitle2": {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(2),
-    },
-    "& .MuiButton-outlined": {
-      margin: "0 auto",
-      display: "flex",
-      justifyContent: "center",
-      color: bgInputs,
-      borderRadius: radius,
-      border: `2px solid ${bgInputs}`,
-    },
-  },
-  imagePreview: {
-    display: "flex",
-    minHeight: "15em",
-    alignItems: "stretch",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    flex: 1,
-  },
-  autocomplete: {
-    marginTop: theme.spacing(1),
-    "& .MuiChip-root": {
-      backgroundColor: bgLight,
-    },
-    "& .MuiInputBase-root": {
-      backgroundColor: "transparent",
+  "& .MuiInputBase-root": {
+    backgroundColor: "transparent !important",
 
-      "&:before": {
-        border: "0 !important",
-      },
+    "&:before": {
+      border: "0 !important",
     },
   },
 }));
@@ -124,7 +122,6 @@ async function readFile(file: Blob) {
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
-  const classes = useStyles();
   const { workspace } = props;
   const { user } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
@@ -177,6 +174,7 @@ export default (props: WorkspaceEditProps) => {
             (e) => console.error("Error uploading thumbnail", e)
           );
         } else {
+          console.log("else");
           setLoading(true);
           props.onLoadWorkspace(true, returnedWorkspace);
         }
@@ -235,7 +233,6 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({ ...workspaceForm, tags: arrayOfTags });
   };
   const setTypeField = (e: any) => {
-    console.log("value: ", e.target.value);
     // publicable if 1
     // featured if 2
     setWorkspaceForm({
@@ -265,18 +262,24 @@ export default (props: WorkspaceEditProps) => {
             </Button>
             <Button
               id="create-a-new-workspace-button"
-              className={classes.actionButton}
               variant="contained"
               color="primary"
               disabled={loading}
               onClick={handleCreateWorkspaceButtonClick}
+              sx={{ marginLeft: "8px" }}
             >
               {workspace.id ? "Save" : "Create A New Workspace"}
             </Button>
           </React.Fragment>
         }
       >
-        <Box p={2} mt={4} className={classes.outerBox}>
+        <Box
+          p={2}
+          mt={4}
+          sx={{
+            marginTop: 0,
+          }}
+        >
           {props.children && <Box>{props.children}</Box>}
           <Box>
             <Typography component="label" variant="h6">
@@ -296,10 +299,9 @@ export default (props: WorkspaceEditProps) => {
             <Typography component="label" variant="h6">
               Workspace tags
             </Typography>
-            <Autocomplete
+            <StyledAutocomplete
               multiple={true}
               freeSolo={true}
-              className={classes.autocomplete}
               options={props.tags.map((tagObject) => tagObject.tag)}
               defaultValue={defaultTags}
               onChange={(event, value) => setWorkspaceTags(value)}
@@ -356,7 +358,7 @@ export default (props: WorkspaceEditProps) => {
             <Typography component="label" variant="h6">
               Workspace thumbnail
             </Typography>
-            <Box alignItems="stretch" className={classes.dropZoneBox}>
+            <StyledDropZoneBox alignItems="stretch">
               <Dropzone
                 onDrop={(acceptedFiles: any) => {
                   setThumbnail(acceptedFiles[0]);
@@ -371,8 +373,7 @@ export default (props: WorkspaceEditProps) => {
                   getInputProps: () => any;
                   acceptedFiles: any[];
                 }) => (
-                  <section
-                    className={classes.imagePreview}
+                  <StyledImagePreviewSection
                     style={{
                       backgroundImage:
                         !thumbnailError && `url(${thumbnailPreview})`,
@@ -392,7 +393,6 @@ export default (props: WorkspaceEditProps) => {
                       >
                         {acceptedFiles.length !== 0 && (
                           <Grid item={true}>
-                            {/* <IconButton><PublishIcon /></IconButton> */}
                             {acceptedFiles.length === 0 ? (
                               ""
                             ) : (
@@ -429,15 +429,15 @@ export default (props: WorkspaceEditProps) => {
                         </Grid>
                       </Grid>
                     </div>
-                  </section>
+                  </StyledImagePreviewSection>
                 )}
               </Dropzone>
-            </Box>
+            </StyledDropZoneBox>
           </Box>
         </Box>
       </OSBDialog>
       {loading && (
-        <Box mt={4} p={2} className={classes.actionBox} textAlign="right">
+        <Box mt={4} p={2} sx={{ backgroundColor: bgLight }} textAlign="right">
           <CircularProgress
             size={24}
             style={{
