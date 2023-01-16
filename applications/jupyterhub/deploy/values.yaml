@@ -46,10 +46,13 @@ singleuser:
   storage:
     type: dynamic
     capacity: 2Mi
+
     dynamic:
       pvcNameTemplate: osb-user-{userid}
       volumeNameTemplate: osb-user-{userid}
       storageClass: "{{namespace}}-nfs-client"
+      storageAccessModes:
+      - "ReadWriteMany"
     homeMountPath: /opt/user
     extraLabels: {}
   cpu:
