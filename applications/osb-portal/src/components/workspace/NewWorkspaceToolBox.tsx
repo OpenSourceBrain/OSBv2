@@ -55,7 +55,6 @@ const StyledContainerBox = styled(Box)(({ theme }) => ({
 
 export const WorkspaceToolBox = (props: any) => {
   const user: UserInfo = props.user;
-
   return (
     <>
       <Box>
@@ -68,6 +67,7 @@ export const WorkspaceToolBox = (props: any) => {
                 template={WorkspaceTemplateType.network}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
             </StyledContainerBox>
           </Grid>
@@ -79,6 +79,7 @@ export const WorkspaceToolBox = (props: any) => {
                 template={WorkspaceTemplateType.explorer}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
             </StyledContainerBox>
           </Grid>
@@ -90,6 +91,7 @@ export const WorkspaceToolBox = (props: any) => {
                 template={WorkspaceTemplateType.playground}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
             </StyledContainerBox>
           </Grid>
@@ -102,6 +104,7 @@ export const WorkspaceToolBox = (props: any) => {
                 template={null}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
             </StyledContainerBox>
           </Grid>

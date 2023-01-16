@@ -37,7 +37,9 @@ export default ({
       className="createWorkspaceRepo"
     >
       <StyledPaper>
-        <WorkspaceToolBox />
+        <WorkspaceToolBox
+          closeMainDialog={(isClosed) => handleClose(isClosed)}
+        />
       </StyledPaper>
     </OSBDialog>
   );

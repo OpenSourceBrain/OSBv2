@@ -90,6 +90,7 @@ interface ItemProps {
   user: UserInfo;
   refreshWorkspaces: () => null;
   className?: string;
+  closeMainDialog?: (isClosed: boolean) => void;
 }
 
 export const NewWorkspaceItem = (props: ItemProps) => {
@@ -105,6 +106,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
     document.getElementById("your-all-workspaces-tab").click();
 
     setNewWorkspaceOpen(false);
+    props.closeMainDialog(false);
     if (refresh) {
       refreshWorkspaces();
     }

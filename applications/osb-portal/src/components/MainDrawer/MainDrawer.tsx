@@ -184,7 +184,7 @@ export const MainDrawer = (props: any) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const [open, setOpen] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
@@ -203,6 +203,7 @@ export const MainDrawer = (props: any) => {
     : "Lets do some science!";
 
   const handleOpenDialog = (type) => {
+    setOpenDrawer(false);
     if (!props.user) {
       setAskLoginOpen(true);
     } else {
@@ -221,7 +222,7 @@ export const MainDrawer = (props: any) => {
     setAnchorEl(null);
   };
 
-  const toggleDrawer = () => setOpen(!open);
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   const handleAboutDialogOpen = () => {
     props.openDialog();
@@ -265,19 +266,21 @@ export const MainDrawer = (props: any) => {
           anchor="left"
           onClose={toggleDrawer}
           elevation={0}
-          open={open}
+          open={openDrawer}
           className={clsx(classes.drawer, classes.root, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
+            [classes.drawerOpen]: openDrawer,
+            [classes.drawerClose]: !openDrawer,
           })}
           classes={{
             paper: clsx(classes.drawerPaper, classes.root, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
+              [classes.drawerOpen]: openDrawer,
+              [classes.drawerClose]: !openDrawer,
             }),
           }}
         >
-          <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+          <div
+            className={`${openDrawer ? classes.drawerContent : ""} verticalFit`}
+          >
             <Toolbar className={classes.toolbar}>
               <Typography
                 sx={{
@@ -381,9 +384,9 @@ export const MainDrawer = (props: any) => {
           <Toolbar className={classes.toolbar}>
             <Button
               id="create-new-workspace-repository"
-              aria-controls={open ? "demo-positioned-menu" : undefined}
+              aria-controls={openDrawer ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
+              aria-expanded={openDrawer ? "true" : undefined}
               onClick={handleClickCreatMenu}
               sx={{
                 width: "100%",
