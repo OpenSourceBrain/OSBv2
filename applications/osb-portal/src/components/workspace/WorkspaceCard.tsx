@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import makeStyles from "@mui/styles/makeStyles";
+import withStyles from "@mui/styles/withStyles";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TagTooltip = withStyles((theme) => ({
+export const TagTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: bgDarkest,
     color: textColor,
@@ -115,110 +115,115 @@ export const WorkspaceCard = (props: Props) => {
   const defaultResource =
     workspace.lastOpen || workspace.resources[workspace.resources.length - 1];
 
-  return <>
-    <Card className={`${classes.card} workspace-card`} elevation={0}>
-      {!props.hideMenu && (
-        <CardActions className={classes.actions}>
-          <WorkspaceActionsMenu
-            user={props.user}
-            workspace={workspace}
-            isWorkspaceOpen={false}
-          />
-        </CardActions>
-      )}
-
-      <Box
-        className={classes.imageContainer}
-        justifyContent="center"
-        alignItems="center"
-        display="flex"
-      >
-        <Link
-          href={`/workspace/${workspace.id}`}
-          color="inherit"
-          className={classes.link}
-          underline="hover">
-          {!workspace.thumbnail ? (
-            <FolderIcon className={classes.imageIcon} />
-          ) : (
-            <img
-              src={
-                "/proxy/workspaces/" +
-                workspace.thumbnail +
-                "?v=" +
-                workspace.timestampUpdated.getMilliseconds()
-              }
-              className={classes.image}
-              title={openTitle}
-              alt={openTitle}
+  return (
+    <>
+      <Card className={`${classes.card} workspace-card`} elevation={0}>
+        {!props.hideMenu && (
+          <CardActions className={classes.actions}>
+            <WorkspaceActionsMenu
+              user={props.user}
+              workspace={workspace}
+              isWorkspaceOpen={false}
             />
-          )}
-        </Link>
-      </Box>
+          </CardActions>
+        )}
 
-      <CardContent className="workspace-content">
-        <Tooltip title={workspace.name}>
+        <Box
+          className={classes.imageContainer}
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
+        >
           <Link
             href={`/workspace/${workspace.id}`}
             color="inherit"
-            className={`${classes.link} workspace-page-link`}
-            underline="hover">
-            <Typography
-              component="h2"
-              variant="h4"
-              className={classes.ellipses}
-            >
-              {workspace.name}
-            </Typography>
-            {workspace.tags.length > 0 && (
-              <TagTooltip
-                title={workspace.tags.map((tagObject) => {
-                  return (
-                    <Chip
-                      size="small"
-                      label={tagObject.tag}
-                      key={tagObject.id}
-                      className={classes.chip}
-                    />
-                  );
-                })}
-                arrow={true}
-                placement="top"
-              >
-                <LocalOfferIcon
-                  fontSize="small"
-                  className={classes.localOfferIcon}
-                />
-              </TagTooltip>
+            className={classes.link}
+            underline="hover"
+          >
+            {!workspace.thumbnail ? (
+              <FolderIcon className={classes.imageIcon} />
+            ) : (
+              <img
+                src={
+                  "/proxy/workspaces/" +
+                  workspace.thumbnail +
+                  "?v=" +
+                  workspace.timestampUpdated.getMilliseconds()
+                }
+                className={classes.image}
+                title={openTitle}
+                alt={openTitle}
+              />
             )}
           </Link>
-        </Tooltip>
-        <Typography
-          variant="caption"
-          className={`${classes.user} ${classes.ellipses}`}
-        >
-          <span>by</span>
-          <Link
-            color="inherit"
-            href={`/user/${workspace.user.id}`}
-            target="_blank"
-            underline="hover">
-            {workspace.user.firstName + " " + workspace.user.lastName}
-          </Link>
-        </Typography>
+        </Box>
 
-        <Typography
-          variant="caption"
-          className={`${classes.captions} ${classes.ellipses}`}
-        >
-          <span>{formatDate(workspace.timestampUpdated)}</span>{" "}
-          <span>
-            {defaultResource && defaultResource.type.application.name}
-          </span>
-        </Typography>
-      </CardContent>
-    </Card>
-  </>;
+        <CardContent className="workspace-content">
+          <Tooltip title={workspace.name}>
+            <Link
+              href={`/workspace/${workspace.id}`}
+              color="inherit"
+              className={`${classes.link} workspace-page-link`}
+              underline="hover"
+            >
+              <Typography
+                component="h2"
+                variant="h4"
+                className={classes.ellipses}
+              >
+                {workspace.name}
+              </Typography>
+              {workspace.tags.length > 0 && (
+                <TagTooltip
+                  title={workspace.tags.map((tagObject) => {
+                    return (
+                      <Chip
+                        size="small"
+                        label={tagObject.tag}
+                        key={tagObject.id}
+                        className={classes.chip}
+                      />
+                    );
+                  })}
+                  arrow={true}
+                  placement="top"
+                >
+                  <LocalOfferIcon
+                    fontSize="small"
+                    className={classes.localOfferIcon}
+                  />
+                </TagTooltip>
+              )}
+            </Link>
+          </Tooltip>
+          <Typography
+            variant="caption"
+            className={`${classes.user} ${classes.ellipses}`}
+          >
+            <span>by</span>
+            <Link
+              color="inherit"
+              href={`/user/${workspace.user.id}`}
+              target="_blank"
+              underline="hover"
+            >
+              {workspace.user.firstName + " " + workspace.user.lastName}
+            </Link>
+          </Typography>
+
+          <Typography
+            variant="caption"
+            className={`${classes.captions} ${classes.ellipses}`}
+          >
+            <span>{formatDate(workspace.timestampUpdated)}</span>{" "}
+            <span>
+              {defaultResource && defaultResource.type.application.name}
+            </span>
+          </Typography>
+        </CardContent>
+      </Card>
+    </>
+  );
 };
 
 export default WorkspaceCard;

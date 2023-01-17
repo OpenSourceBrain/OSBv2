@@ -104,6 +104,21 @@ steps:
     type: parallel
     stage: build
     steps:
+      nfsserver:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/nfsserver
+        title: Nfsserver
+        working_directory: ./cloud-harness/applications/nfsserver
       notifications:
         type: build
         stage: build
@@ -183,21 +198,6 @@ steps:
         image_name: osb/common
         title: Common
         working_directory: ./.overrides/applications/common/server
-      events:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/events
-        title: Events
-        working_directory: ./cloud-harness/applications/events
       workflows-send-result-event:
         type: build
         stage: build
@@ -431,6 +431,15 @@ steps:
         image_name: osb/jupyterlab
         title: Jupyterlab
         working_directory: ./applications/jupyterlab
+  tests_unit:
+    stage: unittest
+    type: parallel
+    steps:
+      workspaces_ut:
+        title: Unit tests for workspaces
+        commands:
+        - pytest /usr/src/app/
+        image: '${{workspaces}}'
   deployment:
     stage: deploy
     type: helm
@@ -513,7 +522,6 @@ steps:
     - kubectl rollout status deployment/accounts
     - kubectl rollout status deployment/volumemanager
     - kubectl rollout status deployment/common
-    - kubectl rollout status deployment/events
     - kubectl rollout status deployment/workflows
     - kubectl rollout status deployment/workspaces
     - kubectl rollout status deployment/accounts-api
@@ -609,6 +617,14 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nfsserver:
+        stage: publish
+        type: push
+        title: Nfsserver
+        candidate: '${{REGISTRY}}/osb/nfsserver:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_notifications:
         stage: publish
         type: push
@@ -646,14 +662,6 @@ steps:
         type: push
         title: Common
         candidate: '${{REGISTRY}}/osb/common:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_events:
-        stage: publish
-        type: push
-        title: Events
-        candidate: '${{REGISTRY}}/osb/events:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

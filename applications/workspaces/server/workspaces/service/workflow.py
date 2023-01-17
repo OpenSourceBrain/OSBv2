@@ -47,7 +47,7 @@ def delete_resource(workspace_resource, pvc_name, resource_path: str):
 
 def run_copy_tasks(workspace_id, tasks):
     pvc_name = WorkspaceService.get_pvc_name(workspace_id)
-    shared_directory = f"{pvc_name}:/project_download"
+    shared_directory = f"{pvc_name}:/project_download:rwx"
     op = operations.SimpleDagOperation(
         f"osb-copy-tasks-job",
         tasks,
@@ -62,7 +62,7 @@ def run_copy_tasks(workspace_id, tasks):
 
 def create_task(image_name, workspace_id, **kwargs):
     pvc_name = WorkspaceService.get_pvc_name(workspace_id)
-    shared_directory = f"{pvc_name}:/project_download"
+    shared_directory = f"{pvc_name}:/project_download:rwx"
     return tasks.CustomTask(
         name=f"{image_name}-{str(uuid.uuid4())[:8]}",
         image_name=image_name,
@@ -90,7 +90,7 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
     source_pvc_name = WorkspaceService.get_pvc_name(source_ws_id)
     dest_pvc_name = WorkspaceService.get_pvc_name(dest_ws_id)
     source_volume = f"{source_pvc_name}:/source"
-    dest_volume = f"{dest_pvc_name}:/project_download"
+    dest_volume = f"{dest_pvc_name}:/project_download:rwx"
 
     copy_task = tasks.BashTask(
         name=f"clone-workspace-data",

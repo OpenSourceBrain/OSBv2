@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { App as app } from "../App";
-import { Workspaces as workspace } from "./workspace/Workspaces";
+import { WorkspacesCards as workspace } from "./workspace/WorkspacesCards";
 import { WorkspaceToolBox as workspacetoolbox } from "./workspace/NewWorkspaceToolBox";
 import workspaceInteractions from "./workspace/drawer/WorkspaceInteractions";
 
@@ -16,7 +16,7 @@ import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspacePage from "../pages/WorkspacePage";
 import workspaceEditor from "./workspace/WorkspaceEditor";
 import editRepoDialog from "../components/repository/EditRepoDialog";
-import HomePageDrawer from './MainDrawer/MainDrawer'
+import HomePageDrawer from "./MainDrawer/MainDrawer";
 
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
@@ -29,7 +29,7 @@ import { AnyAction, Dispatch } from "redux";
 
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
 import { UserPage as userPage } from "../pages/UserPage";
-import { RepositoriesPage as repositoriesPage } from "../pages/RepositoriesNew/index";
+import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
 import repositories from "../components/repository/Repositories";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
@@ -53,7 +53,7 @@ const dispatchWorkspaceProps = {
 
 const mapUserStateToProps = (state: RootState) => ({
   user: state.user,
-  workspacesCounter: state.workspaces.counter
+  workspacesCounter: state.workspaces.counter,
 });
 
 const dispatchUserProps = {
@@ -111,8 +111,8 @@ const mapAboutDialogAndUserToProps = (state: RootState) => ({
 const dispatchAboutDialogAndUser = {
   openDialog,
   closeDialog,
-  ...dispatchUserProps
-}
+  ...dispatchUserProps,
+};
 
 export const Workspaces = connect(
   mapWorkspacesStateToProps,
@@ -186,8 +186,8 @@ export const ProtectedRoute = connect(
 )(protectedRoute);
 
 export const HomePageSider = connect(
-    mapAboutDialogAndUserToProps,
-    dispatchAboutDialogAndUser
+  mapAboutDialogAndUserToProps,
+  dispatchAboutDialogAndUser
 )(HomePageDrawer);
 
 export const WorkspaceActionsMenu = connect(
