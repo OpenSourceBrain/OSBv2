@@ -180,13 +180,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const MainDrawer = (props: any) => {
-    const classes = useStyles();
-    const theme = useTheme();
-    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-    const [open, setOpen] = React.useState(false);
-    const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
-    const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const classes = useStyles();
+  const theme = useTheme();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const [open, setOpen] = React.useState(false);
+  const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
+  const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const openCreatMenu = Boolean(anchorEl);
 
@@ -201,13 +201,18 @@ export const MainDrawer = (props: any) => {
     ? `Welcome back, ${props.user.username}`
     : "Lets do some science!";
 
-    const handleOpenDialog = (type) => {
-        type === 'workspace' ? setOpenWorkspaceDialog(true) : type === 'repository' ? setOpenRepoDialog(true) : null
-        setAnchorEl(null)
-    };
+  const handleOpenDialog = (type) => {
+    type === "workspace"
+      ? setOpenWorkspaceDialog(true)
+      : setOpenRepoDialog(true);
+    setAnchorEl(null);
+  };
 
-    const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
-    const handleCloseRepoDialog = () => setOpenRepoDialog(false);
+  const handleCloseDialog = (type) => {
+    type === "workspace"
+      ? setOpenWorkspaceDialog(false)
+      : setOpenRepoDialog(false);
+  };
 
   const handleClickCreatMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -418,10 +423,12 @@ export const MainDrawer = (props: any) => {
       </Box>
       <CreateWorkspaceDialog
         dialogOpen={openWorkspaceDialog}
-        handleClose={handleCloseWorkspaceDialog}
+        handleClose={handleCloseDialog}
       />
-        <AddRepoDialog dialogOpen={openRepoDialog} handleClose={handleCloseRepoDialog}/>
-
+      <AddRepoDialog
+        dialogOpen={openRepoDialog}
+        handleClose={handleCloseDialog}
+      />
     </>
   );
 };
