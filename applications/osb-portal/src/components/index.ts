@@ -24,13 +24,14 @@ import { userLogin, userLogout, userRegister } from "../store/actions/user";
 import { toggleDrawer } from "../store/actions/drawer";
 import { setError } from "../store/actions/error";
 import { openDialog, closeDialog } from "../store/actions/aboutdialog";
-import newWorkspaceAskUser from "./workspace/NewWorkspaceAskUser";
+import { NewWorkspaceAskUser as newWorkspaceAskUser } from "./workspace/NewWorkspaceAskUser";
 import { AnyAction, Dispatch } from "redux";
 
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
+
 import { UserPage as userPage } from "../pages/UserPage";
 import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
-import repositories from "../components/repository/Repositories";
+import { HomePage as homePage } from "../pages/HomePage";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
 import WorkspaceActionsMenuUnbound from "./workspace/WorkspaceActionsMenu";
@@ -45,7 +46,7 @@ const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   user: state.user,
 });
 
-const dispatchWorkspaceProps = {
+export const dispatchWorkspaceProps = {
   login: userLogin,
   logout: userLogout,
   ...WorkspacesActions,
@@ -92,6 +93,12 @@ const mapUserAndTagsToProps = (state: RootState) => ({
   tags: state.tags,
 });
 
+const mapHomePageToProps = (state: RootState) => ({
+  user: state.user,
+  tags: state.tags,
+  counter: state.workspaces?.counter,
+});
+
 const mapAboutDialogToProps = (state: RootState) => ({
   aboutDialog: state.aboutDialog,
 });
@@ -122,7 +129,10 @@ export const WorkspaceCard = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspaceCard);
-export const Repositories = connect(mapUserStateToProps)(repositories);
+export const HomePage = connect(
+  mapHomePageToProps,
+  dispatchTagsProps
+)(homePage);
 export const EditRepoDialog = connect(
   mapTagsToProps,
   dispatchTagsProps
@@ -131,7 +141,7 @@ export const WorkspaceToolBox = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspacetoolbox);
-export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner);
+
 export const Header = connect(mapUserStateToProps, {
   ...dispatchUserProps,
   ...dispatchDrawerProps,
@@ -143,7 +153,7 @@ export const WorkspaceDrawer = connect(
 export const WorkspaceInteractions = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
-)(workspaceInteractions) as any;
+)(workspaceInteractions);
 export const WorkspaceEditor = connect(
   mapTagsToProps,
   dispatchTagsProps

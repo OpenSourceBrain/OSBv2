@@ -1,6 +1,6 @@
 import * as React from "react";
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import makeStyles from "@mui/styles/makeStyles";
+import withStyles from "@mui/styles/withStyles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -31,7 +31,7 @@ import {
   bgDarker,
 } from "../../theme";
 import WorkspaceService from "../../service/WorkspaceService";
-import Repositories from "../repository/Repositories";
+import Repositories from "../../pages/Repositories/RespositoriesTable";
 import OSBPagination from "../common/OSBPagination";
 import SearchFilter from "../../types/searchFilter";
 
@@ -493,16 +493,13 @@ export default (props: WorkspaceEditProps) => {
                   <Repositories
                     repositories={repositories}
                     handleRepositoryClick={loadRepository}
-                    showSimpleVersion={true}
-                    searchRepositories={true}
-                    filterChanged={(newFilter) => setFilter({...filter, text: newFilter})}
                   />
                 </Box>
                 {totalPages > 1 ? (
                   <OSBPagination
-                    totalPages={totalPages}
-                    handlePageChange={handlePageChange}
-                    color="primary"
+                    page={page}
+                    count={totalPages}
+                    onChange={handlePageChange}
                     showFirstButton={true}
                     showLastButton={true}
                   />

@@ -1,110 +1,122 @@
 import * as React from "react";
 
-import makeStyles from '@mui/styles/makeStyles';
-
+//components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import { UserInfo } from "../../types/user";
-
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
+//types
+import { UserInfo } from "../../types/user";
+
+//icons
 import {
   ComputationalModeling,
   DataAnalystIcon,
   WorkspaceFromRepository,
-  WorkspaceIcon
+  WorkspaceIcon,
 } from "../icons";
-import {secondaryColor, bgLightest, bgLight, badgeBgLight} from '../../theme'
 
-const useStyles = makeStyles((theme) => ({
-    itemContainer: {
-      borderRadius: '4px',
-      width:' 100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      padding: '1rem 0',
+//style
+import {
+  secondaryColor,
+  bgLightest,
+  bgLight,
+  badgeBgLight,
+  lightWhite,
+} from "../../theme";
+import styled from "@mui/system/styled";
 
-      '&:hover': {
-        backgroundColor: bgLightest,
-        borderRadius:  6,
+const StyledContainerBox = styled(Box)(({ theme }) => ({
+  borderRadius: "4px",
+  width: " 100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  padding: "1rem 0",
 
-        '& .MuiSvgIcon-root': {
-            fill: badgeBgLight
-        }
+  "&:hover": {
+    backgroundColor: bgLightest,
+    borderRadius: 6,
+    "& .MuiButtonBase-root": {
+      "& .MuiSvgIcon-root": {
+        fill: badgeBgLight,
       },
+    },
+  },
 
-      '& .MuiButtonBase-root':{
-        color: secondaryColor,
-        padding: 0,
+  "& .MuiButtonBase-root": {
+    color: secondaryColor,
+    padding: 0,
 
-        '& .MuiSvgIcon-root': {
-          fontSize: '2rem',
-          fill: bgLight
-        },
+    "& .MuiSvgIcon-root": {
+      fontSize: "2rem",
+      fill: bgLight,
+    },
 
-        '& .MuiTypography-caption': {
-          textTransform: 'uppercase'
-        }
-      }
-    }
+    "& .MuiTypography-caption": {
+      textTransform: "uppercase",
+    },
+  },
 }));
 
 export const WorkspaceToolBox = (props: any) => {
-  const classes = useStyles();
-
   const user: UserInfo = props.user;
-
-  return<>
-    <Box>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item xs={12} lg={6}>
-          <Box component="span" className={classes.itemContainer}>
-            <WorkspaceItem
+  return (
+    <>
+      <Box>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12} lg={6}>
+            <StyledContainerBox component="span" id="computational-modeling">
+              <WorkspaceItem
                 icon={<WorkspaceIcon />}
                 title="Computational modeling"
                 template={WorkspaceTemplateType.network}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} lg={6}>
-          <Box component="span" className={classes.itemContainer}>
-            <WorkspaceItem
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+            </StyledContainerBox>
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <StyledContainerBox component="span" id="data-analysis">
+              <WorkspaceItem
                 icon={<DataAnalystIcon />}
                 title="Data analysis"
                 template={WorkspaceTemplateType.explorer}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} lg={6}>
-          <Box component="span" className={classes.itemContainer}>
-            <WorkspaceItem
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+            </StyledContainerBox>
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <StyledContainerBox component="span" id="interactive-development">
+              <WorkspaceItem
                 icon={<ComputationalModeling />}
                 title="Interactive development"
                 template={WorkspaceTemplateType.playground}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} lg={6}>
-          <Box component="span" className={classes.itemContainer}>
-            <WorkspaceItem
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+            </StyledContainerBox>
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <StyledContainerBox component="span" id="workspace-from-repository">
+              <WorkspaceItem
                 className="from-repository-create-workspace-item"
                 icon={<WorkspaceFromRepository />}
                 title="Workspace from repository"
                 template={null}
                 user={user}
                 refreshWorkspaces={props.refreshWorkspaces}
-            />
-          </Box>
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+            </StyledContainerBox>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
-  </>;
+      </Box>
+    </>
+  );
 };
