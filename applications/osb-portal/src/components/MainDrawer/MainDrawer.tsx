@@ -33,8 +33,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import CreateWorkspaceDialog from "../common/CreateWorkspaceDialog";
-import AddRepoDialog from "../common/AddRepoDialog";
-
+import { EditRepoDialog } from "..";
 //icons
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import PublicIcon from "@mui/icons-material/Public";
@@ -211,7 +210,8 @@ export const MainDrawer = (props: any) => {
     } else {
       type === "workspace"
         ? setOpenWorkspaceDialog(true)
-        : setOpenRepoDialog(true);      setAnchorEl(null);
+        : setOpenRepoDialog(true);
+      setAnchorEl(null);
     }
   };
 
@@ -434,11 +434,13 @@ export const MainDrawer = (props: any) => {
       </Box>
       <CreateWorkspaceDialog
         dialogOpen={openWorkspaceDialog}
-        handleClose={handleCloseDialog}
+        handleClose={() => handleCloseDialog("workspace")}
       />
-      <AddRepoDialog
+      <EditRepoDialog
         dialogOpen={openRepoDialog}
-        handleClose={handleCloseDialog}
+        handleClose={() => handleCloseDialog("repository")}
+        user={props.user}
+        title="Edit repository"
       />
 
       <OSBDialog

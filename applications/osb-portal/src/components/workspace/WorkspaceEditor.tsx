@@ -27,8 +27,10 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
 import { alpha } from "@mui/material/styles";
+
+//style
 import styled from "@mui/system/styled";
-import { bgLight, radius, gutter, bgInputs } from "../../theme";
+import { bgLight, radius, gutter, bgInputs, bgDarkest } from "../../theme";
 
 //types
 import { Workspace } from "../../types/workspace";
@@ -38,7 +40,7 @@ import { Tag } from "../../apiclient/workspaces";
 //services
 import WorkspaceService from "../../service/WorkspaceService";
 
-const StyledDropZoneBox = styled(Box)(({ theme }) => ({
+export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
   color: bgInputs,
   border: `2px dashed ${bgInputs}`,
   borderRadius: 5,
@@ -57,7 +59,7 @@ const StyledDropZoneBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledImagePreviewSection = styled("section")(() => ({
+export const StyledImagePreviewSection = styled("section")(() => ({
   display: "flex",
   minHeight: "15em",
   alignItems: "stretch",
@@ -67,20 +69,18 @@ const StyledImagePreviewSection = styled("section")(() => ({
 }));
 
 const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
-  marginTop: theme.spacing(1),
   "& .MuiChip-root": {
     backgroundColor: bgLight,
   },
   "& .MuiInputBase-root": {
     backgroundColor: "transparent !important",
+    paddingTop: "0 !important",
 
     "&:before": {
       border: "0 !important",
     },
   },
 }));
-
-const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
 interface WorkspaceEditProps {
   workspace: Workspace;
@@ -95,7 +95,7 @@ interface WorkspaceEditProps {
   user: UserInfo;
 }
 
-const dropAreaStyle = (error: any) => ({
+export const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: "flex",
   alignItems: "center",
@@ -119,11 +119,11 @@ async function readFile(file: Blob) {
   });
 }
 
+const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
-  const { workspace } = props;
-  const { user } = props;
+  const { workspace, user } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
     ...props.workspace,
   });
@@ -391,9 +391,9 @@ export default (props: WorkspaceEditProps) => {
                         alignItems="center"
                         direction="row"
                       >
-                        {acceptedFiles.length !== 0 && (
+                        {thumbnail && (
                           <Grid item={true}>
-                            {acceptedFiles.length === 0 ? (
+                            {!thumbnail ? (
                               ""
                             ) : (
                               <IconButton
@@ -410,12 +410,18 @@ export default (props: WorkspaceEditProps) => {
                         )}
                         <Grid item={true}>
                           <Box component="div" m={1}>
-                            <Typography variant="subtitle2" component="p">
-                              {acceptedFiles.length === 0
-                                ? "Drop file here to upload..."
-                                : null}
-                            </Typography>
-                            <Button variant="outlined">Browse files</Button>
+                            {!thumbnail ? (
+                              <>
+                                <span>Drop file here to upload...</span>
+                                <Button
+                                  variant="outlined"
+                                  sx={{ margin: "auto !important" }}
+                                >
+                                  Browse files
+                                </Button>
+                              </>
+                            ) : null}
+
                             {thumbnailError && (
                               <Typography
                                 color="error"

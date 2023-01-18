@@ -5,7 +5,6 @@ import { WorkspacesCards as workspace } from "./workspace/WorkspacesCards";
 import { WorkspaceToolBox as workspacetoolbox } from "./workspace/NewWorkspaceToolBox";
 import workspaceInteractions from "./workspace/drawer/WorkspaceInteractions";
 
-import { Banner as banner } from "./header/Banner";
 import { Header as header } from "./header/Header";
 import { WorkspaceDrawer as workspacedrawer } from "./workspace/drawer/WorkspaceDrawer";
 import { AboutDialog as aboutDialog } from "./dialogs/AboutDialog";
@@ -20,6 +19,7 @@ import HomePageDrawer from "./MainDrawer/MainDrawer";
 
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
+import * as RepositoriesActions from "../store/actions/repositories";
 import { userLogin, userLogout, userRegister } from "../store/actions/user";
 import { toggleDrawer } from "../store/actions/drawer";
 import { setError } from "../store/actions/error";
@@ -52,6 +52,10 @@ export const dispatchWorkspaceProps = {
   ...WorkspacesActions,
 };
 
+export const dispatchRepositoriesProps = {
+  ...RepositoriesActions,
+};
+
 const mapUserStateToProps = (state: RootState) => ({
   user: state.user,
   workspacesCounter: state.workspaces.counter,
@@ -62,10 +66,6 @@ const dispatchUserProps = {
   logout: userLogout,
   register: userRegister,
 };
-
-const mapDrawerStateToProps = (state: RootState) => ({
-  drawer: state.drawer,
-});
 
 const dispatchDrawerProps = {
   onToggleDrawer: toggleDrawer,
@@ -88,9 +88,10 @@ const mapTagsToProps = (state: RootState) => ({
   tags: state.tags,
 });
 
-const mapUserAndTagsToProps = (state: RootState) => ({
+const mapRepositoriesPageToProps = (state: RootState) => ({
   user: state.user,
   tags: state.tags,
+  counter: state.repositories?.counter,
 });
 
 const mapHomePageToProps = (state: RootState) => ({
@@ -133,10 +134,10 @@ export const HomePage = connect(
   mapHomePageToProps,
   dispatchTagsProps
 )(homePage);
-export const EditRepoDialog = connect(
-  mapTagsToProps,
-  dispatchTagsProps
-)(editRepoDialog);
+export const EditRepoDialog = connect(mapRepositoriesPageToProps, {
+  ...dispatchTagsProps,
+  ...dispatchRepositoriesProps,
+})(editRepoDialog);
 export const WorkspaceToolBox = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
@@ -182,10 +183,10 @@ export const WorkspacePage = connect(
 )(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage);
 export const UserPage = connect(mapUserStateToProps)(userPage);
-export const RepositoriesPage = connect(
-  mapUserAndTagsToProps,
-  dispatchTagsProps
-)(repositoriesPage);
+export const RepositoriesPage = connect(mapRepositoriesPageToProps, {
+  ...dispatchTagsProps,
+  ...dispatchRepositoriesProps,
+})(repositoriesPage);
 export const NewWorkspaceAskUser = connect(
   null,
   dispatchUserProps

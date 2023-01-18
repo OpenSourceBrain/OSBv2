@@ -111,8 +111,6 @@ export const NewWorkspaceItem = (props: ItemProps) => {
     }
   };
 
-  console.log(newWorkspaceOpen);
-
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 
   return (
