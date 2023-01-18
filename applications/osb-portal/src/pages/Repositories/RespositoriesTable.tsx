@@ -64,7 +64,6 @@ export const StyledTableContainer = styled(TableContainer)(() => ({
     height: 2,
   },
   "& .MuiChip-root": {
-    margin: "0 8px 8px 0",
     backgroundColor: chipBg,
   },
   "& .content-types-tag": {
@@ -218,7 +217,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         </Button>
                       </TableCell>
                       <TableCell style={{ minWidth: 200 }}>
-                        <Box mb={".5"}>
+                        <Box>
                           {row.contentTypes.split(",").map((type) => (
                             <Chip
                               avatar={
@@ -240,6 +239,13 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                                   ? () => handleTypeUnclick(type)
                                   : null
                               }
+                              sx={{
+                                margin:
+                                  row.tags?.length > 0 ||
+                                  row.contentTypes.split(",")?.length > 1
+                                    ? "0 8px 8px 0"
+                                    : 0,
+                              }}
                             />
                           ))}
                         </Box>
@@ -258,6 +264,10 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                                   ? () => handleTagUnclick(tagObject)
                                   : null
                               }
+                              sx={{
+                                margin:
+                                  row.tags?.length > 1 ? "0 8px 8px 0" : 0,
+                              }}
                             />
                           ))}
                         </Box>
