@@ -18,7 +18,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import Link from "@mui/material/Link";
 
-import { OSBSplitButton } from "../components/common/OSBSpliButton";
+import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
 import WorkspaceService from "../service/WorkspaceService";
 import {

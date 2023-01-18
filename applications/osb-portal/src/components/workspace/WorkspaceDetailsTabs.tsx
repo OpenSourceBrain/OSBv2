@@ -31,7 +31,7 @@ import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
 // import { AreaChartIcon, ViewInArIcon } from '../icons';
 
 const SidebarBox = styled(Box)(({ theme }) => ({
-    height: 'calc(100%)',
+    // height: 'calc(100%)',
     overflow: 'hidden',
     width: '100%',
     borderRight: `0.085rem solid ${borderColor}`
@@ -101,14 +101,7 @@ TabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
-const WorkspaceDetails = () => {
+const WorkspaceDetailsTabs = () => {
 
     const [tabValue, setTabValue] = React.useState(0);
     const [open, setOpen] = React.useState(true);
@@ -124,8 +117,8 @@ const WorkspaceDetails = () => {
         <SidebarBox>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabValue} onChange={handleTabChange} variant='fullWidth'>
-                    <Tab label='Workspace' {...a11yProps(0)} sx={{ pl: '0.75rem', pr: '0.75rem', fontSize: '0.75rem' }} />
-                    <Tab label='User Assets' {...a11yProps(1)} sx={{ pl: '0.75rem', pr: '0.75rem', fontSize: '0.75rem'}} />
+                    <Tab label='Workspace' sx={{ pl: '0.75rem', pr: '0.75rem', fontSize: '0.75rem' }} />
+                    <Tab label='User Assets' sx={{ pl: '0.75rem', pr: '0.75rem', fontSize: '0.75rem'}} />
                 </Tabs>
             </Box>
             <TabPanel value={tabValue} index={0}>
@@ -159,8 +152,8 @@ const WorkspaceDetails = () => {
                     }} />
                 </ListItemButton>
                 {
-                    open && [0, 1, 2, 3].map((item) => (
-                        <SidebarListItem disablePadding
+                    open && [0, 1, 2, 3].map((item,index) => (
+                        <SidebarListItem disablePadding key={index}
                             secondaryAction={
                                 <SidebarIconButton edge='end' aria-label='delete' sx={{
                                     visibility: 'hidden',
@@ -247,4 +240,4 @@ const WorkspaceDetails = () => {
         </SidebarBox>
     )
 }
-export default WorkspaceDetails;
+export default WorkspaceDetailsTabs;

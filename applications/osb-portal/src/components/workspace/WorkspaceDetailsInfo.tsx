@@ -32,7 +32,11 @@ const WorkspaceInfoSection = styled(Stack)(({ theme }) => ({
     }
 
 }))
-const WorkspaceDetailsInfo = () => {
+const WorkspaceDetailsInfo = (props: any) => {
+
+    const { user } = props.workspace;
+    const { tags } = props.workspace;
+    const { timestampUpdated } = props.workspace;
 
     return (
 
@@ -41,11 +45,11 @@ const WorkspaceDetailsInfo = () => {
                 <Typography variant='subtitle1'>Info</Typography>
                 <Stack direction="row" spacing={1}>
                     <PersonIcon fontSize='small' />
-                    <Typography>By Padraig Gleeson</Typography>
+                    <Typography>By {user.firstName} {user.lastName}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={1}>
                     <CalendarTodayIcon fontSize='small' />
-                    <Typography>Last Updated on 01/09/2022</Typography>
+                    <Typography>Last Updated on {timestampUpdated.toLocaleDateString()}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={1}>
                     <CollectionsBookmarkOutlinedIcon fontSize='small' />
@@ -55,8 +59,13 @@ const WorkspaceDetailsInfo = () => {
             <WorkspaceInfoSection spacing={1} mt={3}>
                 <Typography variant='subtitle1'>Tags</Typography>
                 <Box>
-                    <Chip label="Experiments" size='small' sx={{mt: 1}}/>
-                    <Chip label="Electrophysiology" size='small' sx={{mt:1}}/>
+                    {
+                        tags?.map((item,index)=>{
+                            return (
+                                <Chip key={index} label={item.tag} size='small' sx={{mt: 1}}/>
+                            )
+                        })
+                    }
                 </Box>
             </WorkspaceInfoSection>
         </Box>

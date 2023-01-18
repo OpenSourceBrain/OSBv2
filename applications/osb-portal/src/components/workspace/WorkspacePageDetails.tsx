@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useParams } from 'react-router';
 
 //components
 import Grid from '@mui/material/Grid';
@@ -8,13 +9,22 @@ import Divider from '@mui/material/Divider';
 import WorkspaceDetailsInfo from './WorkspaceDetailsInfo';
 import WorkspaceDetailsTabs from './WorkspaceDetailsTabs';
 
-const WorkspacePageDetails = () => {
+//types
+import { Workspace } from '../../types/workspace';  
+
+const WorkspacePageDetails = (props: any) => {
+
+    const { workspaceId } = useParams<{ workspaceId: string }>();
+    const workspace: Workspace = props.workspace;
+    const user = props.user;
+    const [error, setError] = React.useState<any>(null);
+
     return (
         <Grid container sx={{ height: 'calc(100%)', overflow: 'hidden', background: 'rgba(0, 0, 0, 0.25)' }}>
             <Grid item xs>
                 <WorkspaceDetailsTabs />
             </Grid>
-            <Grid item xs={7} alignItems="center" sx={{ padding: '1.714rem 7.143rem' }}>
+            <Grid item xs={7} alignItems="center">
                 <Stack spacing={4}>
                     <img src="/images/workspace-banner.png" alt="workspace img" />
                     <Divider />
