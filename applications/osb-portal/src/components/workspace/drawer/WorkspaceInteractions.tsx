@@ -35,7 +35,7 @@ import OSBDialog from "../../common/OSBDialog";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import { primaryColor } from "../../../theme";
-import WorkspaceActionsMenu from "../..";
+import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
 import { UserInfo } from "../../../types/user";
 
 const useStyles = makeStyles((theme) => ({
@@ -247,7 +247,7 @@ export default (props: WorkspaceProps | any) => {
               <WorkspaceActionsMenu
                 workspace={workspace}
                 user={props.user}
-                isWorkspaceOpen={true}
+                isWorkspaceOpen={false}
               />
             </Box>
             <Menu

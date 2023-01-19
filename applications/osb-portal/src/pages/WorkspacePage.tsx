@@ -10,13 +10,14 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { HomePageSider } from '../components';
 import { WorkspaceEditor, WorkspaceInteractions } from '../components';
 import { OSBSplitButton } from '../components/common/OSBSplitButton';
 import WorkspaceActionsMenu from '../components/workspace/WorkspaceActionsMenu';
-import WorkspaceDetailsTabs from '../components/workspace/WorkspaceDetailsTabs';
+import WorkspaceSidebar from '../components/workspace/WorkspaceSidebar';
 import WorkspaceDetailsInfo from '../components/workspace/WorkspaceDetailsInfo';
 
 //services
@@ -33,6 +34,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FolderIcon from "@mui/icons-material/Folder";
 
 const NavbarButton = styled(Button)(({ theme }) => ({
     fontSize: '12px',
@@ -55,6 +57,14 @@ export const WorkspacePage = (props: any) => {
     const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
     const [refresh, setRefresh] = React.useState(true);
     const [error, setError] = React.useState<any>(null);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorElmoreVert, setAnchorElmoreVert] = React.useState(null);
+
+    const isWorkspaceOpen = Boolean(anchorElmoreVert);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
     if (!workspace) {
         props.selectWorkspace(workspaceId);
@@ -65,6 +75,7 @@ export const WorkspacePage = (props: any) => {
     }
 
     console.log('Props: ', props.workspace);
+    console.log('IS Workspace open: ', isWorkspaceOpen);
 
     const handleCloseEditWorkspace = () => {
         props.refreshWorkspace(workspaceId);
@@ -176,6 +187,7 @@ export const WorkspacePage = (props: any) => {
                                                     variant="contained"
                                                     aria-label="more"
                                                     id="threeDot-button"
+                                                    onClick={(event) => setAnchorElmoreVert(event.currentTarget)}
                                                     sx={{
                                                         background: chipBg,
                                                         boxShadow: 'none',
@@ -190,65 +202,56 @@ export const WorkspacePage = (props: any) => {
                                 </Box>
                                 <Box width={1} height={1} sx={{ overflowY: 'hidden' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4.5rem', gap: '1rem' }}>
-                                        {!canEdit && <LockOutlinedIcon sx={{ color: paragraph }} />}
-                                        <TextField
-                                            className='workspace-name-input'
-                                            defaultValue={workspace.name}
-                                            sx={{
-                                                maxWidth: '160px',
-                                                '& .MuiInputBase-root': {
-                                                    fontSize: '1.714rem',
-                                                    'fieldset': {
-                                                        border: 'none',
-                                                        display: 'inline',
-                                                        fontFamily: 'inherit',
-                                                        padding: 'none',
-                                                        width: 'auto'
-                                                    },
-                                                    'input': {
-                                                        padding: 0
-                                                    }
-                                                }
-                                            }}
-                                        />
+                                        {!canEdit && (
+                                            <Tooltip
+                                                style={{ marginLeft: "0.3em" }}
+                                                title="You do not have permissions to modify this workspace."
+                                            >
+                                                <LockOutlinedIcon sx={{ color: paragraph }} />
+                                            </Tooltip>
+                                        )}
+                                        <Typography className='workspace-name-input' sx={{ fontSize: '24px' }}>{workspace.name}</Typography>
                                     </Box>
                                     <Box height={1} sx={{ background: 'rgba(0, 0, 0, 0.25)' }}>
-                                        <Grid container>
+                                        <Grid container height={1}>
                                             <Grid item xs>
-                                                <WorkspaceDetailsTabs />
+                                                <WorkspaceSidebar />
                                             </Grid>
-                                            <Grid item xs={7} alignItems="center" padding={'24px 100px'} sx={{ overflowY: 'scroll' }}>
+                                            <Grid item xs={7} justifyContent='center'>
                                                 <Box sx={{
-                                                    display:'flex',
+                                                    display: 'flex',
                                                     flexDirection: 'column',
-                                                    gap: '24px'
+                                                    gap: '24px',
+                                                    maxHeight: '560px',
+                                                    overflowY: 'scroll',
+                                                    padding: '24px 100px'
                                                 }}
                                                 >
                                                     <Box
-                                                        component='img'
-                                                        src="/images/workspace-banner.png"
-                                                        alt="workspace img"
-                                                    />
-                                                    <Divider/>
+                                                        className="imageContainer"
+                                                        justifyContent="center"
+                                                        alignItems="center"
+                                                        display="flex"
+                                                    >
+                                                        {!workspace?.thumbnail ? (
+                                                            <FolderIcon />
+                                                        ) : (
+                                                            <img
+                                                                width={"100%"}
+                                                                src={
+                                                                    "/proxy/workspaces/" +
+                                                                    workspace.thumbnail +
+                                                                    "?v=" +
+                                                                    workspace.timestampUpdated.getMilliseconds()
+                                                                }
+                                                                title={workspace.name}
+                                                                alt={workspace.name}
+                                                            />
+                                                        )}
+                                                    </Box>
+                                                    <Divider />
                                                     <Typography variant="subtitle1" sx={{ color: lightWhite, letterSpacing: '0.01em', lineHeight: '24px' }}>
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                        Maecenas vestibulum id tellus nec facilisis.
-                                                        Nullam at feugiat diam. Vestibulum molestie lacinia dignissim.
-                                                        Sed euismod augue magna. Morbi posuere vulputate viverra.
-                                                        Proin nec risus quis nunc mollis fringilla quis sit amet ante.
-                                                        Aliquam ut nibh consectetur, imperdiet mi et, euismod mi.
-                                                        Vestibulum tristique vel arcu a facilisis.
-                                                        Maecenas tristique felis et nunc elementum aliquam.
-                                                        Etiam dictum nunc vel eros consectetur tincidunt.
-                                                        Maecenas sed consequat metus.
-                                                        Sed euismod augue magna.
-                                                        Morbi posuere vulputate viverra.
-                                                        Proin nec risus quis nunc mollis fringilla quis sit amet ante.
-                                                        Aliquam ut nibh consectetur, imperdiet mi et, euismod mi.
-                                                        Vestibulum tristique vel arcu a facilisis.
-                                                        Maecenas tristique felis et nunc elementum aliquam.
-                                                        Etiam dictum nunc vel eros consectetur tincidunt.
-                                                        Maecenas sed consequat metus.
+                                                        {workspace.description}
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -274,7 +277,13 @@ export const WorkspacePage = (props: any) => {
                     user={user}
                 />
             )}
-
+            {
+                <WorkspaceActionsMenu
+                    workspace={workspace}
+                    user={user}
+                    isWorkspaceOpen={isWorkspaceOpen}
+                />
+            }
         </>
     )
 }

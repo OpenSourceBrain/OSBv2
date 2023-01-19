@@ -124,7 +124,7 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-      <IconButton
+      {/* <IconButton
         size="small"
         onClick={handleClick}
         sx={{
@@ -135,12 +135,12 @@ export default (props: WorkspaceActionsMenuProps) => {
         }}
       >
         <MoreHorizIcon sx={{ fontSize: "1rem", color: lightWhite }} />
-      </IconButton>
+      </IconButton> */}
       <Menu
         id="workspace-actions-menu"
         anchorEl={anchorEl}
         keepMounted={true}
-        open={Boolean(anchorEl)}
+        open={props.isWorkspaceOpen}
         onClose={handleCloseMenu}
       >
         {canEdit && (
@@ -233,7 +233,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         handleClose={handleCloseMenu}
         messages={["Cloning workspace. Please wait."]}
       />
-      <Snackbar
+      {/* <Snackbar
         classes={{ root: classes.snackbar }}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}
@@ -259,7 +259,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </IconButton>
           </React.Fragment>
         }
-      />
+      /> */}
     </>
   );
 };

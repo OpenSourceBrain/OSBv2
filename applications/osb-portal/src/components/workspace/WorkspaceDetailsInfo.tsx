@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
+import Link from '@mui/material/Link';
 
 //icons
 import PersonIcon from '@mui/icons-material/Person';
@@ -29,7 +30,10 @@ const WorkspaceInfoSection = styled(Stack)(({ theme }) => ({
     },
     '& .MuiSvgIcon-root': {
         color: paragraph
-    }
+    },
+    '& .MuiLink-root': {
+        fontSize: '0.857rem',
+    },
 
 }))
 const WorkspaceDetailsInfo = (props: any) => {
@@ -44,8 +48,20 @@ const WorkspaceDetailsInfo = (props: any) => {
             <WorkspaceInfoSection spacing={1}>
                 <Typography variant='subtitle1'>Info</Typography>
                 <Stack direction="row" spacing={1}>
-                    <PersonIcon fontSize='small' />
-                    <Typography>By {user.firstName} {user.lastName}</Typography>
+                    <PersonIcon fontSize="small" />
+                    {props.workspace.user &&
+                        (props.workspace.user.firstName || props.workspace.user.lastName) ? (
+                        <Typography component="span" variant="subtitle2" sx={{fontWeight: 400, color: paragraph, lineHeight: 'unset'}}>
+                            By
+                            {
+                                <Link href={`/user/${props.workspace.user.id}`} underline="hover">
+                                    {" " + props.workspace.user.firstName +
+                                        " " +
+                                        props.workspace.user.lastName}
+                                </Link>
+                            }
+                        </Typography>
+                    ) : null}
                 </Stack>
                 <Stack direction="row" spacing={1}>
                     <CalendarTodayIcon fontSize='small' />
@@ -60,9 +76,9 @@ const WorkspaceDetailsInfo = (props: any) => {
                 <Typography variant='subtitle1'>Tags</Typography>
                 <Box>
                     {
-                        tags?.map((item,index)=>{
+                        tags?.map((item, index) => {
                             return (
-                                <Chip key={index} label={item.tag} size='small' sx={{mt: 1}}/>
+                                <Chip key={index} label={item.tag} size='small' sx={{ mt: 1 }} />
                             )
                         })
                     }

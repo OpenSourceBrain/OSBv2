@@ -47,6 +47,7 @@ export const {
   lightWhite,
   cardIconFill,
   lighterWhite,
+  orangeText
 } = vars;
 
 const verticalFill = {
