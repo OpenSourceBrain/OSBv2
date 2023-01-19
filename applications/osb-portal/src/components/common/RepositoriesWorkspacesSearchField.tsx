@@ -42,7 +42,6 @@ interface RepositoriesSearchProps {
 
 export default (props: RepositoriesSearchProps) => {
   const classes = useStyles();
-  console.log(props?.borderRadius);
   return (
     <TextField
       variant="standard"

@@ -13,7 +13,7 @@ import WindowIcon from "@mui/icons-material/Window";
 import ListIcon from "@mui/icons-material/List";
 import Chip from "@mui/material/Chip";
 import WorkspacesCards from "../components/workspace/WorkspacesCards";
-import SearchReposWorkspaces from "../components/common/SearchReposWorkspaces";
+import SearchFilterReposWorkspaces from "../components/common/SearchFilterReposWorkspaces";
 import { HomePageSider } from "../components";
 import {
   StyledActiveIconButton,
@@ -65,8 +65,6 @@ export const HomePage = (props: any) => {
       return { isPublic: false, isFeatured: false };
     }
   };
-
-  console.log(getTabValue());
 
   const isSearchFieldsEmpty =
     searchFilterValues.tags.length === 0 &&
@@ -293,7 +291,7 @@ export const HomePage = (props: any) => {
                           <CustomButton Icon={<WindowIcon />} listType="grid" />
                           <CustomButton Icon={<ListIcon />} listType="list" />
                         </ButtonGroup>
-                        <SearchReposWorkspaces
+                        <SearchFilterReposWorkspaces
                           filterChanged={(newTextFilter) =>
                             debouncedHandleSearchFilter(newTextFilter)
                           }

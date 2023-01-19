@@ -17,10 +17,8 @@ import WorkspaceService from "../../service/WorkspaceService";
 import { Workspace, OSBApplication } from "../../types/workspace";
 import OSBDialog from "../common/OSBDialog";
 import { fontColor, bgInputs, radius, bgLight, bgDarker } from "../../theme";
-import Link from "@mui/material/Link";
 import { RootState } from "../../store/rootReducer";
-import SearchReposWorkspaces from "../common/SearchReposWorkspaces";
-import RepositoriesSearch from "../repository/RepositoriesSearch";
+import RepositoriesWorkspacesSearchField from "../common/RepositoriesWorkspacesSearchField";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -288,7 +286,10 @@ export const WorkspaceFromRepository = ({
             spacing={1}
           >
             <Grid item={true} xs={12} className="verticalFill">
-              <RepositoriesSearch borderRadius={5} filterChanged={setFilter} />
+              <RepositoriesWorkspacesSearchField
+                borderRadius={5}
+                filterChanged={setFilter}
+              />
             </Grid>
             <Grid item={true} xs={12} className="verticalFill">
               <Box

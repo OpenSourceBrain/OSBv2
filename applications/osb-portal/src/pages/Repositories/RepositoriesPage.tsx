@@ -14,7 +14,7 @@ import Pagination from "@mui/material/Pagination";
 import { HomePageSider } from "../../components";
 import RepositoriesCards from "./RepositoriesCards";
 import RepositoriesTable from "./RespositoriesTable";
-import SearchReposWorkspaces from "../../components/common/SearchReposWorkspaces";
+import SearchFilterReposWorkspaces from "../../components/common/SearchFilterReposWorkspaces";
 import Chip from "@mui/material/Chip";
 import OSBPagination from "../../components/common/OSBPagination";
 
@@ -98,7 +98,13 @@ export const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }));
 
-export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
+export const RepositoriesPage = ({
+  user,
+  counter,
+}: {
+  user: UserInfo;
+  counter: number;
+}) => {
   const history = useHistory();
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
@@ -106,7 +112,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       tags: [],
       types: [],
     });
-
+  console.log(counter);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(0);
@@ -141,7 +147,6 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
 
   const getReposList = (payload) => {
     setLoading(true);
-    console.log({ payload });
     if (payload?.searchFilterValues) {
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -202,7 +207,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     } else {
       getReposList({ searchFilterValues, tabValue });
     }
-  }, [page, searchFilterValues, tabValue]);
+  }, [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
@@ -302,7 +307,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                           <CustomButton Icon={<WindowIcon />} listType="grid" />
                           <CustomButton Icon={<ListIcon />} listType="list" />
                         </ButtonGroup>
-                        <SearchReposWorkspaces
+                        <SearchFilterReposWorkspaces
                           filterChanged={(newTextFilter) =>
                             debouncedHandleSearchFilter(newTextFilter)
                           }

@@ -33,7 +33,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import CreateWorkspaceDialog from "../common/CreateWorkspaceDialog";
-
+import { EditRepoDialog } from "..";
 //icons
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import PublicIcon from "@mui/icons-material/Public";
@@ -186,6 +186,7 @@ export const MainDrawer = (props: any) => {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
+  const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
 
@@ -207,12 +208,18 @@ export const MainDrawer = (props: any) => {
     if (!props.user) {
       setAskLoginOpen(true);
     } else {
-      type === "workspace" ? setOpenWorkspaceDialog(true) : null;
+      type === "workspace"
+        ? setOpenWorkspaceDialog(true)
+        : setOpenRepoDialog(true);
       setAnchorEl(null);
     }
   };
 
-  const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
+  const handleCloseDialog = (type) => {
+    type === "workspace"
+      ? setOpenWorkspaceDialog(false)
+      : setOpenRepoDialog(false);
+  };
 
   const handleClickCreatMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -425,10 +432,20 @@ export const MainDrawer = (props: any) => {
           </Toolbar>
         </Drawer>
       </Box>
-      <CreateWorkspaceDialog
-        dialogOpen={openWorkspaceDialog}
-        handleClose={handleCloseWorkspaceDialog}
-      />
+      {openRepoDialog && (
+        <CreateWorkspaceDialog
+          dialogOpen={openWorkspaceDialog}
+          handleClose={() => handleCloseDialog("workspace")}
+        />
+      )}
+      {openRepoDialog && (
+        <EditRepoDialog
+          dialogOpen={openRepoDialog}
+          handleClose={() => handleCloseDialog("repository")}
+          user={props.user}
+          title="Edit repository"
+        />
+      )}
 
       <OSBDialog
         title="Create new workspace"

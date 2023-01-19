@@ -16,7 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
+import RepositoriesWorkspacesSearchField from "../../components/common/RepositoriesWorkspacesSearchField";
 
 //style
 import {
@@ -112,7 +112,9 @@ const StyledFilterButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
+export const SearchFilterReposWorkspaces = (
+  props: SearchReposWorkspacesProps
+) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [tagSearchValue, setTagSearchValue] = React.useState("");
   const [searchTagOptions, setSearchTagOptions] = React.useState([]);
@@ -185,7 +187,7 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
 
   return (
     <>
-      <RepositoriesSearch filterChanged={props?.filterChanged} />
+      <RepositoriesWorkspacesSearchField filterChanged={props?.filterChanged} />
       <StyledFilterButton
         aria-describedby={id}
         variant="contained"
@@ -318,4 +320,4 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
   );
 };
 
-export default SearchReposWorkspaces;
+export default SearchFilterReposWorkspaces;
