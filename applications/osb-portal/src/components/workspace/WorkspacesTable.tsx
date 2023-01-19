@@ -173,9 +173,6 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                           }
                         >
                           <StyledContextChip
-                            icon={
-                              <CodeBranchIcon sx={{ fontSize: ".857rem" }} />
-                            }
                             label={row.defaultApplication.name}
                           />
                         </Tooltip>

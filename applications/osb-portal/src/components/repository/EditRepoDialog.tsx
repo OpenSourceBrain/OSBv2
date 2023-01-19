@@ -34,6 +34,7 @@ import {
   bgLightest,
   bgDarkest,
   badgeBgLight,
+  drawerText,
 } from "../../theme";
 import MarkdownViewer from "../common/MarkdownViewer";
 import { RepositoryType } from "../../apiclient/workspaces";
@@ -57,6 +58,32 @@ const RepoDialog = styled(Dialog)(({ theme }) => ({
     backgroundColor: bgDarker,
     backgroundImage: "unset",
     borderRadius: "0.143rem",
+
+    "& .MuiDialogTitle-root": {
+      padding: "0.857rem 1.143rem",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: `0.071rem solid ${bgLight}`,
+      color: secondaryColor,
+      fontWeight: 700,
+
+      "& .MuiSvgIcon-root": {
+        color: drawerText,
+      },
+
+      "& .MuiButtonBase-root": {
+        alignSelf: "end",
+        padding: 0,
+        "& .MuiSvgIcon-root": {
+          marginBottom: 0,
+          fill: checkBoxColor,
+        },
+        "&:hover": {
+          backgroundColor: "transparent",
+        },
+      },
+    },
   },
   "& .MuiDialogContent-root": {
     padding: "0.875rem 1rem",
@@ -65,28 +92,7 @@ const RepoDialog = styled(Dialog)(({ theme }) => ({
     marginTop: "0.857rem",
     marginBottom: "1rem",
   },
-  "& .MuiDialogTitle-root": {
-    padding: "0.857rem 1.143rem",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottom: `0.071rem solid ${bgLight}`,
-    "& .MuiTypography-root": {
-      color: secondaryColor,
-      fontWeight: 700,
-    },
-    "& .MuiButtonBase-root": {
-      alignSelf: "end",
-      padding: 0,
-      "& .MuiSvgIcon-root": {
-        marginBottom: 0,
-        fill: checkBoxColor,
-      },
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
-    },
-  },
+
   "& .MuiDialogActions-root": {
     padding: "1.143rem",
     background: bgLightest,
@@ -108,6 +114,7 @@ const RepoDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const RepoButtonGroup = styled(ButtonGroup)(({ theme }) => ({
+  borderRadius: "2px",
   "& .MuiTextField-root": {
     "& .MuiInputBase-root.MuiOutlinedInput-root": {
       borderRadius: "0px 2px 2px 0px",
@@ -119,7 +126,8 @@ const Label = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: "0.75rem",
   color: badgeBgLight,
-  marginBottom: "0.714rem",
+  marginBottom: "0.286rem",
+  lineHeight: "1.429rem",
 }));
 
 const RepoSelect = styled(Select)(({ theme }) => ({
@@ -133,6 +141,13 @@ const RepoSelect = styled(Select)(({ theme }) => ({
     padding: "14px",
   },
   "&:before": {
+    border: 0,
+  },
+
+  "& .MuiSelect-root": {
+    padding: "14px",
+  },
+  "&:after": {
     border: 0,
   },
 
@@ -435,7 +450,6 @@ export const EditRepoDialog = ({
         <Box>
           <Label>Name</Label>
           <FormControl
-            variant="outlined"
             fullWidth={true}
             error={Boolean(error.name)}
             sx={{
@@ -505,7 +519,7 @@ export const EditRepoDialog = ({
             >
               <MenuItem
                 value={RepositoryContentType.Experimental}
-                sx={{ padding: "16px" }}
+                sx={{ padding: "0" }}
               >
                 <Checkbox
                   color="primary"
@@ -517,7 +531,7 @@ export const EditRepoDialog = ({
               </MenuItem>
               <MenuItem
                 value={RepositoryContentType.Modeling}
-                sx={{ padding: "16px" }}
+                sx={{ padding: "0" }}
               >
                 <Checkbox
                   color="primary"

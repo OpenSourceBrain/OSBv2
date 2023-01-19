@@ -18,8 +18,8 @@ export const NewWorkspaceAskUser = (props: any) => {
       <Grid container={true} justifyContent="center">
         <Grid item={true} xs={12} mb={3}>
           <DialogContentText>
-            To use workspaces you need an Open Source Brain v2.0 account. If you
-            already have one, please sign in, if not create one for free.
+            To use {props.type} you need an Open Source Brain v2.0 account. If
+            you already have one, please sign in, if not create one for free.
             Workspaces will let you save your own models and data, and run
             simulations and analyses.
           </DialogContentText>

@@ -20,7 +20,7 @@ const StyledPagination = styled(Pagination)(() => ({
   width: "100%",
 
   "& .Mui-selected": {
-    backgroundColor: primaryColor,
+    backgroundColor: `${primaryColor} !important`,
   },
 }));
 

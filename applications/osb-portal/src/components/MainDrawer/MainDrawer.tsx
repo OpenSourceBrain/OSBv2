@@ -432,27 +432,32 @@ export const MainDrawer = (props: any) => {
           </Toolbar>
         </Drawer>
       </Box>
-      {openRepoDialog && (
+      {openWorkspaceDialog && (
         <CreateWorkspaceDialog
           dialogOpen={openWorkspaceDialog}
           handleClose={() => handleCloseDialog("workspace")}
         />
       )}
+
       {openRepoDialog && (
         <EditRepoDialog
           dialogOpen={openRepoDialog}
           handleClose={() => handleCloseDialog("repository")}
           user={props.user}
-          title="Edit repository"
+          title="Add repository"
         />
       )}
 
       <OSBDialog
-        title="Create new workspace"
+        title={
+          openWorkspaceDialog ? "Create new workspace" : "Create new repository"
+        }
         open={askLoginOpen}
         closeAction={closeAskLogin}
       >
-        <NewWorkspaceAskUser />
+        <NewWorkspaceAskUser
+          type={openWorkspaceDialog ? "workspaces" : "repositories"}
+        />
       </OSBDialog>
     </>
   );
