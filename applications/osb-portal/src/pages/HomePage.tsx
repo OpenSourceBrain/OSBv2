@@ -13,13 +13,12 @@ import WindowIcon from "@mui/icons-material/Window";
 import ListIcon from "@mui/icons-material/List";
 import Chip from "@mui/material/Chip";
 import WorkspacesCards from "../components/workspace/WorkspacesCards";
-import SearchReposWorkspaces from "../components/common/SearchReposWorkspaces";
+import SearchFilterReposWorkspaces from "../components/common/SearchFilterReposWorkspaces";
 import { HomePageSider } from "../components";
 import {
   StyledActiveIconButton,
   StyledGrid,
   StyledIconButton,
-  StyledPagination,
   StyledTabs,
 } from "./Repositories/RepositoriesPage";
 
@@ -35,6 +34,7 @@ import searchFilter from "../types/searchFilter";
 import workspaceService from "../service/WorkspaceService";
 import WorkspacesList from "../components/workspace/WorkspacesTable";
 import { Tag } from "../apiclient/workspaces";
+import OSBPagination from "../components/common/OSBPagination";
 
 export const HomePage = (props: any) => {
   const history = useHistory();
@@ -55,9 +55,16 @@ export const HomePage = (props: any) => {
     props.user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
   const [listView, setListView] = React.useState<string>("grid");
-
   const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
   const isFeatured = tabValue === WorkspaceSelection.FEATURED;
+
+  const getTabValue = () => {
+    if (tabValue) {
+      return { isPublic, isFeatured };
+    } else {
+      return { isPublic: false, isFeatured: false };
+    }
+  };
 
   const isSearchFieldsEmpty =
     searchFilterValues.tags.length === 0 &&
@@ -90,15 +97,22 @@ export const HomePage = (props: any) => {
   const getWorkspacesList = (payload?) => {
     setLoading(true);
 
+    const tabs = getTabValue();
+
     if (payload?.searchFilterValues) {
       workspaceService
-        .fetchWorkspacesByFilter(isPublic, isFeatured, page, searchFilterValues)
+        .fetchWorkspacesByFilter(
+          tabs.isPublic,
+          tabs.isFeatured,
+          page,
+          searchFilterValues
+        )
         .then((workspacesDetails) => {
           setWorkspacesValues(workspacesDetails);
         });
     } else {
       workspaceService
-        .fetchWorkspaces(isPublic, isFeatured, page)
+        .fetchWorkspaces(tabs.isPublic, tabs.isFeatured, page)
         .then((workspacesDetails) => {
           setWorkspacesValues(workspacesDetails);
         });
@@ -139,13 +153,14 @@ export const HomePage = (props: any) => {
       );
     }
   };
+
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
       getWorkspacesList();
     } else {
       getWorkspacesList({ searchFilterValues });
     }
-  }, [page, searchFilterValues, tabValue]);
+  }, [page, searchFilterValues, tabValue, props.counter]);
 
   return (
     <>
@@ -174,7 +189,7 @@ export const HomePage = (props: any) => {
             className="verticalFill"
           >
             <Box width={1} className="verticalFit">
-              <div id="repositories-list" className="verticalFit">
+              <div id="workspaces-list" className="verticalFit">
                 <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
                   <Box
                     display="flex"
@@ -191,7 +206,7 @@ export const HomePage = (props: any) => {
                         item={true}
                         xs={12}
                         sm={12}
-                        md={7}
+                        md={12}
                         lg={7}
                         className="verticalFill"
                       >
@@ -261,7 +276,7 @@ export const HomePage = (props: any) => {
                           />
                         </Tabs>
                       </Grid>
-                      <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
+                      <StyledGrid item={true} xs={12} sm={8} md={12} lg={5}>
                         <ButtonGroup
                           sx={{
                             backgroundColor: bgRegular,
@@ -276,7 +291,7 @@ export const HomePage = (props: any) => {
                           <CustomButton Icon={<WindowIcon />} listType="grid" />
                           <CustomButton Icon={<ListIcon />} listType="list" />
                         </ButtonGroup>
-                        <SearchReposWorkspaces
+                        <SearchFilterReposWorkspaces
                           filterChanged={(newTextFilter) =>
                             debouncedHandleSearchFilter(newTextFilter)
                           }
@@ -334,8 +349,8 @@ export const HomePage = (props: any) => {
                   />
                 )}
               </div>
-              {workspaces && (
-                <StyledPagination
+              {workspaces && totalPages > 1 && (
+                <OSBPagination
                   count={totalPages}
                   page={page}
                   onChange={handleChangePage}

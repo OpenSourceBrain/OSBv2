@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
@@ -9,10 +9,9 @@ import { bgRegular, paragraph, chipTextColor } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    borderRadius: '8px 0px 0px 8px',
     backgroundColor: bgRegular,
     padding: theme.spacing(1),
-    marginRight: '0.286rem',
+    marginRight: "0.286rem",
     "& .MuiSvgIcon-root": {
       width: "1.25rem",
       borderRadius: 0,
@@ -31,23 +30,28 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(0),
       fontSize: ".88rem",
       color: chipTextColor,
-      fontWeight: 500
+      fontWeight: 500,
     },
   },
 }));
 
 interface RepositoriesSearchProps {
   filterChanged: (newFilter: string) => void;
+  borderRadius?: number;
 }
 
 export default (props: RepositoriesSearchProps) => {
   const classes = useStyles();
-
   return (
     <TextField
       variant="standard"
       id="standard-start-adornment"
       fullWidth={true}
+      sx={{
+        borderRadius: props?.borderRadius
+          ? `${props?.borderRadius}px`
+          : "8px 0px 0px 8px",
+      }}
       placeholder="Search"
       className={classes.textField}
       onChange={(e) => {
@@ -59,6 +63,7 @@ export default (props: RepositoriesSearchProps) => {
             <SearchIcon />
           </InputAdornment>
         ),
-      }} />
+      }}
+    />
   );
 };

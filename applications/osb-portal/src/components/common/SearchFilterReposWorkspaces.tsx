@@ -16,7 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
+import RepositoriesWorkspacesSearchField from "../../components/common/RepositoriesWorkspacesSearchField";
 
 //style
 import {
@@ -53,10 +53,8 @@ const StyledLabel = styled(Typography)(({ theme }) => ({
 
 const StyledPopover = styled(Popover)(({ theme }) => ({
   "& .MuiPaper-root": {
-    top: "88px !important",
-    left: "1023px !important",
     background: chipBg,
-    minWidth: "390px !important",
+    minWidth: "350px !important",
     padding: theme.spacing(3),
     boxShadow: "0px 10px 60px rgba(0, 0, 0, 0.5)",
     "& .MuiSvgIcon-root": {
@@ -112,7 +110,9 @@ const StyledFilterButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
+export const SearchFilterReposWorkspaces = (
+  props: SearchReposWorkspacesProps
+) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [tagSearchValue, setTagSearchValue] = React.useState("");
   const [searchTagOptions, setSearchTagOptions] = React.useState([]);
@@ -185,9 +185,10 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
 
   return (
     <>
-      <RepositoriesSearch filterChanged={props?.filterChanged} />
+      <RepositoriesWorkspacesSearchField filterChanged={props?.filterChanged} />
       <StyledFilterButton
         aria-describedby={id}
+        aria-haspopup="true"
         variant="contained"
         onClick={handlePopoverClick}
         startIcon={<FilterListIcon />}
@@ -201,15 +202,18 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
         onClose={handlePopoverClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
           horizontal: "center",
         }}
       >
         <StyledLabel>Tags</StyledLabel>
         <Autocomplete
+          sx={{
+            "& .MuiFormControl-root": {
+              "& .MuiInputBase-root": {
+                padding: "7px",
+              },
+            },
+          }}
           value={props?.searchFilterValues.tags}
           inputValue={tagSearchValue}
           multiple={true}
@@ -318,4 +322,4 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
   );
 };
 
-export default SearchReposWorkspaces;
+export default SearchFilterReposWorkspaces;

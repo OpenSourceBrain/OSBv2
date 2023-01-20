@@ -1,5 +1,5 @@
 import * as React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { useHistory, useParams } from "react-router-dom";
 import { MainMenu } from "../components/index";
 import Box from "@mui/material/Box";
@@ -7,11 +7,7 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import PersonIcon from "@mui/icons-material/Person";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -39,7 +35,7 @@ const useStyles = makeStyles((theme: any) => ({
     "& .MuiGrid-root": {
       marginRight: "10px",
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       flexDirection: "column-reverse",
       position: "fixed",
       bottom: 0,
@@ -82,7 +78,7 @@ const useStyles = makeStyles((theme: any) => ({
           marginLeft: theme.spacing(2),
         },
       },
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down("md")]: {
         flexDirection: "column",
         "& .MuiTypography-root:nth-child(2)": {
           marginTop: theme.spacing(1),
@@ -100,16 +96,16 @@ const useStyles = makeStyles((theme: any) => ({
       width: "20%",
       maxWidth: 400,
       borderRadius: 0,
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down("md")]: {
         display: "none",
       },
     },
   },
   workspaceDescriptionBox: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       paddingLeft: "20%",
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 0,
     },
     "& .inner-description": {
@@ -124,7 +120,7 @@ const useStyles = makeStyles((theme: any) => ({
     "& .MuiTypography-root": {
       marginBottom: theme.spacing(1),
 
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down("sm")]: {
         paddingBottom: theme.spacing(7),
       },
       "& .preview-box": {
@@ -181,181 +177,186 @@ export const WorkspacePage = (props: any) => {
 
   const canEdit = canEditWorkspace(props.user, workspace);
 
-  return workspace && (
-    <Box className="verticalFit">
-      {
-        <>
-          <Box className="wrapper-for-now">
-            <Divider />
-            <MainMenu />
-            <Divider />
-            {/*
-            Top panel.
-          */}
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              bgcolor={bgLight}
-              className={classes.workspaceToolbar}
-            >
-              <Box display="flex" onClick={() => history.push("/")}>
-                <AppsIcon color="primary" fontSize="small" />
-                <Typography component="a" color="primary">
-                  See all workspaces
-                </Typography>
-              </Box>
-
-              <Box display="flex" className="buttons">
-                {canEdit && (
-                  <Button
-                    variant="outlined"
-                    disableElevation={true}
-                    color="secondary"
-                    style={{ borderColor: "white" }}
-                    onClick={() => setEditWorkspaceOpen(true)}
-                  >
-                    Edit
-                  </Button>
-                )}
-                <OSBSplitButton
-                  defaultSelected={workspace.defaultApplication}
-                  handleClick={openWithApp}
-                />
-              </Box>
-            </Box>
-            {/*
-            Alternative accordion for us in small displays.
-          */}
-            <Accordion className={classes.accordion}>
-              <AccordionSummary
-                expandIcon={<ArrowRight />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Resources</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <WorkspaceInteractions
-                  workspace={workspace}
-                  open={true}
-                  user={props.user}
-                  openResource={handleResourceClick}
-                />
-              </AccordionDetails>
-            </Accordion>
-
-            {/*
-             Mid panel: workspace metadata
-          */}
-            <Box
-              bgcolor={bgRegular}
-              minHeight="20vh"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              flexDirection="column"
-              p={1}
-              className={classes.workspaceInformation}
-            >
-              <Typography component="h1" variant="h1">
-                {workspace.name}
-              </Typography>
+  return (
+    workspace && (
+      <Box className="verticalFit">
+        {
+          <>
+            <Box className="wrapper-for-now">
+              <Divider />
+              <MainMenu />
+              <Divider />
+              {/*
+              Top panel.
+            */}
               <Box
                 display="flex"
-                flexDirection="row"
-                color={paragraph}
-                mb={2}
                 alignItems="center"
+                justifyContent="space-between"
+                bgcolor={bgLight}
+                className={classes.workspaceToolbar}
               >
-                {workspace.user &&
-                (workspace.user.firstName || workspace.user.lastName) ? (
-                  <Typography component="span" variant="subtitle2">
-                    <PersonIcon fontSize="small" /> By
-                    {
-                      <Link href={`/user/${workspace.user.id}`} underline="hover">
-                        {workspace.user.firstName +
-                          " " +
-                          workspace.user.lastName}
-                      </Link>
-                    }
+                <Box display="flex" onClick={() => history.push("/")}>
+                  <AppsIcon color="primary" fontSize="small" />
+                  <Typography component="a" color="primary">
+                    See all workspaces
                   </Typography>
-                ) : null}
-                {workspace.timestampUpdated && (
-                  <Typography component="span" variant="subtitle2">
-                    <CalendarTodayIcon fontSize="small" /> Last Updated on{" "}
-                    {workspace.timestampUpdated.toDateString()}
-                  </Typography>
-                )}
+                </Box>
+
+                <Box display="flex" className="buttons">
+                  {canEdit && (
+                    <Button
+                      variant="outlined"
+                      disableElevation={true}
+                      color="secondary"
+                      style={{ borderColor: "white" }}
+                      onClick={() => setEditWorkspaceOpen(true)}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                  <OSBSplitButton
+                    defaultSelected={workspace.defaultApplication}
+                    handleClick={openWithApp}
+                  />
+                </Box>
               </Box>
-              <Box>
-                {workspace.tags &&
-                  workspace.tags.map((tagObject) => {
-                    return <Chip label={tagObject.tag} key={tagObject.id} />;
-                  })}
+              {/*
+              Alternative accordion for us in small displays.
+            */}
+              <Accordion className={classes.accordion}>
+                <AccordionSummary
+                  expandIcon={<ArrowRight />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>Resources</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <WorkspaceInteractions
+                    workspace={workspace}
+                    open={true}
+                    user={props.user}
+                    openResource={handleResourceClick}
+                  />
+                </AccordionDetails>
+              </Accordion>
+
+              {/*
+               Mid panel: workspace metadata
+            */}
+              <Box
+                bgcolor={bgRegular}
+                minHeight="20vh"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                flexDirection="column"
+                p={1}
+                className={classes.workspaceInformation}
+              >
+                <Typography component="h1" variant="h1">
+                  {workspace.name}
+                </Typography>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  color={paragraph}
+                  mb={2}
+                  alignItems="center"
+                >
+                  {workspace.user &&
+                  (workspace.user.firstName || workspace.user.lastName) ? (
+                    <Typography component="span" variant="subtitle2">
+                      <PersonIcon fontSize="small" /> By
+                      {
+                        <Link
+                          href={`/user/${workspace.user.id}`}
+                          underline="hover"
+                        >
+                          {workspace.user.firstName +
+                            " " +
+                            workspace.user.lastName}
+                        </Link>
+                      }
+                    </Typography>
+                  ) : null}
+                  {workspace.timestampUpdated && (
+                    <Typography component="span" variant="subtitle2">
+                      <CalendarTodayIcon fontSize="small" /> Last Updated on{" "}
+                      {workspace.timestampUpdated.toDateString()}
+                    </Typography>
+                  )}
+                </Box>
+                <Box>
+                  {workspace.tags &&
+                    workspace.tags.map((tagObject) => {
+                      return <Chip label={tagObject.tag} key={tagObject.id} />;
+                    })}
+                </Box>
               </Box>
             </Box>
-          </Box>
 
-          {/*
+            {/*
             Bottom: workspace resource panel and thumbnail
           */}
-          <Box
-            className={`verticalFit ${classes.workspaceResourcesInformation}`}
-            display="flex"
-            flexDirection="row"
-          >
-            <WorkspaceInteractions
-              workspace={workspace}
-              open={true}
-              user={props.user}
-              refreshWorkspacePage={() => {
-                setRefresh(!refresh);
-              }}
-              openResource={handleResourceClick}
-            />
             <Box
-              className={`${classes.workspaceDescriptionBox} scrollbar`}
-              width="100%"
+              className={`verticalFit ${classes.workspaceResourcesInformation}`}
               display="flex"
-              flexDirection="column"
-              alignItems="center"
+              flexDirection="row"
             >
-              <Box className={`inner-description`} p={4}>
-                {workspace.thumbnail && (
-                  <>
-                    <Box className={classes.imageBox}>
-                      <img
-                        src={`/proxy/workspaces/${
-                          workspace.thumbnail
-                        }?v=${workspace.timestampUpdated.getMilliseconds()}`}
-                        alt="Workspace thumbnail"
-                      />
-                    </Box>
-                    <Divider />
-                  </>
-                )}
+              <WorkspaceInteractions
+                workspace={workspace}
+                open={true}
+                user={props.user}
+                refreshWorkspacePage={() => {
+                  setRefresh(!refresh);
+                }}
+                openResource={handleResourceClick}
+              />
+              <Box
+                className={`${classes.workspaceDescriptionBox} scrollbar`}
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
+                <Box className={`inner-description`} p={4}>
+                  {workspace.thumbnail && (
+                    <>
+                      <Box className={classes.imageBox}>
+                        <img
+                          src={`/proxy/workspaces/${
+                            workspace.thumbnail
+                          }?v=${workspace.timestampUpdated.getMilliseconds()}`}
+                          alt="Workspace thumbnail"
+                        />
+                      </Box>
+                      <Divider />
+                    </>
+                  )}
 
-                <Typography component="div" variant="body1">
-                  <MarkdownViewer text={workspace.description} />
-                </Typography>
+                  <Typography component="div" variant="body1">
+                    <MarkdownViewer text={workspace.description} />
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Box>
 
-          {canEdit && editWorkspaceOpen && (
-            <WorkspaceEditor
-              open={editWorkspaceOpen}
-              title={"Edit workspace: " + workspace.name}
-              closeHandler={handleCloseEditWorkspace}
-              workspace={workspace}
-              onLoadWorkspace={handleCloseEditWorkspace}
-              user={user}
-            />
-          )}
-        </>
-      }
-    </Box>
+            {canEdit && editWorkspaceOpen && (
+              <WorkspaceEditor
+                open={editWorkspaceOpen}
+                title={"Edit workspace: " + workspace.name}
+                closeHandler={handleCloseEditWorkspace}
+                workspace={workspace}
+                onLoadWorkspace={handleCloseEditWorkspace}
+                user={user}
+              />
+            )}
+          </>
+        }
+      </Box>
+    )
   );
 };
 
