@@ -67,10 +67,6 @@ const WorkspaceDetailsInfo = (props: any) => {
                     <CalendarTodayIcon fontSize='small' />
                     <Typography>Last Updated on {timestampUpdated.toLocaleDateString()}</Typography>
                 </Stack>
-                <Stack direction="row" spacing={1}>
-                    <CollectionsBookmarkOutlinedIcon fontSize='small' />
-                    <Typography>Experimental Data</Typography>
-                </Stack>
             </WorkspaceInfoSection>
             <WorkspaceInfoSection spacing={1} mt={3}>
                 <Typography variant='subtitle1'>Tags</Typography>
