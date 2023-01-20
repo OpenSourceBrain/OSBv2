@@ -10,6 +10,25 @@ harness:
   dependencies:
     build:
       - cloudharness-base
+  quotas:
+    # default for User Quotas
+    # user quotas can be set as Keycloak attributes on Groups and Users
+    # quotas set on User level will always overrule Group quotas
+    # the following keys are valid for Jupyterhub pods (workspaces)
+
+    # sets the maximum number of (included named) servers open concurrently (int)
+    quota-ws-open: 3
+    # sets the cpu guaranteed on a single workspace in CPU units (float)
+    quota-ws-guaranteecpu: 0.2
+    # sets the cpu limit on a single workspace in CPU units (float)
+    quota-ws-maxcpu: 1
+    # sets the memory guaranteed on a single workspace in Gb units (float)
+    quota-ws-guaranteemem: 0.5
+    # sets the memory limit on a single workspace in Gb units (float)
+    quota-ws-maxmem: 1
+    # sets the storage dedicated to the user data in Gb units (float)
+    quota-storage-max : 1.25
+
 hub:
   config:
     JupyterHub:
@@ -23,7 +42,6 @@ hub:
       c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost localhost:3000 *.osb.local *.metacell.us *.opensourcebrain.org *.v2.opensourcebrain.org"}}
     spawner: >-
       c.Spawner.args = []
-  namedServerLimitPerUser: 3
 singleuser:
   storage:
     type: dynamic
@@ -31,6 +49,7 @@ singleuser:
     dynamic:
       pvcNameTemplate: osb-user-{userid}
       volumeNameTemplate: osb-user-{userid}
+      storageClass: "{{namespace}}-nfs-client"
     homeMountPath: /opt/user
     extraLabels: {}
   cpu:

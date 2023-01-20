@@ -1,9 +1,22 @@
 import * as React from "react";
+import debounce from "lodash/debounce";
 
 //components
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import Popover from "@mui/material/Popover";
+import Autocomplete from "@mui/material/Autocomplete";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormGroup from "@mui/material/FormGroup";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+
+import RepositoriesWorkspacesSearchField from "../../components/common/RepositoriesWorkspacesSearchField";
 
 //style
 import {
@@ -13,108 +26,96 @@ import {
   bgRegular,
   bgInputs,
 } from "../../theme";
-import makeStyles from "@mui/styles/makeStyles";
+import styled from "@mui/system/styled";
 
+//types
 import { RepositoryContentType } from "../../apiclient/workspaces";
 import searchFilter from "../../types/searchFilter";
-import RepositoriesSearch from "../../components/repository/RepositoriesSearch";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import Popover from "@mui/material/Popover";
-import Autocomplete from "@mui/material/Autocomplete";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
-import {
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  InputAdornment,
-} from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import debounce from "lodash/debounce";
+
+//services
 import RepositoryService from "../../service/RepositoryService";
-import { useState } from "react";
 
 interface SearchReposWorkspacesProps {
   searchFilterValues: searchFilter;
   filterChanged: (filter: string) => void;
   setSearchFilterValues: (searchFilter) => void;
   hasTypes?: boolean;
+  setLoading?: (loading: boolean) => void;
 }
 
-const useStyles = makeStyles((theme) => ({
-  filterButton: {
-    borderRadius: "0px 8px 8px 0px",
-    textTransform: "capitalize",
-    "&:hover": {
-      backgroundColor: "transparent",
-    },
-    minWidth: "fit-content !important",
-    backgroundColor: bgRegular,
-    "& .MuiTouchRipple-root:hover": {
-      backgroundColor: "transparent",
-    },
+const StyledLabel = styled(Typography)(({ theme }) => ({
+  color: bgInputs,
+  fontWeight: 700,
+  fontSize: ".88rem",
+  marginBottom: theme.spacing(1),
+  display: "inline-block",
+}));
+
+const StyledPopover = styled(Popover)(({ theme }) => ({
+  "& .MuiPaper-root": {
+    background: chipBg,
+    minWidth: "350px !important",
+    padding: theme.spacing(3),
+    boxShadow: "0px 10px 60px rgba(0, 0, 0, 0.5)",
     "& .MuiSvgIcon-root": {
-      fontSize: "1.3rem",
-      color: chipTextColor,
+      cursor: "pointer",
     },
-    "& .MuiTypography-root": {
-      fontSize: "0.857rem",
-      color: chipTextColor,
-      fontWeight: 500,
-    },
-  },
-  popover: {
-    "& .MuiPaper-root": {
-      top: "88px !important",
-      left: "1023px !important",
-      background: chipBg,
-      minWidth: "390px !important",
-      padding: theme.spacing(3),
-      boxShadow: "0px 10px 60px rgba(0, 0, 0, 0.5)",
+    "& .MuiAutocomplete-root": {
+      display: "flex",
+      alignItems: "center",
+      paddingTop: 0,
+      paddingBottom: 0,
+      marginBottom: ".88rem",
       "& .MuiSvgIcon-root": {
-        cursor: "pointer",
+        marginLeft: theme.spacing(1),
+        color: paragraph,
       },
-      "& .MuiAutocomplete-root": {
-        display: "flex",
-        alignItems: "center",
-        paddingTop: 0,
-        paddingBottom: 0,
-        marginBottom: ".88rem",
-        "& .MuiSvgIcon-root": {
-          marginLeft: theme.spacing(1),
-          color: paragraph,
-        },
-        "& .MuiInputBase-root": {
-          paddingLeft: 0,
-        },
-        "& .MuiFilledInput-root": {
-          "&:hover, &:before": {
-            backgroundColor: "transparent",
-            border: "none",
-          },
-        },
-        "& .Mui-focused": {
+      "& .MuiInputBase-root": {
+        paddingLeft: 0,
+      },
+      "& .MuiFilledInput-root": {
+        "&:hover, &:before": {
           backgroundColor: "transparent",
           border: "none",
         },
       },
+      "& .Mui-focused": {
+        backgroundColor: "transparent",
+        border: "none",
+      },
     },
-  },
-  label: {
-    color: bgInputs,
-    fontWeight: 700,
-    fontSize: ".88rem",
-    marginBottom: theme.spacing(1),
-    display: "inline-block",
   },
 }));
 
-export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
-  const classes = useStyles();
+const StyledFilterButton = styled(Button)(({ theme }) => ({
+  borderRadius: "0px 8px 8px 0px",
+  textTransform: "capitalize",
+  boxShadow: "none",
+  "&:hover": {
+    backgroundColor: "transparent",
+  },
+  minWidth: "fit-content !important",
+  backgroundColor: bgRegular,
+  "& .MuiTouchRipple-root:hover": {
+    backgroundColor: "transparent",
+  },
+  "& .MuiSvgIcon-root": {
+    fontSize: "1.3rem",
+    color: chipTextColor,
+  },
+  "& .MuiTypography-root": {
+    fontSize: "0.857rem",
+    color: chipTextColor,
+    fontWeight: 500,
+  },
+}));
 
+export const SearchFilterReposWorkspaces = (
+  props: SearchReposWorkspacesProps
+) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [tagSearchValue, setTagSearchValue] = React.useState("");
-  const [searchTagOptions, setSearchTagOptions] = useState([]);
+  const [searchTagOptions, setSearchTagOptions] = React.useState([]);
   const [tagPage, setTagPage] = React.useState(1);
   const [totalTagPages, setTotalTagPages] = React.useState(0);
 
@@ -184,35 +185,35 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
 
   return (
     <>
-      <RepositoriesSearch filterChanged={props?.filterChanged} />
-      <Button
+      <RepositoriesWorkspacesSearchField filterChanged={props?.filterChanged} />
+      <StyledFilterButton
         aria-describedby={id}
+        aria-haspopup="true"
         variant="contained"
         onClick={handlePopoverClick}
-        className={classes.filterButton}
         startIcon={<FilterListIcon />}
       >
         <Typography component="label">Filter</Typography>
-      </Button>
-      <Popover
+      </StyledFilterButton>
+      <StyledPopover
         id={id}
         open={open}
         anchorEl={anchorEl}
-        className={classes.popover}
         onClose={handlePopoverClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
           horizontal: "center",
         }}
       >
-        <Typography component="label" className={classes.label}>
-          Tags
-        </Typography>
+        <StyledLabel>Tags</StyledLabel>
         <Autocomplete
+          sx={{
+            "& .MuiFormControl-root": {
+              "& .MuiInputBase-root": {
+                padding: "7px",
+              },
+            },
+          }}
           value={props?.searchFilterValues.tags}
           inputValue={tagSearchValue}
           multiple={true}
@@ -273,9 +274,7 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
         {props?.hasTypes && (
           <FormControl variant="standard" component="fieldset">
             <FormGroup>
-              <Typography component="label" className={classes.label}>
-                Types
-              </Typography>
+              <StyledLabel>Types</StyledLabel>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -318,9 +317,9 @@ export const SearchReposWorkspaces = (props: SearchReposWorkspacesProps) => {
             </FormGroup>
           </FormControl>
         )}
-      </Popover>
+      </StyledPopover>
     </>
   );
 };
 
-export default SearchReposWorkspaces;
+export default SearchFilterReposWorkspaces;

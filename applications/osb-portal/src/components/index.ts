@@ -1,11 +1,10 @@
 import { connect } from "react-redux";
 
 import { App as app } from "../App";
-import { Workspaces as workspace } from "./workspace/Workspaces";
+import { WorkspacesCards as workspace } from "./workspace/WorkspacesCards";
 import { WorkspaceToolBox as workspacetoolbox } from "./workspace/NewWorkspaceToolBox";
 import workspaceInteractions from "./workspace/drawer/WorkspaceInteractions";
 
-import { Banner as banner } from "./header/Banner";
 import { Header as header } from "./header/Header";
 import { WorkspaceDrawer as workspacedrawer } from "./workspace/drawer/WorkspaceDrawer";
 import { AboutDialog as aboutDialog } from "./dialogs/AboutDialog";
@@ -16,21 +15,23 @@ import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspacePage from "../pages/WorkspacePage";
 import workspaceEditor from "./workspace/WorkspaceEditor";
 import editRepoDialog from "../components/repository/EditRepoDialog";
-import HomePageDrawer from './MainDrawer/MainDrawer'
+import HomePageDrawer from "./MainDrawer/MainDrawer";
 
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
+import * as RepositoriesActions from "../store/actions/repositories";
 import { userLogin, userLogout, userRegister } from "../store/actions/user";
 import { toggleDrawer } from "../store/actions/drawer";
 import { setError } from "../store/actions/error";
 import { openDialog, closeDialog } from "../store/actions/aboutdialog";
-import newWorkspaceAskUser from "./workspace/NewWorkspaceAskUser";
+import { NewWorkspaceAskUser as newWorkspaceAskUser } from "./workspace/NewWorkspaceAskUser";
 import { AnyAction, Dispatch } from "redux";
 
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
+
 import { UserPage as userPage } from "../pages/UserPage";
-import { RepositoriesPage as repositoriesPage } from "../pages/RepositoriesNew/index";
-import repositories from "../components/repository/Repositories";
+import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
+import { HomePage as homePage } from "../pages/HomePage";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
 import WorkspaceActionsMenuUnbound from "./workspace/WorkspaceActionsMenu";
@@ -45,15 +46,19 @@ const mapSelectedWorkspaceStateToProps = (state: RootState) => ({
   user: state.user,
 });
 
-const dispatchWorkspaceProps = {
+export const dispatchWorkspaceProps = {
   login: userLogin,
   logout: userLogout,
   ...WorkspacesActions,
 };
 
+export const dispatchRepositoriesProps = {
+  ...RepositoriesActions,
+};
+
 const mapUserStateToProps = (state: RootState) => ({
   user: state.user,
-  workspacesCounter: state.workspaces.counter
+  workspacesCounter: state.workspaces.counter,
 });
 
 const dispatchUserProps = {
@@ -61,10 +66,6 @@ const dispatchUserProps = {
   logout: userLogout,
   register: userRegister,
 };
-
-const mapDrawerStateToProps = (state: RootState) => ({
-  drawer: state.drawer,
-});
 
 const dispatchDrawerProps = {
   onToggleDrawer: toggleDrawer,
@@ -87,9 +88,16 @@ const mapTagsToProps = (state: RootState) => ({
   tags: state.tags,
 });
 
-const mapUserAndTagsToProps = (state: RootState) => ({
+const mapRepositoriesPageToProps = (state: RootState) => ({
   user: state.user,
   tags: state.tags,
+  counter: state.repositories?.counter,
+});
+
+const mapHomePageToProps = (state: RootState) => ({
+  user: state.user,
+  tags: state.tags,
+  counter: state.workspaces?.counter,
 });
 
 const mapAboutDialogToProps = (state: RootState) => ({
@@ -111,8 +119,8 @@ const mapAboutDialogAndUserToProps = (state: RootState) => ({
 const dispatchAboutDialogAndUser = {
   openDialog,
   closeDialog,
-  ...dispatchUserProps
-}
+  ...dispatchUserProps,
+};
 
 export const Workspaces = connect(
   mapWorkspacesStateToProps,
@@ -122,16 +130,19 @@ export const WorkspaceCard = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspaceCard);
-export const Repositories = connect(mapUserStateToProps)(repositories);
-export const EditRepoDialog = connect(
-  mapTagsToProps,
+export const HomePage = connect(
+  mapHomePageToProps,
   dispatchTagsProps
-)(editRepoDialog);
+)(homePage);
+export const EditRepoDialog = connect(mapRepositoriesPageToProps, {
+  ...dispatchTagsProps,
+  ...dispatchRepositoriesProps,
+})(editRepoDialog);
 export const WorkspaceToolBox = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspacetoolbox);
-export const Banner = connect(mapUserStateToProps, dispatchUserProps)(banner);
+
 export const Header = connect(mapUserStateToProps, {
   ...dispatchUserProps,
   ...dispatchDrawerProps,
@@ -143,7 +154,7 @@ export const WorkspaceDrawer = connect(
 export const WorkspaceInteractions = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
-)(workspaceInteractions) as any;
+)(workspaceInteractions);
 export const WorkspaceEditor = connect(
   mapTagsToProps,
   dispatchTagsProps
@@ -172,10 +183,10 @@ export const WorkspacePage = connect(
 )(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage);
 export const UserPage = connect(mapUserStateToProps)(userPage);
-export const RepositoriesPage = connect(
-  mapUserAndTagsToProps,
-  dispatchTagsProps
-)(repositoriesPage);
+export const RepositoriesPage = connect(mapRepositoriesPageToProps, {
+  ...dispatchTagsProps,
+  ...dispatchRepositoriesProps,
+})(repositoriesPage);
 export const NewWorkspaceAskUser = connect(
   null,
   dispatchUserProps
@@ -186,8 +197,8 @@ export const ProtectedRoute = connect(
 )(protectedRoute);
 
 export const HomePageSider = connect(
-    mapAboutDialogAndUserToProps,
-    dispatchAboutDialogAndUser
+  mapAboutDialogAndUserToProps,
+  dispatchAboutDialogAndUser
 )(HomePageDrawer);
 
 export const WorkspaceActionsMenu = connect(

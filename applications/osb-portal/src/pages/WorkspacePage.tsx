@@ -1,244 +1,363 @@
 import * as React from "react";
-
-//theme
-import { styled } from "@mui/styles";
-import { bgLightest as lineColor, paragraph, secondaryColor as white, linkColor, chipBg, headerBg as hoverBg } from "../theme";
-
-//components
-import Grid from "@mui/material/Grid";
+import makeStyles from "@mui/styles/makeStyles";
+import { useHistory, useParams } from "react-router-dom";
+import { MainMenu } from "../components/index";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Popper from "@mui/material/Popper";
-import Paper from "@mui/material/Paper";
-import Grow from "@mui/material/Grow";
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Divider from '@mui/material/Divider';
-import { HomePageSider } from "../components";
-import WorkspaceDetails from "../components/workspace/WorkspaceDetailsTabs";
-import WorkspaceDetailsInfo from "../components/workspace/WorkspaceDetailsInfo";
+import Divider from "@mui/material/Divider";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import AppsIcon from "@mui/icons-material/Apps";
+import PersonIcon from "@mui/icons-material/Person";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import ArrowRight from "@mui/icons-material/ArrowRight";
+import Link from "@mui/material/Link";
 
-//icons
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { OSBSplitButton } from "../components/common/OSBSpliButton";
+import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
+import WorkspaceService from "../service/WorkspaceService";
+import {
+  Workspace,
+  WorkspaceResource,
+  OSBApplications,
+  OSBApplication,
+} from "../types/workspace";
+import OSBDialog from "../components/common/OSBDialog";
+import { WorkspaceEditor, WorkspaceInteractions } from "../components";
+import MarkdownViewer from "../components/common/MarkdownViewer";
+import { canEditWorkspace } from "../service/UserService";
 
-const options = ["Open with Github", "Open with NWB Explorer", "Open with JupyterLab"];
+const useStyles = makeStyles((theme: any) => ({
+  workspaceToolbar: {
+    cursor: "pointer",
+    padding: theme.spacing(1),
+    "& .MuiGrid-root": {
+      marginRight: "10px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column-reverse",
+      position: "fixed",
+      bottom: 0,
+      width: "100%",
+      padding: 0,
+      "& .MuiBox-root": {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        width: "100%",
+        justifyContent: "center",
+      },
+      "& .buttons": {
+        borderBottom: `1px solid rgb(255, 255, 255, 0.12)`,
+      },
+      "& .MuiGrid-container": {
+        maxWidth: "fit-content",
+      },
+    },
+  },
+  accordion: {
+    "& .MuiAccordionSummary-root": {
+      color: paragraph,
+      "& .MuiSvgIcon-root": {
+        color: paragraph,
+      },
+    },
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
+  },
+  workspaceInformation: {
+    borderBottom: `1px solid ${bgLighter}`,
+    "& span": {
+      display: "flex",
+      alignItems: "center",
+    },
+    "& .MuiBox-root": {
+      [theme.breakpoints.up("md")]: {
+        "& .MuiTypography-root:nth-child(2)": {
+          marginLeft: theme.spacing(2),
+        },
+      },
+      [theme.breakpoints.down("md")]: {
+        flexDirection: "column",
+        "& .MuiTypography-root:nth-child(2)": {
+          marginTop: theme.spacing(1),
+        },
+      },
+    },
+    "& .MuiChip-root": {
+      backgroundColor: "#3c3c3c",
+    },
+  },
+  workspaceResourcesInformation: {
+    "& .MuiAccordion-root": {
+      borderRight: `1px solid ${bgLighter}`,
+      position: "fixed",
+      width: "20%",
+      maxWidth: 400,
+      borderRadius: 0,
+      [theme.breakpoints.down("md")]: {
+        display: "none",
+      },
+    },
+  },
+  workspaceDescriptionBox: {
+    [theme.breakpoints.down("lg")]: {
+      paddingLeft: "20%",
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 0,
+    },
+    "& .inner-description": {
+      maxWidth: 850,
+      minWidth: "50vw",
+      flex: 1,
+    },
+    "& hr": {
+      marginTop: theme.spacing(4),
+      marginBottom: theme.spacing(4),
+    },
+    "& .MuiTypography-root": {
+      marginBottom: theme.spacing(1),
 
-const GoBackButton = styled(Button)(({ theme }) => ({
-    color: paragraph,
-    fontSize: '0.857rem',
-    textTransform: 'none',
-    "&:hover": {
-        backgroundColor: 'transparent'
-    }
-}))
+      [theme.breakpoints.down("sm")]: {
+        paddingBottom: theme.spacing(7),
+      },
+      "& .preview-box": {
+        backgroundColor: bgDarker,
+        border: "none",
+      },
+      "& .MuiPaper-elevation1": {
+        boxShadow: "none",
+      },
+    },
+  },
+  imageBox: {
+    width: "100%",
+    maxHeight: 300,
+    "& img": {
+      height: 300,
+      width: "100%",
+      objectFit: "contain",
+    },
+  },
+}));
 
-const EditButton = styled(Button)(({ theme }) => ({
-    color: white,
-    fontSize: '0.875rem',
-    textTransform: 'none',
-    borderRadius: '6px',
-    border: `1px solid ${white}`,
-    "&:hover": {
-        border: `1px solid ${white}`,
-        backgroundColor: 'transparent'
-    }
-}))
+export const WorkspacePage = (props: any) => {
+  const classes = useStyles();
+  const history = useHistory();
+  const { workspaceId } = useParams<{ workspaceId: string }>();
+  const workspace: Workspace = props.workspace;
+  const user = props.user;
+  const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
+  const [refresh, setRefresh] = React.useState(true);
+  const [error, setError] = React.useState<any>(null);
 
-const OpenWithButtonGroup = styled(ButtonGroup)(({ theme }) => ({
-    background: linkColor,
-    border: `1px solid #000`,
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: '6px',
-    "& .MuiButton-root": {
-        textTransform: 'none'
-    }
-}))
+  if (!workspace) {
+    props.selectWorkspace(workspaceId);
+  }
 
-const ThreeDotButton = styled(Button)(({ theme }) => ({
-    background: chipBg,
-    minWidth: '32px',
-    borderRadius: '6px',
-    boxShadow: 'none',
-    "&:hover": {
-        background: 'transparent'
-    }
-}))
+  if (error) {
+    throw error;
+  }
+  const handleCloseEditWorkspace = () => {
+    props.refreshWorkspace(workspaceId);
+    setEditWorkspaceOpen(false);
+  };
 
-const WorkspacePage = () => {
+  const handleResourceClick = (resource: WorkspaceResource) => {
+    openWithApp(resource.type.application);
+  };
 
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
+  // open application that is default for selected resource,
+  // or option selected from app selection drop down
+  const openWithApp = (selectedOption: OSBApplication) => {
+    history.push(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+  };
 
-    const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
-    const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
-        setOpen(false);
-    };
-    const handleClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
+  const canEdit = canEditWorkspace(props.user, workspace);
 
-        setOpen(false);
-    };
+  return (
+    workspace && (
+      <Box className="verticalFit">
+        {
+          <>
+            <Box className="wrapper-for-now">
+              <Divider />
+              <MainMenu />
+              <Divider />
+              {/*
+              Top panel.
+            */}
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                bgcolor={bgLight}
+                className={classes.workspaceToolbar}
+              >
+                <Box display="flex" onClick={() => history.push("/")}>
+                  <AppsIcon color="primary" fontSize="small" />
+                  <Typography component="a" color="primary">
+                    See all workspaces
+                  </Typography>
+                </Box>
 
-    return (
-        <>
-            <Box className="verticalFit">
-                <Grid container className="verticalFill">
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={3}
-                        lg={2}
-                        direction="column"
-                        className="verticalFill"
+                <Box display="flex" className="buttons">
+                  {canEdit && (
+                    <Button
+                      variant="outlined"
+                      disableElevation={true}
+                      color="secondary"
+                      style={{ borderColor: "white" }}
+                      onClick={() => setEditWorkspaceOpen(true)}
                     >
-                        <Box width={1} className="verticalFit">
-                            <HomePageSider />
-                        </Box>
-                    </Grid>
-                    <Grid
-                        item={true}
-                        xs={12}
-                        sm={12}
-                        md={9}
-                        lg={10}
-                        alignItems="stretch"
-                        className="verticalFill"
-                    >
-                        <Box width={1} className="verticalFit">
-                            <div id="workspace-details" className="verticalFit">
-                                <Box borderBottom={`2px solid ${lineColor}`}>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        sx={{ padding: '0.571rem 1.143rem' }}
-                                    >
-                                        <GoBackButton variant="text" startIcon={<ChevronLeftIcon />}>All workspaces</GoBackButton>
-                                        <Stack display="flex" direction="row" spacing={2}>
-                                            <EditButton variant="outlined">Edit</EditButton>
-                                            <OpenWithButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-                                                <Button>{options[selectedIndex]}</Button>
-                                                <Button
-                                                    size="small"
-                                                    aria-controls={open ? 'split-button-menu' : undefined}
-                                                    aria-expanded={open ? 'true' : undefined}
-                                                    aria-label="select merge strategy"
-                                                    aria-haspopup="menu"
-                                                    onClick={handleToggle}
-                                                >
-                                                    <KeyboardArrowDownIcon />
-                                                </Button>
-                                            </OpenWithButtonGroup>
-                                            <Popper
-                                                sx={{
-                                                    zIndex: 1,
-                                                }}
-                                                open={open}
-                                                anchorEl={anchorRef.current}
-                                                role={undefined}
-                                                transition
-                                                disablePortal
-                                            >
-                                                {({ TransitionProps, placement }) => (
-                                                    <Grow
-                                                        {...TransitionProps}
-                                                        style={{
-                                                            transformOrigin:
-                                                                placement === 'bottom' ? 'center top' : 'center bottom',
-                                                        }}
-                                                    >
-                                                        <Paper>
-                                                            <ClickAwayListener onClickAway={handleClose}>
-                                                                <MenuList id="split-button-menu" autoFocusItem>
-                                                                    {options.map((option, index) => (
-                                                                        <MenuItem
-                                                                            key={option}
-                                                                            disabled={index === 2}
-                                                                            selected={index === selectedIndex}
-                                                                            onClick={(event) => handleMenuItemClick(event, index)}
-                                                                        >
-                                                                            {option}
-                                                                        </MenuItem>
-                                                                    ))}
-                                                                </MenuList>
-                                                            </ClickAwayListener>
-                                                        </Paper>
-                                                    </Grow>
-                                                )}
-                                            </Popper>
-                                            <ThreeDotButton
-                                                size="small"
-                                                variant="contained"
-                                                aria-label="more"
-                                                id="threeDot-button"
-                                            >
-                                                <MoreVertIcon />
-                                            </ThreeDotButton>
+                      Edit
+                    </Button>
+                  )}
+                  <OSBSplitButton
+                    defaultSelected={workspace.defaultApplication}
+                    handleClick={openWithApp}
+                  />
+                </Box>
+              </Box>
+              {/*
+              Alternative accordion for us in small displays.
+            */}
+              <Accordion className={classes.accordion}>
+                <AccordionSummary
+                  expandIcon={<ArrowRight />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>Resources</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <WorkspaceInteractions
+                    workspace={workspace}
+                    open={true}
+                    user={props.user}
+                    openResource={handleResourceClick}
+                  />
+                </AccordionDetails>
+              </Accordion>
 
-                                        </Stack>
-                                    </Box>
-                                </Box>
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '11rem' }}>
-                                    <LockOutlinedIcon />
-                                    <Typography sx={{ fontSize: '1.714rem', ml: '1.143rem' }} >My Workspace</Typography>
-                                </Box>
-                                <Box className="verticalFit">
-                                    <Grid container sx={{ height: 'calc(100%)', overflow: 'hidden', background: 'rgba(0, 0, 0, 0.25)'}}>
-                                        <Grid item xs>
-                                            <WorkspaceDetails />
-                                        </Grid>
-                                        <Grid item xs={7} alignItems="center" sx={{ padding: '1.714rem 7.143rem' }}>
-                                            <Stack spacing={4}>
-                                                <img src="/images/workspace-banner.png" alt="workspace img" />
-                                                <Divider />
-                                                <Typography variant="subtitle1" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                    Maecenas vestibulum id tellus nec facilisis.
-                                                    Nullam at feugiat diam. Vestibulum molestie lacinia dignissim.
-                                                    Sed euismod augue magna. Morbi posuere vulputate viverra.
-                                                    Proin nec risus quis nunc mollis fringilla quis sit amet ante.
-                                                    Aliquam ut nibh consectetur, imperdiet mi et, euismod mi.
-                                                    Vestibulum tristique vel arcu a facilisis.
-                                                    Maecenas tristique felis et nunc elementum aliquam.
-                                                    Etiam dictum nunc vel eros consectetur tincidunt.
-                                                    Maecenas sed consequat metus.
-                                                    Sed euismod augue magna.
-                                                    Morbi posuere vulputate viverra.
-                                                    Proin nec risus quis nunc mollis fringilla quis sit amet ante.
-                                                    Aliquam ut nibh consectetur, imperdiet mi et, euismod mi.
-                                                    Vestibulum tristique vel arcu a facilisis.
-                                                    Maecenas tristique felis et nunc elementum aliquam.
-                                                    Etiam dictum nunc vel eros consectetur tincidunt.
-                                                    Maecenas sed consequat metus.
-                                                </Typography>
-                                            </Stack>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <WorkspaceDetailsInfo/>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </div>
-                        </Box>
-                    </Grid>
-                </Grid>
+              {/*
+               Mid panel: workspace metadata
+            */}
+              <Box
+                bgcolor={bgRegular}
+                minHeight="20vh"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                flexDirection="column"
+                p={1}
+                className={classes.workspaceInformation}
+              >
+                <Typography component="h1" variant="h1">
+                  {workspace.name}
+                </Typography>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  color={paragraph}
+                  mb={2}
+                  alignItems="center"
+                >
+                  {workspace.user &&
+                  (workspace.user.firstName || workspace.user.lastName) ? (
+                    <Typography component="span" variant="subtitle2">
+                      <PersonIcon fontSize="small" /> By
+                      {
+                        <Link
+                          href={`/user/${workspace.user.id}`}
+                          underline="hover"
+                        >
+                          {workspace.user.firstName +
+                            " " +
+                            workspace.user.lastName}
+                        </Link>
+                      }
+                    </Typography>
+                  ) : null}
+                  {workspace.timestampUpdated && (
+                    <Typography component="span" variant="subtitle2">
+                      <CalendarTodayIcon fontSize="small" /> Last Updated on{" "}
+                      {workspace.timestampUpdated.toDateString()}
+                    </Typography>
+                  )}
+                </Box>
+                <Box>
+                  {workspace.tags &&
+                    workspace.tags.map((tagObject) => {
+                      return <Chip label={tagObject.tag} key={tagObject.id} />;
+                    })}
+                </Box>
+              </Box>
             </Box>
-        </>
+
+            {/*
+            Bottom: workspace resource panel and thumbnail
+          */}
+            <Box
+              className={`verticalFit ${classes.workspaceResourcesInformation}`}
+              display="flex"
+              flexDirection="row"
+            >
+              <WorkspaceInteractions
+                workspace={workspace}
+                open={true}
+                user={props.user}
+                refreshWorkspacePage={() => {
+                  setRefresh(!refresh);
+                }}
+                openResource={handleResourceClick}
+              />
+              <Box
+                className={`${classes.workspaceDescriptionBox} scrollbar`}
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
+                <Box className={`inner-description`} p={4}>
+                  {workspace.thumbnail && (
+                    <>
+                      <Box className={classes.imageBox}>
+                        <img
+                          src={`/proxy/workspaces/${
+                            workspace.thumbnail
+                          }?v=${workspace.timestampUpdated.getMilliseconds()}`}
+                          alt="Workspace thumbnail"
+                        />
+                      </Box>
+                      <Divider />
+                    </>
+                  )}
+
+                  <Typography component="div" variant="body1">
+                    <MarkdownViewer text={workspace.description} />
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
+            {canEdit && editWorkspaceOpen && (
+              <WorkspaceEditor
+                open={editWorkspaceOpen}
+                title={"Edit workspace: " + workspace.name}
+                closeHandler={handleCloseEditWorkspace}
+                workspace={workspace}
+                onLoadWorkspace={handleCloseEditWorkspace}
+                user={user}
+              />
+            )}
+          </>
+        }
+      </Box>
     )
-}
+  );
+};
 
 export default WorkspacePage;

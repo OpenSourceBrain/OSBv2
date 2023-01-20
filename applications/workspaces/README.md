@@ -2,7 +2,7 @@
 <img src="http://www.opensourcebrain.org/images/osbcircle.png" alt="drawing" width="200"/>
 </p>
 
-# Workspaces manager backend
+# WorkspacesCards manager backend
 The workspace manager is pure microservice rest api.
 It's defined with API first approach with Openapi v3 and implemented as a Flask application.
 Use a postgres database as a backend, with api-first ORM mapping.
@@ -33,7 +33,7 @@ When running in Cloudharness the url for the api ui is https://workspaces.cloudh
 
 ## Tech
 
-Workspaces uses openapi for definition of the (REST) api .
+WorkspacesCards uses openapi for definition of the (REST) api .
 
 The database model is generated via OpenAlchemy. For more information about OpenAlchemy see https://pypi.org/project/OpenAlchemy/
 
