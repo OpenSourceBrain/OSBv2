@@ -1,37 +1,39 @@
 import * as React from "react";
 
-import makeStyles from "@mui/styles/makeStyles";
+//components
 import TextField from "@mui/material/TextField";
+
+//icons
 import InputAdornment from "@mui/material/InputAdornment";
-
 import SearchIcon from "@mui/icons-material/Search";
-import { bgRegular, paragraph, chipTextColor } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
-  textField: {
-    backgroundColor: bgRegular,
-    padding: theme.spacing(1),
-    marginRight: "0.286rem",
-    "& .MuiSvgIcon-root": {
-      width: "1.25rem",
-      borderRadius: 0,
-      color: chipTextColor,
-      height: "auto",
+//style
+import { bgRegular, chipTextColor } from "../../theme";
+import styled from "@mui/system/styled";
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  backgroundColor: bgRegular,
+  padding: theme.spacing(1),
+  marginRight: "0.286rem",
+  "& .MuiSvgIcon-root": {
+    width: "1.25rem",
+    borderRadius: 0,
+    color: chipTextColor,
+    height: "auto",
+  },
+  "& .MuiInput-root": {
+    "&:before": {
+      display: "none",
     },
-    "& .MuiInput-root": {
-      "&:before": {
-        display: "none",
-      },
-      "&:after": {
-        display: "none",
-      },
+    "&:after": {
+      display: "none",
     },
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(0),
-      fontSize: ".88rem",
-      color: chipTextColor,
-      fontWeight: 500,
-    },
+  },
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(0),
+    fontSize: ".88rem",
+    color: chipTextColor,
+    fontWeight: 500,
   },
 }));
 
@@ -41,9 +43,8 @@ interface RepositoriesSearchProps {
 }
 
 export default (props: RepositoriesSearchProps) => {
-  const classes = useStyles();
   return (
-    <TextField
+    <StyledTextField
       variant="standard"
       id="standard-start-adornment"
       fullWidth={true}
@@ -53,7 +54,6 @@ export default (props: RepositoriesSearchProps) => {
           : "8px 0px 0px 8px",
       }}
       placeholder="Search"
-      className={classes.textField}
       onChange={(e) => {
         props.filterChanged(e.target.value.toLowerCase());
       }}
