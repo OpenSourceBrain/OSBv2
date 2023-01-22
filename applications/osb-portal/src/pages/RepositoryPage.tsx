@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { useHistory } from "react-router-dom";
+import * as React from "react";
+import { useParams, useHistory } from "react-router-dom";
 
-//theme 
+//theme
 import { styled } from "@mui/styles";
 import {
   linkColor,
   paragraph,
   secondaryColor as white,
   chipBg,
-  bgDarkest
+  bgDarkest,
 } from "../theme";
 
 //components
@@ -17,133 +17,339 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { HomePageSider } from '../components';
-import RepositoryPageBanner from '../components/repository/RepositoryPageBanner';
-import RepositoryPageDetails from '../components/repository/RepositoryPageDetails';
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from "@mui/material/Dialog";
+import Link from "@mui/material/Link";
+import Tooltip from "@mui/material/Tooltip";
+import { HomePageSider } from "../components";
+import RepositoryPageBanner from "../components/repository/RepositoryPageBanner";
+import RepositoryPageDetails from "../components/repository/RepositoryPageDetails";
+import { WorkspaceEditor, NewWorkspaceAskUser } from "../components";
+import OSBDialog from "../components/common/OSBDialog";
+import OSBChipList from "../components/common/OSBChipList";
+import {
+  ExistingWorkspaceEditor as ExistingWorkspaceSelector,
+  ExistingWorkspaceEditorActions,
+} from "../components/workspace/ExistingWorkspaceSelector";
+import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
+
+//types
 import {
   OSBRepository,
+  RepositoryResourceNode,
+  RepositoryType,
 } from "../apiclient/workspaces";
+import { UserInfo } from "../types/user";
 
 //icons
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
+import RepositoryService from "../service/RepositoryService";
+import { Workspace } from "../types/workspace";
+import WorkspaceService from "../service/WorkspaceService";
 
 const GoBackButton = styled(Button)(({ theme }) => ({
   color: paragraph,
-  fontSize: '0.857rem',
-  textTransform: 'none',
+  fontSize: "0.857rem",
+  textTransform: "none",
   "&:hover": {
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: "transparent",
+  },
 }));
 
 const AddSelectionButton = styled(Button)(({ theme }) => ({
   color: white,
-  fontSize: '0.857rem',
-  textTransform: 'none',
-  borderRadius: '0.429rem',
+  fontSize: "0.857rem",
+  textTransform: "none",
+  borderRadius: "0.429rem",
   border: `0.071rem solid ${white}`,
   "&:hover": {
     border: `0.071rem solid ${white}`,
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: "transparent",
+  },
 }));
 
 const NewWorkspaceButton = styled(Button)(({ theme }) => ({
   background: linkColor,
   border: `0.071rem solid #000`,
-  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  borderRadius: '0.429rem',
-  textTransform: 'none'
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  borderRadius: "0.429rem",
+  textTransform: "none",
 }));
 
-const ThreeDotButton = styled(Button)(({ theme }) => ({
-  background: chipBg,
-  minWidth: '2.286rem',
-  borderRadius: '0.429rem',
-  boxShadow: 'none',
-  "&:hover": {
-    background: 'transparent'
-  }
-}));
+let confirmationDialogTitle = "";
+let confirmationDialogContent = "";
 
+const defaultWorkspace: Workspace = {
+  resources: [],
+  volume: null,
+  shareType: null,
+  name: "",
+  description: null,
+  user: null,
+};
 
 export const RepositoryPage = (props: any) => {
+  const user: UserInfo = props.user;
 
+  const { repositoryId } = useParams<{ repositoryId: string }>();
   const history = useHistory();
-
   const [repository, setRepository] = React.useState<OSBRepository>(null);
-  const repo = true;
+  const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] =
+    React.useState(false);
+  const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] =
+    React.useState(false);
+  const [selectedWorkspace, setSelectedWorkspace] = React.useState<Workspace>();
+  const [showUserNotLoggedInAlert, setShowUserNotLoggedInAlert] =
+    React.useState(false);
+  const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
+  const [refresh, setRefresh] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState(false);
+  const [workspaceLink, setWorkspaceLink] = React.useState(null);
+  const [error, setError] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  return <>
-    <Box className='verticalFit'>
-      <Grid container className="verticalFill">
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={3}
-          lg={2}
-          direction="column"
-          className="verticalFill"
-        >
+  if (error) {
+    throw error;
+  }
 
-          <Box width={1} className="verticalFit">
-            <HomePageSider />
-          </Box>
+  const openDialog = () => {
+    setShowWorkspaceEditor(!showWorkspaceEditor);
+    if (showWorkspaceEditor) {
+      setChecked([]);
+      setRefresh(!refresh);
+    }
+  };
 
-        </Grid>
-        <Grid
-          item={true}
-          xs={12}
-          sm={12}
-          md={9}
-          lg={10}
-          alignItems="stretch"
-          className="verticalFill"
-        >
-          <Box width={1} className='verticalFit'>
-            <Box sx={{ background: bgDarkest }}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{ padding: '0.571rem 1.143rem' }}
-              >
-                <GoBackButton variant="text" startIcon={<ChevronLeftIcon />} onClick={() => history.push("/repositories")}>All repositories</GoBackButton>
-                <Stack display="flex" direction="row" spacing={2}>
-                  <AddSelectionButton
-                    variant="outlined"
-                    disableElevation={true}
-                  >
-                    Add selection to existing workspace
-                  </AddSelectionButton>
-                  <NewWorkspaceButton
-                    variant="contained"
-                    disableElevation={true}
-                    color="primary"
-                  >
-                    New workspace from selection
-                  </NewWorkspaceButton>
-                  <ThreeDotButton
-                    size="small"
-                    variant="contained"
-                    aria-label="more"
-                    id="threeDot-button"
-                  >
-                    <MoreVertIcon />
-                  </ThreeDotButton>
+  const openExistingWorkspaceDialog = () => {
+    setShowExisitngWorkspaceEditor(!showExistingWorkspaceEditor);
+    if (showExistingWorkspaceEditor) {
+      setChecked([]);
+      setRefresh(!refresh);
+    }
+  };
 
-                </Stack>
-              </Box>
+  const confirmAction = (dialogTitle: string, dialogContent: string) => {
+    confirmationDialogTitle = dialogTitle;
+    confirmationDialogContent = dialogContent;
+    setShowConfirmationDialog(true);
+  };
+
+  const setCheckedChips = (newChecked: RepositoryResourceNode[]) => {
+    setChecked(newChecked);
+  };
+
+  const handleChipDelete = (key: string) => {
+    const checkedChips = checked.filter((item) => item.resource.path !== key);
+    setCheckedChips(checkedChips);
+    setRefresh(!refresh);
+  };
+
+  const getDefaultWorkspaceName = () => {
+    if (checked.length === 1) {
+      return (
+        checked[0].resource.name.substring(
+          0,
+          checked[0].resource.name.lastIndexOf(".")
+        ) || checked[0].resource.name
+      );
+    } else {
+      return repository?.name;
+    }
+  };
+
+  const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
+    const toImport = checked.length ? checked : [repository.contextResources];
+    WorkspaceService.importResourcesToWorkspace(
+      ws.id,
+      toImport.map((c) => c.resource)
+    )
+      .then(() => {
+        setShowWorkspaceEditor(false);
+        setWorkspaceLink(`/workspace/${ws.id}`);
+        confirmAction("Success", "New workspace created!");
+      })
+      .catch((e) => {
+        setShowWorkspaceEditor(false);
+        confirmAction(
+          "Error",
+          "There was an error creating the new workspace."
+        );
+      });
+    setRefresh(!refresh);
+    setChecked([]);
+  };
+
+  const setWorkspace = (ws: Workspace) => {
+    setSelectedWorkspace(ws);
+  };
+
+  const addToExistingWorkspace = () => {
+    setLoading(true);
+    const toImport = checked.length ? checked : [repository.contextResources];
+    WorkspaceService.importResourcesToWorkspace(
+      selectedWorkspace.id,
+      toImport.map((c) => c.resource)
+    )
+      .then(() => {
+        setSelectedWorkspace(null);
+        confirmAction("Success", "Resources added to workspace!");
+        setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
+        setLoading(false);
+        setShowExisitngWorkspaceEditor(false);
+      })
+      .catch((e) => {
+        confirmAction(
+          "Error",
+          "There was an error adding the resources to the workspace"
+        );
+        setLoading(false);
+        setShowExisitngWorkspaceEditor(false);
+      });
+    setRefresh(!refresh);
+    setChecked([]);
+  };
+
+  const openRepoUrl = () => {
+    switch (repository.repositoryType) {
+      // For github, the URL is: repo/tree/branch
+      case "github":
+        window.open(
+          `${repository.uri + "/tree/" + repository.defaultContext}`,
+          "_blank"
+        );
+        break;
+      // For dandi, the URL is: repo/version
+      case "dandi":
+        window.open(
+          `${repository.uri + "/" + repository.defaultContext}`,
+          "_blank"
+        );
+        break;
+      // For figshare, there does not seem to be a version specific URL
+      case "figshare":
+        window.open(`${repository.uri}`, "_blank");
+        break;
+      default:
+        window.open(`#`, "_blank");
+    }
+  };
+
+  const canAddToWorkspace = () => {
+    return (
+      repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0
+    );
+  };
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    RepositoryService.getRepository(+repositoryId).then(
+      (repo) => {
+        setRepository(repo);
+        setIsLoading(false);
+      },
+      (e) => {
+        setError(e);
+      }
+    );
+  }, []);
+
+  return (
+    <>
+      <Box className="verticalFit">
+        <Grid container className="verticalFill">
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={3}
+            lg={2}
+            direction="column"
+            className="verticalFill"
+          >
+            <Box width={1} className="verticalFit">
+              <HomePageSider />
             </Box>
-            <RepositoryPageBanner />
-            <Box className='verticalFit'>
-              {
-                repo ? (
-                  <RepositoryPageDetails/>
-                ) :
-                  (<CircularProgress
+          </Grid>
+          <Grid
+            item={true}
+            xs={12}
+            sm={12}
+            md={9}
+            lg={10}
+            alignItems="stretch"
+            className="verticalFill"
+          >
+            <Box width={1} className="verticalFit">
+              <Box sx={{ background: bgDarkest }}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ padding: "0.571rem 1.143rem" }}
+                >
+                  <GoBackButton
+                    variant="text"
+                    startIcon={<ChevronLeftIcon />}
+                    onClick={() => history.push("/repositories")}
+                  >
+                    All repositories
+                  </GoBackButton>
+                  <Tooltip
+                    title={
+                      !canAddToWorkspace()
+                        ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                        : ""
+                    }
+                  >
+                    <Stack display="flex" direction="row" spacing={2}>
+                      <AddSelectionButton
+                        variant="outlined"
+                        disableElevation={true}
+                        id="add-existing-workspace-button"
+                        disabled={!canAddToWorkspace()}
+                        color="secondary"
+                        style={{ borderColor: "white" }}
+                        onClick={() => {
+                          user
+                            ? openExistingWorkspaceDialog()
+                            : setShowUserNotLoggedInAlert(true);
+                        }}
+                      >
+                        Add selection to existing workspace
+                      </AddSelectionButton>
+                      <NewWorkspaceButton
+                        variant="contained"
+                        disableElevation={true}
+                        color="primary"
+                        id="create-new-workspace-button"
+                        disabled={!canAddToWorkspace()}
+                        onClick={() => {
+                          user
+                            ? openDialog()
+                            : setShowUserNotLoggedInAlert(true);
+                        }}
+                      >
+                        New workspace from selection
+                      </NewWorkspaceButton>
+                      <RepositoryActionsMenu
+                        user={user}
+                        repository={repository}
+                        onAction={(r: OSBRepository) =>
+                          r && setRepository({ ...repository, ...r })
+                        }
+                      />
+                    </Stack>
+                  </Tooltip>
+                </Box>
+              </Box>
+
+              <Box>
+                {isLoading ? (
+                  <CircularProgress
                     size={48}
                     style={{
                       position: "absolute",
@@ -152,14 +358,117 @@ export const RepositoryPage = (props: any) => {
                       marginTop: -24,
                       marginLeft: -24,
                     }}
-                  />)
-              }
+                  />
+                ) : (
+                  <>
+                    <RepositoryPageBanner
+                      repository={repository}
+                      openRepoUrl={openRepoUrl}
+                    />
+                    <RepositoryPageDetails repository={repository} />
+                  </>
+                )}
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
-  </>
-}
-export default RepositoryPage;
+      </Box>
 
+      {/*
+       * Here we must use `&& showWorkspaceEditor` so that the
+       * `WorkspaceEditor` component is rendered afresh each time. If we don't
+       * do this, the states in the `WorkspaceEditor` component like
+       * `workspaceForm` are initialised only once with the value of
+       * `workspace` prop---at the initial render---and then do not track the
+       * value of the `workpace` prop.
+       */}
+
+      {user && showWorkspaceEditor && (
+        <WorkspaceEditor
+          title={"Create new workspace"}
+          open={showWorkspaceEditor}
+          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }}
+          onLoadWorkspace={onWorkspaceCreated}
+          closeHandler={openDialog}
+          filesSelected={checked.length > 0}
+          user={user}
+        >
+          {checked.length > 0 && (
+            <OSBChipList
+              chipItems={checked}
+              onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)}
+            />
+          )}
+        </WorkspaceEditor>
+      )}
+      {user && (
+        <OSBDialog
+          title="Add to existing workspace"
+          open={showExistingWorkspaceEditor}
+          closeAction={openExistingWorkspaceDialog}
+          actions={
+            <ExistingWorkspaceEditorActions
+              disabled={!selectedWorkspace || loading}
+              closeAction={openExistingWorkspaceDialog}
+              onAddClick={addToExistingWorkspace}
+            />
+          }
+        >
+          {checked.length > 0 && (
+            <OSBChipList
+              chipItems={checked}
+              onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)}
+            />
+          )}
+          <ExistingWorkspaceSelector
+            setWorkspace={(ws: Workspace) => setWorkspace(ws)}
+            loading={loading}
+          />
+        </OSBDialog>
+      )}
+
+      <OSBDialog
+        title="Please login or sign up"
+        open={showUserNotLoggedInAlert}
+        closeAction={() => setShowUserNotLoggedInAlert(false)}
+      >
+        <NewWorkspaceAskUser />
+      </OSBDialog>
+
+      {/* Confirm to user if workspace creation/modification was successful */}
+      {showConfirmationDialog && (
+        <Dialog
+          open={showConfirmationDialog}
+          onClose={() => setShowConfirmationDialog(false)}
+        >
+          <DialogTitle>{confirmationDialogTitle}</DialogTitle>
+          <DialogContent>{confirmationDialogContent}</DialogContent>
+          <DialogActions>
+            <Button
+              color="primary"
+              onClick={() => {
+                setChecked([]);
+                setShowConfirmationDialog(false);
+              }}
+            >
+              Close
+            </Button>
+            {workspaceLink && (
+              <Button color="primary" variant="contained">
+                <Link
+                  href={workspaceLink}
+                  target="_blank"
+                  color="secondary"
+                  underline="none"
+                >
+                  Go to workspace
+                </Link>
+              </Button>
+            )}
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
+  );
+};
+export default RepositoryPage;

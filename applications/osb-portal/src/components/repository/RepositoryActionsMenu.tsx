@@ -2,21 +2,33 @@ import * as React from "react";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { IconButton } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import { EditRepoDialog } from "../index";
 import { canEditRepository } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
 import { OSBRepository } from "../../apiclient/workspaces";
+import Button from "@mui/material/Button";
 
-import { lightWhite } from "../../theme";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+import { styled } from "@mui/styles";
+import { chipBg } from "../../theme";
 
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
   user?: UserInfo;
   onAction: (r: OSBRepository) => void;
 }
+
+const ThreeDotButton = styled(Button)(({ theme }) => ({
+  background: chipBg,
+  minWidth: "2.286rem",
+  borderRadius: "0.429rem",
+  boxShadow: "none",
+  "&:hover": {
+    background: "transparent",
+  },
+}));
 
 export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -45,22 +57,21 @@ export default (props: RepositoryActionsMenuProps) => {
     props.onAction(r);
   };
 
+  console.log(canEdit);
+
   return (
     <>
       {canEdit && (
         <>
-          <IconButton
-            size="small"
+          <ThreeDotButton
             onClick={handleClick}
-            sx={{
-              padding: 0,
-              position: "absolute",
-              right: "0.5rem",
-              top: "0.5rem",
-            }}
+            size="small"
+            variant="contained"
+            aria-label="more"
+            id="threeDot-button"
           >
-            <MoreHorizIcon sx={{ fontSize: "1rem", color: lightWhite }} />
-          </IconButton>
+            <MoreVertIcon />
+          </ThreeDotButton>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
