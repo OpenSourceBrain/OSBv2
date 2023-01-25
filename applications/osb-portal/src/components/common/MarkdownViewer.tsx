@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import gfm from "remark-gfm";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import Box from "@mui/material/Box";
 
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "normal",
       },
       "& h2": {
-        marginTop: theme.spacing(5),
+        marginTop: theme.spacing(1),
         fontWeight: "500",
         paddingBottom: "5px",
       },
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
       },
       "& p img": {
         maxWidth: "30vw",
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down("md")]: {
           maxWidth: "75vw",
         },
       },

@@ -22,7 +22,7 @@ interface RepositoryActionsMenuProps {
 
 const ThreeDotButton = styled(Button)(({ theme }) => ({
   background: chipBg,
-  minWidth: "2.286rem",
+  minWidth: "3rem",
   borderRadius: "0.429rem",
   boxShadow: "none",
   "&:hover": {
@@ -56,8 +56,6 @@ export default (props: RepositoryActionsMenuProps) => {
   const handleOnSubmit = (r: OSBRepository) => {
     props.onAction(r);
   };
-
-  console.log(canEdit);
 
   return (
     <>

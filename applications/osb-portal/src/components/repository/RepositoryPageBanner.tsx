@@ -24,7 +24,6 @@ const RepoPageBannerBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: theme.spacing(2),
   "& .MuiTypography-h1": {
     fontWeight: 400,
   },
@@ -41,7 +40,6 @@ const RepositoryPageBanner = ({
   repository: OSBRepository;
   openRepoUrl: () => void;
 }) => {
-  console.log(repository);
   return (
     repository && (
       <RepoPageBannerBox mt={5} mb={5}>
