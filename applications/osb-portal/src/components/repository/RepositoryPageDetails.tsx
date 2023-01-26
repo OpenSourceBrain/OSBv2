@@ -55,18 +55,8 @@ import {
 } from "../../apiclient/workspaces";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import Resources from "./resources";
-
-const RepoDetailsPageBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-  background: repoPageContentBg,
-  minHeight: "63vh",
-  "& .MuiSvgIcon-root": {
-    fontSize: "1rem",
-  },
-  "& .MuiTypography-h5": {
-    fontWeight: 600,
-  },
-}));
+import { EditRepoDialog } from "../index";
+import { UserInfo } from "../../types/user";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
@@ -107,26 +97,43 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   "& .MuiTypography-root": {
     color: paragraph,
     fontSize: "0.857rem",
+    textDecoration: "none",
   },
 }));
 
 const AboutOSBPaper = styled(Paper)(({ theme }) => ({
+  minHeight: 150,
   padding: theme.spacing(2),
   background: infoBoxBg,
   borderRadius: inputRadius,
-  height: "28vh",
   marginTop: theme.spacing(2),
   overflow: "auto",
+}));
+
+const StyledViewButton = styled(Button)(({ theme }) => ({
+  padding: "0px",
+  fonSize: ".8rem",
+  border: 0,
+  minWidth: "fit-content",
+  textTransform: "none",
+  lineHeight: 0,
+  "&:hover": {
+    backgroundColor: "transparent",
+  },
 }));
 
 const RepositoryPageDetails = ({
   repository,
   openRepoUrl,
   checkedChanged,
+  user,
+  onAction,
 }: {
   repository: OSBRepository;
   openRepoUrl: () => void;
   checkedChanged: (checked: RepositoryResourceNode[]) => any;
+  user: UserInfo;
+  onAction: (r: OSBRepository) => void;
 }) => {
   const [currentPath, setCurrentPath] = React.useState<
     RepositoryResourceNode[]
@@ -135,6 +142,7 @@ const RepositoryPageDetails = ({
   const [checked, setChecked] = React.useState<{
     [id: string]: RepositoryResourceNode;
   }>({});
+  const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
 
   const resourcesList = currentPath
     ?.slice(-1)[0]
@@ -142,10 +150,13 @@ const RepositoryPageDetails = ({
       (e) => !filter || e.resource.name.toLowerCase().includes(filter)
     );
 
-  let test = resourcesList?.reduce((test, item) => {
-    test[item.resource.path] = item.children;
-    return test;
-  }, {});
+  let resourcesListObject = resourcesList?.reduce(
+    (resourcesListObject, item) => {
+      resourcesListObject[item.resource.path] = item.children;
+      return resourcesListObject;
+    },
+    {}
+  );
 
   const handleToggle = (value: any) => () => "";
 
@@ -165,18 +176,37 @@ const RepositoryPageDetails = ({
 
   const onSelectAllFiles = (value) => {
     if (value) {
-      setChecked({ ...test });
+      setChecked(resourcesListObject);
       checkedChanged(resourcesList);
     } else {
       setChecked({});
     }
   };
 
+  const setDialogOpen = () => {
+    setRepositoryEditorOpen(!repositoryEditorOpen);
+  };
+
+  const handleOnSubmit = (r: OSBRepository) => {
+    onAction(r);
+  };
+
+  const handleClickEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setRepositoryEditorOpen(true);
+  };
+
   return (
     repository && (
-      <RepoDetailsPageBox width={1}>
+      <Box
+        sx={{
+          background: repoPageContentBg,
+          height: "100%",
+          padding: "24px",
+          overflow: "auto",
+        }}
+      >
         <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={12} md={6} direction="column" order={{ md: 1, lg: 1 }}>
+          <Grid item xs={12} md={6} direction="column">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -207,17 +237,19 @@ const RepositoryPageDetails = ({
                   </RepoDetailsIconButton>
                 </Tooltip>
               </Box>
-              <Button
+              <StyledViewButton
                 variant="text"
                 endIcon={<ModeEditIcon />}
-                sx={{ textTransform: "none", padding: 0 }}
+                size="small"
+                onClick={handleClickEdit}
               >
                 Edit
-              </Button>
+              </StyledViewButton>
             </Box>
+
             {/*tags*/}
             <Box>
-              <Stack mt={3} mb={3} spacing={1}>
+              <Stack mt={3} mb={3} spacing={1} direction="column">
                 <Typography variant="body2" sx={{ color: greyishTextColor }}>
                   Context: {repository?.defaultContext}
                 </Typography>
@@ -252,37 +284,7 @@ const RepositoryPageDetails = ({
                 </Stack>
               </Stack>
             </Box>
-            {/*repo editor*/}
-          </Grid>
-          <Grid item xs={12} md={6} direction="column" order={{ md: 3, lg: 3 }}>
-            <Box>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                borderBottom={`1px solid ${lineColor}`}
-              >
-                <Typography variant="h5">Repository preview</Typography>
-                <Button
-                  onClick={openRepoUrl}
-                  variant="text"
-                  endIcon={<OpenInNewIcon />}
-                  sx={{ textTransform: "none", padding: 0 }}
-                >
-                  View on{" "}
-                  {Resources[repository?.repositoryType] ||
-                    repository?.repositoryType}
-                </Button>
-              </Box>
-              <AboutOSBPaper className={`verticalFit`}>
-                <MarkdownViewer
-                  text={repository?.description}
-                  repository={repository}
-                />
-              </AboutOSBPaper>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={6} direction="column" order={{ md: 2, lg: 2 }}>
+            {/**/}
             <Box>
               <Box
                 display="flex"
@@ -290,24 +292,78 @@ const RepositoryPageDetails = ({
                 alignItems="start"
                 borderBottom={`1px solid ${lineColor}`}
               >
-                <Typography variant="h5">Select content</Typography>
+                <Box display="flex" alignItems="center">
+                  <Typography variant="h5">Repository preview</Typography>
+                </Box>
+                <StyledViewButton
+                  variant="text"
+                  endIcon={<OpenInNewIcon />}
+                  onClick={openRepoUrl}
+                  size="small"
+                >
+                  View on{" "}
+                  {Resources[repository?.repositoryType] ||
+                    repository?.repositoryType}
+                </StyledViewButton>
               </Box>
-              <Box mt={3} mb={2}>
+              <Box>
+                <AboutOSBPaper className={`verticalFit`}>
+                  <MarkdownViewer
+                    text={repository?.description}
+                    repository={repository}
+                  />
+                </AboutOSBPaper>
+              </Box>
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} md={6} direction="column">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="start"
+              borderBottom={`1px solid ${lineColor}`}
+            >
+              <Box display="flex" alignItems="center">
+                <Typography variant="h5">Select content</Typography>
+                <Tooltip
+                  title={
+                    <>
+                      {`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${
+                        Resources[repository?.repositoryType] ||
+                        repository?.repositoryType
+                      }.`}{" "}
+                      <Link
+                        href="https://docs.opensourcebrain.org/OSBv2/Repositories.html"
+                        target="_blank"
+                      >
+                        Learn more...
+                      </Link>
+                    </>
+                  }
+                >
+                  <RepoDetailsIconButton sx={{ padding: "0 0 0 10px" }}>
+                    <InfoOutlinedIcon />
+                  </RepoDetailsIconButton>
+                </Tooltip>
+              </Box>
+            </Box>
+
+            <Box>
+              <Stack mt={3} mb={3} spacing={1} direction="column">
                 <RepoDetailsBreadcrumbs separator="›" aria-label="breadcrumb">
-                  {currentPath.map((element, i) => (
+                  {currentPath?.map((element, i) => (
                     <Link
-                      key={element.resource.name}
+                      key={element?.resource?.name}
                       color="inherit"
                       onClick={() =>
-                        setCurrentPath(currentPath.slice(0, i + 1))
+                        setCurrentPath(currentPath?.slice(0, i + 1))
                       }
                     >
-                      {i > 0 ? element.resource.name : repository.name}
+                      {i > 0 ? element?.resource?.name : repository?.name}
                     </Link>
                   ))}
                 </RepoDetailsBreadcrumbs>
-              </Box>
-              <Box display="flex">
                 <RepoDetailsSearchField
                   id="standard-start-adornment"
                   fullWidth={true}
@@ -321,14 +377,19 @@ const RepositoryPageDetails = ({
                     ),
                   }}
                 />
-              </Box>
+              </Stack>
             </Box>
-          </Grid>
-          <Grid item xs={12} md={6} direction="column" order={{ md: 4, lg: 4 }}>
-            <Box
-              sx={{ maxHeight: "38vh", overflow: "auto", marginTop: "28px" }}
-            >
-              <Paper elevation={0} sx={{ width: "100%", background: "none" }}>
+
+            <Box>
+              <Paper
+                elevation={0}
+                sx={{
+                  width: "100%",
+                  background: "none",
+                  maxHeight: 200,
+                  overflow: "auto",
+                }}
+              >
                 <TableContainer component="div">
                   <Table aria-label="repository resources">
                     <TableHead
@@ -468,7 +529,18 @@ const RepositoryPageDetails = ({
             </Box>
           </Grid>
         </Grid>
-      </RepoDetailsPageBox>
+
+        {repositoryEditorOpen && (
+          <EditRepoDialog
+            user={user}
+            title="Edit repository"
+            dialogOpen={repositoryEditorOpen}
+            setDialogOpen={setDialogOpen}
+            onSubmit={handleOnSubmit}
+            repository={repository}
+          />
+        )}
+      </Box>
     )
   );
 };

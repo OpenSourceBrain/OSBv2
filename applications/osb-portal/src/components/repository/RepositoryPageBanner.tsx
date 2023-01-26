@@ -2,28 +2,31 @@ import * as React from "react";
 
 //theme
 import { styled } from "@mui/styles";
-import { chipBg, secondaryColor } from "../../theme";
+import { chipBg, secondaryColor, primaryColor } from "../../theme";
 
 //components
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Resources from "./resources";
+import Link from "@mui/material/Link";
 
 //icons
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+
+//types
 import { OSBRepository } from "../../apiclient/workspaces";
-import Link from "@mui/material/Link";
 
 const RepoPageBannerBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(5),
+  minHeight: "200px",
   "& .MuiTypography-h1": {
     fontWeight: 400,
   },
@@ -42,57 +45,60 @@ const RepositoryPageBanner = ({
 }) => {
   return (
     repository && (
-      <RepoPageBannerBox mt={5} mb={5}>
-        <Typography variant="h1">{repository?.name}</Typography>
+      <RepoPageBannerBox>
+        <Typography variant="h1" align="center" sx={{ lineHeight: "1.6" }}>
+          {repository?.name}
+        </Typography>
         <Box sx={{ textAlign: "center", maxWidth: 600 }}>
           {repository?.tags?.map(({ tag, id }, index) => {
             return <Chip label={tag} key={id} />;
           })}
         </Box>
-        <Stack direction="row" spacing={2}>
-          <Stack direction="row" alignItems="center">
-            <IconButton>
-              <PersonOutlineIcon fontSize="small" />
-            </IconButton>
-            <Typography
-              variant="body2"
-              sx={{ display: "inline-flex", alignItems: "baseline" }}
-            >
-              By
-              <Link href={`/user/${repository?.user?.id}`}>
-                <Typography variant="body2" color="primary" sx={{ ml: "3px" }}>
-                  {repository?.user?.firstName +
-                    " " +
-                    repository?.user?.lastName}
-                </Typography>
-              </Link>
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center">
-            <IconButton>
-              <CalendarTodayOutlinedIcon fontSize="small" />
-            </IconButton>
-            <Typography variant="body2">
-              {repository?.timestampCreated &&
-                `Last Updated ${repository?.timestampUpdated?.toDateString()}`}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center">
-            <Button
-              startIcon={<LinkOutlinedIcon fontSize="small" />}
-              onClick={openRepoUrl}
-              variant="text"
-              size="small"
-              sx={{
-                color: secondaryColor,
-                "&:hover": { backgroundColor: "transparent" },
-              }}
-            >
-              {Resources[repository?.repositoryType] ||
-                repository?.repositoryType}
-            </Button>
-          </Stack>
-        </Stack>
+        <Box>
+          <Chip
+            sx={{ background: "transparent !important" }}
+            icon={<PersonOutlineIcon sx={{ fontSize: "1.2rem" }} />}
+            label={
+              <Typography variant="body2">
+                By
+                <Link href={`/user/${repository?.user?.id}`}>
+                  {" "}
+                  <span>
+                    {repository?.user?.firstName +
+                      " " +
+                      repository?.user?.lastName}
+                  </span>
+                </Link>
+              </Typography>
+            }
+          />
+
+          <Chip
+            sx={{ background: "transparent !important" }}
+            icon={<CalendarTodayOutlinedIcon sx={{ fontSize: "1.2rem" }} />}
+            label={
+              <Typography variant="body2">
+                {repository?.timestampCreated &&
+                  `Last Updated ${repository?.timestampUpdated?.toDateString()}`}
+              </Typography>
+            }
+          />
+
+          <Chip
+            onClick={openRepoUrl}
+            sx={{
+              background: "transparent !important",
+              "&:hover": { color: primaryColor },
+            }}
+            icon={<LinkOutlinedIcon sx={{ fontSize: "1.2rem" }} />}
+            label={
+              <Typography variant="body2">
+                {Resources[repository?.repositoryType] ||
+                  repository?.repositoryType}
+              </Typography>
+            }
+          />
+        </Box>
       </RepoPageBannerBox>
     )
   );

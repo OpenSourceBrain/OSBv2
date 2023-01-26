@@ -23,7 +23,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
-import { HomePageSider } from "../components";
+import { EditRepoDialog, HomePageSider } from "../components";
 import RepositoryPageBanner from "../components/repository/RepositoryPageBanner";
 import RepositoryPageDetails from "../components/repository/RepositoryPageDetails";
 import { WorkspaceEditor, NewWorkspaceAskUser } from "../components";
@@ -52,6 +52,7 @@ import WorkspaceService from "../service/WorkspaceService";
 import { canEditRepository } from "../service/UserService";
 
 const GoBackButton = styled(Button)(({ theme }) => ({
+  padding: 0,
   color: paragraph,
   fontSize: "0.857rem",
   textTransform: "none",
@@ -66,6 +67,8 @@ const AddSelectionButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   borderRadius: "0.429rem",
   border: `0.071rem solid ${white}`,
+  height: "100%",
+
   "&:hover": {
     border: `0.071rem solid ${white}`,
     backgroundColor: "transparent",
@@ -78,6 +81,7 @@ const NewWorkspaceButton = styled(Button)(({ theme }) => ({
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   borderRadius: "0.429rem",
   textTransform: "none",
+  height: "100%",
 }));
 
 let confirmationDialogTitle = "";
@@ -265,7 +269,7 @@ export const RepositoryPage = (props: any) => {
       <Box className="verticalFit">
         <Grid container={true} className="verticalFill">
           <Grid
-            item
+            item={true}
             xs={12}
             sm={12}
             md={3}
@@ -277,81 +281,112 @@ export const RepositoryPage = (props: any) => {
               <HomePageSider />
             </Box>
           </Grid>
-          <Grid item xs={12} sm={12} md={9} lg={10} sx={{ height: "100%" }}>
-            <Box width={1}>
-              <Box sx={{ background: bgDarkest }}>
+          <Grid
+            item={true}
+            xs={12}
+            sm={12}
+            md={9}
+            lg={10}
+            alignItems="stretch"
+            className="verticalFill"
+            direction="column"
+          >
+            {/*header*/}
+            <Box
+              sx={{
+                padding: `0.571rem ${
+                  canEdit ? "0" : "1.143rem"
+                } 0.571rem 1.143rem`,
+                width: "100%",
+                backgroundColor: bgDarkest,
+              }}
+            >
+              <Grid container={true} spacing={2}>
                 <Grid
-                  container={true}
-                  className="verticalFill"
-                  spacing={2}
-                  sx={{
-                    padding: `0.571rem ${
-                      canEdit ? "0" : "1.143rem"
-                    } 0.571rem 1.143rem`,
-                  }}
+                  item
+                  xs={12}
+                  sm={12}
+                  md={canEdit ? 3 : 4}
+                  lg={canEdit ? 5 : 6}
                 >
-                  <Grid
-                    item
-                    xs={12}
-                    sm={12}
-                    md={canEdit ? 3 : 4}
-                    lg={canEdit ? 5 : 6}
+                  <GoBackButton
+                    variant="text"
+                    startIcon={<ChevronLeftIcon />}
+                    onClick={() => history.push("/repositories")}
                   >
-                    <GoBackButton
-                      variant="text"
-                      startIcon={<ChevronLeftIcon />}
-                      onClick={() => history.push("/repositories")}
-                    >
-                      All repositories
-                    </GoBackButton>
-                  </Grid>
+                    All repositories
+                  </GoBackButton>
+                </Grid>
 
-                  <Grid
-                    item
-                    xs={canEdit ? 5 : 6}
-                    sm={canEdit ? 5 : 6}
-                    md={4}
-                    lg={3}
+                <Grid
+                  item
+                  xs={canEdit ? 5 : 6}
+                  sm={canEdit ? 5 : 6}
+                  md={4}
+                  lg={3}
+                >
+                  <Tooltip
+                    title={
+                      !canAddToWorkspace()
+                        ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                        : ""
+                    }
                   >
-                    <AddSelectionButton
-                      fullWidth
-                      variant="outlined"
-                      disableElevation={true}
-                      id="add-existing-workspace-button"
-                      disabled={!canAddToWorkspace()}
-                      color="secondary"
-                      style={{ borderColor: "white" }}
-                      onClick={() => {
-                        user
-                          ? openExistingWorkspaceDialog()
-                          : setShowUserNotLoggedInAlert(true);
-                      }}
-                    >
-                      Add selection to existing workspace
-                    </AddSelectionButton>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={canEdit ? 5 : 6}
-                    sm={canEdit ? 5 : 6}
-                    md={4}
-                    lg={3}
+                    <Stack sx={{ width: "100%", padding: 0 }}>
+                      <AddSelectionButton
+                        fullWidth
+                        variant="outlined"
+                        disableElevation={true}
+                        id="add-existing-workspace-button"
+                        disabled={!canAddToWorkspace()}
+                        color="secondary"
+                        style={{ borderColor: "white" }}
+                        onClick={() => {
+                          user
+                            ? openExistingWorkspaceDialog()
+                            : setShowUserNotLoggedInAlert(true);
+                        }}
+                      >
+                        Add selection to existing workspace
+                      </AddSelectionButton>
+                    </Stack>
+                  </Tooltip>
+                </Grid>
+                <Grid
+                  item
+                  xs={canEdit ? 5 : 6}
+                  sm={canEdit ? 5 : 6}
+                  md={4}
+                  lg={3}
+                >
+                  <Tooltip
+                    title={
+                      !canAddToWorkspace()
+                        ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                        : ""
+                    }
                   >
-                    <NewWorkspaceButton
-                      fullWidth
-                      variant="contained"
-                      disableElevation={true}
-                      color="primary"
-                      id="create-new-workspace-button"
-                      disabled={!canAddToWorkspace()}
-                      onClick={() => {
-                        user ? openDialog() : setShowUserNotLoggedInAlert(true);
-                      }}
-                    >
-                      New workspace from selection
-                    </NewWorkspaceButton>
-                  </Grid>
-                  <Grid item xs={canEdit ? 1 : 0}>
+                    <Stack sx={{ width: "100%", padding: 0 }}>
+                      <NewWorkspaceButton
+                        fullWidth
+                        variant="contained"
+                        disableElevation={true}
+                        color="primary"
+                        id="create-new-workspace-button"
+                        disabled={!canAddToWorkspace()}
+                        onClick={() => {
+                          user
+                            ? openDialog()
+                            : setShowUserNotLoggedInAlert(true);
+                        }}
+                      >
+                        New workspace from selection
+                      </NewWorkspaceButton>
+                    </Stack>
+                  </Tooltip>
+                </Grid>
+                {canEdit ? (
+                  <Grid item xs={1}>
                     <RepositoryActionsMenu
                       user={user}
                       repository={repository}
@@ -360,94 +395,38 @@ export const RepositoryPage = (props: any) => {
                       }
                     />
                   </Grid>
-                </Grid>
-                {/*<Box*/}
-                {/*  display="flex"*/}
-                {/*  justifyContent="space-between"*/}
-                {/*  alignItems="center"*/}
-                {/*  sx={{ padding: "0.571rem 1.143rem" }}*/}
-                {/*>*/}
-                {/*  <GoBackButton*/}
-                {/*    variant="text"*/}
-                {/*    startIcon={<ChevronLeftIcon />}*/}
-                {/*    onClick={() => history.push("/repositories")}*/}
-                {/*  >*/}
-                {/*    All repositories*/}
-                {/*  </GoBackButton>*/}
-                {/*  <Tooltip*/}
-                {/*    title={*/}
-                {/*      !canAddToWorkspace()*/}
-                {/*        ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."*/}
-                {/*        : ""*/}
-                {/*    }*/}
-                {/*  >*/}
-                {/*    <Stack display="flex" direction="row" spacing={2}>*/}
-                {/*      <AddSelectionButton*/}
-                {/*        variant="outlined"*/}
-                {/*        disableElevation={true}*/}
-                {/*        id="add-existing-workspace-button"*/}
-                {/*        disabled={!canAddToWorkspace()}*/}
-                {/*        color="secondary"*/}
-                {/*        style={{ borderColor: "white" }}*/}
-                {/*        onClick={() => {*/}
-                {/*          user*/}
-                {/*            ? openExistingWorkspaceDialog()*/}
-                {/*            : setShowUserNotLoggedInAlert(true);*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        Add selection to existing workspace*/}
-                {/*      </AddSelectionButton>*/}
-                {/*      <NewWorkspaceButton*/}
-                {/*        variant="contained"*/}
-                {/*        disableElevation={true}*/}
-                {/*        color="primary"*/}
-                {/*        id="create-new-workspace-button"*/}
-                {/*        disabled={!canAddToWorkspace()}*/}
-                {/*        onClick={() => {*/}
-                {/*          user*/}
-                {/*            ? openDialog()*/}
-                {/*            : setShowUserNotLoggedInAlert(true);*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        New workspace from selection*/}
-                {/*      </NewWorkspaceButton>*/}
-                {/*      <RepositoryActionsMenu*/}
-                {/*        user={user}*/}
-                {/*        repository={repository}*/}
-                {/*        onAction={(r: OSBRepository) =>*/}
-                {/*          r && setRepository({ ...repository, ...r })*/}
-                {/*        }*/}
-                {/*      />*/}
-                {/*    </Stack>*/}
-                {/*  </Tooltip>*/}
-                {/*</Box>*/}
-              </Box>
-
-              {isLoading && !repository ? (
-                <CircularProgress
-                  size={48}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -24,
-                    marginLeft: -24,
-                  }}
-                />
-              ) : (
-                <>
-                  <RepositoryPageBanner
-                    repository={repository}
-                    openRepoUrl={openRepoUrl}
-                  />
-                  <RepositoryPageDetails
-                    repository={repository}
-                    openRepoUrl={openRepoUrl}
-                    checkedChanged={setCheckedChips}
-                  />
-                </>
-              )}
+                ) : null}
+              </Grid>
             </Box>
+            {/*details*/}
+            {isLoading && !repository ? (
+              <CircularProgress
+                size={48}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: -24,
+                  marginLeft: -24,
+                }}
+              />
+            ) : (
+              <>
+                <RepositoryPageBanner
+                  repository={repository}
+                  openRepoUrl={openRepoUrl}
+                />
+                <RepositoryPageDetails
+                  repository={repository}
+                  openRepoUrl={openRepoUrl}
+                  checkedChanged={setCheckedChips}
+                  onAction={(r: OSBRepository) =>
+                    r && setRepository({ ...repository, ...r })
+                  }
+                  user={user}
+                />
+              </>
+            )}
           </Grid>
         </Grid>
       </Box>
