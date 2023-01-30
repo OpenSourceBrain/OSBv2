@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: testpvc
+  namespace: osblocal
+spec:
+  storageClassName: nfs-client-osblocal
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi

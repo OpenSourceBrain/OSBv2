@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:hub-1.4.2
+FROM jupyter/base-notebook:hub-1.5.0
 USER root
 
 
@@ -41,7 +41,7 @@ RUN jupyter labextension install plotlywidget
 # this will cause the libs to get updated and use the cached dependencies
 
 # Invalidate the cache
-ARG NOCACHE
+# ARG NOCACHE
 
 USER root
 # LFPy

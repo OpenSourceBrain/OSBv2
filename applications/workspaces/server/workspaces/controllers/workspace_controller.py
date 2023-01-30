@@ -8,7 +8,7 @@ from workspaces.config import Config
 from workspaces.repository.model_repository import WorkspaceImageRepository, WorkspaceRepository, db
 from workspaces.repository.models import WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
-from workspaces.service.model_service import NotAuthorized, WorkspaceService
+from workspaces.service.model_service import NotAuthorized, NotAllowed, WorkspaceService
 
 def _save_image(id_=None, image=None, filename_base=None):
     ext = mimetypes.guess_extension(image.mimetype)
@@ -100,3 +100,5 @@ def workspace_clone(id_, body=None):
         return ws.to_dict()
     except NotAuthorized:
         return "Not authorized", 401
+    except NotAllowed:
+        return "Not allowed", 405

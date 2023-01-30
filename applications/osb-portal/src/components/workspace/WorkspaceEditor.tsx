@@ -176,6 +176,9 @@ export default (props: WorkspaceEditProps) => {
       },
       (e) => {
         setLoading(false);
+        if (e.status === 405) {
+          throw new Error("Maximum number of workspaces exceeded.");
+        }
         throw new Error("Error submitting the workspace");
         // console.error('Error submitting the workspace', e);
       }

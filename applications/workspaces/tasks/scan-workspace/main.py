@@ -9,7 +9,7 @@ assert len(sys.argv) > 3, 'Not all arguments not specified. Cannot notify queue.
 
 
 
-folder = sys.argv[1].split(":")[-1]
+folder = sys.argv[1].split(":")[1]
 workspace_id = sys.argv[2]
 queue = sys.argv[3]
 

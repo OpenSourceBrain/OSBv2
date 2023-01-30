@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 
 import { WorkspaceInteractions } from "../..";
-import { Workspace, WorkspaceResource } from "../../../types/workspace";
+import { OSBApplications, ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
@@ -101,8 +101,24 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   // Keep drawer closed for jupyter by default
   const [open, setOpen] = React.useState(app === "jupyter" ? false : true);
 
+  const getActiveResource = () => {
+    if (workspace.lastOpen != null) {
+      if (!app || workspace.lastOpen.type.application === OSBApplications[app]) {
+        return workspace.lastOpen;
+      } 
+    }
+   if (app) {
+      return workspace.resources.find(
+        (resource) =>
+          resource.type.application === OSBApplications[app] &&
+          resource.status === ResourceStatus.available
+      );
+    } else if (workspace.resources?.length) {
+      return workspace.resources.find(resource => resource.status === ResourceStatus.available);
+    }
+  };
   const [currentResource, setCurrentResource] =
-    React.useState<WorkspaceResource>(!app ? workspace.lastOpen : null);
+    React.useState<WorkspaceResource>(getActiveResource());
 
   const handleToggleDrawer = () => setOpen(!open);
 
@@ -135,6 +151,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
             <WorkspaceInteractions
               workspace={workspace}
               open={open}
+              currentResource={currentResource}
               openResource={setCurrentResource}
             />
           </div>

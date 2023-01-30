@@ -55,7 +55,11 @@ steps:
       cmd_ps: --wait --timeout 600s
       custom_value_files:
       - ./deployment/helm/values.yaml
-      custom_values: []
+      custom_values:
+      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
     image: codefresh/cfstep-helm:3.6.2
     environment:
     - CHART_REF=./deployment/helm

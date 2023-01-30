@@ -104,6 +104,21 @@ steps:
     type: parallel
     stage: build
     steps:
+      nfsserver:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/nfsserver
+        title: Nfsserver
+        working_directory: ./cloud-harness/applications/nfsserver
       notifications:
         type: build
         stage: build
@@ -183,21 +198,6 @@ steps:
         image_name: osb/common
         title: Common
         working_directory: ./.overrides/applications/common/server
-      events:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/events
-        title: Events
-        working_directory: ./cloud-harness/applications/events
       workflows-send-result-event:
         type: build
         stage: build
@@ -431,6 +431,15 @@ steps:
         image_name: osb/jupyterlab
         title: Jupyterlab
         working_directory: ./applications/jupyterlab
+  tests_unit:
+    stage: unittest
+    type: parallel
+    steps:
+      workspaces_ut:
+        title: Unit tests for workspaces
+        commands:
+        - pytest /usr/src/app/
+        image: '${{workspaces}}'
   deployment:
     stage: deploy
     type: helm
@@ -446,7 +455,11 @@ steps:
       cmd_ps: --wait --timeout 600s
       custom_value_files:
       - ./deployment/helm/values.yaml
-      custom_values: []
+      custom_values:
+      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
     image: codefresh/cfstep-helm:3.6.2
     environment:
     - CHART_REF=./deployment/helm
@@ -458,6 +471,116 @@ steps:
     - HELM_REPO_CONTEXT_PATH=
     - TIMEOUT=600s
     - VALUESFILE_values=./deployment/helm/values.yaml
+  build_test_images:
+    title: Build test images
+    type: parallel
+    stage: qa
+    steps:
+      test-e2e:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/test-e2e
+        title: Test e2e
+        working_directory: ./cloud-harness/test/test-e2e
+      test-api:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: test/test-api/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/test-api
+        title: Test api
+        working_directory: ./cloud-harness
+    when:
+      condition:
+        all:
+          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
+  wait_deployment:
+    stage: qa
+    title: Wait deployment to be ready
+    image: codefresh/kubectl
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl config set-context --current --namespace=${{NAMESPACE}}
+    - kubectl rollout status deployment/notifications
+    - kubectl rollout status deployment/accounts
+    - kubectl rollout status deployment/volumemanager
+    - kubectl rollout status deployment/common
+    - kubectl rollout status deployment/workflows
+    - kubectl rollout status deployment/workspaces
+    - kubectl rollout status deployment/accounts-api
+    - kubectl rollout status deployment/osb-portal
+    - kubectl rollout status deployment/backoffice
+    - sleep 60
+    when:
+      condition:
+        all:
+          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
+  tests_api:
+    stage: qa
+    title: Api tests
+    working_directory: /home/test
+    image: '${{test-api}}'
+    fail_fast: false
+    commands:
+    - echo $APP_NAME
+    scale:
+      common_api_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/.overrides/applications/common:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://common.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://common.${{DOMAIN}}/api -c all
+      workflows_api_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://workflows.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://workflows.${{DOMAIN}}/api -c all
+    when:
+      condition:
+        all:
+          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
+  tests_e2e:
+    stage: qa
+    title: End to end tests
+    working_directory: /home/test
+    image: '${{test-e2e}}'
+    fail_fast: false
+    commands:
+    - yarn test
+    scale:
+      osb-portal_e2e_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
+        environment:
+        - APP_URL=https://www.${{DOMAIN}}
+    when:
+      condition:
+        all:
+          whenVarExists: includes("${{SKIP_TESTS}}", "{{SKIP_TESTS}}") == true
   approval:
     type: pending-approval
     stage: publish
@@ -491,6 +614,14 @@ steps:
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_nfsserver:
+        stage: publish
+        type: push
+        title: Nfsserver
+        candidate: '${{REGISTRY}}/osb/nfsserver:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -531,14 +662,6 @@ steps:
         type: push
         title: Common
         candidate: '${{REGISTRY}}/osb/common:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_events:
-        stage: publish
-        type: push
-        title: Events
-        candidate: '${{REGISTRY}}/osb/events:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

@@ -1,0 +1,54 @@
+[[responses]]
+
+[responses.response]
+method = "GET"
+url = "https://api.dandiarchive.org/api/dandisets/000029/versions/"
+body = "{\"count\":8,\"next\":null,\"previous\":null,\"results\":[{\"version\":\"draft\",\"name\":\"Test dataset for development purposes\",\"asset_count\":4,\"size\":20716124,\"status\":\"Valid\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-11-07T23:45:30.267449Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.210712.1903\",\"name\":\"Test dataset for development purposes\",\"asset_count\":5,\"size\":20716128,\"status\":\"Valid\",\"created\":\"2021-07-12T19:03:54.185140Z\",\"modified\":\"2021-07-12T19:03:54.410697Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.210730.1538\",\"name\":\"Test dataset for development purposes\",\"asset_count\":5,\"size\":20716130,\"status\":\"Valid\",\"created\":\"2021-07-30T15:38:58.725535Z\",\"modified\":\"2021-07-30T15:38:58.951710Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.210805.2047\",\"name\":\"Test dataset for development purposes\",\"asset_count\":5,\"size\":20716130,\"status\":\"Valid\",\"created\":\"2021-08-05T20:47:35.155215Z\",\"modified\":\"2021-08-05T20:47:35.354089Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.210806.1511\",\"name\":\"Test dataset for development purposes\",\"asset_count\":5,\"size\":20716130,\"status\":\"Valid\",\"created\":\"2021-08-06T15:11:13.175097Z\",\"modified\":\"2021-08-06T15:11:13.471183Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.210806.2112\",\"name\":\"Test dataset for development purposes\",\"asset_count\":5,\"size\":20716130,\"status\":\"Valid\",\"created\":\"2021-08-06T21:12:59.814044Z\",\"modified\":\"2021-08-06T21:12:59.936073Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.210915.1646\",\"name\":\"Test dataset for development purposes\",\"asset_count\":6,\"size\":20716176,\"status\":\"Valid\",\"created\":\"2021-09-15T16:46:57.398908Z\",\"modified\":\"2021-09-15T16:46:57.697348Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}},{\"version\":\"0.221107.2344\",\"name\":\"Test dataset for development purposes\",\"asset_count\":4,\"size\":20716124,\"status\":\"Valid\",\"created\":\"2022-11-07T23:44:44.010846Z\",\"modified\":\"2022-11-07T23:44:45.180397Z\",\"dandiset\":{\"identifier\":\"000029\",\"created\":\"2020-07-31T16:44:32.094000Z\",\"modified\":\"2022-06-27T19:36:18.198345Z\",\"contact_person\":\"Last, First\",\"embargo_status\":\"OPEN\"}}]}"
+status = 200
+content_type = "text/plain"
+auto_calculate_content_length = false
+[[responses]]
+
+[responses.response]
+method = "GET"
+url = "https://api.dandiarchive.org/api/dandisets/000029/versions/draft/assets/paths/?path_prefix="
+body = "{\"count\":4,\"next\":null,\"previous\":null,\"results\":[{\"path\":\"sub-anm369962\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":6644036,\"asset\":null},{\"path\":\"sub-anm369963\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":6393196,\"asset\":null},{\"path\":\"sub-anm369964\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":7660100,\"asset\":null},{\"path\":\"sub-RAT123\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":18792,\"asset\":null}]}"
+status = 200
+content_type = "text/plain"
+auto_calculate_content_length = false
+[[responses]]
+
+[responses.response]
+method = "GET"
+url = "https://api.dandiarchive.org/api/dandisets/000029/versions/draft/assets/paths/?path_prefix=sub-anm369962"
+body = "{\"count\":1,\"next\":null,\"previous\":null,\"results\":[{\"path\":\"sub-anm369962/sub-anm369962_behavior+ecephys.nwb\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":6644036,\"asset\":{\"asset_id\":\"4f6a8f1d-ca04-491f-a530-9ed00a909c21\",\"url\":\"https://dandiarchive.s3.amazonaws.com/blobs/180/9f5/1809f541-1cb1-48b8-b916-9a696bab488d\"}}]}"
+status = 200
+content_type = "text/plain"
+auto_calculate_content_length = false
+[[responses]]
+
+[responses.response]
+method = "GET"
+url = "https://api.dandiarchive.org/api/dandisets/000029/versions/draft/assets/paths/?path_prefix=sub-anm369963"
+body = "{\"count\":1,\"next\":null,\"previous\":null,\"results\":[{\"path\":\"sub-anm369963/sub-anm369963_behavior+ecephys.nwb\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":6393196,\"asset\":{\"asset_id\":\"38f2024d-62a9-4c79-8a22-7a0ff34b331d\",\"url\":\"https://dandiarchive.s3.amazonaws.com/blobs/e72/88a/e7288a2c-444c-42c5-b7bb-9a58c728992b\"}}]}"
+status = 200
+content_type = "text/plain"
+auto_calculate_content_length = false
+[[responses]]
+
+[responses.response]
+method = "GET"
+url = "https://api.dandiarchive.org/api/dandisets/000029/versions/draft/assets/paths/?path_prefix=sub-anm369964"
+body = "{\"count\":1,\"next\":null,\"previous\":null,\"results\":[{\"path\":\"sub-anm369964/sub-anm369964_behavior+ecephys.nwb\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":7660100,\"asset\":{\"asset_id\":\"689d7c0c-d980-462e-9a56-3df87efc9658\",\"url\":\"https://dandiarchive.s3.amazonaws.com/blobs/c40/57c/c4057c5e-7af5-4370-878f-ccfc971aeba4\"}}]}"
+status = 200
+content_type = "text/plain"
+auto_calculate_content_length = false
+[[responses]]
+
+[responses.response]
+method = "GET"
+url = "https://api.dandiarchive.org/api/dandisets/000029/versions/draft/assets/paths/?path_prefix=sub-RAT123"
+body = "{\"count\":1,\"next\":null,\"previous\":null,\"results\":[{\"path\":\"sub-RAT123/sub-RAT123.nwb\",\"version\":419,\"aggregate_files\":1,\"aggregate_size\":18792,\"asset\":{\"asset_id\":\"86e09d7e-4355-4887-9c5a-7a137c046953\",\"url\":\"https://dandiarchive.s3.amazonaws.com/blobs/2db/af0/2dbaf0fd-5003-4a0a-b4c0-bc8cdbdb3826\"}}]}"
+status = 200
+content_type = "text/plain"
+auto_calculate_content_length = false

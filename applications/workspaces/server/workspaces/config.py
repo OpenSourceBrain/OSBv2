@@ -28,6 +28,8 @@ class Config(object):
     APP_NAME = "workspaces"
     WSMGR_HOSTNAME = socket.gethostname()
     WSMGR_IPADDRESS = socket.gethostbyname(WSMGR_HOSTNAME)
+    # set the max number of workspaces per user
+    MAX_NUMBER_WORKSPACES_PER_USER = 3
 
     try:
         CH_NAMESPACE = conf.get_configuration()["namespace"]

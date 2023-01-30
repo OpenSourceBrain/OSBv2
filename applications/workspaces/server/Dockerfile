@@ -14,7 +14,6 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY requirements.txt /usr/src/app/
-COPY requirements /usr/src/app/requirements
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
@@ -31,4 +30,4 @@ ENV FLASK_APP=workspaces.__main__
 ENV FLASK_LOG_LEVEL=info
 
 RUN pip3 install -e .
-ENTRYPOINT gunicorn --workers=$WORKERS --bind=0.0.0.0:$PORT $FLASK_APP:app
+CMD gunicorn --workers=$WORKERS --bind=0.0.0.0:$PORT $FLASK_APP:app

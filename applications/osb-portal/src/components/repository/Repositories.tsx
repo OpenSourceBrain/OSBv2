@@ -37,7 +37,7 @@ import Resources from "./resources";
 interface RepositoriesProps {
   repositories: OSBRepository[];
   showSimpleVersion?: boolean;
-  handleRepositoryClick: (repositoryId: number) => void;
+  handleRepositoryClick: (repository: Repository) => void;
   handleTagClick: (tagObject: Tag) => void;
   handleTagUnclick: (tagObject: Tag) => void;
   handleTypeClick: (type: string) => void;
@@ -263,7 +263,7 @@ export default (props: RepositoriesProps) => {
                 onClick={(e: any) => {
                   console.log(e);
                   if (e.target.tagName.toLowerCase() !== "a")
-                    props.handleRepositoryClick(repository.id);
+                    props.handleRepositoryClick(repository);
                 }}
               >
                 <Typography component="strong">{repository.name}</Typography>
