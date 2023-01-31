@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router';
 
 //theme
 import { styled } from '@mui/styles';
-import { bgLightest as lineColor, paragraph, secondaryColor as white, chipBg, headerBg as hoverBg, bgDarkest, lightWhite } from '../theme';
+import { paragraph, secondaryColor as white, chipBg, bgDarkest, lightWhite } from '../theme';
 
 //components
 import Box from '@mui/material/Box';
@@ -12,8 +12,9 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import CircularProgress from "@mui/material/CircularProgress";
 import { HomePageSider } from '../components';
-import { WorkspaceEditor, WorkspaceInteractions } from '../components';
+import { WorkspaceEditor } from '../components';
 import { OSBSplitButton } from '../components/common/OSBSplitButton';
 import WorkspaceActionsMenu from '../components/workspace/WorkspaceActionsMenu';
 import WorkspaceSidebar from '../components/workspace/WorkspaceSidebar';
@@ -25,7 +26,6 @@ import { canEditWorkspace } from '../service/UserService';
 //types
 import {
     Workspace,
-    WorkspaceResource,
     OSBApplication,
 } from "../types/workspace";
 
@@ -33,7 +33,6 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import FolderIcon from "@mui/icons-material/Folder";
 
 const NavbarButton = styled(Button)(({ theme }) => ({
     fontSize: '12px',
@@ -54,16 +53,11 @@ export const WorkspacePage = (props: any) => {
     const workspace: Workspace = props.workspace;
     const user = props.user;
     const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
-    const [refresh, setRefresh] = React.useState(true);
     const [error, setError] = React.useState<any>(null);
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const [anchorElmoreVert, setAnchorElmoreVert] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const isWorkspaceOpen = Boolean(anchorElmoreVert);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
 
     if (!workspace) {
         props.selectWorkspace(workspaceId);
@@ -73,16 +67,9 @@ export const WorkspacePage = (props: any) => {
         throw error;
     }
 
-    console.log('Props: ', props.workspace);
-    console.log('IS Workspace open: ', isWorkspaceOpen);
-
     const handleCloseEditWorkspace = () => {
         props.refreshWorkspace(workspaceId);
         setEditWorkspaceOpen(false);
-    };
-
-    const handleResourceClick = (resource: WorkspaceResource) => {
-        openWithApp(resource.type.application);
     };
 
     const openWithApp = (selectedOption: OSBApplication) => {
@@ -91,7 +78,7 @@ export const WorkspacePage = (props: any) => {
 
     const canEdit = canEditWorkspace(props.user, workspace);
 
-    return workspace && (
+    return (
         <>
             <Box className="verticalFit">
                 <Grid container className="verticalFill">
@@ -177,15 +164,14 @@ export const WorkspacePage = (props: any) => {
                                                 }
 
                                                 <OSBSplitButton
-                                                    defaultSelected={workspace.defaultApplication}
+                                                    defaultSelected={workspace?.defaultApplication}
                                                     handleClick={openWithApp}
                                                 />
-
                                                 <NavbarButton
+                                                    id="workspace-actions-menu"
                                                     size="small"
                                                     variant="contained"
                                                     aria-label="more"
-                                                    id="threeDot-button"
                                                     onClick={(event) => setAnchorElmoreVert(event.currentTarget)}
                                                     sx={{
                                                         background: chipBg,
@@ -195,71 +181,95 @@ export const WorkspacePage = (props: any) => {
                                                 >
                                                     <MoreVertIcon fontSize='small' />
                                                 </NavbarButton>
+                                                <WorkspaceActionsMenu
+                                                    workspace={workspace}
+                                                    user={user}
+                                                    isWorkspaceOpen={isWorkspaceOpen}
+                                                    anchorEl = {anchorElmoreVert}
+                                                    setAnchorEl = {(anchorEl) => setAnchorElmoreVert(anchorEl)}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box width={1} height={1} sx={{ overflowY: 'hidden' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4.5rem', gap: '1rem' }}>
-                                        {!canEdit && (
-                                            <Tooltip
-                                                style={{ marginLeft: "0.3em" }}
-                                                title="You do not have permissions to modify this workspace."
-                                            >
-                                                <LockOutlinedIcon sx={{ color: paragraph }} />
-                                            </Tooltip>
-                                        )}
-                                        <Typography className='workspace-name-input' sx={{ fontSize: '24px' }}>{workspace.name}</Typography>
-                                    </Box>
-                                    <Box height={1} sx={{ background: 'rgba(0, 0, 0, 0.25)' }}>
-                                        <Grid container height={1}>
-                                            <Grid item xs>
-                                                <WorkspaceSidebar />
-                                            </Grid>
-                                            <Grid item xs={7} justifyContent='center'>
-                                                <Box sx={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    gap: '24px',
-                                                    maxHeight: '560px',
-                                                    overflowY: 'scroll',
-                                                    padding: '24px 100px'
-                                                }}
-                                                >
-                                                    <Box
-                                                        className="imageContainer"
-                                                        justifyContent="center"
-                                                        alignItems="center"
-                                                        display="flex"
+                                {
+                                    !workspace ? (
+                                        <Box
+                                            flex={1}
+                                            px={2}
+                                            py={2}
+                                            display="flex"
+                                            alignContent="center"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                        >
+                                            <CircularProgress />
+                                        </Box>
+                                    ) : (
+                                        <Box width={1} height={1} sx={{ overflowY: 'hidden' }}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4.5rem', gap: '1rem' }}>
+                                                {!canEdit && (
+                                                    <Tooltip
+                                                        style={{ marginLeft: "0.3em" }}
+                                                        title="You do not have permissions to modify this workspace."
                                                     >
-                                                        {!workspace?.thumbnail ? (
-                                                            <FolderIcon />
-                                                        ) : (
-                                                            <img
-                                                                width={"100%"}
-                                                                src={
-                                                                    "/proxy/workspaces/" +
-                                                                    workspace.thumbnail +
-                                                                    "?v=" +
-                                                                    workspace.timestampUpdated.getMilliseconds()
-                                                                }
-                                                                title={workspace.name}
-                                                                alt={workspace.name}
-                                                            />
-                                                        )}
-                                                    </Box>
-                                                    <Divider />
-                                                    <Typography variant="subtitle1" sx={{ color: lightWhite, letterSpacing: '0.01em', lineHeight: '24px' }}>
-                                                        {workspace.description}
-                                                    </Typography>
-                                                </Box>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <WorkspaceDetailsInfo workspace={workspace} />
-                                            </Grid>
-                                        </Grid>
-                                    </Box>
-                                </Box>
+                                                        <LockOutlinedIcon sx={{ color: paragraph }} />
+                                                    </Tooltip>
+                                                )}
+                                                <Typography className='workspace-name-input' sx={{ fontSize: '24px' }}>{workspace?.name}</Typography>
+                                            </Box>
+                                            <Box height={1} sx={{ background: 'rgba(0, 0, 0, 0.25)' }}>
+                                                <Grid container height={1}>
+                                                    <Grid item xs>
+                                                        <WorkspaceSidebar workspace={workspace} user={user} refreshWorkspace={props.refreshWorkspace} />
+                                                    </Grid>
+                                                    <Grid item justifyContent={workspace?.thumbnail ? 'center' : 'start'} xs={6}>
+                                                        <Box sx={{
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            gap: '24px',
+                                                            maxHeight: '560px',
+                                                            overflowY: 'scroll',
+                                                            padding: '24px 100px'
+                                                        }}
+                                                        >
+                                                            <Box
+                                                                className="imageContainer"
+                                                                justifyContent="center"
+                                                                alignItems="center"
+                                                                display="flex"
+                                                            >
+                                                                {workspace?.thumbnail && (
+                                                                    <img
+                                                                        width={"100%"}
+                                                                        src={
+                                                                            "/proxy/workspaces/" +
+                                                                            workspace.thumbnail +
+                                                                            "?v=" +
+                                                                            workspace.timestampUpdated.getMilliseconds()
+                                                                        }
+                                                                        title={workspace.name}
+                                                                        alt={workspace.name}
+                                                                    />
+                                                                )}
+                                                            </Box>
+                                                            {
+                                                                workspace?.thumbnail && <Divider />
+                                                            }
+                                                            <Typography variant="subtitle1" sx={{ color: lightWhite, letterSpacing: '0.01em', lineHeight: '24px' }}>
+                                                                {workspace?.description}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs>
+                                                        <WorkspaceDetailsInfo workspace={workspace} />
+                                                    </Grid>
+                                                </Grid>
+                                            </Box>
+                                        </Box>
+                                    )
+
+                                }
                             </div>
                         </Box>
                     </Grid>
@@ -276,13 +286,6 @@ export const WorkspacePage = (props: any) => {
                     user={user}
                 />
             )}
-            {
-                <WorkspaceActionsMenu
-                    workspace={workspace}
-                    user={user}
-                    isWorkspaceOpen={isWorkspaceOpen}
-                />
-            }
         </>
     )
 }

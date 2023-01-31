@@ -42,7 +42,7 @@ const WorkspaceDetailsInfo = (props: any) => {
     const { tags } = props.workspace;
     const { timestampUpdated } = props.workspace;
 
-    return (
+    return props.workspace && (
 
         <Box sx={{ height: '100%', overflow: 'hidden' }} pt={4} pl={2}>
             <WorkspaceInfoSection spacing={1}>
