@@ -33,6 +33,8 @@ const workspaceSlice = createSlice({
       };
     },
     refreshWorkspaces(state, action: AnyAction) {
+      console.log(action.payload, action, "action");
+
       return { ...state, counter: state.counter + 1 };
     },
     deleteWorkspace(state, action: PayloadAction<number>) {

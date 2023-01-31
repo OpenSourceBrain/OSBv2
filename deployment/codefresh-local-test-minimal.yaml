@@ -135,22 +135,6 @@ steps:
         image_name: osb/accounts
         title: Accounts
         working_directory: ./.overrides/applications/accounts
-      volumemanager:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
-        image_name: osb/volumemanager
-        title: Volumemanager
-        working_directory: ./cloud-harness/applications/volumemanager/server
       jupyterhub:
         type: build
         stage: build
@@ -371,6 +355,21 @@ steps:
         image_name: osb/osb-portal
         title: Osb portal
         working_directory: ./applications/osb-portal
+      jupyterlab-minimal:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/jupyterlab-minimal
+        title: Jupyterlab minimal
+        working_directory: ./applications/jupyterlab-minimal
   prepare_cluster:
     stage: deploy
     image: codefresh/kubectl
@@ -419,6 +418,22 @@ steps:
         image_name: osb/test-e2e
         title: Test e2e
         working_directory: ./cloud-harness/test/test-e2e
+      test-api:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: test/test-api/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/test-api
+        title: Test api
+        working_directory: ./cloud-harness
   wait_deployment:
     stage: qa
     title: Wait deployment to be ready
@@ -428,7 +443,6 @@ steps:
     - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
     - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/accounts
-    - kubectl rollout status deployment/volumemanager
     - kubectl rollout status deployment/common
     - kubectl rollout status deployment/events
     - kubectl rollout status deployment/workflows
@@ -436,6 +450,39 @@ steps:
     - kubectl rollout status deployment/accounts-api
     - kubectl rollout status deployment/osb-portal
     - sleep 60
+  tests_api:
+    stage: qa
+    title: Api tests
+    working_directory: /home/test
+    image: '${{test-api}}'
+    fail_fast: false
+    commands:
+    - echo $APP_NAME
+    scale:
+      common_api_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/.overrides/applications/common:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://common.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://common.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api -c all
+      workflows_api_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://workflows.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://workflows.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api -c all
+    hooks:
+      on_fail:
+        exec:
+          image: alpine
+          commands:
+          - cf_export  FAILED=failed
   tests_e2e:
     stage: qa
     title: End to end tests
@@ -467,6 +514,17 @@ steps:
       timeUnit: minutes
       duration: '${{WAIT_ON_FAIL}}'
       finalState: denied
+    when:
+      condition:
+        all:
+          error: '"${{FAILED}}" == "failed"'
+          wait_on_fail: '${{WAIT_ON_FAIL}}'
+  dummy_end:
+    title: Dummy step
+    description: Without this, the on_finish hook is executed before the approval
+      step
+    image: python:3.9.10
+    stage: qa
     when:
       condition:
         all:

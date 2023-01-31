@@ -14,7 +14,9 @@ import Pagination from "@mui/material/Pagination";
 import { HomePageSider } from "../../components";
 import RepositoriesCards from "./RepositoriesCards";
 import RepositoriesTable from "./RespositoriesTable";
-import SearchReposWorkspaces from "../../components/common/SearchReposWorkspaces";
+import SearchFilterReposWorkspaces from "../../components/common/SearchFilterReposWorkspaces";
+import Chip from "@mui/material/Chip";
+import OSBPagination from "../../components/common/OSBPagination";
 
 //Icons
 import WindowIcon from "@mui/icons-material/Window";
@@ -42,7 +44,6 @@ import {
   primaryColor,
 } from "../../theme";
 import styled from "@mui/system/styled";
-import { Chip } from "@mui/material";
 
 enum RepositoriesTab {
   all,
@@ -92,23 +93,18 @@ export const StyledTabs = styled(Tab)(() => ({
 }));
 
 export const StyledGrid = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     padding: "12px 24px !important",
   },
 }));
 
-export const StyledPagination = styled(Pagination)(() => ({
-  display: "flex",
-  justifyContent: "center",
-  padding: ".88rem",
-  borderTop: `1px solid ${lineColor}`,
-
-  "& .Mui-selected": {
-    backgroundColor: primaryColor,
-  },
-}));
-
-export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
+export const RepositoriesPage = ({
+  user,
+  counter,
+}: {
+  user: UserInfo;
+  counter: number;
+}) => {
   const history = useHistory();
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
@@ -116,7 +112,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
       tags: [],
       types: [],
     });
-
+  console.log(counter);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(0);
@@ -135,12 +131,9 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     history.push(`/repositories/${repositoryId}`);
   };
 
-  const debouncedHandleSearchFilter = React.useCallback(
-    debounce((newTextFilter: string) => {
-      setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
-    }, 500),
-    []
-  );
+  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+    setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+  }, 500);
 
   const setReposValues = (reposDetails) => {
     setRepositories(reposDetails.osbrepositories);
@@ -149,9 +142,8 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
     setLoading(false);
   };
 
-  const getReposList = (payload?) => {
+  const getReposList = (payload) => {
     setLoading(true);
-
     if (payload?.searchFilterValues) {
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -208,11 +200,11 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
   };
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
-      getReposList();
+      getReposList({ searchFilterValues: null, tabValue });
     } else {
       getReposList({ searchFilterValues, tabValue });
     }
-  }, [page, searchFilterValues, tabValue]);
+  }, [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
@@ -312,7 +304,7 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                           <CustomButton Icon={<WindowIcon />} listType="grid" />
                           <CustomButton Icon={<ListIcon />} listType="list" />
                         </ButtonGroup>
-                        <SearchReposWorkspaces
+                        <SearchFilterReposWorkspaces
                           filterChanged={(newTextFilter) =>
                             debouncedHandleSearchFilter(newTextFilter)
                           }
@@ -377,13 +369,13 @@ export const RepositoriesPage = ({ user }: { user: UserInfo }) => {
                   />
                 )}
               </div>
-              {repositories && (
-                <StyledPagination
+              {repositories && totalPages > 1 && (
+                <OSBPagination
                   count={totalPages}
                   page={page}
                   onChange={handleChangePage}
-                  showFirstButton
-                  showLastButton
+                  showFirstButton={true}
+                  showLastButton={true}
                 />
               )}
             </Box>

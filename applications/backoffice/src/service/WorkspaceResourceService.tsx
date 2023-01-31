@@ -1,6 +1,5 @@
-import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest } from "../apiclient/workspaces";
+import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from "../apiclient/workspaces";
 
-import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';
 import { WorkspaceResource, OSBApplications, SampleResourceTypes, Workspace, ResourceStatus } from "../types/workspace";
 

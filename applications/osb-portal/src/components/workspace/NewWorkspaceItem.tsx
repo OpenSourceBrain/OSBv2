@@ -2,10 +2,7 @@ import * as React from "react";
 
 import { Typography, Box, Button } from "@mui/material";
 
-import { NewWorkspaceAskUser } from "..";
 import { WorkspaceEditor } from "../index";
-
-import OSBDialog from "../common/OSBDialog";
 
 import { UserInfo } from "../../types/user";
 import {
@@ -93,28 +90,22 @@ interface ItemProps {
   user: UserInfo;
   refreshWorkspaces: () => null;
   className?: string;
+  closeMainDialog?: (isClosed: boolean) => void;
 }
 
 export const NewWorkspaceItem = (props: ItemProps) => {
-  const { user, template, title, refreshWorkspaces, className, icon } = props;
+  const { template, title, refreshWorkspaces, className, icon } = props;
 
-  const [askLoginOpen, setAskLoginOpen] = React.useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
 
   const handleClick = () => {
-    if (!user) {
-      setAskLoginOpen(true);
-    } else {
-      setNewWorkspaceOpen(true);
-    }
+    setNewWorkspaceOpen(true);
   };
 
-  const closeAskLogin = () => setAskLoginOpen(false);
-
   const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
-    document.getElementById("your-all-workspaces-tab").click();
-
+    document.getElementById("your-all-workspaces-tab")?.click();
     setNewWorkspaceOpen(false);
+    props.closeMainDialog(false);
     if (refresh) {
       refreshWorkspaces();
     }
@@ -127,7 +118,9 @@ export const NewWorkspaceItem = (props: ItemProps) => {
       <Button style={{ textTransform: "none" }} onClick={handleClick}>
         <Box textAlign="center">
           {icon}
-          <Typography variant="subtitle1" sx={{marginBottom: '0.286rem'}}>{title}</Typography>
+          <Typography variant="subtitle1" sx={{ marginBottom: "0.286rem" }}>
+            {title}
+          </Typography>
           <Typography variant="caption">
             {typeof WORKSPACE_TEMPLATES[template] === "undefined"
               ? template
@@ -135,15 +128,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
           </Typography>
         </Box>
       </Button>
-      {askLoginOpen && (
-        <OSBDialog
-          title="Create new workspace"
-          open={askLoginOpen}
-          closeAction={closeAskLogin}
-        >
-          <NewWorkspaceAskUser />
-        </OSBDialog>
-      )}
+
       {newWorkspaceOpen &&
         (defaultWorkspace ? (
           <WorkspaceEditor
