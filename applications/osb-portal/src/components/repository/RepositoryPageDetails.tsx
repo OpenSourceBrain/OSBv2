@@ -55,7 +55,7 @@ import {
 } from "../../apiclient/workspaces";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import Resources from "./resources";
-import { EditRepoDialog } from "../index";
+import { EditRepoDialog } from "..";
 import { UserInfo } from "../../types/user";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
@@ -102,7 +102,7 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
 }));
 
 const AboutOSBPaper = styled(Paper)(({ theme }) => ({
-  minHeight: 150,
+  maxHeight: 300,
   padding: theme.spacing(2),
   background: infoBoxBg,
   borderRadius: inputRadius,
@@ -183,16 +183,16 @@ const RepositoryPageDetails = ({
     }
   };
 
-  const setDialogOpen = () => {
-    setRepositoryEditorOpen(!repositoryEditorOpen);
-  };
-
   const handleOnSubmit = (r: OSBRepository) => {
     onAction(r);
   };
 
   const handleClickEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
     setRepositoryEditorOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setRepositoryEditorOpen(false);
   };
 
   return (
@@ -386,7 +386,7 @@ const RepositoryPageDetails = ({
                 sx={{
                   width: "100%",
                   background: "none",
-                  maxHeight: 200,
+                  maxHeight: 300,
                   overflow: "auto",
                 }}
               >
@@ -535,7 +535,7 @@ const RepositoryPageDetails = ({
             user={user}
             title="Edit repository"
             dialogOpen={repositoryEditorOpen}
-            setDialogOpen={setDialogOpen}
+            handleClose={handleCloseDialog}
             onSubmit={handleOnSubmit}
             repository={repository}
           />

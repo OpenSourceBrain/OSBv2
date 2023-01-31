@@ -49,8 +49,8 @@ export default (props: RepositoryActionsMenuProps) => {
     handleCloseMenu();
   };
 
-  const setDialogOpen = () => {
-    setRepositoryEditorOpen(!repositoryEditorOpen);
+  const handleCloseDialog = () => {
+    setRepositoryEditorOpen(false);
   };
 
   const handleOnSubmit = (r: OSBRepository) => {
@@ -86,7 +86,7 @@ export default (props: RepositoryActionsMenuProps) => {
               user={props.user}
               title="Edit repository"
               dialogOpen={repositoryEditorOpen}
-              setDialogOpen={setDialogOpen}
+              handleClose={handleCloseDialog}
               onSubmit={handleOnSubmit}
               repository={props.repository}
             />
