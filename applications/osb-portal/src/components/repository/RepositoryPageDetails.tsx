@@ -12,6 +12,7 @@ import {
   infoBoxBg,
   inputRadius,
   greyishTextColor,
+  badgeBgLight,
 } from "../../theme";
 
 //components
@@ -57,6 +58,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import Resources from "./resources";
 import { EditRepoDialog } from "..";
 import { UserInfo } from "../../types/user";
+import { canEditRepository } from "../../service/UserService";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
@@ -94,10 +96,23 @@ const RepoDetailsSearchField = styled(TextField)(({ theme }) => ({
 
 const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   color: bgInputs,
+  lineHeight: 1,
+
   "& .MuiTypography-root": {
-    color: paragraph,
     fontSize: "0.857rem",
     textDecoration: "none",
+  },
+
+  "& .MuiBreadcrumbs-ol": {
+    "& .MuiBreadcrumbs-li": {
+      color: badgeBgLight,
+      cursor: "pointer",
+
+      "&:last-child": {
+        color: `${paragraph} !important`,
+        cursor: "initial",
+      },
+    },
   },
 }));
 
@@ -143,6 +158,8 @@ const RepositoryPageDetails = ({
     [id: string]: RepositoryResourceNode;
   }>({});
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
+
+  const canEdit = canEditRepository(user, repository);
 
   const resourcesList = currentPath
     ?.slice(-1)[0]
@@ -213,7 +230,7 @@ const RepositoryPageDetails = ({
               alignItems="start"
               borderBottom={`1px solid ${lineColor}`}
             >
-              <Box display="flex" alignItems="center">
+              <Box display="flex" alignItems="center" mb={"4px"}>
                 <Typography variant="h5">Overview</Typography>
                 <Tooltip
                   title={
@@ -237,22 +254,21 @@ const RepositoryPageDetails = ({
                   </RepoDetailsIconButton>
                 </Tooltip>
               </Box>
-              <StyledViewButton
-                variant="text"
-                endIcon={<ModeEditIcon />}
-                size="small"
-                onClick={handleClickEdit}
-              >
-                Edit
-              </StyledViewButton>
+              {canEdit && (
+                <StyledViewButton
+                  variant="text"
+                  endIcon={<ModeEditIcon />}
+                  size="small"
+                  onClick={handleClickEdit}
+                >
+                  Edit
+                </StyledViewButton>
+              )}
             </Box>
 
             {/*tags*/}
             <Box>
               <Stack mt={3} mb={3} spacing={1} direction="column">
-                <Typography variant="body2" sx={{ color: greyishTextColor }}>
-                  Context: {repository?.defaultContext}
-                </Typography>
                 <Typography variant="body2" sx={{ color: greyishTextColor }}>
                   Created:{" "}
                   {repository?.timestampCreated &&
@@ -261,7 +277,11 @@ const RepositoryPageDetails = ({
                 <Stack direction="row" spacing={1}>
                   {repository?.defaultContext && (
                     <RepoDetailsChip
-                      avatar={<LanOutlinedIcon sx={{ fill: paragraph }} />}
+                      icon={
+                        <LanOutlinedIcon
+                          sx={{ fill: paragraph, fontSize: "1rem" }}
+                        />
+                      }
                       label={repository?.defaultContext}
                       key={repository?.defaultContext}
                     />
@@ -292,7 +312,7 @@ const RepositoryPageDetails = ({
                 alignItems="start"
                 borderBottom={`1px solid ${lineColor}`}
               >
-                <Box display="flex" alignItems="center">
+                <Box display="flex" alignItems="center" mb={"4px"}>
                   <Typography variant="h5">Repository preview</Typography>
                 </Box>
                 <StyledViewButton
@@ -324,7 +344,7 @@ const RepositoryPageDetails = ({
               alignItems="start"
               borderBottom={`1px solid ${lineColor}`}
             >
-              <Box display="flex" alignItems="center">
+              <Box display="flex" alignItems="center" mb={"4px"}>
                 <Typography variant="h5">Select content</Typography>
                 <Tooltip
                   title={
@@ -417,7 +437,9 @@ const RepositoryPageDetails = ({
                             }}
                           />
                         </TableCell>
-                        <TableCell>Name</TableCell>
+                        <TableCell>
+                          <Typography component="p">Name</Typography>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody
@@ -496,7 +518,16 @@ const RepositoryPageDetails = ({
                                         <InsertDriveFileIcon color="disabled" />
                                       )}
                                     </Box>
-                                    <Typography component="p">
+                                    <Typography
+                                      component="p"
+                                      sx={{
+                                        "&:hover": {
+                                          cursor: isFolder
+                                            ? "pointer"
+                                            : "initial",
+                                        },
+                                      }}
+                                    >
                                       {filename}
                                       {extension && (
                                         <Typography component="span">

@@ -60,9 +60,8 @@ const RepositoryPageBanner = ({
             icon={<PersonOutlineIcon sx={{ fontSize: "1.2rem" }} />}
             label={
               <Typography variant="body2">
-                By
-                <Link href={`/user/${repository?.user?.id}`}>
-                  {" "}
+                By{" "}
+                <Link href={`/user/${repository?.user?.id}`} underline="hover">
                   <span>
                     {repository?.user?.firstName +
                       " " +
