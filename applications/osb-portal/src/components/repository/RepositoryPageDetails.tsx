@@ -107,10 +107,16 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
     "& .MuiBreadcrumbs-li": {
       color: badgeBgLight,
       cursor: "pointer",
-
+      "&:hover": {
+        textDecoration: "underline"
+      },
       "&:last-child": {
         color: `${paragraph} !important`,
         cursor: "initial",
+
+        "&:hover": {
+          textDecoration: "none"
+        },
       },
     },
   },
