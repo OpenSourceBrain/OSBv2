@@ -104,11 +104,11 @@ export const WorkspacesCards = (props: any) => {
                                 title={workspace.tags.map((tagObject) => {
                                   return (
                                     <Chip
-                                      color={textColor}
                                       size="small"
                                       label={tagObject.tag}
                                       key={tagObject.id}
                                       sx={{
+                                        color: textColor,
                                         margin: "0px 2px 0px 2px",
                                         backgroundColor: chipBg,
                                       }}

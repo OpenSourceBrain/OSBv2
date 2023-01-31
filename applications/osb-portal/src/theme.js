@@ -361,14 +361,14 @@ const theme = {
         paddingTop: "10px",
         paddingBottom: "10px",
         borderRadius: inputRadius,
-        "& div:first-of-type": {
-          paddingBottom: "0px",
-        },
-        "& .MuiInputBase-root": {
-          paddingTop: "0px !important",
-          backgroundColor: "transparent",
-          "& .MuiAutocomplete-endAdornment": {
-            display: "none",
+        // '& div:first-of-type': {
+        //   paddingBottom: '0px',
+        // },
+        '& .MuiInputBase-root': {
+          // paddingTop: '0px !important',
+          backgroundColor: 'transparent',
+          '& .MuiAutocomplete-endAdornment': {
+            display: 'none',
           },
         },
         "& .MuiFilledInput-underline::before": {

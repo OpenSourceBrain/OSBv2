@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -197,155 +197,158 @@ export default (props: WorkspaceProps | any) => {
     history.push("/");
   };
 
-  return <>
-    {props.open ? (
-      <>
-        <Accordion
-          className={`${classes.expansionPanel} verticalFill`}
-          elevation={0}
-          expanded={expanded === "workspace" || true}
-          onChange={handleChange("workspace")}
-        >
-          <AccordionSummary
-          // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
+  return (
+    <>
+      {props.open ? (
+        <>
+          <Accordion
+            className={`${classes.expansionPanel} verticalFill`}
+            elevation={0}
+            expanded={expanded === "workspace" || true}
+            onChange={handleChange("workspace")}
           >
-            {
-              // TODO: when cloning workspaces has been implemented, update tooltip to tell users they can clone workspace to make modifications */
-            }
-            <Typography variant="h4" className={classes.flexCenter}>
-              {workspace.name}
-              <Tooltip
-                sx={{ marginLeft: "0.3em" }}
-                title={
-                  <>
-                    Resources are special files that can be opened with
-                    applications supported by Open Source Brain. To see all
-                    your files, and upload non-resource files, please open the
-                    workspace in the JupyterLab application.{" "}
-                    <Link
-                      href="https://docs.opensourcebrain.org/OSBv2/Workspaces.html"
-                      target="_blank"
-                      underline="hover">
-                      Learn more...
-                    </Link>
-                  </>
-                }
-              >
-                <InfoOutlinedIcon fontSize="small" />
-              </Tooltip>
-              {!canEdit && (
-                <Tooltip
-                  style={{ marginLeft: "0.3em" }}
-                  title="You do not have permissions to modify this workspace."
-                >
-                  <ReadOnlyIcon fontSize="small" />
-                </Tooltip>
-              )}
-            </Typography>
-
-            <Box p={2}>
-              <WorkspaceActionsMenu
-                workspace={workspace}
-                user={props.user}
-                isWorkspaceOpen={false}
-              />
-            </Box>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted={true}
-              open={Boolean(anchorEl)}
-              onClose={handleShareClose}
+            <AccordionSummary
+            // expandIcon={<ArrowUpIcon style={{ padding: 0 }} />}
             >
-              {props.user && !workspace.publicable && (
-                <MenuItem onClick={handlePublicWorkspace}>
-                  Make public
-                </MenuItem>
-              )}
-              {props.user && workspace.publicable && (
-                <MenuItem onClick={handlePrivateWorkspace}>
-                  Make private
-                </MenuItem>
-              )}
-            </Menu>
-          </AccordionSummary>
-
-          <AccordionDetails className="verticalFit">
-            <Divider />
-            {canEdit && (
-              <ListItem
-                button={true}
-                onClick={showAddResource}
-                className={classes.treePadding}
-              >
-                <ListItemIcon style={{ paddingLeft: 0 }}>
-                  <AddIcon style={{ fontSize: "1.3rem" }} />
-                </ListItemIcon>
-                <ListItemText primary={"Add resource"} />
-              </ListItem>
-            )}
-            <Divider />
-            <WorkspaceResourceBrowser
-              workspace={workspace}
-              currentResource={props.currentResource}
-              refreshWorkspace={handleWorkspaceRefresh}
-              openResource={props.openResource}
-            />
-          </AccordionDetails>
-        </Accordion>
-        {false && ( // TODO user shared space back when available
-          <Accordion elevation={0}>
-            <AccordionSummary expandIcon={<ArrowUpIcon />}>
+              {
+                // TODO: when cloning workspaces has been implemented, update tooltip to tell users they can clone workspace to make modifications */
+              }
               <Typography variant="h4" className={classes.flexCenter}>
-                User shared space
+                {workspace.name}
+                <Tooltip
+                  sx={{ marginLeft: "0.3em" }}
+                  title={
+                    <>
+                      Resources are special files that can be opened with
+                      applications supported by Open Source Brain. To see all
+                      your files, and upload non-resource files, please open the
+                      workspace in the JupyterLab application.{" "}
+                      <Link
+                        href="https://docs.opensourcebrain.org/OSBv2/Workspaces.html"
+                        target="_blank"
+                        underline="hover"
+                      >
+                        Learn more...
+                      </Link>
+                    </>
+                  }
+                >
+                  <InfoOutlinedIcon fontSize="small" />
+                </Tooltip>
+                {!canEdit && (
+                  <Tooltip
+                    style={{ marginLeft: "0.3em" }}
+                    title="You do not have permissions to modify this workspace."
+                  >
+                    <ReadOnlyIcon fontSize="small" />
+                  </Tooltip>
+                )}
               </Typography>
+
+              <Box p={2}>
+                <WorkspaceActionsMenu
+                  workspace={workspace}
+                  user={props.user}
+                  isWorkspaceOpen={true}
+                />
+              </Box>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted={true}
+                open={Boolean(anchorEl)}
+                onClose={handleShareClose}
+              >
+                {props.user && !workspace.publicable && (
+                  <MenuItem onClick={handlePublicWorkspace}>
+                    Make public
+                  </MenuItem>
+                )}
+                {props.user && workspace.publicable && (
+                  <MenuItem onClick={handlePrivateWorkspace}>
+                    Make private
+                  </MenuItem>
+                )}
+              </Menu>
             </AccordionSummary>
 
-            <AccordionDetails>
-              <VolumePathBrowser
-                volumeId={null /* TODO get from logged user */}
-                path="/"
+            <AccordionDetails className="verticalFit">
+              <Divider />
+              {canEdit && (
+                <ListItem
+                  button={true}
+                  onClick={showAddResource}
+                  className={classes.treePadding}
+                >
+                  <ListItemIcon style={{ paddingLeft: 0 }}>
+                    <AddIcon style={{ fontSize: "1.3rem" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"Add resource"} />
+                </ListItem>
+              )}
+              <Divider />
+              <WorkspaceResourceBrowser
+                workspace={workspace}
+                currentResource={props.currentResource}
+                refreshWorkspace={handleWorkspaceRefresh}
+                openResource={props.openResource}
               />
             </AccordionDetails>
           </Accordion>
-        )}
-      </>
-    ) : (
-      <>
-        <div className={classes.closedText}>
-          {canEdit && (
-            <IconButton onClick={showAddResource} size="large">
-              <AddIcon style={{ fontSize: "1.3rem" }} />
-            </IconButton>
-          )}
-          {props.workspace.name}
+          {false && ( // TODO user shared space back when available
+            <Accordion elevation={0}>
+              <AccordionSummary expandIcon={<ArrowUpIcon />}>
+                <Typography variant="h4" className={classes.flexCenter}>
+                  User shared space
+                </Typography>
+              </AccordionSummary>
 
-          <IconButton size="large">
-            <WorkspaceActionsMenu
-              workspace={workspace}
-              user={props.user}
-              updateWorkspace={props.updateWorkspace}
-              deleteWorkspace={props.deleteWorkspace}
-              refreshWorkspaces={handleWorkspaceRefresh}
-              isWorkspaceOpen={true}
-            />
-          </IconButton>
-        </div>
-      </>
-    )}
-    <OSBDialog
-      title={dialogTitle}
-      open={addResourceOpen}
-      closeAction={() => setAddResourceOpen(false)}
-      maxWidth="md"
-    >
-      {canEdit && (
-        <AddResourceForm
-          workspace={workspace}
-          onResourceAdded={handleResourceAdded}
-          onSubmit={setAddResourceClosed}
-        />
+              <AccordionDetails>
+                <VolumePathBrowser
+                  volumeId={null /* TODO get from logged user */}
+                  path="/"
+                />
+              </AccordionDetails>
+            </Accordion>
+          )}
+        </>
+      ) : (
+        <>
+          <div className={classes.closedText}>
+            {canEdit && (
+              <IconButton onClick={showAddResource} size="large">
+                <AddIcon style={{ fontSize: "1.3rem" }} />
+              </IconButton>
+            )}
+            {props.workspace.name}
+
+            <IconButton size="large">
+              <WorkspaceActionsMenu
+                workspace={workspace}
+                user={props.user}
+                updateWorkspace={props.updateWorkspace}
+                deleteWorkspace={props.deleteWorkspace}
+                refreshWorkspaces={handleWorkspaceRefresh}
+                isWorkspaceOpen={true}
+              />
+            </IconButton>
+          </div>
+        </>
       )}
-    </OSBDialog>
-  </>;
+      <OSBDialog
+        title={dialogTitle}
+        open={addResourceOpen}
+        closeAction={() => setAddResourceOpen(false)}
+        maxWidth="md"
+      >
+        {canEdit && (
+          <AddResourceForm
+            workspace={workspace}
+            onResourceAdded={handleResourceAdded}
+            onSubmit={setAddResourceClosed}
+          />
+        )}
+      </OSBDialog>
+    </>
+  );
 };

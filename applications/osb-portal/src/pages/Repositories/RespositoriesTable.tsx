@@ -48,18 +48,22 @@ import searchFilter from "../../types/searchFilter";
 interface RepositoriesProps {
   repositories: OSBRepository[];
   handleRepositoryClick: (repository: OSBRepository) => void;
-  handleTagClick: (tagObject: Tag) => void;
-  handleTagUnclick: (tagObject: Tag) => void;
-  handleTypeClick: (type: string) => void;
-  handleTypeUnclick: (type: string) => void;
-  searchFilterValues: searchFilter;
+  handleTagClick?: (tagObject: Tag) => void;
+  handleTagUnclick?: (tagObject: Tag) => void;
+  handleTypeClick?: (type: string) => void;
+  handleTypeUnclick?: (type: string) => void;
+  searchFilterValues?: searchFilter;
   user?: UserInfo;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const StyledTableContainer = styled(TableContainer)(() => ({
+  overflow: "scroll",
+  "&::-webkit-scrollbar": {
+    width: 2,
+    height: 2,
+  },
   "& .MuiChip-root": {
-    margin: "0 8px 8px 0",
     backgroundColor: chipBg,
   },
   "& .content-types-tag": {
@@ -89,6 +93,8 @@ export const StyledTableContainer = styled(TableContainer)(() => ({
 export const StyledShowMoreText = styled(ShowMoreText)(() => ({
   color: paragraph,
   marginTop: 8,
+  display: "inline-block",
+  width: "400px",
   "& a": {
     color: linkColor,
     display: "flex",
@@ -158,7 +164,10 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         component="th"
                         scope="row"
                       >
-                        <Box className="col">
+                        <Box
+                          className="col"
+                          sx={{ display: "flex", flexDirection: "column" }}
+                        >
                           <Typography component="strong">{row.name}</Typography>
                           {row.summary && (
                             <StyledShowMoreText
@@ -183,7 +192,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           )}
                         </Box>
                       </TableCell>
-                      <TableCell style={{ minWidth: 80 }}>
+                      <TableCell style={{ minWidth: 150 }}>
                         <Button
                           sx={{
                             "&:hover": { backgroundColor: "transparent" },
@@ -208,7 +217,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         </Button>
                       </TableCell>
                       <TableCell style={{ minWidth: 200 }}>
-                        <Box mb={".5"}>
+                        <Box>
                           {row.contentTypes.split(",").map((type) => (
                             <Chip
                               avatar={
@@ -230,6 +239,13 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                                   ? () => handleTypeUnclick(type)
                                   : null
                               }
+                              sx={{
+                                margin:
+                                  row.tags?.length > 0 ||
+                                  row.contentTypes.split(",")?.length > 1
+                                    ? "0 8px 8px 0"
+                                    : 0,
+                              }}
                             />
                           ))}
                         </Box>
@@ -248,6 +264,10 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                                   ? () => handleTagUnclick(tagObject)
                                   : null
                               }
+                              sx={{
+                                margin:
+                                  row.tags?.length > 1 ? "0 8px 8px 0" : 0,
+                              }}
                             />
                           ))}
                         </Box>

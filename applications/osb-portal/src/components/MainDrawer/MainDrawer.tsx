@@ -33,7 +33,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import CreateWorkspaceDialog from "../common/CreateWorkspaceDialog";
-
+import { EditRepoDialog } from "..";
 //icons
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import PublicIcon from "@mui/icons-material/Public";
@@ -44,6 +44,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import OSBDialog from "../common/OSBDialog";
+import { NewWorkspaceAskUser } from "..";
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
@@ -182,9 +184,11 @@ export const MainDrawer = (props: any) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const [open, setOpen] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
+  const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [askLoginOpen, setAskLoginOpen] = React.useState(false);
 
   const openCreatMenu = Boolean(anchorEl);
 
@@ -200,11 +204,22 @@ export const MainDrawer = (props: any) => {
     : "Lets do some science!";
 
   const handleOpenDialog = (type) => {
-    type === "workspace" ? setOpenWorkspaceDialog(true) : null;
-    setAnchorEl(null);
+    setOpenDrawer(false);
+    if (!props.user) {
+      setAskLoginOpen(true);
+    } else {
+      type === "workspace"
+        ? setOpenWorkspaceDialog(true)
+        : setOpenRepoDialog(true);
+      setAnchorEl(null);
+    }
   };
 
-  const handleCloseWorkspaceDialog = () => setOpenWorkspaceDialog(false);
+  const handleCloseDialog = (type) => {
+    type === "workspace"
+      ? setOpenWorkspaceDialog(false)
+      : setOpenRepoDialog(false);
+  };
 
   const handleClickCreatMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -214,11 +229,13 @@ export const MainDrawer = (props: any) => {
     setAnchorEl(null);
   };
 
-  const toggleDrawer = () => setOpen(!open);
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   const handleAboutDialogOpen = () => {
     props.openDialog();
   };
+
+  const closeAskLogin = () => setAskLoginOpen(false);
 
   return (
     <>
@@ -256,19 +273,21 @@ export const MainDrawer = (props: any) => {
           anchor="left"
           onClose={toggleDrawer}
           elevation={0}
-          open={open}
+          open={openDrawer}
           className={clsx(classes.drawer, classes.root, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
+            [classes.drawerOpen]: openDrawer,
+            [classes.drawerClose]: !openDrawer,
           })}
           classes={{
             paper: clsx(classes.drawerPaper, classes.root, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
+              [classes.drawerOpen]: openDrawer,
+              [classes.drawerClose]: !openDrawer,
             }),
           }}
         >
-          <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+          <div
+            className={`${openDrawer ? classes.drawerContent : ""} verticalFit`}
+          >
             <Toolbar className={classes.toolbar}>
               <Typography
                 sx={{
@@ -371,10 +390,10 @@ export const MainDrawer = (props: any) => {
           </div>
           <Toolbar className={classes.toolbar}>
             <Button
-              id="demo-positioned-button"
-              aria-controls={open ? "demo-positioned-menu" : undefined}
+              id="create-new-workspace-repository"
+              aria-controls={openDrawer ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
+              aria-expanded={openDrawer ? "true" : undefined}
               onClick={handleClickCreatMenu}
               sx={{
                 width: "100%",
@@ -390,8 +409,8 @@ export const MainDrawer = (props: any) => {
               Create new
             </Button>
             <Menu
-              id="demo-positioned-menu"
-              aria-labelledby="demo-positioned-button"
+              id="create-new-workspace-repository-menu"
+              aria-labelledby="create-new-workspace-repository-menu"
               open={openCreatMenu}
               onClose={handleCloseCreatMenu}
               anchorEl={anchorEl}
@@ -413,10 +432,33 @@ export const MainDrawer = (props: any) => {
           </Toolbar>
         </Drawer>
       </Box>
-      <CreateWorkspaceDialog
-        dialogOpen={openWorkspaceDialog}
-        handleClose={handleCloseWorkspaceDialog}
-      />
+      {openWorkspaceDialog && (
+        <CreateWorkspaceDialog
+          dialogOpen={openWorkspaceDialog}
+          handleClose={() => handleCloseDialog("workspace")}
+        />
+      )}
+
+      {openRepoDialog && (
+        <EditRepoDialog
+          dialogOpen={openRepoDialog}
+          handleClose={() => handleCloseDialog("repository")}
+          user={props.user}
+          title="Add repository"
+        />
+      )}
+
+      <OSBDialog
+        title={
+          openWorkspaceDialog ? "Create new workspace" : "Create new repository"
+        }
+        open={askLoginOpen}
+        closeAction={closeAskLogin}
+      >
+        <NewWorkspaceAskUser
+          type={openWorkspaceDialog ? "workspaces" : "repositories"}
+        />
+      </OSBDialog>
     </>
   );
 };

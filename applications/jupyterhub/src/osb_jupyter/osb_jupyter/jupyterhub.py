@@ -36,7 +36,7 @@ def change_pod_manifest(self: KubeSpawner):
     Returns:
         -
     """
-
+    print("OSB change pod manifest")
     # get the workspace cookie to determine the workspace id
 
     def get_from_cookie(cookie_name):
@@ -45,6 +45,13 @@ def change_pod_manifest(self: KubeSpawner):
             raise Exception(
                 "Required cookie not found. Check that the cookie named '%s' is set." % cookie_name)
         return cookie.value
+
+    def user_volume_is_legacy(user_id):
+        print("User id", user_id, "max", self.config['apps']['jupyterhub'].get('legacyusermax', 0))
+        return int(user_id) < self.config['apps']['jupyterhub'].get('legacyusermax', 0)
+
+    def workspace_volume_is_legacy(workspace_id):
+        return int(workspace_id) < self.config['apps']['jupyterhub'].get('legacyworkspacemax', 0)
 
     try:
         workspace_id = get_from_cookie('workspaceId')
@@ -58,9 +65,6 @@ def change_pod_manifest(self: KubeSpawner):
             'name': volume_name,
             'persistentVolumeClaim': {
                 'claimName': volume_name,
-                'spec': {
-                    'accessModes': ['ReadWriteOnce', 'ReadOnlyMany']
-                }
             }
         }
 
@@ -78,13 +82,18 @@ def change_pod_manifest(self: KubeSpawner):
 
         self.common_labels = labels
         self.extra_labels = labels
-
-        self.pod_affinity_required.append(affinity_spec('user', self.user.name))
+        self.storage_class = f'{self.config["namespace"]}-nfs-client'
+        if not user_volume_is_legacy(self.user.id):
+            # User pod affinity is by default added by cloudharness
+            self.pod_affinity_required = []
+        
         write_access = has_user_write_access(
             workspace_id, self.user, workspace_owner)
-        if write_access:
+        if workspace_volume_is_legacy(workspace_id):
             # Pods with write access must be on the same node
             self.pod_affinity_required.append(affinity_spec('workspace', workspace_id))
+        from pprint import pprint
+        pprint(self.volumes)
         if not [v for v in self.volume_mounts if v['name'] == volume_name]:
             self.volume_mounts.append({
                 'name': volume_name,
@@ -93,6 +102,7 @@ def change_pod_manifest(self: KubeSpawner):
             })
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
+
 
 
 def has_user_write_access(workspace_id, user: User, workspace_owner: str):
