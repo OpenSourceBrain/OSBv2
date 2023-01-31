@@ -131,12 +131,9 @@ export const RepositoriesPage = ({
     history.push(`/repositories/${repositoryId}`);
   };
 
-  const debouncedHandleSearchFilter = React.useCallback(
-    debounce((newTextFilter: string) => {
-      setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
-    }, 500),
-    []
-  );
+  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+    setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+  }, 500);
 
   const setReposValues = (reposDetails) => {
     setRepositories(reposDetails.osbrepositories);

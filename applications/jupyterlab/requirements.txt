@@ -49,7 +49,7 @@ protobuf==3.17.0
 git+https://github.com/SheffieldML/GPy.git@devel
 #modeci_mdf==0.3.3 # big jump in size of image...
 
-sklearn # Required for some Neuromatch Academy material
+scikit-learn # Required for some Neuromatch Academy material
 fasttext # Required for some Neuromatch Academy material
 
 

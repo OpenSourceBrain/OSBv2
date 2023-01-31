@@ -76,16 +76,15 @@ export const HomePage = (props: any) => {
     history.push(`/workspace/${workspaceId}`);
   };
 
-  const debouncedHandleSearchFilter = React.useCallback(
-    debounce((newTextFilter: string) => {
-      setSearchFilterValues({
-        ...searchFilterValues,
-        text: newTextFilter,
-        tags: [newTextFilter],
-      });
-    }, 500),
-    []
-  );
+  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+    setSearchFilterValues({
+      ...searchFilterValues,
+      text: newTextFilter,
+      tags: newTextFilter
+        ? [...searchFilterValues?.tags, newTextFilter]
+        : searchFilterValues?.tags,
+    });
+  }, 500);
 
   const setWorkspacesValues = (workspacesDetails) => {
     setWorkspaces(workspacesDetails.items);
