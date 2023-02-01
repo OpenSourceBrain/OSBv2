@@ -76,21 +76,7 @@ export const StyledActiveIconButton = styled(IconButton)(() => ({
   },
 }));
 
-export const StyledTabs = styled(Tab)(() => ({
-  maxWidth: "33%",
-  minWidth: "fit-content",
-  padding: "16px 24px",
-
-  "& .tabTitle": {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    "& .MuiTypography-root": {
-      fontSize: "0.857rem",
-      fontWeight: 700,
-    },
-  },
-}));
+export const StyledTabs = styled(Tab)(() => ({}));
 
 export const StyledGrid = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("lg")]: {
@@ -208,179 +194,144 @@ export const RepositoriesPage = ({
 
   return (
     <>
-      <Box className="verticalFit">
-        <Grid container={true} className="verticalFill">
-          <Grid
-            item={true}
-            xs={12}
-            sm={12}
-            md={3}
-            lg={2}
-            direction="column"
-            className="verticalFill"
-          >
-            <Box width={1} className="verticalFit">
-              <HomePageSider />
-            </Box>
-          </Grid>
-          <Grid
-            item={true}
-            xs={12}
-            sm={12}
-            md={9}
-            lg={10}
-            alignItems="stretch"
-            className="verticalFill"
-          >
-            <Box width={1} className="verticalFit">
-              <div id="repositories-list" className="verticalFit">
-                <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Grid
-                      container={true}
-                      alignItems="center"
-                      className="verticalFill"
-                      spacing={1}
-                    >
-                      <Grid
-                        item={true}
-                        xs={12}
-                        sm={12}
-                        md={7}
-                        lg={7}
-                        className="verticalFill"
-                      >
-                        <Tabs value={tabValue} onChange={handleTabChange}>
-                          <StyledTabs
-                            value={RepositoriesTab.all}
-                            label={
-                              <div className="tabTitle">
-                                <Typography>All repositories</Typography>
-                                {tabValue === RepositoriesTab.all && (
-                                  <Chip
-                                    size="small"
-                                    color="primary"
-                                    label={total}
-                                  />
-                                )}
-                              </div>
-                            }
-                          />
-                          {user && (
-                            <StyledTabs
-                              value={RepositoriesTab.my}
-                              label={
-                                <div className="tabTitle">
-                                  <Typography>My repositories</Typography>
-                                  {tabValue === RepositoriesTab.my && (
-                                    <Chip
-                                      size="small"
-                                      color="primary"
-                                      label={total}
-                                    />
-                                  )}
-                                </div>
-                              }
-                            />
+      <Box width={1} className="verticalFit">
+        <div id="repositories-list" className="verticalFit">
+          <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Grid
+                container={true}
+                alignItems="center"
+                className="verticalFill"
+                spacing={1}
+              >
+                <Grid
+                  item={true}
+                  xs={12}
+                  sm={12}
+                  md={7}
+                  lg={7}
+                  className="verticalFill"
+                >
+                  <Tabs value={tabValue} onChange={handleTabChange}>
+                    <StyledTabs
+                      value={RepositoriesTab.all}
+                      label={
+                        <div className="tabTitle">
+                          <Typography>All repositories</Typography>
+                          {tabValue === RepositoriesTab.all && (
+                            <Chip size="small" color="primary" label={total} />
                           )}
-                        </Tabs>
-                      </Grid>
-                      <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
-                        <ButtonGroup
-                          sx={{
-                            backgroundColor: bgRegular,
-                            padding: "4px",
-                            borderRadius: "8px",
-                            marginRight: "0.571rem",
-                          }}
-                          disableElevation
-                          variant="contained"
-                          aria-label="Disabled elevation buttons"
-                        >
-                          <CustomButton Icon={<WindowIcon />} listType="grid" />
-                          <CustomButton Icon={<ListIcon />} listType="list" />
-                        </ButtonGroup>
-                        <SearchFilterReposWorkspaces
-                          filterChanged={(newTextFilter) =>
-                            debouncedHandleSearchFilter(newTextFilter)
-                          }
-                          searchFilterValues={searchFilterValues}
-                          setSearchFilterValues={setSearchFilterValues}
-                          hasTypes={true}
-                          setLoading={setLoading}
-                        />
-                      </StyledGrid>
-                    </Grid>
-                  </Box>
-                </Box>
-
-                {listView === "list" ? (
-                  <RepositoriesTable
-                    handleRepositoryClick={(repository: OSBRepository) =>
-                      openRepoUrl(repository.id)
-                    }
-                    handleTagClick={(tag: Tag) =>
-                      searchFilterValues.tags.includes(tag.tag)
-                        ? null
-                        : setSearchFilterValues({
-                            ...searchFilterValues,
-                            tags: searchFilterValues.tags.concat(tag.tag),
-                          })
-                    }
-                    handleTagUnclick={(tag: Tag) =>
-                      setSearchFilterValues({
-                        ...searchFilterValues,
-                        tags: searchFilterValues.tags.filter(
-                          (t) => t !== tag.tag
-                        ),
-                      })
-                    }
-                    handleTypeClick={(type: string) =>
-                      setSearchFilterValues({
-                        ...searchFilterValues,
-                        types: searchFilterValues.types.concat(type),
-                      })
-                    }
-                    handleTypeUnclick={(type: string) =>
-                      setSearchFilterValues({
-                        ...searchFilterValues,
-                        types: searchFilterValues.types.filter(
-                          (t) => t !== type
-                        ),
-                      })
+                        </div>
+                      }
+                    />
+                    {user && (
+                      <StyledTabs
+                        value={RepositoriesTab.my}
+                        label={
+                          <div className="tabTitle">
+                            <Typography>My repositories</Typography>
+                            {tabValue === RepositoriesTab.my && (
+                              <Chip
+                                size="small"
+                                color="primary"
+                                label={total}
+                              />
+                            )}
+                          </div>
+                        }
+                      />
+                    )}
+                  </Tabs>
+                </Grid>
+                <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
+                  <ButtonGroup
+                    sx={{
+                      backgroundColor: bgRegular,
+                      padding: "4px",
+                      borderRadius: "8px",
+                      marginRight: "0.571rem",
+                    }}
+                    disableElevation
+                    variant="contained"
+                    aria-label="Disabled elevation buttons"
+                  >
+                    <CustomButton Icon={<WindowIcon />} listType="grid" />
+                    <CustomButton Icon={<ListIcon />} listType="list" />
+                  </ButtonGroup>
+                  <SearchFilterReposWorkspaces
+                    filterChanged={(newTextFilter) =>
+                      debouncedHandleSearchFilter(newTextFilter)
                     }
                     searchFilterValues={searchFilterValues}
-                    user={user}
-                    repositories={repositories}
-                    loading={loading}
+                    setSearchFilterValues={setSearchFilterValues}
+                    hasTypes={true}
+                    setLoading={setLoading}
                   />
-                ) : (
-                  <RepositoriesCards
-                    handleRepositoryClick={(repository: OSBRepository) =>
-                      openRepoUrl(repository.id)
-                    }
-                    user={user}
-                    repositories={repositories}
-                    loading={loading}
-                  />
-                )}
-              </div>
-              {repositories && totalPages > 1 && (
-                <OSBPagination
-                  count={totalPages}
-                  page={page}
-                  onChange={handleChangePage}
-                  showFirstButton={true}
-                  showLastButton={true}
-                />
-              )}
+                </StyledGrid>
+              </Grid>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+
+          {listView === "list" ? (
+            <RepositoriesTable
+              handleRepositoryClick={(repository: OSBRepository) =>
+                openRepoUrl(repository.id)
+              }
+              handleTagClick={(tag: Tag) =>
+                searchFilterValues.tags.includes(tag.tag)
+                  ? null
+                  : setSearchFilterValues({
+                      ...searchFilterValues,
+                      tags: searchFilterValues.tags.concat(tag.tag),
+                    })
+              }
+              handleTagUnclick={(tag: Tag) =>
+                setSearchFilterValues({
+                  ...searchFilterValues,
+                  tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
+                })
+              }
+              handleTypeClick={(type: string) =>
+                setSearchFilterValues({
+                  ...searchFilterValues,
+                  types: searchFilterValues.types.concat(type),
+                })
+              }
+              handleTypeUnclick={(type: string) =>
+                setSearchFilterValues({
+                  ...searchFilterValues,
+                  types: searchFilterValues.types.filter((t) => t !== type),
+                })
+              }
+              searchFilterValues={searchFilterValues}
+              user={user}
+              repositories={repositories}
+              loading={loading}
+            />
+          ) : (
+            <RepositoriesCards
+              handleRepositoryClick={(repository: OSBRepository) =>
+                openRepoUrl(repository.id)
+              }
+              user={user}
+              repositories={repositories}
+              loading={loading}
+            />
+          )}
+        </div>
+        {repositories && totalPages > 1 && (
+          <OSBPagination
+            count={totalPages}
+            page={page}
+            onChange={handleChangePage}
+            showFirstButton={true}
+            showLastButton={true}
+          />
+        )}
       </Box>
     </>
   );

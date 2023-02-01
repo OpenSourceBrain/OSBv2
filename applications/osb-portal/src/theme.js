@@ -98,11 +98,8 @@ const theme = {
 
     h2: {
       fontWeight: "bold",
-      marginBottom: spacing[3],
       lineHeight: "1.25rem",
-      paddingBottom: spacing[2],
       fontSize: "1.1rem",
-      borderBottom: `3px solid ${bgInputs}`,
     },
     h3: {
       fontSize: "1.3rem",
@@ -133,16 +130,22 @@ const theme = {
     },
     subtitle2: {
       lineHeight: 1,
-      fontSize: "0.9em",
-      marginBottom: "0.3rem",
-      fontWeight: "bold",
+      fontSize: "0.9rem",
+      marginTop: "0.5em",
+      color: paragraph,
       "& .MuiSvgIcon-root": {
         marginRight: "0.3em",
       },
     },
+    body1: {  
+      fontSize: "0.875rem",
+      color: paragraph,
+    }
   },
-  overrides: {
+  components: {
+    
     MuiChip: {
+      styleOverrides: {
       root: {
         marginRight: spacing[0.5],
         marginLeft: spacing[1],
@@ -189,8 +192,9 @@ const theme = {
       deleteIcon: {
         color: "#a6a6a6",
       },
-    },
+    }},
     MuiInput: {
+      styleOverrides: {
       input: {
         outline: "none !important",
         border: "none !important",
@@ -198,33 +202,38 @@ const theme = {
       },
 
       root: { color: fontColor },
-    },
+    }},
     MuiOutlinedInput: {
+      styleOverrides: {
       notchedOutline: {
         borderColor: bgLightest,
       },
-    },
+    }},
     MuiSelect: {
+      styleOverrides: {
       root: {
         outline: "none !important",
         border: "none !important",
         boxShadow: "none !important",
       },
       select: { "&:focus": { background: "none" } },
-    },
+    }},
     MuiGrid: {
+      styleOverrides: {
       root: {
         display: "flex",
       },
       container: {
         flex: 1,
       },
-    },
-    MuiCard: { root: { flex: 1 } },
+    }},
+    MuiCard: {styleOverrides: { root: { flex: 1 } }},
     MuiBottomNavigation: {
+      styleOverrides: {
       root: { backgroundColor: bgRegular, marginBottom: 8, borderRadius: 4 },
-    },
+    }},
     MuiPaper: {
+      styleOverrides: {
       root: {
         color: "inherit",
         backgroundColor: bgRegular,
@@ -233,18 +242,21 @@ const theme = {
       rounded: {
         borderRadius: "5px",
       },
-    },
+    }},
     MuiBottomNavigationAction: {
+      styleOverrides: {
       root: { color: fontColor, textTransform: "uppercase" },
       label: { fontSize: "0.65rem", "&.Mui-selected": { fontSize: "0.65rem" } },
-    },
-    MuiFormControl: { root: { overflow: "visible" } },
+    }},
+    MuiFormControl: {styleOverrides: { root: { overflow: "visible" } }},
     MuiFab: {},
     MuiButton: {
+      styleOverrides: {
       root: {},
       outlined: {
         borderWidth: 2,
-        borderColor: fontColor,
+
+        "&:hover": {borderWidth: 2,},
         marginRight: gutter / 2,
         "&:last-child": {
           marginRight: 0,
@@ -263,8 +275,9 @@ const theme = {
           backgroundColor: primaryColor,
         },
       },
-    },
+    }},
     MuiMenuItem: {
+      styleOverrides: {
       root: {
         fontSize: "1em",
         paddingTop: gutter / 2,
@@ -273,15 +286,18 @@ const theme = {
         paddingLeft: gutter * 2,
         paddingRight: gutter * 2,
       },
-    },
-    MuiDialogTitle: { root: { fontWeight: 600, fontSize: "1rem" } },
-    MuiDialogContent: { root: { paddingBottom: gutter } },
+    }},
+    MuiDialogTitle: { styleOverrides: {root: { fontWeight: 600, fontSize: "1rem" } }},
+    MuiDialogContent: { styleOverrides: {root: { paddingBottom: gutter } }},
     MuiCollapse: {
+      styleOverrides: {
       container: { padding: 0 },
       wrapper: { padding: "0px!important" },
+      }
     },
-    MuiIcon: { fontSizeLarge: { fontSize: "1.75rem" } },
+    MuiIcon: { styleOverrides: {fontSizeLarge: { fontSize: "1.75rem" } }},
     MuiAccordionSummary: {
+      styleOverrides: {
       root: {
         padding: "0px!important",
         margin: 0,
@@ -291,26 +307,31 @@ const theme = {
       },
       content: { margin: "0px!important", cursor: "auto" },
       expandIcon: { marginRight: 0 },
-    },
+    }},
     MuiAccordionDetails: {
+      styleOverrides: {
       root: {
         padding: 0,
         margin: 0,
         minHeight: "unset!important",
         flexDirection: "column",
       },
-    },
+    }},
     MuiAccordion: {
+      styleOverrides: {
       root: { padding: 0, margin: "0px!important", minHeight: "unset" },
+      }
     },
     MuiCardContent: {
+      styleOverrides: {
       root: {
         "&:last-child": {
           paddingBottom: 16,
         },
       },
-    },
+    }},
     MuiDrawer: {
+      styleOverrides: {
       root: {
         ...verticalFill,
       },
@@ -321,10 +342,12 @@ const theme = {
           ...verticalFill,
         },
       },
-    },
+    }},
     MuiTabs: {
-      root: {
+      styleOverrides: {
+      root: ({theme}) => ({
         width: "100%",
+
         "& .MuiChip-root": {
           height: "15px",
           "& .MuiChip-label": {
@@ -338,48 +361,63 @@ const theme = {
         "& .MuiTabs-flexContainer": {
           flexWrap: "wrap",
         },
-      },
+      }),
       indicator: {
         width: "100%",
       },
-    },
+    }},
     MuiTab: {
+      styleOverrides: {
       root: {
         alignContent: "flex-start",
-        paddingRight: "1rem",
-        paddingTop: 0,
+
+
         overflow: "auto",
-        paddingLeft: 0,
-        paddingBottom: 0,
         fontSize: "0.9rem",
         fontWeight: 700,
         border: 0,
-        minWidth: "auto",
-
+        maxWidth: "33%",
+        minWidth: "fit-content",
+        padding: "16px 0",
+        marginRight: "1em",
+      
+        "& .tabTitle": {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          "& .MuiTypography-root": {
+            fontSize: "0.857rem",
+            fontWeight: 700,
+          },
+        },
         "&:first-of-type": {
           borderRight: "none",
         },
       },
-    },
+    }},
     MuiToolbar: {
+      styleOverrides: {
       root: {
         minHeight: 15,
       },
-    },
+    }},
     MuiAvatar: {
+      styleOverrides: {
       root: {
         border: `1px solid ${bgLightest}`,
       },
-    },
+    }},
     MuiLink: {
+      styleOverrides: {
       root: {
         textDecoration: "none",
         "&:hover": {
           textDecoration: "underline"
         }
       }
-    },
+    }},
     MuiAutocomplete: {
+      styleOverrides: {
       root: {
         border: `1px solid ${bgLightest}`,
         paddingTop: "10px",
@@ -403,8 +441,8 @@ const theme = {
         },
       },
       popupIndicator: { marginRight: 0 },
-    },
+    }},
   },
 };
 
-export default createTheme(adaptV4Theme(theme));
+export default createTheme(theme);

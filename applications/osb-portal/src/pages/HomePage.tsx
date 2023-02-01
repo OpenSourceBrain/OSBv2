@@ -163,204 +163,165 @@ export const HomePage = (props: any) => {
 
   return (
     <>
-      <Box className="verticalFit">
-        <Grid container={true} className="verticalFill">
-          <Grid
-            item={true}
-            xs={12}
-            sm={12}
-            md={3}
-            lg={2}
-            direction="column"
-            className="verticalFill"
+      <div id="workspaces-list" className="verticalFit">
+        <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            pl={3}
+            pr={3}
           >
-            <Box width={1} className="verticalFit">
-              <HomePageSider />
-            </Box>
-          </Grid>
-          <Grid
-            item={true}
-            xs={12}
-            sm={12}
-            md={9}
-            lg={10}
-            alignItems="stretch"
-            className="verticalFill"
-          >
-            <Box width={1} className="verticalFit">
-              <div id="workspaces-list" className="verticalFit">
-                <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Grid
-                      container={true}
-                      alignItems="center"
-                      className="verticalFill"
-                      spacing={1}
-                    >
-                      <Grid
-                        item={true}
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={7}
-                        className="verticalFill"
-                      >
-                        <Tabs value={tabValue} onChange={handleTabChange}>
-                          {props.user ? (
-                            <StyledTabs
-                              id="your-all-workspaces-tab"
-                              value={WorkspaceSelection.USER}
-                              label={
-                                props.user.isAdmin ? (
-                                  <div className="tabTitle">
-                                    <Typography>All workspaces</Typography>
-                                    {tabValue === WorkspaceSelection.USER && (
-                                      <Chip
-                                        size="small"
-                                        color="primary"
-                                        label={total}
-                                      />
-                                    )}
-                                  </div>
-                                ) : (
-                                  <div className="tabTitle">
-                                    <Typography>My workspaces</Typography>
-                                    {tabValue === WorkspaceSelection.USER && (
-                                      <Chip
-                                        size="small"
-                                        color="primary"
-                                        label={total}
-                                      />
-                                    )}
-                                  </div>
-                                )
-                              }
-                            />
-                          ) : null}
-                          <StyledTabs
-                            id="featured-tab"
-                            value={WorkspaceSelection.FEATURED}
-                            label={
-                              <div className="tabTitle">
-                                <Typography>Featured workspaces</Typography>
-                                {tabValue === WorkspaceSelection.FEATURED && (
-                                  <Chip
-                                    size="small"
-                                    color="primary"
-                                    label={total}
-                                  />
-                                )}
-                              </div>
-                            }
-                          />
-                          <StyledTabs
-                            id="public-tab"
-                            value={WorkspaceSelection.PUBLIC}
-                            label={
-                              <div className="tabTitle">
-                                <Typography>Public workspaces</Typography>
-                                {tabValue === WorkspaceSelection.PUBLIC && (
-                                  <Chip
-                                    size="small"
-                                    color="primary"
-                                    label={total}
-                                  />
-                                )}
-                              </div>
-                            }
-                          />
-                        </Tabs>
-                      </Grid>
-                      <StyledGrid item={true} xs={12} sm={8} md={12} lg={5}>
-                        <ButtonGroup
-                          sx={{
-                            backgroundColor: bgRegular,
-                            padding: "4px",
-                            borderRadius: "8px",
-                            marginRight: "0.571rem",
-                          }}
-                          disableElevation
-                          variant="contained"
-                          aria-label="Disabled elevation buttons"
-                        >
-                          <CustomButton Icon={<WindowIcon />} listType="grid" />
-                          <CustomButton Icon={<ListIcon />} listType="list" />
-                        </ButtonGroup>
-                        <SearchFilterReposWorkspaces
-                          filterChanged={(newTextFilter) =>
-                            debouncedHandleSearchFilter(newTextFilter)
-                          }
-                          searchFilterValues={searchFilterValues}
-                          setSearchFilterValues={setSearchFilterValues}
-                          hasTypes={false}
-                          setLoading={setLoading}
-                        />
-                      </StyledGrid>
-                    </Grid>
-                  </Box>
-                </Box>
-
-                {listView === "grid" ? (
-                  <WorkspacesCards workspaces={workspaces} loading={loading} />
-                ) : (
-                  <WorkspacesList
-                    workspaces={workspaces}
-                    handleWorkspaceClick={(workspace: Workspace) =>
-                      openWorkspaceUrl(workspace.id)
+            <Grid
+              container={true}
+              alignItems="center"
+              className="verticalFill"
+              spacing={1}
+            >
+              <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={12}
+                lg={7}
+                className="verticalFill"
+              >
+                <Tabs value={tabValue} onChange={handleTabChange}>
+                  {props.user ? (
+                    <Tab
+                      id="your-all-workspaces-tab"
+                      value={WorkspaceSelection.USER}
+                      label={
+                        props.user.isAdmin ? (
+                          <div className="tabTitle">
+                            <Typography>All workspaces</Typography>
+                            {tabValue === WorkspaceSelection.USER && (
+                              <Chip
+                                size="small"
+                                color="primary"
+                                label={total}
+                              />
+                            )}
+                          </div>
+                        ) : (
+                          <div className="tabTitle">
+                            <Typography>My workspaces</Typography>
+                            {tabValue === WorkspaceSelection.USER && (
+                              <Chip
+                                size="small"
+                                color="primary"
+                                label={total}
+                              />
+                            )}
+                          </div>
+                        )
+                      }
+                    />
+                  ) : null}
+                  <Tab
+                    id="featured-tab"
+                    value={WorkspaceSelection.FEATURED}
+                    label={
+                      <div className="tabTitle">
+                        <Typography>Featured workspaces</Typography>
+                        {tabValue === WorkspaceSelection.FEATURED && (
+                          <Chip size="small" color="primary" label={total} />
+                        )}
+                      </div>
                     }
-                    handleTagClick={(tag: Tag) =>
-                      searchFilterValues.tags.includes(tag.tag)
-                        ? null
-                        : setSearchFilterValues({
-                            ...searchFilterValues,
-                            tags: searchFilterValues.tags.concat(tag.tag),
-                          })
-                    }
-                    handleTagUnclick={(tag: Tag) =>
-                      setSearchFilterValues({
-                        ...searchFilterValues,
-                        tags: searchFilterValues.tags.filter(
-                          (t) => t !== tag.tag
-                        ),
-                      })
-                    }
-                    handleTypeClick={(type: string) =>
-                      setSearchFilterValues({
-                        ...searchFilterValues,
-                        types: searchFilterValues.types.concat(type),
-                      })
-                    }
-                    handleTypeUnclick={(type: string) =>
-                      setSearchFilterValues({
-                        ...searchFilterValues,
-                        types: searchFilterValues.types.filter(
-                          (t) => t !== type
-                        ),
-                      })
-                    }
-                    searchFilterValues={searchFilterValues}
-                    loading={loading}
-                    user={props?.user}
                   />
-                )}
-              </div>
-              {workspaces && totalPages > 1 && (
-                <OSBPagination
-                  count={totalPages}
-                  page={page}
-                  onChange={handleChangePage}
-                  showFirstButton
-                  showLastButton
+                  <Tab
+                    id="public-tab"
+                    value={WorkspaceSelection.PUBLIC}
+                    label={
+                      <div className="tabTitle">
+                        <Typography>Public workspaces</Typography>
+                        {tabValue === WorkspaceSelection.PUBLIC && (
+                          <Chip size="small" color="primary" label={total} />
+                        )}
+                      </div>
+                    }
+                  />
+                </Tabs>
+              </Grid>
+              <StyledGrid item={true} xs={12} sm={8} md={12} lg={5}>
+                <ButtonGroup
+                  sx={{
+                    backgroundColor: bgRegular,
+                    padding: "4px",
+                    borderRadius: "8px",
+                    marginRight: "0.571rem",
+                  }}
+                  disableElevation
+                  variant="contained"
+                  aria-label="Disabled elevation buttons"
+                >
+                  <CustomButton Icon={<WindowIcon />} listType="grid" />
+                  <CustomButton Icon={<ListIcon />} listType="list" />
+                </ButtonGroup>
+                <SearchFilterReposWorkspaces
+                  filterChanged={(newTextFilter) =>
+                    debouncedHandleSearchFilter(newTextFilter)
+                  }
+                  searchFilterValues={searchFilterValues}
+                  setSearchFilterValues={setSearchFilterValues}
+                  hasTypes={false}
+                  setLoading={setLoading}
                 />
-              )}
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+              </StyledGrid>
+            </Grid>
+          </Box>
+        </Box>
+
+        {listView === "grid" ? (
+          <WorkspacesCards workspaces={workspaces} loading={loading} />
+        ) : (
+          <WorkspacesList
+            workspaces={workspaces}
+            handleWorkspaceClick={(workspace: Workspace) =>
+              openWorkspaceUrl(workspace.id)
+            }
+            handleTagClick={(tag: Tag) =>
+              searchFilterValues.tags.includes(tag.tag)
+                ? null
+                : setSearchFilterValues({
+                    ...searchFilterValues,
+                    tags: searchFilterValues.tags.concat(tag.tag),
+                  })
+            }
+            handleTagUnclick={(tag: Tag) =>
+              setSearchFilterValues({
+                ...searchFilterValues,
+                tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
+              })
+            }
+            handleTypeClick={(type: string) =>
+              setSearchFilterValues({
+                ...searchFilterValues,
+                types: searchFilterValues.types.concat(type),
+              })
+            }
+            handleTypeUnclick={(type: string) =>
+              setSearchFilterValues({
+                ...searchFilterValues,
+                types: searchFilterValues.types.filter((t) => t !== type),
+              })
+            }
+            searchFilterValues={searchFilterValues}
+            loading={loading}
+            user={props?.user}
+          />
+        )}
+      </div>
+      {workspaces && totalPages > 1 && (
+        <OSBPagination
+          count={totalPages}
+          page={page}
+          onChange={handleChangePage}
+          showFirstButton
+          showLastButton
+        />
+      )}
     </>
   );
 };

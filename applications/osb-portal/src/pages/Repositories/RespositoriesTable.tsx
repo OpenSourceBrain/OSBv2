@@ -168,7 +168,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           className="col"
                           sx={{ display: "flex", flexDirection: "column" }}
                         >
-                          <Typography component="strong">{row.name}</Typography>
+                          <Typography variant="h3" component="h2">{row.name}</Typography>
                           {row.summary && (
                             <StyledShowMoreText
                               lines={2}

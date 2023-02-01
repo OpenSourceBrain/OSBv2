@@ -9,6 +9,7 @@ import { CssBaseline } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
 import theme from "./theme";
+import SidebarPageLayout from "./layouts/SidebarLayout";
 
 import {
   Header,
@@ -59,10 +60,14 @@ export const App = (props: any) => {
                 <OSBErrorBoundary>
                   <Switch>
                     <Route exact={true} path="/">
-                      <HomePage />
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
                     </Route>
                     <Route exact={true} path="/workspace/:workspaceId">
-                      <WorkspacePage />
+                      <SidebarPageLayout>
+                        <WorkspacePage />
+                      </SidebarPageLayout>
                     </Route>
                     <ProtectedRoute
                       exact={true}
@@ -77,13 +82,19 @@ export const App = (props: any) => {
                       <WorkspaceOpenPage />
                     </ProtectedRoute>
                     <Route exact={true} path="/repositories">
-                      <RepositoriesPage />
+                      <SidebarPageLayout>
+                        <RepositoriesPage />
+                      </SidebarPageLayout>
                     </Route>
                     <Route exact={true} path="/repositories/:repositoryId">
-                      <RepositoryPage />
+                      <SidebarPageLayout>
+                        <RepositoryPage />
+                      </SidebarPageLayout>
                     </Route>
                     <Route exact={true} path="/user/:userId">
-                      <UserPage />
+                      <SidebarPageLayout>
+                        <UserPage />
+                      </SidebarPageLayout>
                     </Route>
                   </Switch>
                 </OSBErrorBoundary>

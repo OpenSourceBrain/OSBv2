@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
@@ -12,6 +12,7 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinkIcon from "@mui/icons-material/Link";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
@@ -39,10 +40,11 @@ import RepositoryService from "../service/RepositoryService";
 import {
   bgDarkest,
   bgLightestShade,
-  bgRegular,
+  bgDarker,
   linkColor,
   paragraph,
   textColor,
+  bgLightest as lineColor,
 } from "../theme";
 import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
@@ -52,19 +54,12 @@ import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "relative",
-    "& .MuiDivider-root": {
-      position: "absolute",
-      top: theme.spacing(7),
-      width: "100%",
-      height: "2px",
-    },
-  },
-  profileInformation: {
-    paddingTop: `${theme.spacing(6)} !important`,
+const styles = {
+  profileInformation: (theme) => ({
     flexDirection: "column",
+    backgroundColor: bgDarker,
+    borderRight: `1px solid ${lineColor}`,
+    paddingRight: theme.spacing(3),
     "& .MuiSvgIcon-root": {
       marginRight: "5px",
       color: paragraph,
@@ -78,26 +73,20 @@ const useStyles = makeStyles((theme) => ({
       color: textColor,
       flex: "none",
     },
-    "& .username": {
-      marginBottom: "1.5rem",
+    "& h2": {
+      marginBottom: "0.5em",
     },
+    "& .username": {},
     "& .MuiButton-root": {
       width: "100%",
       marginBottom: "1.5rem",
     },
     "& .links": {
-      marginTop: "2rem",
-      paddingBottom: "2.5rem",
-      borderBottom: `2px solid ${bgRegular}`,
       "& .MuiTypography-root": {
         display: "flex",
       },
     },
     "& .groups": {
-      paddingTop: "1rem",
-      paddingBottom: "1rem",
-      borderBottom: `2px solid ${bgRegular}`,
-      marginBottom: "1rem",
       "& .MuiTypography-root": {
         color: textColor,
       },
@@ -109,9 +98,8 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 0,
       },
     },
-  },
-  repositoriesAndWorkspaces: {
-    paddingTop: `calc(${theme.spacing(7)} - 23px) !important`,
+  }),
+  repositoriesAndWorkspaces: (theme) => ({
     flexDirection: "column",
     paddingBottom: "0px !important",
     "& .repo-paper": {
@@ -119,10 +107,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3),
       marginBottom: theme.spacing(2),
     },
-    "& .MuiTabs-root": {
-      marginBottom: "15px",
-    },
-  },
+  }),
   showMoreText: {
     color: paragraph,
     "& a": {
@@ -143,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
   repository: {
     cursor: "pointer",
   },
-}));
+};
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -190,7 +175,7 @@ export const UserPage = (props: any) => {
     React.useState(false);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [user, setUser] = React.useState<User>(null);
-  const classes = useStyles();
+
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
   const [error, setError] = React.useState<any>(null);
@@ -322,302 +307,325 @@ export const UserPage = (props: any) => {
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
-    <Box className="verticalFit">
-      <MainMenu />
-
+    <>
       <Box
         bgcolor={bgDarkest}
-        className={`${classes.root} verticalFill`}
-        width="100vw"
+        className={`verticalFill`}
         display="flex"
         justifyContent="center"
       >
-        <Divider light={true} variant="fullWidth" />
         <Container maxWidth="xl" className="verticalFit">
-          <Grid container={true} spacing={6} className="verticalFill">
-            <Grid
-              item={true}
-              sm={4}
-              lg={3}
-              className={`${classes.profileInformation}`}
-            >
-              <Avatar alt="user-profile-avatar" src={user.avatar}>
-                {(user.firstName.length > 0 && user.firstName.charAt(0)) +
-                  (user.lastName.length > 0 && user.lastName.charAt(0))}
-              </Avatar>
-              <Typography className="name" component="h1" variant="h1">
-                {user.firstName + " " + user.lastName}
-              </Typography>
-              <Typography className="username" component="p" variant="body2">
-                {user.username}
-              </Typography>
-              {canEdit && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setProfileEditDialogOpen(true)}
-                >
-                  Edit My Profile
-                </Button>
-              )}
+          <Grid container={true} spacing={0} className="verticalFill">
+            <Grid item={true} sm={4} lg={3} sx={styles.profileInformation}>
+              <Stack pt={5} spacing={4}>
+                <Avatar alt="user-profile-avatar" src={user.avatar}>
+                  {(user.firstName.length > 0 && user.firstName.charAt(0)) +
+                    (user.lastName.length > 0 && user.lastName.charAt(0))}
+                </Avatar>
+                <Typography className="name" component="h1" variant="h2">
+                  {user.firstName + " " + user.lastName}
+                  <Typography
+                    className="username"
+                    component="p"
+                    variant="subtitle2"
+                  >
+                    {user.username}
+                  </Typography>
+                </Typography>
 
-              <Box display="flex" flexDirection="row" color={paragraph}>
-                {publicWorkspaces ? (
-                  <>
-                    <FolderOpenIcon fontSize="small" />
-                    {publicWorkspaces.length} workspaces
-                  </>
-                ) : (
-                  <CircularProgress size="1rem" />
+                {canEdit && (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setProfileEditDialogOpen(true)}
+                  >
+                    Edit My Profile
+                  </Button>
                 )}
-                {canEdit && allWorkspaces ? (
-                  <> ({getPrivateWorkspaces().length} private) </>
-                ) : (
-                  <> </>
-                )}
-                {repositories ? (
-                  <>
-                    <FiberManualRecordIcon
-                      className={classes.dot}
-                      fontSize="small"
-                    />
-                    <AccountTreeOutlinedIcon fontSize="small" />
-                    {repositories.length} repositories
-                  </>
-                ) : (
-                  <CircularProgress size="1rem" />
-                )}
-              </Box>
 
-              {(user.profiles || user.website) && (
-                <Box
-                  className="links"
+                <Typography
                   display="flex"
-                  flexDirection="column"
-                  width="100%"
+                  flexDirection="row"
+                  color={paragraph}
                 >
-                  {typeof user.website === "string" && user.website && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <LanguageIcon fontSize="small" />
-                      <Tooltip title="Website">
-                        <Link href={user.website} underline="hover">{user.website}</Link>
-                      </Tooltip>
-                    </Typography>
+                  {publicWorkspaces ? (
+                    <>
+                      <FolderOpenIcon fontSize="small" />
+                      {publicWorkspaces.length} workspaces
+                    </>
+                  ) : (
+                    <CircularProgress size="1rem" />
                   )}
+                  {canEdit && allWorkspaces ? (
+                    <> ({getPrivateWorkspaces().length} private) </>
+                  ) : (
+                    <> </>
+                  )}
+                  {repositories ? (
+                    <>
+                      <FiberManualRecordIcon sx={styles.dot} fontSize="small" />
+                      <AccountTreeOutlinedIcon fontSize="small" />
+                      {repositories.length} repositories
+                    </>
+                  ) : (
+                    <CircularProgress size="1rem" />
+                  )}
+                </Typography>
 
-                  {typeof affiliation === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <BusinessIcon fontSize="small" />
-                      <Tooltip title="Affiliation">
-                        <Link href={affiliation} underline="hover">{affiliation}</Link>
-                      </Tooltip>
+                {(user.profiles || user.website) && (
+                  <Box
+                    className="links"
+                    display="flex"
+                    flexDirection="column"
+                    width="100%"
+                  >
+                    <Typography component="h2" variant="h5" gutterBottom={true}>
+                      Links
                     </Typography>
-                  )}
-                  {typeof github === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <GitHubIcon fontSize="small" />
-                      <Tooltip title="GitHub">
-                        <Link
-                          href={
-                            github.includes("github.com")
-                              ? github
-                              : "https://github.com/" + github
-                          }
-                          underline="hover">
-                          @
-                          {github.includes("github.com")
-                            ? github.replace(/\/$/, "").split("/").pop()
-                            : github}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof bitbucket === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <BitBucketIcon fontSize="small" />
-                      <Tooltip title="BitBucket">
-                        <Link
-                          href={
-                            bitbucket.includes("bitbucket.org")
-                              ? bitbucket
-                              : "https://bitbucket.org/" + bitbucket
-                          }
-                          underline="hover">
-                          @
-                          {bitbucket.includes("bitbucket.org")
-                            ? bitbucket.replace(/\/$/, "").split("/").pop()
-                            : bitbucket}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof twitter === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <TwitterIcon fontSize="small" />
-                      <Tooltip title="Twitter">
-                        <Link
-                          href={
-                            twitter.includes("twitter.com")
-                              ? twitter
-                              : "https://twitter.com/" + twitter
-                          }
-                          underline="hover">
-                          @
-                          {twitter.includes("twitter.com")
-                            ? twitter.replace(/\/$/, "").split("/").pop()
-                            : twitter}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof incf === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <GroupIcon fontSize="small" />
-                      <Tooltip title="INCF">
-                        <Link href={incf} underline="hover">INCF</Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof orcid === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <GroupIcon fontSize="small" />
-                      <Tooltip title="ORCID">
-                        <Link href={orcid} underline="hover">ORCID</Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {Object.keys(otherProfiles)
-                    .filter((k) => otherProfiles[k] !== "")
-                    .map((k) => (
+                    {typeof user.website === "string" && user.website && (
                       <Typography
-                        key={k}
                         component="p"
                         variant="body2"
                         gutterBottom={true}
                       >
-                        <LinkIcon fontSize="small" />
-                        <Tooltip title={k.charAt(0).toUpperCase() + k.slice(1)}>
-                          <Link href={otherProfiles[k]} underline="hover">
-                            {k.charAt(0).toUpperCase() + k.slice(1)}
+                        <LanguageIcon fontSize="small" />
+                        <Tooltip title="Website">
+                          <Link href={user.website} underline="hover">
+                            {user.website}
                           </Link>
                         </Tooltip>
                       </Typography>
-                    ))}
-                </Box>
-              )}
+                    )}
 
-              {user.groups && (
-                <Box className="groups" width="100%">
-                  <Typography component="p" variant="h5" gutterBottom={true}>
-                    Groups
-                  </Typography>
-                  {user.groups &&
-                    user.groups.map((group, index) => {
-                      return (
-                        <Chip
-                          className={index === 0 ? "first-chip" : ""}
-                          color="secondary"
-                          label={group}
-                          key={group}
-                          variant="outlined"
-                        />
-                      );
+                    {typeof affiliation === "string" && (
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        gutterBottom={true}
+                      >
+                        <BusinessIcon fontSize="small" />
+                        <Tooltip title="Affiliation">
+                          <Link href={affiliation} underline="hover">
+                            {affiliation}
+                          </Link>
+                        </Tooltip>
+                      </Typography>
+                    )}
+                    {typeof github === "string" && (
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        gutterBottom={true}
+                      >
+                        <GitHubIcon fontSize="small" />
+                        <Tooltip title="GitHub">
+                          <Link
+                            href={
+                              github.includes("github.com")
+                                ? github
+                                : "https://github.com/" + github
+                            }
+                            underline="hover"
+                          >
+                            @
+                            {github.includes("github.com")
+                              ? github.replace(/\/$/, "").split("/").pop()
+                              : github}
+                          </Link>
+                        </Tooltip>
+                      </Typography>
+                    )}
+                    {typeof bitbucket === "string" && (
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        gutterBottom={true}
+                      >
+                        <BitBucketIcon fontSize="small" />
+                        <Tooltip title="BitBucket">
+                          <Link
+                            href={
+                              bitbucket.includes("bitbucket.org")
+                                ? bitbucket
+                                : "https://bitbucket.org/" + bitbucket
+                            }
+                            underline="hover"
+                          >
+                            @
+                            {bitbucket.includes("bitbucket.org")
+                              ? bitbucket.replace(/\/$/, "").split("/").pop()
+                              : bitbucket}
+                          </Link>
+                        </Tooltip>
+                      </Typography>
+                    )}
+                    {typeof twitter === "string" && (
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        gutterBottom={true}
+                      >
+                        <TwitterIcon fontSize="small" />
+                        <Tooltip title="Twitter">
+                          <Link
+                            href={
+                              twitter.includes("twitter.com")
+                                ? twitter
+                                : "https://twitter.com/" + twitter
+                            }
+                            underline="hover"
+                          >
+                            @
+                            {twitter.includes("twitter.com")
+                              ? twitter.replace(/\/$/, "").split("/").pop()
+                              : twitter}
+                          </Link>
+                        </Tooltip>
+                      </Typography>
+                    )}
+                    {typeof incf === "string" && (
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        gutterBottom={true}
+                      >
+                        <GroupIcon fontSize="small" />
+                        <Tooltip title="INCF">
+                          <Link href={incf} underline="hover">
+                            INCF
+                          </Link>
+                        </Tooltip>
+                      </Typography>
+                    )}
+                    {typeof orcid === "string" && (
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        gutterBottom={true}
+                      >
+                        <GroupIcon fontSize="small" />
+                        <Tooltip title="ORCID">
+                          <Link href={orcid} underline="hover">
+                            ORCID
+                          </Link>
+                        </Tooltip>
+                      </Typography>
+                    )}
+                    {Object.keys(otherProfiles)
+                      .filter((k) => otherProfiles[k] !== "")
+                      .map((k) => (
+                        <Typography
+                          key={k}
+                          component="p"
+                          variant="body2"
+                          gutterBottom={true}
+                        >
+                          <LinkIcon fontSize="small" />
+                          <Tooltip
+                            title={k.charAt(0).toUpperCase() + k.slice(1)}
+                          >
+                            <Link href={otherProfiles[k]} underline="hover">
+                              {k.charAt(0).toUpperCase() + k.slice(1)}
+                            </Link>
+                          </Tooltip>
+                        </Typography>
+                      ))}
+                  </Box>
+                )}
+
+                {user.groups && user.groups.length > 0 && (
+                  <Box className="groups" width="100%">
+                    <Typography component="h2" variant="h5" gutterBottom={true}>
+                      Groups
+                    </Typography>
+                    {user.groups &&
+                      user.groups.map((group, index) => {
+                        return (
+                          <Chip
+                            className={index === 0 ? "first-chip" : ""}
+                            color="secondary"
+                            label={group}
+                            key={group}
+                            variant="outlined"
+                          />
+                        );
+                      })}
+                  </Box>
+                )}
+
+                {user.registrationDate && (
+                  <Typography component="p" variant="body1">
+                    Member since{" "}
+                    {user.registrationDate.toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
                     })}
-                </Box>
-              )}
-
-              {user.registrationDate && (
-                <Typography component="p" variant="body2">
-                  Member since {user.registrationDate.toDateString()}
-                </Typography>
-              )}
+                  </Typography>
+                )}
+              </Stack>
             </Grid>
 
             <Grid
               item={true}
               sm={8}
               lg={9}
-              className={`verticalFit ${classes.repositoriesAndWorkspaces}`}
+              className={`verticalFit`}
+              sx={styles.repositoriesAndWorkspaces}
             >
-              <Tabs
-                value={tabValue}
-                onChange={handleTabChange}
-                textColor="primary"
-                indicatorColor="primary"
-                aria-label="tabs"
-                variant="standard"
-              >
-                <Tab
-                  label={
-                    <>
-                      Public Workspaces
-                      <Chip
-                        size="small"
-                        color="primary"
-                        label={publicWorkspaces.length}
-                      />
-                    </>
-                  }
-                  {...a11yProps(0)}
-                />
-                {canEdit && (
+              <Box px={theme => theme.spacing(4)} sx={{ borderBottom: `1px solid ${lineColor}` }}>
+                <Tabs
+                  value={tabValue}
+                  onChange={handleTabChange}
+                  textColor="primary"
+                  indicatorColor="primary"
+                  aria-label="tabs"
+                  variant="standard"
+                  
+                >
                   <Tab
                     label={
                       <>
-                        Private Workspaces
+                        Public Workspaces
                         <Chip
                           size="small"
                           color="primary"
-                          label={getPrivateWorkspaces().length}
+                          label={publicWorkspaces.length}
                         />
                       </>
                     }
-                    {...a11yProps(1)}
+                    {...a11yProps(0)}
                   />
-                )}
-                <Tab
-                  label={
-                    <>
-                      Repositories
-                      <Chip
-                        size="small"
-                        color="primary"
-                        label={repositories.length}
-                      />
-                    </>
-                  }
-                  {...a11yProps(2)}
-                />
-              </Tabs>
-
+                  {canEdit && (
+                    <Tab
+                      label={
+                        <>
+                          Private Workspaces
+                          <Chip
+                            size="small"
+                            color="primary"
+                            label={getPrivateWorkspaces().length}
+                          />
+                        </>
+                      }
+                      {...a11yProps(1)}
+                    />
+                  )}
+                  <Tab
+                    label={
+                      <>
+                        Repositories
+                        <Chip
+                          size="small"
+                          color="primary"
+                          label={repositories.length}
+                        />
+                      </>
+                    }
+                    {...a11yProps(2)}
+                  />
+                </Tabs>
+              </Box>
               <Box className="scrollbar" height="100%">
                 <TabPanel value={tabValue} index={0}>
                   <Grid container={true} spacing={1}>
@@ -632,10 +640,7 @@ export const UserPage = (props: any) => {
                           lg={4}
                           xl={3}
                         >
-                          <WorkspaceCard 
-                            workspace={ws} 
-                            user={currentUser} 
-                            />
+                          <WorkspaceCard workspace={ws} user={currentUser} />
                         </Grid>
                       );
                     })}
@@ -680,7 +685,7 @@ export const UserPage = (props: any) => {
                           item={true}
                           key={repo.id}
                           xs={12}
-                          className={classes.repository}
+                          sx={styles.repository}
                           onClick={() => openRepoUrl(repo.id)}
                         >
                           <Paper className="repo-paper" elevation={0}>
@@ -739,6 +744,6 @@ export const UserPage = (props: any) => {
         </OSBDialog>
       )}
       {loading && <CircularProgress size={24} />}
-    </Box>
+    </>
   );
 };
