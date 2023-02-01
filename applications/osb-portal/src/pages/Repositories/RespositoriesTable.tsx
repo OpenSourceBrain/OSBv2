@@ -69,32 +69,15 @@ export const StyledTableContainer = styled(TableContainer)(() => ({
   "& .content-types-tag": {
     color: chipTextColor,
   },
-  "& .MuiButtonBase-root": {
-    "&:hover": {
-      color: secondaryColor,
-    },
-  },
-  "& .MuiButton-outlined": {
-    minWidth: "max-content",
-    padding: "8px 12px",
-    textTransform: "inherit",
-    fontSize: "0.857rem",
-    color: secondaryColor,
-    borderRadius: 8,
-    borderWidth: 1,
-
-    "&:hover": {
-      borderColor: primaryColor,
-      color: `${primaryColor} !important`,
-    },
-  },
+ 
+  
 }));
 
 export const StyledShowMoreText = styled(ShowMoreText)(() => ({
   color: paragraph,
   marginTop: 8,
   display: "inline-block",
-  width: "400px",
+  fontSize: "0.857rem",
   "& a": {
     color: linkColor,
     display: "flex",
@@ -160,7 +143,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell
-                        style={{ minWidth: 300 }}
+                        sx={{ minWidth: 300, pl: 4 }}
                         component="th"
                         scope="row"
                       >
@@ -168,7 +151,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           className="col"
                           sx={{ display: "flex", flexDirection: "column" }}
                         >
-                          <Typography variant="h3" component="h2">{row.name}</Typography>
+                          <Typography variant="h5" component="h2">{row.name}</Typography>
                           {row.summary && (
                             <StyledShowMoreText
                               lines={2}
@@ -178,10 +161,10 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                                 </>
                               }
                               less={
-                                <>
+                                <Typography >
                                   See less
                                   <ExpandLessIcon />
-                                </>
+                                </Typography>
                               }
                               onClick={handleExpandClick}
                               expanded={expanded}
@@ -288,9 +271,10 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           />
                         </Tooltip>
                       </TableCell>
-                      <TableCell style={{ width: 100 }}>
+                      <TableCell sx={{ width: "12em", pr: 4, textAlign: "right" }}>
                         <Button
                           variant="outlined"
+                          color="secondary"
                           onClick={() => handleRepositoryClick(row)}
                         >
                           Open Details

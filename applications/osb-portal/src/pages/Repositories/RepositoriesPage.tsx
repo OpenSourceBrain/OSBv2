@@ -196,11 +196,12 @@ export const RepositoriesPage = ({
     <>
       <Box width={1} className="verticalFit">
         <div id="repositories-list" className="verticalFit">
-          <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
+          <Box borderBottom={`1px solid ${lineColor}`} >
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
+              px={4}
             >
               <Grid
                 container={true}

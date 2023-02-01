@@ -94,27 +94,32 @@ const theme = {
       fontSize: "1.7rem",
       fontWeight: 700,
       marginBottom: "0.6rem",
+      color: fontColor
     },
 
     h2: {
       fontWeight: "bold",
       lineHeight: "1.25rem",
       fontSize: "1.1rem",
+      color: fontColor
     },
     h3: {
       fontSize: "1.3rem",
       fontWeight: 400,
       flex: 1,
+      color: fontColor
     },
     h4: {
       fontSize: "1.2rem",
       fontWeight: 400,
       flex: 1,
+      color: fontColor
     },
     h5: {
       fontSize: "1rem",
       flex: 1,
-      fontWeight: 400,
+      fontWeight: 600,
+      color: fontColor
     },
     h6: {
       lineHeight: 1,
@@ -122,6 +127,7 @@ const theme = {
       fontSize: "0.8rem",
       marginBottom: "0.3rem",
       fontWeight: "bold",
+      color: fontColor
     },
     subtitle1: {
       fontWeight: 400,
@@ -140,6 +146,9 @@ const theme = {
     body1: {  
       fontSize: "0.875rem",
       color: paragraph,
+    },
+    body2: {
+      color: fontColor
     }
   },
   components: {
@@ -149,7 +158,13 @@ const theme = {
       root: {
         marginRight: spacing[0.5],
         marginLeft: spacing[1],
-        color: fontColor,
+        backgroundColor: chipBg,
+        borderRadius: "16px",
+        
+        overflow: "hidden",
+        color: chipTextColor,
+        fontSize: "0.857rem",
+        padding: "0.143rem",
         label: {
           fontSize: "0.8rem",
         },
@@ -180,6 +195,10 @@ const theme = {
           }
         }
 
+      },
+      filledPrimary: {
+        color: bgDarker,
+        backgroundColor: primaryColor,
       },
       labelSmall: {
         paddingLeft: "0.8em",
@@ -227,7 +246,67 @@ const theme = {
         flex: 1,
       },
     }},
-    MuiCard: {styleOverrides: { root: { flex: 1 } }},
+    MuiCard: {
+      styleOverrides: { 
+        root: ({theme}) => ({
+          position: "relative",
+          flex: 1,
+          height: `15em`,
+          maxHeight: `16em`,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          borderRadius: "8px",
+          "& .btn-workspace-actions": {
+            position: "absolute",
+            top: 3,
+            right: 3,
+          },
+          "& .imageContainer": {
+            overflow: "hidden",
+        
+            "& .MuiSvgIcon-root": {
+              fontSize: "5em",
+              fill: cardIconFill,
+            },
+          },
+          "& .workspace-page-link": {
+            display: "flex",
+            width: "fit-content",
+            maxWidth: "100%",
+            justifyContent: "center",
+          },
+        })
+      }
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "0px !important",
+          minHeight: "10rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          "&:last-child": {
+            paddingBottom: 16,
+          },
+          "&:hover": {
+            cursor: "pointer",
+            "& .imageContainer": {
+              "& .MuiSvgIcon-root": {
+                fill: "white",
+              },
+            },
+        
+            "& .workspace-page-link": {
+              textDecoration: "underline",
+              textDecorationColor: "white",
+            },
+          },
+        }
+      }
+    },    
+      
     MuiBottomNavigation: {
       styleOverrides: {
       root: { backgroundColor: bgRegular, marginBottom: 8, borderRadius: 4 },
@@ -252,10 +331,12 @@ const theme = {
     MuiFab: {},
     MuiButton: {
       styleOverrides: {
-      root: {},
+      root: {
+        textTransform: "none",
+      },
       outlined: {
         borderWidth: 2,
-
+        textTransform: "none",
         "&:hover": {borderWidth: 2,},
         marginRight: gutter / 2,
         "&:last-child": {
@@ -281,6 +362,7 @@ const theme = {
       root: {
         fontSize: "1em",
         paddingTop: gutter / 2,
+        color: fontColor,
       },
       gutters: {
         paddingLeft: gutter * 2,
@@ -322,14 +404,7 @@ const theme = {
       root: { padding: 0, margin: "0px!important", minHeight: "unset" },
       }
     },
-    MuiCardContent: {
-      styleOverrides: {
-      root: {
-        "&:last-child": {
-          paddingBottom: 16,
-        },
-      },
-    }},
+   
     MuiDrawer: {
       styleOverrides: {
       root: {
@@ -373,6 +448,7 @@ const theme = {
 
 
         overflow: "auto",
+        flexDirection:"row !important",
         fontSize: "0.9rem",
         fontWeight: 700,
         border: 0,

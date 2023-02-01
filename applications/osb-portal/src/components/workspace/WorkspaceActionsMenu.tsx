@@ -17,8 +17,8 @@ import WorkspaceService from "../../service/WorkspaceService";
 import OSBLoader from "../common/OSBLoader";
 import { bgDarkest, textColor, lightWhite } from "../../theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import * as Icons from "../icons";
 
-// TODO: refactor to use redux instead of passing props
 
 interface WorkspaceActionsMenuProps {
   workspace?: Workspace;
@@ -27,6 +27,7 @@ interface WorkspaceActionsMenuProps {
   refreshWorkspaces?: () => void;
   user?: UserInfo;
   isWorkspaceOpen?: boolean;
+  showButton?: boolean;
   [other: string]: any;
 }
 
@@ -46,16 +47,16 @@ export default (props: WorkspaceActionsMenuProps) => {
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
-  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  // const canEdit = canEditWorkspace(props?.user, props?.workspace);
-  const canEdit = true;
+  const [anchorEl, setAnchorEl] = props.anchorEl ? [props.anchorEl, props.setAnchorEl]: React.useState<null | HTMLElement>(null);
+  const canEdit = canEditWorkspace(props?.user, props?.workspace);
+
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    props.setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
-    props.setAnchorEl(null);
+    setAnchorEl(null);
   };
 
   const handleEditWorkspace = () => {
@@ -115,6 +116,7 @@ export default (props: WorkspaceActionsMenuProps) => {
     window.location.href = `/workspace/${clonedWSId}`;
   };
 
+
   /*
    *
    * @param applicatonType OSBApplication key
@@ -125,11 +127,14 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
+    {props.showButton && <IconButton className="btn-workspace-actions" size="small" onClick={handleClick}>
+        <Icons.Dots style={{ fontSize: "1rem" }} />
+      </IconButton>}
       <Menu
         id="workspace-actions-menu"
-        anchorEl={props.anchorEl}
+        anchorEl={anchorEl}
         keepMounted={true}
-        open={props.isWorkspaceOpen}
+        open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
         {canEdit && (
@@ -222,7 +227,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         handleClose={handleCloseMenu}
         messages={["Cloning workspace. Please wait."]}
       />
-      {/* <Snackbar
+       <Snackbar
         classes={{ root: classes.snackbar }}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}
@@ -248,7 +253,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </IconButton>
           </React.Fragment>
         }
-      /> */}
+      /> 
     </>
   );
 };

@@ -56,7 +56,7 @@ const RepositoryPageBanner = ({
         </Box>
         <Box>
           <Chip
-            sx={{ background: "transparent !important" }}
+            sx={{ background: "transparent !important", maxWidth: "none" }}
             icon={<PersonOutlineIcon sx={{ fontSize: "1.2rem" }} />}
             label={
               <Typography variant="body2">
@@ -73,7 +73,7 @@ const RepositoryPageBanner = ({
           />
 
           <Chip
-            sx={{ background: "transparent !important" }}
+            sx={{ background: "transparent !important", maxWidth: "none"  }}
             icon={<CalendarTodayOutlinedIcon sx={{ fontSize: "1.2rem" }} />}
             label={
               <Typography variant="body2">
@@ -88,6 +88,7 @@ const RepositoryPageBanner = ({
             sx={{
               background: "transparent !important",
               "&:hover": { color: primaryColor },
+              maxWidth: "none" 
             }}
             icon={<LinkOutlinedIcon sx={{ fontSize: "1.2rem" }} />}
             label={

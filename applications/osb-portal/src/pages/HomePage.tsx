@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import WindowIcon from "@mui/icons-material/Window";
@@ -14,12 +15,11 @@ import ListIcon from "@mui/icons-material/List";
 import Chip from "@mui/material/Chip";
 import WorkspacesCards from "../components/workspace/WorkspacesCards";
 import SearchFilterReposWorkspaces from "../components/common/SearchFilterReposWorkspaces";
-import { HomePageSider } from "../components";
+
 import {
   StyledActiveIconButton,
   StyledGrid,
   StyledIconButton,
-  StyledTabs,
 } from "./Repositories/RepositoriesPage";
 
 //style

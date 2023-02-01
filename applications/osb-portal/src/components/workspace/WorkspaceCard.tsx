@@ -17,8 +17,16 @@ import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
 import { WorkspaceActionsMenu } from "..";
-import { bgDarkest, paragraph, textColor } from "../../theme";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import {
+  bgDarkest,
+  paragraph,
+  textColor,
+  chipBg,
+  chipTextColor,
+} from "../../theme";
+
+import CardTitle from "../common/CardTitle";
+import CardFooter from "../common/CardFooter";
 
 interface Props {
   workspace: Workspace;
@@ -27,76 +35,9 @@ interface Props {
   user?: UserInfo;
   refreshWorkspaces?: () => any;
   hideMenu?: boolean;
+  handleWorkspaceClick?: (workspace: Workspace) => any;
   [k: string]: any;
 }
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    flex: 1,
-    minHeight: `17em`,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  imageIcon: {
-    fontSize: "7em",
-  },
-  actions: {
-    lineHeight: "0",
-    justifyContent: "flex-end",
-  },
-  imageContainer: {
-    overflow: "hidden",
-    height: "130px",
-    margin: "0 0 auto",
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-    maxWidth: "100%",
-    objectFit: "cover",
-    minHeight: "130px",
-  },
-  ellipses: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    width: "auto",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  user: {
-    "& *": {
-      lineHeight: "1em",
-      marginRight: "0.3em",
-    },
-    marginBottom: "0.4em",
-    marginTop: "0.4em",
-  },
-  captions: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  link: {
-    display: "flex",
-    width: "fit-content",
-    maxWidth: "100%",
-    justifyContent: "center",
-  },
-  localOfferIcon: {
-    color: paragraph,
-    fontSize: "1rem",
-    alignSelf: "center",
-    marginLeft: "5px",
-  },
-  chip: {
-    margin: "0px 2px 0px 2px",
-    backgroundColor: "#3c3c3c",
-    "& .MuiChip-label": {
-      color: textColor,
-    },
-  },
-}));
 
 export const TagTooltip = withStyles((theme) => ({
   tooltip: {
@@ -110,117 +51,110 @@ export const TagTooltip = withStyles((theme) => ({
 
 export const WorkspaceCard = (props: Props) => {
   const workspace: Workspace = props.workspace;
-  const classes = useStyles();
-  const openTitle = "Open workspace";
-  const defaultResource =
-    workspace.lastOpen || workspace.resources[workspace.resources.length - 1];
 
   return (
     <>
-      <Card className={`${classes.card} workspace-card`} elevation={0}>
-        {!props.hideMenu && (
-          <CardActions className={classes.actions}>
-            <WorkspaceActionsMenu
-              user={props.user}
-              workspace={workspace}
-              isWorkspaceOpen={false}
-            />
-          </CardActions>
-        )}
+      <Card className={`workspace-card`} elevation={0}>
+        <WorkspaceActionsMenu
+          workspace={workspace}
+          showButton={true}
+        />
 
-        <Box
-          className={classes.imageContainer}
-          justifyContent="center"
-          alignItems="center"
-          display="flex"
-        >
-          <Link
-            href={`/workspace/${workspace.id}`}
-            color="inherit"
-            className={classes.link}
-            underline="hover"
+        <CardContent>
+          <Box
+            className="imageContainer"
+            justifyContent="center"
+            alignItems="center"
+            display="flex"
+            mb={2}
+            onClick={() => props.handleWorkspaceClick(workspace)}
           >
-            {!workspace.thumbnail ? (
-              <FolderIcon className={classes.imageIcon} />
+            {!workspace?.thumbnail ? (
+              <FolderIcon />
             ) : (
               <img
+                width={"100%"}
                 src={
                   "/proxy/workspaces/" +
                   workspace.thumbnail +
                   "?v=" +
                   workspace.timestampUpdated.getMilliseconds()
                 }
-                className={classes.image}
-                title={openTitle}
-                alt={openTitle}
+                title={workspace.name}
+                alt={workspace.name}
               />
             )}
-          </Link>
-        </Box>
-
-        <CardContent className="workspace-content">
-          <Tooltip title={workspace.name}>
+          </Box>
+          <Box sx={{ padding: "0 0.857rem", cursor: "pointer" }}>
+            <Tooltip title={workspace?.name}>
+              <Link
+                href={`/workspace/${workspace.id}`}
+                className={`workspace-page-link`}
+                underline="none"
+              >
+                <CardTitle mb={"4px"}>{workspace.name}</CardTitle>
+                {workspace.tags.length > 0 && (
+                  <TagTooltip
+                    title={workspace.tags.map((tagObject) => {
+                      return (
+                        <Chip
+                          size="small"
+                          label={tagObject.tag}
+                          key={tagObject.id}
+                          sx={{
+                            color: textColor,
+                            margin: "0px 2px 0px 2px",
+                            backgroundColor: chipBg,
+                          }}
+                        />
+                      );
+                    })}
+                    arrow={true}
+                    placement="top"
+                  >
+                    <LocalOfferIcon
+                      fontSize="small"
+                      sx={{
+                        color: paragraph,
+                        fontSize: "1rem",
+                        alignSelf: "center",
+                        marginLeft: "5px",
+                      }}
+                    />
+                  </TagTooltip>
+                )}
+              </Link>
+            </Tooltip>
             <Link
-              href={`/workspace/${workspace.id}`}
-              color="inherit"
-              className={`${classes.link} workspace-page-link`}
-              underline="hover"
+              sx={{
+                "&:hover": {
+                  textDecoration: "underline",
+                  textDecorationColor: chipTextColor,
+                },
+              }}
+              underline="none"
+              href={`/user/${workspace.user.id}`}
             >
               <Typography
-                component="h2"
-                variant="h4"
-                className={classes.ellipses}
+                variant="caption"
+                sx={{
+                  fontSize: ".857rem",
+                  color: chipTextColor,
+                  lineHeight: 1.143,
+                }}
+                mb={"4px"}
               >
-                {workspace.name}
+                {workspace.user.firstName + " " + workspace.user.lastName}
               </Typography>
-              {workspace.tags.length > 0 && (
-                <TagTooltip
-                  title={workspace.tags.map((tagObject) => {
-                    return (
-                      <Chip
-                        size="small"
-                        label={tagObject.tag}
-                        key={tagObject.id}
-                        className={classes.chip}
-                      />
-                    );
-                  })}
-                  arrow={true}
-                  placement="top"
-                >
-                  <LocalOfferIcon
-                    fontSize="small"
-                    className={classes.localOfferIcon}
-                  />
-                </TagTooltip>
-              )}
             </Link>
-          </Tooltip>
-          <Typography
-            variant="caption"
-            className={`${classes.user} ${classes.ellipses}`}
-          >
-            <span>by</span>
-            <Link
-              color="inherit"
-              href={`/user/${workspace.user.id}`}
-              target="_blank"
-              underline="hover"
-            >
-              {workspace.user.firstName + " " + workspace.user.lastName}
-            </Link>
-          </Typography>
-
-          <Typography
-            variant="caption"
-            className={`${classes.captions} ${classes.ellipses}`}
-          >
-            <span>{formatDate(workspace.timestampUpdated)}</span>{" "}
-            <span>
-              {defaultResource && defaultResource.type.application.name}
-            </span>
-          </Typography>
+          </Box>
         </CardContent>
+        <Box sx={{ padding: "0.429rem 0.857rem 0.857rem 0.857rem" }}>
+          <CardFooter variant="caption">
+            <span>{formatDate(workspace?.timestampUpdated)}</span>
+            <span>{workspace?.defaultApplication?.name}</span>
+          </CardFooter>
+        </Box>
       </Card>
     </>
   );

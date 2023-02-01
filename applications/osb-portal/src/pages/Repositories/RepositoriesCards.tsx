@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
 import CardContent from "@mui/material/CardContent";
@@ -39,6 +38,9 @@ import { UserInfo } from "../../types/user";
 //utils
 import { formatDate } from "../../utils";
 import RepositoryActionsMenu from "../../components/repository/RepositoryActionsMenu";
+import CardTitle from "../../components/common/CardTitle";
+import Grid from "@mui/material/Grid";
+import CardFooter from "../../components/common/CardFooter";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -46,61 +48,6 @@ interface RepositoriesProps {
   loading: boolean;
   handleRepositoryClick: (repository: OSBRepository) => void;
 }
-
-export const StyledCard = styled(Card)(() => ({
-  position: "relative",
-  flex: 1,
-  height: `15em`,
-  maxHeight: `16em`,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "flex-end",
-  borderRadius: "8px",
-
-  "& .imageContainer": {
-    overflow: "hidden",
-
-    "& .MuiSvgIcon-root": {
-      fontSize: "5em",
-      fill: cardIconFill,
-    },
-  },
-  "& .workspace-page-link": {
-    display: "flex",
-    width: "fit-content",
-    maxWidth: "100%",
-    justifyContent: "center",
-  },
-}));
-
-export const StyledRepositoryTags = styled(Typography)(() => ({
-  lineHeight: 1.143,
-  fontSize: ".857rem",
-  color: chipTextColor,
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  width: "100%",
-
-  "& .MuiSvgIcon-root": {
-    fontSize: ".857rem",
-  },
-
-  "& .MuiButtonBase-root": {
-    textTransform: "capitalize",
-    padding: "0.286rem 0.857rem 0.286rem 0rem",
-    color: chipTextColor,
-    fontWeight: 400,
-    justifyContent: "flex-start",
-  },
-
-  "& .repoType": {
-    "&:hover": {
-      backgroundColor: "transparent",
-      textDecoration: "underline",
-    },
-  },
-}));
 
 export const StyledContextChip = styled(Chip)(() => ({
   background: chipBg,
@@ -110,37 +57,6 @@ export const StyledContextChip = styled(Chip)(() => ({
   color: chipTextColor,
   fontSize: "0.857rem",
   padding: "0.143rem",
-}));
-
-export const StyledRepoName = styled(Typography)(() => ({
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  fontSize: "1rem",
-  color: lightWhite,
-  lineHeight: "1.429",
-}));
-
-export const StyledCardContent = styled(CardContent)(() => ({
-  padding: 0,
-  minHeight: "10rem",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "flex-end",
-
-  "&:hover": {
-    cursor: "pointer",
-    "& .imageContainer": {
-      "& .MuiSvgIcon-root": {
-        fill: "white",
-      },
-    },
-
-    "& .workspace-page-link": {
-      textDecoration: "underline",
-      textDecorationColor: "white",
-    },
-  },
 }));
 
 export const RepositoriesListCards = (props: RepositoriesProps) => {
@@ -173,8 +89,8 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
             {repositories?.map((repository: OSBRepository, index: number) => {
               return (
                 <Grid item key={index} xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <StyledCard className={`workspace-card`} elevation={0}>
-                    <StyledCardContent>
+                  <Card className={`workspace-card`} elevation={0}>
+                    <CardContent>
                       <RepositoryActionsMenu
                         repository={repository}
                         user={props.user}
@@ -197,9 +113,7 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                             className={`workspace-page-link`}
                             underline="none"
                           >
-                            <StyledRepoName mb={"4px"}>
-                              {repository.name}
-                            </StyledRepoName>
+                            <CardTitle mb={"4px"}>{repository.name}</CardTitle>
                             {repository.tags.length > 0 && (
                               <TagTooltip
                                 title={repository.tags.map((tagObject) => {
@@ -244,11 +158,11 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                           {formatDate(repository.timestampUpdated)}
                         </Typography>
                       </Box>
-                    </StyledCardContent>
-                    <CardActions
+                    </CardContent>
+                    <Box
                       sx={{ padding: "0.429rem 0.857rem 0.857rem 0.857rem" }}
                     >
-                      <StyledRepositoryTags variant="caption">
+                      <CardFooter variant="caption">
                         <Button
                           className="repoType"
                           endIcon={<OpenInNewIcon />}
@@ -269,9 +183,9 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                             label={repository.defaultContext}
                           />
                         </Tooltip>
-                      </StyledRepositoryTags>
-                    </CardActions>
-                  </StyledCard>
+                      </CardFooter>
+                    </Box>
+                  </Card>
                 </Grid>
               );
             })}

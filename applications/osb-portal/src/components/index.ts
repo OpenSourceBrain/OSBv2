@@ -202,6 +202,6 @@ export const HomePageSider = connect(
 )(HomePageDrawer);
 
 export const WorkspaceActionsMenu = connect(
-  null,
+  mapUserStateToProps,
   dispatchWorkspaceProps
 )(WorkspaceActionsMenuUnbound);
