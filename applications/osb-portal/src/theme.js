@@ -371,6 +371,14 @@ const theme = {
         border: `1px solid ${bgLightest}`,
       },
     },
+    MuiLink: {
+      root: {
+        textDecoration: "none",
+        "&:hover": {
+          textDecoration: "underline"
+        }
+      }
+    },
     MuiAutocomplete: {
       root: {
         border: `1px solid ${bgLightest}`,

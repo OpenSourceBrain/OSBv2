@@ -108,14 +108,14 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
       color: badgeBgLight,
       cursor: "pointer",
       "&:hover": {
-        textDecoration: "underline"
+        textDecoration: "underline",
       },
       "&:last-child": {
         color: `${paragraph} !important`,
         cursor: "initial",
 
         "&:hover": {
-          textDecoration: "none"
+          textDecoration: "none",
         },
       },
     },
@@ -316,21 +316,16 @@ const RepositoryPageDetails = ({
                 display="flex"
                 justifyContent="space-between"
                 alignItems="start"
+                pb={"4px"}
                 borderBottom={`1px solid ${lineColor}`}
               >
-                <Box display="flex" alignItems="center" mb={"4px"}>
-                  <Typography variant="h5">Repository preview</Typography>
-                </Box>
-                <StyledViewButton
-                  variant="text"
-                  endIcon={<OpenInNewIcon />}
-                  onClick={openRepoUrl}
-                  size="small"
-                >
+                <Typography variant="h5">Repository preview</Typography>
+                <Link href="#" onClick={openRepoUrl} fontSize="small" sx={{display: "flex", alignItems: "center"}}>
                   View on{" "}
                   {Resources[repository?.repositoryType] ||
                     repository?.repositoryType}
-                </StyledViewButton>
+                  <OpenInNewIcon fontSize="small" sx={{paddingLeft: "0.3em"}} />
+                </Link>
               </Box>
               <Box>
                 <AboutOSBPaper className={`verticalFit`}>
@@ -430,7 +425,7 @@ const RepositoryPageDetails = ({
                       }}
                     >
                       <TableRow>
-                        <TableCell padding="checkbox">
+                        <TableCell padding="checkbox" sx={{ width: "1.8em" }}>
                           <Checkbox
                             color="primary"
                             checked={
@@ -443,7 +438,7 @@ const RepositoryPageDetails = ({
                             }}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell component="th">
                           <Typography component="p">Name</Typography>
                         </TableCell>
                       </TableRow>
@@ -478,7 +473,10 @@ const RepositoryPageDetails = ({
                               key={value.resource.name}
                               onClick={handleToggle(value)}
                             >
-                              <TableCell padding="checkbox">
+                              <TableCell
+                                padding="checkbox"
+                                sx={{ width: "1.8em" }}
+                              >
                                 <Checkbox
                                   edge="start"
                                   checked={Boolean(
@@ -492,11 +490,7 @@ const RepositoryPageDetails = ({
                                   }
                                 />
                               </TableCell>
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                padding="none"
-                              >
+                              <TableCell scope="row" padding="none">
                                 <Box
                                   display="flex"
                                   alignItems="left"
