@@ -10,11 +10,25 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { OSBApplication, OSBApplications } from "../../types/workspace";
+import { styled } from "@mui/styles";
 
 interface OSBSplitButtonProps {
   defaultSelected: OSBApplication;
   handleClick: (selectedItem: OSBApplication) => void;
 }
+
+const StyledButtonGroup = styled(ButtonGroup)(()=>({
+  borderRadius: '6px',
+  border: `1px solid #000`,
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  '& .MuiButton-root': {
+    textTransform: 'none'
+  },
+  '& .MuiButtonGroup-grouped:not(:last-of-type)': {
+    borderColor: 'none',
+    borderRight: '1px solid rgba(0, 0, 0, 0.2)'
+  },
+}))
 
 export const OSBSplitButton = (props: OSBSplitButtonProps) => {
   const [open, setOpen] = useState(false);
@@ -48,23 +62,11 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
   return (
     <Grid direction="column" alignItems="center">
       <Grid item={true} xs={12}>
-        <ButtonGroup
+        <StyledButtonGroup
           variant="contained"
           color="primary"
           ref={anchorRef}
           aria-label="split button"
-          sx={{
-            borderRadius: '6px',
-            border: `1px solid #000`,
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-            '& .MuiButton-root': {
-              textTransform: 'none'
-            },
-            '& .MuiButtonGroup-grouped:not(:last-of-type)': {
-              borderColor: 'none',
-              borderRight: '1px solid rgba(0, 0, 0, 0.2)'
-          },
-          }}
         >
           <Button className={`open-workspace`} onClick={handleItemClick}>Open with {selected.name}</Button>
           <Button
@@ -78,7 +80,7 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
           >
             <ArrowDropDownIcon />
           </Button>
-        </ButtonGroup>
+        </StyledButtonGroup>
         <Popper
           open={open}
           anchorEl={anchorRef.current}
