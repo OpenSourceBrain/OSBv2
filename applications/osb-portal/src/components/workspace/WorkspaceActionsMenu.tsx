@@ -46,15 +46,16 @@ export default (props: WorkspaceActionsMenuProps) => {
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const canEdit = canEditWorkspace(props.user, props.workspace);
+  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const canEdit = canEditWorkspace(props?.user, props?.workspace);
+  const canEdit = true;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+    props.setAnchorEl(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
-    setAnchorEl(null);
+    props.setAnchorEl(null);
   };
 
   const handleEditWorkspace = () => {
@@ -124,23 +125,11 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-      <IconButton
-        size="small"
-        onClick={handleClick}
-        sx={{
-          padding: 0,
-          position: "absolute",
-          right: "0.5rem",
-          top: "0.5rem",
-        }}
-      >
-        <MoreHorizIcon sx={{ fontSize: "1rem", color: lightWhite }} />
-      </IconButton>
       <Menu
         id="workspace-actions-menu"
-        anchorEl={anchorEl}
+        anchorEl={props.anchorEl}
         keepMounted={true}
-        open={Boolean(anchorEl)}
+        open={props.isWorkspaceOpen}
         onClose={handleCloseMenu}
       >
         {canEdit && (
@@ -156,7 +145,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             Delete
           </MenuItem>
         )}
-        {canEdit && !props.workspace.publicable && (
+        {canEdit && !props.workspace?.publicable && (
           <MenuItem
             className="make-public-workspace"
             onClick={handlePublicWorkspace}
@@ -164,7 +153,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             Make public
           </MenuItem>
         )}
-        {canEdit && props.workspace.publicable && (
+        {canEdit && props.workspace?.publicable && (
           <MenuItem
             className="make-private-workspace"
             onClick={handlePrivateWorkspace}
@@ -174,8 +163,8 @@ export default (props: WorkspaceActionsMenuProps) => {
         )}
         {props.user &&
           props.user.isAdmin &&
-          props.workspace.publicable &&
-          !props.workspace.featured && (
+          props.workspace?.publicable &&
+          !props.workspace?.featured && (
             <MenuItem
               className="add-featured-workspace"
               onClick={handleFeaturedWorkspace}
@@ -183,7 +172,7 @@ export default (props: WorkspaceActionsMenuProps) => {
               Add to featured
             </MenuItem>
           )}
-        {props.user && props.user.isAdmin && props.workspace.featured && (
+        {props.user && props.user.isAdmin && props.workspace?.featured && (
           <MenuItem
             className="remove-featured-workspace"
             onClick={handleFeaturedWorkspace}
@@ -233,7 +222,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         handleClose={handleCloseMenu}
         messages={["Cloning workspace. Please wait."]}
       />
-      <Snackbar
+      {/* <Snackbar
         classes={{ root: classes.snackbar }}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}
@@ -259,7 +248,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </IconButton>
           </React.Fragment>
         }
-      />
+      /> */}
     </>
   );
 };

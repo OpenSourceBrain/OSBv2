@@ -1,363 +1,292 @@
-import * as React from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import { useHistory, useParams } from "react-router-dom";
-import { MainMenu } from "../components/index";
-import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import AppsIcon from "@mui/icons-material/Apps";
-import PersonIcon from "@mui/icons-material/Person";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import ArrowRight from "@mui/icons-material/ArrowRight";
-import Link from "@mui/material/Link";
+import * as React from 'react';
+import { useHistory, useParams } from 'react-router';
 
-import { OSBSplitButton } from "../components/common/OSBSpliButton";
-import { bgDarker, bgLight, bgLighter, bgRegular, paragraph } from "../theme";
-import WorkspaceService from "../service/WorkspaceService";
+//theme
+import { styled } from '@mui/styles';
+import { paragraph, secondaryColor as white, chipBg, bgDarkest, lightWhite } from '../theme';
+
+//components
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import CircularProgress from "@mui/material/CircularProgress";
+import { HomePageSider } from '../components';
+import { WorkspaceEditor } from '../components';
+import { OSBSplitButton } from '../components/common/OSBSplitButton';
+import WorkspaceActionsMenu from '../components/workspace/WorkspaceActionsMenu';
+import WorkspaceSidebar from '../components/workspace/WorkspaceSidebar';
+import WorkspaceDetailsInfo from '../components/workspace/WorkspaceDetailsInfo';
+
+//services
+import { canEditWorkspace } from '../service/UserService';
+
+//types
 import {
-  Workspace,
-  WorkspaceResource,
-  OSBApplications,
-  OSBApplication,
+    Workspace,
+    OSBApplication,
 } from "../types/workspace";
-import OSBDialog from "../components/common/OSBDialog";
-import { WorkspaceEditor, WorkspaceInteractions } from "../components";
-import MarkdownViewer from "../components/common/MarkdownViewer";
-import { canEditWorkspace } from "../service/UserService";
 
-const useStyles = makeStyles((theme: any) => ({
-  workspaceToolbar: {
-    cursor: "pointer",
-    padding: theme.spacing(1),
-    "& .MuiGrid-root": {
-      marginRight: "10px",
-    },
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column-reverse",
-      position: "fixed",
-      bottom: 0,
-      width: "100%",
-      padding: 0,
-      "& .MuiBox-root": {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        width: "100%",
-        justifyContent: "center",
-      },
-      "& .buttons": {
-        borderBottom: `1px solid rgb(255, 255, 255, 0.12)`,
-      },
-      "& .MuiGrid-container": {
-        maxWidth: "fit-content",
-      },
-    },
-  },
-  accordion: {
-    "& .MuiAccordionSummary-root": {
-      color: paragraph,
-      "& .MuiSvgIcon-root": {
-        color: paragraph,
-      },
-    },
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
-  },
-  workspaceInformation: {
-    borderBottom: `1px solid ${bgLighter}`,
-    "& span": {
-      display: "flex",
-      alignItems: "center",
-    },
-    "& .MuiBox-root": {
-      [theme.breakpoints.up("md")]: {
-        "& .MuiTypography-root:nth-child(2)": {
-          marginLeft: theme.spacing(2),
-        },
-      },
-      [theme.breakpoints.down("md")]: {
-        flexDirection: "column",
-        "& .MuiTypography-root:nth-child(2)": {
-          marginTop: theme.spacing(1),
-        },
-      },
-    },
-    "& .MuiChip-root": {
-      backgroundColor: "#3c3c3c",
-    },
-  },
-  workspaceResourcesInformation: {
-    "& .MuiAccordion-root": {
-      borderRight: `1px solid ${bgLighter}`,
-      position: "fixed",
-      width: "20%",
-      maxWidth: 400,
-      borderRadius: 0,
-      [theme.breakpoints.down("md")]: {
-        display: "none",
-      },
-    },
-  },
-  workspaceDescriptionBox: {
-    [theme.breakpoints.down("lg")]: {
-      paddingLeft: "20%",
-    },
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: 0,
-    },
-    "& .inner-description": {
-      maxWidth: 850,
-      minWidth: "50vw",
-      flex: 1,
-    },
-    "& hr": {
-      marginTop: theme.spacing(4),
-      marginBottom: theme.spacing(4),
-    },
-    "& .MuiTypography-root": {
-      marginBottom: theme.spacing(1),
+//icons
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-      [theme.breakpoints.down("sm")]: {
-        paddingBottom: theme.spacing(7),
-      },
-      "& .preview-box": {
-        backgroundColor: bgDarker,
-        border: "none",
-      },
-      "& .MuiPaper-elevation1": {
-        boxShadow: "none",
-      },
-    },
-  },
-  imageBox: {
-    width: "100%",
-    maxHeight: 300,
-    "& img": {
-      height: 300,
-      width: "100%",
-      objectFit: "contain",
-    },
-  },
+const NavbarButton = styled(Button)(({ theme }) => ({
+    fontSize: '12px',
+    textTransform: 'none',
+    borderRadius: '6px',
+    minHeight: '32px',
+    fontWeight: 600,
+    '&:hover': {
+        backgroundColor: 'transparent'
+    }
 }));
 
+
 export const WorkspacePage = (props: any) => {
-  const classes = useStyles();
-  const history = useHistory();
-  const { workspaceId } = useParams<{ workspaceId: string }>();
-  const workspace: Workspace = props.workspace;
-  const user = props.user;
-  const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
-  const [refresh, setRefresh] = React.useState(true);
-  const [error, setError] = React.useState<any>(null);
 
-  if (!workspace) {
-    props.selectWorkspace(workspaceId);
-  }
+    const history = useHistory();
+    const { workspaceId } = useParams<{ workspaceId: string }>();
+    const workspace: Workspace = props.workspace;
+    const user = props.user;
+    const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
+    const [error, setError] = React.useState<any>(null);
+    const [anchorElmoreVert, setAnchorElmoreVert] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  if (error) {
-    throw error;
-  }
-  const handleCloseEditWorkspace = () => {
-    props.refreshWorkspace(workspaceId);
-    setEditWorkspaceOpen(false);
-  };
+    const isWorkspaceOpen = Boolean(anchorElmoreVert);
 
-  const handleResourceClick = (resource: WorkspaceResource) => {
-    openWithApp(resource.type.application);
-  };
+    if (!workspace) {
+        props.selectWorkspace(workspaceId);
+    }
 
-  // open application that is default for selected resource,
-  // or option selected from app selection drop down
-  const openWithApp = (selectedOption: OSBApplication) => {
-    history.push(`/workspace/open/${workspaceId}/${selectedOption.code}`);
-  };
+    if (error) {
+        throw error;
+    }
 
-  const canEdit = canEditWorkspace(props.user, workspace);
+    const handleCloseEditWorkspace = () => {
+        props.refreshWorkspace(workspaceId);
+        setEditWorkspaceOpen(false);
+    };
 
-  return (
-    workspace && (
-      <Box className="verticalFit">
-        {
-          <>
-            <Box className="wrapper-for-now">
-              <Divider />
-              <MainMenu />
-              <Divider />
-              {/*
-              Top panel.
-            */}
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                bgcolor={bgLight}
-                className={classes.workspaceToolbar}
-              >
-                <Box display="flex" onClick={() => history.push("/")}>
-                  <AppsIcon color="primary" fontSize="small" />
-                  <Typography component="a" color="primary">
-                    See all workspaces
-                  </Typography>
-                </Box>
+    const openWithApp = (selectedOption: OSBApplication) => {
+        history.push(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+    };
 
-                <Box display="flex" className="buttons">
-                  {canEdit && (
-                    <Button
-                      variant="outlined"
-                      disableElevation={true}
-                      color="secondary"
-                      style={{ borderColor: "white" }}
-                      onClick={() => setEditWorkspaceOpen(true)}
+    const canEdit = canEditWorkspace(props.user, workspace);
+
+    return (
+        <>
+            <Box className="verticalFit">
+                <Grid container className="verticalFill">
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={3}
+                        lg={2}
+                        direction="column"
+                        className="verticalFill"
                     >
-                      Edit
-                    </Button>
-                  )}
-                  <OSBSplitButton
-                    defaultSelected={workspace.defaultApplication}
-                    handleClick={openWithApp}
-                  />
-                </Box>
-              </Box>
-              {/*
-              Alternative accordion for us in small displays.
-            */}
-              <Accordion className={classes.accordion}>
-                <AccordionSummary
-                  expandIcon={<ArrowRight />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>Resources</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <WorkspaceInteractions
-                    workspace={workspace}
-                    open={true}
-                    user={props.user}
-                    openResource={handleResourceClick}
-                  />
-                </AccordionDetails>
-              </Accordion>
+                        <Box width={1} className="verticalFit">
+                            <HomePageSider />
+                        </Box>
+                    </Grid>
+                    <Grid
+                        item={true}
+                        xs={12}
+                        sm={12}
+                        md={9}
+                        lg={10}
+                        alignItems="stretch"
+                        className="verticalFill"
+                    >
+                        <Box width={1} className="verticalFit">
+                            <div id="workspace-details" className="verticalFit">
+                                <Box>
+                                    <Box
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Grid
+                                            container={true}
+                                            alignItems="center"
+                                            className="verticalFill"
+                                            spacing={1}
+                                            sx={{ background: bgDarkest }}
+                                        >
+                                            <Grid
+                                                item={true}
+                                                xs={12}
+                                                sm={12}
+                                                md={7}
+                                                lg={7}
+                                                className="verticalFill"
+                                            >
+                                                <NavbarButton
+                                                    variant="text"
+                                                    startIcon={<ChevronLeftIcon />}
+                                                    onClick={() => history.push('/')}
+                                                    sx={{ color: paragraph, padding: '16px 24px' }}
+                                                >
+                                                    All workspaces
+                                                </NavbarButton>
+                                            </Grid>
+                                            <Grid
+                                                item={true}
+                                                gap={1}
+                                                xs={12}
+                                                sm={8}
+                                                md={5}
+                                                lg={5}
+                                                justifyContent='end'
+                                                padding={'0 16px'}
+                                            >
+                                                {
+                                                    canEdit && (
+                                                        <NavbarButton
+                                                            onClick={() => setEditWorkspaceOpen(true)}
+                                                            sx={{
+                                                                color: white,
+                                                                border: `1px solid ${white}`,
+                                                                '&:hover': {
+                                                                    border: `1px solid ${white}`,
+                                                                }
+                                                            }}
+                                                        >
+                                                            Edit
+                                                        </NavbarButton>
+                                                    )
+                                                }
 
-              {/*
-               Mid panel: workspace metadata
-            */}
-              <Box
-                bgcolor={bgRegular}
-                minHeight="20vh"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flexDirection="column"
-                p={1}
-                className={classes.workspaceInformation}
-              >
-                <Typography component="h1" variant="h1">
-                  {workspace.name}
-                </Typography>
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  color={paragraph}
-                  mb={2}
-                  alignItems="center"
-                >
-                  {workspace.user &&
-                  (workspace.user.firstName || workspace.user.lastName) ? (
-                    <Typography component="span" variant="subtitle2">
-                      <PersonIcon fontSize="small" /> By
-                      {
-                        <Link
-                          href={`/user/${workspace.user.id}`}
-                          underline="hover"
-                        >
-                          {workspace.user.firstName +
-                            " " +
-                            workspace.user.lastName}
-                        </Link>
-                      }
-                    </Typography>
-                  ) : null}
-                  {workspace.timestampUpdated && (
-                    <Typography component="span" variant="subtitle2">
-                      <CalendarTodayIcon fontSize="small" /> Last Updated on{" "}
-                      {workspace.timestampUpdated.toDateString()}
-                    </Typography>
-                  )}
-                </Box>
-                <Box>
-                  {workspace.tags &&
-                    workspace.tags.map((tagObject) => {
-                      return <Chip label={tagObject.tag} key={tagObject.id} />;
-                    })}
-                </Box>
-              </Box>
-            </Box>
+                                                <OSBSplitButton
+                                                    defaultSelected={workspace?.defaultApplication}
+                                                    handleClick={openWithApp}
+                                                />
+                                                <NavbarButton
+                                                    id="workspace-actions-menu"
+                                                    size="small"
+                                                    variant="contained"
+                                                    aria-label="more"
+                                                    onClick={(event) => setAnchorElmoreVert(event.currentTarget)}
+                                                    sx={{
+                                                        background: chipBg,
+                                                        boxShadow: 'none',
+                                                        minWidth: '32px'
+                                                    }}
+                                                >
+                                                    <MoreVertIcon fontSize='small' />
+                                                </NavbarButton>
+                                                <WorkspaceActionsMenu
+                                                    workspace={workspace}
+                                                    user={user}
+                                                    isWorkspaceOpen={isWorkspaceOpen}
+                                                    anchorEl = {anchorElmoreVert}
+                                                    setAnchorEl = {(anchorEl) => setAnchorElmoreVert(anchorEl)}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Box>
+                                </Box>
+                                {
+                                    !workspace ? (
+                                        <Box
+                                            flex={1}
+                                            px={2}
+                                            py={2}
+                                            display="flex"
+                                            alignContent="center"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                        >
+                                            <CircularProgress />
+                                        </Box>
+                                    ) : (
+                                        <Box width={1} height={1} sx={{ overflowY: 'hidden' }}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4.5rem', gap: '1rem' }}>
+                                                {!canEdit && (
+                                                    <Tooltip
+                                                        style={{ marginLeft: "0.3em" }}
+                                                        title="You do not have permissions to modify this workspace."
+                                                    >
+                                                        <LockOutlinedIcon sx={{ color: paragraph }} />
+                                                    </Tooltip>
+                                                )}
+                                                <Typography className='workspace-name-input' sx={{ fontSize: '24px' }}>{workspace?.name}</Typography>
+                                            </Box>
+                                            <Box height={1} sx={{ background: 'rgba(0, 0, 0, 0.25)' }}>
+                                                <Grid container height={1}>
+                                                    <Grid item xs>
+                                                        <WorkspaceSidebar workspace={workspace} user={user} refreshWorkspace={props.refreshWorkspace} />
+                                                    </Grid>
+                                                    <Grid item justifyContent={workspace?.thumbnail ? 'center' : 'start'} xs={6}>
+                                                        <Box sx={{
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            gap: '24px',
+                                                            maxHeight: '560px',
+                                                            overflowY: 'scroll',
+                                                            padding: '24px 100px'
+                                                        }}
+                                                        >
+                                                            <Box
+                                                                className="imageContainer"
+                                                                justifyContent="center"
+                                                                alignItems="center"
+                                                                display="flex"
+                                                            >
+                                                                {workspace?.thumbnail && (
+                                                                    <img
+                                                                        width={"100%"}
+                                                                        src={
+                                                                            "/proxy/workspaces/" +
+                                                                            workspace.thumbnail +
+                                                                            "?v=" +
+                                                                            workspace.timestampUpdated.getMilliseconds()
+                                                                        }
+                                                                        title={workspace.name}
+                                                                        alt={workspace.name}
+                                                                    />
+                                                                )}
+                                                            </Box>
+                                                            {
+                                                                workspace?.thumbnail && <Divider />
+                                                            }
+                                                            <Typography variant="subtitle1" sx={{ color: lightWhite, letterSpacing: '0.01em', lineHeight: '24px' }}>
+                                                                {workspace?.description}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs>
+                                                        <WorkspaceDetailsInfo workspace={workspace} />
+                                                    </Grid>
+                                                </Grid>
+                                            </Box>
+                                        </Box>
+                                    )
 
-            {/*
-            Bottom: workspace resource panel and thumbnail
-          */}
-            <Box
-              className={`verticalFit ${classes.workspaceResourcesInformation}`}
-              display="flex"
-              flexDirection="row"
-            >
-              <WorkspaceInteractions
-                workspace={workspace}
-                open={true}
-                user={props.user}
-                refreshWorkspacePage={() => {
-                  setRefresh(!refresh);
-                }}
-                openResource={handleResourceClick}
-              />
-              <Box
-                className={`${classes.workspaceDescriptionBox} scrollbar`}
-                width="100%"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-              >
-                <Box className={`inner-description`} p={4}>
-                  {workspace.thumbnail && (
-                    <>
-                      <Box className={classes.imageBox}>
-                        <img
-                          src={`/proxy/workspaces/${
-                            workspace.thumbnail
-                          }?v=${workspace.timestampUpdated.getMilliseconds()}`}
-                          alt="Workspace thumbnail"
-                        />
-                      </Box>
-                      <Divider />
-                    </>
-                  )}
-
-                  <Typography component="div" variant="body1">
-                    <MarkdownViewer text={workspace.description} />
-                  </Typography>
-                </Box>
-              </Box>
+                                }
+                            </div>
+                        </Box>
+                    </Grid>
+                </Grid>
             </Box>
 
             {canEdit && editWorkspaceOpen && (
-              <WorkspaceEditor
-                open={editWorkspaceOpen}
-                title={"Edit workspace: " + workspace.name}
-                closeHandler={handleCloseEditWorkspace}
-                workspace={workspace}
-                onLoadWorkspace={handleCloseEditWorkspace}
-                user={user}
-              />
+                <WorkspaceEditor
+                    open={editWorkspaceOpen}
+                    title={"Edit workspace: " + workspace.name}
+                    closeHandler={handleCloseEditWorkspace}
+                    workspace={workspace}
+                    onLoadWorkspace={handleCloseEditWorkspace}
+                    user={user}
+                />
             )}
-          </>
-        }
-      </Box>
+        </>
     )
-  );
-};
-
+}
 export default WorkspacePage;
