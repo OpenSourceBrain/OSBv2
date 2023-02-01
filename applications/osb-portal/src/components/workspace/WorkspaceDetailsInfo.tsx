@@ -4,7 +4,7 @@ import * as React from 'react';
 import { styled } from '@mui/styles';
 
 import {
-    paragraph,
+  paragraph,
 } from "../../theme";
 
 //components
@@ -21,66 +21,66 @@ import CollectionsBookmarkOutlinedIcon from '@mui/icons-material/CollectionsBook
 
 const WorkspaceInfoSection = styled(Stack)(({ theme }) => ({
 
-    '& .MuiTypography-subtitle1': {
-        fontWeight: 600
-    },
-    '& .MuiTypography-body1': {
-        fontSize: '0.857rem',
-        color: paragraph
-    },
-    '& .MuiSvgIcon-root': {
-        color: paragraph
-    },
-    '& .MuiLink-root': {
-        fontSize: '0.857rem',
-    },
+  '& .MuiTypography-subtitle1': {
+    fontWeight: 600
+  },
+  '& .MuiTypography-body1': {
+    fontSize: '0.857rem',
+    color: paragraph
+  },
+  '& .MuiSvgIcon-root': {
+    color: paragraph
+  },
+  '& .MuiLink-root': {
+    fontSize: '0.857rem',
+  },
 
 }))
 const WorkspaceDetailsInfo = (props: any) => {
 
-    const { user } = props.workspace;
-    const { tags } = props.workspace;
-    const { timestampUpdated } = props.workspace;
+  const { user } = props.workspace;
+  const { tags } = props.workspace;
+  const { timestampUpdated } = props.workspace;
 
-    return props.workspace && (
+  return props.workspace && (
 
-        <Box sx={{ height: '100%', overflow: 'hidden' }} pt={4} pl={2}>
-            <WorkspaceInfoSection spacing={1}>
-                <Typography variant='subtitle1'>Info</Typography>
-                <Stack direction="row" spacing={1}>
-                    <PersonIcon fontSize="small" />
-                    {props.workspace.user &&
-                        (props.workspace.user.firstName || props.workspace.user.lastName) ? (
-                        <Typography component="span" variant="subtitle2" sx={{fontWeight: 400, color: paragraph, lineHeight: 'unset'}}>
-                            By
-                            {
-                                <Link href={`/user/${props.workspace.user.id}`} underline="hover">
-                                    {" " + props.workspace.user.firstName +
-                                        " " +
-                                        props.workspace.user.lastName}
-                                </Link>
-                            }
-                        </Typography>
-                    ) : null}
-                </Stack>
-                <Stack direction="row" spacing={1}>
-                    <CalendarTodayIcon fontSize='small' />
-                    <Typography>Last Updated on {timestampUpdated.toLocaleDateString()}</Typography>
-                </Stack>
-            </WorkspaceInfoSection>
-            <WorkspaceInfoSection spacing={1} mt={3}>
-                <Typography variant='subtitle1'>Tags</Typography>
-                <Box>
-                    {
-                        tags?.map((item, index) => {
-                            return (
-                                <Chip key={index} label={item.tag} size='small' sx={{ mt: 1 }} />
-                            )
-                        })
-                    }
-                </Box>
-            </WorkspaceInfoSection>
+    <Box sx={{ height: '100%', overflow: 'hidden' }} pt={4} pl={2}>
+      <WorkspaceInfoSection spacing={1}>
+        <Typography variant='subtitle1'>Info</Typography>
+        <Stack direction="row" spacing={1}>
+          <PersonIcon fontSize="small" />
+          {props.workspace.user &&
+          (props.workspace.user.firstName || props.workspace.user.lastName) ? (
+            <Typography component="span" variant="subtitle2" sx={{fontWeight: 400, color: paragraph, lineHeight: 'unset'}}>
+              By
+              {
+                <Link href={`/user/${props.workspace.user.id}`} underline="hover">
+                  {" " + props.workspace.user.firstName +
+                    " " +
+                    props.workspace.user.lastName}
+                </Link>
+              }
+            </Typography>
+          ) : null}
+        </Stack>
+        <Stack direction="row" spacing={1}>
+          <CalendarTodayIcon fontSize='small' />
+          <Typography>Last Updated on {timestampUpdated.toLocaleDateString()}</Typography>
+        </Stack>
+      </WorkspaceInfoSection>
+      <WorkspaceInfoSection spacing={1} mt={3}>
+        <Typography variant='subtitle1'>Tags</Typography>
+        <Box>
+          {
+            tags?.map((item, index) => {
+              return (
+                <Chip key={index} label={item.tag} size='small' sx={{ ml: 0, mr: 1 }} />
+              )
+            })
+          }
         </Box>
-    )
+      </WorkspaceInfoSection>
+    </Box>
+  )
 }
 export default WorkspaceDetailsInfo;
