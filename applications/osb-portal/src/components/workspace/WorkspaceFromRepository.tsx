@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import makeStyles from "@mui/styles/makeStyles";
 import { Typography, Box, Button, Grid, CircularProgress } from "@mui/material";
 
-import { RepositoriesList as Repositories } from "../../pages/Repositories/RespositoriesTable";
+import { RepositoriesList as Repositories } from "../repository/RespositoriesTable";
 import { WorkspaceEditor } from "../index";
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import OSBChipList from "../common/OSBChipList";

@@ -38,9 +38,9 @@ import { UserInfo } from "../../types/user";
 //utils
 import { formatDate } from "../../utils";
 import RepositoryActionsMenu from "../../components/repository/RepositoryActionsMenu";
-import CardTitle from "../../components/common/CardTitle";
+import CardTitle from "../../components/styled/CardTitle";
 import Grid from "@mui/material/Grid";
-import CardFooter from "../../components/common/CardFooter";
+import CardFooter from "../../components/styled/CardFooter";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];

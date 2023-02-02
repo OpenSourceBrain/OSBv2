@@ -21,10 +21,7 @@ import { chipTextColor } from "../../theme";
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-import { CodeBranchIcon } from "../icons";
 
 //types
 import { RepositoryContentType, Tag } from "../../apiclient/workspaces";
@@ -33,7 +30,7 @@ import searchFilter from "../../types/searchFilter";
 import {
   StyledShowMoreText,
   StyledTableContainer,
-} from "../../pages/Repositories/RespositoriesTable";
+} from "../styled/Tables";
 import { Workspace } from "../../types/workspace";
 
 interface WorkspacesProps {
@@ -107,31 +104,28 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                           className="col"
                           sx={{ display: "flex", flexDirection: "column" }}
                         >
-                          <Typography component="strong">{row.name}</Typography>
+                          <Typography variant="h5" component="h2">{row.name}</Typography>
                           {row.description && (
                             <StyledShowMoreText
                               lines={2}
                               more={
-                                <>
-                                  See more <ExpandMoreIcon />
-                                </>
+                                <span className="seemore">
+                                  See more <ExpandMoreIcon fontSize="small" />
+                                </span>
                               }
-                              less={
-                                <>
-                                  See less
-                                  <ExpandLessIcon />
-                                </>
+                              less={<span className="seemore">
+                                  See less <ExpandLessIcon fontSize="small"  />
+                                  </span>
                               }
                               onClick={handleExpandClick}
                               expanded={expanded}
-                              width={400}
                             >
                               {row.description}
                             </StyledShowMoreText>
                           )}
                         </Box>
                       </TableCell>
-                      <TableCell style={{ minWidth: 200 }}>
+                      <TableCell sx={{ minWidth: 200 }}>
                         <Button
                           sx={{
                             "&:hover": { backgroundColor: "transparent" },
@@ -143,8 +137,14 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                           {row.user.firstName + " " + row.user.lastName}
                         </Button>
                       </TableCell>
+                      <TableCell >
+                        <Typography>
+                        Last updated on {row.timestampUpdated.toLocaleDateString()}
+                        </Typography>
+                        
+                      </TableCell>
 
-                      <TableCell style={{ minWidth: 200 }}>
+                      <TableCell sx={{ minWidth: 200 }}>
                         <Box>
                           {row.tags.map((tagObject) => (
                             <Chip
@@ -177,12 +177,13 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                           />
                         </Tooltip>
                       </TableCell>
-                      <TableCell style={{ width: 100 }}>
+                     <TableCell sx={{ width: "12em", pr: 4, textAlign: "right" }}>
                         <Button
                           variant="outlined"
+                          color="secondary"
                           onClick={() => handleWorkspaceClick(row)}
                         >
-                          Open Details
+                          Open Workspace
                         </Button>
                       </TableCell>
                     </TableRow>

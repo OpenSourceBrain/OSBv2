@@ -54,6 +54,8 @@ import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
 
+import RepositoriesTable from "../components/repository/RespositoriesTable";
+
 const styles = {
   profileInformation: (theme) => ({
     flexDirection: "column",
@@ -351,7 +353,7 @@ export const UserPage = (props: any) => {
                 {publicWorkspaces ? (
                   <>
                     <FolderOpenIcon fontSize="small" />
-                    {publicWorkspaces.length} workspaces
+                    {allWorkspaces.length} workspaces
                   </>
                 ) : (
                   <CircularProgress size="1rem" />
@@ -678,33 +680,15 @@ export const UserPage = (props: any) => {
                     : 1
                 }
               >
-                <Grid container={true} spacing={2}>
-                  {repositories.map((repo) => {
-                    return (
-                      <Grid
-                        item={true}
-                        key={repo.id}
-                        xs={12}
-                        sx={styles.repository}
-                        onClick={() => openRepoUrl(repo.id)}
-                      >
-                        <Paper className="repo-paper" elevation={0}>
-                          <Typography component="span" gutterBottom={true}>
-                            {repo.name}
-                          </Typography>
-                          {repo.description && (
-                            <Typography component="span" gutterBottom={true}>
-                              {repo.description}
-                            </Typography>
-                          )}
-                          {repo.summary && (
-                            <MarkdownViewer text={repo.summary} />
-                          )}
-                        </Paper>
-                      </Grid>
-                    );
-                  })}
-                </Grid>
+               <RepositoriesTable
+              handleRepositoryClick={(repository: OSBRepository) =>
+                openRepoUrl(repository.id)
+              }
+              
+              user={currentUser}
+              repositories={repositories}
+              loading={loading}
+            />
               </TabPanel>
             </Box>
           </Grid>

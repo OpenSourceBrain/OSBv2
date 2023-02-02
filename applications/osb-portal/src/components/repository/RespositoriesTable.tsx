@@ -15,18 +15,12 @@ import Tooltip from "@mui/material/Tooltip";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import ShowMoreText from "react-show-more-text";
-import { StyledContextChip } from "./RepositoriesCards";
+import { StyledContextChip } from "../../pages/Repositories/RepositoriesCards";
 
 // style
 import {
-  paragraph,
-  linkColor,
   chipTextColor,
-  chipBg,
-  secondaryColor,
-  primaryColor,
 } from "../../theme";
-import styled from "@mui/system/styled";
 
 // icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -34,7 +28,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-import { CodeBranchIcon } from "../../components/icons";
+import { CodeBranchIcon } from "../icons";
 
 //types
 import {
@@ -44,6 +38,11 @@ import {
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
+
+import {
+  StyledShowMoreText,
+  StyledTableContainer,
+} from "../styled/Tables";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -57,36 +56,6 @@ interface RepositoriesProps {
   loading?: boolean;
 }
 
-export const StyledTableContainer = styled(TableContainer)(() => ({
-  overflow: "scroll",
-  "&::-webkit-scrollbar": {
-    width: 2,
-    height: 2,
-  },
-  "& .MuiChip-root": {
-    backgroundColor: chipBg,
-  },
-  "& .content-types-tag": {
-    color: chipTextColor,
-  },
- 
-  
-}));
-
-export const StyledShowMoreText = styled(ShowMoreText)(() => ({
-  color: paragraph,
-  marginTop: 8,
-  display: "inline-block",
-  fontSize: "0.857rem",
-  "& a": {
-    color: linkColor,
-    display: "flex",
-    textDecoration: "none",
-    "& .MuiSvgIcon-root": {
-      color: `${linkColor} !important`,
-    },
-  },
-}));
 
 export const RepositoriesList = (props: RepositoriesProps) => {
   const {
@@ -156,19 +125,16 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                             <StyledShowMoreText
                               lines={2}
                               more={
-                                <>
-                                  See more <ExpandMoreIcon />
-                                </>
+                                <span className="seemore">
+                                  See more <ExpandMoreIcon fontSize="small" />
+                                </span>
                               }
-                              less={
-                                <Typography >
-                                  See less
-                                  <ExpandLessIcon />
-                                </Typography>
+                              less={<span className="seemore">
+                                  See less <ExpandLessIcon fontSize="small"  />
+                                  </span>
                               }
                               onClick={handleExpandClick}
                               expanded={expanded}
-                              width={400}
                             >
                               {row.summary}
                             </StyledShowMoreText>
@@ -212,12 +178,12 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                                   }
                                 />
                               }
-                              onClick={() => handleTypeClick(type)}
+                              onClick={handleTypeClick && (() => handleTypeClick(type))}
                               key={type}
                               label={type}
                               clickable={true}
                               className="content-types-tag"
-                              onDelete={
+                              onDelete={handleTypeUnclick && 
                                 searchFilterValues?.types?.includes(type)
                                   ? () => handleTypeUnclick(type)
                                   : null
@@ -236,12 +202,12 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           {row.tags.map((tagObject) => (
                             <Chip
                               className="repo-tag"
-                              onClick={() => handleTagClick(tagObject)}
+                              onClick={handleTagClick && (() => handleTagClick(tagObject))}
                               key={tagObject.id}
                               label={tagObject.tag}
                               clickable={true}
                               onDelete={
-                                searchFilterValues?.tags?.includes(
+                                handleTagUnclick && searchFilterValues?.tags?.includes(
                                   tagObject.tag
                                 )
                                   ? () => handleTagUnclick(tagObject)

@@ -25,8 +25,8 @@ import {
   chipTextColor,
 } from "../../theme";
 
-import CardTitle from "../common/CardTitle";
-import CardFooter from "../common/CardFooter";
+import CardTitle from "../styled/CardTitle";
+import CardFooter from "../styled/CardFooter";
 
 interface Props {
   workspace: Workspace;

@@ -13,7 +13,7 @@ import Pagination from "@mui/material/Pagination";
 
 import { HomePageSider } from "../../components";
 import RepositoriesCards from "./RepositoriesCards";
-import RepositoriesTable from "./RespositoriesTable";
+import RepositoriesTable from "../../components/repository/RespositoriesTable";
 import SearchFilterReposWorkspaces from "../../components/common/SearchFilterReposWorkspaces";
 import Chip from "@mui/material/Chip";
 import OSBPagination from "../../components/common/OSBPagination";

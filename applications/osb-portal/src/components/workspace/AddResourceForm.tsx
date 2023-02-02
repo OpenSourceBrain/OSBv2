@@ -31,7 +31,7 @@ import {
   bgDarker,
 } from "../../theme";
 import WorkspaceService from "../../service/WorkspaceService";
-import Repositories from "../../pages/Repositories/RespositoriesTable";
+import Repositories from "../repository/RespositoriesTable";
 import OSBPagination from "../common/OSBPagination";
 import SearchFilter from "../../types/searchFilter";
 
