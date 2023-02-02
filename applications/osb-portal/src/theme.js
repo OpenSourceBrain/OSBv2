@@ -90,9 +90,10 @@ const theme = {
   },
   typography: {
     fontFamily: font,
+    color: fontColor,
     h1: {
       fontSize: "1.7rem",
-      fontWeight: 700,
+      fontWeight: 400,
       marginBottom: "0.6rem",
       color: fontColor
     },
@@ -492,6 +493,48 @@ const theme = {
         }
       }
     }},
+    MuiTree: {
+      styleOverrides: {}
+    },
+    MuiTreeItem: {
+      styleOverrides: {
+       root: {
+          color: lightWhite,
+          "& .MuiIconButton-root": {
+            color: lightWhite,
+          },
+          "& .MuiListItemButton-root": {
+            paddingLeft: "2.571rem",
+            paddingTop: 0,
+            paddingBottom: 0,
+            "&:hover": {
+              background: workspaceItemBg,
+              "& .MuiTypography-root": {
+                color: orangeText,
+              },
+            },
+          },
+          "& .MuiTypography-root": {
+            fontWeight: 400,
+            fontSize: "0.75rem",
+            paddingLeft: "0.286rem",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+            maxWidth: "150px",
+          },
+          "&:hover": {
+            "& .MuiListItemSecondaryAction-root .MuiIconButton-root": {
+              visibility: "inherit",
+            },
+            "& .MuiTypography-root": {
+              color: orangeText,
+            },
+          },
+        
+      }
+      }
+    },
     MuiAutocomplete: {
       styleOverrides: {
       root: {

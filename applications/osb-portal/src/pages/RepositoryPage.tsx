@@ -23,7 +23,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
-import { EditRepoDialog, HomePageSider } from "../components";
+import { EditRepoDialog, PageSider } from "../components";
 import RepositoryPageBanner from "../components/repository/RepositoryPageBanner";
 import RepositoryPageDetails from "../components/repository/RepositoryPageDetails";
 import { WorkspaceEditor, NewWorkspaceAskUser } from "../components";

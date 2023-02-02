@@ -15,7 +15,7 @@ import workspaceOpenPage from "../pages/WorkspaceOpenPage";
 import workspacePage from "../pages/WorkspacePage";
 import workspaceEditor from "./workspace/WorkspaceEditor";
 import editRepoDialog from "../components/repository/EditRepoDialog";
-import HomePageDrawer from "./MainDrawer/MainDrawer";
+import MainDrawer from "./MainDrawer/MainDrawer";
 
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
@@ -31,7 +31,7 @@ import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
 
 import { UserPage as userPage } from "../pages/UserPage";
 import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
-import { HomePage as homePage } from "../pages/HomePage";
+import { WorkspacesPage as homePage } from "../pages/WorkspacesPage";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
 import { WorkspaceCard as workspaceCard } from "./workspace/WorkspaceCard";
 import WorkspaceActionsMenuUnbound from "./workspace/WorkspaceActionsMenu";
@@ -196,10 +196,10 @@ export const ProtectedRoute = connect(
   dispatchUserProps
 )(protectedRoute);
 
-export const HomePageSider = connect(
+export const PageSider = connect(
   mapAboutDialogAndUserToProps,
   dispatchAboutDialogAndUser
-)(HomePageDrawer);
+)(MainDrawer);
 
 export const WorkspaceActionsMenu = connect(
   mapUserStateToProps,

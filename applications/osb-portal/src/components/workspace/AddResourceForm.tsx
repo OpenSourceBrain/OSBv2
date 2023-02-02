@@ -1,6 +1,4 @@
 import * as React from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import withStyles from "@mui/styles/withStyles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -10,6 +8,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import BackupIcon from "@mui/icons-material/Backup";
 import LinkIcon from "@mui/icons-material/Link";
+import debounce from "lodash/debounce";
 
 import RepositoryResourceBrowser from "../repository/RepositoryResourceBrowser";
 import workspaceResourceService, {
@@ -34,6 +33,9 @@ import WorkspaceService from "../../service/WorkspaceService";
 import Repositories from "../repository/RespositoriesTable";
 import OSBPagination from "../common/OSBPagination";
 import SearchFilter from "../../types/searchFilter";
+import SearchFilterReposWorkspaces from "../common/SearchFilterReposWorkspaces";
+import searchFilter from "../../types/searchFilter";
+import Divider from "@mui/material/Divider";
 
 interface WorkspaceEditProps {
   workspace: Workspace;
@@ -77,41 +79,54 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   tabs: {
     height: "fit-content",
+    "& .MuiTabs-indicator": {
+      display: "none",
+    },
     "& .MuiTabs-scroller": {
       display: "block",
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
+      py: 1,
+
       height: "fit-content",
       "& .MuiTabs-flexContainer": {
         "& .Mui-selected": {
           backgroundColor: bgLighter,
         },
         "& .MuiTab-root": {
-          border: `2px solid ${bgLighter}`,
+          border: `2px solid ${bgLight}`,
           borderRadius: radius,
-          paddingTop: theme.spacing(1),
-          paddingBottom: theme.spacing(1),
-          marginRight: theme.spacing(1),
-          marginLeft: theme.spacing(1),
+          py: 1,
+          mx: 1,
           height: "100%",
+          display: "block",
+          flexDirection: "column",
+          color: fontColor,
+          textTransform: "none",
+          "&:hover": {
+            backgroundColor: bgLighter,
+          },
+          "& div": {
+            color: fontColor,
+            pb: "0.5em",
+          },
         },
       },
     },
   },
+  tab: {},
   root: {
-    padding: theme.spacing(2),
+    p: 2,
     paddingTop: 0,
   },
   addByUploadForm: {
     paddingTop: 0,
-    marginBottom: theme.spacing(3),
+    mb: 3,
     display: "flex",
     alignItems: "flex-end",
     "& .MuiButton-root": {
-      marginLeft: theme.spacing(3),
+      ml: 3,
       height: "fit-content",
       borderRadius: "2px",
     },
@@ -123,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   tabPanel: {
-    marginTop: theme.spacing(3),
+    mt: 3,
     miHeight: "fit-content",
     "& #tabpanel-1": {
       "& .MuiBox-root": {
@@ -131,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: theme.spacing(2),
+          padding: 2,
           "& .MuiGrid-item": {
             "& .MuiTypography-root": {
               fontSize: "0.75rem",
@@ -146,7 +161,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   repositoryBrowserContainer: {
-    backgroundColor: bgLight,
+
+    
     borderRadius: radius,
     "& .repositories-list": {
       "& .MuiBox-root": {
@@ -155,7 +171,8 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiGrid-container": {
           paddingTop: 0,
           paddingBottom: 0,
-          backgroundColor: bgLight,
+
+          
           "&:hover": {
             backgroundColor: bgDarker,
           },
@@ -212,11 +229,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-}));
+};
 
 export default (props: WorkspaceEditProps) => {
-  const classes = useStyles();
-
   const { workspace, onResourceAdded } = props;
 
   const [url, setUrl] = React.useState<string>(null);
@@ -236,6 +251,13 @@ export default (props: WorkspaceEditProps) => {
 
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
+  const [searchFilterValues, setSearchFilterValues] =
+    React.useState<searchFilter>({
+      text: undefined,
+      tags: [],
+      types: [],
+    });
+
   const [selectedRepository, setRepository] =
     React.useState<OSBRepository>(null);
 
@@ -247,10 +269,8 @@ export default (props: WorkspaceEditProps) => {
 
   const [totalPages, setTotalPages] = React.useState(0);
 
-  const [filter, setFilter] = React.useState<SearchFilter>(undefined);
-
   React.useEffect(() => {
-    if (filter === undefined) {
+    if (searchFilterValues === undefined) {
       if (!firstTimeFiltering) {
         setPage(1);
       }
@@ -261,20 +281,23 @@ export default (props: WorkspaceEditProps) => {
     } else {
       if (firstTimeFiltering) {
         firstTimeFiltering = false;
-        RepositoryService.getRepositoriesByFilter(1, filter).then((repos) => {
-          setRepositories(repos.osbrepositories);
-          setTotalPages(repos.pagination.numberOfPages);
-        });
-      } else {
-        RepositoryService.getRepositoriesByFilter(page, filter).then(
+        RepositoryService.getRepositoriesByFilter(1, searchFilterValues).then(
           (repos) => {
             setRepositories(repos.osbrepositories);
             setTotalPages(repos.pagination.numberOfPages);
           }
         );
+      } else {
+        RepositoryService.getRepositoriesByFilter(
+          page,
+          searchFilterValues
+        ).then((repos) => {
+          setRepositories(repos.osbrepositories);
+          setTotalPages(repos.pagination.numberOfPages);
+        });
       }
     }
-  }, [page, filter]);
+  }, [page, searchFilterValues]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -298,6 +321,10 @@ export default (props: WorkspaceEditProps) => {
       setRepository(repo);
     });
   };
+
+  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+    setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+  }, 500);
 
   const handleBackAction = () => {
     setRepositoryLoading(false);
@@ -372,39 +399,41 @@ export default (props: WorkspaceEditProps) => {
   };
 
   return (
-    <Box className={classes.root}>
+    <Box sx={styles.root}>
       <Tabs
-        className={classes.tabs}
+        sx={styles.tabs}
         onChange={handleTabChange}
         value={tabValue}
         aria-label="add-resourse-to-workspace-options"
         variant="fullWidth"
       >
         <Tab
+          sx={styles.tab}
           label={
             <>
-              <Typography component="span">By URL</Typography>
+              <Typography component="div">By URL</Typography>
               <BackupIcon />
             </>
           }
         />
         <Tab
+          sx={styles.tab}
           label={
             <>
-              <Typography component="span">From OSB Repository</Typography>
+              <Typography component="div">From OSB Repository</Typography>
               <LinkIcon />
             </>
           }
         />
         {/* <Tab
-          className={classes.tab}
+          sx={styles.tab}
           label={<>
-            <Typography className={classes.tabTitle} component="span">Upload from computer</Typography>
+            <Typography sx={styles.tabTitle} component="span">Upload from computer</Typography>
             <PublishIcon />
           </>}
         /> */}
       </Tabs>
-      <Box className={classes.tabPanel}>
+      <Box sx={styles.tabPanel}>
         <TabPanel value={tabValue} index={0}>
           <Grid
             container={true}
@@ -429,11 +458,7 @@ export default (props: WorkspaceEditProps) => {
                 variant="standard"
               />
             </Grid>
-            <Grid
-              item={true}
-              style={{ flex: 1 }}
-              className={classes.addByUploadForm}
-            >
+            <Grid item={true} style={{ flex: 1 }} sx={styles.addByUploadForm}>
               <TextField
                 key={"namefor-" + url}
                 error={Boolean(nameError)}
@@ -447,10 +472,11 @@ export default (props: WorkspaceEditProps) => {
 
               <Button
                 variant="contained"
+                color="secondary"
                 onClick={handleAddResource}
                 disabled={waiting}
               >
-                Upload
+                UPLOAD
               </Button>
               {waiting && (
                 <CircularProgress
@@ -468,10 +494,10 @@ export default (props: WorkspaceEditProps) => {
           </Grid>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <Box className={classes.repositoryBrowserContainer}>
+          <Box sx={styles.repositoryBrowserContainer}>
             {repositoryLoading ? (
               selectedRepository ? (
-                <Box className="resource-browser">
+                <Box p={2}>
                   <RepositoryResourceBrowser
                     repository={selectedRepository}
                     checkedChanged={setCheckedArray}
@@ -489,7 +515,19 @@ export default (props: WorkspaceEditProps) => {
               )
             ) : repositories ? (
               <>
-                <Box className="repositories-list">
+                <Box>
+                  <Box py={2} mb={2} px={4} display="flex" >
+                    <SearchFilterReposWorkspaces
+                      filterChanged={(newTextFilter) =>
+                        debouncedHandleSearchFilter(newTextFilter)
+                      }
+                      searchFilterValues={searchFilterValues}
+                      setSearchFilterValues={setSearchFilterValues}
+                      hasTypes={true}
+                      setLoading={() => setRepositories(null)}
+                    />
+                  </Box>
+                  <Divider />
                   <Repositories
                     repositories={repositories}
                     handleRepositoryClick={loadRepository}

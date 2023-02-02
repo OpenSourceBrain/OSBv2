@@ -46,7 +46,7 @@ const WorkspaceDetailsInfo = (props: any) => {
 
     <Box sx={{ height: '100%', overflow: 'hidden' }} pt={4} pl={2}>
       <WorkspaceInfoSection spacing={1}>
-        <Typography variant='subtitle1'>Info</Typography>
+        <Typography variant='h5' component="h2">Info</Typography>
         <Stack direction="row" spacing={1}>
           <PersonIcon fontSize="small" />
           {props.workspace.user &&
@@ -69,7 +69,7 @@ const WorkspaceDetailsInfo = (props: any) => {
         </Stack>
       </WorkspaceInfoSection>
       <WorkspaceInfoSection spacing={1} mt={3}>
-        <Typography variant='subtitle1'>Tags</Typography>
+        <Typography variant='h5' component="h2">Tags</Typography>
         <Box>
           {
             tags?.map((item, index) => {

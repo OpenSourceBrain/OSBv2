@@ -103,11 +103,7 @@ const styles = {
   repositoriesAndWorkspaces: (theme) => ({
     flexDirection: "column",
     paddingBottom: "0px !important",
-    "& .repo-paper": {
-      backgroundColor: bgLightestShade,
-      padding: theme.spacing(3),
-      marginBottom: theme.spacing(2),
-    },
+    backgroundColor: bgDarker,
   }),
   showMoreText: {
     color: paragraph,
@@ -273,6 +269,8 @@ export const UserPage = (props: any) => {
     return privateWorkspaces;
   };
 
+  const privateWorkspaces = getPrivateWorkspaces();
+
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
   };
@@ -309,12 +307,7 @@ export const UserPage = (props: any) => {
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
     <>
-      <Box
-        bgcolor={bgDarkest}
-        className={`verticalFill`}
-        display="flex"
-        justifyContent="center"
-      >
+      <Box className={`verticalFill`} display="flex" justifyContent="center">
         <Grid container={true} spacing={0} className="verticalFill">
           <Grid
             id="profile-info"
@@ -359,7 +352,7 @@ export const UserPage = (props: any) => {
                   <CircularProgress size="1rem" />
                 )}
                 {canEdit && allWorkspaces ? (
-                  <> ({getPrivateWorkspaces().length} private) </>
+                  <> ({privateWorkspaces.length} private) </>
                 ) : (
                   <> </>
                 )}
@@ -574,6 +567,7 @@ export const UserPage = (props: any) => {
             sx={styles.repositoriesAndWorkspaces}
           >
             <Box
+              bgcolor={bgDarkest}
               px={(theme) => theme.spacing(4)}
               sx={{ borderBottom: `1px solid ${lineColor}` }}
             >
@@ -606,7 +600,7 @@ export const UserPage = (props: any) => {
                         <Chip
                           size="small"
                           color="primary"
-                          label={getPrivateWorkspaces().length}
+                          label={privateWorkspaces.length}
                         />
                       </>
                     }
@@ -652,7 +646,7 @@ export const UserPage = (props: any) => {
               {canEdit && (
                 <TabPanel value={tabValue} index={1}>
                   <Grid container={true} spacing={2}>
-                    {getPrivateWorkspaces().map((ws) => {
+                    {privateWorkspaces.map((ws) => {
                       return (
                         <Grid
                           item={true}
@@ -680,15 +674,14 @@ export const UserPage = (props: any) => {
                     : 1
                 }
               >
-               <RepositoriesTable
-              handleRepositoryClick={(repository: OSBRepository) =>
-                openRepoUrl(repository.id)
-              }
-              
-              user={currentUser}
-              repositories={repositories}
-              loading={loading}
-            />
+                <RepositoriesTable
+                  handleRepositoryClick={(repository: OSBRepository) =>
+                    openRepoUrl(repository.id)
+                  }
+                  user={currentUser}
+                  repositories={repositories}
+                  loading={loading}
+                />
               </TabPanel>
             </Box>
           </Grid>

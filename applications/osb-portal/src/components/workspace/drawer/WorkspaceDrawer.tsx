@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+
   },
   hide: {
     display: "none",
@@ -57,13 +57,13 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     display: "flex",
     bottom: 0,
-    paddingTop: theme.spacing(1),
+
     justifyContent: "space-between",
   },
   drawerHeader: {
     display: "flex",
     alignItems: "center",
-    fontSize: "1rem",
+
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",

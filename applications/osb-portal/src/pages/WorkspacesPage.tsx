@@ -36,7 +36,7 @@ import WorkspacesList from "../components/workspace/WorkspacesTable";
 import { Tag } from "../apiclient/workspaces";
 import OSBPagination from "../components/common/OSBPagination";
 
-export const HomePage = (props: any) => {
+export const WorkspacesPage = (props: any) => {
   const history = useHistory();
 
   const [searchFilterValues, setSearchFilterValues] =
@@ -164,13 +164,16 @@ export const HomePage = (props: any) => {
   return (
     <>
       <div id="workspaces-list" className="verticalFit">
-        <Box borderBottom={`1px solid ${lineColor}`} pr="1.3rem">
+        <Box borderBottom={`1px solid ${lineColor}`}>
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            pl={3}
-            pr={3}
+            px={4}
+            sx={{ pb: {
+              sm: 2,
+              lg: 0
+            } }}
           >
             <Grid
               container={true}
@@ -244,7 +247,7 @@ export const HomePage = (props: any) => {
                   />
                 </Tabs>
               </Grid>
-              <StyledGrid item={true} xs={12} sm={8} md={12} lg={5}>
+              <Grid item={true} xs={12} sm={12} md={12} lg={5}>
                 <ButtonGroup
                   sx={{
                     backgroundColor: bgRegular,
@@ -268,7 +271,7 @@ export const HomePage = (props: any) => {
                   hasTypes={false}
                   setLoading={setLoading}
                 />
-              </StyledGrid>
+              </Grid>
             </Grid>
           </Box>
         </Box>

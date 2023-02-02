@@ -27,9 +27,7 @@ const RepoPageBannerBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   padding: theme.spacing(5),
   minHeight: "200px",
-  "& .MuiTypography-h1": {
-    fontWeight: 400,
-  },
+  
   "& .MuiChip-root": {
     background: chipBg,
     margin: "0.25rem",
@@ -46,7 +44,7 @@ const RepositoryPageBanner = ({
   return (
     repository && (
       <RepoPageBannerBox>
-        <Typography variant="h1" align="center" sx={{ lineHeight: "1.6" }}>
+        <Typography variant="h1" component="h1" align="center" sx={{ lineHeight: "1.6" }}>
           {repository?.name}
         </Typography>
         <Box sx={{ textAlign: "center", maxWidth: 600 }}>

@@ -20,11 +20,11 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import { HomePageSider } from "../components";
+import { PageSider } from "../components";
 import { WorkspaceEditor } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
-import WorkspaceSidebar from "../components/workspace/WorkspaceSidebar";
+import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
 import WorkspaceDetailsInfo from "../components/workspace/WorkspaceDetailsInfo";
 
 //services
@@ -37,6 +37,7 @@ import { Workspace, OSBApplication } from "../types/workspace";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import WorkspaceResourceBrowser from "../components/workspace/drawer/WorkspaceResourceBrowser";
 
 const NavbarButton = styled(Button)(({ theme }) => ({
   fontSize: "12px",
@@ -206,8 +207,9 @@ export const WorkspacePage = (props: any) => {
                 </Tooltip>
               )}
               <Typography
-                className="workspace-name-input"
-                sx={{ fontSize: "24px" }}
+                className="workspace-name"
+                variant="h1"
+                component="h1"
               >
                 {workspace?.name}
               </Typography>
@@ -219,10 +221,13 @@ export const WorkspacePage = (props: any) => {
             >
               <Grid container height={1} spacing={2}>
                 <Grid id="workspace-detail-sidebar" item xs={12} sm={3} lg={2}>
-                  <WorkspaceSidebar
+                  <WorkspaceResourceBrowser
                     workspace={workspace}
                     user={user}
                     refreshWorkspace={props.refreshWorkspace}
+                    open={true}
+                    openResourceAction={(resource) => history.push(`/workspace/open/${workspaceId}/${resource.type.application.code}`)}
+                    currentResource={workspace.lastOpen || workspace.resources[0]}
                   />
                 </Grid>
                 <Grid

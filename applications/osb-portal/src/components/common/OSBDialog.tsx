@@ -114,7 +114,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
       }}
       onClose={handleClose}
       open={open}
-      fullWidth={true}
+      fullWidth={false}
       maxWidth={maxWidth}
     >
       <DialogTitle>

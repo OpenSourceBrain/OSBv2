@@ -20,6 +20,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 //components
 import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
@@ -46,13 +48,32 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import OSBDialog from "../common/OSBDialog";
 import { NewWorkspaceAskUser } from "..";
+import { UserInfo } from "../../types/user";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   drawerContent: {
     width: "100%",
   },
-  root: {
+  root: (openDrawer) => (theme) => ({
     display: "flex",
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+
+    top: "initial",
+
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: openDrawer
+        ? theme.transitions.duration.enteringScreen
+        : theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: "hidden",
+    width: "100%",
+
+    "& .verticalFit": {
+      display: "block",
+    },
+
     "& .MuiListSubheader-root": {
       backgroundColor: "transparent",
       "& .MuiTypography-root": {
@@ -103,45 +124,21 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  },
-  menuButton: {
+  }),
+  menuButton: (theme) => ({
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    display: {
+      md: "none",
     },
-  },
+  }),
   toolbar: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 16px",
   },
-  drawer: {
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-    display: "flex",
-  },
-  drawerOpen: {
-    top: "initial",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    top: "initial",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: "100%",
-    "& .verticalFit": {
-      display: "block",
-    },
-  },
 
-  drawerPaper: {
+  drawerPaper: (theme) => ({
     position: "static",
     flex: 1,
     display: "flex",
@@ -150,8 +147,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     borderRight: `1px solid ${bgRegular}`,
     backgroundColor: bgDarkest,
-  },
-  createMenu: {
+  }),
+  createMenu: (theme) => ({
     minWidth: "14.62rem",
     backgroundColor: "#3C3C3C",
     borderRadius: "6px",
@@ -177,11 +174,14 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  },
-}));
+  }),
+};
 
-export const MainDrawer = (props: any) => {
-  const classes = useStyles();
+export const MainDrawer = (props: {
+  isWorkspacesPage: boolean;
+  user: UserInfo;
+  isRepositoriesPage: boolean;
+}) => {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -189,15 +189,13 @@ export const MainDrawer = (props: any) => {
   const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
+  const {isWorkspacesPage, isRepositoriesPage} = props;
 
   const openCreatMenu = Boolean(anchorEl);
 
   const history = useHistory();
 
-  const isWorkspacesPage =
-    history.location.pathname === "/" ||
-    history.location.pathname.includes("workspaces");
-  const isRepositoriesPage = history.location.pathname.includes("repositories");
+  
 
   const text = props.user
     ? `Welcome back, ${props.user.username}`
@@ -246,7 +244,7 @@ export const MainDrawer = (props: any) => {
             aria-label="open drawer"
             edge="start"
             onClick={toggleDrawer}
-            className={classes.menuButton}
+            sx={styles.menuButton}
           >
             <MenuIcon />
           </IconButton>
@@ -274,21 +272,16 @@ export const MainDrawer = (props: any) => {
           onClose={toggleDrawer}
           elevation={0}
           open={openDrawer}
-          className={clsx(classes.drawer, classes.root, {
-            [classes.drawerOpen]: openDrawer,
-            [classes.drawerClose]: !openDrawer,
-          })}
-          classes={{
-            paper: clsx(classes.drawerPaper, classes.root, {
-              [classes.drawerOpen]: openDrawer,
-              [classes.drawerClose]: !openDrawer,
-            }),
+          sx={styles.root(openDrawer)}
+          PaperProps={{
+            sx: styles.drawerPaper,
           }}
         >
-          <div
-            className={`${openDrawer ? classes.drawerContent : ""} verticalFit`}
+          <Box
+            sx={openDrawer ? styles.drawerContent : {}}
+            className={openDrawer ? "verticalFit" : ""}
           >
-            <Toolbar className={classes.toolbar}>
+            <Toolbar sx={styles.toolbar}>
               <Typography
                 sx={{
                   fontWeight: 700,
@@ -314,40 +307,39 @@ export const MainDrawer = (props: any) => {
                 </ListSubheader>
               }
             >
-              <ListItem
-                button
+              <ListItemButton
                 onClick={() => history.push("/")}
                 selected={isWorkspacesPage}
-                secondaryAction={
-                  isWorkspacesPage ? (
-                    <IconButton edge="end" aria-label="arrow">
-                      <KeyboardArrowRightIcon />
-                    </IconButton>
-                  ) : null
-                }
               >
                 <ListItemIcon>
                   <FolderOpenIcon />
                 </ListItemIcon>
                 <ListItemText primary="Workspaces" />
-              </ListItem>
-              <ListItem
-                button
-                onClick={() => history.push("/repositories")}
-                selected={isRepositoriesPage}
-                secondaryAction={
-                  isRepositoriesPage ? (
+                <ListItemSecondaryAction>
+                  {isWorkspacesPage ? (
                     <IconButton edge="end" aria-label="arrow">
                       <KeyboardArrowRightIcon />
                     </IconButton>
-                  ) : null
-                }
+                  ) : null}
+                </ListItemSecondaryAction>
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => history.push("/repositories")}
+                selected={isRepositoriesPage}
               >
                 <ListItemIcon>
                   <PublicIcon />
                 </ListItemIcon>
                 <ListItemText primary="Repositories" />
-              </ListItem>
+                <ListItemSecondaryAction>
+                  {isRepositoriesPage ? (
+                    <IconButton edge="end" aria-label="arrow">
+                      <KeyboardArrowRightIcon />
+                    </IconButton>
+                  ) : null}
+                </ListItemSecondaryAction>
+              </ListItemButton>
+              
             </List>
             <List
               subheader={
@@ -358,14 +350,15 @@ export const MainDrawer = (props: any) => {
                 </ListSubheader>
               }
             >
-              <ListItem button onClick={handleAboutDialogOpen}>
+              <ListItemButton 
+              onClick={handleAboutDialogOpen}>
                 <ListItemIcon>
                   <InfoOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="About OSB" />
-              </ListItem>
-              <ListItem
-                button
+              </ListItemButton>
+              <ListItemButton
+                
                 component="a"
                 href="https://docs.opensourcebrain.org/OSBv2/Overview.html"
                 target="_blank"
@@ -374,9 +367,8 @@ export const MainDrawer = (props: any) => {
                   <DescriptionOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Documentation" />
-              </ListItem>
-              <ListItem
-                button
+              </ListItemButton>
+              <ListItemButton
                 component="a"
                 href="https://matrix.to/#/%23OpenSourceBrain_community:gitter.im?utm_source=gitter"
                 target="_blank"
@@ -385,10 +377,10 @@ export const MainDrawer = (props: any) => {
                   <HelpOutlineOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Chat" />
-              </ListItem>
+              </ListItemButton>
             </List>
-          </div>
-          <Toolbar className={classes.toolbar}>
+          </Box>
+          <Toolbar sx={styles.toolbar}>
             <Button
               id="create-new-workspace-repository"
               aria-controls={openDrawer ? "demo-positioned-menu" : undefined}
@@ -417,7 +409,7 @@ export const MainDrawer = (props: any) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{ vertical: "top", horizontal: "center" }}
               PaperProps={{
-                className: classes.createMenu,
+                sx: styles.createMenu,
               }}
             >
               <MenuItem onClick={() => handleOpenDialog("workspace")}>

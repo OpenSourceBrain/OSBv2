@@ -9,9 +9,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import Pagination from "@mui/material/Pagination";
 
-import { HomePageSider } from "../../components";
 import RepositoriesCards from "./RepositoriesCards";
 import RepositoriesTable from "../../components/repository/RespositoriesTable";
 import SearchFilterReposWorkspaces from "../../components/common/SearchFilterReposWorkspaces";
