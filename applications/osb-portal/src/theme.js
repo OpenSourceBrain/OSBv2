@@ -371,7 +371,7 @@ const theme = {
       } },
     MuiDialogTitle: { 
       styleOverrides: { 
-        root: ({theme}) => ({ 
+        root: ({ theme }) => ({ 
           borderBottom: `1px solid ${bgLightest}`,
           display: "flex",
           justifyContent: "space-between",
@@ -394,7 +394,7 @@ const theme = {
     },
     MuiDialogActions: {
       styleOverrides: {
-        root: ({theme}) => ( {
+        root: ({ theme }) => ( {
           backgroundColor: bgLightest,
           paddingTop: theme.spacing(2),
           paddingBottom: theme.spacing(2),
@@ -405,7 +405,7 @@ const theme = {
     },
     MuiDialogContent: { 
       styleOverrides: { 
-        root: ({theme}) => ( { 
+        root: ({ theme }) => ( { 
           paddingTop: theme.spacing(2),
           paddingBottom: theme.spacing(2),
           paddingRight: theme.spacing(3),
