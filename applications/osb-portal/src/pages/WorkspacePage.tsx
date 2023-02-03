@@ -7,7 +7,9 @@ import {
   paragraph,
   secondaryColor as white,
   chipBg,
+  bgLightest,
   bgDarkest,
+  bgDark,
   lightWhite,
 } from "../theme";
 
@@ -24,7 +26,7 @@ import { PageSider } from "../components";
 import { WorkspaceEditor } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
-import WorkspaceInteractions from "../components/workspace/drawer/WorkspaceInteractions";
+
 import WorkspaceDetailsInfo from "../components/workspace/WorkspaceDetailsInfo";
 
 //services
@@ -186,7 +188,7 @@ export const WorkspacePage = (props: any) => {
             className="verticalFit"
             width={1}
             height={1}
-            sx={{ overflowY: "hidden" }}
+            sx={{ overflowY: "hidden", backgroundColor: bgDark }}
           >
             <Box
               id="workspace-detail-top"
@@ -219,13 +221,14 @@ export const WorkspacePage = (props: any) => {
               height={1}
               sx={{ background: "rgba(0, 0, 0, 0.25)" }}
             >
-              <Grid container height={1} spacing={2}>
-                <Grid id="workspace-detail-sidebar" item xs={12} sm={3} lg={2}>
+              <Grid container height={1} spacing={2} className="verticalFill">
+                <Grid id="workspace-detail-sidebar" className="verticalFill" item xs={12} sm={3} lg={2} sx={{
+                  borderRight: `1px solid ${bgLightest}`
+                }}>
                   <WorkspaceResourceBrowser
                     workspace={workspace}
                     user={user}
                     refreshWorkspace={props.refreshWorkspace}
-                    open={true}
                     openResourceAction={(resource) => history.push(`/workspace/open/${workspaceId}/${resource.type.application.code}`)}
                     currentResource={workspace.lastOpen || workspace.resources[0]}
                   />

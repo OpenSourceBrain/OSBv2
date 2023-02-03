@@ -281,21 +281,23 @@ export default (props: WorkspaceProps | any) => {
         </SidebarBox>
       ) : (
         <>
-          <div className={classes.closedText}>
+          <Box className={classes.closedText}>
             {canEdit && (
               <IconButton onClick={showAddResource} size="large">
                 <AddIcon fontSize="small" />
               </IconButton>
             )}
+            <Typography variant="h6" >
             {props.workspace.name}
-          </div>
+            </Typography>
+          </Box>
         </>
       )}
       <OSBDialog
         title={
           <span>
             Add resources to
-            <Box
+            <Typography
               component="span"
               sx={{
                 color: "primary.main",
@@ -303,7 +305,7 @@ export default (props: WorkspaceProps | any) => {
             >
               {" "}
               Workspace {workspace.name}
-            </Box>
+            </Typography>
           </span>
         }
         open={addResourceOpen}

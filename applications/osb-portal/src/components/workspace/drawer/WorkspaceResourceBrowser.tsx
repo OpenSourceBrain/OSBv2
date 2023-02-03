@@ -61,9 +61,6 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
     paddingBottom: 0,
     "&:hover": {
       background: workspaceItemBg,
-      "& .MuiTypography-root": {
-        color: orangeText,
-      },
     },
   },
   "& .MuiTypography-root": {
@@ -75,16 +72,14 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
     textOverflow: "ellipsis",
     maxWidth: "100%",
   },
-  "& .Mui-disabled": {
+  "& .Mui-disabled.active": {
     opacity: 1
   },
   "&:hover": {
     "& .MuiListItemSecondaryAction-root .MuiIconButton-root": {
       visibility: "inherit",
     },
-    "& .MuiTypography-root": {
-      color: orangeText,
-    },
+
   },
   "& .active .MuiTypography-root": {
     color: orangeText,
@@ -159,7 +154,7 @@ const OSBResourceItem = (props: {
     >
       <ListItemButton
         className={active ? "active" : ""}
-        disabled={active}
+        disabled={active || resource.status !== ResourceStatus.available}
         onClick={canOpenFile ? handleOpenResource : undefined}
       >
         <SidebarIconButton>{Icon}</SidebarIconButton>
@@ -184,7 +179,7 @@ const OSBResourceItem = (props: {
 interface WorkspaceProps {
   workspace: Workspace;
   refreshWorkspace: () => void;
-  openResource: (r: WorkspaceResource) => any;
+  openResource?: (r: WorkspaceResource) => any;
   currentResource: WorkspaceResource;
   user: UserInfo;
   openResourceAction?: (resource: WorkspaceResource) => void;
@@ -263,13 +258,13 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   };
 
   return (
-    <>
-      <Box width="100%">
-        <List>
+    <Box className="verticalFill">
+      <Box width="100%" className="verticalFill">
+        <List className="verticalFill">
           {experimentalResources.length > 0 && (
             <ResourceTreeGroup
               resources={experimentalResources}
-              defaultOpen={currentResource.resourceType === ResourceType.E}
+              defaultOpen={currentResource && currentResource.resourceType === ResourceType.E}
               label={"Experiment Data"}
               Icon={<AreaChartIcon fontSize="small" />}
             />
@@ -277,7 +272,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           {modelResources.length > 0 && (
             <ResourceTreeGroup
               resources={modelResources}
-              defaultOpen={currentResource.resourceType === ResourceType.M}
+              defaultOpen={currentResource && currentResource.resourceType === ResourceType.M}
               label={"Models"}
               Icon={<ViewInArIcon fontSize="small" />}
             />
@@ -285,7 +280,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           {notebookResources.length > 0 && (
             <ResourceTreeGroup
               resources={notebookResources}
-              defaultOpen={currentResource.resourceType === ResourceType.G}
+              defaultOpen={currentResource && currentResource.resourceType === ResourceType.G}
               label={"Notebooks"}
               Icon={<StickyNote2OutlinedIcon fontSize="small" />}
             />
@@ -318,7 +313,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           </ListItem>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 
