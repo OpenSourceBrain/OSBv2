@@ -13,6 +13,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { styled } from "@mui/styles";
 import { chipBg } from "../../theme";
+import IconButton from "@mui/material/IconButton";
 
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
@@ -61,15 +62,9 @@ export default (props: RepositoryActionsMenuProps) => {
     <>
       {canEdit && (
         <>
-          <ThreeDotButton
-            onClick={handleClick}
-            size="small"
-            variant="contained"
-            aria-label="more"
-            id="threeDot-button"
-          >
-            <MoreVertIcon />
-          </ThreeDotButton>
+          <IconButton className="btn-actions" size="small" onClick={handleClick}>
+        <MoreVertIcon style={{ fontSize: "1rem" }} />
+      </IconButton>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}

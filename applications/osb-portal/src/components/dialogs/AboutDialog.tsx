@@ -9,48 +9,44 @@ import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
 import { secondaryColor, bgLight } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   paper: {
-    padding: theme.spacing(2),
-    margin: theme.spacing(1),
+    padding: 2,
     textAlign: "center",
-  },
-  partners: {
-    fontSize: "0.9em",
-    marginBottom: "0.5em",
-  },
-}));
+    backgroundColor: "transparent",
+  }
+};
 
 export const AboutContent = (props: any) => {
-  const classes = useStyles();
+
   const logoOSB = "/images/osb-logo-full.png";
-  const logoMetaCell = "/images/metacell_new.png";
+  const logoMetaCell = "/images/metacell.png";
   const logoWellcome = "/images/wellcome.png";
 
   return (
-    <Paper className={classes.paper}>
+    <Box sx={styles.paper}>
       <img width="250" src={logoOSB} />
-      <Box m={1}>
+      <Box>
         <Link
           variant="h5"
           style={{ display: "block" }}
           href="https://github.com/OpenSourceBrain/OSBv2"
           target="_blank"
-          underline="hover">
+        >
           Open Source Brain v2.0
         </Link>
       </Box>
 
-      <Box m={1}>
-        <Typography variant="body2" color={secondaryColor}>
+      <Box my={2}>
+        <Typography variant="body1" >
           Open Source Brain v2.0 (OSBv2) is a cloud based integrated research
           environment for neuroscience. OSBv2 aims to close the loop between
           experimental and computational neuroscience.
         </Typography>
       </Box>
 
-      <Box m={1} pb={2}>
-        <Typography variant="body2" color={secondaryColor}>
+      <Box my={2} pb={2}>
+        <Typography variant="body1" >
           Please see the project{" "}
           <Link
             href="https://docs.opensourcebrain.org/OSBv2/Overview.html"
@@ -62,8 +58,8 @@ export const AboutContent = (props: any) => {
         </Typography>
       </Box>
 
-      <Box m={1}>
-        <Typography variant="body2" color={secondaryColor}>
+      <Box my={2}>
+        <Typography variant="body1">
           OSBv2 is being developed by the{" "}
           <Link href="http://silverlab.org/" target="_blank" underline="hover">
             Silver Lab at University College London
@@ -92,7 +88,10 @@ export const AboutContent = (props: any) => {
           </Link>
           .
         </Typography>
-        <Link href="http://www.metacell.us" target="_blank" underline="hover">
+        
+      </Box>
+      <Box mt={2}>
+      <Link href="http://www.metacell.us" target="_blank" underline="hover">
           <img
             style={{
               width: 150,
@@ -111,7 +110,7 @@ export const AboutContent = (props: any) => {
           />
         </Link>
       </Box>
-    </Paper>
+    </Box>
   );
 };
 

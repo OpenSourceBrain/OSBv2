@@ -127,7 +127,7 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-    {props.showButton && <IconButton className="btn-workspace-actions" size="small" onClick={handleClick}>
+    {props.showButton && <IconButton className="btn-actions" size="small" onClick={handleClick}>
         <Icons.Dots style={{ fontSize: "1rem" }} />
       </IconButton>}
       <Menu

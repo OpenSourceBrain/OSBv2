@@ -12,16 +12,10 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
 //style
-import makeStyles from "@mui/styles/makeStyles";
 import {
-  checkBoxColor,
-  bgDarker,
-  secondaryColor,
-  paragraph,
-  lightText,
+
   drawerText,
 } from "../../theme";
-import clsx from "clsx";
 
 interface DialogProps {
   open: boolean;
@@ -31,59 +25,8 @@ interface DialogProps {
   actions?: React.ReactElement;
   closeAction: () => void;
   className?: string;
+  sx?: any
 }
-
-const useStyles = makeStyles((theme) => ({
-  dialog: {
-    padding: "2rem",
-    backgroundColor: bgDarker,
-    backgroundImage: "unset",
-    borderRadius: "16px",
-
-    "& .MuiDialogContent-root": {
-      "&::-webkit-scrollbar": {
-        width: 2,
-        height: 2,
-      },
-      backgroundColor: bgDarker,
-      padding: 0,
-    },
-    "& .MuiDialogTitle-root": {
-      padding: 0,
-      color: secondaryColor,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-
-      "& .MuiButtonBase-root": {
-        alignSelf: "end",
-        padding: 0,
-
-        "& .MuiSvgIcon-root": {
-          marginBottom: 0,
-        },
-      },
-    },
-  },
-  closeIcon: {
-    color: checkBoxColor,
-  },
-  createWorkspaceRepo: {
-    "& .MuiSvgIcon-root": {
-      marginBottom: theme.spacing(1),
-    },
-    "& .MuiTypography-caption": {
-      color: paragraph,
-      fontSize: "0.857rem",
-    },
-    "& .MuiButtonBase-root": {
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
-    },
-  },
-}));
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   closeAction,
@@ -92,7 +35,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   children,
   actions,
   maxWidth,
-  className,
+  sx,
   subTitle,
 }) => {
   const handleClose = () => {
@@ -103,41 +46,29 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
     }
   };
 
-  const classes = useStyles();
-
   return (
     <Dialog
-      PaperProps={{
-        className: className
-          ? clsx(classes.dialog, classes[className])
-          : classes.dialog,
-      }}
       onClose={handleClose}
       open={open}
       fullWidth={false}
       maxWidth={maxWidth}
+      sx={sx}
     >
       <DialogTitle>
-        <IconButton onClick={handleClose}>
-          <CloseIcon sx={{ color: drawerText }} />
-        </IconButton>
-        <Typography
-          component="h1"
-          variant="h1"
-          align="center"
-          sx={{ fontWeight: 400, marginBottom: "1.143rem" }}
-        >
+        <Typography component="h3" variant="h6" sx={{m: 0}}>
           {title}
+          <Typography
+            component="h5"
+            variant="subtitle1"
+            align="center"
+          >
+            {subTitle}
+          </Typography>
         </Typography>
-        <Typography
-          component="h5"
-          variant="h5"
-          color={lightText}
-          align="center"
-          sx={{ fontWeight: 400, letterSpacing: "0.02rem", lineHeight: 1.8 }}
-        >
-          {subTitle}
-        </Typography>
+
+        <IconButton sx={{p: 0, fontSize: "1rem"}} onClick={handleClose}>
+          <CloseIcon fontSize="inherit" sx={{ color: drawerText }} />
+        </IconButton>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
       {actions ? <DialogActions>{actions}</DialogActions> : null}

@@ -39,6 +39,7 @@ import { Tag } from "../../apiclient/workspaces";
 
 //services
 import WorkspaceService from "../../service/WorkspaceService";
+import StyledLabel from "../styled/FormLabel";
 
 export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
   color: bgInputs,
@@ -58,6 +59,7 @@ export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
     border: `2px solid ${bgInputs}`,
   },
 }));
+
 
 export const StyledImagePreviewSection = styled("section")(() => ({
   display: "flex",
@@ -273,18 +275,12 @@ export default (props: WorkspaceEditProps) => {
           </React.Fragment>
         }
       >
-        <Box
-          p={2}
-          mt={4}
-          sx={{
-            marginTop: 0,
-          }}
-        >
+        <Box>
           {props.children && <Box>{props.children}</Box>}
           <Box>
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace name
-            </Typography>
+            </StyledLabel>
             <TextField
               id="workspaceName"
               placeholder="Name"
@@ -296,9 +292,9 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4} alignItems="stretch">
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace tags
-            </Typography>
+            </StyledLabel>
             <StyledAutocomplete
               multiple={true}
               freeSolo={true}
@@ -327,9 +323,9 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4}>
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Visibility
-            </Typography>
+            </StyledLabel>
             <Select
               value={workspaceForm.shareType}
               onChange={setTypeField}
@@ -343,9 +339,9 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4}>
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace description
-            </Typography>
+            </StyledLabel>
 
             <MDEditor
               defaultValue={workspace?.description}
@@ -355,9 +351,9 @@ export default (props: WorkspaceEditProps) => {
             />
           </Box>
           <Box mt={4} alignItems="stretch">
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace thumbnail
-            </Typography>
+            </StyledLabel>
             <StyledDropZoneBox alignItems="stretch">
               <Dropzone
                 onDrop={(acceptedFiles: any) => {

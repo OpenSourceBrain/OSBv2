@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import Avatar from "@mui/material/Avatar";
 import AlternateEmail from "@mui/icons-material/AlternateEmail";
 import EmailIcon from "@mui/icons-material/Email";
@@ -19,6 +18,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LanguageIcon from "@mui/icons-material/Language";
 import GroupIcon from "@mui/icons-material/Group";
 import BusinessIcon from "@mui/icons-material/Business";
+import FormLabel from "../styled/FormLabel";
 
 // This order is followed when data is displayed
 const profileMeta: { [key: string]: { [key: string]: any } } = {
@@ -209,9 +209,9 @@ export default (props: UserEditProps) => {
             props.profileForm.lastName?.charAt(0)}
         </Avatar>
         <Box width="100%">
-          <Typography component="label" variant="h6">
+          <FormLabel>
             Profile picture URL
-          </Typography>
+          </FormLabel>
           <TextField
             error={props.error.avatar}
             helperText={props.error.avatar}
@@ -224,9 +224,9 @@ export default (props: UserEditProps) => {
         </Box>
       </Box>
       <Box mb={1} mt={1}>
-        <Typography component="label" variant="h6">
+        <FormLabel>
           Display Name
-        </Typography>
+        </FormLabel>
         <TextField
           error={props.error.firstName}
           helperText={props.error.firstName}
@@ -239,9 +239,9 @@ export default (props: UserEditProps) => {
         />
       </Box>
       <Box mb={1} mt={1}>
-        <Typography component="label" variant="h6">
+        <FormLabel>
           Username
-        </Typography>
+        </FormLabel>
         <TextField
           disabled={true}
           error={props.error.username}
@@ -261,9 +261,9 @@ export default (props: UserEditProps) => {
         />
       </Box>
       <Box mb={1} mt={1}>
-        <Typography component="label" variant="h6">
+        <FormLabel>
           Email address
-        </Typography>
+        </FormLabel>
         <TextField
           error={props.error.email}
           helperText={props.error.email}
@@ -282,16 +282,16 @@ export default (props: UserEditProps) => {
         />
         <Typography
           component="span"
-          variant="h6"
+          variant="body1"
           style={{ fontWeight: "normal" }}
         >
           Your email address is private. Other users can't see it.
         </Typography>
       </Box>
       <Box mb={1} mt={1}>
-        <Typography component="label" variant="h6">
+        <FormLabel>
           Links
-        </Typography>
+        </FormLabel>
         <Tooltip title="Website link">
           <TextField
             error={props.error.website}

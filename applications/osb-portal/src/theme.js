@@ -257,7 +257,7 @@ const theme = {
           flexDirection: "column",
           justifyContent: "flex-end",
           borderRadius: "8px",
-          "& .btn-workspace-actions": {
+          "& .btn-actions": {
             position: "absolute",
             top: 3,
             right: 3,
@@ -369,8 +369,50 @@ const theme = {
           paddingRight: gutter * 2,
         },
       } },
-    MuiDialogTitle: { styleOverrides: { root: { fontWeight: 600, fontSize: "1rem" } } },
-    MuiDialogContent: { styleOverrides: { root: { paddingBottom: gutter } } },
+    MuiDialogTitle: { 
+      styleOverrides: { 
+        root: ({theme}) => ({ 
+          borderBottom: `1px solid ${bgLightest}`,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+          paddingRight: theme.spacing(3),
+          paddingLeft: theme.spacing(3),
+
+        })
+      } 
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: "none",
+          backgroundColor: bgDark,
+        }
+      }
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: ({theme}) => ( {
+          backgroundColor: bgLightest,
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+          paddingRight: theme.spacing(3),
+          paddingLeft: theme.spacing(3),
+        })
+      }
+    },
+    MuiDialogContent: { 
+      styleOverrides: { 
+        root: ({theme}) => ( { 
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+          paddingRight: theme.spacing(3),
+          paddingLeft: theme.spacing(3),
+        })
+      }
+    },
     MuiCollapse: {
       styleOverrides: {
         container: { padding: 0 },
