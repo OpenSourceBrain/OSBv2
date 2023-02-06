@@ -2,15 +2,9 @@ FROM jupyter/base-notebook:hub-1.5.0
 USER root
 
 
-RUN apt-get update
-
 ####  General packages via apt-get
 
-RUN apt-get install graphviz -y
-RUN apt-get install openjdk-11-jre-headless -y
-
-RUN apt-get install git vim htop ncdu -y      # git and general utilities
-RUN apt-get install make cmake libncurses-dev g++ -y  # make etc. to allow NEURON`s nrnivmodl
+RUN apt-get update &&  apt-get install graphviz openjdk-11-jre-headless git vim htop ncdu make cmake libncurses-dev g++ -y
 
 ################################################################################
 
@@ -23,10 +17,10 @@ ENV NETPYNE_CORE_BRANCH_TAG=osbv2
 
 USER root
 # LFPy
-RUN apt-get install libopenmpi-dev -y
+RUN apt-get update && apt-get install libopenmpi-dev -y
 
 ####  Octave etc.
-RUN apt-get install octave octave-statistics -y
+RUN apt-get update && apt-get install octave octave-statistics -y
 
 #### Install Python packages
 USER jovyan
@@ -36,26 +30,7 @@ RUN pip install -r requirements.txt --upgrade --no-cache-dir
 ####  General Python packages
 RUN jupyter labextension install plotlywidget
 
-#########################################################################
-# Run install again but first invalidate the cache
-# this will cause the libs to get updated and use the cached dependencies
 
-# Invalidate the cache
-# ARG NOCACHE
-
-USER root
-# LFPy
-RUN apt-get update
-RUN apt-get install libopenmpi-dev -y
-
-#  Octave etc.
-RUN apt-get install octave octave-statistics -y
-
-USER jovyan
-#### Install Python packages
-RUN pip install -r requirements.txt --upgrade --no-cache-dir
-
-#########################################################################
 
 ##############
 
@@ -90,5 +65,26 @@ COPY conf/ .jupyter/lab/user-settings/@jupyterlab
 USER root
 RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
 RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
+
+#########################################################################
+# Run install again but first invalidate the cache
+# this will cause the libs to get updated and use the cached dependencies
+
+# Invalidate the cache
+ARG NOCACHE
+
+USER root
+# LFPy 
+RUN apt-get update && apt-get install libopenmpi-dev -y
+
+#  Octave etc.
+RUN apt-get update && apt-get install octave octave-statistics -y
+
+USER jovyan
+#### Install Python packages
+RUN pip install -r requirements.txt --upgrade --no-cache-dir
+
+#########################################################################
+
 
 WORKDIR /opt/workspace
