@@ -1,12 +1,12 @@
-FROM node:13.14 as base
+FROM node:19.6.0 as base
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
-COPY package-lock.json ${BUILDDIR}/package-lock.json
+COPY yarn.lock ${BUILDDIR}/yarn.lock
 WORKDIR ${BUILDDIR}
-RUN npm ci
+RUN yarn --timeout 300000
 COPY . $BUILDDIR
-RUN npm run build
+RUN yarn build
 ###
 FROM nginx:1.17-alpine
 ENV BUILDDIR=/builddir
