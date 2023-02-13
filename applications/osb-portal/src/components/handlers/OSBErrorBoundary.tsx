@@ -96,7 +96,7 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
     }
 
     // when there's not an error, render children untouched
-    return this.props.children;
+    return <>{this.props.children}</>;
   }
 }
 

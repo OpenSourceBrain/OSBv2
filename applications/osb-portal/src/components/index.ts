@@ -72,9 +72,7 @@ const dispatchDrawerProps = {
   ...WorkspacesActions,
 };
 
-const mapErrorStateToProps = (state: RootState) => ({
-  error: state.error,
-});
+
 
 const dispatchErrorProps = {
   setError,
@@ -160,7 +158,10 @@ export const WorkspaceEditor = connect(
   dispatchTagsProps
 )(workspaceEditor);
 
-export const App = connect(mapErrorStateToProps, null)(app);
+export const App = connect((state: RootState) => ({
+  error: state.error,
+  user: state.user,
+}), null)(app);
 export const AboutDialog = connect(
   mapAboutDialogToProps,
   dispatchAboutDialogProps

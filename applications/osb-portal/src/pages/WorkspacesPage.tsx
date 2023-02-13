@@ -35,8 +35,14 @@ import workspaceService from "../service/WorkspaceService";
 import WorkspacesList from "../components/workspace/WorkspacesTable";
 import { Tag } from "../apiclient/workspaces";
 import OSBPagination from "../components/common/OSBPagination";
+import { UserInfo } from "../types/user";
 
-export const WorkspacesPage = (props: any) => {
+interface WorkspacesPageProps {
+  user: UserInfo;
+  counter: number;
+}
+
+export const WorkspacesPage = (props: WorkspacesPageProps) => {
   const history = useHistory();
 
   const [searchFilterValues, setSearchFilterValues] =
