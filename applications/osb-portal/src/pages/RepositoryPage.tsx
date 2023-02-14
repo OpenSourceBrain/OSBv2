@@ -269,13 +269,20 @@ export const RepositoryPage = (props: any) => {
       {/*header*/}
       <Box
         sx={{
-          padding: `0.571rem ${canEdit ? "0" : "1.143rem"} 0.571rem 1.143rem`,
+          px: 4,
+          py: 2,
           width: "100%",
           backgroundColor: bgDarkest,
         }}
       >
-        <Grid container={true} spacing={2}>
-          <Grid item xs={12} sm={12} md={canEdit ? 3 : 4} lg={canEdit ? 5 : 6}>
+        <Stack
+          spacing={2}
+          direction="row"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box>
             <GoBackButton
               variant="text"
               startIcon={<ChevronLeftIcon />}
@@ -283,9 +290,9 @@ export const RepositoryPage = (props: any) => {
             >
               All repositories
             </GoBackButton>
-          </Grid>
+          </Box>
 
-          <Grid item xs={canEdit ? 5 : 6} sm={canEdit ? 5 : 6} md={4} lg={3}>
+          <Stack spacing={2} direction="row">
             <Tooltip
               title={
                 !canAddToWorkspace()
@@ -301,7 +308,11 @@ export const RepositoryPage = (props: any) => {
                   id="add-existing-workspace-button"
                   disabled={!canAddToWorkspace()}
                   color="secondary"
-                  style={{ borderColor: "white" }}
+                  sx={{
+                    whiteSpace: {
+                      lg: "nowrap",
+                    },
+                  }}
                   onClick={() => {
                     user
                       ? openExistingWorkspaceDialog()
@@ -312,34 +323,33 @@ export const RepositoryPage = (props: any) => {
                 </AddSelectionButton>
               </Stack>
             </Tooltip>
-          </Grid>
-          <Grid item xs={canEdit ? 5 : 6} sm={canEdit ? 5 : 6} md={4} lg={3}>
-            <Tooltip
-              title={
-                !canAddToWorkspace()
-                  ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
-                  : ""
-              }
-            >
-              <Stack sx={{ width: "100%", padding: 0 }}>
-                <NewWorkspaceButton
-                  fullWidth
-                  variant="contained"
-                  disableElevation={true}
-                  color="primary"
-                  id="create-new-workspace-button"
-                  disabled={!canAddToWorkspace()}
-                  onClick={() => {
-                    user ? openDialog() : setShowUserNotLoggedInAlert(true);
-                  }}
-                >
-                  New workspace from selection
-                </NewWorkspaceButton>
-              </Stack>
-            </Tooltip>
-          </Grid>
-          {canEdit ? (
-            <Grid item xs={1}>
+
+            {canEdit && (
+              <Tooltip
+                title={
+                  !canAddToWorkspace()
+                    ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                    : ""
+                }
+              >
+                <Stack sx={{ width: "100%", padding: 0 }}>
+                  <NewWorkspaceButton
+                    fullWidth
+                    variant="contained"
+                    disableElevation={true}
+                    color="primary"
+                    id="create-new-workspace-button"
+                    disabled={!canAddToWorkspace()}
+                    onClick={() => {
+                      user ? openDialog() : setShowUserNotLoggedInAlert(true);
+                    }}
+                  >
+                    New workspace from selection
+                  </NewWorkspaceButton>
+                </Stack>
+              </Tooltip>
+            )}
+            {canEdit ? (
               <RepositoryActionsMenu
                 user={user}
                 repository={repository}
@@ -347,9 +357,9 @@ export const RepositoryPage = (props: any) => {
                   r && setRepository({ ...repository, ...r })
                 }
               />
-            </Grid>
-          ) : null}
-        </Grid>
+            ) : null}
+          </Stack>
+        </Stack>
       </Box>
       {/*details*/}
       {isLoading && !repository ? (
