@@ -27,7 +27,7 @@ interface WorkspaceActionsMenuProps {
   refreshWorkspaces?: () => void;
   user?: UserInfo;
   isWorkspaceOpen?: boolean;
-  showButton?: boolean;
+  ButtonComponent?: React.ComponentType<any>;
   [other: string]: any;
 }
 
@@ -42,12 +42,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default (props: WorkspaceActionsMenuProps) => {
   const classes = useStyles();
+  const {ButtonComponent} = props;
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
-  const [anchorEl, setAnchorEl] = props.anchorEl ? [props.anchorEl, props.setAnchorEl]: React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const canEdit = canEditWorkspace(props?.user, props?.workspace);
 
 
@@ -127,7 +128,8 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-    {props.showButton && <IconButton className="btn-actions" size="small" onClick={handleClick}>
+    {ButtonComponent ? <ButtonComponent className="btn-actions" onClick={handleClick} /> : 
+      <IconButton className="btn-actions" size="small" onClick={handleClick}>
         <Icons.Dots style={{ fontSize: "1rem" }} />
       </IconButton>}
       <Menu

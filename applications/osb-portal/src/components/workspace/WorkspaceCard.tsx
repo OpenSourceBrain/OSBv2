@@ -57,7 +57,6 @@ export const WorkspaceCard = (props: Props) => {
       <Card className={`workspace-card`} elevation={0}>
         <WorkspaceActionsMenu
           workspace={workspace}
-          showButton={true}
         />
 
         <CardContent>

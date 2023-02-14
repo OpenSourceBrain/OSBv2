@@ -147,26 +147,28 @@ export const WorkspacePage = (props: any) => {
                   defaultSelected={workspace?.defaultApplication}
                   handleClick={openWithApp}
                 />
-                <NavbarButton
-                  id="workspace-actions-menu"
-                  size="small"
-                  variant="contained"
-                  aria-label="more"
-                  onClick={(event) => setAnchorElmoreVert(event.currentTarget)}
-                  sx={{
-                    background: chipBg,
-                    boxShadow: "none",
-                    minWidth: "32px",
-                  }}
-                >
-                  <MoreVertIcon fontSize="small" />
-                </NavbarButton>
+                
                 <WorkspaceActionsMenu
                   workspace={workspace}
                   user={user}
                   isWorkspaceOpen={isWorkspaceOpen}
-                  anchorEl={anchorElmoreVert}
-                  setAnchorEl={(anchorEl) => setAnchorElmoreVert(anchorEl)}
+                  ButtonComponent={(props) => (<NavbarButton
+                    {...props}
+                    
+                    size="small"
+                    variant="contained"
+                    aria-label="more"
+
+                    
+                    sx={{
+                      background: chipBg,
+                      boxShadow: "none",
+                      minWidth: "32px",
+                    }}
+                    
+                  >
+                    <MoreVertIcon fontSize="small" />
+                  </NavbarButton>)}
                 />
               </Grid>
             </Grid>
