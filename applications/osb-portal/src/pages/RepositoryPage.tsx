@@ -247,7 +247,7 @@ export const RepositoryPage = (props: any) => {
 
   const canAddToWorkspace = () => {
     return (
-      repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0
+      repository && (repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0)
     );
   };
 
@@ -291,7 +291,7 @@ export const RepositoryPage = (props: any) => {
               All repositories
             </GoBackButton>
           </Box>
-
+        
           <Stack spacing={2} direction="row">
             <Tooltip
               title={
