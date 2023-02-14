@@ -226,16 +226,18 @@ export const EditRepoDialog = ({
       RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
         (info: RepositoryInfo) => {
           setContexts(info.contexts);
-          setFormValues({
-            ...formValues,
-            tags: info.tags.map((tag) => ({ tag })),
-            defaultContext:
-              info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
-              info.contexts[0],
-            summary: info.summary,
-            name: info.name,
-          });
-          setLoading(false);
+          if (!repository.id) {
+            setFormValues({
+              ...formValues,
+              tags: info.tags.map((tag) => ({ tag })),
+              defaultContext:
+                info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
+                info.contexts[0],
+              summary: info.summary,
+              name: info.name,
+            });
+            setLoading(false);
+          }
         },
         () => {
           setError({ ...error, uri: "Invalid url" });
@@ -562,7 +564,7 @@ export const EditRepoDialog = ({
               multiple={true}
               freeSolo={true}
               options={tagOptions.map((t) => t.tag)}
-              onChange={(event, value) => setRepositoryTags(value)}
+              onChange={(event, value: string[]) => setRepositoryTags(value)}
               placeholder="Select tags"
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
