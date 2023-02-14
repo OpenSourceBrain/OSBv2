@@ -17,57 +17,29 @@ import {
   WorkspaceIcon,
 } from "../icons";
 
-//style
-import {
-  secondaryColor,
-  bgLightest,
-  bgLight,
-  badgeBgLight,
-  lightWhite,
-} from "../../theme";
-import styled from "@mui/system/styled";
 
-const StyledContainerBox = styled(Box)(({ theme }) => ({
-  borderRadius: "4px",
-  width: " 100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "flex-start",
-  padding: "1rem 0",
+import Typography from "@mui/material/Typography";
 
-  "&:hover": {
-    backgroundColor: bgLightest,
-    borderRadius: 6,
-    "& .MuiButtonBase-root": {
-      "& .MuiSvgIcon-root": {
-        fill: badgeBgLight,
-      },
-    },
-  },
-
-  "& .MuiButtonBase-root": {
-    color: secondaryColor,
-    padding: 0,
-
-    "& .MuiSvgIcon-root": {
-      fontSize: "2rem",
-      fill: bgLight,
-    },
-
-    "& .MuiTypography-caption": {
-      textTransform: "uppercase",
-    },
-  },
-}));
 
 export const WorkspaceToolBox = (props: any) => {
   const user: UserInfo = props.user;
   return (
     <>
       <Box>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Box pb={4} textAlign="center">
+          <Typography pb={2} variant="h1" component="h2">
+            {" "}
+            {props.title}
+          </Typography>
+          <Typography variant="body1">
+            Quickly create a workspace by choosing <br /> one of the predefined
+            templates
+          </Typography>
+        </Box>
+
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="computational-modeling">
           <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span" id="computational-modeling">
+
               <WorkspaceItem
                 icon={<WorkspaceIcon />}
                 title="Computational modeling"
@@ -76,10 +48,10 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
                 closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
-            </StyledContainerBox>
+  
           </Grid>
-          <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span" id="data-analysis">
+          <Grid item xs={12} lg={6} id="data-analysis">
+    
               <WorkspaceItem
                 icon={<DataAnalystIcon />}
                 title="Data analysis"
@@ -88,10 +60,10 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
                 closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
-            </StyledContainerBox>
+    
           </Grid>
-          <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span" id="interactive-development">
+          <Grid item xs={12} lg={6} id="interactive-development">
+
               <WorkspaceItem
                 icon={<ComputationalModeling />}
                 title="Interactive development"
@@ -100,10 +72,10 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
                 closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
-            </StyledContainerBox>
+
           </Grid>
-          <Grid item xs={12} lg={6}>
-            <StyledContainerBox component="span" id="workspace-from-repository">
+          <Grid item xs={12} lg={6} id="workspace-from-repository">
+
               <WorkspaceItem
                 className="from-repository-create-workspace-item"
                 icon={<WorkspaceFromRepository />}
@@ -113,7 +85,7 @@ export const WorkspaceToolBox = (props: any) => {
                 refreshWorkspaces={props.refreshWorkspaces}
                 closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
               />
-            </StyledContainerBox>
+
           </Grid>
         </Grid>
       </Box>

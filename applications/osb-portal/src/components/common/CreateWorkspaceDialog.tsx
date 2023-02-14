@@ -1,13 +1,18 @@
 import * as React from "react";
 
-//components
-import OSBDialog from "./OSBDialog";
 import Paper from "@mui/material/Paper";
-import { WorkspaceToolBox } from "../index";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+
 
 //style
 import { bgDarker } from "../../theme";
 import styled from "@mui/system/styled";
+
+//custom components
+import OSBDialog from "./OSBDialog";
+import { WorkspaceToolBox } from "../index";
+
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: bgDarker,
@@ -25,23 +30,19 @@ export default ({
   return (
     <OSBDialog
       closeAction={() => handleClose(false)}
-      title="Create a new workspace"
-      subTitle={
-        <>
-          Quickly create a workspace by choosing <br /> one of the predefined
-          templates
-        </>
-      }
+      title=""
       open={dialogOpen}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       className="createWorkspaceRepo"
+      sx={{ "& .MuiTypography-h6": {borderBottom: "none !important"} }}
     >
-      <StyledPaper>
+      
         <WorkspaceToolBox
+          title="Create new Workspace"
           closeMainDialog={(isClosed) => handleClose(isClosed)}
         />
-      </StyledPaper>
+      
     </OSBDialog>
   );
 };

@@ -23,7 +23,7 @@ import {
 } from "./Repositories/RepositoriesPage";
 
 //style
-import { bgLightest as lineColor, bgRegular } from "../theme";
+import { bgLightest as lineColor, bgRegular, bgDark, bgDarker } from "../theme";
 
 //types
 import { Workspace } from "../types/workspace";
@@ -36,6 +36,8 @@ import WorkspacesList from "../components/workspace/WorkspacesTable";
 import { Tag } from "../apiclient/workspaces";
 import OSBPagination from "../components/common/OSBPagination";
 import { UserInfo } from "../types/user";
+import Paper from "@mui/material/Paper";
+import { WorkspaceToolBox } from "../components";
 
 interface WorkspacesPageProps {
   user: UserInfo;
@@ -52,7 +54,7 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
       types: [],
     });
 
-  const [workspaces, setWorkspaces] = React.useState<Workspace[]>([]);
+  const [workspaces, setWorkspaces] = React.useState<Workspace[]>(null);
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(0);
@@ -176,10 +178,12 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
             justifyContent="space-between"
             alignItems="center"
             px={4}
-            sx={{ pb: {
-              sm: 2,
-              lg: 0
-            } }}
+            sx={{
+              pb: {
+                sm: 2,
+                lg: 0,
+              },
+            }}
           >
             <Grid
               container={true}
@@ -282,45 +286,56 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
           </Box>
         </Box>
 
-        {listView === "grid" ? (
-          <WorkspacesCards workspaces={workspaces} loading={loading} />
-        ) : (
-          <WorkspacesList
-            workspaces={workspaces}
-            handleWorkspaceClick={(workspace: Workspace) =>
-              openWorkspaceUrl(workspace.id)
-            }
-            handleTagClick={(tag: Tag) =>
-              searchFilterValues.tags.includes(tag.tag)
-                ? null
-                : setSearchFilterValues({
-                    ...searchFilterValues,
-                    tags: searchFilterValues.tags.concat(tag.tag),
-                  })
-            }
-            handleTagUnclick={(tag: Tag) =>
-              setSearchFilterValues({
-                ...searchFilterValues,
-                tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
-              })
-            }
-            handleTypeClick={(type: string) =>
-              setSearchFilterValues({
-                ...searchFilterValues,
-                types: searchFilterValues.types.concat(type),
-              })
-            }
-            handleTypeUnclick={(type: string) =>
-              setSearchFilterValues({
-                ...searchFilterValues,
-                types: searchFilterValues.types.filter((t) => t !== type),
-              })
-            }
-            searchFilterValues={searchFilterValues}
-            loading={loading}
-            user={props?.user}
-          />
-        )}
+        {workspaces?.length === 0 ? (
+          <Box display="flex" alignContent="center" alignItems="center" justifyContent="center" flex="1"sx={{ backgroundColor: bgDarker}}>
+          <Paper sx={{px: 6, py: 6, maxWidth:700, borderRadius: "16px", backgroundColor: bgDark }}>
+            <WorkspaceToolBox
+            title="Create your first workspace"
+              closeMainDialog={(isClosed) => null}
+            />
+          </Paper></Box>) : (
+          listView === "grid" ? (
+            <WorkspacesCards workspaces={workspaces} loading={loading} />
+          ) : (
+            <WorkspacesList
+              workspaces={workspaces}
+              handleWorkspaceClick={(workspace: Workspace) =>
+                openWorkspaceUrl(workspace.id)
+              }
+              handleTagClick={(tag: Tag) =>
+                searchFilterValues.tags.includes(tag.tag)
+                  ? null
+                  : setSearchFilterValues({
+                      ...searchFilterValues,
+                      tags: searchFilterValues.tags.concat(tag.tag),
+                    })
+              }
+              handleTagUnclick={(tag: Tag) =>
+                setSearchFilterValues({
+                  ...searchFilterValues,
+                  tags: searchFilterValues.tags.filter((t) => t !== tag.tag),
+                })
+              }
+              handleTypeClick={(type: string) =>
+                setSearchFilterValues({
+                  ...searchFilterValues,
+                  types: searchFilterValues.types.concat(type),
+                })
+              }
+              handleTypeUnclick={(type: string) =>
+                setSearchFilterValues({
+                  ...searchFilterValues,
+                  types: searchFilterValues.types.filter((t) => t !== type),
+                })
+              }
+              searchFilterValues={searchFilterValues}
+              loading={loading}
+              user={props?.user}
+            />
+          )
+        ) 
+        
+        }
       </div>
       {workspaces && totalPages > 1 && (
         <OSBPagination

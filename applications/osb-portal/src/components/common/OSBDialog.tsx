@@ -58,9 +58,8 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
         <Typography component="h3" variant="h6" sx={{m: 0}}>
           {title}
           <Typography
-            component="h5"
+            component="p"
             variant="subtitle1"
-            align="center"
           >
             {subTitle}
           </Typography>

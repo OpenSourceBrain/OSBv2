@@ -12,6 +12,15 @@ import {
 } from "../../types/workspace";
 import WorkspaceFromRepository from "./WorkspaceFromRepository";
 
+//style
+import {
+  secondaryColor,
+  bgLightest,
+  bgLight,
+  badgeBgLight,
+  lightWhite,
+} from "../../theme";
+
 export interface WorkspaceTemplate {
   title: string;
   application: OSBApplication;
@@ -93,6 +102,37 @@ interface ItemProps {
   closeMainDialog?: (isClosed: boolean) => void;
 }
 
+const style = {
+  borderRadius: "6px",
+  width: " 100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  padding: "1rem 0",
+
+  "&:hover": {
+    backgroundColor: bgLightest,
+
+    "& .MuiButtonBase-root": {
+      "& .MuiSvgIcon-root": {
+        fill: badgeBgLight,
+      },
+    },
+  },
+
+  color: secondaryColor,
+
+
+  "& .MuiSvgIcon-root": {
+    fontSize: "2rem",
+    fill: bgLight,
+  },
+
+  "& .MuiTypography-caption": {
+    textTransform: "uppercase",
+  },
+};
+
 export const NewWorkspaceItem = (props: ItemProps) => {
   const { template, title, refreshWorkspaces, className, icon } = props;
 
@@ -114,8 +154,8 @@ export const NewWorkspaceItem = (props: ItemProps) => {
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 
   return (
-    <div className={className}>
-      <Button style={{ textTransform: "none" }} onClick={handleClick}>
+<>
+      <Button sx={style} onClick={handleClick} className={className}>
         <Box textAlign="center">
           {icon}
           <Typography variant="subtitle1" sx={{ marginBottom: "0.286rem" }}>
@@ -145,8 +185,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
             workspaceCreatedCallback={onWorkspaceCreated}
           />
         ))}
-    </div>
-  );
+  </>);
 };
 
 export default NewWorkspaceItem;
