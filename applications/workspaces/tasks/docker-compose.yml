@@ -1,0 +1,17 @@
+version: "3"
+services:
+  test-wf:
+    build:
+      dockerfile: test/test-api/Dockerfile
+      args:
+        CLOUDHARNESS_BASE: cloudharness/cloudharness-base:latest
+    image: cloudharness/test-api:2
+    network_mode: "host"
+    environment:
+      - APP_URL=https://common.v2dev.opensourcebrain.org/api
+      - USERNAME=sample@testuser.com
+      - PASSWORD=test
+    volumes:
+      - ./applications/common:/home/test
+      - ./deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml
+    command: st  run /home/test/api/openapi.yaml --base-url https://common.v2dev.opensourcebrain.org/api -c all --skip-deprecated-operations

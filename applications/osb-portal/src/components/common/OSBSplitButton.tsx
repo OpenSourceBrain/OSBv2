@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -36,6 +36,10 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
     props.defaultSelected ?? OSBApplications.jupyter
   );
   const anchorRef = useRef(null);
+
+  useEffect(() => {
+    props.defaultSelected && setSelected(props.defaultSelected);
+  }, [props.defaultSelected]);
 
   const options = Object.values(OSBApplications);
 

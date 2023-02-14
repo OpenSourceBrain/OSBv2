@@ -21,6 +21,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { PageSider } from "../components";
 import { WorkspaceEditor } from "../components";
@@ -40,6 +41,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import WorkspaceResourceBrowser from "../components/workspace/drawer/WorkspaceResourceBrowser";
+
 
 const NavbarButton = styled(Button)(({ theme }) => ({
   fontSize: "12px",
@@ -83,7 +85,7 @@ export const WorkspacePage = (props: any) => {
 
   const canEdit = canEditWorkspace(props.user, workspace);
 
-  return (
+  return workspace ? (
     <>
       <div id="workspace-details" className="verticalFit">
         <Box>
@@ -222,15 +224,29 @@ export const WorkspacePage = (props: any) => {
               sx={{ background: "rgba(0, 0, 0, 0.25)" }}
             >
               <Grid container height={1} spacing={2} className="verticalFill">
-                <Grid id="workspace-detail-sidebar" className="verticalFill" item xs={12} sm={3} lg={2} sx={{
-                  borderRight: `1px solid ${bgLightest}`
-                }}>
+                <Grid
+                  id="workspace-detail-sidebar"
+                  className="verticalFill"
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={2}
+                  sx={{
+                    borderRight: `1px solid ${bgLightest}`,
+                  }}
+                >
                   <WorkspaceResourceBrowser
                     workspace={workspace}
                     user={user}
                     refreshWorkspace={props.refreshWorkspace}
-                    openResourceAction={(resource) => history.push(`/workspace/open/${workspaceId}/${resource.type.application.code}`)}
-                    currentResource={workspace.lastOpen || workspace.resources[0]}
+                    openResourceAction={(resource) =>
+                      history.push(
+                        `/workspace/open/${workspaceId}/${resource.type.application.code}`
+                      )
+                    }
+                    currentResource={
+                      workspace.lastOpen || workspace.resources[0]
+                    }
                   />
                 </Grid>
                 <Grid
@@ -309,6 +325,8 @@ export const WorkspacePage = (props: any) => {
         />
       )}
     </>
+  ) : (
+    <Backdrop open={true}><CircularProgress /></Backdrop>
   );
 };
 export default WorkspacePage;
