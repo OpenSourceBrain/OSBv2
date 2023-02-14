@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Dropzone from "react-dropzone";
 import Chip from "@mui/material/Chip";
+import Alert from '@mui/material/Alert';
 import Autocomplete from "@mui/material/Autocomplete";
 import MDEditor from "react-markdown-editor-lite";
 import MarkdownViewer from "../common/MarkdownViewer";
@@ -40,6 +41,7 @@ import { Tag } from "../../apiclient/workspaces";
 //services
 import WorkspaceService from "../../service/WorkspaceService";
 import StyledLabel from "../styled/FormLabel";
+
 
 export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
   color: bgInputs,
@@ -148,6 +150,8 @@ export default (props: WorkspaceEditProps) => {
       : [];
   const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
 
+  const [submitError, setSubmitError] = React.useState("");
+
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== "undefined") {
       props.filesSelected
@@ -184,9 +188,11 @@ export default (props: WorkspaceEditProps) => {
       (e) => {
         setLoading(false);
         if (e.status === 405) {
-          throw new Error("Maximum number of workspaces exceeded.");
+          setSubmitError("Workspaces quota exceeded. Try to delete some workspaces or see the documentation to know how to manage your quotas.");
+        } else {
+          setSubmitError("Unexpected error submitting the workspace. Please try again later.");
         }
-        throw new Error("Error submitting the workspace");
+        
         // console.error('Error submitting the workspace', e);
       }
     );
@@ -255,6 +261,7 @@ export default (props: WorkspaceEditProps) => {
         maxWidth="md"
         actions={
           <React.Fragment>
+            {submitError && <Alert severity="error">{submitError}</Alert>}
             <Button
               disabled={loading}
               color="primary"
@@ -464,6 +471,7 @@ export default (props: WorkspaceEditProps) => {
             }
           </DialogContent>
           <DialogActions>
+
             <Button
               color="primary"
               onClick={() => setShowNoFilesSelectedDialog(false)}
