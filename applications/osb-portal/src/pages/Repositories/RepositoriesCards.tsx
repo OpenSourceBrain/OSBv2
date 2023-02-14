@@ -109,7 +109,7 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                       <Box sx={{ padding: "0 0.857rem" }}>
                         <Tooltip title={repository.name}>
                           <Link
-                            href={`/repository/${repository.id}`}
+                            href={`/repositories/${repository.id}`}
                             className={`workspace-page-link`}
                             underline="none"
                           >
