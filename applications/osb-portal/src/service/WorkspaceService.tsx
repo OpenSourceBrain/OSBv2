@@ -236,11 +236,9 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
     (workspace?.resources[0]?.id && workspace?.resources[0]?.id > 0);
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId
-    ? mapResource(
-        workspace.resources.find(
+    ? resources.find(
           (resource) => resource.id === defaultResourceId
         )
-      )
     : {
         workspaceId: workspace.id,
         name: "Generic",

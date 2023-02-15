@@ -29,7 +29,7 @@ export interface WorkspaceResource {
   status?: ResourceStatus;
   timestampUpdated?: Date;
   timestampCreated?: Date;
-  resourceType: string;
+  resourceType?: string;
 }
 
 export interface ResourceType {

@@ -64,7 +64,7 @@ COPY conf/ .jupyter/lab/user-settings/@jupyterlab
 
 USER root
 RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
-RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
+RUN wget --no-verbose -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
 
 #########################################################################
 # Run install again but first invalidate the cache
