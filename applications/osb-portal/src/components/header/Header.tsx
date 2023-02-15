@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 
-import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link } from "@mui/material";
+
 import PersonIcon from "@mui/icons-material/Person";
 import {BetaIcon, OSBLogo} from "../icons";
 
@@ -11,14 +11,15 @@ import {
   secondaryColor
 } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ({
   toolbar: {
     backgroundColor: headerBg,
-    padding: theme.spacing(1),
     justifyContent: "space-between",
-    minHeight: '2.5rem',
-    height: '2.5rem',
     borderBottom: '1px solid #434343',
+    minHeight: '2.5rem !important',
+    height: '2.5rem !important',
+    p: 0,
+
   },
   button: {
     textTransform: "none",
@@ -29,15 +30,15 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'start',
     alignItems: 'center',
+    height: '22px',
+    overflow: 'hidden',
 
-    '& .MuiSvgIcon-root': {
-      fontSize: '10.5rem'
-    }
+    
   },
-}));
+});
 
 export const Header = (props: any) => {
-  const classes = useStyles();
+
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
   const history = useHistory();
@@ -70,7 +71,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin} className={`sign-in ${classes.button}`}>
+      <Button sx={styles.button} onClick={handleUserLogin} className={`sign-in`}>
         Sign in
       </Button>
     ) : (
@@ -112,7 +113,8 @@ export const Header = (props: any) => {
           aria-haspopup="true"
           onClick={handleMenuToggle}
           startIcon={<PersonIcon fontSize="large" />}
-          className={`${classes.button} user-menu-btn`}
+          sx={styles.button}
+          className={`user-menu-btn`}
         >
           {user.username}
         </Button>
@@ -129,11 +131,11 @@ export const Header = (props: any) => {
   // @ts-ignore
   return (
     <React.Fragment>
-      <Toolbar className={classes.toolbar}>
-        <a href="/" onClick={handleToggleDrawer}  className={classes.logoContainer}>
-          <OSBLogo />
-          <BetaIcon />
-        </a>
+      <Toolbar sx={styles.toolbar}>
+        <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
+          <OSBLogo sx={{mr: "0.4rem", fontSize: "11rem"}}  />
+          <BetaIcon sx={{ fontSize: "2rem"}} />
+        </Link>
         <Box>
           {headerText}
         </Box>

@@ -513,12 +513,6 @@ const theme = {
           },
         },
       } },
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          minHeight: 15,
-        },
-      } },
     MuiAvatar: {
       styleOverrides: {
         root: {
