@@ -228,8 +228,8 @@ const RepositoryPageDetails = ({
           overflow: "auto",
         }}
       >
-        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={12} md={6} direction="column">
+        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="verticalFit">
+          <Grid item xs={12} md={6} direction="column" className="verticalFit">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -273,8 +273,8 @@ const RepositoryPageDetails = ({
             </Box>
 
             {/*tags*/}
-            <Box>
-              <Stack mt={3} mb={3} spacing={1} direction="column">
+            <Box className="verticalFit">
+              <Stack mt={3} mb={3} spacing={1} direction="column" >
                 <Typography variant="body2" sx={{ color: greyishTextColor }}>
                   Created:{" "}
                   {repository?.timestampCreated &&
@@ -338,7 +338,7 @@ const RepositoryPageDetails = ({
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={6} direction="column">
+          <Grid item xs={12} md={6} direction="column" className="verticalFit">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -401,9 +401,10 @@ const RepositoryPageDetails = ({
               </Stack>
             </Box>
 
-            <Box>
+            <Box className="verticalFit">
               <Paper
                 elevation={0}
+                className="verticalFit"
                 sx={{
                   width: "100%",
                   background: "none",
@@ -411,7 +412,7 @@ const RepositoryPageDetails = ({
                   overflow: "auto",
                 }}
               >
-                <TableContainer component="div">
+                <TableContainer component="div" className="scrollbar">
                   <Table aria-label="repository resources">
                     <TableHead
                       sx={{
