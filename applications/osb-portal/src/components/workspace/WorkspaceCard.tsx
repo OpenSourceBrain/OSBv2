@@ -69,6 +69,7 @@ export const WorkspaceCard = (props: Props) => {
             sx={{
               backgroundImage: `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
               backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           >
             {!workspace?.thumbnail ? <FolderIcon /> : <Box />}
