@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import makeStyles from "@mui/styles/makeStyles";
-import withStyles from "@mui/styles/withStyles";
+import styled from "@mui/system/styled";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -39,7 +38,7 @@ interface Props {
   [k: string]: any;
 }
 
-export const TagTooltip = withStyles((theme) => ({
+export const TagTooltip = styled(Tooltip)((theme) => ({
   tooltip: {
     backgroundColor: bgDarkest,
     color: textColor,
@@ -47,7 +46,7 @@ export const TagTooltip = withStyles((theme) => ({
   arrow: {
     color: bgDarkest,
   },
-}))(Tooltip);
+}));
 
 export const WorkspaceCard = (props: Props) => {
   const workspace: Workspace = props.workspace;
@@ -55,9 +54,7 @@ export const WorkspaceCard = (props: Props) => {
   return (
     <>
       <Card className={`workspace-card`} elevation={0}>
-        <WorkspaceActionsMenu
-          workspace={workspace}
-        />
+        <WorkspaceActionsMenu workspace={workspace} />
 
         <CardContent>
           <Box
@@ -66,25 +63,17 @@ export const WorkspaceCard = (props: Props) => {
             alignItems="center"
             display="flex"
             mb={2}
+            overflow="hidden"
+            flex="1"
             onClick={() => props.handleWorkspaceClick(workspace)}
+            sx={{
+              backgroundImage: `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
+              backgroundSize: "cover",
+            }}
           >
-            {!workspace?.thumbnail ? (
-              <FolderIcon />
-            ) : (
-              <img
-                width={"100%"}
-                src={
-                  "/proxy/workspaces/" +
-                  workspace.thumbnail +
-                  "?v=" +
-                  workspace.timestampUpdated.getMilliseconds()
-                }
-                title={workspace.name}
-                alt={workspace.name}
-              />
-            )}
+            {!workspace?.thumbnail ? <FolderIcon /> : <Box />}
           </Box>
-          <Box sx={{ padding: "0 0.857rem", cursor: "pointer" }}>
+          <Box sx={{ px: 1, cursor: "pointer" }}>
             <Tooltip title={workspace?.name}>
               <Link
                 href={`/workspace/${workspace.id}`}
@@ -148,9 +137,15 @@ export const WorkspaceCard = (props: Props) => {
             </Link>
           </Box>
         </CardContent>
-        <Box sx={{ padding: "0.429rem 0.857rem 0.857rem 0.857rem" }}>
+        <Box sx={{ padding: 1 }}>
           <CardFooter variant="caption">
-            <span>{formatDate(workspace?.timestampUpdated)}</span>
+            <span>
+              {workspace?.timestampUpdated.toLocaleDateString("en-UK", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </span>
             <span>{workspace?.defaultApplication?.name}</span>
           </CardFooter>
         </Box>

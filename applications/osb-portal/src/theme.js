@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, alpha } from "@mui/material/styles";
 import lessToJs from "less-vars-to-js";
 
 import "./css/mui.less";
@@ -251,16 +251,17 @@ const theme = {
         root: {
           position: "relative",
           flex: 1,
-          height: `15em`,
-          maxHeight: `16em`,
+          height: `25vh`,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           borderRadius: "8px",
+
           "& .btn-actions": {
             position: "absolute",
             top: 3,
             right: 3,
+            backgroundColor: alpha(bgDark, 0.1),
           },
           "& .imageContainer": {
             overflow: "hidden",
@@ -285,6 +286,7 @@ const theme = {
           padding: "0px !important",
           minHeight: "10rem",
           display: "flex",
+          flex: "1",
           flexDirection: "column",
           justifyContent: "flex-end",
           "&:last-child": {
@@ -299,14 +301,12 @@ const theme = {
             },
         
             "& .workspace-page-link": {
-              textDecoration: "underline",
               textDecorationColor: "white",
             },
           },
         }
       }
     },    
-      
     MuiBottomNavigation: {
       styleOverrides: {
         root: { backgroundColor: bgRegular, marginBottom: 8, borderRadius: 4 },

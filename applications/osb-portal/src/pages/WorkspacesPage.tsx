@@ -295,7 +295,9 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
             />
           </Paper></Box>) : (
           listView === "grid" ? (
-            <WorkspacesCards workspaces={workspaces} loading={loading} />
+            <WorkspacesCards workspaces={workspaces} loading={loading} handleWorkspaceClick={(workspace: Workspace) =>
+              openWorkspaceUrl(workspace.id)
+            } />
           ) : (
             <WorkspacesList
               workspaces={workspaces}

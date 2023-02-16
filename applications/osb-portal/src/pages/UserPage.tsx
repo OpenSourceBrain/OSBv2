@@ -22,16 +22,11 @@ import LanguageIcon from "@mui/icons-material/Language";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
-import EmailIcon from "@mui/icons-material/Email";
 import BusinessIcon from "@mui/icons-material/Business";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import ShowMoreText from "react-show-more-text";
+
 import Tooltip from "@mui/material/Tooltip";
 
-import MarkdownViewer from "../components/common/MarkdownViewer";
-import { MainMenu } from "../components";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";
@@ -46,8 +41,7 @@ import {
   textColor,
   bgLightest as lineColor,
 } from "../theme";
-import Divider from "@mui/material/Divider";
-import Container from "@mui/material/Container";
+
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
@@ -624,7 +618,7 @@ export const UserPage = (props: any) => {
             </Box>
             <Box className="scrollbar" height="100%" py={4} pl={4}>
               <TabPanel value={tabValue} index={0}>
-                <Grid container={true} spacing={2}>
+                <Grid container={true} spacing={1}>
                   {publicWorkspaces.map((ws) => {
                     return (
                       <Grid
@@ -633,8 +627,8 @@ export const UserPage = (props: any) => {
                         xs={12}
                         sm={6}
                         md={4}
-                        lg={3}
-                        xl={2}
+                        lg={4}
+                        xl={3}
                       >
                         <WorkspaceCard workspace={ws} user={currentUser} />
                       </Grid>
@@ -654,8 +648,8 @@ export const UserPage = (props: any) => {
                           xs={12}
                           sm={6}
                           md={4}
-                          lg={3}
-                          xl={2}
+                          lg={4}
+                          xl={3}
                         >
                           <WorkspaceCard workspace={ws} user={currentUser} />
                         </Grid>
