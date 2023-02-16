@@ -1,5 +1,7 @@
 harness:
   subdomain: nwbexplorer
+  deployment:
+    image: gcr.io/metacellllc/osb/nwb-explorer:0.6.0-RC
   service:
     auto: false
     port: 80

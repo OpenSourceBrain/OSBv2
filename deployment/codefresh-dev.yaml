@@ -340,21 +340,6 @@ steps:
         image_name: osb/workspaces
         title: Workspaces
         working_directory: ./applications/workspaces/server
-      netpyne:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/netpyne
-        title: Netpyne
-        working_directory: ./applications/netpyne
       accounts-api:
         type: build
         stage: build
@@ -401,36 +386,6 @@ steps:
         image_name: osb/backoffice
         title: Backoffice
         working_directory: ./applications/backoffice
-      nwb-explorer:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/nwb-explorer
-        title: Nwb explorer
-        working_directory: ./applications/nwb-explorer
-      jupyterlab:
-        type: build
-        stage: build
-        tag: '${{CF_BUILD_ID}}'
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - TAG=${{CF_BUILD_ID}}
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/jupyterlab
-        title: Jupyterlab
-        working_directory: ./applications/jupyterlab
   tests_unit:
     stage: unittest
     type: parallel
@@ -737,14 +692,6 @@ steps:
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
-        stage: publish
-        type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_accounts-api:
         stage: publish
         type: push
@@ -766,22 +713,6 @@ steps:
         type: push
         title: Backoffice
         candidate: '${{REGISTRY}}/osb/backoffice:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
-        stage: publish
-        type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{CF_BUILD_ID}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterlab:
-        stage: publish
-        type: push
-        title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{CF_BUILD_ID}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

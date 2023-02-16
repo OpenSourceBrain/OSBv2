@@ -6,6 +6,7 @@ harness:
     name: proxy-public
   deployment:
     auto: false
+    image: gcr.io/metacellllc/osb/jupyterlab:0.6.0-RC
   dependencies:
     build:
       - cloudharness-base

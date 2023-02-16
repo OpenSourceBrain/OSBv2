@@ -1,5 +1,7 @@
 harness:
   subdomain: netpyne
+  deployment:
+    image: gcr.io/metacellllc/osb/netpyne:0.6.0-RC
   service:
     auto: false
     port: 80
