@@ -75,6 +75,7 @@ class RepositoryService {
       perPage: size,
       tags,
       types,
+      userId: filter.user_id
     });
   }
 

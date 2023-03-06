@@ -89,7 +89,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenWorkspace = () => {
-    window.location.href = `/workspace/open/${props.workspace.id}`;
+    window.location.href = `/workspace/${props.workspace.id}`;
   };
 
   const handleCloseEditWorkspace = () => {
@@ -128,7 +128,7 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   return (
     <>
-    {ButtonComponent ? <ButtonComponent className="btn-actions" onClick={handleClick} /> : 
+    {ButtonComponent ? <ButtonComponent className="btn-actions" onClick={handleClick} /> :
       <IconButton className="btn-actions" size="small" onClick={handleClick}>
         <Icons.Dots style={{ fontSize: "1rem" }} />
       </IconButton>}
@@ -255,7 +255,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </IconButton>
           </React.Fragment>
         }
-      /> 
+      />
     </>
   );
 };

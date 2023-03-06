@@ -238,6 +238,7 @@ export const EditRepoDialog = ({
               name: repository.name || info.name,
             });
           }
+          setLoading(false);
         },
         () => {
           setError({ ...error, uri: "Invalid url" });

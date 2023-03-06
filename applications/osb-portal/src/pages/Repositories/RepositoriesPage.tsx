@@ -96,7 +96,6 @@ export const RepositoriesPage = ({
       tags: [],
       types: [],
     });
-  console.log(counter);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(0);
@@ -129,9 +128,11 @@ export const RepositoriesPage = ({
   const getReposList = (payload) => {
     setLoading(true);
     if (payload?.searchFilterValues) {
+      const myReposFilter = payload?.tabValue ? {...payload?.searchFilterValues, user_id: user.id} : payload?.searchFilterValues
+
       RepositoryService.getRepositoriesByFilter(
         page,
-        payload?.searchFilterValues
+        myReposFilter
       ).then((reposDetails) => {
         setReposValues(reposDetails);
       });
