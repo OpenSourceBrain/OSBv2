@@ -226,17 +226,17 @@ export const EditRepoDialog = ({
       RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
         (info: RepositoryInfo) => {
           setContexts(info.contexts);
-          if (!repository.id) {
+          setLoading(false);
+          if(repository !== RepositoryService.EMPTY_REPOSITORY) {
             setFormValues({
               ...formValues,
-              tags: info.tags.map((tag) => ({ tag })),
-              defaultContext:
+              tags: repository.tags || info.tags.map((tag) => ({ tag })),
+              defaultContext: repository.defaultContext ||
                 info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
                 info.contexts[0],
-              summary: info.summary,
-              name: info.name,
+              summary: repository.summary || info.summary,
+              name: repository.name || info.name,
             });
-            setLoading(false);
           }
         },
         () => {
@@ -572,7 +572,7 @@ export const EditRepoDialog = ({
                     variant="outlined"
                     label={option}
                     {...getTagProps({ index })}
-                    key={option}
+                    key={`tag-${index}`}
                   />
                 ))
               }

@@ -123,7 +123,6 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
 }));
 
 const AboutOSBPaper = styled(Paper)(({ theme }) => ({
-  maxHeight: 300,
   padding: theme.spacing(2),
   background: infoBoxBg,
   borderRadius: inputRadius,
@@ -173,7 +172,7 @@ const RepositoryPageDetails = ({
       (e) => !filter || e.resource.name.toLowerCase().includes(filter)
     );
 
-  let resourcesListObject = resourcesList?.reduce(
+  let resourcesListObject: {[id: string]: RepositoryResourceNode} = resourcesList?.reduce(
     (resourcesListObject, item) => {
       resourcesListObject[item.resource.path] = item.children;
       return resourcesListObject;
@@ -273,7 +272,7 @@ const RepositoryPageDetails = ({
             </Box>
 
             {/*tags*/}
-            <Box className="verticalFit">
+            <Box>
               <Stack mt={3} mb={3} spacing={1} direction="column" >
                 <Typography variant="body2" sx={{ color: greyishTextColor }}>
                   Created:{" "}
@@ -311,12 +310,13 @@ const RepositoryPageDetails = ({
               </Stack>
             </Box>
             {/**/}
-            <Box>
+            <Box className="verticalFit">
               <Box
                 display="flex"
                 justifyContent="space-between"
                 alignItems="start"
                 pb={"4px"}
+                
                 borderBottom={`1px solid ${lineColor}`}
               >
                 <Typography variant="h5">Repository preview</Typography>
@@ -327,7 +327,7 @@ const RepositoryPageDetails = ({
                   <OpenInNewIcon fontSize="small" sx={{paddingLeft: "0.3em"}} />
                 </Link>
               </Box>
-              <Box>
+              <Box className="verticalFit">
                 <AboutOSBPaper className={`verticalFit`}>
                   <MarkdownViewer
                     text={repository?.description}
@@ -408,7 +408,6 @@ const RepositoryPageDetails = ({
                 sx={{
                   width: "100%",
                   background: "none",
-                  maxHeight: 300,
                   overflow: "auto",
                 }}
               >
