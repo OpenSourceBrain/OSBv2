@@ -236,8 +236,8 @@ export const EditRepoDialog = ({
               summary: info.summary,
               name: info.name,
             });
-            setLoading(false);
           }
+          setLoading(false);
         },
         () => {
           setError({ ...error, uri: "Invalid url" });
