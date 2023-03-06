@@ -45,6 +45,7 @@ export function isUserAdmin(): boolean {
 }
 
 export async function getUser(userid: string): Promise<User> {
+  // Note that the keycloak username is expected
   return usersApi.getUser({ userid });
 }
 

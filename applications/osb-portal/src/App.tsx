@@ -116,7 +116,7 @@ export const App = (props: AppProps) => {
                       <RepositoryPage />
                     </SidebarPageLayout>
                   </Route>
-                  <Route exact={true} path="/user/:userId">
+                  <Route exact={true} path="/user/:userName">
                     <SidebarPageLayout>
                       <UserPage />
                     </SidebarPageLayout>

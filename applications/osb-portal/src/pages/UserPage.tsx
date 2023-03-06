@@ -168,7 +168,7 @@ export const UserPage = (props: any) => {
   const [user, setUser] = React.useState<User>(null);
 
   const history = useHistory();
-  const { userId } = useParams<{ userId: string }>();
+  const { userName } = useParams<{ userName: string }>();
   const [error, setError] = React.useState<any>(null);
   const [formError, setFormError] = React.useState<any>({});
   const [userProfileForm, setUserProfileForm] = React.useState<any>({});
@@ -188,10 +188,16 @@ export const UserPage = (props: any) => {
   };
 
   React.useEffect(() => {
-    getUser(userId).then((u) => {
+    getUser(userName).then((u) => {
       setUser(u);
       setUserProfileForm({ ...u });
     });
+  }, [userName, props.workspacesCounter]);
+
+  React.useEffect(() => {
+    if (!user) return;
+
+    const userId = user.id;
     workspaceService
       .fetchWorkspacesByFilter(
         true,
@@ -234,7 +240,7 @@ export const UserPage = (props: any) => {
         setError(e);
       }
     );
-  }, [userId, tabValue, props.workspacesCounter]);
+  }, [user]);
 
   if (error) {
     throw error;

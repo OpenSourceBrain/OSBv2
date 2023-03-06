@@ -121,7 +121,7 @@ export const WorkspaceCard = (props: Props) => {
                 },
               }}
               underline="none"
-              href={`/user/${workspace.user.id}`}
+              href={`/user/${workspace.user.username}`}
             >
               <Typography
                 variant="caption"
