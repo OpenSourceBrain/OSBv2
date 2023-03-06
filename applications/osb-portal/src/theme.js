@@ -251,7 +251,7 @@ const theme = {
         root: {
           position: "relative",
           flex: 1,
-          height: `25vh`,
+          minHeight: `250px`,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
