@@ -130,7 +130,6 @@ export const RepositoriesPage = ({
     if (payload?.searchFilterValues) {
       const myReposFilter = payload?.tabValue ? {...payload?.searchFilterValues, user_id: user.id} : payload?.searchFilterValues
 
-      console.log(myReposFilter)
       RepositoryService.getRepositoriesByFilter(
         page,
         myReposFilter
