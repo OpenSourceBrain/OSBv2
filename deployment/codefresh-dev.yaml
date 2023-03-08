@@ -647,6 +647,7 @@ steps:
     - echo $APP_NAME
     scale:
       common_api_test:
+        title: common api test
         volumes:
         - '${{CF_REPO_NAME}}/.overrides/applications/common:/home/test'
         - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
@@ -656,6 +657,7 @@ steps:
         - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
           https://common.${{DOMAIN}}/api -c all
       workflows_api_test:
+        title: workflows api test
         volumes:
         - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
         - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
@@ -678,6 +680,7 @@ steps:
     - yarn test
     scale:
       osb-portal_e2e_test:
+        title: osb-portal e2e test
         volumes:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
