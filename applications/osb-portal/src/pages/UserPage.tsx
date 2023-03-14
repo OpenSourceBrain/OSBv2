@@ -170,9 +170,8 @@ export const UserPage = (props: any) => {
   const history = useHistory();
   const { userName } = useParams<{ userName: string }>();
   const [error, setError] = React.useState<any>(null);
-  const [formError, setFormError] = React.useState<any>({});
-  const [userProfileForm, setUserProfileForm] = React.useState<any>({});
-  delete userProfileForm.groups;
+  
+  
   const [loading, setLoading] = React.useState(false);
   const currentUser: UserInfo = props.user;
 
@@ -190,7 +189,7 @@ export const UserPage = (props: any) => {
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
-      setUserProfileForm({ ...u });
+      
     });
   }, [userName, props.workspacesCounter]);
 
@@ -288,7 +287,7 @@ export const UserPage = (props: any) => {
   const handleUpdateUser = (u: User) => {
     setLoading(true);
     setProfileEditDialogOpen(false);
-    updateUser(userProfileForm)
+    updateUser(u)
       .then((updatedUser) => {
         setUser(updatedUser);
         setLoading(false);
@@ -688,36 +687,12 @@ export const UserPage = (props: any) => {
         </Grid>
       </Box>
       {canEdit && profileEditDialogOpen && (
-        <OSBDialog
-          open={true}
-          title="Edit My Profile"
-          closeAction={() => setProfileEditDialogOpen(false)}
-          actions={
-            <React.Fragment>
-              <Button
-                color="primary"
-                onClick={() => setProfileEditDialogOpen(false)}
-              >
-                Cancel
-              </Button>{" "}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUpdateUser}
-              >
-                Save Changes
-              </Button>
-            </React.Fragment>
-          }
-        >
+        
           <UserEditor
             user={user}
-            profileForm={userProfileForm}
-            setProfileForm={setUserProfileForm}
-            error={formError}
-            setError={setFormError}
+            saveUser={handleUpdateUser}
+            close={() => setProfileEditDialogOpen(false)}
           />
-        </OSBDialog>
       )}
       {loading && <CircularProgress size={24} />}
     </>

@@ -36,6 +36,7 @@ steps:
     - harness-deployment cloud-harness . -d ${{DOMAIN}} -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}}
       -n ${{NAMESPACE}} --write-env -e dev -i osb-portal
     - cat deployment/.env >> ${{CF_VOLUME_PATH}}/env_vars_to_export
+    - cat ${{CF_VOLUME_PATH}}/env_vars_to_export
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
@@ -66,9 +67,11 @@ steps:
         tag: '${{CLOUDHARNESS_BASE_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{CLOUDHARNESS_BASE_TAG_EXISTS}}', '{{CLOUDHARNESS_BASE_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{CLOUDHARNESS_BASE_TAG_EXISTS}}', '{{CLOUDHARNESS_BASE_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{CLOUDHARNESS_BASE_TAG_FORCE_BUILD}}', '{{CLOUDHARNESS_BASE_TAG_FORCE_BUILD}}')
+                == false
       cloudharness-frontend-build:
         type: build
         stage: build
@@ -85,9 +88,11 @@ steps:
         tag: '${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}',
+            any:
+              buildDoesNotExist: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}',
                 '{{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_FORCE_BUILD}}',
+                '{{CLOUDHARNESS_FRONTEND_BUILD_TAG_FORCE_BUILD}}') == false
   build_static_images:
     title: Build static images
     type: parallel
@@ -110,9 +115,11 @@ steps:
         tag: '${{CLOUDHARNESS_FLASK_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{CLOUDHARNESS_FLASK_TAG_EXISTS}}', '{{CLOUDHARNESS_FLASK_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{CLOUDHARNESS_FLASK_TAG_EXISTS}}', '{{CLOUDHARNESS_FLASK_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}', '{{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}')
+                == false
   build_application_images:
     type: parallel
     stage: build
@@ -133,9 +140,11 @@ steps:
         tag: '${{NFSSERVER_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{NFSSERVER_TAG_EXISTS}}', '{{NFSSERVER_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{NFSSERVER_TAG_EXISTS}}', '{{NFSSERVER_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{NFSSERVER_TAG_FORCE_BUILD}}', '{{NFSSERVER_TAG_FORCE_BUILD}}')
+                == false
       notifications:
         type: build
         stage: build
@@ -153,9 +162,11 @@ steps:
         tag: '${{NOTIFICATIONS_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{NOTIFICATIONS_TAG_EXISTS}}', '{{NOTIFICATIONS_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{NOTIFICATIONS_TAG_EXISTS}}', '{{NOTIFICATIONS_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{NOTIFICATIONS_TAG_FORCE_BUILD}}', '{{NOTIFICATIONS_TAG_FORCE_BUILD}}')
+                == false
       accounts:
         type: build
         stage: build
@@ -172,9 +183,11 @@ steps:
         tag: '${{ACCOUNTS_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{ACCOUNTS_TAG_EXISTS}}', '{{ACCOUNTS_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{ACCOUNTS_TAG_EXISTS}}', '{{ACCOUNTS_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{ACCOUNTS_TAG_FORCE_BUILD}}', '{{ACCOUNTS_TAG_FORCE_BUILD}}')
+                == false
       volumemanager:
         type: build
         stage: build
@@ -192,9 +205,11 @@ steps:
         tag: '${{VOLUMEMANAGER_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{VOLUMEMANAGER_TAG_EXISTS}}', '{{VOLUMEMANAGER_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{VOLUMEMANAGER_TAG_EXISTS}}', '{{VOLUMEMANAGER_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{VOLUMEMANAGER_TAG_FORCE_BUILD}}', '{{VOLUMEMANAGER_TAG_FORCE_BUILD}}')
+                == false
       jupyterhub:
         type: build
         stage: build
@@ -212,9 +227,11 @@ steps:
         tag: '${{JUPYTERHUB_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{JUPYTERHUB_TAG_EXISTS}}', '{{JUPYTERHUB_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{JUPYTERHUB_TAG_EXISTS}}', '{{JUPYTERHUB_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{JUPYTERHUB_TAG_FORCE_BUILD}}', '{{JUPYTERHUB_TAG_FORCE_BUILD}}')
+                == false
       common:
         type: build
         stage: build
@@ -232,9 +249,11 @@ steps:
         tag: '${{COMMON_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{COMMON_TAG_EXISTS}}', '{{COMMON_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{COMMON_TAG_EXISTS}}', '{{COMMON_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{COMMON_TAG_FORCE_BUILD}}', '{{COMMON_TAG_FORCE_BUILD}}')
+                == false
       workflows-send-result-event:
         type: build
         stage: build
@@ -252,9 +271,11 @@ steps:
         tag: '${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}',
+            any:
+              buildDoesNotExist: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}',
                 '{{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_FORCE_BUILD}}',
+                '{{WORKFLOWS_SEND_RESULT_EVENT_TAG_FORCE_BUILD}}') == false
       workflows-extract-download:
         type: build
         stage: build
@@ -271,9 +292,11 @@ steps:
         tag: '${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_EXISTS}}',
+            any:
+              buildDoesNotExist: includes('${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_EXISTS}}',
                 '{{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_FORCE_BUILD}}',
+                '{{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_FORCE_BUILD}}') == false
       workflows-notify-queue:
         type: build
         stage: build
@@ -291,9 +314,11 @@ steps:
         tag: '${{WORKFLOWS_NOTIFY_QUEUE_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKFLOWS_NOTIFY_QUEUE_TAG_EXISTS}}', '{{WORKFLOWS_NOTIFY_QUEUE_TAG_EXISTS}}')
-                == true
+            any:
+              buildDoesNotExist: includes('${{WORKFLOWS_NOTIFY_QUEUE_TAG_EXISTS}}',
+                '{{WORKFLOWS_NOTIFY_QUEUE_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKFLOWS_NOTIFY_QUEUE_TAG_FORCE_BUILD}}',
+                '{{WORKFLOWS_NOTIFY_QUEUE_TAG_FORCE_BUILD}}') == false
       workflows:
         type: build
         stage: build
@@ -311,9 +336,11 @@ steps:
         tag: '${{WORKFLOWS_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKFLOWS_TAG_EXISTS}}', '{{WORKFLOWS_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{WORKFLOWS_TAG_EXISTS}}', '{{WORKFLOWS_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{WORKFLOWS_TAG_FORCE_BUILD}}', '{{WORKFLOWS_TAG_FORCE_BUILD}}')
+                == false
       workspaces-figshare-copy:
         type: build
         stage: build
@@ -331,9 +358,11 @@ steps:
         tag: '${{WORKSPACES_FIGSHARE_COPY_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}',
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}',
                 '{{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_FIGSHARE_COPY_TAG_FORCE_BUILD}}') == false
       workspaces-scan-workspace:
         type: build
         stage: build
@@ -351,9 +380,11 @@ steps:
         tag: '${{WORKSPACES_SCAN_WORKSPACE_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}',
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}',
                 '{{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_SCAN_WORKSPACE_TAG_FORCE_BUILD}}') == false
       workspaces-github-copy:
         type: build
         stage: build
@@ -371,9 +402,11 @@ steps:
         tag: '${{WORKSPACES_GITHUB_COPY_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}', '{{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}')
-                == true
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_GITHUB_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_GITHUB_COPY_TAG_FORCE_BUILD}}') == false
       workspaces-dandi-copy:
         type: build
         stage: build
@@ -390,9 +423,11 @@ steps:
         tag: '${{WORKSPACES_DANDI_COPY_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKSPACES_DANDI_COPY_TAG_EXISTS}}', '{{WORKSPACES_DANDI_COPY_TAG_EXISTS}}')
-                == true
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_DANDI_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_DANDI_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_DANDI_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_DANDI_COPY_TAG_FORCE_BUILD}}') == false
       workspaces:
         type: build
         stage: build
@@ -410,9 +445,11 @@ steps:
         tag: '${{WORKSPACES_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{WORKSPACES_TAG_EXISTS}}', '{{WORKSPACES_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_TAG_EXISTS}}', '{{WORKSPACES_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{WORKSPACES_TAG_FORCE_BUILD}}', '{{WORKSPACES_TAG_FORCE_BUILD}}')
+                == false
       netpyne:
         type: build
         stage: build
@@ -429,9 +466,11 @@ steps:
         tag: '${{NETPYNE_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{NETPYNE_TAG_EXISTS}}', '{{NETPYNE_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{NETPYNE_TAG_EXISTS}}', '{{NETPYNE_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{NETPYNE_TAG_FORCE_BUILD}}', '{{NETPYNE_TAG_FORCE_BUILD}}')
+                == false
       accounts-api:
         type: build
         stage: build
@@ -449,9 +488,11 @@ steps:
         tag: '${{ACCOUNTS_API_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{ACCOUNTS_API_TAG_EXISTS}}', '{{ACCOUNTS_API_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{ACCOUNTS_API_TAG_EXISTS}}', '{{ACCOUNTS_API_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{ACCOUNTS_API_TAG_FORCE_BUILD}}', '{{ACCOUNTS_API_TAG_FORCE_BUILD}}')
+                == false
       osb-portal:
         type: build
         stage: build
@@ -468,9 +509,11 @@ steps:
         tag: '${{OSB_PORTAL_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{OSB_PORTAL_TAG_EXISTS}}', '{{OSB_PORTAL_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{OSB_PORTAL_TAG_EXISTS}}', '{{OSB_PORTAL_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{OSB_PORTAL_TAG_FORCE_BUILD}}', '{{OSB_PORTAL_TAG_FORCE_BUILD}}')
+                == false
       backoffice:
         type: build
         stage: build
@@ -487,9 +530,11 @@ steps:
         tag: '${{BACKOFFICE_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{BACKOFFICE_TAG_EXISTS}}', '{{BACKOFFICE_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{BACKOFFICE_TAG_EXISTS}}', '{{BACKOFFICE_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{BACKOFFICE_TAG_FORCE_BUILD}}', '{{BACKOFFICE_TAG_FORCE_BUILD}}')
+                == false
       nwb-explorer:
         type: build
         stage: build
@@ -506,9 +551,11 @@ steps:
         tag: '${{NWB_EXPLORER_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{NWB_EXPLORER_TAG_EXISTS}}', '{{NWB_EXPLORER_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{NWB_EXPLORER_TAG_EXISTS}}', '{{NWB_EXPLORER_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{NWB_EXPLORER_TAG_FORCE_BUILD}}', '{{NWB_EXPLORER_TAG_FORCE_BUILD}}')
+                == false
       jupyterlab:
         type: build
         stage: build
@@ -525,9 +572,11 @@ steps:
         tag: '${{JUPYTERLAB_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{JUPYTERLAB_TAG_EXISTS}}', '{{JUPYTERLAB_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{JUPYTERLAB_TAG_EXISTS}}', '{{JUPYTERLAB_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{JUPYTERLAB_TAG_FORCE_BUILD}}', '{{JUPYTERLAB_TAG_FORCE_BUILD}}')
+                == false
   tests_unit:
     stage: unittest
     type: parallel
@@ -589,9 +638,11 @@ steps:
         tag: '${{TEST_E2E_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{TEST_E2E_TAG_EXISTS}}', '{{TEST_E2E_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{TEST_E2E_TAG_EXISTS}}', '{{TEST_E2E_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{TEST_E2E_TAG_FORCE_BUILD}}', '{{TEST_E2E_TAG_FORCE_BUILD}}')
+                == false
       test-api:
         type: build
         stage: build
@@ -609,9 +660,11 @@ steps:
         tag: '${{TEST_API_TAG}}'
         when:
           condition:
-            all:
-              whenVarExists: includes('${{TEST_API_TAG_EXISTS}}', '{{TEST_API_TAG_EXISTS}}')
+            any:
+              buildDoesNotExist: includes('${{TEST_API_TAG_EXISTS}}', '{{TEST_API_TAG_EXISTS}}')
                 == true
+              forceNoCache: includes('${{TEST_API_TAG_FORCE_BUILD}}', '{{TEST_API_TAG_FORCE_BUILD}}')
+                == false
     when:
       condition:
         all:
