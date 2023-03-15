@@ -107,7 +107,6 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                           display="flex"
                           mb={2}
                           onClick={() => history.push(`/repositories/${repository.id}`)}
-                          height={"240px"}
                         >
                           <RepositoriesCardIcon />
                         </Box>

@@ -353,6 +353,7 @@ export const RepositoryPage = (props: any) => {
               <RepositoryActionsMenu
                 user={user}
                 repository={repository}
+                isRepositoryPage={true}
                 onAction={(r: OSBRepository) =>
                   r && setRepository({ ...repository, ...r })
                 }

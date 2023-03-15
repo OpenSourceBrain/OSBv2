@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { useHistory } from "react-router-dom";
 import makeStyles from "@mui/styles/makeStyles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -50,6 +50,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const canEdit = canEditWorkspace(props?.user, props?.workspace);
+  const history = useHistory();
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -123,7 +124,7 @@ export default (props: WorkspaceActionsMenuProps) => {
    * @param applicatonType OSBApplication key
    */
   const handleOpenWorkspaceWithApp = (applicatonType: string) => {
-    window.location.href = `/workspace/open/${props.workspace.id}/${applicatonType}`;
+    history.push(`/workspace/open/${props.workspace.id}/${applicatonType}`);
   };
 
   return (
@@ -139,17 +140,34 @@ export default (props: WorkspaceActionsMenuProps) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
+       {!props.isWorkspaceOpen && (
+          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>
+            Open workspace
+          </MenuItem>
+        )}
+         <NestedMenuItem
+          className="open-with"
+          label="Open with..."
+          parentMenuOpen={true}
+        >
+          {Object.keys(OSBApplications).map((appCode) => (
+            <MenuItem
+              key={appCode}
+              className={appCode}
+              onClick={(e) => {
+                handleOpenWorkspaceWithApp(appCode);
+              }}
+            >
+              {OSBApplications[appCode].name}
+            </MenuItem>
+          ))}
+        </NestedMenuItem>
+        {props.user && (
+          <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
+        )}
         {canEdit && (
           <MenuItem className="edit-workspace" onClick={handleEditWorkspace}>
             Edit
-          </MenuItem>
-        )}
-        {canEdit && (
-          <MenuItem
-            className="delete-workspace"
-            onClick={handleDeleteWorkspace}
-          >
-            Delete
           </MenuItem>
         )}
         {canEdit && !props.workspace?.publicable && (
@@ -179,6 +197,7 @@ export default (props: WorkspaceActionsMenuProps) => {
               Add to featured
             </MenuItem>
           )}
+
         {props.user && props.user.isAdmin && props.workspace?.featured && (
           <MenuItem
             className="remove-featured-workspace"
@@ -187,31 +206,17 @@ export default (props: WorkspaceActionsMenuProps) => {
             Remove from featured
           </MenuItem>
         )}
-        {!props.isWorkspaceOpen && (
-          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>
-            Open workspace
+          
+        {canEdit && (
+          <MenuItem
+            className="delete-workspace"
+            onClick={handleDeleteWorkspace}
+          >
+            Delete
           </MenuItem>
         )}
-        {props.user && (
-          <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
-        )}
-        <NestedMenuItem
-          className="open-with"
-          label="Open with..."
-          parentMenuOpen={true}
-        >
-          {Object.keys(OSBApplications).map((appCode) => (
-            <MenuItem
-              key={appCode}
-              className={appCode}
-              onClick={(e) => {
-                handleOpenWorkspaceWithApp(appCode);
-              }}
-            >
-              {OSBApplications[appCode].name}
-            </MenuItem>
-          ))}
-        </NestedMenuItem>
+       
+       
       </Menu>
       {editWorkspaceOpen && (
         <WorkspaceEditor
