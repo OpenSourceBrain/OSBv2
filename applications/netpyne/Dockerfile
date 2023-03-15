@@ -13,9 +13,8 @@ RUN yarn install  --network-timeout 1000000000
 RUN yarn build-dev
 
 
-RUN mv node_modules/@metacell .
-RUN rm -Rf node_modules/*
-RUN mv @metacell node_modules
+RUN mv node_modules/@metacell . && rm -Rf node_modules/* && mv @metacell node_modules
+
 
 ###
 FROM jupyter/base-notebook:hub-1.4.2
@@ -70,12 +69,14 @@ COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_conf
 RUN rm -f ~/.jupyter/*.json
 RUN chown $NB_UID .
 RUN chown $NB_UID /opt
-RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
+RUN rm -Rf workspace
+# RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
 USER $NB_UID
 
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
+
 RUN ln -s /opt/workspace workspace
 
 ENV NEURON_HOME=/opt/conda
