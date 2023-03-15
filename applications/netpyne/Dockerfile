@@ -1,8 +1,8 @@
 FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
-ENV BRANCH_TAG=osb2
+ENV BRANCH_TAG=master
 ENV FOLDER=netpyne
-RUN echo "no-cache 2023-3-15"
+RUN echo "no-cache 2023-3-15a"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
