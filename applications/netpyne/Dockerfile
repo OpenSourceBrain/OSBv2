@@ -51,7 +51,7 @@ RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN python utilities/install.py --npm-skip --netpyne $NETPYNE_CORE_BRANCH_TAG --workspace= 
+RUN python utilities/install.py --npm-skip --netpyne $NETPYNE_CORE_BRANCH_TAG
 
 
 
