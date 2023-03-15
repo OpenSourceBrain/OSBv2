@@ -598,7 +598,7 @@ steps:
       kube_context: '${{CLUSTER_NAME}}'
       namespace: '${{NAMESPACE}}'
       chart_version: '${{CF_BUILD_ID}}'
-      cmd_ps: --wait --timeout 600s
+      cmd_ps: --wait --timeout 600s --create-namespace
       custom_value_files:
       - ./deployment/helm/values.yaml
       custom_values:
@@ -694,7 +694,7 @@ steps:
     stage: qa
     title: Api tests
     working_directory: /home/test
-    image: '${{test-api}}'
+    image: '${{REGISTRY}}/osb/test-api:${{TEST_API_TAG}}'
     fail_fast: false
     commands:
     - echo $APP_NAME
@@ -727,7 +727,7 @@ steps:
     stage: qa
     title: End to end tests
     working_directory: /home/test
-    image: '${{REGISTRY}}/osb/test-api:${{TEST_API_TAG}}'
+    image: '${{REGISTRY}}/osb/test-e2e:${{TEST_E2E_TAG}}'
     fail_fast: false
     commands:
     - yarn test
