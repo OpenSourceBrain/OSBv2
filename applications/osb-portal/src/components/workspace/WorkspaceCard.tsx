@@ -69,7 +69,7 @@ export const WorkspaceCard = (props: Props) => {
             flex="1"
             onClick={() => props.handleWorkspaceClick(workspace)}
             sx={{
-              backgroundImage: `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
+              backgroundImage: workspace.thumbnail && `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
               backgroundSize: "cover",
             }}
           >
