@@ -110,4 +110,5 @@ def has_user_write_access(workspace_id, user: User, workspace_owner: str):
     if workspace_owner == user.name:
         return True
     auth_client = AuthClient()
-    return auth_client.user_has_realm_role(user.name, 'administrator')
+    kc_user = auth_client.get_user(user.name)
+    return auth_client.user_has_realm_role(kc_user.id, 'administrator')
