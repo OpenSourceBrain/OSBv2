@@ -104,11 +104,7 @@ export const RepositoriesPage = ({
   const [tabValue, setTabValue] = React.useState(RepositoriesTab.all);
   const [listView, setListView] = React.useState<string>("list");
 
-  const isSearchFieldsEmpty =
-    searchFilterValues.tags.length === 0 &&
-    searchFilterValues.types.length === 0 &&
-    (typeof searchFilterValues.text === "undefined" ||
-      searchFilterValues.text === "");
+  
 
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
@@ -125,10 +121,15 @@ export const RepositoriesPage = ({
     setLoading(false);
   };
 
-  const getReposList = (payload) => {
+  const updateReposList = () => {
+    const isSearchFieldsEmpty =
+    searchFilterValues.tags.length === 0 &&
+    searchFilterValues.types.length === 0 &&
+    (typeof searchFilterValues.text === "undefined" ||
+      searchFilterValues.text === "");
     setLoading(true);
-    if (payload?.searchFilterValues) {
-      const myReposFilter = payload?.tabValue ? {...payload?.searchFilterValues, user_id: user.id} : payload?.searchFilterValues
+    if (!isSearchFieldsEmpty) {
+      const myReposFilter = tabValue ? {...searchFilterValues, user_id: user.id} : searchFilterValues
 
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -136,7 +137,7 @@ export const RepositoriesPage = ({
       ).then((reposDetails) => {
         setReposValues(reposDetails);
       });
-    } else if (payload?.tabValue) {
+    } else if (tabValue) {
       RepositoryService.getUserRepositoriesDetails(user.id, page).then(
         (reposDetails) => {
           setReposValues(reposDetails);
@@ -148,6 +149,10 @@ export const RepositoriesPage = ({
       });
     }
   };
+
+  const handleRefreshRepositories = () => {
+    updateReposList();
+  }
 
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
     setTotal(0);
@@ -183,13 +188,7 @@ export const RepositoriesPage = ({
       );
     }
   };
-  React.useEffect(() => {
-    if (isSearchFieldsEmpty) {
-      getReposList({ searchFilterValues: null, tabValue });
-    } else {
-      getReposList({ searchFilterValues, tabValue });
-    }
-  }, [page, searchFilterValues, tabValue, counter]);
+  React.useEffect(updateReposList, [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
@@ -320,6 +319,7 @@ export const RepositoriesPage = ({
               user={user}
               repositories={repositories}
               loading={loading}
+              refreshRepositories={handleRefreshRepositories}
             />
           )}
         </div>

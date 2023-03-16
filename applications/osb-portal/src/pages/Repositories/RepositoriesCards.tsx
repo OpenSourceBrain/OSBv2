@@ -15,14 +15,7 @@ import { TagTooltip } from "../../components/workspace/WorkspaceCard";
 import CircularProgress from "@mui/material/CircularProgress";
 
 // style
-import {
-  paragraph,
-  chipTextColor,
-  chipBg,
-  textColor,
-  lightWhite,
-  cardIconFill,
-} from "../../theme";
+import { paragraph, chipTextColor, chipBg, textColor } from "../../theme";
 import styled from "@mui/system/styled";
 
 // icons
@@ -42,12 +35,14 @@ import CardTitle from "../../components/styled/CardTitle";
 import Grid from "@mui/material/Grid";
 import CardFooter from "../../components/styled/CardFooter";
 import { useHistory } from "react-router-dom";
+import { refreshRepositories } from "../../store/actions/repositories";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
   user?: UserInfo;
   loading: boolean;
   handleRepositoryClick: (repository: OSBRepository) => void;
+  refreshRepositories: () => void;
 }
 
 export const StyledContextChip = styled(Chip)((theme) => ({
@@ -61,7 +56,8 @@ export const StyledContextChip = styled(Chip)((theme) => ({
 }));
 
 export const RepositoriesListCards = (props: RepositoriesProps) => {
-  const { repositories, loading, handleRepositoryClick } = props;
+  const { repositories, loading, handleRepositoryClick, refreshRepositories } =
+    props;
 
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
   const history = useHistory();
@@ -97,30 +93,29 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                       <RepositoryActionsMenu
                         repository={repository}
                         user={props.user}
-                        onAction={() => {}}
+                        onAction={refreshRepositories}
                       />
-                      
-                        <Box
-                          className="imageContainer"
-                          justifyContent="center"
-                          alignItems="center"
-                          display="flex"
-                          mb={2}
-                          onClick={() => history.push(`/repositories/${repository.id}`)}
-                        >
-                          <RepositoriesCardIcon />
-                        </Box>
-                      
+
+                      <Box
+                        className="imageContainer"
+                        justifyContent="center"
+                        alignItems="center"
+                        display="flex"
+                        mb={2}
+                        onClick={() => handleRepositoryClick(repository)}
+                      >
+                        <RepositoriesCardIcon />
+                      </Box>
 
                       <Box sx={{ px: 1, py: 0 }}>
                         <Box display="flex">
-                          <Tooltip title={repository.name} >
+                          <Tooltip title={repository.name}>
                             <Link
                               href={`/repositories/${repository.id}`}
                               className={`workspace-page-link`}
                               underline="none"
                               color="secondary"
-                              sx={{minWidth: 0}}
+                              sx={{ minWidth: 0 }}
                             >
                               <CardTitle mb={"4px"}>
                                 {repository.name}
@@ -159,7 +154,6 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                               />
                             </TagTooltip>
                           )}
-                        
                         </Box>
                         <Typography
                           variant="caption"
@@ -174,9 +168,7 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                         </Typography>
                       </Box>
                     </CardContent>
-                    <Box
-                      sx={{ px: 1, pb: 1 }}
-                    >
+                    <Box sx={{ px: 1, pb: 1 }}>
                       <CardFooter variant="caption">
                         <Button
                           className="repoType"

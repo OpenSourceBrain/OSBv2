@@ -52,6 +52,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const DEFAULT_CONTEXTS = ["main", "master"];
 
+interface EditRepoProps {
+  dialogOpen: boolean;
+  onSubmit?: (r: OSBRepository) => any;
+  handleClose: (open: boolean) => any;
+  repository?: OSBRepository;
+  title: string;
+  user?: UserInfo;
+  tags: Tag[];
+  refreshRepositories: () => void;
+}
+
 const RepoDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiPaper-root": {
     padding: 0,
@@ -178,16 +189,7 @@ export const EditRepoDialog = ({
   tags: tagOptions,
   handleClose,
   refreshRepositories,
-}: {
-  dialogOpen: boolean;
-  onSubmit?: (r: OSBRepository) => any;
-  handleClose: (open: boolean) => any;
-  repository?: OSBRepository;
-  title: string;
-  user: UserInfo;
-  tags: Tag[];
-  refreshRepositories: () => void;
-}) => {
+}: EditRepoProps) => {
   const [formValues, setFormValues] = useState({
     ...repository,
     userId: user?.id,

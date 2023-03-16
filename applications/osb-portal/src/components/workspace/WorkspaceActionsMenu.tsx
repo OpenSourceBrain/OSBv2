@@ -90,7 +90,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenWorkspace = () => {
-    window.location.href = `/workspace/${props.workspace.id}`;
+    history.push(`/workspace/${props.workspace.id}`);
   };
 
   const handleCloseEditWorkspace = () => {
@@ -115,7 +115,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenClonedWorkspace = () => {
-    window.location.href = `/workspace/${clonedWSId}`;
+    history.push(`/workspace/${clonedWSId}`);
   };
 
 
