@@ -1,5 +1,5 @@
 harness:
-  subdomain: www
+  subdomain: app
   secured: false
   deployment:
     auto: true
