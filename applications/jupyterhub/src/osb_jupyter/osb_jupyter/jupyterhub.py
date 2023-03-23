@@ -120,7 +120,7 @@ def has_user_write_access(workspace, user: User):
 
 def get_workspace(workspace_id, token, workspace_base_url=None):
     if workspace_base_url is None:
-        workspace_conf: applications.ApplicationConfiguration = applications.get_configuration('workspace')
+        workspace_conf: applications.ApplicationConfiguration = applications.get_configuration('workspaces')
         workspace_base_url = workspace_conf.get_service_address()
     import requests
     workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}", headers={"Authorization": f"Bearer {token}"}).json()
