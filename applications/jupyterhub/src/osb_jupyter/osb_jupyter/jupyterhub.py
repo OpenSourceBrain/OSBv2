@@ -6,6 +6,7 @@ from kubespawner.spawner import KubeSpawner
 
 from cloudharness.auth import AuthClient
 from cloudharness import log
+from cloudharness import applications
 
 
 def affinity_spec(key, value):
@@ -72,7 +73,8 @@ def change_pod_manifest(self: KubeSpawner):
         if not [v for v in self.volumes if v['name'] == volume_name]:
             self.volumes.append(ws_pvc)
 
-        workspace_owner = get_from_cookie('workspaceOwner')
+        
+        
 
         # Add labels to use for affinity
         labels = {
@@ -88,7 +90,7 @@ def change_pod_manifest(self: KubeSpawner):
             self.pod_affinity_required = []
         
         write_access = has_user_write_access(
-            workspace_id, self.user, workspace_owner)
+            workspace_id, self.user)
         if workspace_volume_is_legacy(workspace_id):
             # Pods with write access must be on the same node
             self.pod_affinity_required.append(affinity_spec('workspace', workspace_id))
@@ -105,10 +107,23 @@ def change_pod_manifest(self: KubeSpawner):
 
 
 
-def has_user_write_access(workspace_id, user: User, workspace_owner: str):
-    print('name:', user.name, workspace_owner)
+def has_user_write_access(workspace_id, user: User):
+    print('Cheking access, name:', user.name, "workspace:", workspace_id)
+
+    workspace = get_workspace(workspace_id)
+    workspace_owner = workspace["user"]["username"]
+    
     if workspace_owner == user.name:
         return True
     auth_client = AuthClient()
     kc_user = auth_client.get_user(user.name)
     return auth_client.user_has_realm_role(kc_user.id, 'administrator')
+
+def get_workspace(workspace_id, workspace_base_url=None):
+    if workspace_base_url is None:
+        workspace_conf: applications.ApplicationConfiguration = applications.get_application('workspace')
+        workspace_base_url = workspace_conf.get_service_address()
+    import requests
+    workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}").json()
+    
+    return workspace.json()

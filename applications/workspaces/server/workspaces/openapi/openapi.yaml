@@ -142,10 +142,6 @@ paths:
                     description: The workspace.
                 '404':
                     description: The workspace was not found.
-            security:
-                - {}
-                -
-                    bearerAuth: []
             summary: Used to retrieve a workspace from the repository.
         put:
             requestBody:

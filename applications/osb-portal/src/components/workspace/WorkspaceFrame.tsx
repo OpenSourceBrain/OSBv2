@@ -82,7 +82,6 @@ export const WorkspaceFrame = (props: {
     const userParam = user == null ? "" : `${user.username}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
-    document.cookie = `workspaceOwner=${workspace.userId};path=/;domain=${domain}`;
     if (window.APP_DOMAIN) {
       // Dev
       setFrameUrl(`${applicationDomain}/geppetto`);

@@ -22,7 +22,7 @@ ENV NB_UID=jovyan
 ENV FOLDER=netpyne
 
 # branch with latest neuroml updates
-ARG NETPYNE_CORE_BRANCH_TAG=osbv2-dev
+ARG NETPYNE_CORE_BRANCH_TAG
 
 USER root
 
