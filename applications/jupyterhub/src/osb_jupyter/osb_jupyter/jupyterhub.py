@@ -125,4 +125,4 @@ def get_workspace(workspace_id, token, workspace_base_url=None):
     import requests
     workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}", headers={"Authorization": f"Bearer {token}"}).json()
     
-    return workspace.json()
+    return workspace
