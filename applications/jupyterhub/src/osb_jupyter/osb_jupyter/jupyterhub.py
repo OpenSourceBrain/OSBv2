@@ -88,9 +88,11 @@ def change_pod_manifest(self: KubeSpawner):
         if not user_volume_is_legacy(self.user.id):
             # User pod affinity is by default added by cloudharness
             self.pod_affinity_required = []
-        
+
+        workspace = get_workspace(workspace_id, get_from_cookie("accessToken"))
         write_access = has_user_write_access(
-            workspace_id, self.user)
+            workspace, self.user)
+        
         if workspace_volume_is_legacy(workspace_id):
             # Pods with write access must be on the same node
             self.pod_affinity_required.append(affinity_spec('workspace', workspace_id))
@@ -107,10 +109,10 @@ def change_pod_manifest(self: KubeSpawner):
 
 
 
-def has_user_write_access(workspace_id, user: User):
-    print('Cheking access, name:', user.name, "workspace:", workspace_id)
+def has_user_write_access(workspace, user: User):
+    print('Checking access, name:', user.name, "workspace:", workspace["id"])
 
-    workspace = get_workspace(workspace_id)
+    
     workspace_owner = workspace["user"]["username"]
     
     if workspace_owner == user.name:
@@ -119,11 +121,11 @@ def has_user_write_access(workspace_id, user: User):
     kc_user = auth_client.get_user(user.name)
     return auth_client.user_has_realm_role(kc_user.id, 'administrator')
 
-def get_workspace(workspace_id, workspace_base_url=None):
+def get_workspace(workspace_id, token, workspace_base_url=None):
     if workspace_base_url is None:
         workspace_conf: applications.ApplicationConfiguration = applications.get_application('workspace')
         workspace_base_url = workspace_conf.get_service_address()
     import requests
-    workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}").json()
+    workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}", headers={"Authorization": f"Bearer {token}"}).json()
     
     return workspace.json()
