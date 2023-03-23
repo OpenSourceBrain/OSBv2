@@ -136,7 +136,7 @@ steps:
         - REGISTRY=${{REGISTRY}}/osb/
         image_name: osb/nfsserver
         title: Nfsserver
-        working_directory: ./cloud-harness/applications/nfsserver
+        working_directory: ./.overrides/applications/nfsserver
         tag: '${{NFSSERVER_TAG}}'
         when:
           condition:
@@ -737,7 +737,7 @@ steps:
         volumes:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
-        - APP_URL=https://www.${{DOMAIN}}
+        - APP_URL=https://app.${{DOMAIN}}
     when:
       condition:
         all:
@@ -758,7 +758,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness base
-        candidate: '${{REGISTRY}}/osb/cloudharness-base:${{${{CLOUDHARNESS_BASE_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -766,7 +766,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -774,7 +774,7 @@ steps:
         stage: publish
         type: push
         title: Cloudharness flask
-        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{${{CLOUDHARNESS_FLASK_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -782,7 +782,7 @@ steps:
         stage: publish
         type: push
         title: Nfsserver
-        candidate: '${{REGISTRY}}/osb/nfsserver:${{${{NFSSERVER_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/nfsserver:${{NFSSERVER_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -790,7 +790,7 @@ steps:
         stage: publish
         type: push
         title: Notifications
-        candidate: '${{REGISTRY}}/osb/notifications:${{${{NOTIFICATIONS_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/notifications:${{NOTIFICATIONS_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -798,7 +798,7 @@ steps:
         stage: publish
         type: push
         title: Accounts
-        candidate: '${{REGISTRY}}/osb/accounts:${{${{ACCOUNTS_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/accounts:${{ACCOUNTS_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -806,7 +806,7 @@ steps:
         stage: publish
         type: push
         title: Volumemanager
-        candidate: '${{REGISTRY}}/osb/volumemanager:${{${{VOLUMEMANAGER_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/volumemanager:${{VOLUMEMANAGER_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -814,7 +814,7 @@ steps:
         stage: publish
         type: push
         title: Jupyterhub
-        candidate: '${{REGISTRY}}/osb/jupyterhub:${{${{JUPYTERHUB_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/jupyterhub:${{JUPYTERHUB_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -822,7 +822,7 @@ steps:
         stage: publish
         type: push
         title: Common
-        candidate: '${{REGISTRY}}/osb/common:${{${{COMMON_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/common:${{COMMON_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -830,7 +830,7 @@ steps:
         stage: publish
         type: push
         title: Workflows send result event
-        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -838,7 +838,7 @@ steps:
         stage: publish
         type: push
         title: Workflows extract download
-        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -846,7 +846,7 @@ steps:
         stage: publish
         type: push
         title: Workflows notify queue
-        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{${{WORKFLOWS_NOTIFY_QUEUE_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{WORKFLOWS_NOTIFY_QUEUE_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -854,7 +854,7 @@ steps:
         stage: publish
         type: push
         title: Workflows
-        candidate: '${{REGISTRY}}/osb/workflows:${{${{WORKFLOWS_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workflows:${{WORKFLOWS_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -862,7 +862,7 @@ steps:
         stage: publish
         type: push
         title: Workspaces figshare copy
-        candidate: '${{REGISTRY}}/osb/workspaces-figshare-copy:${{${{WORKSPACES_FIGSHARE_COPY_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workspaces-figshare-copy:${{WORKSPACES_FIGSHARE_COPY_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -870,7 +870,7 @@ steps:
         stage: publish
         type: push
         title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{${{WORKSPACES_SCAN_WORKSPACE_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{WORKSPACES_SCAN_WORKSPACE_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -878,7 +878,7 @@ steps:
         stage: publish
         type: push
         title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{${{WORKSPACES_GITHUB_COPY_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{WORKSPACES_GITHUB_COPY_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -886,7 +886,7 @@ steps:
         stage: publish
         type: push
         title: Workspaces dandi copy
-        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{${{WORKSPACES_DANDI_COPY_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{WORKSPACES_DANDI_COPY_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -894,7 +894,7 @@ steps:
         stage: publish
         type: push
         title: Workspaces
-        candidate: '${{REGISTRY}}/osb/workspaces:${{${{WORKSPACES_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -902,7 +902,7 @@ steps:
         stage: publish
         type: push
         title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{${{NETPYNE_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/netpyne:${{NETPYNE_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -910,7 +910,7 @@ steps:
         stage: publish
         type: push
         title: Accounts api
-        candidate: '${{REGISTRY}}/osb/accounts-api:${{${{ACCOUNTS_API_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/accounts-api:${{ACCOUNTS_API_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -918,7 +918,7 @@ steps:
         stage: publish
         type: push
         title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{${{OSB_PORTAL_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/osb-portal:${{OSB_PORTAL_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -926,7 +926,7 @@ steps:
         stage: publish
         type: push
         title: Backoffice
-        candidate: '${{REGISTRY}}/osb/backoffice:${{${{BACKOFFICE_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/backoffice:${{BACKOFFICE_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -934,7 +934,7 @@ steps:
         stage: publish
         type: push
         title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{${{NWB_EXPLORER_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{NWB_EXPLORER_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -942,7 +942,7 @@ steps:
         stage: publish
         type: push
         title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{${{JUPYTERLAB_TAG}}}}'
+        candidate: '${{REGISTRY}}/osb/jupyterlab:${{JUPYTERLAB_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
