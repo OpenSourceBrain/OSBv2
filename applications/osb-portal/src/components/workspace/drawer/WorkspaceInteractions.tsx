@@ -19,27 +19,16 @@ import Tooltip from "@mui/material/Tooltip";
 //icons
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Box from "@mui/material/Box";
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 
-import {
-  ResourceStatus,
-  Workspace,
-  WorkspaceResource,
-} from "../../../types/workspace";
+import { Workspace, WorkspaceResource } from "../../../types/workspace";
 
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import OSBDialog from "../../common/OSBDialog";
-import {
-  primaryColor,
-  bgRegular as borderColor,
-  paragraph,
-  workspaceItemBg,
-  orangeText,
-  lightWhite,
-  bgInputs,
-} from "../../../theme";
+import { bgRegular as borderColor, paragraph } from "../../../theme";
 import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
 import { UserInfo } from "../../../types/user";
 import { Typography } from "@mui/material";
@@ -213,6 +202,8 @@ export default (props: WorkspaceProps | any) => {
             </Tabs>
           </Box>
           <TabPanel value={tabValue} index={0}>
+
+            
             <ListItem
               component="div"
               className="workspace-tab-header"
@@ -249,14 +240,17 @@ export default (props: WorkspaceProps | any) => {
                       <InfoOutlinedIcon fontSize="small" />
                     </Tooltip>
                   </SidebarIconButton>
-                  {canEdit && (
+                  {canEdit ? (
                     <SidebarIconButton>
                       <AddOutlinedIcon
                         fontSize="small"
                         onClick={showAddResource}
                       />
                     </SidebarIconButton>
-                  )}
+                  ) :  <Tooltip title="You do not have permissions to modify this workspace. Either clone it or create a new one if you need edit access.">
+                      <LockOutlinedIcon sx={{ color: paragraph }} />
+                    </Tooltip>
+                }
                 </Stack>
               </ListItemButton>
             </ListItem>
@@ -281,14 +275,20 @@ export default (props: WorkspaceProps | any) => {
         </SidebarBox>
       ) : (
         <>
-          <Box className={classes.closedText}>
-            {canEdit && (
+          <Box>
+            {canEdit ? (
               <IconButton onClick={showAddResource} size="large">
                 <AddIcon fontSize="small" />
               </IconButton>
+            ) : (
+              <IconButton size="large">
+                <Tooltip title="You do not have permissions to modify this workspace.">
+                  <LockOutlinedIcon sx={{ color: paragraph }} />
+                </Tooltip>
+              </IconButton>
             )}
-            <Typography variant="h6" >
-            {props.workspace.name}
+            <Typography variant="h6" className={classes.closedText}>
+              {props.workspace.name}
             </Typography>
           </Box>
         </>
