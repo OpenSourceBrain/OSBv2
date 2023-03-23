@@ -66,9 +66,9 @@ export const WorkspacePage = (props: any) => {
 
   const isWorkspaceOpen = Boolean(anchorElmoreVert);
 
-  if (!workspace) {
-    props.selectWorkspace(workspaceId);
-  }
+  React.useEffect(() => 
+    props.selectWorkspace(workspaceId), [workspaceId]
+  )
 
   if (error) {
     throw error;
@@ -84,6 +84,7 @@ export const WorkspacePage = (props: any) => {
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
+
 
   return workspace ? (
     <>
@@ -174,7 +175,7 @@ export const WorkspacePage = (props: any) => {
             </Grid>
           </Box>
         </Box>
-        {!workspace ? (
+        {(!workspace || workspace?.id !== parseInt(workspaceId)) ? (
           <Box
             flex={1}
             px={2}
