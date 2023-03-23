@@ -157,7 +157,7 @@ export const ComputationalModeling = (props: SvgIconProps) => (
   </SvgIcon>
 );
 
-export const WorkspaceFromRepository = (props: SvgIconProps) => (
+export const WorkspaceFromRepositoryIcon = (props: SvgIconProps) => (
   <SvgIcon viewBox="0 0 28 28" {...props}>
     <rect width="28" height="28" rx="8" />
     <path

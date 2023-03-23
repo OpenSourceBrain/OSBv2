@@ -204,6 +204,9 @@ const theme = {
           paddingLeft: "0.8em",
           paddingRight: "0.8em",
         },
+        labelMedium: {
+          maxWidth: "10em"
+        },
         outlined: {
           backgroundColor: bgDarker,
           border: "none",

@@ -305,6 +305,7 @@ export const WorkspaceFromRepository = ({
               >
                 <Repositories
                   repositories={repositories}
+                  compact={true}
                   handleRepositoryClick={(repository) => {
                     setSelectedRepository(repository);
                     setStage(Stage.SELECT_FILES);
@@ -349,6 +350,7 @@ export const WorkspaceFromRepository = ({
       <OSBDialog
         title="Create new workspace"
         open={true}
+        maxWidth={"xl"}
         closeAction={handleClose}
       >
         {children}
