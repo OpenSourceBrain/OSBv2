@@ -173,15 +173,15 @@ describe("OSB v2 Smoke Tests", () => {
       args: [
         "--no-sandbox",
         `--window-size=1600,1000`,
-        "--ignore-certificate-errors",
+        "--ignore-certificate-errors"
       ],
-      headless: true,
-      devtools: false,
+      headless: !process.env.PUPPETEER_DISPLAY,
       defaultViewport: {
         width: 1600,
         height: 1000,
       },
     });
+
 
     page = await browser.newPage();
     console.log(
