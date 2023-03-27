@@ -77,7 +77,8 @@ def change_pod_manifest(self: KubeSpawner):
         clean_username = "".join(c for c in app_user.username if c.isalnum())
         labels = {
             'workspace': str(workspace_id),
-            'username': clean_username
+            'username': clean_username,
+            'user': str(self.user.id),
         }
 
         appname = self.image.split('/')[-1].split(':')[0]
