@@ -79,7 +79,7 @@ export const WorkspaceFrame = (props: {
 
     const domain = getBaseDomain();
 
-    const userParam = user == null ? "" : `${user.username}`;
+    const userParam = user == null ? "" : `${user.id}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
     if (window.APP_DOMAIN) {
@@ -87,7 +87,7 @@ export const WorkspaceFrame = (props: {
       setFrameUrl(`${applicationDomain}/geppetto`);
     } else {
       setFrameUrl(
-        `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`
+        `//${applicationDomain}`
       );
     }
     openResource();

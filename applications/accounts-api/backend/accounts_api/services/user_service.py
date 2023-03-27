@@ -11,22 +11,13 @@ class UserNotFound(Exception): pass
 
 class UserNotAuthorized(Exception): pass
 
-def is_uuid(s):
-    import uuid
-    try:
-        uuid.UUID(s)
-        return True
-    except ValueError:
-        return False
 
 def get_user(username_or_id: str) -> User:
     client = AuthClient()
     try:
-        if is_uuid(username_or_id):
-            kc_user = client.get_user(username_or_id)
-        else:
-            kc_user = client.get_admin_client().get_users({"username": username_or_id})[0]
-            kc_user = client.get_user(kc_user['id']) # Load full data
+
+        kc_user = client.get_user(username_or_id)
+
     except KeycloakGetError as e:
         if e.response_code == 404:
             raise UserNotFound(username_or_id)
