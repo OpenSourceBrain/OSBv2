@@ -76,7 +76,7 @@ def change_pod_manifest(self: KubeSpawner):
         # Add labels to use for affinity
         labels = {
             'workspace': str(workspace_id),
-            'user': self.user.name
+            'user': "".join(c for c in self.user.name if c.isalnum())
         }
 
         self.common_labels = labels
@@ -110,7 +110,8 @@ def has_user_write_access(workspace, user: User):
     print('Checking access, name:', user.name, "workspace:", workspace["id"])
 
     
-    workspace_owner = workspace["user"]["username"]
+    workspace_owner = workspace["user"]["id"]
+    print("Workspace owner", workspace_owner, "-", workspace["user"]["username"])
     
     if workspace_owner == user.name:
         return True
