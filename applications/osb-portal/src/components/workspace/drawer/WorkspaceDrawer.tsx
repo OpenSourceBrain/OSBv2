@@ -1,15 +1,20 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import clsx from "clsx";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 
 import { WorkspaceInteractions } from "../..";
-import { OSBApplications, ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
+import {
+  OSBApplications,
+  ResourceStatus,
+  Workspace,
+  WorkspaceResource,
+} from "../../../types/workspace";
 
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
@@ -20,9 +25,7 @@ const useStyles = makeStyles((theme) => ({
   drawerContent: {
     width: 400,
   },
-  menuButton: {
-
-  },
+  menuButton: {},
   hide: {
     display: "none",
   },
@@ -99,23 +102,35 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   const classes = useStyles();
 
   const { app } = useParams<{ app: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // Keep drawer closed for jupyter by default
   const [open, setOpen] = React.useState(app === "jupyter" ? false : true);
 
   const getActiveResource = () => {
     if (workspace.lastOpen != null) {
-      if (!app || workspace.lastOpen.type.application === OSBApplications[app]) {
+      if (
+        !app ||
+        workspace.lastOpen.type.application === OSBApplications[app]
+      ) {
         return workspace.lastOpen;
-      } 
+      }
     }
-   if (app) {
+    const resourceFromParam = searchParams.get("resource");
+    if (resourceFromParam) {
+      return workspace.resources.find(
+        (resource) => resource.name === resourceFromParam
+      );
+    } else if (app) {
       return workspace.resources.find(
         (resource) =>
           resource.type.application === OSBApplications[app] &&
           resource.status === ResourceStatus.available
       );
     } else if (workspace.resources?.length) {
-      return workspace.resources.find(resource => resource.status === ResourceStatus.available);
+      return workspace.resources.find(
+        (resource) => resource.status === ResourceStatus.available
+      );
     }
   };
   const [currentResource, setCurrentResource] =
@@ -123,56 +138,58 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
 
   const handleToggleDrawer = () => setOpen(!open);
 
-  return user &&
-  workspace && (
-    <Box
-      display="flex"
-      alignItems="stretch"
-      flex="1"
-      className="verticalFill"
-    >
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        elevation={0}
-        open={open}
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx(classes.drawerPaper, {
+  return (
+    user &&
+    workspace && (
+      <Box
+        display="flex"
+        alignItems="stretch"
+        flex="1"
+        className="verticalFill"
+      >
+        <Drawer
+          variant="permanent"
+          anchor="left"
+          elevation={0}
+          open={open}
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
-          <WorkspaceInteractions
-            workspace={workspace}
-            open={open}
-            currentResource={currentResource}
-            openResource={setCurrentResource}
-          />
-        </div>
-        <div>
-          <Divider />
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleToggleDrawer} size="large">
-              {open ? (
-                <ArrowLeft style={{ fontSize: "1rem" }} />
-              ) : (
-                <ArrowRight style={{ fontSize: "1rem" }} />
-              )}
-            </IconButton>
+          })}
+          classes={{
+            paper: clsx(classes.drawerPaper, {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+        >
+          <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+            <WorkspaceInteractions
+              workspace={workspace}
+              open={open}
+              currentResource={currentResource}
+              openResource={setCurrentResource}
+            />
           </div>
-        </div>
-      </Drawer>
+          <div>
+            <Divider />
+            <div className={classes.drawerHeader}>
+              <IconButton onClick={handleToggleDrawer} size="large">
+                {open ? (
+                  <ArrowLeft style={{ fontSize: "1rem" }} />
+                ) : (
+                  <ArrowRight style={{ fontSize: "1rem" }} />
+                )}
+              </IconButton>
+            </div>
+          </div>
+        </Drawer>
 
-      <Box display="flex" flex="1">
-        <WorkspaceFrame currentResource={currentResource} />
-        {children}
+        <Box display="flex" flex="1">
+          <WorkspaceFrame currentResource={currentResource} />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    )
   );
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //theme
 import { makeStyles, useTheme } from "@mui/styles";
@@ -193,7 +193,7 @@ export const MainDrawer = (props: {
 
   const openCreatMenu = Boolean(anchorEl);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   
 
@@ -308,7 +308,7 @@ export const MainDrawer = (props: {
               }
             >
               <ListItemButton
-                onClick={() => history.push("/")}
+                onClick={() => navigate("/")}
                 selected={isWorkspacesPage}
               >
                 <ListItemIcon>
@@ -324,7 +324,7 @@ export const MainDrawer = (props: {
                 </ListItemSecondaryAction>
               </ListItemButton>
               <ListItemButton
-                onClick={() => history.push("/repositories")}
+                onClick={() => navigate("/repositories")}
                 selected={isRepositoriesPage}
               >
                 <ListItemIcon>

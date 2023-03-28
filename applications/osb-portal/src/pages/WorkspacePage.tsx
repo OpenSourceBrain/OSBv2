@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 //theme
 import { styled } from "@mui/styles";
@@ -54,7 +54,7 @@ const NavbarButton = styled(Button)(({ theme }) => ({
 }));
 
 export const WorkspacePage = (props: any) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace: Workspace = props.workspace;
   const user = props.user;
@@ -79,7 +79,7 @@ export const WorkspacePage = (props: any) => {
   };
 
   const openWithApp = (selectedOption: OSBApplication) => {
-    history.push(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+    navigate(`/workspace/open/${workspaceId}/${selectedOption.code}`);
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
@@ -112,7 +112,7 @@ export const WorkspacePage = (props: any) => {
                 <NavbarButton
                   variant="text"
                   startIcon={<ChevronLeftIcon />}
-                  onClick={() => history.push("/")}
+                  onClick={() => navigate("/")}
                   sx={{ color: paragraph, padding: "16px 24px" }}
                 >
                   All workspaces
@@ -242,7 +242,7 @@ export const WorkspacePage = (props: any) => {
                     user={user}
                     refreshWorkspace={props.refreshWorkspace}
                     openResourceAction={(resource) =>
-                      history.push(
+                      navigate(
                         `/workspace/open/${workspaceId}/${resource.type.application.code}`
                       )
                     }

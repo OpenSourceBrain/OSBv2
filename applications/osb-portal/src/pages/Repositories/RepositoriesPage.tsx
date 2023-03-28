@@ -27,7 +27,7 @@ import { OSBRepository, Tag } from "../../apiclient/workspaces";
 import searchFilter from "../../types/searchFilter";
 
 //hooks
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //api
 import RepositoryService from "../../service/RepositoryService";
@@ -89,7 +89,7 @@ export const RepositoriesPage = ({
   user: UserInfo;
   counter: number;
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
       text: undefined,
@@ -107,7 +107,7 @@ export const RepositoriesPage = ({
   
 
   const openRepoUrl = (repositoryId: number) => {
-    history.push(`/repositories/${repositoryId}`);
+    navigate(`/repositories/${repositoryId}`);
   };
 
   const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {

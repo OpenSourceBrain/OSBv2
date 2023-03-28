@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
 import Box from "@mui/material/Box";
@@ -167,7 +167,7 @@ export const UserPage = (props: any) => {
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [user, setUser] = React.useState<User>(null);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const { userName } = useParams<{ userName: string }>();
   const [error, setError] = React.useState<any>(null);
   
@@ -271,7 +271,7 @@ export const UserPage = (props: any) => {
   const privateWorkspaces = getPrivateWorkspaces();
 
   const openRepoUrl = (repositoryId: number) => {
-    history.push(`/repositories/${repositoryId}`);
+    navigate(`/repositories/${repositoryId}`);
   };
   /* the keys are stored in lower case */
   const {

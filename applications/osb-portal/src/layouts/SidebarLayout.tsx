@@ -1,16 +1,16 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { PageSider } from "../components";
 
 export const SidebarPageLayout = (props: { children: any }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const isWorkspacesPage =
-    history.location.pathname === "/" ||
-    history.location.pathname.includes("workspaces");
-  const isRepositoriesPage = history.location.pathname.includes("repositories");
+    window.location.pathname === "/" ||
+    window.location.pathname.includes("workspaces");
+  const isRepositoriesPage = window.location.pathname.includes("repositories");
 
   return (
     <Box className="verticalFit">

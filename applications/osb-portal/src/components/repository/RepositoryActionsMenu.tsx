@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -39,7 +39,7 @@ export default (props: RepositoryActionsMenuProps) => {
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -63,7 +63,7 @@ export default (props: RepositoryActionsMenuProps) => {
   };
 
   const handleOpenRepository = () => {
-    history.push(`/repositories/${props.repository.id}`);
+    navigate(`/repositories/${props.repository.id}`);
   };
 
   const handleDeleteRepository = () => {

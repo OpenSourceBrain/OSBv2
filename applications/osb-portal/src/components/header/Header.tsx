@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link } from "@mui/material";
 
@@ -41,7 +41,7 @@ export const Header = (props: any) => {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleMenuToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -61,7 +61,7 @@ export const Header = (props: any) => {
   };
 
   const handleMyAccount = () => {
-    history.push(`/user/${user.username}`);
+    navigate(`/user/${user.username}`);
     setMenuOpen(false);
   };
   const handleAccountHelp = () => {

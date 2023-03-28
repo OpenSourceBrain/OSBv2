@@ -2,8 +2,8 @@ import * as React from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  useHistory,
+  Routes,
+  useNavigate,
 } from "react-router-dom";
 import {
   ThemeProvider,
@@ -52,14 +52,14 @@ const styles = {
 };
 
 const UserActionThenRedirect = ({ userAction, user }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   React.useEffect(() => {
     if (user) {
-      history.push("/");
+      navigate("/");
     } else {
       userAction();
     }
-  }, [history, user, userAction]);
+  }, [navigate, user, userAction]);
 
   return <></>;
 };
@@ -83,57 +83,78 @@ export const App = (props: AppProps) => {
                   <Header />
                 </Box>
 
-                <Switch>
-                  <Route exact={true} path="/">
-                    <SidebarPageLayout>
-                      <HomePage />
-                    </SidebarPageLayout>
-                  </Route>
-                  <Route exact={true} path="/workspace/:workspaceId">
-                    <SidebarPageLayout>
-                      <WorkspacePage />
-                    </SidebarPageLayout>
-                  </Route>
-                  <ProtectedRoute
-                    exact={true}
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspace/:workspaceId"
+                    element={
+                      <SidebarPageLayout>
+                        <WorkspacePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
                     path="/workspace/open/:workspaceId/:app"
-                  >
-                    <WorkspaceOpenPage />
-                  </ProtectedRoute>
-                  <ProtectedRoute
-                    exact={true}
+                    element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
+                  />
+                  <Route
                     path="/workspace/open/:workspaceId"
-                  >
-                    <WorkspaceOpenPage />
-                  </ProtectedRoute>
-                  <Route exact={true} path="/repositories">
-                    <SidebarPageLayout>
-                      <RepositoriesPage />
-                    </SidebarPageLayout>
-                  </Route>
-                  <Route exact={true} path="/repositories/:repositoryId">
-                    <SidebarPageLayout>
-                      <RepositoryPage />
-                    </SidebarPageLayout>
-                  </Route>
-                  <Route exact={true} path="/user/:userName">
-                    <SidebarPageLayout>
-                      <UserPage />
-                    </SidebarPageLayout>
-                  </Route>
-                  <Route exact={true} path="/login">
-                    <UserActionThenRedirect
-                      userAction={UserService.login}
-                      user={props.user}
-                    />
-                  </Route>
-                  <Route exact={true} path="/register">
-                    <UserActionThenRedirect
-                      userAction={UserService.register}
-                      user={props.user}
-                    />
-                  </Route>
-                </Switch>
+                    element={
+                      <ProtectedRoute>
+                        <WorkspaceOpenPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/repositories"
+                    element={
+                      <SidebarPageLayout>
+                        <RepositoriesPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/repositories/:repositoryId"
+                    element={
+                      <SidebarPageLayout>
+                        <RepositoryPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/user/:userName"
+                    element={
+                      <SidebarPageLayout>
+                        <UserPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <UserActionThenRedirect
+                        userAction={UserService.login}
+                        user={props.user}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <UserActionThenRedirect
+                        userAction={UserService.register}
+                        user={props.user}
+                      />
+                    }
+                  />
+                </Routes>
               </Box>
             </Router>
           )}

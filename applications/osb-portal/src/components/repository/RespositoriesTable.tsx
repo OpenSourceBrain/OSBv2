@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // components
 import Chip from "@mui/material/Chip";
@@ -71,7 +71,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
     compact
   } = props;
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -150,7 +150,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                             textTransform: "capitalize",
                             color: chipTextColor,
                           }}
-                          onClick={() => history.push(`/user/${row?.user?.id}`)}
+                          onClick={() => navigate(`/user/${row?.user?.id}`)}
                         >
                           {row.user.username}
                         </Button>

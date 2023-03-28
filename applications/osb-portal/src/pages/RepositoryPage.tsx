@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 //theme
 import { styled } from "@mui/styles";
@@ -100,7 +100,7 @@ export const RepositoryPage = (props: any) => {
   const user: UserInfo = props.user;
 
   const { repositoryId } = useParams<{ repositoryId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [repository, setRepository] = React.useState<OSBRepository>(null);
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] =
@@ -286,7 +286,7 @@ export const RepositoryPage = (props: any) => {
             <GoBackButton
               variant="text"
               startIcon={<ChevronLeftIcon />}
-              onClick={() => history.push("/repositories")}
+              onClick={() => navigate("/repositories")}
             >
               All repositories
             </GoBackButton>

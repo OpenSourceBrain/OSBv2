@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import makeStyles from "@mui/styles/makeStyles";
 import { styled } from "@mui/styles";

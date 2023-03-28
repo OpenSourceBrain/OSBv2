@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
 import { MainMenuItem } from "./MainMenuItem";
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 
 export const MainMenu = (props: any) => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleDialogOpen = () => {
     props.openDialog();
@@ -69,18 +69,18 @@ export const MainMenu = (props: any) => {
           items={[
             {
               label: "Repositories",
-              callback: () => history.push("/repositories"),
-              checked: history.location.pathname === "/repositories",
+              callback: () => navigate("/repositories"),
+              checked: navigate.location.pathname === "/repositories",
             },
             {
               label: "Workspaces",
-              callback: () => history.push("/"),
-              checked: history.location.pathname === "/",
+              callback: () => navigate("/"),
+              checked: navigate.location.pathname === "/",
             },
           ]}
         />
       </Box>
-      {history.location.pathname === "/" ? (
+      {navigate.location.pathname === "/" ? (
         <MainMenuItem
           title={
             <>
@@ -91,12 +91,12 @@ export const MainMenu = (props: any) => {
           items={[
             {
               label: "Repositories",
-              callback: () => history.push("/repositories"),
+              callback: () => navigate("/repositories"),
             },
           ]}
           popperPlacement="bottom-end"
         />
-      ) : history.location.pathname === "/repositories" ? (
+      ) : navigate.location.pathname === "/repositories" ? (
         <MainMenuItem
           title={
             <>
@@ -104,7 +104,7 @@ export const MainMenu = (props: any) => {
             </>
           }
           className={classes.flipButton}
-          items={[{ label: "Workspaces", callback: () => history.push("/") }]}
+          items={[{ label: "Workspaces", callback: () => navigate("/") }]}
           popperPlacement="bottom-end"
         />
       ) : null}

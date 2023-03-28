@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import makeStyles from "@mui/styles/makeStyles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -50,7 +50,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const canEdit = canEditWorkspace(props?.user, props?.workspace);
-  const history = useHistory();
+  const navigate = useNavigate();
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -90,7 +90,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenWorkspace = () => {
-    history.push(`/workspace/${props.workspace.id}`);
+    navigate(`/workspace/${props.workspace.id}`);
   };
 
   const handleCloseEditWorkspace = () => {
@@ -115,7 +115,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenClonedWorkspace = () => {
-    history.push(`/workspace/${clonedWSId}`);
+    navigate(`/workspace/${clonedWSId}`);
   };
 
 
@@ -124,7 +124,7 @@ export default (props: WorkspaceActionsMenuProps) => {
    * @param applicatonType OSBApplication key
    */
   const handleOpenWorkspaceWithApp = (applicatonType: string) => {
-    history.push(`/workspace/open/${props.workspace.id}/${applicatonType}`);
+    navigate(`/workspace/open/${props.workspace.id}/${applicatonType}`);
   };
 
   return (
