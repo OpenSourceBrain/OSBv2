@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
 //theme
 import { styled } from "@mui/styles";
@@ -90,17 +91,15 @@ const OSBResourceItem = (props: {
   resource: WorkspaceResource;
   active: boolean;
   refreshWorkspace: () => void;
-  openResource: (r: WorkspaceResource) => any;
-  lastOpenResourceId: number;
+  currentResourceId: number;
   Icon: JSX.Element;
-  openResourceAction?: (resource: WorkspaceResource) => void;
+  workspaceId: number;
 }) => {
   const {
     resource,
     active,
     refreshWorkspace,
-    openResource,
-    openResourceAction,
+    workspaceId,
     Icon,
   } = props;
   const canOpenFile: boolean =
@@ -108,6 +107,7 @@ const OSBResourceItem = (props: {
   const [waiting, setWaiting] = React.useState(
     resource.status === ResourceStatus.pending
   );
+  let navigate = useNavigate();
 
   React.useEffect(() => {
     setWaiting(resource.status === ResourceStatus.pending);
@@ -127,13 +127,10 @@ const OSBResourceItem = (props: {
 
   const handleOpenResource =
   (e: any) => {
-    openResource && openResource(resource);
-    return workspaceResourceService
-      .workspacesControllerWorkspaceResourceOpen(resource.id)
-      .then(openResourceAction ? (() => openResourceAction(resource)) : refreshWorkspace)
-      .catch(() => {
-        console.error("Error opening resource, ResourceOpen function failed!");
-      });
+    navigate(
+      {pathname: `/workspace/open/${workspaceId}/${resource.type.application.code}`,
+      search: `?resource=${resource.name}`},
+    )
   };
 
   return (
@@ -179,16 +176,14 @@ const OSBResourceItem = (props: {
 interface WorkspaceProps {
   workspace: Workspace;
   refreshWorkspace: () => void;
-  openResource?: (r: WorkspaceResource) => any;
   currentResource: WorkspaceResource;
   user: UserInfo;
-  openResourceAction?: (resource: WorkspaceResource) => void;
 }
 
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
-  const { workspace, refreshWorkspace, openResource, currentResource, openResourceAction } = props;
+  const { workspace, refreshWorkspace, currentResource } = props;
 
-  const lastOpenResourceId = currentResource?.id ?? -1;
+  const currentResourceId = currentResource?.id ?? -1;
 
   const resources = workspace.resources.filter(
     (resource) => resource.id !== undefined && resource.id !== -1
@@ -244,12 +239,11 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               <OSBResourceItem
                 key={resource.id}
                 resource={resource}
-                active={resource.id === lastOpenResourceId}
+                active={resource.id === currentResourceId}
                 refreshWorkspace={refreshWorkspace}
-                openResource={openResource}
-                lastOpenResourceId={lastOpenResourceId}
-                openResourceAction={openResourceAction}
+                currentResourceId={currentResourceId}
                 Icon={Icon}
+                workspaceId={workspace.id}
               />
             ))}
         </Box>

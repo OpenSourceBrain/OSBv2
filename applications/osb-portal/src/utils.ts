@@ -20,9 +20,9 @@ export function getBaseDomain() {
 }
 
 export function getApplicationDomain(app: OSBApplication) {
-  if (window.APP_DOMAIN) {
+  if (window.location.host.includes("localhost")) {
     // Dev
-    return window.APP_DOMAIN;
+    return null;
   }
   return `${app.subdomain}.${getBaseDomain()}`
 }

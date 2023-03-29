@@ -30,6 +30,7 @@ import {
 } from "./components";
 import Box from "@mui/material/Box";
 import { UserInfo } from "./types/user";
+import SampleIframePage from "./pages/SampleIframePage";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -154,10 +155,19 @@ export const App = (props: AppProps) => {
                       />
                     }
                   />
+                  <Route
+                    path="/testapp"
+                    element={
+                      <SampleIframePage
+                      />
+                    }
+                  />
                 </Routes>
               </Box>
             </Router>
+            
           )}
+          
         </OSBErrorBoundary>
       </ThemeProvider>
     </StyledEngineProvider>

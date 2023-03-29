@@ -61,12 +61,15 @@ export const WorkspacePage = (props: any) => {
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [error, setError] = React.useState<any>(null);
   const [anchorElmoreVert, setAnchorElmoreVert] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
 
   const isWorkspaceOpen = Boolean(anchorElmoreVert);
 
-  React.useEffect(() => 
-    props.selectWorkspace(workspaceId), [workspaceId]
+  React.useEffect(() => {
+    props.selectWorkspace(workspaceId);
+    return () => null
+  }
+    , [workspaceId]
   )
 
   if (error) {
@@ -241,11 +244,6 @@ export const WorkspacePage = (props: any) => {
                     workspace={workspace}
                     user={user}
                     refreshWorkspace={props.refreshWorkspace}
-                    openResourceAction={(resource) =>
-                      navigate(
-                        `/workspace/open/${workspaceId}/${resource.type.application.code}`
-                      )
-                    }
                     currentResource={
                       workspace.lastOpen || workspace.resources[0]
                     }

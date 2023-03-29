@@ -16,6 +16,8 @@ import {
   WorkspaceResource,
 } from "../../../types/workspace";
 
+import workspaceResourceService from "../../../service/WorkspaceResourceService";
+
 import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
 
@@ -102,25 +104,25 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   const classes = useStyles();
 
   const { app } = useParams<{ app: string }>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams()[0];
 
   // Keep drawer closed for jupyter by default
   const [open, setOpen] = React.useState(app === "jupyter" ? false : true);
 
   const getActiveResource = () => {
-    if (workspace.lastOpen != null) {
+    
+    const resourceFromParam = searchParams.get("resource");
+    if (resourceFromParam) {
+      return workspace.resources.find(
+        (resource) => resource.name === resourceFromParam
+      );
+    } else if (workspace.lastOpen != null) {
       if (
         !app ||
         workspace.lastOpen.type.application === OSBApplications[app]
       ) {
         return workspace.lastOpen;
       }
-    }
-    const resourceFromParam = searchParams.get("resource");
-    if (resourceFromParam) {
-      return workspace.resources.find(
-        (resource) => resource.name === resourceFromParam
-      );
     } else if (app) {
       return workspace.resources.find(
         (resource) =>
@@ -133,8 +135,18 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
       );
     }
   };
-  const [currentResource, setCurrentResource] =
-    React.useState<WorkspaceResource>(getActiveResource());
+  const currentResource = getActiveResource();
+
+  React.useEffect(() => {
+    if(workspace.user.id === user.id) {
+    workspaceResourceService
+      .workspacesControllerWorkspaceResourceOpen(currentResource.id)
+      .catch(() => {
+        console.error("Error opening resource, ResourceOpen function failed!");
+      });
+    }
+      return () => {}
+    }, [currentResource]);
 
   const handleToggleDrawer = () => setOpen(!open);
 
@@ -168,7 +180,6 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
               workspace={workspace}
               open={open}
               currentResource={currentResource}
-              openResource={setCurrentResource}
             />
           </div>
           <div>

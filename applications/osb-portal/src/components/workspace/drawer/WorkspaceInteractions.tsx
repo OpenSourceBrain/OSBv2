@@ -105,10 +105,8 @@ interface WorkspaceProps {
   deleteWorkspace: (wsId: number) => null;
   user: UserInfo;
   [propName: string]: any;
-  openResource: (r: WorkspaceResource) => any;
   refreshWorkspacePage?: () => void;
   currentResource: WorkspaceResource;
-  openResourceAction?: (resource: WorkspaceResource) => void;
 }
 
 const SidebarBox = styled(Box)(({ theme }) => ({
@@ -258,9 +256,7 @@ export default (props: WorkspaceProps | any) => {
               workspace={workspace}
               currentResource={props.currentResource}
               refreshWorkspace={handleWorkspaceRefresh}
-              openResource={props.openResource}
               user={props.user}
-              openResourceAction={props.openResourceAction}
             />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
