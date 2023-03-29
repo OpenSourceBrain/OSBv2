@@ -6,7 +6,7 @@ flask_testing==0.6.1
 black
 isort
 tox
-responses
+responses==0.22.0
 -e ../../../cloud-harness/libraries/models
 -e ../../../cloud-harness/libraries/cloudharness-common
 -e .

@@ -61,7 +61,7 @@ export const Header = (props: any) => {
   };
 
   const handleMyAccount = () => {
-    history.push(`/user/${user.id}`);
+    history.push(`/user/${user.username}`);
     setMenuOpen(false);
   };
   const handleAccountHelp = () => {

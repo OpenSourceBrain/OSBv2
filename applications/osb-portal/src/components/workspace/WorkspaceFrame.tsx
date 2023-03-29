@@ -82,11 +82,11 @@ export const WorkspaceFrame = (props: {
     const userParam = user == null ? "" : `${user.id}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
-    document.cookie = `workspaceOwner=${workspace.userId};path=/;domain=${domain}`;
     if (window.APP_DOMAIN) {
       // Dev
       setFrameUrl(`${applicationDomain}/geppetto`);
     } else {
+      // The frame url must be different for each user and workspace and application so jupyterhub does not return the same ws
       setFrameUrl(
         `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`
       );

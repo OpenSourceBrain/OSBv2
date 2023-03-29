@@ -29,7 +29,7 @@ const testApplication =
     if (appName == "NetPyNE") {
       //due to the Close page popup that appears when you try and leave NetPyne
       try {
-        await page.once("dialog", async function (dialog) {
+        await page.once("dialog", async function (dialog: any) {
           await dialog.accept();
           // await dialog.dismiss();
         });
@@ -81,7 +81,7 @@ const testApplication =
     await page.click(selectors.OPEN_WITH_APPLICATION);
 
     //There's a maximum number of servers per user
-    await page.on("response", async (response) => {
+    await page.on("response", async (response: any) => {
       if (
         response.status() == "500" &&
         (page.url().endsWith("nwbexplorer") ||

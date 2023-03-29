@@ -54,6 +54,7 @@ interface RepositoriesProps {
   searchFilterValues?: searchFilter;
   user?: UserInfo;
   loading?: boolean;
+  compact?: boolean;
 }
 
 
@@ -67,6 +68,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
     loading,
     searchFilterValues,
     handleRepositoryClick,
+    compact
   } = props;
 
   const history = useHistory();
@@ -112,7 +114,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell
-                        sx={{ minWidth: 300, pl: 4 }}
+                        sx={{ minWidth: {md: "200px", lg: "300px"}, pl: 4 }}
                         component="th"
                         scope="row"
                       >
@@ -141,7 +143,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           )}
                         </Box>
                       </TableCell>
-                      <TableCell style={{ minWidth: 150 }}>
+                      {!compact && <TableCell style={{ minWidth: 150 }}>
                         <Button
                           sx={{
                             "&:hover": { backgroundColor: "transparent" },
@@ -152,7 +154,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         >
                           {row.user.username}
                         </Button>
-                      </TableCell>
+                      </TableCell>}
                       <TableCell style={{ minWidth: 100 }}>
                         <Button
                           sx={{
@@ -165,7 +167,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           {row.repositoryType}
                         </Button>
                       </TableCell>
-                      <TableCell style={{ minWidth: 200 }}>
+                      <TableCell style={{ minWidth: compact? "100px": "200px" }}>
                         <Box>
                           {row.contentTypes.split(",").map((type) => (
                             <Chip

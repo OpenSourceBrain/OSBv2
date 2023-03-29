@@ -75,6 +75,7 @@ class RepositoryService {
       perPage: size,
       tags,
       types,
+      userId: filter.user_id
     });
   }
 
@@ -158,6 +159,11 @@ class RepositoryService {
     const requestParameters = { page, perPage, q };
     return this.workspacesApi.tagGet(requestParameters);
   }
+  async deleteRepository(id: number) {
+    return this.workspacesApi.osbrepositoryIdDelete({ id });
+  }
+  
 }
+
 
 export default new RepositoryService();

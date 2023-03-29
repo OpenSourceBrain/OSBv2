@@ -12,21 +12,25 @@ class UserNotFound(Exception): pass
 class UserNotAuthorized(Exception): pass
 
 
-def get_user(userid: str) -> User:
+def get_user(username_or_id: str) -> User:
+    client = AuthClient()
     try:
-        client = AuthClient()
-        kc_user = client.get_user(userid)
+
+        kc_user = client.get_user(username_or_id)
+
     except KeycloakGetError as e:
         if e.response_code == 404:
-            raise UserNotFound(userid)
+            raise UserNotFound(username_or_id)
         raise Exception("Unhandled Keycloak exception") from e
+    except IndexError:
+        raise UserNotFound(username_or_id)
     except KeycloakError as e:
         raise Exception("Unhandled Keycloak exception") from e
 
     user = map_user(kc_user)
     try:
         current_user = client.get_current_user()
-        if not current_user or current_user['id'] != userid:
+        if not current_user or current_user['username'] != username_or_id:
             user.email = None
     except:  # user not provided
         log.error("Error checking user", exc_info=True)
@@ -78,7 +82,7 @@ def update_user(userid, user: User):
 
     try:
         current_user = client.get_current_user()
-        if current_user['id'] != userid != user.id:
+        if current_user['id'] != user.id:
             raise UserNotAuthorized
         admin_client = client.get_admin_client()
         updated_user = {

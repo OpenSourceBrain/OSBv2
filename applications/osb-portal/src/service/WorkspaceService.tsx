@@ -66,7 +66,7 @@ class WorkspaceService {
     isPublic = false,
     isFeatured = false,
     page = 1,
-    perPage = 18
+    perPage = 24
   ): Promise<Page<Workspace>> {
     // ToDo: pagination & size of pagination
     const params: any = {};

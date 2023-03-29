@@ -52,7 +52,7 @@ steps:
       kube_context: '${{CLUSTER_NAME}}'
       namespace: '${{NAMESPACE}}'
       chart_version: '${{DEPLOYMENT_TAG}}'
-      cmd_ps: --wait --timeout 600s
+      cmd_ps: --wait --timeout 600s --create-namespace
       custom_value_files:
       - ./deployment/helm/values.yaml
       custom_values:

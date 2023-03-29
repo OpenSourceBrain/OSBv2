@@ -13,7 +13,7 @@ import { UserInfo } from "../../types/user";
 import {
   ComputationalModeling,
   DataAnalystIcon,
-  WorkspaceFromRepository,
+  WorkspaceFromRepositoryIcon,
   WorkspaceIcon,
 } from "../icons";
 
@@ -78,7 +78,7 @@ export const WorkspaceToolBox = (props: any) => {
 
               <WorkspaceItem
                 className="from-repository-create-workspace-item"
-                icon={<WorkspaceFromRepository />}
+                icon={<WorkspaceFromRepositoryIcon />}
                 title="Workspace from repository"
                 template={null}
                 user={user}

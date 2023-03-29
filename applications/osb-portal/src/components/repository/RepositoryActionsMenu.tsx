@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -14,11 +15,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/styles";
 import { chipBg } from "../../theme";
 import IconButton from "@mui/material/IconButton";
+import RepositoryService from "../../service/RepositoryService";
 
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
   user?: UserInfo;
   onAction: (r: OSBRepository) => void;
+  isRepositoryPage?: boolean;
 }
 
 const ThreeDotButton = styled(Button)(({ theme }) => ({
@@ -36,6 +39,7 @@ export default (props: RepositoryActionsMenuProps) => {
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
+  const history = useHistory();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -58,35 +62,56 @@ export default (props: RepositoryActionsMenuProps) => {
     props.onAction(r);
   };
 
+  const handleOpenRepository = () => {
+    history.push(`/repositories/${props.repository.id}`);
+  };
+
+  const handleDeleteRepository = () => {
+    RepositoryService.deleteRepository(props.repository.id).then(() => {
+      props.onAction(null);
+      handleCloseMenu();
+    });
+  };
+
   return (
     <>
-      {canEdit && (
-        <>
-          <IconButton className="btn-actions" size="small" onClick={handleClick}>
+      <IconButton className="btn-actions" size="small" onClick={handleClick}>
         <MoreVertIcon style={{ fontSize: "1rem" }} />
       </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted={true}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-          >
-            {canEdit && (
-              <MenuItem onClick={handleEditRepository}>Edit</MenuItem>
-            )}
-          </Menu>
-          {repositoryEditorOpen && (
-            <EditRepoDialog
-              user={props.user}
-              title="Edit repository"
-              dialogOpen={repositoryEditorOpen}
-              handleClose={handleCloseDialog}
-              onSubmit={handleOnSubmit}
-              repository={props.repository}
-            />
-          )}
-        </>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted={true}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        {!props?.isRepositoryPage && (
+          <MenuItem className="open-repository" onClick={handleOpenRepository}>
+            Open Repository
+          </MenuItem>
+        )}
+        {canEdit && (
+            <MenuItem onClick={handleEditRepository}>Edit</MenuItem>
+        )}
+        {canEdit && (
+        <MenuItem
+              className="open-repository"
+              onClick={handleDeleteRepository}
+            >
+              Delete
+            </MenuItem>
+        )}
+      </Menu>
+
+      {repositoryEditorOpen && (
+        <EditRepoDialog
+          user={props.user}
+          title="Edit repository"
+          dialogOpen={repositoryEditorOpen}
+          handleClose={handleCloseDialog}
+          onSubmit={handleOnSubmit}
+          repository={props.repository}
+        />
       )}
     </>
   );

@@ -301,19 +301,6 @@ export const SearchFilterReposWorkspaces = (
                 }
                 label="Modeling"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    checked={props?.searchFilterValues.types.includes(
-                      "Development"
-                    )}
-                    onChange={handleInput}
-                    name="Development"
-                  />
-                }
-                label="Development"
-              />
             </FormGroup>
           </FormControl>
         )}

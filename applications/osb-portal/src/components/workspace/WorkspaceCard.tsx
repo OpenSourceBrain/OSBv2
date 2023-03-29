@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 
 import styled from "@mui/system/styled";
 import Card from "@mui/material/Card";
@@ -50,6 +51,7 @@ export const TagTooltip = styled(Tooltip)((theme) => ({
 
 export const WorkspaceCard = (props: Props) => {
   const workspace: Workspace = props.workspace;
+  const history = useHistory();
 
   return (
     <>
@@ -67,7 +69,7 @@ export const WorkspaceCard = (props: Props) => {
             flex="1"
             onClick={() => props.handleWorkspaceClick(workspace)}
             sx={{
-              backgroundImage: `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
+              backgroundImage: workspace.thumbnail && `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
               backgroundSize: "cover",
             }}
           >
@@ -76,7 +78,7 @@ export const WorkspaceCard = (props: Props) => {
           <Box sx={{ px: 1, cursor: "pointer" }}>
             <Tooltip title={workspace?.name}>
               <Link
-                href={`/workspace/${workspace.id}`}
+                onClick={() => history.push(`/workspace/${workspace.id}`)}
                 className={`workspace-page-link`}
                 underline="none"
               >
@@ -121,7 +123,7 @@ export const WorkspaceCard = (props: Props) => {
                 },
               }}
               underline="none"
-              href={`/user/${workspace.user.id}`}
+              onClick={() => history.push(`/user/${workspace.user.username}`)}
             >
               <Typography
                 variant="caption"

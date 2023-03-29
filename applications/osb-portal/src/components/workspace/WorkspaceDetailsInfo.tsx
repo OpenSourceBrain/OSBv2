@@ -54,7 +54,7 @@ const WorkspaceDetailsInfo = (props: any) => {
             <Typography component="span" variant="subtitle2" sx={{fontWeight: 400, color: paragraph, lineHeight: 'unset'}}>
               By
               {
-                <Link href={`/user/${props.workspace.user.id}`} underline="hover">
+                <Link href={`/user/${props.workspace.user.username}`} underline="hover">
                   {" " + props.workspace.user.firstName +
                     " " +
                     props.workspace.user.lastName}
