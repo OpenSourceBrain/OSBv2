@@ -21,12 +21,15 @@ let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(
 declare const window: any;
 
 export const initApis = (token: string) => {
-  document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
-  repositoryService.initApis(token);
-  workspaceService.initApis(token);
-  usersApi = new accountsApi.UsersApi(
-    new Configuration({ basePath: accountsApiUri, accessToken: token })
-  );
+  if(token) {
+    document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
+    repositoryService.initApis(token);
+    workspaceService.initApis(token);
+    usersApi = new accountsApi.UsersApi(
+      new Configuration({ basePath: accountsApiUri, accessToken: token })
+    );
+  }
+ 
 };
 
 function mapKeycloakUser(userInfo: any): UserInfo {
