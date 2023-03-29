@@ -138,7 +138,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   const currentResource = getActiveResource();
 
   React.useEffect(() => {
-    if(workspace.user.id === user.id) {
+    if(user && workspace.user.id === user.id && currentResource) {
     workspaceResourceService
       .workspacesControllerWorkspaceResourceOpen(currentResource.id)
       .catch(() => {
