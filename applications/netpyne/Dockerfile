@@ -51,7 +51,7 @@ RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN python utilities/install.py --npm-skip --netpyne $NETPYNE_CORE_BRANCH_TAG
+RUN python utilities/install.py --npm-skip --no-test --netpyne $NETPYNE_CORE_BRANCH_TAG
 
 
 
@@ -70,12 +70,14 @@ RUN rm -f ~/.jupyter/*.json
 RUN chown $NB_UID .
 RUN chown $NB_UID /opt
 RUN rm -Rf workspace
-# RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
+
 USER $NB_UID
 
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
+
+RUN wget --no-check-certificate -P ${FOLDER}/workspace https://www.parralab.org/nyhead/sa_nyhead.mat
 
 RUN ln -s /opt/workspace workspace
 
