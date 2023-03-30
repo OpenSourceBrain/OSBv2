@@ -77,7 +77,6 @@ USER $NB_UID
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
 
-RUN wget --no-check-certificate -P ${FOLDER}/workspace https://www.parralab.org/nyhead/sa_nyhead.mat
 
 RUN ln -s /opt/workspace workspace
 
@@ -86,4 +85,4 @@ ENV NEURON_HOME=/opt/conda
 EXPOSE 8888
 
 ENTRYPOINT ["tini", "-g", "--"]
-CMD ./NetPyNE-UI
+CMD wget --no-check-certificate -P /opt/workspace https://www.parralab.org/nyhead/sa_nyhead.mat & ./NetPyNE-UI
