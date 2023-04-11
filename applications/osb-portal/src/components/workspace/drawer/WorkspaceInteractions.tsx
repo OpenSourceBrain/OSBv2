@@ -107,6 +107,7 @@ interface WorkspaceProps {
   [propName: string]: any;
   refreshWorkspacePage?: () => void;
   currentResource: WorkspaceResource;
+  hideTabs: Boolean;
 }
 
 const SidebarBox = styled(Box)(({ theme }) => ({
@@ -143,7 +144,7 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export default (props: WorkspaceProps | any) => {
-  const { workspace, refreshWorkspace } = props;
+  const { workspace, refreshWorkspace, hideTabs } = props;
   const classes = useStyles();
 
   const [tabValue, setTabValue] = React.useState(0);
@@ -184,7 +185,7 @@ export default (props: WorkspaceProps | any) => {
       {props.open ? (
         <SidebarBox>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
+            {!hideTabs && <Tabs
               value={tabValue}
               onChange={handleTabChange}
               variant="fullWidth"
@@ -197,7 +198,7 @@ export default (props: WorkspaceProps | any) => {
                 label="My Assets"
                 sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
               />
-            </Tabs>
+            </Tabs>}
           </Box>
           <TabPanel value={tabValue} index={0}>
 

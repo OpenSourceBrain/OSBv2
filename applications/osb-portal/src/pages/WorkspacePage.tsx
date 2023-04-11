@@ -23,7 +23,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import { WorkspaceEditor } from "../components";
+import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
 
@@ -240,9 +240,11 @@ export const WorkspacePage = (props: any) => {
                     borderRight: `1px solid ${bgLightest}`,
                   }}
                 >
-                  <WorkspaceResourceBrowser
+                  <WorkspaceInteractions
                     workspace={workspace}
                     user={user}
+                    open={true}
+                    hideTabs={true}
                     refreshWorkspace={props.refreshWorkspace}
                     currentResource={
                       workspace.lastOpen || workspace.resources[0]
