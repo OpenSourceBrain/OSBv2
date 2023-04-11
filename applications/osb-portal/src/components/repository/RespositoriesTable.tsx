@@ -43,6 +43,7 @@ import {
   StyledShowMoreText,
   StyledTableContainer,
 } from "../styled/Tables";
+import Link from "@mui/material/Link";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -122,7 +123,9 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                           className="col"
                           sx={{ display: "flex", flexDirection: "column" }}
                         >
-                          <Typography variant="h5" component="h2">{row.name}</Typography>
+                          <Link color="secondary" onClick={() => handleRepositoryClick(row)}>
+                            <Typography variant="h5" component="h2" >{row.name}</Typography>
+                          </Link>
                           {row.summary && (
                             <StyledShowMoreText
                               lines={2}
@@ -183,6 +186,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               onClick={handleTypeClick && (() => handleTypeClick(type))}
                               key={type}
                               label={type}
+                              size="small"
                               clickable={true}
                               className="content-types-tag"
                               onDelete={handleTypeUnclick && 
@@ -207,6 +211,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               onClick={handleTagClick && (() => handleTagClick(tagObject))}
                               key={tagObject.id}
                               label={tagObject.tag}
+                              size="small"
                               clickable={true}
                               onDelete={
                                 handleTagUnclick && searchFilterValues?.tags?.includes(

@@ -324,7 +324,7 @@ export const RepositoryPage = (props: any) => {
               </Stack>
             </Tooltip>
 
-            {canEdit && (
+            {(
               <Tooltip
                 title={
                   !canAddToWorkspace()
