@@ -529,7 +529,7 @@ const theme = {
         root: {
           textDecoration: "none",
           "& *": {
-          cursor: "pointer",
+            cursor: "pointer",
           },
           
           "&:hover": {
