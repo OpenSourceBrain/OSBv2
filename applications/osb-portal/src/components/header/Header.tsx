@@ -32,8 +32,15 @@ const styles = ({
     alignItems: 'center',
     height: '22px',
     overflow: 'hidden',
-
-    
+  },
+  logoChip: {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: "2px",
+    fontSize: "9px",
+    px: "5px",
+    py: "2px",
+    lineHeight: 1.4,
+    fontWeight: 700,
   },
 });
 
@@ -135,10 +142,13 @@ export const Header = (props: any) => {
   return (
     <React.Fragment>
       <Toolbar sx={styles.toolbar}>
+        <Box display="flex" sx={{height: "100%", overflow: "hidden", alignItems: "center"}}>
         <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
           <OSBLogo sx={{mr: "0.4rem", fontSize: "11rem"}}  />
-          <BetaIcon sx={{ fontSize: "2rem"}} />
+          
         </Link>
+        <Box component="sup" sx={styles.logoChip}>v2.0</Box>
+        </Box>
         <Box>
           {headerText}
         </Box>
