@@ -1,22 +1,32 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import Chip from "@material-ui/core/Chip";
-import FolderIcon from "@material-ui/icons/Folder";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import styled from "@mui/system/styled";
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import Chip from "@mui/material/Chip";
+import FolderIcon from "@mui/icons-material/Folder";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 import { Workspace } from "../../types/workspace";
 import { formatDate } from "../../utils";
 import { UserInfo } from "../../types/user";
 import { WorkspaceActionsMenu } from "..";
-import { bgDarkest, paragraph, textColor } from "../../theme";
+import {
+  bgDarkest,
+  paragraph,
+  textColor,
+  chipBg,
+  chipTextColor,
+} from "../../theme";
+
+import CardTitle from "../styled/CardTitle";
+import CardFooter from "../styled/CardFooter";
 
 interface Props {
   workspace: Workspace;
@@ -25,78 +35,11 @@ interface Props {
   user?: UserInfo;
   refreshWorkspaces?: () => any;
   hideMenu?: boolean;
+  handleWorkspaceClick?: (workspace: Workspace) => any;
   [k: string]: any;
 }
 
-const useStyles = makeStyles((theme) => ({
-  card: {
-    flex: 1,
-    minHeight: `18em`,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  imageIcon: {
-    fontSize: "7em",
-  },
-  actions: {
-    lineHeight: "0",
-    justifyContent: "flex-end",
-  },
-  imageContainer: {
-    overflow: "hidden",
-    height: "130px",
-    margin: "0 0 auto",
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-    maxWidth: "100%",
-    objectFit: "cover",
-    minHeight: "130px",
-  },
-  ellipses: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    width: "auto",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  user: {
-    "& *": {
-      lineHeight: "1em",
-      marginRight: "0.3em",
-    },
-    marginBottom: "0.4em",
-    marginTop: "0.4em",
-  },
-  captions: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  link: {
-    display: "flex",
-    width: "fit-content",
-    maxWidth: "100%",
-    justifyContent: "center",
-  },
-  localOfferIcon: {
-    color: paragraph,
-    fontSize: "1rem",
-    alignSelf: "center",
-    marginLeft: "5px",
-  },
-  chip: {
-    margin: "0px 2px 0px 2px",
-    backgroundColor: "#3c3c3c",
-    "& .MuiChip-label": {
-      color: textColor,
-    },
-  },
-}));
-
-const TagTooltip = withStyles((theme) => ({
+export const TagTooltip = styled(Tooltip)((theme) => ({
   tooltip: {
     backgroundColor: bgDarkest,
     color: textColor,
@@ -104,118 +47,110 @@ const TagTooltip = withStyles((theme) => ({
   arrow: {
     color: bgDarkest,
   },
-}))(Tooltip);
+}));
 
 export const WorkspaceCard = (props: Props) => {
   const workspace: Workspace = props.workspace;
-  const classes = useStyles();
-  const openTitle = "Open workspace";
-  const defaultResource =
-    workspace.lastOpen || workspace.resources[workspace.resources.length - 1];
+  const history = useHistory();
 
   return (
     <>
-      <Card className={`${classes.card} workspace-card`} elevation={0}>
-        {!props.hideMenu && (
-          <CardActions className={classes.actions}>
-            <WorkspaceActionsMenu
-              user={props.user}
-              workspace={workspace}
-              isWorkspaceOpen={false}
-            />
-          </CardActions>
-        )}
+      <Card className={`workspace-card`} elevation={0}>
+        <WorkspaceActionsMenu workspace={workspace} />
 
-        <Box
-          className={classes.imageContainer}
-          justifyContent="center"
-          alignItems="center"
-          display="flex"
-        >
-          <Link
-            href={`/workspace/${workspace.id}`}
-            color="inherit"
-            className={classes.link}
+        <CardContent>
+          <Box
+            className="imageContainer"
+            justifyContent="center"
+            alignItems="center"
+            display="flex"
+            mb={2}
+            overflow="hidden"
+            flex="1"
+            onClick={() => props.handleWorkspaceClick(workspace)}
+            sx={{
+              backgroundImage: workspace.thumbnail && `url(/proxy/workspaces/${workspace.thumbnail}?v=${workspace.timestampUpdated.getMilliseconds()})`,
+              backgroundSize: "cover",
+            }}
           >
-            {!workspace.thumbnail ? (
-              <FolderIcon className={classes.imageIcon} />
-            ) : (
-              <img
-                src={
-                  "/proxy/workspaces/" +
-                  workspace.thumbnail +
-                  "?v=" +
-                  workspace.timestampUpdated.getMilliseconds()
-                }
-                className={classes.image}
-                title={openTitle}
-                alt={openTitle}
-              />
-            )}
-          </Link>
-        </Box>
-
-        <CardContent className="workspace-content">
-          <Tooltip title={workspace.name}>
+            {!workspace?.thumbnail ? <FolderIcon /> : <Box />}
+          </Box>
+          <Box sx={{ px: 1, cursor: "pointer" }}>
+            <Tooltip title={workspace?.name}>
+              <Link
+                onClick={() => history.push(`/workspace/${workspace.id}`)}
+                className={`workspace-page-link`}
+                underline="none"
+              >
+                <CardTitle mb={"4px"}>{workspace.name}</CardTitle>
+                {workspace.tags.length > 0 && (
+                  <TagTooltip
+                    title={workspace.tags.map((tagObject) => {
+                      return (
+                        <Chip
+                          size="small"
+                          label={tagObject.tag}
+                          key={tagObject.id}
+                          sx={{
+                            color: textColor,
+                            margin: "0px 2px 0px 2px",
+                            backgroundColor: chipBg,
+                          }}
+                        />
+                      );
+                    })}
+                    arrow={true}
+                    placement="top"
+                  >
+                    <LocalOfferIcon
+                      fontSize="small"
+                      sx={{
+                        color: paragraph,
+                        fontSize: "1rem",
+                        alignSelf: "center",
+                        marginLeft: "5px",
+                      }}
+                    />
+                  </TagTooltip>
+                )}
+              </Link>
+            </Tooltip>
             <Link
-              href={`/workspace/${workspace.id}`}
-              color="inherit"
-              className={`${classes.link} workspace-page-link`}
+              sx={{
+                "&:hover": {
+                  textDecoration: "underline",
+                  textDecorationColor: chipTextColor,
+                },
+              }}
+              underline="none"
+              onClick={() => history.push(`/user/${workspace.user.username}`)}
             >
               <Typography
-                component="h2"
-                variant="h4"
-                className={classes.ellipses}
+                variant="caption"
+                sx={{
+                  fontSize: ".857rem",
+                  color: chipTextColor,
+                  lineHeight: 1.143,
+                }}
+                mb={"4px"}
               >
-                {workspace.name}
+                {workspace.user.firstName + " " + workspace.user.lastName}
               </Typography>
-              {workspace.tags.length > 0 && (
-                <TagTooltip
-                  title={workspace.tags.map((tagObject) => {
-                    return (
-                      <Chip
-                        size="small"
-                        label={tagObject.tag}
-                        key={tagObject.id}
-                        className={classes.chip}
-                      />
-                    );
-                  })}
-                  arrow={true}
-                  placement="top"
-                >
-                  <LocalOfferIcon
-                    fontSize="small"
-                    className={classes.localOfferIcon}
-                  />
-                </TagTooltip>
-              )}
             </Link>
-          </Tooltip>
-          <Typography
-            variant="caption"
-            className={`${classes.user} ${classes.ellipses}`}
-          >
-            <span>by</span>
-            <Link
-              color="inherit"
-              href={`/user/${workspace.user.id}`}
-              target="_blank"
-            >
-              {workspace.user.firstName + " " + workspace.user.lastName}
-            </Link>
-          </Typography>
-
-          <Typography
-            variant="caption"
-            className={`${classes.captions} ${classes.ellipses}`}
-          >
-            <span>{formatDate(workspace.timestampUpdated)}</span>{" "}
-            <span>
-              {defaultResource && defaultResource.type.application.name}
-            </span>
-          </Typography>
+          </Box>
         </CardContent>
+        <Box sx={{ padding: 1 }}>
+          <CardFooter variant="caption">
+            <span>
+              {workspace?.timestampUpdated.toLocaleDateString("en-UK", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </span>
+            <span>{workspace?.defaultApplication?.name}</span>
+          </CardFooter>
+        </Box>
       </Card>
     </>
   );

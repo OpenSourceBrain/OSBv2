@@ -1,36 +1,32 @@
 import React from "react";
 import OSBDialog from "../common/OSBDialog";
-import Typography from "@material-ui/core/Typography";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
-import Icon from "@material-ui/core/Icon";
+import Typography from "@mui/material/Typography";
+import DialogTitle from "@mui/material/DialogTitle";
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Icon from "@mui/material/Icon";
 import { secondaryColor, bgLight } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   paper: {
-    padding: theme.spacing(2),
-    margin: theme.spacing(1),
+    padding: 2,
     textAlign: "center",
-  },
-  partners: {
-    fontSize: "0.9em",
-    marginBottom: "0.5em",
-  },
-}));
+    backgroundColor: "transparent",
+  }
+};
 
 export const AboutContent = (props: any) => {
-  const classes = useStyles();
+
   const logoOSB = "/images/osb-logo-full.png";
-  const logoMetaCell = "/images/metacell_new.png";
+  const logoMetaCell = "/images/metacell.png";
   const logoWellcome = "/images/wellcome.png";
 
   return (
-    <Paper className={classes.paper}>
+    <Box sx={styles.paper}>
       <img width="250" src={logoOSB} />
-      <Box m={1}>
+      <Box>
         <Link
           variant="h5"
           style={{ display: "block" }}
@@ -41,58 +37,61 @@ export const AboutContent = (props: any) => {
         </Link>
       </Box>
 
-      <Box m={1}>
-        <Typography variant="body2" color={secondaryColor}>
+      <Box my={2}>
+        <Typography variant="body1" >
           Open Source Brain v2.0 (OSBv2) is a cloud based integrated research
           environment for neuroscience. OSBv2 aims to close the loop between
           experimental and computational neuroscience.
         </Typography>
       </Box>
 
-      <Box m={1} pb={2}>
-        <Typography variant="body2" color={secondaryColor}>
+      <Box my={2} pb={2}>
+        <Typography variant="body1" >
           Please see the project{" "}
           <Link
             href="https://docs.opensourcebrain.org/OSBv2/Overview.html"
             target="_blank"
-          >
+            underline="hover">
             documentation
           </Link>{" "}
           for more information.
         </Typography>
       </Box>
 
-      <Box m={1}>
-        <Typography variant="body2" color={secondaryColor}>
+      <Box my={2}>
+        <Typography variant="body1">
           OSBv2 is being developed by the{" "}
-          <Link href="http://silverlab.org/" target="_blank">
+          <Link href="http://silverlab.org/" target="_blank" underline="hover">
             Silver Lab at University College London
           </Link>{" "}
           in collaboration with{" "}
-          <Link href="http://metacell.us" target="_blank">
+          <Link href="http://metacell.us" target="_blank" underline="hover">
             MetaCell
           </Link>
           , and is funded by{" "}
-          <Link href="https://wellcome.org/" target="_blank">
+          <Link href="https://wellcome.org/" target="_blank" underline="hover">
             Wellcome
           </Link>
           . The source code is available on{" "}
           <Link
             href="https://github.com/OpenSourceBrain/OSBv2/"
             target="_blank"
-          >
+            underline="hover">
             GitHub
           </Link>{" "}
           under the{" "}
           <Link
             href="https://github.com/OpenSourceBrain/OSBv2/blob/develop/LICENSE"
             target="_blank"
-          >
+            underline="hover">
             MIT License
           </Link>
           .
         </Typography>
-        <Link href="http://www.metacell.us" target="_blank">
+        
+      </Box>
+      <Box mt={2}>
+      <Link href="http://www.metacell.us" target="_blank" underline="hover">
           <img
             style={{
               width: 150,
@@ -101,7 +100,7 @@ export const AboutContent = (props: any) => {
             src={logoMetaCell}
           />
         </Link>
-        <Link href="https://wellcome.org/" target="_blank">
+        <Link href="https://wellcome.org/" target="_blank" underline="hover">
           <img
             style={{
               width: 80,
@@ -111,7 +110,7 @@ export const AboutContent = (props: any) => {
           />
         </Link>
       </Box>
-    </Paper>
+    </Box>
   );
 };
 
@@ -127,4 +126,3 @@ export const AboutDialog = (props: any) => {
   );
 };
 
-export default AboutDialog;

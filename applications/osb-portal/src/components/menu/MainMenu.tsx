@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
 import { MainMenuItem } from "./MainMenuItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const useStyles = makeStyles(() => ({
   button: {

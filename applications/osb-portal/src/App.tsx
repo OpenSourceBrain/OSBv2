@@ -1,57 +1,98 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { CssBaseline, makeStyles } from "@material-ui/core";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+} from "react-router-dom";
+import {
+  ThemeProvider,
+  Theme,
+  StyledEngineProvider,
+} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
-import HomePage from "./pages/HomePage";
 import theme from "./theme";
+import SidebarPageLayout from "./layouts/SidebarLayout";
+import * as UserService from "./service/UserService";
 
 import {
   Header,
   AboutDialog,
   WorkspaceOpenPage,
   ProtectedRoute,
-  RepositoriesPage,
   RepositoryPage,
   WorkspacePage,
   UserPage,
-} from "./components/index";
+  RepositoriesPage,
+  HomePage,
+} from "./components";
+import Box from "@mui/material/Box";
+import { UserInfo } from "./types/user";
 
-const useStyles = makeStyles(() => ({
+declare module "@mui/styles/defaultTheme" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+const styles = {
   mainContainer: {
-    overflow: "auto",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    [theme.breakpoints.up("md")]: {
-      height: "100vh",
-      overflow: "hidden",
+    height: {
+      md: "100vh",
+    },
+    overflow: {
+      xs: "auto",
+      md: "hidden",
     },
   },
-}));
+};
 
-export const App = (props: any) => {
-  const classes = useStyles();
+const UserActionThenRedirect = ({ userAction, user }) => {
+  const history = useHistory();
+  React.useEffect(() => {
+    if (user) {
+      history.push("/");
+    } else {
+      userAction();
+    }
+  }, [history, user, userAction]);
 
+  return <></>;
+};
+
+interface AppProps {
+  error: boolean;
+  user: UserInfo;
+}
+
+export const App = (props: AppProps) => {
   return (
-    <ThemeProvider theme={theme}>
-      <OSBErrorBoundary>
-        <CssBaseline />
-        <AboutDialog />
-        {!props.error && (
-          <Router>
-            <div className={classes.mainContainer}>
-              <div id="header">
-                <Header />
-              </div>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <OSBErrorBoundary>
+          <CssBaseline />
+          <AboutDialog />
+          {!props.error && (
+            <Router>
+              <Box sx={styles.mainContainer}>
+                <Box id="header">
+                  <Header />
+                </Box>
 
-              <OSBErrorBoundary>
                 <Switch>
                   <Route exact={true} path="/">
-                    <HomePage />
+                    <SidebarPageLayout>
+                      <HomePage />
+                    </SidebarPageLayout>
                   </Route>
                   <Route exact={true} path="/workspace/:workspaceId">
-                    <WorkspacePage />
+                    <SidebarPageLayout>
+                      <WorkspacePage />
+                    </SidebarPageLayout>
                   </Route>
                   <ProtectedRoute
                     exact={true}
@@ -66,20 +107,38 @@ export const App = (props: any) => {
                     <WorkspaceOpenPage />
                   </ProtectedRoute>
                   <Route exact={true} path="/repositories">
-                    <RepositoriesPage />
+                    <SidebarPageLayout>
+                      <RepositoriesPage />
+                    </SidebarPageLayout>
                   </Route>
                   <Route exact={true} path="/repositories/:repositoryId">
-                    <RepositoryPage />
+                    <SidebarPageLayout>
+                      <RepositoryPage />
+                    </SidebarPageLayout>
                   </Route>
-                  <Route exact={true} path="/user/:userId">
-                    <UserPage />
+                  <Route exact={true} path="/user/:userName">
+                    <SidebarPageLayout>
+                      <UserPage />
+                    </SidebarPageLayout>
+                  </Route>
+                  <Route exact={true} path="/login">
+                    <UserActionThenRedirect
+                      userAction={UserService.login}
+                      user={props.user}
+                    />
+                  </Route>
+                  <Route exact={true} path="/register">
+                    <UserActionThenRedirect
+                      userAction={UserService.register}
+                      user={props.user}
+                    />
                   </Route>
                 </Switch>
-              </OSBErrorBoundary>
-            </div>
-          </Router>
-        )}
-      </OSBErrorBoundary>
-    </ThemeProvider>
+              </Box>
+            </Router>
+          )}
+        </OSBErrorBoundary>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { AnyAction, Dispatch } from "redux";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Workspace,
   WorkspaceResource,
@@ -82,11 +82,11 @@ export const WorkspaceFrame = (props: {
     const userParam = user == null ? "" : `${user.id}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
-    document.cookie = `workspaceOwner=${workspace.userId};path=/;domain=${domain}`;
     if (window.APP_DOMAIN) {
       // Dev
       setFrameUrl(`${applicationDomain}/geppetto`);
     } else {
+      // The frame url must be different for each user and workspace and application so jupyterhub does not return the same ws
       setFrameUrl(
         `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`
       );

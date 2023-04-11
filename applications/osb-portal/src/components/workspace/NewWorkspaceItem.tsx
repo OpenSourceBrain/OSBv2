@@ -1,13 +1,8 @@
 import * as React from "react";
 
-import { Typography, Box, Button } from "@material-ui/core";
+import { Typography, Box, Button } from "@mui/material";
 
-import { NewWorkspaceAskUser } from "..";
-import { WorkspaceEditor } from "./../index";
-
-import OSBDialog from "../common/OSBDialog";
-
-import { RepositoryResourceNode } from "../../apiclient/workspaces";
+import { WorkspaceEditor } from "../index";
 
 import { UserInfo } from "../../types/user";
 import {
@@ -16,6 +11,15 @@ import {
   OSBApplication,
 } from "../../types/workspace";
 import WorkspaceFromRepository from "./WorkspaceFromRepository";
+
+//style
+import {
+  secondaryColor,
+  bgLightest,
+  bgLight,
+  badgeBgLight,
+  lightWhite,
+} from "../../theme";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -43,6 +47,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       {
         name: "NetPyNE tutorials",
         type: SampleResourceTypes.m,
+        resourceType: "m",
         origin: {
           path: "https://github.com/Neurosim-lab/netpyne_workspace/archive/master.zip",
         },
@@ -59,6 +64,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       {
         name: "sample.nwb",
         type: SampleResourceTypes.e,
+        resourceType: "e",
         origin: {
           path: "https://github.com/OpenSourceBrain/NWBShowcase/raw/master/FergusonEtAl2015/FergusonEtAl2015.nwb",
         },
@@ -75,6 +81,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
       {
         name: "notebook",
         type: SampleResourceTypes.g,
+        resourceType: "g",
         origin: {
           path: window.location.origin + "/workspace-data/notebook.ipynb",
         },
@@ -94,29 +101,54 @@ interface ItemProps {
   template?: WorkspaceTemplateType | string;
   user: UserInfo;
   refreshWorkspaces: () => null;
-  className: string;
+  className?: string;
+  closeMainDialog?: (isClosed: boolean) => void;
 }
 
-export const NewWorkspaceItem = (props: ItemProps) => {
-  const { user, template, title, refreshWorkspaces, className } = props;
+const style = {
+  borderRadius: "6px",
+  width: " 100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  padding: "1rem 0",
 
-  const [askLoginOpen, setAskLoginOpen] = React.useState(false);
+  "&:hover": {
+    backgroundColor: bgLightest,
+
+    "& .MuiButtonBase-root": {
+      "& .MuiSvgIcon-root": {
+        fill: badgeBgLight,
+      },
+    },
+  },
+
+  color: secondaryColor,
+
+
+  "& .MuiSvgIcon-root": {
+    fontSize: "2rem",
+    fill: bgLight,
+  },
+
+  "& .MuiTypography-caption": {
+    textTransform: "uppercase",
+  },
+};
+
+export const NewWorkspaceItem = (props: ItemProps) => {
+  const { template, title, refreshWorkspaces, className, icon } = props;
+
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
 
   const handleClick = () => {
-    if (!user) {
-      setAskLoginOpen(true);
-    } else {
-      setNewWorkspaceOpen(true);
-    }
+    setNewWorkspaceOpen(true);
   };
 
-  const closeAskLogin = () => setAskLoginOpen(false);
-
   const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
-    document.getElementById("your-all-workspaces-tab").click();
-
+    document.getElementById("your-all-workspaces-tab")?.click();
     setNewWorkspaceOpen(false);
+    props.closeMainDialog(false);
     if (refresh) {
       refreshWorkspaces();
     }
@@ -125,11 +157,13 @@ export const NewWorkspaceItem = (props: ItemProps) => {
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
 
   return (
-    <div className={className}>
-      <Button style={{ textTransform: "none" }} onClick={handleClick}>
+<>
+      <Button sx={style} onClick={handleClick} className={className}>
         <Box textAlign="center">
-          <Box style={{ marginBottom: "0.2em" }}>{props.icon}</Box>
-          <Typography variant="subtitle1">{title}</Typography>
+          {icon}
+          <Typography variant="subtitle1" sx={{ marginBottom: "0.286rem" }}>
+            {title}
+          </Typography>
           <Typography variant="caption">
             {typeof WORKSPACE_TEMPLATES[template] === "undefined"
               ? template
@@ -137,15 +171,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
           </Typography>
         </Box>
       </Button>
-      {askLoginOpen && (
-        <OSBDialog
-          title="Create new workspace"
-          open={askLoginOpen}
-          closeAction={closeAskLogin}
-        >
-          <NewWorkspaceAskUser />
-        </OSBDialog>
-      )}
+
       {newWorkspaceOpen &&
         (defaultWorkspace ? (
           <WorkspaceEditor
@@ -162,8 +188,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
             workspaceCreatedCallback={onWorkspaceCreated}
           />
         ))}
-    </div>
-  );
+  </>);
 };
 
 export default NewWorkspaceItem;

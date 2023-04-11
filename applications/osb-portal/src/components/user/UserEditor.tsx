@@ -1,27 +1,33 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Avatar from "@material-ui/core/Avatar";
-import AlternateEmail from "@material-ui/icons/AlternateEmail";
-import EmailIcon from "@material-ui/icons/Email";
-import LinkIcon from "@material-ui/icons/Link";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import GitHubIcon from "@material-ui/icons/GitHub";
+import makeStyles from "@mui/styles/makeStyles";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import AlternateEmail from "@mui/icons-material/AlternateEmail";
+import EmailIcon from "@mui/icons-material/Email";
+import LinkIcon from "@mui/icons-material/Link";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { AddIcon, BitBucketIcon } from "../icons";
 import { bgLight, paragraph } from "../../theme";
 import { User } from "../../apiclient/accounts";
 import OSBDialog from "../common/OSBDialog";
-import Tooltip from "@material-ui/core/Tooltip";
-import LanguageIcon from "@material-ui/icons/Language";
-import GroupIcon from "@material-ui/icons/Group";
-import BusinessIcon from "@material-ui/icons/Business";
+import Tooltip from "@mui/material/Tooltip";
+import LanguageIcon from "@mui/icons-material/Language";
+import GroupIcon from "@mui/icons-material/Group";
+import BusinessIcon from "@mui/icons-material/Business";
+import FormLabel from "../styled/FormLabel";
+
+interface ProfileLink {
+  text: string;
+  icon: any;
+  prefix: string;
+}
 
 // This order is followed when data is displayed
-const profileMeta: { [key: string]: { [key: string]: any } } = {
+const profileMeta: { [key: string]: ProfileLink } = {
   affiliation: {
     text: "Affiliation",
     icon: BusinessIcon,
@@ -54,12 +60,12 @@ const profileMeta: { [key: string]: { [key: string]: any } } = {
   },
 };
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   avatar: {
     alignSelf: "center",
     height: "70px",
     width: "70px",
-    marginRight: theme.spacing(1),
+    mr: 1,
   },
   textFieldWithIcon: {
     "& .MuiInputBase-root": {
@@ -75,33 +81,41 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: bgLight,
     borderTopLeftRadius: "4px",
     borderBottomLeftRadius: "4px",
-    marginRight: theme.spacing(1),
+    mr: 1,
     "& .MuiSvgIcon-root": {
       color: paragraph,
     },
   },
-}));
+};
 
 interface UserEditProps {
   user: User;
-  profileForm: any;
-  setProfileForm: any;
-  error: any;
-  setError: any;
+  saveUser: (user: User) => void;
+  close: () => void;
 }
 
 export default (props: UserEditProps) => {
-  const classes = useStyles();
   const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
+
+  const profiles = {
+    ...Object.keys(profileMeta).reduce(
+      (prev, k) => ({ ...prev, [k]: null }),
+      {}
+    ),
+    ...props.user.profiles,
+  };
+  const [userForm, setProfileForm] = React.useState<User | any>({
+    ...props.user,
+    profiles,
+    groups: undefined
+  });
+  const [error, setError] = React.useState<any>({});
   const [newLinkInformation, setNewLinkInformation] = React.useState<{
     linkFor: string;
     link: string;
   }>({ linkFor: "", link: "" });
 
   /* Construct profiles dict from meta and what's provided by user */
-  const temp: any = {};
-  Object.keys(profileMeta).map((k) => (temp[k] = null));
-  const profiles = { ...temp, ...props.user.profiles };
 
   const setWebsiteURLField = (e: any) => {
     const value = e.target.value;
@@ -110,10 +124,10 @@ export default (props: UserEditProps) => {
         const _ = new URL(value);
       }
 
-      props.setProfileForm({ ...props.profileForm, website: value });
-      props.setError({ ...props.error, website: undefined });
+      setProfileForm({ ...userForm, website: value });
+      setError({ ...error, website: undefined });
     } catch (_) {
-      props.setError({ ...props.error, website: "Invalid URL" });
+      setError({ ...error, website: "Invalid URL" });
     }
   };
 
@@ -123,17 +137,17 @@ export default (props: UserEditProps) => {
       if (value) {
         const _ = new URL(value);
       }
-      props.setError({ ...props.error, avatar: undefined });
-      props.setProfileForm({ ...props.profileForm, avatar: value });
+      setError({ ...error, avatar: undefined });
+      setProfileForm({ ...userForm, avatar: value });
     } catch (_) {
-      props.setError({ ...props.error, avatar: "Invalid URL" });
+      setError({ ...error, avatar: "Invalid URL" });
     }
   };
 
   const setProfileDisplayName = (e: any) => {
     // The first word is the first name, and everything else is the second name
-    props.setProfileForm({
-      ...props.profileForm,
+    setProfileForm({
+      ...userForm,
       firstName: e.target.value.split(" ")[0],
       lastName:
         e.target.value.split(" ").length > 1
@@ -145,10 +159,10 @@ export default (props: UserEditProps) => {
   const setProfileUserName = (e: any) => {
     const value = e.target.value;
     if (!value) {
-      props.setError({ ...props.error, username: "Username cannot be empty" });
+      setError({ ...error, username: "Username cannot be empty" });
     } else {
-      props.setProfileForm({ ...props.profileForm, username: e.target.value });
-      props.setError({ ...props.error, username: undefined });
+      setProfileForm({ ...userForm, username: e.target.value });
+      setError({ ...error, username: undefined });
     }
   };
 
@@ -159,10 +173,10 @@ export default (props: UserEditProps) => {
         value
       )
     ) {
-      props.setError({ ...props.error, email: "Invalid Email" });
+      setError({ ...error, email: "Invalid Email" });
     } else {
-      props.setProfileForm({ ...props.profileForm, email: e.target.value });
-      props.setError({ ...props.error, email: undefined });
+      setProfileForm({ ...userForm, email: e.target.value });
+      setError({ ...error, email: undefined });
     }
   };
 
@@ -171,20 +185,20 @@ export default (props: UserEditProps) => {
       if (value) {
         const _ = new URL(value);
       }
-      props.setError({ ...props.error, [profileType]: undefined });
+      setError({ ...error, [profileType]: undefined });
       /* TODO: if the value is "", we should remove this new profile
        * completely Can be done here by removing the profileType from the
        * dict, but also requires updates to the backend to remove the key
        * completely, and not just leave it empty.
        */
-      props.setProfileForm({
-        ...props.profileForm,
-        profiles: { ...props.profileForm.profiles, [profileType]: value },
+      setProfileForm({
+        ...userForm,
+        profiles: { ...userForm.profiles, [profileType]: value },
       });
     } catch (_) {
-      props.setError({
-        ...props.error,
-        [profileType]: `Please enter your ${profileType} profile address`,
+      setError({
+        ...error,
+        [profileType]: `Please enter a valid URL for ${profileType}`,
       });
     }
   };
@@ -198,63 +212,72 @@ export default (props: UserEditProps) => {
   };
 
   return (
-    <>
+    <OSBDialog
+      open={true}
+      title="Edit My Profile"
+      closeAction={props.close}
+      actions={
+        <React.Fragment>
+          <Button color="primary" onClick={props.close}>
+            Cancel
+          </Button>{" "}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => props.saveUser(userForm)}
+          >
+            Save Changes
+          </Button>
+        </React.Fragment>
+      }
+    >
       <Box p={3}>
         <Box display="flex" flexDirection="row" mb={1}>
           <Avatar
-            className={classes.avatar}
+            sx={styles.avatar}
             alt="user-profile-avatar"
-            src={props.profileForm.avatar}
+            src={userForm.avatar}
           >
-            {props.profileForm.firstName?.charAt(0) +
-              props.profileForm.lastName?.charAt(0)}
+            {userForm.firstName?.charAt(0) + userForm.lastName?.charAt(0)}
           </Avatar>
           <Box width="100%">
-            <Typography component="label" variant="h6">
-              Profile picture URL
-            </Typography>
+            <FormLabel>Profile picture URL</FormLabel>
             <TextField
-              error={props.error.avatar}
-              helperText={props.error.avatar}
+              error={error.avatar}
+              helperText={error.avatar}
               id="profilePictureURL"
               fullWidth={true}
               onChange={setProfileURLField}
               variant="outlined"
-              defaultValue={props.profileForm.avatar}
+              defaultValue={userForm.avatar}
             />
           </Box>
         </Box>
         <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Display Name
-          </Typography>
+          <FormLabel>Display Name</FormLabel>
           <TextField
-            error={props.error.firstName}
-            helperText={props.error.firstName}
+            error={error.firstName}
+            helperText={error.firstName}
             fullWidth={true}
             onChange={setProfileDisplayName}
             variant="outlined"
-            defaultValue={
-              props.profileForm.firstName + " " + props.profileForm.lastName
-            }
+            defaultValue={userForm.firstName + " " + userForm.lastName}
           />
         </Box>
         <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Username
-          </Typography>
+          <FormLabel>Username</FormLabel>
           <TextField
             disabled={true}
-            error={props.error.username}
-            helperText={props.error.username}
-            className={classes.textFieldWithIcon}
+            error={error.username}
+            helperText={error.username}
+            sx={styles.textFieldWithIcon}
             fullWidth={true}
             onChange={setProfileUserName}
             variant="outlined"
-            defaultValue={props.profileForm.username}
+            defaultValue={userForm.username}
             InputProps={{
               startAdornment: (
-                <Box className={classes.inputIconBox}>
+                <Box sx={styles.inputIconBox}>
                   <AlternateEmail fontSize="small" />
                 </Box>
               ),
@@ -262,20 +285,18 @@ export default (props: UserEditProps) => {
           />
         </Box>
         <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Email address
-          </Typography>
+          <FormLabel>Email address</FormLabel>
           <TextField
-            error={props.error.email}
-            helperText={props.error.email}
-            className={classes.textFieldWithIcon}
+            error={error.email}
+            helperText={error.email}
+            sx={styles.textFieldWithIcon}
             fullWidth={true}
             onChange={setProfileEmailAddress}
             variant="outlined"
-            defaultValue={props.profileForm.email}
+            defaultValue={userForm.email}
             InputProps={{
               startAdornment: (
-                <Box className={classes.inputIconBox}>
+                <Box sx={styles.inputIconBox}>
                   <EmailIcon fontSize="small" />
                 </Box>
               ),
@@ -283,37 +304,35 @@ export default (props: UserEditProps) => {
           />
           <Typography
             component="span"
-            variant="h6"
+            variant="body1"
             style={{ fontWeight: "normal" }}
           >
             Your email address is private. Other users can't see it.
           </Typography>
         </Box>
         <Box mb={1} mt={1}>
-          <Typography component="label" variant="h6">
-            Links
-          </Typography>
+          <FormLabel>Links</FormLabel>
           <Tooltip title="Website link">
             <TextField
-              error={props.error.website}
-              helperText={props.error.website}
-              className={classes.textFieldWithIcon}
+              error={error.website}
+              helperText={error.website}
+              sx={styles.textFieldWithIcon}
               fullWidth={true}
               margin="dense"
               onChange={setWebsiteURLField}
               variant="outlined"
-              defaultValue={props.profileForm.website}
+              defaultValue={userForm.website}
               placeholder="https://.."
               InputProps={{
                 startAdornment: (
-                  <Box className={classes.inputIconBox}>
+                  <Box sx={styles.inputIconBox}>
                     <LanguageIcon fontSize="small" />
                   </Box>
                 ),
               }}
             />
           </Tooltip>
-          {Object.entries(profiles).map((profile) => {
+          {Object.entries(userForm.profiles).map((profile) => {
             const profileType = profile[0];
             let profileTypeText = profileType;
             let profileTypeIcon: any = React.createElement(LinkIcon, {
@@ -334,10 +353,10 @@ export default (props: UserEditProps) => {
             return (
               <Tooltip key={profileType} title={`${profileTypeText} link`}>
                 <TextField
-                  error={props.error[profileType]}
-                  helperText={props.error[profileType]}
+                  error={error[profileType]}
+                  helperText={error[profileType]}
                   key={profileType}
-                  className={classes.textFieldWithIcon}
+                  sx={styles.textFieldWithIcon}
                   fullWidth={true}
                   margin="dense"
                   variant="outlined"
@@ -348,10 +367,7 @@ export default (props: UserEditProps) => {
                   }}
                   InputProps={{
                     startAdornment: (
-                      <Box className={classes.inputIconBox}>
-                        {" "}
-                        {profileTypeIcon}{" "}
-                      </Box>
+                      <Box sx={styles.inputIconBox}> {profileTypeIcon} </Box>
                     ),
                   }}
                 />
@@ -372,8 +388,8 @@ export default (props: UserEditProps) => {
       </Box>
 
       <Box mt={1} p={2} textAlign="right" bgcolor={bgLight}>
-        {props.error.general && (
-          <Typography color="error">{props.error.general}</Typography>
+        {error.general && (
+          <Typography color="error">{error.general}</Typography>
         )}
       </Box>
       <OSBDialog
@@ -395,7 +411,7 @@ export default (props: UserEditProps) => {
             placeholder="What is this link for?"
           />
           <TextField
-            className={classes.textFieldWithIcon}
+            sx={styles.textFieldWithIcon}
             fullWidth={true}
             margin="normal"
             variant="outlined"
@@ -408,7 +424,7 @@ export default (props: UserEditProps) => {
             placeholder="Link"
             InputProps={{
               startAdornment: (
-                <Box className={classes.inputIconBox}>
+                <Box sx={styles.inputIconBox}>
                   <LinkIcon fontSize="small" />
                 </Box>
               ),
@@ -432,6 +448,6 @@ export default (props: UserEditProps) => {
           </Button>
         </Box>
       </OSBDialog>
-    </>
+    </OSBDialog>
   );
 };

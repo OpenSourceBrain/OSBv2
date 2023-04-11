@@ -1,10 +1,10 @@
-import { WorkspaceIdGetRequest, WorkspaceGetRequest } from "../apiclient/workspaces/apis/RestApi";
+import { WorkspaceIdGetRequest, WorkspaceGetRequest,  Configuration, InlineResponse200, Workspace as ApiWorkspace, ResourceOrigin, Tag, User } from "../apiclient/workspaces";
 
 import { Workspace, WorkspaceResource, OSBApplications, SampleResourceTypes } from "../types/workspace";
 import { FeaturedType } from '../types/global';
 
 import * as workspaceApi from '../apiclient/workspaces/apis';
-import { Configuration, RestApi, InlineResponse200, Workspace as ApiWorkspace, RepositoryResourceNode, RepositoryResource, ResourceOrigin, InlineResponse2003, Tag, User } from '../apiclient/workspaces';
+
 
 import { mapResource, mapPostUrlResource } from './WorkspaceResourceService';
 import { Page } from "../types/model";

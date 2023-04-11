@@ -1,11 +1,9 @@
-import sys
-
-import yaml
 from jupyterhub.user import User
 from kubespawner.spawner import KubeSpawner
 
 from cloudharness.auth import AuthClient
 from cloudharness import log
+from cloudharness import applications
 
 
 def affinity_spec(key, value):
@@ -72,28 +70,37 @@ def change_pod_manifest(self: KubeSpawner):
         if not [v for v in self.volumes if v['name'] == volume_name]:
             self.volumes.append(ws_pvc)
 
-        workspace_owner = get_from_cookie('workspaceOwner')
+        app_user = get_app_user(self.user)
+        
 
         # Add labels to use for affinity
+        clean_username = "".join(c for c in app_user.username if c.isalnum())
         labels = {
             'workspace': str(workspace_id),
-            'user': self.user.name
+            'username': clean_username,
+            'user': str(self.user.id),
         }
+
+        appname = self.image.split('/')[-1].split(':')[0]
 
         self.common_labels = labels
         self.extra_labels = labels
         self.storage_class = f'{self.config["namespace"]}-nfs-client'
+
         if not user_volume_is_legacy(self.user.id):
             # User pod affinity is by default added by cloudharness
             self.pod_affinity_required = []
-        
+
+        workspace = get_workspace(workspace_id, get_from_cookie("accessToken"))
         write_access = has_user_write_access(
-            workspace_id, self.user, workspace_owner)
+            workspace, self.user, app_user=app_user)
+        
         if workspace_volume_is_legacy(workspace_id):
             # Pods with write access must be on the same node
             self.pod_affinity_required.append(affinity_spec('workspace', workspace_id))
         from pprint import pprint
         pprint(self.volumes)
+        self.pod_name = f'ws-{clean_username}-{workspace_id}-{appname}'
         if not [v for v in self.volume_mounts if v['name'] == volume_name]:
             self.volume_mounts.append({
                 'name': volume_name,
@@ -104,10 +111,28 @@ def change_pod_manifest(self: KubeSpawner):
         log.error('Change pod manifest failed due to an error.', exc_info=True)
 
 
+def get_app_user(user: User):
+    auth_client = AuthClient()
+    kc_user = auth_client.get_user(user.name)
+    return kc_user
 
-def has_user_write_access(workspace_id, user: User, workspace_owner: str):
-    print('name:', user.name, workspace_owner)
+def has_user_write_access(workspace, user: User, app_user=None):
+    print('Checking access, name:', user.name, "workspace:", workspace["id"])
+
+    
+    workspace_owner = workspace["user"]["id"]
+    print("Workspace owner", workspace_owner, "-", workspace["user"]["username"])
+    
     if workspace_owner == user.name:
         return True
     auth_client = AuthClient()
-    return auth_client.user_has_realm_role(user.name, 'administrator')
+    return auth_client.user_has_realm_role(app_user.id, 'administrator')
+
+def get_workspace(workspace_id, token, workspace_base_url=None):
+    if workspace_base_url is None:
+        workspace_conf: applications.ApplicationConfiguration = applications.get_configuration('workspaces')
+        workspace_base_url = workspace_conf.get_service_address()
+    import requests
+    workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}", headers={"Authorization": f"Bearer {token}"}).json()
+    
+    return workspace

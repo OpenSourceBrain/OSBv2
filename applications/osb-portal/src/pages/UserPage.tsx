@@ -1,35 +1,32 @@
 import React from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { makeStyles, styled } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import Paper from "@material-ui/core/Paper";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import LinkIcon from "@material-ui/icons/Link";
-import FolderOpenIcon from "@material-ui/icons/FolderOpen";
-import GitHubIcon from "@material-ui/icons/GitHub";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import LanguageIcon from "@material-ui/icons/Language";
-import GroupIcon from "@material-ui/icons/Group";
-import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
+import { styled } from "@mui/material/styles";
+import makeStyles from "@mui/styles/makeStyles";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinkIcon from "@mui/icons-material/Link";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import LanguageIcon from "@mui/icons-material/Language";
+import GroupIcon from "@mui/icons-material/Group";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
-import EmailIcon from "@material-ui/icons/Email";
-import BusinessIcon from "@material-ui/icons/Business";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import ShowMoreText from "react-show-more-text";
-import Tooltip from "@material-ui/core/Tooltip";
+import BusinessIcon from "@mui/icons-material/Business";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-import MarkdownViewer from "../components/common/MarkdownViewer";
-import { MainMenu } from "../components/index";
+import Tooltip from "@mui/material/Tooltip";
+
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";
@@ -38,32 +35,27 @@ import RepositoryService from "../service/RepositoryService";
 import {
   bgDarkest,
   bgLightestShade,
-  bgRegular,
+  bgDarker,
   linkColor,
   paragraph,
   textColor,
+  bgLightest as lineColor,
 } from "../theme";
-import Divider from "@material-ui/core/Divider";
-import Container from "@material-ui/core/Container";
+
 import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "relative",
-    "& .MuiDivider-root": {
-      position: "absolute",
-      top: theme.spacing(7),
-      width: "100%",
-      height: "2px",
-    },
-  },
-  profileInformation: {
-    paddingTop: `${theme.spacing(6)}px !important`,
+import RepositoriesTable from "../components/repository/RespositoriesTable";
+
+const styles = {
+  profileInformation: (theme) => ({
     flexDirection: "column",
+    backgroundColor: bgDarker,
+    borderRight: `1px solid ${lineColor}`,
+    paddingRight: theme.spacing(3),
     "& .MuiSvgIcon-root": {
       marginRight: "5px",
       color: paragraph,
@@ -77,26 +69,19 @@ const useStyles = makeStyles((theme) => ({
       color: textColor,
       flex: "none",
     },
-    "& .username": {
-      marginBottom: "1.5rem",
+    "& h2": {
+      marginBottom: "0.5em",
     },
+    "& .username": {},
     "& .MuiButton-root": {
       width: "100%",
-      marginBottom: "1.5rem",
     },
     "& .links": {
-      marginTop: "2rem",
-      paddingBottom: "2.5rem",
-      borderBottom: `2px solid ${bgRegular}`,
       "& .MuiTypography-root": {
         display: "flex",
       },
     },
     "& .groups": {
-      paddingTop: "1rem",
-      paddingBottom: "1rem",
-      borderBottom: `2px solid ${bgRegular}`,
-      marginBottom: "1rem",
       "& .MuiTypography-root": {
         color: textColor,
       },
@@ -108,20 +93,12 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 0,
       },
     },
-  },
-  repositoriesAndWorkspaces: {
-    paddingTop: `${theme.spacing(7) - 23}px !important`,
+  }),
+  repositoriesAndWorkspaces: (theme) => ({
     flexDirection: "column",
     paddingBottom: "0px !important",
-    "& .repo-paper": {
-      backgroundColor: bgLightestShade,
-      padding: theme.spacing(3),
-      marginBottom: theme.spacing(2),
-    },
-    "& .MuiTabs-root": {
-      marginBottom: "15px",
-    },
-  },
+    backgroundColor: bgDarker,
+  }),
   showMoreText: {
     color: paragraph,
     "& a": {
@@ -142,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
   repository: {
     cursor: "pointer",
   },
-}));
+};
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -189,13 +166,12 @@ export const UserPage = (props: any) => {
     React.useState(false);
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [user, setUser] = React.useState<User>(null);
-  const classes = useStyles();
+
   const history = useHistory();
-  const { userId } = useParams<{ userId: string }>();
+  const { userName } = useParams<{ userName: string }>();
   const [error, setError] = React.useState<any>(null);
-  const [formError, setFormError] = React.useState<any>({});
-  const [userProfileForm, setUserProfileForm] = React.useState<any>({});
-  delete userProfileForm.groups;
+  
+  
   const [loading, setLoading] = React.useState(false);
   const currentUser: UserInfo = props.user;
 
@@ -211,10 +187,16 @@ export const UserPage = (props: any) => {
   };
 
   React.useEffect(() => {
-    getUser(userId).then((u) => {
+    getUser(userName).then((u) => {
       setUser(u);
-      setUserProfileForm({ ...u });
+      
     });
+  }, [userName, props.workspacesCounter]);
+
+  React.useEffect(() => {
+    if (!user) return;
+
+    const userId = user.id;
     workspaceService
       .fetchWorkspacesByFilter(
         true,
@@ -257,7 +239,7 @@ export const UserPage = (props: any) => {
         setError(e);
       }
     );
-  }, [userId, tabValue, props.workspacesCounter]);
+  }, [user]);
 
   if (error) {
     throw error;
@@ -286,6 +268,8 @@ export const UserPage = (props: any) => {
     return privateWorkspaces;
   };
 
+  const privateWorkspaces = getPrivateWorkspaces();
+
   const openRepoUrl = (repositoryId: number) => {
     history.push(`/repositories/${repositoryId}`);
   };
@@ -303,7 +287,7 @@ export const UserPage = (props: any) => {
   const handleUpdateUser = (u: User) => {
     setLoading(true);
     setProfileEditDialogOpen(false);
-    updateUser(userProfileForm)
+    updateUser(u)
       .then((updatedUser) => {
         setUser(updatedUser);
         setLoading(false);
@@ -321,35 +305,32 @@ export const UserPage = (props: any) => {
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
-    <Box className="verticalFit">
-      <MainMenu />
-
-      <Box
-        bgcolor={bgDarkest}
-        className={`${classes.root} verticalFill`}
-        width="100vw"
-        display="flex"
-        justifyContent="center"
-      >
-        <Divider light={true} variant="fullWidth" />
-        <Container maxWidth="xl" className="verticalFit">
-          <Grid container={true} spacing={6} className="verticalFill">
-            <Grid
-              item={true}
-              sm={4}
-              lg={3}
-              className={`${classes.profileInformation}`}
-            >
+    <>
+      <Box className={`verticalFill`} display="flex" justifyContent="center">
+        <Grid container={true} spacing={0} className="verticalFill">
+          <Grid
+            id="profile-info"
+            item={true}
+            sm={4}
+            lg={3}
+            sx={styles.profileInformation}
+          >
+            <Stack pt={5} px={4} spacing={4}>
               <Avatar alt="user-profile-avatar" src={user.avatar}>
                 {(user.firstName.length > 0 && user.firstName.charAt(0)) +
                   (user.lastName.length > 0 && user.lastName.charAt(0))}
               </Avatar>
-              <Typography className="name" component="h1" variant="h1">
+              <Typography className="name" component="h1" variant="h2">
                 {user.firstName + " " + user.lastName}
+                <Typography
+                  className="username"
+                  component="p"
+                  variant="subtitle2"
+                >
+                  {user.username}
+                </Typography>
               </Typography>
-              <Typography className="username" component="p" variant="body2">
-                {user.username}
-              </Typography>
+
               {canEdit && (
                 <Button
                   variant="outlined"
@@ -360,33 +341,30 @@ export const UserPage = (props: any) => {
                 </Button>
               )}
 
-              <Box display="flex" flexDirection="row" color={paragraph}>
+              <Typography display="flex" flexDirection="row" color={paragraph}>
                 {publicWorkspaces ? (
                   <>
                     <FolderOpenIcon fontSize="small" />
-                    {publicWorkspaces.length} workspaces
+                    {allWorkspaces.length} workspaces
                   </>
                 ) : (
                   <CircularProgress size="1rem" />
                 )}
                 {canEdit && allWorkspaces ? (
-                  <> ({getPrivateWorkspaces().length} private) </>
+                  <> ({privateWorkspaces.length} private) </>
                 ) : (
                   <> </>
                 )}
                 {repositories ? (
                   <>
-                    <FiberManualRecordIcon
-                      className={classes.dot}
-                      fontSize="small"
-                    />
+                    <FiberManualRecordIcon sx={styles.dot} fontSize="small" />
                     <AccountTreeOutlinedIcon fontSize="small" />
                     {repositories.length} repositories
                   </>
                 ) : (
                   <CircularProgress size="1rem" />
                 )}
-              </Box>
+              </Typography>
 
               {(user.profiles || user.website) && (
                 <Box
@@ -395,6 +373,9 @@ export const UserPage = (props: any) => {
                   flexDirection="column"
                   width="100%"
                 >
+                  <Typography component="h2" variant="h5" gutterBottom={true}>
+                    Links
+                  </Typography>
                   {typeof user.website === "string" && user.website && (
                     <Typography
                       component="p"
@@ -403,7 +384,9 @@ export const UserPage = (props: any) => {
                     >
                       <LanguageIcon fontSize="small" />
                       <Tooltip title="Website">
-                        <Link href={user.website}>{user.website}</Link>
+                        <Link href={user.website} underline="hover">
+                          {user.website}
+                        </Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -416,7 +399,9 @@ export const UserPage = (props: any) => {
                     >
                       <BusinessIcon fontSize="small" />
                       <Tooltip title="Affiliation">
-                        <Link href={affiliation}>{affiliation}</Link>
+                        <Link href={affiliation} underline="hover">
+                          {affiliation}
+                        </Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -434,6 +419,7 @@ export const UserPage = (props: any) => {
                               ? github
                               : "https://github.com/" + github
                           }
+                          underline="hover"
                         >
                           @
                           {github.includes("github.com")
@@ -457,6 +443,7 @@ export const UserPage = (props: any) => {
                               ? bitbucket
                               : "https://bitbucket.org/" + bitbucket
                           }
+                          underline="hover"
                         >
                           @
                           {bitbucket.includes("bitbucket.org")
@@ -480,6 +467,7 @@ export const UserPage = (props: any) => {
                               ? twitter
                               : "https://twitter.com/" + twitter
                           }
+                          underline="hover"
                         >
                           @
                           {twitter.includes("twitter.com")
@@ -497,7 +485,9 @@ export const UserPage = (props: any) => {
                     >
                       <GroupIcon fontSize="small" />
                       <Tooltip title="INCF">
-                        <Link href={incf}>INCF</Link>
+                        <Link href={incf} underline="hover">
+                          INCF
+                        </Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -509,7 +499,9 @@ export const UserPage = (props: any) => {
                     >
                       <GroupIcon fontSize="small" />
                       <Tooltip title="ORCID">
-                        <Link href={orcid}>ORCID</Link>
+                        <Link href={orcid} underline="hover">
+                          ORCID
+                        </Link>
                       </Tooltip>
                     </Typography>
                   )}
@@ -524,7 +516,7 @@ export const UserPage = (props: any) => {
                       >
                         <LinkIcon fontSize="small" />
                         <Tooltip title={k.charAt(0).toUpperCase() + k.slice(1)}>
-                          <Link href={otherProfiles[k]}>
+                          <Link href={otherProfiles[k]} underline="hover">
                             {k.charAt(0).toUpperCase() + k.slice(1)}
                           </Link>
                         </Tooltip>
@@ -533,9 +525,9 @@ export const UserPage = (props: any) => {
                 </Box>
               )}
 
-              {user.groups && (
+              {user.groups && user.groups.length > 0 && (
                 <Box className="groups" width="100%">
-                  <Typography component="p" variant="h5" gutterBottom={true}>
+                  <Typography component="h2" variant="h5" gutterBottom={true}>
                     Groups
                   </Typography>
                   {user.groups &&
@@ -554,17 +546,29 @@ export const UserPage = (props: any) => {
               )}
 
               {user.registrationDate && (
-                <Typography component="p" variant="body2">
-                  Member since {user.registrationDate.toDateString()}
+                <Typography component="p" variant="body1">
+                  Member since{" "}
+                  {user.registrationDate.toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </Typography>
               )}
-            </Grid>
+            </Stack>
+          </Grid>
 
-            <Grid
-              item={true}
-              sm={8}
-              lg={9}
-              className={`verticalFit ${classes.repositoriesAndWorkspaces}`}
+          <Grid
+            item={true}
+            sm={8}
+            lg={9}
+            className={`verticalFit`}
+            sx={styles.repositoriesAndWorkspaces}
+          >
+            <Box
+              bgcolor={bgDarkest}
+              px={(theme) => theme.spacing(4)}
+              sx={{ borderBottom: `1px solid ${lineColor}` }}
             >
               <Tabs
                 value={tabValue}
@@ -595,7 +599,7 @@ export const UserPage = (props: any) => {
                         <Chip
                           size="small"
                           color="primary"
-                          label={getPrivateWorkspaces().length}
+                          label={privateWorkspaces.length}
                         />
                       </>
                     }
@@ -616,11 +620,32 @@ export const UserPage = (props: any) => {
                   {...a11yProps(2)}
                 />
               </Tabs>
+            </Box>
+            <Box className="scrollbar" height="100%" py={4} pl={4}>
+              <TabPanel value={tabValue} index={0}>
+                <Grid container={true} spacing={1}>
+                  {publicWorkspaces.map((ws) => {
+                    return (
+                      <Grid
+                        item={true}
+                        key={ws.id}
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={4}
+                        xl={3}
+                      >
+                        <WorkspaceCard workspace={ws} user={currentUser} />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </TabPanel>
 
-              <Box className="scrollbar" height="100%">
-                <TabPanel value={tabValue} index={0}>
-                  <Grid container={true} spacing={1}>
-                    {publicWorkspaces.map((ws) => {
+              {canEdit && (
+                <TabPanel value={tabValue} index={1}>
+                  <Grid container={true} spacing={2}>
+                    {privateWorkspaces.map((ws) => {
                       return (
                         <Grid
                           item={true}
@@ -631,113 +656,45 @@ export const UserPage = (props: any) => {
                           lg={4}
                           xl={3}
                         >
-                          <WorkspaceCard 
-                            workspace={ws} 
-                            user={currentUser} 
-                            />
+                          <WorkspaceCard workspace={ws} user={currentUser} />
                         </Grid>
                       );
                     })}
                   </Grid>
                 </TabPanel>
+              )}
 
-                {canEdit && (
-                  <TabPanel value={tabValue} index={1}>
-                    <Grid container={true} spacing={1}>
-                      {getPrivateWorkspaces().map((ws) => {
-                        return (
-                          <Grid
-                            item={true}
-                            key={ws.id}
-                            xs={12}
-                            sm={6}
-                            md={4}
-                            lg={4}
-                            xl={3}
-                          >
-                            <WorkspaceCard workspace={ws} user={currentUser} />
-                          </Grid>
-                        );
-                      })}
-                    </Grid>
-                  </TabPanel>
-                )}
-
-                <TabPanel
-                  value={tabValue}
-                  index={
-                    currentUser &&
-                    (currentUser.id === user.id || currentUser.isAdmin)
-                      ? 2
-                      : 1
+              <TabPanel
+                value={tabValue}
+                index={
+                  currentUser &&
+                  (currentUser.id === user.id || currentUser.isAdmin)
+                    ? 2
+                    : 1
+                }
+              >
+                <RepositoriesTable
+                  handleRepositoryClick={(repository: OSBRepository) =>
+                    openRepoUrl(repository.id)
                   }
-                >
-                  <Grid container={true} spacing={1}>
-                    {repositories.map((repo) => {
-                      return (
-                        <Grid
-                          item={true}
-                          key={repo.id}
-                          xs={12}
-                          className={classes.repository}
-                          onClick={() => openRepoUrl(repo.id)}
-                        >
-                          <Paper className="repo-paper" elevation={0}>
-                            <Typography component="span" gutterBottom={true}>
-                              {repo.name}
-                            </Typography>
-                            {repo.description && (
-                              <Typography component="span" gutterBottom={true}>
-                                {repo.description}
-                              </Typography>
-                            )}
-                            {repo.summary && (
-                              <MarkdownViewer text={repo.summary} />
-                            )}
-                          </Paper>
-                        </Grid>
-                      );
-                    })}
-                  </Grid>
-                </TabPanel>
-              </Box>
-            </Grid>
+                  user={currentUser}
+                  repositories={repositories}
+                  loading={loading}
+                />
+              </TabPanel>
+            </Box>
           </Grid>
-        </Container>
+        </Grid>
       </Box>
       {canEdit && profileEditDialogOpen && (
-        <OSBDialog
-          open={true}
-          title="Edit My Profile"
-          closeAction={() => setProfileEditDialogOpen(false)}
-          actions={
-            <React.Fragment>
-              <Button
-                color="primary"
-                onClick={() => setProfileEditDialogOpen(false)}
-              >
-                Cancel
-              </Button>{" "}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUpdateUser}
-              >
-                Save Changes
-              </Button>
-            </React.Fragment>
-          }
-        >
+        
           <UserEditor
             user={user}
-            profileForm={userProfileForm}
-            setProfileForm={setUserProfileForm}
-            error={formError}
-            setError={setFormError}
+            saveUser={handleUpdateUser}
+            close={() => setProfileEditDialogOpen(false)}
           />
-        </OSBDialog>
       )}
       {loading && <CircularProgress size={24} />}
-    </Box>
+    </>
   );
 };

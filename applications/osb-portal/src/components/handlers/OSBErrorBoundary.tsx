@@ -1,11 +1,11 @@
 import React from "react";
 import * as Sentry from "@sentry/react";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
+import Alert from '@mui/material/Alert';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
 interface OwnState {
   eventId: string;
@@ -96,7 +96,7 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
     }
 
     // when there's not an error, render children untouched
-    return this.props.children;
+    return <>{this.props.children}</>;
   }
 }
 

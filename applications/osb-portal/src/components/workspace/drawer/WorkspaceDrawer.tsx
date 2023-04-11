@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
-import Divider from "@material-ui/core/Divider";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import Drawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Divider from "@mui/material/Divider";
 
 import { WorkspaceInteractions } from "../..";
 import { OSBApplications, ResourceStatus, Workspace, WorkspaceResource } from "../../../types/workspace";
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+
   },
   hide: {
     display: "none",
@@ -56,13 +57,13 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     display: "flex",
     bottom: 0,
-    paddingTop: theme.spacing(1),
+
     justifyContent: "space-between",
   },
   drawerHeader: {
     display: "flex",
     alignItems: "center",
-    fontSize: "1rem",
+
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
@@ -122,58 +123,56 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
 
   const handleToggleDrawer = () => setOpen(!open);
 
-  return (
-    user &&
-    workspace && (
-      <Box
-        display="flex"
-        alignItems="stretch"
-        flex="1"
-        className="verticalFill"
-      >
-        <Drawer
-          variant="permanent"
-          anchor="left"
-          elevation={0}
-          open={open}
-          className={clsx(classes.drawer, {
+  return user &&
+  workspace && (
+    <Box
+      display="flex"
+      alignItems="stretch"
+      flex="1"
+      className="verticalFill"
+    >
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        elevation={0}
+        open={open}
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx(classes.drawerPaper, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx(classes.drawerPaper, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
-          }}
-        >
-          <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
-            <WorkspaceInteractions
-              workspace={workspace}
-              open={open}
-              currentResource={currentResource}
-              openResource={setCurrentResource}
-            />
+          }),
+        }}
+      >
+        <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+          <WorkspaceInteractions
+            workspace={workspace}
+            open={open}
+            currentResource={currentResource}
+            openResource={setCurrentResource}
+          />
+        </div>
+        <div>
+          <Divider />
+          <div className={classes.drawerHeader}>
+            <IconButton onClick={handleToggleDrawer} size="large">
+              {open ? (
+                <ArrowLeft style={{ fontSize: "1rem" }} />
+              ) : (
+                <ArrowRight style={{ fontSize: "1rem" }} />
+              )}
+            </IconButton>
           </div>
-          <div>
-            <Divider />
-            <div className={classes.drawerHeader}>
-              <IconButton onClick={handleToggleDrawer}>
-                {open ? (
-                  <ArrowLeft style={{ fontSize: "1rem" }} />
-                ) : (
-                  <ArrowRight style={{ fontSize: "1rem" }} />
-                )}
-              </IconButton>
-            </div>
-          </div>
-        </Drawer>
+        </div>
+      </Drawer>
 
-        <Box display="flex" flex="1">
-          <WorkspaceFrame currentResource={currentResource} />
-          {children}
-        </Box>
+      <Box display="flex" flex="1">
+        <WorkspaceFrame currentResource={currentResource} />
+        {children}
       </Box>
-    )
+    </Box>
   );
 };

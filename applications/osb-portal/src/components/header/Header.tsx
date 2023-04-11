@@ -1,62 +1,44 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 
+import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link } from "@mui/material";
+
+import PersonIcon from "@mui/icons-material/Person";
+import {BetaIcon, OSBLogo} from "../icons";
+
 import {
-  Toolbar,
-  Box,
-  Button,
-  Paper,
-  Popper,
-  MenuItem,
-  MenuList,
-  ClickAwayListener,
-  makeStyles,
-} from "@material-ui/core";
-import PersonIcon from "@material-ui/icons/Person";
+  headerBg,
+  secondaryColor
+} from "../../theme";
 
-const title = "Open Source Brain";
-
-const useStyles = makeStyles((theme) => ({
+const styles = ({
   toolbar: {
-    backgroundColor: theme.palette.background.paper,
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
+    backgroundColor: headerBg,
     justifyContent: "space-between",
-  },
-  toolbarTitle: {
-    flex: 1,
-  },
-  toolbarSecondary: {
-    justifyContent: "space-between",
-    overflowX: "auto",
-  },
-  toolbarLink: {
-    padding: theme.spacing(1),
-    flexShrink: 0,
-  },
-  wrapIcon: {
-    verticalAlign: "middle",
-    display: "inline-flex",
+    borderBottom: '1px solid #434343',
+    minHeight: '2.5rem !important',
+    height: '2.5rem !important',
+    p: 0,
+
   },
   button: {
     textTransform: "none",
+    color: secondaryColor,
+    padding: 0
   },
-  logoChip: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    borderRadius: 2,
-    textTransform: "uppercase",
-    fontSize: 9,
-    padding: 3,
-    lineHeight: "1em",
-    marginTop: 3,
-    fontWeight: 700,
-    marginLeft: "1em",
-    alignSelf: "flex-start",
+  logoContainer: {
+    display: 'flex',
+    justifyContent: 'start',
+    alignItems: 'center',
+    height: '22px',
+    overflow: 'hidden',
+
+    
   },
-}));
+});
 
 export const Header = (props: any) => {
-  const classes = useStyles();
+
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
   const history = useHistory();
@@ -79,7 +61,7 @@ export const Header = (props: any) => {
   };
 
   const handleMyAccount = () => {
-    history.push(`/user/${user.id}`);
+    history.push(`/user/${user.username}`);
     setMenuOpen(false);
   };
   const handleAccountHelp = () => {
@@ -89,7 +71,7 @@ export const Header = (props: any) => {
 
   const headerText =
     user === null ? (
-      <Button onClick={handleUserLogin} className={`sign-in ${classes.button}`}>
+      <Button sx={styles.button} onClick={handleUserLogin} className={`sign-in`}>
         Sign in
       </Button>
     ) : (
@@ -114,7 +96,6 @@ export const Header = (props: any) => {
                     Account help
                   </MenuItem>
                 }
-                {/* <MenuItem>Settings</MenuItem> */}
                 <MenuItem
                   className="logout-menu-item"
                   onClick={handleUserLogout}
@@ -132,7 +113,8 @@ export const Header = (props: any) => {
           aria-haspopup="true"
           onClick={handleMenuToggle}
           startIcon={<PersonIcon fontSize="large" />}
-          className={`${classes.button} user-menu-btn`}
+          sx={styles.button}
+          className={`user-menu-btn`}
         >
           {user.username}
         </Button>
@@ -146,24 +128,15 @@ export const Header = (props: any) => {
     }
   };
 
+  // @ts-ignore
   return (
     <React.Fragment>
-      <Toolbar className={classes.toolbar}>
-        <Box display="flex">
-          <a href="/" onClick={handleToggleDrawer}>
-            <img
-              src="/images/osb-logo-full.png"
-              alt={title}
-              title={title}
-              height="25"
-            />
-          </a>
-          <sup className={classes.logoChip}>beta</sup>
-        </Box>
+      <Toolbar sx={styles.toolbar}>
+        <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
+          <OSBLogo sx={{mr: "0.4rem", fontSize: "11rem"}}  />
+          <BetaIcon sx={{ fontSize: "2rem"}} />
+        </Link>
         <Box>
-          {/* <IconButton>
-              <SearchIcon />
-            </IconButton> */}
           {headerText}
         </Box>
       </Toolbar>

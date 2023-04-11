@@ -1,81 +1,90 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+
+//components
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import Dropzone from "react-dropzone";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import { Autocomplete } from "@material-ui/lab";
+import Chip from "@mui/material/Chip";
+import Alert from '@mui/material/Alert';
+import Autocomplete from "@mui/material/Autocomplete";
 import MDEditor from "react-markdown-editor-lite";
+import MarkdownViewer from "../common/MarkdownViewer";
+import OSBDialog from "../common/OSBDialog";
+
+//icons
+import IconButton from "@mui/material/IconButton";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
-import MarkdownViewer from "../common/MarkdownViewer";
-import Chip from "@material-ui/core/Chip";
+import { alpha } from "@mui/material/styles";
 
+//style
+import styled from "@mui/system/styled";
+import { bgLight, radius, gutter, bgInputs, bgDarkest } from "../../theme";
+
+//types
 import { Workspace } from "../../types/workspace";
 import { UserInfo } from "../../types/user";
 import { Tag } from "../../apiclient/workspaces";
+
+//services
 import WorkspaceService from "../../service/WorkspaceService";
-import OSBDialog from "../common/OSBDialog";
+import StyledLabel from "../styled/FormLabel";
 
-import { bgLight, radius, gutter, bgInputs } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
-  actionButton: {
-    marginLeft: theme.spacing(2),
-  },
-  actionBox: {
-    backgroundColor: bgLight,
-  },
-  outerBox: {
-    marginTop: 0,
-  },
-  dropZoneBox: {
-    color: bgInputs,
-    border: `2px dashed ${bgInputs}`,
-    borderRadius: 5,
-    padding: 4,
-    "& .MuiTypography-subtitle2": {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(2),
-    },
-    "& .MuiButton-outlined": {
-      margin: "0 auto",
-      display: "flex",
-      justifyContent: "center",
-      color: bgInputs,
-      borderRadius: radius,
-      border: `2px solid ${bgInputs}`,
-    },
-  },
-  imagePreview: {
-    display: "flex",
-    minHeight: "15em",
-    alignItems: "stretch",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    flex: 1,
-  },
-  autocomplete: {
+export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
+  color: bgInputs,
+  border: `2px dashed ${bgInputs}`,
+  borderRadius: 5,
+  padding: 4,
+  "& .MuiTypography-subtitle2": {
     marginTop: theme.spacing(1),
-    "& .MuiChip-root": {
-      backgroundColor: bgLight,
-    },
+    marginBottom: theme.spacing(2),
+  },
+  "& .MuiButton-outlined": {
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "center",
+    color: bgInputs,
+    borderRadius: radius,
+    border: `2px solid ${bgInputs}`,
   },
 }));
 
-const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
+
+export const StyledImagePreviewSection = styled("section")(() => ({
+  display: "flex",
+  minHeight: "15em",
+  alignItems: "stretch",
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  flex: 1,
+}));
+
+const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
+  "& .MuiChip-root": {
+    backgroundColor: bgLight,
+  },
+  "& .MuiInputBase-root": {
+    backgroundColor: "transparent !important",
+    paddingTop: "0 !important",
+
+    "&:before": {
+      border: "0 !important",
+    },
+  },
+}));
 
 interface WorkspaceEditProps {
   workspace: Workspace;
@@ -90,14 +99,14 @@ interface WorkspaceEditProps {
   user: UserInfo;
 }
 
-const dropAreaStyle = (error: any) => ({
+export const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: "flex",
   alignItems: "center",
 
   borderRadius: radius,
   padding: gutter,
-  borderColor: error ? "red" : fade(bgInputs, 1),
+  borderColor: error ? "red" : alpha(bgInputs, 1),
 });
 
 async function readFile(file: Blob) {
@@ -114,12 +123,11 @@ async function readFile(file: Blob) {
   });
 }
 
+const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
-  const classes = useStyles();
-  const { workspace } = props;
-  const { user } = props;
+  const { workspace, user } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
     ...props.workspace,
   });
@@ -141,6 +149,8 @@ export default (props: WorkspaceEditProps) => {
       ? workspace.tags.map((tagObject) => tagObject.tag)
       : [];
   const [defaultTags, setDefaultTags] = React.useState(workspaceTags);
+
+  const [submitError, setSubmitError] = React.useState("");
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== "undefined") {
@@ -170,6 +180,7 @@ export default (props: WorkspaceEditProps) => {
             (e) => console.error("Error uploading thumbnail", e)
           );
         } else {
+          console.log("else");
           setLoading(true);
           props.onLoadWorkspace(true, returnedWorkspace);
         }
@@ -177,9 +188,11 @@ export default (props: WorkspaceEditProps) => {
       (e) => {
         setLoading(false);
         if (e.status === 405) {
-          throw new Error("Maximum number of workspaces exceeded.");
+          setSubmitError("Workspaces quota exceeded. Try to delete some workspaces or see the documentation to know how to manage your quotas.");
+        } else {
+          setSubmitError("Unexpected error submitting the workspace. Please try again later.");
         }
-        throw new Error("Error submitting the workspace");
+        
         // console.error('Error submitting the workspace', e);
       }
     );
@@ -228,7 +241,6 @@ export default (props: WorkspaceEditProps) => {
     setWorkspaceForm({ ...workspaceForm, tags: arrayOfTags });
   };
   const setTypeField = (e: any) => {
-    console.log("value: ", e.target.value);
     // publicable if 1
     // featured if 2
     setWorkspaceForm({
@@ -249,6 +261,7 @@ export default (props: WorkspaceEditProps) => {
         maxWidth="md"
         actions={
           <React.Fragment>
+            {submitError && <Alert severity="error">{submitError}</Alert>}
             <Button
               disabled={loading}
               color="primary"
@@ -258,23 +271,23 @@ export default (props: WorkspaceEditProps) => {
             </Button>
             <Button
               id="create-a-new-workspace-button"
-              className={classes.actionButton}
               variant="contained"
               color="primary"
               disabled={loading}
               onClick={handleCreateWorkspaceButtonClick}
+              sx={{ marginLeft: "8px" }}
             >
               {workspace.id ? "Save" : "Create A New Workspace"}
             </Button>
           </React.Fragment>
         }
       >
-        <Box p={2} mt={4} className={classes.outerBox}>
+        <Box>
           {props.children && <Box>{props.children}</Box>}
           <Box>
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace name
-            </Typography>
+            </StyledLabel>
             <TextField
               id="workspaceName"
               placeholder="Name"
@@ -286,13 +299,12 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4} alignItems="stretch">
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace tags
-            </Typography>
-            <Autocomplete
+            </StyledLabel>
+            <StyledAutocomplete
               multiple={true}
               freeSolo={true}
-              className={classes.autocomplete}
               options={props.tags.map((tagObject) => tagObject.tag)}
               defaultValue={defaultTags}
               onChange={(event, value) => setWorkspaceTags(value)}
@@ -318,9 +330,9 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4}>
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Visibility
-            </Typography>
+            </StyledLabel>
             <Select
               value={workspaceForm.shareType}
               onChange={setTypeField}
@@ -334,9 +346,9 @@ export default (props: WorkspaceEditProps) => {
           </Box>
 
           <Box mt={4}>
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace description
-            </Typography>
+            </StyledLabel>
 
             <MDEditor
               defaultValue={workspace?.description}
@@ -346,10 +358,10 @@ export default (props: WorkspaceEditProps) => {
             />
           </Box>
           <Box mt={4} alignItems="stretch">
-            <Typography component="label" variant="h6">
+            <StyledLabel>
               Workspace thumbnail
-            </Typography>
-            <Box alignItems="stretch" className={classes.dropZoneBox}>
+            </StyledLabel>
+            <StyledDropZoneBox alignItems="stretch">
               <Dropzone
                 onDrop={(acceptedFiles: any) => {
                   setThumbnail(acceptedFiles[0]);
@@ -364,8 +376,7 @@ export default (props: WorkspaceEditProps) => {
                   getInputProps: () => any;
                   acceptedFiles: any[];
                 }) => (
-                  <section
-                    className={classes.imagePreview}
+                  <StyledImagePreviewSection
                     style={{
                       backgroundImage:
                         !thumbnailError && `url(${thumbnailPreview})`,
@@ -379,14 +390,13 @@ export default (props: WorkspaceEditProps) => {
                       <input {...getInputProps()} />
                       <Grid
                         container={true}
-                        justify="center"
+                        justifyContent="center"
                         alignItems="center"
                         direction="row"
                       >
-                        {acceptedFiles.length !== 0 && (
+                        {thumbnail && (
                           <Grid item={true}>
-                            {/* <IconButton><PublishIcon /></IconButton> */}
-                            {acceptedFiles.length === 0 ? (
+                            {!thumbnail ? (
                               ""
                             ) : (
                               <IconButton
@@ -394,6 +404,7 @@ export default (props: WorkspaceEditProps) => {
                                   e.preventDefault();
                                   setThumbnail(null);
                                 }}
+                                size="large"
                               >
                                 <DeleteForeverIcon />
                               </IconButton>
@@ -402,12 +413,18 @@ export default (props: WorkspaceEditProps) => {
                         )}
                         <Grid item={true}>
                           <Box component="div" m={1}>
-                            <Typography variant="subtitle2" component="p">
-                              {acceptedFiles.length === 0
-                                ? "Drop file here to upload..."
-                                : null}
-                            </Typography>
-                            <Button variant="outlined">Browse files</Button>
+                            {!thumbnail ? (
+                              <>
+                                <span>Drop file here to upload...</span>
+                                <Button
+                                  variant="outlined"
+                                  sx={{ margin: "auto !important" }}
+                                >
+                                  Browse files
+                                </Button>
+                              </>
+                            ) : null}
+
                             {thumbnailError && (
                               <Typography
                                 color="error"
@@ -421,15 +438,15 @@ export default (props: WorkspaceEditProps) => {
                         </Grid>
                       </Grid>
                     </div>
-                  </section>
+                  </StyledImagePreviewSection>
                 )}
               </Dropzone>
-            </Box>
+            </StyledDropZoneBox>
           </Box>
         </Box>
       </OSBDialog>
       {loading && (
-        <Box mt={4} p={2} className={classes.actionBox} textAlign="right">
+        <Box mt={4} p={2} sx={{ backgroundColor: bgLight }} textAlign="right">
           <CircularProgress
             size={24}
             style={{
@@ -454,6 +471,7 @@ export default (props: WorkspaceEditProps) => {
             }
           </DialogContent>
           <DialogActions>
+
             <Button
               color="primary"
               onClick={() => setShowNoFilesSelectedDialog(false)}

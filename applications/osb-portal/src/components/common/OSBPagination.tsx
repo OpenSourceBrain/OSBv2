@@ -1,65 +1,38 @@
-import React, { useState } from "react";
-import Pagination from "@material-ui/lab/Pagination";
-import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../theme";
-
-type sizes = "small" | "medium" | "large";
-type colors = "primary" | "secondary" | "standard";
-type variants = "outlined" | "text";
+import React from "react";
+import Pagination from "@mui/material/Pagination";
+import styled from "@mui/system/styled";
+import { bgLightest as lineColor, primaryColor } from "../../theme";
 
 interface OSBPaginationProps {
-  totalPages: number;
-  handlePageChange: (
-    event: React.ChangeEvent<unknown>,
-    pageNumber: number
-  ) => void;
-  size?: sizes;
-  page?: number;
-  color?: colors;
-  variant?: variants;
+  count: number;
+  page: number;
+  onChange: (event: React.ChangeEvent<unknown>, pageNumber: number) => void;
   showFirstButton?: boolean;
   showLastButton?: boolean;
+  removeTopBorder?: boolean;
 }
 
-const useStyles = makeStyles(() => ({
-  pagination: {
-    padding: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
-    "& .MuiPagination-root": {
-      "& .MuiPagination-ul": {
-        "& li": {
-          "& .MuiPaginationItem-root": {
-            color: "white",
-          },
-        },
-      },
-    },
+const StyledPagination = styled(Pagination)(() => ({
+  display: "flex",
+  justifyContent: "center",
+  padding: ".88rem",
+
+  width: "100%",
+
+  "& .Mui-selected": {
+    backgroundColor: `${primaryColor} !important`,
   },
 }));
 
 export default (props: OSBPaginationProps) => {
-  const classes = useStyles();
-
   return (
-    <Pagination
-      className={classes.pagination}
-      count={props.totalPages}
-      color={typeof props.color === "undefined" ? "standard" : props.color}
-      size={typeof props.size === "undefined" ? "medium" : props.size}
-      variant={typeof props.variant === "undefined" ? "text" : props.variant}
-      page={props.page || undefined}
-      showFirstButton={
-        typeof props.showFirstButton === "undefined"
-          ? null
-          : props.showFirstButton
-      }
-      showLastButton={
-        typeof props.showLastButton === "undefined"
-          ? null
-          : props.showLastButton
-      }
-      onChange={props.handlePageChange}
+    <StyledPagination
+      sx={{ borderTop: props?.removeTopBorder ? 0 : `1px solid ${lineColor}` }}
+      count={props.count}
+      page={props.page}
+      onChange={props.onChange}
+      showFirstButton={props.showFirstButton}
+      showLastButton={props.showLastButton}
     />
   );
 };

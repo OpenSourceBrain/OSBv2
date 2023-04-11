@@ -2,7 +2,7 @@ FROM node:13.14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
 ENV BRANCH_TAG=osb2-dev
 ENV FOLDER=netpyne
-RUN echo "no-cache 2023-1-9"
+RUN echo "no-cache 2023-3-15b"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -13,9 +13,8 @@ RUN yarn install  --network-timeout 1000000000
 RUN yarn build-dev
 
 
-RUN mv node_modules/@metacell .
-RUN rm -Rf node_modules/*
-RUN mv @metacell node_modules
+RUN mv node_modules/@metacell . && rm -Rf node_modules/* && mv @metacell node_modules
+
 
 ###
 FROM jupyter/base-notebook:hub-1.4.2
@@ -52,7 +51,7 @@ RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN python utilities/install.py --npm-skip --netpyne $NETPYNE_CORE_BRANCH_TAG --workspace= 
+RUN python utilities/install.py --npm-skip --netpyne $NETPYNE_CORE_BRANCH_TAG
 
 
 
@@ -70,12 +69,14 @@ COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_conf
 RUN rm -f ~/.jupyter/*.json
 RUN chown $NB_UID .
 RUN chown $NB_UID /opt
-RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
+RUN rm -Rf workspace
+# RUN wget -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
 USER $NB_UID
 
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
+
 RUN ln -s /opt/workspace workspace
 
 ENV NEURON_HOME=/opt/conda

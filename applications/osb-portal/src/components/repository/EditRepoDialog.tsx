@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import ClearIcon from "@material-ui/icons/Clear";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
-import { Autocomplete } from "@material-ui/lab";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import ClearIcon from "@mui/icons-material/Clear";
+import CircularProgress from "@mui/material/CircularProgress";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
+import Chip from "@mui/material/Chip";
+import InputLabel from "@mui/material/InputLabel";
+import Autocomplete from "@mui/material/Autocomplete";
 
 import {
   Box,
@@ -21,20 +20,24 @@ import {
   MenuItem,
   TextField,
   FormHelperText,
-} from "@material-ui/core";
+} from "@mui/material";
 import MDEditor from "react-markdown-editor-lite";
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
 
 import {
   bgLight,
-  bgInputs,
-  fontColor,
   paragraph,
-  bgLightestShade,
+  bgDarker,
+  secondaryColor,
+  checkBoxColor,
+  bgLightest,
+  bgDarkest,
+  badgeBgLight,
+  drawerText,
 } from "../../theme";
 import MarkdownViewer from "../common/MarkdownViewer";
-import { RepositoryType } from "../../apiclient/workspaces/models/RepositoryType";
+import { RepositoryType } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import {
   OSBRepository,
@@ -43,141 +46,154 @@ import {
   Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
+import { styled } from "@mui/system";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const DEFAULT_CONTEXTS = ["main", "master"]
+const DEFAULT_CONTEXTS = ["main", "master"];
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiOutlinedInput-root.Mui-focused": {
-      "& .MuiOutlinedInput-notchedOutline": {
-        boxShadow: "0px 0px 0px 3px rgba(55, 171, 200, 0.12)",
-      },
-    },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: bgLight,
-    },
-    "& .MuiSelect-selectMenu": {
-      backgroundColor: bgLight,
-    },
-    "& .MuiSvgIcon-root": {
-      color: paragraph,
-    },
-    "& .input-group": {
-      marginBottom: theme.spacing(2),
-      "& .wrap": {
-        [theme.breakpoints.up("sm")]: {
-          display: "flex",
-        },
-      },
-      "& .MuiTextField-root": {
-        "& .MuiOutlinedInput-root": {
-          borderRadius: 2,
-          borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
-        },
-      },
-      "& .MuiOutlinedInput-root": {
-        borderRadius: 2,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-      },
-      "& .MuiTypography-root": {
-        display: "block",
-        fontWeight: "bold",
-        fontSize: ".875rem",
-        marginBottom: theme.spacing(1),
-        color: bgInputs,
-      },
-      "& .MuiFormControl-root": {
-        "&:not(.MuiTextField-root)": {
-          width: "9rem",
-          flexShrink: 0,
-          [theme.breakpoints.down("sm")]: {
-            width: "100%",
-            marginBottom: ".5rem",
-          },
-        },
-      },
-    },
-    "& .form-group": {
-      "& .MuiOutlinedInput-root": {
-        borderRadius: 2,
-      },
-      "& .MuiTypography-root": {
-        display: "block",
-        fontWeight: "bold",
-        marginBottom: theme.spacing(1),
-        fontSize: ".875rem",
-        color: bgInputs,
-      },
-      "&+.form-group": {
-        marginTop: theme.spacing(2),
-      },
-    },
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(3),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(3),
-      "& .MuiButton-root": {
-        height: "2.13rem",
-        padding: "0 1rem",
-        "&.MuiButton-containedPrimary": {
-          color: fontColor,
-        },
-      },
-    },
+interface EditRepoProps {
+  dialogOpen: boolean;
+  onSubmit?: (r: OSBRepository) => any;
+  handleClose: (open: boolean) => any;
+  repository?: OSBRepository;
+  title: string;
+  user?: UserInfo;
+  tags: Tag[];
+  refreshRepositories: () => void;
+}
 
-    "& .MuiDialog-paper": {
-      backgroundColor: bgLightestShade,
-      borderWidth: 1,
-      borderStyle: "solid",
-      borderColor: bgLight,
-      boxShadow: "0 10px 60px rgba(0, 0, 0, 0.5);",
-    },
+const RepoDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiPaper-root": {
+    padding: 0,
+    backgroundColor: bgDarker,
+    backgroundImage: "unset",
+    borderRadius: "0.143rem",
 
     "& .MuiDialogTitle-root": {
-      border: "none",
-      borderBottomWidth: 1,
-      borderBottomStyle: "solid",
-      borderBottomColor: bgLight,
-      padding: theme.spacing(3),
-      "& .MuiTypography-root": {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        fontWeight: 700,
+      padding: "0.857rem 1.143rem",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: `0.071rem solid ${bgLight}`,
+      color: secondaryColor,
+      fontWeight: 700,
+
+      "& .MuiSvgIcon-root": {
+        color: drawerText,
+      },
+
+      "& .MuiButtonBase-root": {
+        alignSelf: "end",
+        padding: 0,
         "& .MuiSvgIcon-root": {
-          cursor: "pointer",
+          marginBottom: 0,
+          fill: checkBoxColor,
+        },
+        "&:hover": {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+  },
+  "& .MuiDialogContent-root": {
+    padding: "0.875rem 1rem",
+    display: "grid",
+    gap: "0.875rem",
+    marginTop: "0.857rem",
+    marginBottom: "1rem",
+  },
+
+  "& .MuiDialogActions-root": {
+    padding: "1.143rem",
+    background: bgLightest,
+    boxShadow: "0px -5px 30px rgba(0, 0, 0, 0.25)",
+    border: `0.071rem solid ${bgDarkest}`,
+  },
+  "& .MuiFormControl-root": {
+    backgroundColor: bgLight,
+    borderRadius: "2px",
+    "& .MuiInputBase-root": {
+      margin: 0,
+      "&:hover": {
+        "&:before": {
+          border: 0,
         },
       },
     },
   },
 }));
 
+const RepoButtonGroup = styled(ButtonGroup)(({ theme }) => ({
+  borderRadius: "2px",
+  "& .MuiTextField-root": {
+    "& .MuiInputBase-root.MuiOutlinedInput-root": {
+      borderRadius: "0px 2px 2px 0px",
+    },
+  },
+}));
+
+const Label = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  fontSize: "0.75rem",
+  color: badgeBgLight,
+  marginBottom: "0.286rem",
+  lineHeight: "1.429rem",
+}));
+
+const RepoSelect = styled(Select)(({ theme }) => ({
+  padding: 0,
+  borderRadius: "2px",
+  color: paragraph,
+  fontSize: "1rem",
+  backgroundColor: bgLight,
+
+  "& .MuiSelect-select": {
+    padding: "14px",
+  },
+  "&:before": {
+    border: 0,
+  },
+
+  "& .MuiSelect-root": {
+    padding: "14px",
+  },
+  "&:after": {
+    border: 0,
+  },
+
+  "& .MuiSvgIcon-root": {
+    right: theme.spacing(1),
+  },
+}));
+
+const RepoAutocomplete = styled(Autocomplete)(({ theme }) => ({
+  border: 0,
+  padding: 0,
+  "& .MuiButtonBase-root.MuiChip-root": {
+    background: bgDarkest,
+  },
+  "& .MuiFormControl-root": {
+    "& .MuiInputBase-root": {
+      padding: "7px",
+    },
+  },
+}));
+
 export const EditRepoDialog = ({
   dialogOpen,
-  setDialogOpen,
   onSubmit,
   repository = RepositoryService.EMPTY_REPOSITORY,
   title = "Add repository",
   user,
   tags: tagOptions,
-}: {
-  dialogOpen: boolean;
-  onSubmit: (r: OSBRepository) => any;
-  setDialogOpen: (open: boolean) => any;
-  repository?: OSBRepository;
-  title: string;
-  user: UserInfo;
-  tags: Tag[];
-}) => {
-  const classes = useStyles();
+  handleClose,
+  refreshRepositories,
+}: EditRepoProps) => {
   const [formValues, setFormValues] = useState({
     ...repository,
-    userId: user.id,
+    userId: user?.id,
   });
-
   const [loading, setLoading] = React.useState(false);
   const [contexts, setContexts] = useState<string[]>();
 
@@ -197,7 +213,7 @@ export const EditRepoDialog = ({
   };
 
   React.useEffect(() => {
-    setFormValues({ ...repository, userId: user.id });
+    setFormValues({ ...repository, userId: user?.id });
     const repositoryTags: string[] =
       repository && repository.tags
         ? repository.tags.map((tagObject) => tagObject.tag)
@@ -209,20 +225,21 @@ export const EditRepoDialog = ({
     if (uri) {
       setLoading(true);
       setError({ ...error, uri: undefined });
-      RepositoryService.getRepositoryInfo(
-        uri,
-        formValues.repositoryType
-      ).then(
+      RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
         (info: RepositoryInfo) => {
           setContexts(info.contexts);
-          setFormValues({
-            ...formValues,
-            tags: info.tags.map((tag) => ({tag})),
-            defaultContext: info.contexts.find((c => DEFAULT_CONTEXTS.includes(c))) || info.contexts[0],
-            summary: info.summary,
-            name: info.name
-            
-          });
+          setLoading(false);
+          if(repository !== RepositoryService.EMPTY_REPOSITORY) {
+            setFormValues({
+              ...formValues,
+              tags: repository.tags || info.tags.map((tag) => ({ tag })),
+              defaultContext: repository.defaultContext ||
+                info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
+                info.contexts[0],
+              summary: repository.summary || info.summary,
+              name: repository.name || info.name,
+            });
+          }
           setLoading(false);
         },
         () => {
@@ -230,14 +247,8 @@ export const EditRepoDialog = ({
           setLoading(false);
         }
       );
-
-      
     }
   }, [uri]);
-
-  const handleClose = () => {
-    setDialogOpen(false);
-  };
 
   const handleInput = (event: any, key: any) => {
     const value = event?.target?.value || event.text;
@@ -255,7 +266,7 @@ export const EditRepoDialog = ({
 
   const handleInputContext = (event: any) => {
     const value = event?.target?.value || event.text;
-    setFormValues({...formValues, defaultContext: value})
+    setFormValues({ ...formValues, defaultContext: value });
   };
 
   const addOrUpdateRepository = () => {
@@ -279,7 +290,8 @@ export const EditRepoDialog = ({
         RepositoryService.addRepository(formValues).then(
           (r) => {
             setLoading(false);
-            handleClose();
+            handleClose(false);
+            refreshRepositories();
             const obj: any = r;
             // Computed fields are not updated: remove so that the repo can be merged by the caller
             Object.keys(r).forEach((key) =>
@@ -303,7 +315,8 @@ export const EditRepoDialog = ({
           .then(
             (r: OSBRepository) => {
               setLoading(false);
-              setDialogOpen(false);
+              handleClose(false);
+              refreshRepositories();
               const obj: any = r;
               // Computed fields are not updated: remove so that the repo can be merged by the caller
               Object.keys(r).forEach((key) =>
@@ -326,10 +339,10 @@ export const EditRepoDialog = ({
   };
 
   return (
-    <Dialog
+    <RepoDialog
       open={dialogOpen}
-      onClose={handleClose}
-      className={`${classes.root} repository-edit-modal`}
+      onClose={() => handleClose(false)}
+      className={"repository-edit-modal"}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth={true}
@@ -337,96 +350,182 @@ export const EditRepoDialog = ({
     >
       <DialogTitle id="alert-dialog-title">
         {title}
-        <ClearIcon onClick={handleClose} />
+        <ClearIcon onClick={() => handleClose(false)} />
       </DialogTitle>
       <DialogContent>
-        <Box className="input-group">
-          <Typography component="label">Source</Typography>
-          <Box className="wrap">
-            <FormControl variant="outlined">
-              <Select
-                className="repository-source-input-element"
-                value={formValues.repositoryType}
-                onChange={(e) => handleInput(e, "repositoryType")}
-                IconComponent={KeyboardArrowDownIcon}
-              >
-                {Object.values(RepositoryType).map((repositoryType) => (
-                  <MenuItem key={repositoryType} value={repositoryType}>
-                    {repositoryType}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
+        <Box>
+          <Label>Source</Label>
+          <RepoButtonGroup fullWidth>
+            <Select
+              sx={{
+                background: bgLight,
+                borderRadius: "2px 0px 0px 2px",
+                width: "30%",
+                "& .MuiOutlinedInput-root:hover": {
+                  "& > fieldset": {
+                    borderColor: bgLightest,
+                  },
+                },
+                "&:before": {
+                  border: "0 !important",
+                },
+                "& .MuiSelect-select": {
+                  padding: "0 24px",
+                },
+              }}
+              inputProps={{ "aria-label": "Without label" }}
+              IconComponent={(props) => (
+                <ExpandMoreIcon sx={{ fill: paragraph }} {...props} />
+              )}
+              variant="standard"
+              className="repository-source-input-element"
+              value={formValues.repositoryType}
+              onChange={(e) => handleInput(e, "repositoryType")}
+            >
+              {Object.values(RepositoryType).map((repositoryType) => (
+                <MenuItem key={repositoryType} value={repositoryType}>
+                  {repositoryType}
+                </MenuItem>
+              ))}
+            </Select>
             <TextField
               className="repository-url-input-element"
-              fullWidth={true}
-              placeholder="Repository URL"
               variant="outlined"
               error={Boolean(error.uri)}
               onChange={handleInputUri}
               value={formValues.uri}
+              placeholder="Repository URL"
+              fullWidth
+              sx={{
+                backgroundColor: "transparent !important",
+                padding: 0,
+                "& .MuiOutlinedInput-root:hover": {
+                  "& > fieldset": {
+                    borderColor: bgLightest,
+                  },
+                },
+              }}
             />
-          </Box>
+          </RepoButtonGroup>
           <FormHelperText error={Boolean(error.uri)}>
             {error.uri}
           </FormHelperText>
         </Box>
-        <Box className="form-group">
-          <Typography component="label">Name</Typography>
-          <TextField
-            className="repository-name-input-element"
-            fullWidth={true}
-            variant="outlined"
-            error={Boolean(error.name)}
-            onChange={(e) => handleInput(e, "name")}
-            value={formValues.name}
-          />
-          <FormHelperText error={Boolean(error.name)}>
-            {error.name}
-          </FormHelperText>
-        </Box>
         {contexts && (
-          <Box className="form-group">
-            <Typography component="label">Default Branch/Version</Typography>
+          <Box>
+            <Label>Default Branch/Version</Label>
             <FormControl
               variant="outlined"
               fullWidth={true}
               error={Boolean(error.defaultContext)}
             >
-              <Select
+              <InputLabel
+                shrink={false}
+                htmlFor="repo-branch"
+                sx={{ color: paragraph }}
+              >
+                {!formValues.defaultContext && "Select branch"}
+              </InputLabel>
+              <RepoSelect
+                id="repo-branch"
+                variant="standard"
                 value={formValues.defaultContext}
                 defaultValue={"main"}
                 onChange={(e) => handleInputContext(e)}
-                IconComponent={KeyboardArrowDownIcon}
+                fullWidth
+                displayEmpty
+                label="Select branch"
+                inputProps={{
+                  "aria-label": "Select branch",
+                }}
+                IconComponent={(props) => (
+                  <ExpandMoreIcon sx={{ fill: paragraph }} {...props} />
+                )}
               >
-                {contexts.map((c) => (
+                {contexts?.map((c) => (
                   <MenuItem key={c} value={c}>
                     {c}
                   </MenuItem>
                 ))}
-              </Select>
+              </RepoSelect>
               <FormHelperText>{error.defaultContext}</FormHelperText>
             </FormControl>
           </Box>
         )}
+        <Box>
+          <Label>Name</Label>
+          <FormControl
+            fullWidth={true}
+            error={Boolean(error.name)}
+            sx={{
+              "& .MuiFormControl-root": {
+                padding: 0,
+              },
+              "& .MuiInputBase-root": {
+                "&:hover": {
+                  "& > fieldset": {
+                    borderColor: bgLightest,
+                  },
+                },
+                "& .MuiInputBase-input": {
+                  padding: "14px",
+                },
+              },
+            }}
+          >
+            <InputLabel
+              shrink={false}
+              htmlFor="repo-name"
+              sx={{ color: paragraph }}
+            >
+              {!formValues.name && "Repository name"}
+            </InputLabel>
+            <TextField
+              id="repo-name"
+              className="repository-name-input-element"
+              fullWidth={true}
+              variant="outlined"
+              error={Boolean(error.name)}
+              onChange={(e) => handleInput(e, "name")}
+              value={formValues.name}
+              sx={{ padding: "14px" }}
+            />
+            <FormHelperText error={Boolean(error.name)}>
+              {error.name}
+            </FormHelperText>
+          </FormControl>
+        </Box>
 
-        <Box className="form-group">
-          <Typography component="label">Type</Typography>
+        <Box>
+          <Label>Type</Label>
           <FormControl
             variant="outlined"
             fullWidth={true}
             error={Boolean(error.contentTypesList)}
           >
-            <Select
+            <InputLabel
+              shrink={false}
+              htmlFor="repo-type"
+              sx={{ color: paragraph, "&.Mui-focused": { color: paragraph } }}
+            >
+              {!formValues?.contentTypesList?.length && "Select type"}
+            </InputLabel>
+            <RepoSelect
+              variant="standard"
+              id="repo-type"
               className="repository-type-input-element"
               value={formValues.contentTypesList}
               multiple={true}
               onChange={(e) => handleInput(e, "contentTypesList")}
-              IconComponent={KeyboardArrowDownIcon}
+              IconComponent={(props) => (
+                <ExpandMoreIcon sx={{ fill: paragraph }} {...props} />
+              )}
               renderValue={(selected) => (selected as string[]).join(", ")}
             >
-              <MenuItem value={RepositoryContentType.Experimental}>
+              <MenuItem
+                value={RepositoryContentType.Experimental}
+                sx={{ padding: "0" }}
+              >
                 <Checkbox
                   color="primary"
                   checked={formValues.contentTypesList.includes(
@@ -435,7 +534,10 @@ export const EditRepoDialog = ({
                 />
                 <ListItemText primary="Experimental Data" />
               </MenuItem>
-              <MenuItem value={RepositoryContentType.Modeling}>
+              <MenuItem
+                value={RepositoryContentType.Modeling}
+                sx={{ padding: "0" }}
+              >
                 <Checkbox
                   color="primary"
                   checked={formValues.contentTypesList.includes(
@@ -444,48 +546,66 @@ export const EditRepoDialog = ({
                 />
                 <ListItemText primary="Modeling" />
               </MenuItem>
-            </Select>
+            </RepoSelect>
             <FormHelperText>{error.contentTypesList}</FormHelperText>
           </FormControl>
         </Box>
 
-        <Box className="form-group">
-          <Typography component="label">Tags</Typography>
-          <Autocomplete
-            className="repository-tags-input-element"
-            multiple={true}
-            freeSolo={true}
-            options={tagOptions.map((t) => t.tag)}
-            onChange={(event, value) => setRepositoryTags(value)}
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
-                  variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
-                  key={option}
+        <Box>
+          <Label>Repository tags</Label>
+          <FormControl variant="outlined" fullWidth={true}>
+            <InputLabel
+              shrink={false}
+              htmlFor="repository-tags-input-element"
+              sx={{ color: paragraph }}
+            >
+              {!formValues?.tags?.length && "Select tags"}
+            </InputLabel>
+            <RepoAutocomplete
+              id="repository-tags-input-element"
+              className="repository-tags-input-element"
+              multiple={true}
+              freeSolo={true}
+              options={tagOptions.map((t) => t.tag)}
+              onChange={(event, value: string[]) => setRepositoryTags(value)}
+              placeholder="Select tags"
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                    key={`tag-${index}`}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField
+                  InputProps={{ disableUnderline: true }}
+                  fullWidth={true}
+                  {...params}
+                  variant="filled"
                 />
-              ))
-            }
-            renderInput={(params) => (
-              <TextField
-                InputProps={{ disableUnderline: true }}
-                fullWidth={true}
-                {...params}
-                variant="filled"
-              />
-            )}
-            value={
-              formValues.tags &&
-              formValues.tags.map((tagObject) => tagObject.tag)
-            }
-          />
+              )}
+              value={
+                formValues.tags &&
+                formValues.tags.map((tagObject) => tagObject.tag)
+              }
+              sx={{
+                "& .MuiInputBase-root": {
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+                },
+              }}
+            />
+          </FormControl>
         </Box>
 
-        <Box className="form-group">
-          <Typography component="label">
+        <Box>
+          <Label>
             Can you describe what people can find in this repository?
-          </Typography>
+          </Label>
 
           <MDEditor
             defaultValue={formValues.summary || repository?.summary}
@@ -497,14 +617,14 @@ export const EditRepoDialog = ({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={() => handleClose(false)} color="primary">
           Cancel
         </Button>
         <Button
           className="repository-add-button"
           variant="contained"
           disableElevation={true}
-          disabled={Object.values(error).filter((e) => e).length !== 0}
+          disabled={loading}
           onClick={addOrUpdateRepository}
           color="primary"
         >
@@ -523,7 +643,7 @@ export const EditRepoDialog = ({
           />
         )}
       </DialogActions>
-    </Dialog>
+    </RepoDialog>
   );
 };
 

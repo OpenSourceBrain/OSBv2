@@ -1,25 +1,24 @@
 import * as React from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import NestedMenuItem from "material-ui-nested-menu-item";
-import Button from "@material-ui/core/Button";
-import { IconButton } from "@material-ui/core";
-import Snackbar from "@material-ui/core/Snackbar";
-import * as Icons from "../icons";
-import CloseIcon from "@material-ui/icons/Close";
+import { useHistory } from "react-router-dom";
+import makeStyles from "@mui/styles/makeStyles";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import NestedMenuItem from "../common/NestedMenuItems";
+import Button from "@mui/material/Button";
+import { IconButton } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
-import OSBDialog from "../common/OSBDialog";
-import { WorkspaceEditor } from "./../index";
+import { WorkspaceEditor } from "../index";
 import { canEditWorkspace } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
 import WorkspaceService from "../../service/WorkspaceService";
 import OSBLoader from "../common/OSBLoader";
-import { bgDarkest, textColor } from "../../theme";
+import { bgDarkest, textColor, lightWhite } from "../../theme";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import * as Icons from "../icons";
 
-// TODO: refactor to use redux instead of passing props
 
 interface WorkspaceActionsMenuProps {
   workspace?: Workspace;
@@ -28,6 +27,7 @@ interface WorkspaceActionsMenuProps {
   refreshWorkspaces?: () => void;
   user?: UserInfo;
   isWorkspaceOpen?: boolean;
+  ButtonComponent?: React.ComponentType<any>;
   [other: string]: any;
 }
 
@@ -42,13 +42,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default (props: WorkspaceActionsMenuProps) => {
   const classes = useStyles();
+  const {ButtonComponent} = props;
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const canEdit = canEditWorkspace(props.user, props.workspace);
+  const canEdit = canEditWorkspace(props?.user, props?.workspace);
+  const history = useHistory();
+
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -87,7 +90,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenWorkspace = () => {
-    window.location.href = `/workspace/open/${props.workspace.id}`;
+    history.push(`/workspace/${props.workspace.id}`);
   };
 
   const handleCloseEditWorkspace = () => {
@@ -112,22 +115,24 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenClonedWorkspace = () => {
-    window.location.href = `/workspace/${clonedWSId}`;
+    history.push(`/workspace/${clonedWSId}`);
   };
+
 
   /*
    *
    * @param applicatonType OSBApplication key
    */
   const handleOpenWorkspaceWithApp = (applicatonType: string) => {
-    window.location.href = `/workspace/open/${props.workspace.id}/${applicatonType}`;
+    history.push(`/workspace/open/${props.workspace.id}/${applicatonType}`);
   };
 
   return (
     <>
-      <IconButton className="btn-workspace-actions" size="small" onClick={handleClick}>
+    {ButtonComponent ? <ButtonComponent className="btn-actions" onClick={handleClick} /> :
+      <IconButton className="btn-actions" size="small" onClick={handleClick}>
         <Icons.Dots style={{ fontSize: "1rem" }} />
-      </IconButton>
+      </IconButton>}
       <Menu
         id="workspace-actions-menu"
         anchorEl={anchorEl}
@@ -135,34 +140,16 @@ export default (props: WorkspaceActionsMenuProps) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        {canEdit && <MenuItem className="edit-workspace" onClick={handleEditWorkspace}>Edit</MenuItem>}
-        {canEdit && <MenuItem className="delete-workspace" onClick={handleDeleteWorkspace}>Delete</MenuItem>}
-        {canEdit && !props.workspace.publicable && (
-          <MenuItem className="make-public-workspace" onClick={handlePublicWorkspace}>Make public</MenuItem>
-        )}
-        {canEdit && props.workspace.publicable && (
-          <MenuItem className="make-private-workspace" onClick={handlePrivateWorkspace}>Make private</MenuItem>
-        )}
-        {props.user &&
-          props.user.isAdmin &&
-          props.workspace.publicable &&
-          !props.workspace.featured && (
-            <MenuItem className="add-featured-workspace" onClick={handleFeaturedWorkspace}>
-              Add to featured
-            </MenuItem>
-          )}
-        {props.user && props.user.isAdmin && props.workspace.featured && (
-          <MenuItem className="remove-featured-workspace" onClick={handleFeaturedWorkspace}>
-            Remove from featured
+       {!props.isWorkspaceOpen && (
+          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>
+            Open workspace
           </MenuItem>
         )}
-        {!props.isWorkspaceOpen && (
-          <MenuItem className="open-workspace" onClick={handleOpenWorkspace}>Open workspace</MenuItem>
-        )}
-        {props.user && (
-          <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
-        )}
-        <NestedMenuItem className="open-with" label="Open with..." parentMenuOpen={true}>
+         <NestedMenuItem
+          className="open-with"
+          label="Open with..."
+          parentMenuOpen={true}
+        >
           {Object.keys(OSBApplications).map((appCode) => (
             <MenuItem
               key={appCode}
@@ -175,6 +162,61 @@ export default (props: WorkspaceActionsMenuProps) => {
             </MenuItem>
           ))}
         </NestedMenuItem>
+        {props.user && (
+          <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
+        )}
+        {canEdit && (
+          <MenuItem className="edit-workspace" onClick={handleEditWorkspace}>
+            Edit
+          </MenuItem>
+        )}
+        {canEdit && !props.workspace?.publicable && (
+          <MenuItem
+            className="make-public-workspace"
+            onClick={handlePublicWorkspace}
+          >
+            Make public
+          </MenuItem>
+        )}
+        {canEdit && props.workspace?.publicable && (
+          <MenuItem
+            className="make-private-workspace"
+            onClick={handlePrivateWorkspace}
+          >
+            Make private
+          </MenuItem>
+        )}
+        {props.user &&
+          props.user.isAdmin &&
+          props.workspace?.publicable &&
+          !props.workspace?.featured && (
+            <MenuItem
+              className="add-featured-workspace"
+              onClick={handleFeaturedWorkspace}
+            >
+              Add to featured
+            </MenuItem>
+          )}
+
+        {props.user && props.user.isAdmin && props.workspace?.featured && (
+          <MenuItem
+            className="remove-featured-workspace"
+            onClick={handleFeaturedWorkspace}
+          >
+            Remove from featured
+          </MenuItem>
+        )}
+          
+        {canEdit && (
+          <MenuItem
+            className="delete-workspace"
+            onClick={handleDeleteWorkspace}
+          >
+            Delete
+          </MenuItem>
+        )}
+       
+       
       </Menu>
       {editWorkspaceOpen && (
         <WorkspaceEditor
@@ -192,7 +234,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         handleClose={handleCloseMenu}
         messages={["Cloning workspace. Please wait."]}
       />
-      <Snackbar
+       <Snackbar
         classes={{ root: classes.snackbar }}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}

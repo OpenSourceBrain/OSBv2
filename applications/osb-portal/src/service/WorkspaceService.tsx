@@ -1,7 +1,7 @@
 import {
   WorkspaceIdGetRequest,
   WorkspaceGetRequest,
-} from "../apiclient/workspaces/apis/RestApi";
+} from "../apiclient/workspaces";
 
 import {
   Workspace,
@@ -9,7 +9,7 @@ import {
   OSBApplications,
   SampleResourceTypes,
 } from "../types/workspace";
-import { FeaturedType } from "../types//global";
+import { FeaturedType } from "../types/global";
 
 import * as workspaceApi from "../apiclient/workspaces/apis";
 import {
@@ -66,7 +66,7 @@ class WorkspaceService {
     isPublic = false,
     isFeatured = false,
     page = 1,
-    perPage = 20
+    perPage = 24
   ): Promise<Page<Workspace>> {
     // ToDo: pagination & size of pagination
     const params: any = {};
@@ -236,11 +236,9 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
     (workspace?.resources[0]?.id && workspace?.resources[0]?.id > 0);
   const resources: WorkspaceResource[] = workspace.resources.map(mapResource);
   const lastOpen: WorkspaceResource = defaultResourceId
-    ? mapResource(
-        workspace.resources.find(
+    ? resources.find(
           (resource) => resource.id === defaultResourceId
         )
-      )
     : {
         workspaceId: workspace.id,
         name: "Generic",

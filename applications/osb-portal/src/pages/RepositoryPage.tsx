@@ -1,194 +1,91 @@
 import * as React from "react";
 import { useParams, useHistory } from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import AddIcon from "@material-ui/icons/Add";
-import Box from "@material-ui/core/Box";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import LinkIcon from "@material-ui/icons/Link";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Link from "@material-ui/core/Link";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+//theme
+import { styled } from "@mui/styles";
 import {
-  Chip,
-  DialogContent,
-  DialogTitle,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import {
-  OSBRepository,
-  RepositoryResourceNode,
-  RepositoryContentType,
-  RepositoryType,
-} from "../apiclient/workspaces";
-import RepositoryService from "../service/RepositoryService";
-import RepositoryResourceBrowser from "../components/repository/RepositoryResourceBrowser";
+  linkColor,
+  paragraph,
+  secondaryColor as white,
+  chipBg,
+  bgDarkest,
+} from "../theme";
+
+//components
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from "@mui/material/Dialog";
+import Link from "@mui/material/Link";
+import Tooltip from "@mui/material/Tooltip";
+import { EditRepoDialog, PageSider } from "../components";
+import RepositoryPageBanner from "../components/repository/RepositoryPageBanner";
+import RepositoryPageDetails from "../components/repository/RepositoryPageDetails";
+import { WorkspaceEditor, NewWorkspaceAskUser } from "../components";
 import OSBDialog from "../components/common/OSBDialog";
-import { WorkspaceEditor, MainMenu } from "../components/index";
 import OSBChipList from "../components/common/OSBChipList";
-import { NewWorkspaceAskUser } from "../components";
 import {
   ExistingWorkspaceEditor as ExistingWorkspaceSelector,
   ExistingWorkspaceEditorActions,
 } from "../components/workspace/ExistingWorkspaceSelector";
+import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
+
+//types
+import {
+  OSBRepository,
+  RepositoryResourceNode,
+  RepositoryType,
+} from "../apiclient/workspaces";
+import { UserInfo } from "../types/user";
+
+//icons
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
+import RepositoryService from "../service/RepositoryService";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
-import { UserInfo } from "../types/user";
-import MarkdownViewer from "../components/common/MarkdownViewer";
-import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
-import Resources from "../components/repository/resources";
+import { canEditRepository } from "../service/UserService";
 
-import {
-  linkColor,
-  bgLightest,
-  fontColor,
-  bgDarkest,
-  checkBoxColor,
-  paragraph,
-  textColor,
-} from "../theme";
-import { CodeBranchIcon } from "../components/icons";
-
-const useStyles = makeStyles((theme) => ({
-  infoIcon: {
-    fontSize: "small",
-    verticalAlign: "middle",
-    color: paragraph,
-  },
-  linkButton: {
-    position: "absolute",
-    right: 0,
-    backgroundColor: "black",
-    textTransform: "none",
-    "& .MuiButton-label": {
-      color: "white",
-      fontSize: "0.7rem",
-    },
-    "&:hover": {
-      backgroundColor: "black",
-    },
-  },
-  previewBox: {
-    padding: theme.spacing(3),
-    border: `3px solid #1e1e1e`,
-    backgroundColor: "#191919",
-    minHeight: 300,
-  },
-  repositoryResourceBrowserBox: {
-    width: "100%",
-  },
-  repositoryInformation: {
-    marginBottom: theme.spacing(1),
-    "& .MuiAccordionSummary-root": {
-      flexDirection: "row",
-      paddingLeft: `${theme.spacing(1)}px !important`,
-    },
-    "& .MuiAccordionDetails-root": {
-      paddingLeft: `${theme.spacing(2)}px !important`,
-      paddingBottom: theme.spacing(1),
-    },
-    "& .MuiChip-root": {
-      margin: `5px 5px ${theme.spacing(1)}px 0px`,
-      backgroundColor: "#3c3c3c",
-      color: paragraph,
-      textTransform: "capitalize",
-    },
-    "& .repo-chip": {
-      color: textColor,
-      textTransform: "none",
-    },
-  },
-  root: {
-    maxHeight: "100%",
-    backgroundColor: bgDarkest,
-    "& .MuiCheckbox-colorSecondary": {
-      color: checkBoxColor,
-      "&.Mui-checked": {
-        color: linkColor,
-      },
-    },
-    "& .main-content": {
-      padding: theme.spacing(3),
-      "& .MuiGrid-container": {
-        height: `calc(100% + ${theme.spacing(5)}px)`,
-      },
-      "& .flex-grow-1": {
-        flexGrow: 1,
-      },
-    },
-    "& .subheader": {
-      display: "flex",
-      background: bgLightest,
-      alignItems: "center",
-      height: "4.062rem",
-      paddingRight: 0,
-      justifyContent: "space-between",
-      "& .MuiSvgIcon-root": {
-        width: "1rem",
-        marginRight: theme.spacing(1),
-        height: "auto",
-        cursor: "pointer",
-      },
-
-      "& h1": {
-        fontSize: ".88rem",
-        lineHeight: 1,
-        display: "flex",
-        alignItems: "center",
-        "& span": {
-          fontSize: ".88rem",
-          lineHeight: 1,
-          fontWeight: "bold",
-          "&:not(:last-child)": {
-            cursor: "pointer",
-            fontWeight: "normal",
-            marginRight: ".5rem",
-            "&:after": {
-              content: '"/"',
-              display: "inline-block",
-              paddingLeft: ".5rem",
-            },
-          },
-          "&:first-child": {
-            color: fontColor,
-          },
-        },
-      },
-      "& .MuiButton-outlined, .MuiButton-containedPrimary": {
-        [theme.breakpoints.down("xs")]: {
-          paddingLeft: 0,
-          paddingRight: 0,
-        },
-        [theme.breakpoints.down("sm")]: {
-          minWidth: "2.25rem",
-        },
-        [theme.breakpoints.up("sm")]: {
-          minWidth: "11.5rem",
-          "& .MuiSvgIcon-root": {
-            display: "none",
-          },
-        },
-        "& .MuiButton-label": {
-          color: fontColor,
-          [theme.breakpoints.down("xs")]: {
-            fontSize: 0,
-          },
-        },
-      },
-    },
+const GoBackButton = styled(Button)(({ theme }) => ({
+  padding: 0,
+  color: paragraph,
+  fontSize: "0.857rem",
+  textTransform: "none",
+  "&:hover": {
+    backgroundColor: "transparent",
   },
 }));
+
+const AddSelectionButton = styled(Button)(({ theme }) => ({
+  color: white,
+  fontSize: "0.857rem",
+  textTransform: "none",
+  borderRadius: "0.429rem",
+  border: `0.071rem solid ${white}`,
+  height: "100%",
+
+  "&:hover": {
+    border: `0.071rem solid ${white}`,
+    backgroundColor: "transparent",
+  },
+}));
+
+const NewWorkspaceButton = styled(Button)(({ theme }) => ({
+  background: linkColor,
+  border: `0.071rem solid #000`,
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  borderRadius: "0.429rem",
+  textTransform: "none",
+  height: "100%",
+}));
+
+let confirmationDialogTitle = "";
+let confirmationDialogContent = "";
 
 const defaultWorkspace: Workspace = {
   resources: [],
@@ -198,9 +95,6 @@ const defaultWorkspace: Workspace = {
   description: null,
   user: null,
 };
-
-let confirmationDialogTitle = "";
-let confirmationDialogContent = "";
 
 export const RepositoryPage = (props: any) => {
   const user: UserInfo = props.user;
@@ -221,19 +115,9 @@ export const RepositoryPage = (props: any) => {
   const [loading, setLoading] = React.useState(false);
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
   const [error, setError] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const classes = useStyles();
-
-  React.useEffect(() => {
-    RepositoryService.getRepository(+repositoryId).then(
-      (repo) => {
-        setRepository(repo);
-      },
-      (e) => {
-        setError(e);
-      }
-    );
-  }, []);
+  const canEdit = canEditRepository(props.user, props.repository);
 
   if (error) {
     throw error;
@@ -336,332 +220,177 @@ export const RepositoryPage = (props: any) => {
     setChecked([]);
   };
 
-  const getRepoURL = () => {
+  const openRepoUrl = () => {
     switch (repository.repositoryType) {
       // For github, the URL is: repo/tree/branch
       case "github":
-        return repository.uri + "/tree/" + repository.defaultContext;
+        window.open(
+          `${repository.uri + "/tree/" + repository.defaultContext}`,
+          "_blank"
+        );
+        break;
       // For dandi, the URL is: repo/version
       case "dandi":
-        return repository.uri + "/" + repository.defaultContext;
+        window.open(
+          `${repository.uri + "/" + repository.defaultContext}`,
+          "_blank"
+        );
+        break;
       // For figshare, there does not seem to be a version specific URL
       case "figshare":
-        return repository.uri;
+        window.open(`${repository.uri}`, "_blank");
+        break;
       default:
-        return "#";
+        window.open(`#`, "_blank");
     }
   };
 
   const canAddToWorkspace = () => {
     return (
-      repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0
+      repository && (repository?.repositoryType !== RepositoryType.Dandi || checked.length > 0)
     );
   };
 
+  React.useEffect(() => {
+    setIsLoading(true);
+    RepositoryService.getRepository(+repositoryId).then(
+      (repo) => {
+        setRepository(repo);
+        setIsLoading(false);
+      },
+      (e) => {
+        setError(e);
+      }
+    );
+  }, []);
+
   return (
     <>
-      <MainMenu />
-      <Box className={`${classes.root} verticalFit`}>
-        <Box className="subheader" paddingX={3} justifyContent="space-between">
+      {/*header*/}
+      <Box
+        sx={{
+          px: 4,
+          py: 2,
+          width: "100%",
+          backgroundColor: bgDarkest,
+        }}
+      >
+        <Stack
+          spacing={2}
+          direction="row"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Box>
-            <Box display="flex" alignItems="center">
-              <ArrowBackIcon onClick={() => history.push("/repositories")} />
-              <Typography component="h1" color="primary">
-                <Typography
-                  component="span"
-                  onClick={() => history.push("/repositories")}
-                >
-                  All repositories
-                </Typography>
-                {repository ? (
-                  <Typography component="span">{repository.name}</Typography>
-                ) : null}
-              </Typography>
-            </Box>
+            <GoBackButton
+              variant="text"
+              startIcon={<ChevronLeftIcon />}
+              onClick={() => history.push("/repositories")}
+            >
+              All repositories
+            </GoBackButton>
           </Box>
+        
+          <Stack spacing={2} direction="row">
+            <Tooltip
+              title={
+                !canAddToWorkspace()
+                  ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                  : ""
+              }
+            >
+              <Stack sx={{ width: "100%", padding: 0 }}>
+                <AddSelectionButton
+                  fullWidth
+                  variant="outlined"
+                  disableElevation={true}
+                  id="add-existing-workspace-button"
+                  disabled={!canAddToWorkspace()}
+                  color="secondary"
+                  sx={{
+                    whiteSpace: {
+                      lg: "nowrap",
+                    },
+                  }}
+                  onClick={() => {
+                    user
+                      ? openExistingWorkspaceDialog()
+                      : setShowUserNotLoggedInAlert(true);
+                  }}
+                >
+                  Add selection to existing workspace
+                </AddSelectionButton>
+              </Stack>
+            </Tooltip>
 
-          <Tooltip
-            title={
-              !canAddToWorkspace()
-                ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
-                : ""
-            }
-          >
-            <Box>
-              <Button
-                id="add-existing-workspace-button"
-                variant="outlined"
-                disabled={!canAddToWorkspace()}
-                disableElevation={true}
-                color="secondary"
-                style={{ borderColor: "white" }}
-                onClick={() => {
-                  user
-                    ? openExistingWorkspaceDialog()
-                    : setShowUserNotLoggedInAlert(true);
-                }}
+            {canEdit && (
+              <Tooltip
+                title={
+                  !canAddToWorkspace()
+                    ? "Note: due to the large size of files in most DANDI repositories, the default behaviour of adding all files to a new workspace when no files/folders are selected below is disabled. Please select specific files/folders to add to a workspace, bearing in mind the total size of the files."
+                    : ""
+                }
               >
-                <AddIcon />
-                Add to existing workspace
-              </Button>
-              <Button
-                id="create-new-workspace-button"
-                variant="contained"
-                disabled={!canAddToWorkspace()}
-                disableElevation={true}
-                color="primary"
-                onClick={() => {
-                  user ? openDialog() : setShowUserNotLoggedInAlert(true);
-                }}
-              >
-                <AddIcon />
-                Create new workspace
-              </Button>
+                <Stack sx={{ width: "100%", padding: 0 }}>
+                  <NewWorkspaceButton
+                    fullWidth
+                    variant="contained"
+                    disableElevation={true}
+                    color="primary"
+                    id="create-new-workspace-button"
+                    disabled={!canAddToWorkspace()}
+                    onClick={() => {
+                      user ? openDialog() : setShowUserNotLoggedInAlert(true);
+                    }}
+                  >
+                    New workspace from selection
+                  </NewWorkspaceButton>
+                </Stack>
+              </Tooltip>
+            )}
+            {canEdit ? (
               <RepositoryActionsMenu
                 user={user}
                 repository={repository}
+                isRepositoryPage={true}
                 onAction={(r: OSBRepository) =>
                   r && setRepository({ ...repository, ...r })
                 }
               />
-            </Box>
-          </Tooltip>
-        </Box>
-
-        <Box className="main-content verticalFit">
-          {repository ? (
-            <Grid container={true} spacing={5} className="verticalFill">
-              <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box
-                  className="flex-grow-1 scrollbar"
-                  maxWidth="100%"
-                  position="relative"
-                >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Typography
-                      component="h2"
-                      variant="h2"
-                      className="primary-heading"
-                      style={{ width: "100%" }}
-                    >
-                      Overview{" "}
-                      <Tooltip
-                        interactive={true}
-                        title={
-                          <>
-                            Repositories provide views of files in public
-                            resources that have been indexed in OSBv2 by users.
-                            Use the Repository Contents pane on the right to
-                            select files from this repository to add to your
-                            workspaces.{" "}
-                            <Link
-                              href="https://docs.opensourcebrain.org/OSBv2/Repositories.html"
-                              target="_blank"
-                            >
-                              Learn more...
-                            </Link>
-                          </>
-                        }
-                      >
-                        <InfoOutlinedIcon className={classes.infoIcon} />
-                      </Tooltip>
-                    </Typography>
-                  </Box>
-                  <Box className={classes.repositoryInformation}>
-                    <Typography component="h1" variant="h1">
-                      {repository.name}
-                    </Typography>
-                    {repository.user &&
-                      (repository.user.firstName ||
-                        repository.user.lastName) && (
-                        <Typography component="p" variant="body2">
-                          Added by{" "}
-                          {
-                            <Link href={`/user/${repository?.user?.id}`}>
-                              {" "}
-                              {repository.user.firstName +
-                                " " +
-                                repository.user.lastName}
-                            </Link>
-                          }{" "}
-                          {repository.timestampCreated &&
-                            ` on ${repository.timestampCreated.toDateString()}`}
-                        </Typography>
-                      )}
-                    {repository.summary && (
-                      <Typography component="p" variant="body2">
-                        <MarkdownViewer text={repository.summary} />
-                      </Typography>
-                    )}
-                    <Box>
-                      {repository.contentTypesList.map((type) => {
-                        return (
-                          <Chip
-                            className="repo-chip"
-                            size="small"
-                            avatar={
-                              <FiberManualRecordIcon
-                                color={
-                                  type === RepositoryContentType.Experimental
-                                    ? "primary"
-                                    : "secondary"
-                                }
-                              />
-                            }
-                            key={type}
-                            label={type}
-                          />
-                        );
-                      })}
-                      {repository.defaultContext && (
-                        <Chip
-                          className="repo-chip"
-                          size="small"
-                          avatar={<CodeBranchIcon />}
-                          label={repository.defaultContext}
-                          key={repository.defaultContext}
-                        />
-                      )}
-                      {repository.tags.map((tagObject) => {
-                        return (
-                          <Chip
-                            className="repo-chip"
-                            size="small"
-                            label={tagObject.tag}
-                            key={tagObject.id}
-                          />
-                        );
-                      })}
-                    </Box>
-
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                      >
-                        <Typography component="p" variant="body1">
-                          More Info
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        {repository.id && (
-                          <Typography component="p" variant="body2">
-                            Id: {repository.id}
-                          </Typography>
-                        )}
-                        <Typography component="p" variant="body2">
-                          Repository type:{" "}
-                          {repository.repositoryType.charAt(0).toUpperCase() +
-                            repository.repositoryType.slice(1)}
-                        </Typography>
-                        {repository.defaultContext && (
-                          <Typography component="p" variant="body2">
-                            Context: {repository.defaultContext}
-                          </Typography>
-                        )}
-                        {repository.timestampCreated && (
-                          <Typography component="p" variant="body2">
-                            Created:{" "}
-                            {repository.timestampCreated.toDateString()}
-                          </Typography>
-                        )}
-                      </AccordionDetails>
-                    </Accordion>
-                  </Box>
-                  <Box position="relative" mt="2">
-                    <Button
-                      href={getRepoURL()}
-                      target="_blank"
-                      className={classes.linkButton}
-                      variant="contained"
-                      size="small"
-                      endIcon={<LinkIcon />}
-                    >
-                      View on{" "}
-                      {Resources[repository.repositoryType] ||
-                        repository.repositoryType}
-                    </Button>
-                    <Typography
-                      component="h2"
-                      variant="h2"
-                      className="primary-heading"
-                    >
-                      Repository preview
-                    </Typography>
-                    <Paper className={`verticalFit ${classes.previewBox}`}>
-                      <MarkdownViewer
-                        text={repository.description}
-                        repository={repository}
-                      />
-                    </Paper>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item={true} xs={12} md={6} className="verticalFill">
-                <Box
-                  className={`verticalFit ${classes.repositoryResourceBrowserBox}`}
-                >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Typography
-                      component="h2"
-                      variant="h2"
-                      style={{ width: "100%" }}
-                    >
-                      Repository contents{" "}
-                      <Tooltip
-                        interactive={true}
-                        title={
-                          <>
-                            {`The file list below shows the latest (current) version and contents of the repository. Select files and folders below to add to your workspaces. To see the previous version and contents of the repository, please view the repository on ${
-                              Resources[repository.repositoryType] ||
-                              repository.repositoryType
-                            }.`}{" "}
-                            <Link
-                              href="https://docs.opensourcebrain.org/OSBv2/Repositories.html"
-                              target="_blank"
-                            >
-                              Learn more...
-                            </Link>
-                          </>
-                        }
-                      >
-                        <InfoOutlinedIcon className={classes.infoIcon} />
-                      </Tooltip>
-                    </Typography>
-                  </Box>
-                  <Box className="verticalFit">
-                    <RepositoryResourceBrowser
-                      repository={repository}
-                      checkedChanged={setCheckedChips}
-                      refresh={refresh}
-                    />
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-          ) : (
-            <CircularProgress
-              size={48}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginTop: -24,
-                marginLeft: -24,
-              }}
-            />
-          )}
-        </Box>
+            ) : null}
+          </Stack>
+        </Stack>
       </Box>
+      {/*details*/}
+      {isLoading && !repository ? (
+        <CircularProgress
+          size={48}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            marginTop: -24,
+            marginLeft: -24,
+          }}
+        />
+      ) : (
+        <>
+          <RepositoryPageBanner
+            repository={repository}
+            openRepoUrl={openRepoUrl}
+          />
+          <RepositoryPageDetails
+            repository={repository}
+            openRepoUrl={openRepoUrl}
+            checkedChanged={setCheckedChips}
+            onAction={(r: OSBRepository) =>
+              r && setRepository({ ...repository, ...r })
+            }
+            user={user}
+          />
+        </>
+      )}
 
       {/*
        * Here we must use `&& showWorkspaceEditor` so that the
@@ -671,11 +400,12 @@ export const RepositoryPage = (props: any) => {
        * `workspace` prop---at the initial render---and then do not track the
        * value of the `workpace` prop.
        */}
+
       {user && showWorkspaceEditor && (
         <WorkspaceEditor
           title={"Create new workspace"}
           open={showWorkspaceEditor}
-          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName(), tags: repository.tags }}
+          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }}
           onLoadWorkspace={onWorkspaceCreated}
           closeHandler={openDialog}
           filesSelected={checked.length > 0}
@@ -759,5 +489,4 @@ export const RepositoryPage = (props: any) => {
     </>
   );
 };
-
 export default RepositoryPage;

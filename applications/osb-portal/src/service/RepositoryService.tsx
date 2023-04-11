@@ -18,7 +18,7 @@ type RepositoriesListAndPaginationDetails = InlineResponse2001;
 
 const workspacesApiUri = "/proxy/workspaces/api";
 
-const PER_PAGE_DEFAULT = 10;
+const PER_PAGE_DEFAULT = 18;
 
 class RepositoryService {
   workspacesApi: RestApi = null;
@@ -75,6 +75,7 @@ class RepositoryService {
       perPage: size,
       tags,
       types,
+      userId: filter.user_id
     });
   }
 
@@ -158,6 +159,11 @@ class RepositoryService {
     const requestParameters = { page, perPage, q };
     return this.workspacesApi.tagGet(requestParameters);
   }
+  async deleteRepository(id: number) {
+    return this.workspacesApi.osbrepositoryIdDelete({ id });
+  }
+  
 }
+
 
 export default new RepositoryService();
