@@ -29,19 +29,20 @@ const timeout = (ms: number, promise: Promise<any>) => {
 
 console.log(root, App);
 
-const user = initUser();
-store.dispatch(userLogin(user));
 
-root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+
+
+
 
 timeout(20000, checkUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
-  }
+  } 
+  root.render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 });
 initErrorHandler(appName);
 

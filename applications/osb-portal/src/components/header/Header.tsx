@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link } from "@mui/material";
+import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link, CircularProgress } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
 import {BetaIcon, OSBLogo} from "../icons";
@@ -70,7 +70,10 @@ export const Header = (props: any) => {
   };
 
   const headerText =
-    user === null ? (
+    user === undefined ? (
+      <CircularProgress size={20} />
+    ) : 
+    (user === null ? (
       <Button sx={styles.button} onClick={handleUserLogin} className={`sign-in`}>
         Sign in
       </Button>
@@ -119,7 +122,7 @@ export const Header = (props: any) => {
           {user.username}
         </Button>
       </Box>
-    );
+    ));
 
   const handleToggleDrawer = (e: any) => {
     if (props.drawerEnabled) {
