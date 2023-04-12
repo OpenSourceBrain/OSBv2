@@ -424,6 +424,7 @@ export const RepositoryPage = (props: any) => {
           title="Add to existing workspace"
           open={showExistingWorkspaceEditor}
           closeAction={openExistingWorkspaceDialog}
+          maxWidth="xl"
           actions={
             <ExistingWorkspaceEditorActions
               disabled={!selectedWorkspace || loading}

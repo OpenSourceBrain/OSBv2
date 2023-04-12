@@ -106,7 +106,7 @@ class WorkspaceService {
     page: number = 1,
     filter: SearchFilter,
     size: number = PER_PAGE_DEFAULT
-  ): Promise<any> {
+  ): Promise<Page<Workspace>> {
     const params: any = {};
     if (isPublic) {
       params.publicable = "true";

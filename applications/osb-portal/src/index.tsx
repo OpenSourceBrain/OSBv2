@@ -34,7 +34,7 @@ console.log(root, App);
 
 
 
-timeout(20000, checkUser()).then((user: UserInfo) => {
+timeout(2000, checkUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   } 
@@ -43,7 +43,11 @@ timeout(20000, checkUser()).then((user: UserInfo) => {
       <App />
     </Provider>
   );
-});
+}, () => root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+));
 initErrorHandler(appName);
 
 store.dispatch(retrieveAllTags);

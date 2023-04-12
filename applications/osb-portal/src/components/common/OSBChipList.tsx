@@ -16,9 +16,6 @@ interface OSBChipListProps {
 const useStyles = makeStyles((theme) => ({
   chipBox: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    paddingLeft: theme.spacing(1),
-    marginBottom: theme.spacing(2),
     "& h6": {
       fontWeight: "bold",
       color: bgInputs,
