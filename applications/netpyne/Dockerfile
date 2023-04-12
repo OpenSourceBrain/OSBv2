@@ -51,9 +51,9 @@ RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN python utilities/install.py --npm-skip --no-test --netpyne $NETPYNE_CORE_BRANCH_TAG
+RUN python utilities/install.py --npm-skip --no-test
 
-
+RUN pip install git+https://github.com/Neurosim-lab/netpyne.git@$NETPYNE_CORE_BRANCH_TAG
 
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
@@ -85,4 +85,8 @@ ENV NEURON_HOME=/opt/conda
 EXPOSE 8888
 
 ENTRYPOINT ["tini", "-g", "--"]
-CMD wget --no-check-certificate -P /opt/workspace https://www.parralab.org/nyhead/sa_nyhead.mat & ./NetPyNE-UI
+
+ENV NP_LFPYKIT_HEAD_FILE=/home/jovyan/nyhead.mat
+# Temporary solution until the on demand download is merged https://github.com/LFPy/LFPykit/pull/192
+RUN wget --no-check-certificate -P /opt/workspace https://www.parralab.org/nyhead/sa_nyhead.mat -o $NP_LFPYKIT_HEAD_FILE
+CMD ./NetPyNE-UI
