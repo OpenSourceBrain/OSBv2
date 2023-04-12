@@ -185,13 +185,15 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
 
   const currentResourceId = currentResource?.id ?? -1;
 
+  if (!workspace.resources || workspace.resources.length === 0) {
+    return null;
+  }
+  
   const resources = workspace.resources.filter(
     (resource) => resource.id !== undefined && resource.id !== -1
   );
 
-  if (!resources || resources.length === 0) {
-    return null;
-  }
+
 
   const experimentalResources = resources.filter(
     (resource) => resource.resourceType === ResourceType.E
