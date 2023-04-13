@@ -23,7 +23,7 @@ ENV FOLDER=netpyne
 ENV NP_LFPYKIT_HEAD_FILE=/home/jovyan/nyhead.mat
 
 # branch with latest neuroml updates
-ARG NETPYNE_CORE_BRANCH_TAG=osbv2
+ARG NETPYNE_CORE_BRANCH_TAG=
 
 USER root
 
@@ -56,8 +56,9 @@ RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
   python utilities/install.py --npm-skip --no-test
 
+COPY overrides/requirements.txt overrides/requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
-    pip install git+https://github.com/Neurosim-lab/netpyne.git@$NETPYNE_CORE_BRANCH_TAG
+    pip install -r overrides/requirements.txt
 
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
