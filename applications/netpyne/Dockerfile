@@ -20,6 +20,7 @@ RUN mv node_modules/@metacell . && rm -Rf node_modules/* && mv @metacell node_mo
 FROM jupyter/base-notebook:hub-1.4.2
 ENV NB_UID=jovyan
 ENV FOLDER=netpyne
+ENV NP_LFPYKIT_HEAD_FILE=/home/jovyan/nyhead.mat
 
 # branch with latest neuroml updates
 ARG NETPYNE_CORE_BRANCH_TAG=osbv2
@@ -35,7 +36,8 @@ RUN conda install python=3.7 -y
 
 WORKDIR $FOLDER
 COPY --from=jsbuild --chown=1000:1000 $FOLDER/requirements.txt requirements.txt
-RUN pip install -r requirements.txt --no-cache-dir --prefer-binary
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
+    pip install -r requirements.txt --prefer-binary
 
 COPY --from=jsbuild --chown=1000:1000 $FOLDER .
 
@@ -51,9 +53,11 @@ RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
-RUN python utilities/install.py --npm-skip --no-test
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+  python utilities/install.py --npm-skip --no-test
 
-RUN pip install git+https://github.com/Neurosim-lab/netpyne.git@$NETPYNE_CORE_BRANCH_TAG
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
+    pip install git+https://github.com/Neurosim-lab/netpyne.git@$NETPYNE_CORE_BRANCH_TAG
 
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
@@ -86,7 +90,6 @@ EXPOSE 8888
 
 ENTRYPOINT ["tini", "-g", "--"]
 
-ENV NP_LFPYKIT_HEAD_FILE=/home/jovyan/nyhead.mat
-# Temporary solution until the on demand download is merged https://github.com/LFPy/LFPykit/pull/192
-RUN wget --no-check-certificate -P /opt/workspace https://www.parralab.org/nyhead/sa_nyhead.mat -o $NP_LFPYKIT_HEAD_FILE
+
+
 CMD ./NetPyNE-UI
