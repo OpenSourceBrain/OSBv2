@@ -22,9 +22,6 @@ ENV NB_UID=jovyan
 ENV FOLDER=netpyne
 ENV NP_LFPYKIT_HEAD_FILE=/home/jovyan/nyhead.mat
 
-# branch with latest neuroml updates
-ARG NETPYNE_CORE_BRANCH_TAG=
-
 USER root
 
 RUN rm -rf /var/lib/apt/lists
