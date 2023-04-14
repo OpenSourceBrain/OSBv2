@@ -38,8 +38,29 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
 
 COPY --from=jsbuild --chown=1000:1000 $FOLDER .
 
+COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 
+# ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
+# and thus removes the frame ancestor cors settings
+RUN rm -f ~/.jupyter/*.json
+RUN chown $NB_UID .
+RUN chown $NB_UID /opt
+RUN rm -Rf workspace
+
+USER $NB_UID
+
+# sym link workspace pvc to $FOLDER
+RUN mkdir -p /opt/workspace
+RUN mkdir -p /opt/user
+
+
+RUN ln -s /opt/workspace workspace
+
+ENV NEURON_HOME=/opt/conda
+
+
+USER root
 # Temporary fix for deprecated api usage on some requirement
 # RUN pip install setuptools==45
 
@@ -61,28 +82,8 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
 
-
-USER root
-COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-
-
-# ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
-# and thus removes the frame ancestor cors settings
-RUN rm -f ~/.jupyter/*.json
-RUN chown $NB_UID .
-RUN chown $NB_UID /opt
-RUN rm -Rf workspace
-
 USER $NB_UID
 
-# sym link workspace pvc to $FOLDER
-RUN mkdir -p /opt/workspace
-RUN mkdir -p /opt/user
-
-
-RUN ln -s /opt/workspace workspace
-
-ENV NEURON_HOME=/opt/conda
 
 EXPOSE 8888
 
