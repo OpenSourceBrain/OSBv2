@@ -55,16 +55,12 @@ RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/user
 
 
-RUN ln -s /opt/workspace workspace
+
 
 ENV NEURON_HOME=/opt/conda
 
 
 USER root
-# Temporary fix for deprecated api usage on some requirement
-# RUN pip install setuptools==45
-
-#RUN conda install pandas=0.23.4 -y
 
 RUN jupyter nbextension install --py --symlink --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
@@ -78,6 +74,8 @@ COPY overrides/requirements.txt overrides/requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
     pip install -r overrides/requirements.txt
 
+RUN mv workspace /opt/workspace/tutorials
+RUN ln -s /opt/workspace workspace
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
 
