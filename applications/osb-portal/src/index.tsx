@@ -34,7 +34,7 @@ console.log(root, App);
 
 
 
-timeout(2000, checkUser()).then((user: UserInfo) => {
+timeout(10000, checkUser()).then((user: UserInfo) => {
   if (user) {
     store.dispatch(userLogin(user));
   } 
