@@ -1,4 +1,4 @@
-import os
+import random
 import sys
 import logging
 
@@ -33,7 +33,8 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
                     'kc-access', None) or self.request.cookies.get('accessToken', None)
                 print("Token", accessToken)
                 if accessToken == '-1' or not accessToken:
-                    raw_user = self.user_from_username(self.request.remote_ip.replace(".", "-"))
+                    import socket
+                    raw_user = self.user_from_username("a-%s-%0.5x" % (socket.inet_aton(self.request.remote_ip).hex(), random.randint(0, 99999)))
                 else:
                     accessToken = accessToken.value
                     user_data = AuthClient.decode_token(accessToken)
