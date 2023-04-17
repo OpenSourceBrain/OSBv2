@@ -113,7 +113,7 @@ def change_pod_manifest(self: KubeSpawner):
             })
     except CookieNotFound:
         # Setup a readonly default session
-        self.pod_name = f'anonymous-{self.handler.request.remote_ip.replace(".", "-")}-{appname}'
+        self.pod_name = f'anonymous-{self.user.username}-{appname}'
         from pprint import pprint
         pprint(self.volumes)
 
