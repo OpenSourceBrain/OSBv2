@@ -33,7 +33,7 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
                     'kc-access', None) or self.request.cookies.get('accessToken', None)
                 print("Token", accessToken)
                 if accessToken == '-1' or not accessToken:
-                    raw_user = self.user_from_username(str(hash(self.request.remote_ip)))
+                    raw_user = self.user_from_username(self.request.remote_ip.replace(".", "-"))
                 else:
                     accessToken = accessToken.value
                     user_data = AuthClient.decode_token(accessToken)
