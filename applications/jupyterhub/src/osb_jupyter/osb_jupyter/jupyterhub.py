@@ -120,6 +120,7 @@ def change_pod_manifest(self: KubeSpawner):
         self.volumes = []
         pprint(self.volume_mounts)
         self.volume_mounts = []
+        self.maxAge
 
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
