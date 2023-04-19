@@ -37,7 +37,13 @@ RUN jupyter labextension install plotlywidget
 USER root
 
 ### Some aliases
-RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \nalias jnml="java -classpath /opt/conda/lib/python3.9/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML"\n' >> ~/.bashrc
+RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
+
+### Set up jnml, reusing pynml jar
+RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.9/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
+RUN chmod +x /opt/conda/bin/jnml
+ENV JNML_HOME=/opt/conda/bin
+
 RUN cat ~/.bashrc
 
 
