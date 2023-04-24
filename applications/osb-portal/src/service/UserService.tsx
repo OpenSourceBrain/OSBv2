@@ -21,16 +21,19 @@ let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(
 declare const window: any;
 
 export const initApis = (token: string) => {
-  document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
-  repositoryService.initApis(token);
-  workspaceService.initApis(token);
-  usersApi = new accountsApi.UsersApi(
-    new Configuration({ basePath: accountsApiUri, accessToken: token })
-  );
+  if(token) {
+    document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
+    repositoryService.initApis(token);
+    workspaceService.initApis(token);
+    usersApi = new accountsApi.UsersApi(
+      new Configuration({ basePath: accountsApiUri, accessToken: token })
+    );
+  }
+ 
 };
 
 function mapKeycloakUser(userInfo: any): UserInfo {
-  return {
+  return userInfo && {
     id: userInfo.sub,
     firstName: userInfo.given_name,
     lastName: userInfo.family_name,
@@ -53,7 +56,44 @@ export async function updateUser(user: User): Promise<User> {
   return usersApi.updateUser({ userid: user.id, requestBody: user });
 }
 
-export async function initUser(): Promise<UserInfo> {
+function getCookie(name): string {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(";").shift();
+  }
+  return null;
+}
+
+function parseJwt(token: string) {
+  if (!token) {
+    return null;
+  }
+  const base64Url: string = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map((c) => {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+export function getToken(): string {
+  return getCookie("accessToken");
+}
+
+export function initUser(): UserInfo {
+  const kcUser = parseJwt(getToken());
+  return mapKeycloakUser(kcUser);
+}
+
+export async function checkUser(): Promise<UserInfo> {
   let user = null;
 
   try {

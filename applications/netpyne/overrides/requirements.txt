@@ -1,0 +1,2 @@
+lfpykit==0.5.1
+git+https://github.com/Neurosim-lab/netpyne.git@osbv2

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // components
 import Chip from "@mui/material/Chip";
@@ -55,7 +55,7 @@ export const WorkspacesList = (props: WorkspacesProps) => {
     handleWorkspaceClick,
   } = props;
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -132,7 +132,7 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                             textTransform: "capitalize",
                             color: chipTextColor,
                           }}
-                          onClick={() => history.push(`/user/${row?.user?.id}`)}
+                          onClick={() => navigate(`/user/${row?.user?.id}`)}
                         >
                           {row.user.firstName + " " + row.user.lastName}
                         </Button>

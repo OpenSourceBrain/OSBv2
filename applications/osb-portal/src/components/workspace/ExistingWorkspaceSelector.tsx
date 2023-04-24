@@ -1,6 +1,7 @@
 import * as React from "react";
+import debounce from "lodash/debounce";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,6 +12,9 @@ import workspaceService from "../../service/WorkspaceService";
 import WorkspaceCard from "./WorkspaceCard";
 import { Workspace } from "../../types/workspace";
 import { linkColor } from "../../theme";
+import searchFilter from "../../types/searchFilter";
+import SearchFilterReposWorkspaces from "../common/SearchFilterReposWorkspaces";
+import { Page } from "../../types/model";
 
 const useStyles = makeStyles((theme) => ({
   workspacesBox: {
@@ -83,18 +87,60 @@ export const ExistingWorkspaceEditor = (
   const [activeCardClassNames, setActiveCardClassNames] = React.useState<
     string[]
   >([]);
+  const [searchFilterValues, setSearchFilterValues] =
+    React.useState<searchFilter>({
+      text: undefined,
+      tags: [],
+      types: [],
+    });
   const [workspaces, setWorkspaces] = React.useState<Workspace[]>(null);
 
+  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+    setSearchFilterValues({
+      ...searchFilterValues,
+      text: newTextFilter,
+      tags: newTextFilter
+        ? [...searchFilterValues?.tags, newTextFilter]
+        : searchFilterValues?.tags,
+    });
+  }, 500);
+
+
+
+  const isSearchFieldsEmpty =
+    searchFilterValues.tags.length === 0 &&
+    searchFilterValues.types.length === 0 &&
+    (typeof searchFilterValues.text === "undefined" ||
+      searchFilterValues.text === "");
+
+  const setWorkspacesFromPage = (retrievedWorkspaces: Page<Workspace>): void => {
+    setWorkspaces(retrievedWorkspaces.items);
+    setActiveCardClassNames(
+      Array(retrievedWorkspaces.items.length).fill("not-active")
+    );
+  };
+
+  const getWorkspacesList = (payload?) => {
+    setWorkspaces(null);
+
+    if (payload?.searchFilterValues) {
+      workspaceService
+        .fetchWorkspacesByFilter(null, null, 1, searchFilterValues, 100)
+        .then(setWorkspacesFromPage);
+    } else {
+      workspaceService
+        .fetchWorkspaces(null, null, 1, 100)
+        .then(setWorkspacesFromPage);
+    }
+  };
+
   React.useEffect(() => {
-    workspaceService
-      .fetchWorkspaces(null, null, 1, 1000)
-      .then((retrievedWorkspaces) => {
-        setWorkspaces(retrievedWorkspaces.items);
-        setActiveCardClassNames(
-          Array(retrievedWorkspaces.items.length).fill("not-active")
-        );
-      });
-  }, []);
+    if (isSearchFieldsEmpty) {
+      getWorkspacesList();
+    } else {
+      getWorkspacesList({ searchFilterValues });
+    }
+  }, [searchFilterValues]);
 
   const handleWorkspaceSelection = (index: number) => {
     const placeHolderArray = Array(workspaces.length).fill("not-active");
@@ -105,7 +151,17 @@ export const ExistingWorkspaceEditor = (
 
   return (
     <>
-      <Box p={3} className={`${classes.workspacesBox} scrollbar`}>
+      <Box width="100%" display="flex" py={2}>
+        <SearchFilterReposWorkspaces
+          filterChanged={(newTextFilter) =>
+            debouncedHandleSearchFilter(newTextFilter)
+          }
+          searchFilterValues={searchFilterValues}
+          setSearchFilterValues={setSearchFilterValues}
+          hasTypes={false}
+        />
+      </Box>
+      <Box className={`${classes.workspacesBox} scrollbar`}>
         {workspaces ? (
           <Grid container={true} spacing={1}>
             {workspaces &&
@@ -115,10 +171,10 @@ export const ExistingWorkspaceEditor = (
                     item={true}
                     key={workspace.id}
                     xs={6}
-                    sm={4}
+                    sm={6}
                     md={4}
-                    lg={4}
-                    xl={3}
+                    lg={3}
+                    xl={2}
                   >
                     <Button
                       className={`${activeCardClassNames[index]}-button ${classes.workspaceButton}`}

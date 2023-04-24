@@ -3,7 +3,7 @@ pyelectro
 git+https://github.com/NeuralEnsemble/neurotune.git
 
 ####  NEURON & NetPyNE
-neuron
+neuron==8.1
 
 # Install specific version of NetPyNE
 git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
@@ -11,14 +11,17 @@ git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
 ####  Other simulators
 
 # Arbor
-arbor
+arbor==0.6.0
+
+# EDEN
+eden-simulator==0.2.1
 
 # Brian
 brian2
 brian2tools
 
 # PyNN
-pynn==0.10.0
+pynn==0.10.1
 
 # elephant
 elephant
@@ -42,12 +45,7 @@ seaborn
 torch==1.11.0+cpu
 
 # For MDF
-git+https://github.com/SheffieldML/GPy.git@devel
-dask==2.30.0
-distributed==2.30.1
-protobuf==3.17.0
-git+https://github.com/SheffieldML/GPy.git@devel
-#modeci_mdf==0.3.3 # big jump in size of image...
+modeci_mdf==0.4.5 # big jump in size of image...
 
 scikit-learn # Required for some Neuromatch Academy material
 fasttext # Required for some Neuromatch Academy material

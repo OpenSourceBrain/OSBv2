@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import makeStyles from "@mui/styles/makeStyles";
 import { styled } from "@mui/styles";
@@ -105,10 +105,9 @@ interface WorkspaceProps {
   deleteWorkspace: (wsId: number) => null;
   user: UserInfo;
   [propName: string]: any;
-  openResource: (r: WorkspaceResource) => any;
   refreshWorkspacePage?: () => void;
   currentResource: WorkspaceResource;
-  openResourceAction?: (resource: WorkspaceResource) => void;
+  hideTabs: Boolean;
 }
 
 const SidebarBox = styled(Box)(({ theme }) => ({
@@ -145,7 +144,7 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export default (props: WorkspaceProps | any) => {
-  const { workspace, refreshWorkspace } = props;
+  const { workspace, refreshWorkspace, hideTabs } = props;
   const classes = useStyles();
 
   const [tabValue, setTabValue] = React.useState(0);
@@ -186,7 +185,7 @@ export default (props: WorkspaceProps | any) => {
       {props.open ? (
         <SidebarBox>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
+            {!hideTabs && <Tabs
               value={tabValue}
               onChange={handleTabChange}
               variant="fullWidth"
@@ -199,7 +198,7 @@ export default (props: WorkspaceProps | any) => {
                 label="My Assets"
                 sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
               />
-            </Tabs>
+            </Tabs>}
           </Box>
           <TabPanel value={tabValue} index={0}>
 
@@ -258,9 +257,7 @@ export default (props: WorkspaceProps | any) => {
               workspace={workspace}
               currentResource={props.currentResource}
               refreshWorkspace={handleWorkspaceRefresh}
-              openResource={props.openResource}
               user={props.user}
-              openResourceAction={props.openResourceAction}
             />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>

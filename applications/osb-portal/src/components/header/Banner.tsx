@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import makeStyles from '@mui/styles/makeStyles';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Banner = (props: any) => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const user: UserInfo = props.user;
   const handleSignup = () => {
     props.register();
@@ -66,7 +66,7 @@ export const Banner = (props: any) => {
             ) : null}
             <Button
               variant="outlined"
-              onClick={() => history.push("/repositories")}
+              onClick={() => navigate("/repositories")}
             >
               View repositories
             </Button>

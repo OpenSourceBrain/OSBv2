@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 //theme
 import { styled } from "@mui/styles";
@@ -23,7 +23,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import { WorkspaceEditor } from "../components";
+import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
 
@@ -54,19 +54,22 @@ const NavbarButton = styled(Button)(({ theme }) => ({
 }));
 
 export const WorkspacePage = (props: any) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { workspaceId } = useParams<{ workspaceId: string }>();
   const workspace: Workspace = props.workspace;
   const user = props.user;
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [error, setError] = React.useState<any>(null);
   const [anchorElmoreVert, setAnchorElmoreVert] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
 
   const isWorkspaceOpen = Boolean(anchorElmoreVert);
 
-  React.useEffect(() => 
-    props.selectWorkspace(workspaceId), [workspaceId]
+  React.useEffect(() => {
+    props.selectWorkspace(workspaceId);
+    return () => null
+  }
+    , [workspaceId]
   )
 
   if (error) {
@@ -79,7 +82,7 @@ export const WorkspacePage = (props: any) => {
   };
 
   const openWithApp = (selectedOption: OSBApplication) => {
-    history.push(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+    navigate(`/workspace/open/${workspaceId}/${selectedOption.code}`);
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
@@ -112,7 +115,7 @@ export const WorkspacePage = (props: any) => {
                 <NavbarButton
                   variant="text"
                   startIcon={<ChevronLeftIcon />}
-                  onClick={() => history.push("/")}
+                  onClick={() => navigate("/")}
                   sx={{ color: paragraph, padding: "16px 24px" }}
                 >
                   All workspaces
@@ -237,15 +240,12 @@ export const WorkspacePage = (props: any) => {
                     borderRight: `1px solid ${bgLightest}`,
                   }}
                 >
-                  <WorkspaceResourceBrowser
+                  <WorkspaceInteractions
                     workspace={workspace}
                     user={user}
+                    open={true}
+                    hideTabs={true}
                     refreshWorkspace={props.refreshWorkspace}
-                    openResourceAction={(resource) =>
-                      history.push(
-                        `/workspace/open/${workspaceId}/${resource.type.application.code}`
-                      )
-                    }
                     currentResource={
                       workspace.lastOpen || workspace.resources[0]
                     }

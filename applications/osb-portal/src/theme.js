@@ -203,9 +203,10 @@ const theme = {
         labelSmall: {
           paddingLeft: "0.8em",
           paddingRight: "0.8em",
+          maxWidth: "10em"
         },
         labelMedium: {
-          maxWidth: "10em"
+          
         },
         outlined: {
           backgroundColor: bgDarker,
@@ -214,7 +215,8 @@ const theme = {
         deleteIcon: {
           color: "#a6a6a6",
         },
-      } },
+      } 
+    },
     MuiInput: {
       styleOverrides: {
         input: {
@@ -526,11 +528,19 @@ const theme = {
       styleOverrides: {
         root: {
           textDecoration: "none",
+          "& *": {
+            cursor: "pointer",
+          },
+          
           "&:hover": {
             textDecoration: "underline"
           }
+        },
+        primary: {
+          borderColor: "white"
         }
-      } },
+      } 
+    },
     MuiTree: {
       styleOverrides: {}
     },

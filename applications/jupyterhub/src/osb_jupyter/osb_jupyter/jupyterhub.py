@@ -22,6 +22,8 @@ def affinity_spec(key, value):
         'topologyKey': 'kubernetes.io/hostname'
     }
 
+class CookieNotFound(Exception):
+    pass
 
 def change_pod_manifest(self: KubeSpawner):
     """
@@ -40,7 +42,7 @@ def change_pod_manifest(self: KubeSpawner):
     def get_from_cookie(cookie_name):
         cookie = self.handler.request.cookies.get(cookie_name, None)
         if cookie is None:
-            raise Exception(
+            raise CookieNotFound(
                 "Required cookie not found. Check that the cookie named '%s' is set." % cookie_name)
         return cookie.value
 
@@ -50,6 +52,8 @@ def change_pod_manifest(self: KubeSpawner):
 
     def workspace_volume_is_legacy(workspace_id):
         return int(workspace_id) < self.config['apps']['jupyterhub'].get('legacyworkspacemax', 0)
+
+    appname = self.image.split('/')[-1].split(':')[0]
 
     try:
         workspace_id = get_from_cookie('workspaceId')
@@ -81,7 +85,7 @@ def change_pod_manifest(self: KubeSpawner):
             'user': str(self.user.id),
         }
 
-        appname = self.image.split('/')[-1].split(':')[0]
+        
 
         self.common_labels = labels
         self.extra_labels = labels
@@ -107,6 +111,17 @@ def change_pod_manifest(self: KubeSpawner):
                 'mountPath': '/opt/workspace',
                 'readOnly': not write_access
             })
+    except CookieNotFound:
+        # Setup a readonly default session
+        self.pod_name = f'anonymous-{self.user.username}-{appname}'
+        from pprint import pprint
+        pprint(self.volumes)
+
+        self.volumes = []
+        pprint(self.volume_mounts)
+        self.volume_mounts = []
+        self.maxAge
+
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
 

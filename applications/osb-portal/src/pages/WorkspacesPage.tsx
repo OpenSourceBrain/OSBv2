@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import debounce from "lodash/debounce";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //components
 import Box from "@mui/material/Box";
@@ -45,7 +45,7 @@ interface WorkspacesPageProps {
 }
 
 export const WorkspacesPage = (props: WorkspacesPageProps) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
@@ -81,7 +81,7 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
       searchFilterValues.text === "");
 
   const openWorkspaceUrl = (workspaceId: number) => {
-    history.push(`/workspace/${workspaceId}`);
+    navigate(`/workspace/${workspaceId}`);
   };
 
   const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {

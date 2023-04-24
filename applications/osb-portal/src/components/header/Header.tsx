@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link } from "@mui/material";
+import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link, CircularProgress } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
 import {BetaIcon, OSBLogo} from "../icons";
@@ -32,8 +32,15 @@ const styles = ({
     alignItems: 'center',
     height: '22px',
     overflow: 'hidden',
-
-    
+  },
+  logoChip: {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: "2px",
+    fontSize: "9px",
+    px: "5px",
+    py: "2px",
+    lineHeight: 1.4,
+    fontWeight: 700,
   },
 });
 
@@ -41,7 +48,7 @@ export const Header = (props: any) => {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleMenuToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -61,7 +68,7 @@ export const Header = (props: any) => {
   };
 
   const handleMyAccount = () => {
-    history.push(`/user/${user.username}`);
+    navigate(`/user/${user.username}`);
     setMenuOpen(false);
   };
   const handleAccountHelp = () => {
@@ -70,7 +77,10 @@ export const Header = (props: any) => {
   };
 
   const headerText =
-    user === null ? (
+    user === undefined ? (
+      <CircularProgress size={20} />
+    ) : 
+    (user === null ? (
       <Button sx={styles.button} onClick={handleUserLogin} className={`sign-in`}>
         Sign in
       </Button>
@@ -119,7 +129,7 @@ export const Header = (props: any) => {
           {user.username}
         </Button>
       </Box>
-    );
+    ));
 
   const handleToggleDrawer = (e: any) => {
     if (props.drawerEnabled) {
@@ -132,10 +142,13 @@ export const Header = (props: any) => {
   return (
     <React.Fragment>
       <Toolbar sx={styles.toolbar}>
+        <Box display="flex" sx={{height: "100%", overflow: "hidden", alignItems: "center"}}>
         <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
           <OSBLogo sx={{mr: "0.4rem", fontSize: "11rem"}}  />
-          <BetaIcon sx={{ fontSize: "2rem"}} />
+          
         </Link>
+        <Box component="sup" sx={styles.logoChip}>v2.0</Box>
+        </Box>
         <Box>
           {headerText}
         </Box>

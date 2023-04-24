@@ -34,7 +34,7 @@ import RepositoryActionsMenu from "../../components/repository/RepositoryActions
 import CardTitle from "../../components/styled/CardTitle";
 import Grid from "@mui/material/Grid";
 import CardFooter from "../../components/styled/CardFooter";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { refreshRepositories } from "../../store/actions/repositories";
 
 interface RepositoriesProps {
@@ -60,7 +60,7 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
     props;
 
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <>
