@@ -43,6 +43,27 @@
         "duplicateEmailsAllowed": false,
         "resetPasswordAllowed": true,
         "editUsernameAllowed": true,
+        "identityProviders": [
+            {
+              "alias": "orcid",
+              "internalId": "bcc1bc98-c0e5-4f95-8acf-f679e3abe156",
+              "providerId": "orcid",
+              "enabled": true,
+              "updateProfileFirstLoginMode": "on",
+              "trustEmail": false,
+              "storeToken": false,
+              "addReadTokenRoleOnCreate": false,
+              "authenticateByDefault": false,
+              "linkOnly": false,
+              "firstBrokerLoginFlowAlias": "first broker login",
+              "config": {
+                "syncMode": "IMPORT",
+                "clientSecret": "**********",
+                "clientId": "APP-K13R7EHQQ0AK88W1",
+                "useJwksUrl": "true"
+              }
+            }
+          ],
         "users": [
             {{- range $app := .Values.apps }}
               {{- if (hasKey $app.harness "accounts")  }}
