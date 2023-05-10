@@ -21,7 +21,7 @@
    var search = location.search;
 
    /**** CUSTOM OSB LOAD RESOURCE ****/
-   if (window !== window.parent) {
+   if (window !== window.parent && !window.location.href.includes("lab/tree")) {
     window.parent.postMessage({ type: "APP_READY" }, "*");
    }
 
