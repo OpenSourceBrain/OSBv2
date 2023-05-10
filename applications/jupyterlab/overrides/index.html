@@ -32,7 +32,7 @@
       console.debug("Load resource", event.data);
       const relativeResourcePath = event.data.payload.replace("/opt/workspace/", "")
       if (!window.location.href.includes(relativeResourcePath)) {
-       window.location.href = window.location.href.split("lab")[0] + `lab/tree/${relativeResourcePath}`;
+       window.location.href = window.location.href.split("/lab")[0] + `/lab/tree/${relativeResourcePath}`;
       }
       break;
      case "NO_RESOURCE": {
