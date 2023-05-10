@@ -19,6 +19,7 @@ declare var window: any;
 const useStyles = makeStyles((theme) => ({
   iframe: {
     flex: 1,
+    border: "none",
   },
 }));
 
@@ -117,7 +118,6 @@ export const WorkspaceFrame = (props: {
   return (
     <iframe
       id="workspace-frame"
-      frameBorder="0"
       src={frameUrl}
       className={classes.iframe}
     />
