@@ -46,7 +46,7 @@
         "identityProviders": [
             {
               "alias": "orcid",
-              "internalId": "bcc1bc98-c0e5-4f95-8acf-f679e3abe156",
+              "internalId": "2ab5a52e-60f2-411b-86af-ae58224155e3",
               "providerId": "orcid",
               "enabled": true,
               "updateProfileFirstLoginMode": "on",
@@ -59,7 +59,26 @@
               "config": {
                 "syncMode": "IMPORT",
                 "clientSecret": "**********",
-                "clientId": "APP-K13R7EHQQ0AK88W1",
+                "clientId": "APP-ZBK69Z38RMGG6G0R",
+                "useJwksUrl": "true"
+              }
+            },
+            {
+              "alias": "github",
+              "internalId": "a22eb498-74dc-4d64-9bcd-38e2623c1af2",
+              "providerId": "github",
+              "enabled": true,
+              "updateProfileFirstLoginMode": "on",
+              "trustEmail": false,
+              "storeToken": false,
+              "addReadTokenRoleOnCreate": false,
+              "authenticateByDefault": false,
+              "linkOnly": false,
+              "firstBrokerLoginFlowAlias": "first broker login",
+              "config": {
+                "syncMode": "IMPORT",
+                "clientSecret": "**********",
+                "clientId": "97a77871b8005be03669",
                 "useJwksUrl": "true"
               }
             }
