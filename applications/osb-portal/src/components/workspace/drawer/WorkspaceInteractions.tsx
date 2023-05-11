@@ -245,18 +245,21 @@ export default (props: WorkspaceProps | any) => {
                       <InfoOutlinedIcon fontSize="small" />
                     </Tooltip>
                   </SidebarIconButton>
-                  <Tooltip title="If resources have been manually added or updated inside the application, click here to sync">
-                    <SidebarIconButton>
-                      <CachedIcon sx={{ color: paragraph }} onClick={handleRefreshResources}/>
-                    </SidebarIconButton>
-                  </Tooltip>
+                  
                   {canEdit ? (
-                    <SidebarIconButton>
-                      <AddOutlinedIcon
-                        fontSize="small"
-                        onClick={showAddResource}
-                      />
-                    </SidebarIconButton>
+                    <>
+                      <Tooltip title="If resources have been manually added or updated inside the application, click here to sync">
+                        <SidebarIconButton>
+                          <CachedIcon sx={{ color: paragraph }} onClick={handleRefreshResources}/>
+                        </SidebarIconButton>
+                      </Tooltip>
+                      <SidebarIconButton>
+                        <AddOutlinedIcon
+                          fontSize="small"
+                          onClick={showAddResource}
+                        />
+                      </SidebarIconButton>
+                    </>
                   ) : (
                     <Tooltip title="You do not have permissions to modify this workspace. Either clone it or create a new one if you need edit access.">
                       <LockOutlinedIcon sx={{ color: paragraph }} />
