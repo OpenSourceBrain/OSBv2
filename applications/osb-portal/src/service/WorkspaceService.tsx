@@ -34,6 +34,7 @@ const PER_PAGE_DEFAULT = 10;
 const workspacesApiUri = "/proxy/workspaces/api";
 
 class WorkspaceService {
+  
   workspacesApi: workspaceApi.RestApi = null;
   accessToken: string = null;
 
@@ -60,6 +61,12 @@ class WorkspaceService {
       throw new Error("Workspace not found");
     }
     return ws;
+  }
+
+  async refreshResources(selectedWorkspaceId: any) {
+    return this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(
+      {id: selectedWorkspaceId, inlineObject: {}}
+    );
   }
 
   async fetchWorkspaces(
@@ -211,7 +218,7 @@ class WorkspaceService {
       inlineObject: { resourceorigins: resources },
     };
 
-    await this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(
+    return this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(
       requestObject
     );
   }
