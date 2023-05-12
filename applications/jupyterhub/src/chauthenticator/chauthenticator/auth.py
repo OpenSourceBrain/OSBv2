@@ -13,11 +13,13 @@ handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
 logging.getLogger().addHandler(handler)
 
+
 class CloudHarnessAuthenticateHandler(BaseHandler):
     """
     Handler for /chkclogin
     Creates a new user based on the keycloak user, and auto starts their server
     """
+
     def initialize(self, force_new_server, process_user):
         super().initialize()
         self.force_new_server = force_new_server
@@ -28,27 +30,34 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
         self.clear_login_cookie()
 
         try:
-                
-                accessToken = self.request.cookies.get(
-                    'kc-access', None) or self.request.cookies.get('accessToken', None)
-                print("Token", accessToken)
-                if accessToken == '-1' or not accessToken:
-                    import socket
-                    raw_user = self.user_from_username("a-%s-%0.5x" % (socket.inet_aton(self.request.remote_ip).hex(), random.randint(0, 99999)))
-                else:
-                    accessToken = accessToken.value
-                    user_data = AuthClient.decode_token(accessToken)
-                    username = user_data['sub']
-                    print("Username", username, "-",user_data['preferred_username'])
-                    raw_user = self.user_from_username(username)
-                print("JH user: ", raw_user.__dict__)
-                self.set_login_cookie(raw_user)
-        except Exception as e:
-                logging.error("Error getting user from session", exc_info=True)
-                raise
 
+            accessToken = self.request.cookies.get(
+                'kc-access', None) or self.request.cookies.get('accessToken', None)
+            print("Token", accessToken)
+            if accessToken == '-1' or not accessToken:
+
+                raw_user = self.get_anonymous_user()
+            else:
+                accessToken = accessToken.value
+                user_data = AuthClient.decode_token(accessToken)
+                username = user_data['sub']
+                print("Username", username, "-",
+                      user_data['preferred_username'])
+                raw_user = self.user_from_username(username)
+
+        except Exception as e:
+            logging.info("Error getting user from session", exc_info=True)
+            self.request.cookies.clear()
+            raw_user = self.get_anonymous_user()
+
+        print("JH user: ", raw_user.__dict__)
+        self.set_login_cookie(raw_user)
         user = yield gen.maybe_future(self.process_user(raw_user, self))
         self.redirect(self.get_next_url(user))
+
+    def get_anonymous_user(self):
+        import socket
+        return self.user_from_username("a-%s-%0.5x" % (socket.inet_aton(self.request.remote_ip).hex(), random.randint(0, 99999)))
 
 
 class CloudHarnessAuthenticator(Authenticator):
