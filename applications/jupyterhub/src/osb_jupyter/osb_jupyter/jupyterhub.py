@@ -114,13 +114,10 @@ def change_pod_manifest(self: KubeSpawner):
     except CookieNotFound:
         # Setup a readonly default session
         self.pod_name = f'anonymous-{self.user.name}-{appname}'
-        from pprint import pprint
-        pprint(self.volumes)
-
+        self.storage_pvc_ensure = False
         self.volumes = []
-        pprint(self.volume_mounts)
         self.volume_mounts = []
-        self.maxAge
+        print("Starting anonymoous session with no volumes")
 
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
