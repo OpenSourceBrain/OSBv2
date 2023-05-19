@@ -170,8 +170,8 @@ export const UserPage = (props: any) => {
   const navigate = useNavigate();
   const { userName } = useParams<{ userName: string }>();
   const [error, setError] = React.useState<any>(null);
-  
-  
+
+
   const [loading, setLoading] = React.useState(false);
   const currentUser: UserInfo = props.user;
 
@@ -189,7 +189,7 @@ export const UserPage = (props: any) => {
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
-      
+
     });
   }, [userName, props.workspacesCounter]);
 
@@ -301,7 +301,7 @@ export const UserPage = (props: any) => {
         });
       });
   };
-
+  console.log(user)
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
@@ -314,6 +314,7 @@ export const UserPage = (props: any) => {
             sm={4}
             lg={3}
             sx={styles.profileInformation}
+            className="scrollbar"
           >
             <Stack pt={5} px={4} spacing={4}>
               <Avatar alt="user-profile-avatar" src={user.avatar}>
@@ -687,7 +688,7 @@ export const UserPage = (props: any) => {
         </Grid>
       </Box>
       {canEdit && profileEditDialogOpen && (
-        
+
           <UserEditor
             user={user}
             saveUser={handleUpdateUser}
