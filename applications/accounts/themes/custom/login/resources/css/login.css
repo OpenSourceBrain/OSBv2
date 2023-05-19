@@ -765,9 +765,8 @@ a.zocial {
   border: 0
 }
 
-.login-pf-page .btn-primary:active:focus {
-  background: #fff;
-  color: #4a4a4a;
+.login-pf-page .btn-primary:active:focus, .login-pf-page .btn-primary:hover {
+  background: rgba(0, 188, 212, .1);
   outline: 0;
 }
 
