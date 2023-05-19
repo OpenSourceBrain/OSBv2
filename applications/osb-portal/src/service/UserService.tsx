@@ -29,7 +29,7 @@ export const initApis = (token: string) => {
       new Configuration({ basePath: accountsApiUri, accessToken: token })
     );
   }
- 
+
 };
 
 function mapKeycloakUser(userInfo: any): UserInfo {
