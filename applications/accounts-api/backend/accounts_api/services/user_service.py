@@ -1,4 +1,7 @@
 from datetime import datetime
+import os
+from cloudharness.applications import get_configuration
+from cloudharness.auth.quota import get_user_quotas
 from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient
@@ -13,7 +16,7 @@ class UserNotAuthorized(Exception): pass
 
 
 def get_user(username_or_id: str) -> User:
-    client = AuthClient()
+    client = AuthClient(username=os.getenv('ACCOUNTS_ADMIN_USERNAME', None), password=os.getenv('ACCOUNTS_ADMIN_PASSWORD', None))
     try:
 
         kc_user = client.get_user(username_or_id)
@@ -35,6 +38,11 @@ def get_user(username_or_id: str) -> User:
     except:  # user not provided
         log.error("Error checking user", exc_info=True)
         user.email = None
+
+
+    ws_quotas =  get_user_quotas(get_configuration('workspaces'), user_id=user.id)
+    hub_quotas = get_user_quotas(get_configuration('jupyterhub'), user_id=user.id)
+    user.quotas = {**ws_quotas, **hub_quotas}
     return user
 
 

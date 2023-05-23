@@ -39,7 +39,6 @@ import { Workspace, OSBApplication } from "../types/workspace";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import WorkspaceResourceBrowser from "../components/workspace/drawer/WorkspaceResourceBrowser";
 
 
 const NavbarButton = styled(Button)(({ theme }) => ({

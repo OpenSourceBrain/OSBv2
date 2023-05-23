@@ -25,12 +25,15 @@ const workspaceSlice = createSlice({
     selectWorkspace(state, action: PayloadAction<Workspace>) {
       return { ...state, selectedWorkspace: action.payload };
     },
-    refreshWorkspace(state, action: AnyAction) {
+    refreshWorkspace(state, action: PayloadAction<Workspace>) {
       return {
         ...state,
         selectedWorkspace: action.payload,
         counter: state.counter + 1,
       };
+    },
+    refreshWorkspaceResources(state, action: AnyAction) {
+      return state;
     },
     refreshWorkspaces(state, action: AnyAction) {
       console.log(action.payload, action, "action");

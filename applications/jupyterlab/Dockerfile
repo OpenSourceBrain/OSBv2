@@ -92,5 +92,5 @@ RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #########################################################################
 
-
+COPY --chown=jovyan:users overrides/* /opt/conda/share/jupyter/lab/static/
 WORKDIR /opt/workspace

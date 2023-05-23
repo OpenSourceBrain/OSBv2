@@ -4,6 +4,7 @@ export const {
   selectWorkspace,
   refreshWorkspace,
   refreshWorkspaces,
+  refreshWorkspaceResources,
   deleteWorkspace,
   updateWorkspace,
   resourceAdded,

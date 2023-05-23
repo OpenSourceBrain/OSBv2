@@ -15,7 +15,7 @@ class User(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, username=None, email=None, first_name=None, last_name=None, groups=None, profiles=None, registration_date=None, avatar=None, website=None):  # noqa: E501
+    def __init__(self, id=None, username=None, email=None, first_name=None, last_name=None, groups=None, profiles=None, registration_date=None, avatar=None, website=None, quotas=None):  # noqa: E501
         """User - a model defined in OpenAPI
 
         :param id: The id of this User.  # noqa: E501
@@ -38,6 +38,8 @@ class User(Model):
         :type avatar: str
         :param website: The website of this User.  # noqa: E501
         :type website: str
+        :param quotas: The quotas of this User.  # noqa: E501
+        :type quotas: Dict[str, object]
         """
         self.openapi_types = {
             'id': str,
@@ -49,7 +51,8 @@ class User(Model):
             'profiles': Dict[str, object],
             'registration_date': date,
             'avatar': str,
-            'website': str
+            'website': str,
+            'quotas': Dict[str, object]
         }
 
         self.attribute_map = {
@@ -62,7 +65,8 @@ class User(Model):
             'profiles': 'profiles',
             'registration_date': 'registrationDate',
             'avatar': 'avatar',
-            'website': 'website'
+            'website': 'website',
+            'quotas': 'quotas'
         }
 
         self._id = id
@@ -75,6 +79,7 @@ class User(Model):
         self._registration_date = registration_date
         self._avatar = avatar
         self._website = website
+        self._quotas = quotas
 
     @classmethod
     def from_dict(cls, dikt) -> 'User':
@@ -206,6 +211,7 @@ class User(Model):
     def groups(self):
         """Gets the groups of this User.
 
+          # noqa: E501
 
         :return: The groups of this User.
         :rtype: List[str]
@@ -216,6 +222,7 @@ class User(Model):
     def groups(self, groups):
         """Sets the groups of this User.
 
+          # noqa: E501
 
         :param groups: The groups of this User.
         :type groups: List[str]
@@ -227,7 +234,7 @@ class User(Model):
     def profiles(self):
         """Gets the profiles of this User.
 
-        sddssd  # noqa: E501
+          # noqa: E501
 
         :return: The profiles of this User.
         :rtype: Dict[str, object]
@@ -238,7 +245,7 @@ class User(Model):
     def profiles(self, profiles):
         """Sets the profiles of this User.
 
-        sddssd  # noqa: E501
+          # noqa: E501
 
         :param profiles: The profiles of this User.
         :type profiles: Dict[str, object]
@@ -250,6 +257,7 @@ class User(Model):
     def registration_date(self):
         """Gets the registration_date of this User.
 
+          # noqa: E501
 
         :return: The registration_date of this User.
         :rtype: date
@@ -260,6 +268,7 @@ class User(Model):
     def registration_date(self, registration_date):
         """Sets the registration_date of this User.
 
+          # noqa: E501
 
         :param registration_date: The registration_date of this User.
         :type registration_date: date
@@ -271,6 +280,7 @@ class User(Model):
     def avatar(self):
         """Gets the avatar of this User.
 
+          # noqa: E501
 
         :return: The avatar of this User.
         :rtype: str
@@ -281,6 +291,7 @@ class User(Model):
     def avatar(self, avatar):
         """Sets the avatar of this User.
 
+          # noqa: E501
 
         :param avatar: The avatar of this User.
         :type avatar: str
@@ -292,6 +303,7 @@ class User(Model):
     def website(self):
         """Gets the website of this User.
 
+          # noqa: E501
 
         :return: The website of this User.
         :rtype: str
@@ -302,9 +314,33 @@ class User(Model):
     def website(self, website):
         """Sets the website of this User.
 
+          # noqa: E501
 
         :param website: The website of this User.
         :type website: str
         """
 
         self._website = website
+
+    @property
+    def quotas(self):
+        """Gets the quotas of this User.
+
+          # noqa: E501
+
+        :return: The quotas of this User.
+        :rtype: Dict[str, object]
+        """
+        return self._quotas
+
+    @quotas.setter
+    def quotas(self, quotas):
+        """Sets the quotas of this User.
+
+          # noqa: E501
+
+        :param quotas: The quotas of this User.
+        :type quotas: Dict[str, object]
+        """
+
+        self._quotas = quotas

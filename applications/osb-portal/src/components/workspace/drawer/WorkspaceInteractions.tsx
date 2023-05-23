@@ -20,6 +20,7 @@ import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
 import WorkspaceResourceBrowser from "./WorkspaceResourceBrowser";
 
@@ -29,9 +30,9 @@ import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import OSBDialog from "../../common/OSBDialog";
 import { bgRegular as borderColor, paragraph } from "../../../theme";
-import WorkspaceActionsMenu from "../WorkspaceActionsMenu";
 import { UserInfo } from "../../../types/user";
 import { Typography } from "@mui/material";
+import { update } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
@@ -101,6 +102,7 @@ interface WorkspaceProps {
   workspace: Workspace;
   open?: boolean;
   refreshWorkspace?: () => void;
+  refreshWorkspaceResources?: () => void;
   updateWorkspace: (ws: Workspace) => null;
   deleteWorkspace: (wsId: number) => null;
   user: UserInfo;
@@ -144,7 +146,7 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export default (props: WorkspaceProps | any) => {
-  const { workspace, refreshWorkspace, hideTabs } = props;
+  const { workspace, refreshWorkspace, hideTabs, refreshWorkspaceResources } = props;
   const classes = useStyles();
 
   const [tabValue, setTabValue] = React.useState(0);
@@ -164,6 +166,10 @@ export default (props: WorkspaceProps | any) => {
     setAddResourceOpen(false);
     refreshWorkspace();
   };
+
+  const handleRefreshResources = () => {
+    refreshWorkspaceResources();
+  }
 
   if (!workspace) {
     return null;
@@ -185,24 +191,24 @@ export default (props: WorkspaceProps | any) => {
       {props.open ? (
         <SidebarBox>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            {!hideTabs && <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              variant="fullWidth"
-            >
-              <Tab
-                label="Workspace"
-                sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
-              />
-              <Tab
-                label="My Assets"
-                sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
-              />
-            </Tabs>}
+            {!hideTabs && (
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                variant="fullWidth"
+              >
+                <Tab
+                  label="Workspace"
+                  sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
+                />
+                <Tab
+                  label="My Assets"
+                  sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
+                />
+              </Tabs>
+            )}
           </Box>
           <TabPanel value={tabValue} index={0}>
-
-            
             <ListItem
               component="div"
               className="workspace-tab-header"
@@ -239,17 +245,26 @@ export default (props: WorkspaceProps | any) => {
                       <InfoOutlinedIcon fontSize="small" />
                     </Tooltip>
                   </SidebarIconButton>
+                  
                   {canEdit ? (
-                    <SidebarIconButton>
-                      <AddOutlinedIcon
-                        fontSize="small"
-                        onClick={showAddResource}
-                      />
-                    </SidebarIconButton>
-                  ) :  <Tooltip title="You do not have permissions to modify this workspace. Either clone it or create a new one if you need edit access.">
+                    <>
+                      <Tooltip title="If resources have been manually added or updated inside the application, click here to sync">
+                        <SidebarIconButton>
+                          <CachedIcon sx={{ color: paragraph }} onClick={handleRefreshResources}/>
+                        </SidebarIconButton>
+                      </Tooltip>
+                      <SidebarIconButton>
+                        <AddOutlinedIcon
+                          fontSize="small"
+                          onClick={showAddResource}
+                        />
+                      </SidebarIconButton>
+                    </>
+                  ) : (
+                    <Tooltip title="You do not have permissions to modify this workspace. Either clone it or create a new one if you need edit access.">
                       <LockOutlinedIcon sx={{ color: paragraph }} />
                     </Tooltip>
-                }
+                  )}
                 </Stack>
               </ListItemButton>
             </ListItem>

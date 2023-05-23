@@ -227,7 +227,7 @@ const RepositoryPageDetails = ({
           overflow: "auto",
         }}
       >
-        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="verticalFit">
+        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="verticalFill">
           <Grid item xs={12} md={6} direction="column" className="verticalFit">
             <Box
               display="flex"

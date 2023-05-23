@@ -1,4 +1,4 @@
-FROM node:13.14 as jsbuild
+FROM node:14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
 ENV BRANCH_TAG=release/1.0.0
 ENV FOLDER=netpyne

@@ -10,8 +10,10 @@ info:
 servers:
 - url: /api
 tags:
-- name: infrastructure
-- name: users
+- description: ""
+  name: infrastructure
+- description: ""
+  name: users
 paths:
   /live:
     get:
@@ -46,33 +48,6 @@ paths:
       - infrastructure
       x-openapi-router-controller: accounts_api.controllers.infrastructure_controller
   /users:
-    get:
-      summary: Get list of users based on query
-      operationId: get_users
-      parameters:
-      - description: query filter
-        in: query
-        name: query_string
-        required: false
-        schema:
-          type: string
-      security:
-      - bearerAuth: []
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  users:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
-          description: Get list of users
-      tags:
-      - users
-      x-openapi-router-controller: accounts_api.controllers.users_controller
     post:
       operationId: create_user
       requestBody:
@@ -152,7 +127,12 @@ components:
           type: string
       type: object
     Url:
+      description: ""
       type: string
+    Profiles:
+      additionalProperties: true
+      description: ""
+      type: object
     User:
       additionalProperties: true
       description: Keycloak User
@@ -160,8 +140,10 @@ components:
         firstName: firstName
         lastName: lastName
         website: website
+        quotas:
+          key: ""
         profiles:
-          key: '{}'
+          key: ""
         registrationDate: 2000-01-23
         groups:
         - groups
@@ -187,26 +169,30 @@ components:
           description: Last Name of the keycloak user
           type: string
         groups:
+          description: ""
           items:
             type: string
           readOnly: true
           type: array
         profiles:
           additionalProperties: true
-          description: sddssd
+          description: ""
           type: object
         registrationDate:
+          description: ""
           format: date
           type: string
         avatar:
+          description: ""
           type: string
         website:
+          description: ""
           type: string
+        quotas:
+          additionalProperties: true
+          description: ""
+          type: object
       title: User
-      type: object
-    Profiles:
-      additionalProperties: true
-      description: sddssd
       type: object
   securitySchemes:
     bearerAuth:

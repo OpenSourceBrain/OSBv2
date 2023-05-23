@@ -18,7 +18,7 @@ let refreshPending = false;
  * @private
  */
 const callAPIMiddlewareFn: Middleware =
-  ({ getState }: { getState: () => RootState }) =>
+  ({ getState, dispatch }: { getState: () => RootState, dispatch: any }) =>
   (next) =>
   async (action: AnyAction) => {
     switch (action.type) {
@@ -46,13 +46,21 @@ const callAPIMiddlewareFn: Middleware =
           next(Tags.loadTags(tagDetails.tags));
         });
         break;
-      case Workspaces.selectWorkspace.toString():
 
+      case Workspaces.refreshWorkspaceResources.toString():
+        const selectedWorkspaceId =
+            action.payload || getState().workspaces.selectedWorkspace?.id;
+        workspaceService.refreshResources(selectedWorkspaceId).then(dispatch(Workspaces.refreshWorkspace(selectedWorkspaceId)));
+        break;
+
+      case Workspaces.selectWorkspace.toString():
       case Workspaces.refreshWorkspace.toString():
-        function refreshWorkspace(callback: (workspace: Workspace) => any) {
+        async function refreshWorkspace(callback: (workspace: Workspace) => any) {
           const selectedWorkspaceId =
-            action.payload || getState().workspaces.selectedWorkspace.id;
+            action.payload || getState().workspaces.selectedWorkspace?.id;
           refreshPending = true;
+          
+          
           workspaceService.getWorkspace(selectedWorkspaceId).then(
             (workspace: Workspace) => {
               callback(workspace);
@@ -76,7 +84,7 @@ const callAPIMiddlewareFn: Middleware =
                       )
                     ) {
                       // update state only if something happened in resources
-                      next({ ...action, payload: workspaceUpdated });
+                      next({ ...action, payload:  workspaceUpdated });
                     }
                   });
                 }

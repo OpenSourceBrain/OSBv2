@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+ <meta charset="utf-8">
+ <title>JupyterLab</title>
+ <meta name="viewport" content="width=device-width,initial-scale=1">{# Copy so we do not modify the page_config with
+ updates. #} {% set page_config_full = page_config.copy() %} {# Set a dummy variable - we just want the side effect
+ of the update. #} {% set _ = page_config_full.update(baseUrl=base_url, wsUrl=ws_url) %}
+ <script id="jupyter-config-data" type="application/json">{{ page_config_full | tojson }}</script>{% block favicon %}
+ <link rel="icon" type="image/x-icon" href="{{ base_url | escape }}static/favicons/favicon.ico" class="idle favicon">
+ <link rel="" type="image/x-icon" href="{{ base_url | escape }}static/favicons/favicon-busy-1.ico" class="busy favicon">
+ {% endblock %}
+ <script defer="defer" src="{{page_config.fullStaticUrl}}/main.fe94d08af5b88fb277af.js?v=af1d2defcf4ce2e2e039"></script>
+</head>
+
+<body>
+ <script>/* Remove token from URL. */
+  (function () {
+   var location = window.location;
+   var search = location.search;
+
+   /**** CUSTOM OSB LOAD RESOURCE ****/
+   if (window !== window.parent && !window.location.href.includes("lab/tree")) {
+    window.parent.postMessage({ type: "APP_READY" }, "*");
+   }
+
+
+   const loadFromEvent = (event) => {
+    switch (event.data.type) {
+     case "LOAD_RESOURCE":
+      console.debug("Load resource", event.data);
+      const relativeResourcePath = event.data.payload.replace("/opt/workspace/", "")
+      if (!window.location.href.includes(relativeResourcePath)) {
+       window.location.href = window.location.href.split("/lab")[0] + `/lab/tree/${relativeResourcePath}`;
+      }
+      break;
+     case "NO_RESOURCE": {
+      console.debug("no resource", event.data);
+     }
+    }
+   };
+
+   // A message from the parent frame can specify the file to load
+   window.addEventListener("message", loadFromEvent);
+
+   /**** END CUSTOM OSB LOAD RESOURCE ****/
+
+   // If there is no query string, bail.
+   if (search.length <= 1) {
+    return;
+   }
+
+   // Rebuild the query string without the `token`.
+   var query = '?' + search.slice(1).split('&')
+    .filter(function (param) { return param.split('=')[0] !== 'token'; })
+    .join('&');
+
+   // Rebuild the URL with the new query string.
+   var url = location.origin + location.pathname +
+    (query !== '?' ? query : '') + location.hash;
+
+   if (url === location.href) {
+    return;
+   }
+
+   window.history.replaceState({}, '', url);
+
+  })();</script>
+</body>
+
+</html>

@@ -1,199 +1,181 @@
----
 openapi: 3.0.2
 info:
-  title: accounts_api
-  version: 0.1.0
-  description: Accounts rest api
-  contact:
-    email: cloudharness@metacell.us
-  license:
-    name: UNLICENSED
+    title: accounts_api
+    version: 0.1.0
+    description: Accounts rest api
+    contact:
+        email: cloudharness@metacell.us
+    license:
+        name: UNLICENSED
 servers:
-- url: /api
+    -
+        url: /api
 paths:
-  /live:
-    get:
-      tags:
-      - infrastructure
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: string
-          description: Healthy
-        "500":
-          description: Application is not healthy
-      operationId: live
-      summary: Test if application is healthy
-  /ready:
-    get:
-      tags:
-      - infrastructure
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: string
-          description: Ready
-        "500":
-          description: Application is not ready yet
-      operationId: ready
-      summary: Test if application is ready to take requests
-  /users:
-    get:
-      summary: Get list of users based on query
-      operationId: get_users
-      parameters:
-      - description: query filter
-        in: query
-        name: query_string
-        required: false
-        schema:
-          type: string
-      security:
-      - bearerAuth: []
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  users:
+    /live:
+        get:
+            tags:
+                - infrastructure
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Healthy
+                '500':
+                    description: Application is not healthy
+            operationId: live
+            summary: Test if application is healthy
+    /ready:
+        get:
+            tags:
+                - infrastructure
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Ready
+                '500':
+                    description: Application is not ready yet
+            operationId: ready
+            summary: Test if application is ready to take requests
+    /users:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                required: true
+            tags:
+                - users
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                    description: The user as just saved
+            security:
+                -
+                    bearerAuth: []
+            operationId: createUser
+    '/users/{userid}':
+        get:
+            tags:
+                - users
+            parameters:
+                -
+                    name: userid
+                    description: user id
+                    schema:
+                        type: string
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                    description: Get a user's public information
+            operationId: getUser
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                required: true
+            tags:
+                - users
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                    description: The user as just saved
+            security:
+                -
+                    bearerAuth: []
+            operationId: updateUser
+        parameters:
+            -
+                name: userid
+                description: user id
+                schema:
+                    type: string
+                in: path
+                required: true
+components:
+    schemas:
+        Valid:
+            type: object
+            properties:
+                response:
+                    type: string
+        Url:
+            description: ''
+            type: string
+        Profiles:
+            description: ''
+            type: object
+            additionalProperties: true
+        User:
+            description: Keycloak User
+            type: object
+            properties:
+                id:
+                    description: user id
+                    type: string
+                username:
+                    description: Username of the keycloak user
+                    type: string
+                email:
+                    description: Email address of the keycloak user
+                    type: string
+                firstName:
+                    description: First Name of the keycloak user
+                    type: string
+                lastName:
+                    description: Last Name of the keycloak user
+                    type: string
+                groups:
+                    description: ''
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
-          description: Get list of users
-      tags:
-      - users
-      x-openapi-router-controller: accounts_api.controllers.users_controller
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      tags:
-      - users
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: The user as just saved
-      security:
-      - bearerAuth: []
-      operationId: createUser
-  /users/{userid}:
-    get:
-      tags:
-      - users
-      parameters:
-      - name: userid
-        description: user id
-        schema:
-          type: string
-        in: path
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: Get a user's public information
-      operationId: getUser
-    put:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      tags:
-      - users
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: The user as just saved
-      security:
-      - bearerAuth: []
-      operationId: updateUser
-    parameters:
-    - name: userid
-      description: user id
-      schema:
-        type: string
-      in: path
-      required: true
-components:
-  schemas:
-    Valid:
-      type: object
-      properties:
-        response:
-          type: string
-    Url:
-      description: ""
-      type: string
-    User:
-      description: Keycloak User
-      type: object
-      properties:
-        id:
-          description: user id
-          type: string
-        username:
-          description: Username of the keycloak user
-          type: string
-        email:
-          description: Email address of the keycloak user
-          type: string
-        firstName:
-          description: First Name of the keycloak user
-          type: string
-        lastName:
-          description: Last Name of the keycloak user
-          type: string
-        groups:
-          description: ""
-          type: array
-          items:
-            type: string
-          readOnly: true
-        profiles:
-          $ref: '#/components/schemas/Profiles'
-          description: "External links to user profiles (e.g. GitHub, Twitter, etc.)"
-        registrationDate:
-          format: date
-          description: ""
-          type: string
-        avatar:
-          $ref: '#/components/schemas/Url'
-          description: ""
-        website:
-          $ref: '#/components/schemas/Url'
-          description: ""
-      additionalProperties: true
-    Profiles:
-      description: ""
-      type: object
-      additionalProperties: true
-  securitySchemes:
-    bearerAuth:
-      scheme: bearer
-      bearerFormat: JWT
-      type: http
-      x-bearerInfoFunc: cloudharness.auth.decode_token
+                        type: string
+                    readOnly: true
+                profiles:
+                    $ref: '#/components/schemas/Profiles'
+                    description: 'External links to user profiles (e.g. GitHub, Twitter, etc.)'
+                registrationDate:
+                    format: date
+                    description: ''
+                    type: string
+                avatar:
+                    $ref: '#/components/schemas/Url'
+                    description: ''
+                website:
+                    $ref: '#/components/schemas/Url'
+                    description: ''
+                quotas:
+                    $ref: '#/components/schemas/Profiles'
+                    description: ''
+            additionalProperties: true
+    securitySchemes:
+        bearerAuth:
+            scheme: bearer
+            bearerFormat: JWT
+            type: http
+            x-bearerInfoFunc: cloudharness.auth.decode_token
 tags:
-- name: infrastructure
-  description: ""
-- name: users
-  description: ""
+    -
+        name: infrastructure
+        description: ''
+    -
+        name: users
+        description: ''

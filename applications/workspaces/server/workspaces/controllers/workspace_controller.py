@@ -88,11 +88,18 @@ def delimage(id_=None, image_id=None, **kwargs):
 
 
 def import_resources(id_, body, **kwargs):
+    workspace = WorkspaceRepository().get(id=id_)
+    if workspace is None:
+        return f"Workspace with id {id_} not found.", 404
+
     resource_origins = body.get("resourceorigins", [])
     copy_origins(id_, resource_origins)
     return "Scheduled", 200
 
 def workspace_clone(id_, body=None):
+    workspace = WorkspaceRepository().get(id=id_)
+    if workspace is None:
+        return f"Workspace with id {id_} not found.", 404
     try:
         ws = WorkspaceService().clone(id_)
         if ws is None:
