@@ -2,8 +2,6 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
@@ -27,12 +25,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { Workspace } from "../../types/workspace";
 import { OSBRepository } from "../../apiclient/workspaces";
 import workspaceService from "../../service/WorkspaceService";
-import WorkspaceCard from "../../components/workspace/WorkspaceCard";
 import RepositoryService from "../../service/RepositoryService";
 import {
-  bgDarkest,
   bgDarker,
-  linkColor,
   paragraph,
   textColor,
   bgLightest as lineColor,
@@ -42,9 +37,6 @@ import UserEditor from "../../components/user/UserEditor";
 import { User } from "../../apiclient/accounts";
 import { getUser, updateUser } from "../../service/UserService";
 import { UserInfo } from "../../types/user";
-
-import RepositoriesTable from "../../components/repository/RespositoriesTable";
-
 
 export const Quotas = {
   "quota-ws-maxcpu": {
@@ -125,30 +117,11 @@ const styles = {
       },
     },
   }),
-  repositoriesAndWorkspaces: (theme) => ({
-    flexDirection: "column",
-    paddingBottom: "0px !important",
-    backgroundColor: bgDarker,
-  }),
-  showMoreText: {
-    color: paragraph,
-    "& a": {
-      color: linkColor,
-      display: "flex",
-      textDecoration: "none",
-      "& .MuiSvgIcon-root": {
-        color: `${linkColor} !important`,
-      },
-    },
-  },
   dot: {
     height: "5px",
     width: "5px",
     alignSelf: "center",
     marginLeft: "5px",
-  },
-  repository: {
-    cursor: "pointer",
   },
 };
 

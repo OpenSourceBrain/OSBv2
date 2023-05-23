@@ -1,32 +1,11 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Chip from "@mui/material/Chip";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import CircularProgress from "@mui/material/CircularProgress";
-import LinkIcon from "@mui/icons-material/Link";
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LanguageIcon from "@mui/icons-material/Language";
-import GroupIcon from "@mui/icons-material/Group";
-import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
-import { BitBucketIcon } from "../components/icons";
-import BusinessIcon from "@mui/icons-material/Business";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-
-import Tooltip from "@mui/material/Tooltip";
-
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import workspaceService from "../service/WorkspaceService";
@@ -34,76 +13,20 @@ import WorkspaceCard from "../components/workspace/WorkspaceCard";
 import RepositoryService from "../service/RepositoryService";
 import {
   bgDarkest,
-  bgLightestShade,
   bgDarker,
   linkColor,
   paragraph,
-  textColor,
   bgLightest as lineColor,
 } from "../theme";
 
-import OSBDialog from "../components/common/OSBDialog";
-import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
 
 import RepositoriesTable from "../components/repository/RespositoriesTable";
-import {Quotas} from "./GroupsPage";
 import {UserPageLayout} from "../components/user/UserPageLayout";
 
 const styles = {
-  profileInformation: (theme) => ({
-    flexDirection: "column",
-    backgroundColor: bgDarker,
-    borderRight: `1px solid ${lineColor}`,
-    paddingRight: theme.spacing(3),
-    overflowY: 'auto',
-    maxHeight: "100%",
-
-  "&::-webkit-scrollbar": {
-      display: 'none',
-      width: 0
-    },
-
-    "& .MuiSvgIcon-root": {
-      marginRight: "5px",
-      color: paragraph,
-    },
-    "& .MuiAvatar-root": {
-      width: "150px",
-      height: "150px",
-      marginBottom: theme.spacing(2),
-    },
-    "& .name": {
-      color: textColor,
-      flex: "none",
-    },
-    "& h2": {
-      marginBottom: "0.5em",
-    },
-    "& .username": {},
-    "& .MuiButton-root": {
-      width: "100%",
-    },
-    "& .links": {
-      "& .MuiTypography-root": {
-        display: "flex",
-      },
-    },
-    "& .groups": {
-      "& .MuiTypography-root": {
-        color: textColor,
-      },
-      "& .MuiChip-root": {
-        color: paragraph,
-        border: `1px solid ${paragraph}`,
-      },
-      "& .first-chip": {
-        marginLeft: 0,
-      },
-    },
-  }),
   repositoriesAndWorkspaces: (theme) => ({
     flexDirection: "column",
     paddingBottom: "0px !important",
@@ -167,13 +90,11 @@ function a11yProps(index: number) {
 const BIG_NUMBER_OF_ITEMS = 1000;
 export const UserPage = (props: any) => {
   const [tabValue, setTabValue] = React.useState(0);
-  const [expanded, setExpanded] = React.useState(false);
   const [publicWorkspaces, setPublicWorkspaces] = React.useState<Workspace[]>(
     []
   );
   const [allWorkspaces, setAllWorkspaces] = React.useState<Workspace[]>([]);
-  const [profileEditDialogOpen, setProfileEditDialogOpen] =
-    React.useState(false);
+
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [user, setUser] = React.useState<User>(null);
 
@@ -190,10 +111,6 @@ export const UserPage = (props: any) => {
     newTabValue: number
   ) => {
     setTabValue(newTabValue);
-  };
-
-  const handleSeeMore = (exp: boolean) => {
-    setExpanded(!expanded);
   };
 
   React.useEffect(() => {
@@ -283,34 +200,7 @@ export const UserPage = (props: any) => {
   const openRepoUrl = (repositoryId: number) => {
     navigate(`/repositories/${repositoryId}`);
   };
-  /* the keys are stored in lower case */
-  const {
-    affiliation,
-    incf,
-    bitbucket,
-    github,
-    twitter,
-    orcid,
-    ...otherProfiles
-  } = user.profiles as unknown as { [k: string]: string };
 
-  const handleUpdateUser = (u: User) => {
-    setLoading(true);
-    setProfileEditDialogOpen(false);
-    updateUser(u)
-      .then((updatedUser) => {
-        setUser(updatedUser);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.error("error updating user", err);
-        setError({
-          ...error,
-          general: `An error occurred updating the user. Please try again later.`,
-        });
-      });
-  };
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
