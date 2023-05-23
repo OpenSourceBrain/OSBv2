@@ -27,6 +27,7 @@ import {
   UserPage,
   RepositoriesPage,
   HomePage,
+  GroupsPage
 } from "./components";
 import Box from "@mui/material/Box";
 import { UserInfo } from "./types/user";
@@ -138,6 +139,14 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
+                    path="/user/groups/:userName"
+                    element={
+                      <SidebarPageLayout>
+                        <GroupsPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
                     path="/login"
                     element={
                       <UserActionThenRedirect
@@ -165,9 +174,9 @@ export const App = (props: AppProps) => {
                 </Routes>
               </Box>
             </Router>
-            
+
           )}
-          
+
         </OSBErrorBoundary>
       </ThemeProvider>
     </StyledEngineProvider>

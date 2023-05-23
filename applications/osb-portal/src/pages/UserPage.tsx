@@ -49,6 +49,8 @@ import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
 
 import RepositoriesTable from "../components/repository/RespositoriesTable";
+import {Quotas} from "./GroupsPage";
+import {UserPageLayout} from "../components/user/UserPageLayout";
 
 const styles = {
   profileInformation: (theme) => ({
@@ -56,6 +58,14 @@ const styles = {
     backgroundColor: bgDarker,
     borderRight: `1px solid ${lineColor}`,
     paddingRight: theme.spacing(3),
+    overflowY: 'auto',
+    maxHeight: "100%",
+
+  "&::-webkit-scrollbar": {
+      display: 'none',
+      width: 0
+    },
+
     "& .MuiSvgIcon-root": {
       marginRight: "5px",
       color: paragraph,
@@ -301,401 +311,136 @@ export const UserPage = (props: any) => {
         });
       });
   };
-  console.log(user)
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
-    <>
-      <Box className={`verticalFill`} display="flex" justifyContent="center">
-        <Grid container={true} spacing={0} className="verticalFill">
-          <Grid
-            id="profile-info"
-            item={true}
-            sm={4}
-            lg={3}
-            sx={styles.profileInformation}
-            className="scrollbar"
+    <UserPageLayout>
+      <Grid
+        item={true}
+        sm={8}
+        lg={9}
+        className={`verticalFit`}
+        sx={styles.repositoriesAndWorkspaces}
+      >
+        <Box
+          bgcolor={bgDarkest}
+          px={(theme) => theme.spacing(4)}
+          sx={{ borderBottom: `1px solid ${lineColor}` }}
+        >
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            textColor="primary"
+            indicatorColor="primary"
+            aria-label="tabs"
+            variant="standard"
           >
-            <Stack pt={5} px={4} spacing={4}>
-              <Avatar alt="user-profile-avatar" src={user.avatar}>
-                {(user.firstName.length > 0 && user.firstName.charAt(0)) +
-                  (user.lastName.length > 0 && user.lastName.charAt(0))}
-              </Avatar>
-              <Typography className="name" component="h1" variant="h2">
-                {user.firstName + " " + user.lastName}
-                <Typography
-                  className="username"
-                  component="p"
-                  variant="subtitle2"
-                >
-                  {user.username}
-                </Typography>
-              </Typography>
-
-              {canEdit && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setProfileEditDialogOpen(true)}
-                >
-                  Edit My Profile
-                </Button>
-              )}
-
-              <Typography display="flex" flexDirection="row" color={paragraph}>
-                {publicWorkspaces ? (
-                  <>
-                    <FolderOpenIcon fontSize="small" />
-                    {allWorkspaces.length} workspaces
-                  </>
-                ) : (
-                  <CircularProgress size="1rem" />
-                )}
-                {canEdit && allWorkspaces ? (
-                  <> ({privateWorkspaces.length} private) </>
-                ) : (
-                  <> </>
-                )}
-                {repositories ? (
-                  <>
-                    <FiberManualRecordIcon sx={styles.dot} fontSize="small" />
-                    <AccountTreeOutlinedIcon fontSize="small" />
-                    {repositories.length} repositories
-                  </>
-                ) : (
-                  <CircularProgress size="1rem" />
-                )}
-              </Typography>
-
-              {(user.profiles || user.website) && (
-                <Box
-                  className="links"
-                  display="flex"
-                  flexDirection="column"
-                  width="100%"
-                >
-                  <Typography component="h2" variant="h5" gutterBottom={true}>
-                    Links
-                  </Typography>
-                  {typeof user.website === "string" && user.website && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <LanguageIcon fontSize="small" />
-                      <Tooltip title="Website">
-                        <Link href={user.website} underline="hover">
-                          {user.website}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-
-                  {typeof affiliation === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <BusinessIcon fontSize="small" />
-                      <Tooltip title="Affiliation">
-                        <Link href={affiliation} underline="hover">
-                          {affiliation}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof github === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <GitHubIcon fontSize="small" />
-                      <Tooltip title="GitHub">
-                        <Link
-                          href={
-                            github.includes("github.com")
-                              ? github
-                              : "https://github.com/" + github
-                          }
-                          underline="hover"
-                        >
-                          @
-                          {github.includes("github.com")
-                            ? github.replace(/\/$/, "").split("/").pop()
-                            : github}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof bitbucket === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <BitBucketIcon fontSize="small" />
-                      <Tooltip title="BitBucket">
-                        <Link
-                          href={
-                            bitbucket.includes("bitbucket.org")
-                              ? bitbucket
-                              : "https://bitbucket.org/" + bitbucket
-                          }
-                          underline="hover"
-                        >
-                          @
-                          {bitbucket.includes("bitbucket.org")
-                            ? bitbucket.replace(/\/$/, "").split("/").pop()
-                            : bitbucket}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof twitter === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <TwitterIcon fontSize="small" />
-                      <Tooltip title="Twitter">
-                        <Link
-                          href={
-                            twitter.includes("twitter.com")
-                              ? twitter
-                              : "https://twitter.com/" + twitter
-                          }
-                          underline="hover"
-                        >
-                          @
-                          {twitter.includes("twitter.com")
-                            ? twitter.replace(/\/$/, "").split("/").pop()
-                            : twitter}
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof incf === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <GroupIcon fontSize="small" />
-                      <Tooltip title="INCF">
-                        <Link href={incf} underline="hover">
-                          INCF
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {typeof orcid === "string" && (
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      gutterBottom={true}
-                    >
-                      <GroupIcon fontSize="small" />
-                      <Tooltip title="ORCID">
-                        <Link href={orcid} underline="hover">
-                          ORCID
-                        </Link>
-                      </Tooltip>
-                    </Typography>
-                  )}
-                  {Object.keys(otherProfiles)
-                    .filter((k) => otherProfiles[k] !== "")
-                    .map((k) => (
-                      <Typography
-                        key={k}
-                        component="p"
-                        variant="body2"
-                        gutterBottom={true}
-                      >
-                        <LinkIcon fontSize="small" />
-                        <Tooltip title={k.charAt(0).toUpperCase() + k.slice(1)}>
-                          <Link href={otherProfiles[k]} underline="hover">
-                            {k.charAt(0).toUpperCase() + k.slice(1)}
-                          </Link>
-                        </Tooltip>
-                      </Typography>
-                    ))}
-                </Box>
-              )}
-
-              {user.groups && user.groups.length > 0 && (
-                <Box className="groups" width="100%">
-                  <Typography component="h2" variant="h5" gutterBottom={true}>
-                    Groups
-                  </Typography>
-                  {user.groups &&
-                    user.groups.map((group, index) => {
-                      return (
-                        <Chip
-                          className={index === 0 ? "first-chip" : ""}
-                          color="secondary"
-                          label={group}
-                          key={group}
-                          variant="outlined"
-                        />
-                      );
-                    })}
-                </Box>
-              )}
-
-              {user.registrationDate && (
-                <Typography component="p" variant="body1">
-                  Member since{" "}
-                  {user.registrationDate.toLocaleDateString(undefined, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </Typography>
-              )}
-            </Stack>
-          </Grid>
-
-          <Grid
-            item={true}
-            sm={8}
-            lg={9}
-            className={`verticalFit`}
-            sx={styles.repositoriesAndWorkspaces}
-          >
-            <Box
-              bgcolor={bgDarkest}
-              px={(theme) => theme.spacing(4)}
-              sx={{ borderBottom: `1px solid ${lineColor}` }}
-            >
-              <Tabs
-                value={tabValue}
-                onChange={handleTabChange}
-                textColor="primary"
-                indicatorColor="primary"
-                aria-label="tabs"
-                variant="standard"
-              >
-                <Tab
-                  label={
-                    <>
-                      Public Workspaces
-                      <Chip
-                        size="small"
-                        color="primary"
-                        label={publicWorkspaces.length}
-                      />
-                    </>
-                  }
-                  {...a11yProps(0)}
-                />
-                {canEdit && (
-                  <Tab
-                    label={
-                      <>
-                        Private Workspaces
-                        <Chip
-                          size="small"
-                          color="primary"
-                          label={privateWorkspaces.length}
-                        />
-                      </>
-                    }
-                    {...a11yProps(1)}
+            <Tab
+              label={
+                <>
+                  Public Workspaces
+                  <Chip
+                    size="small"
+                    color="primary"
+                    label={publicWorkspaces.length}
                   />
-                )}
-                <Tab
-                  label={
-                    <>
-                      Repositories
-                      <Chip
-                        size="small"
-                        color="primary"
-                        label={repositories.length}
-                      />
-                    </>
-                  }
-                  {...a11yProps(2)}
-                />
-              </Tabs>
-            </Box>
-            <Box className="scrollbar" height="100%" py={4} pl={4}>
-              <TabPanel value={tabValue} index={0}>
-                <Grid container={true} spacing={1}>
-                  {publicWorkspaces.map((ws) => {
-                    return (
-                      <Grid
-                        item={true}
-                        key={ws.id}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={4}
-                        xl={3}
-                      >
-                        <WorkspaceCard workspace={ws} user={currentUser} />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              </TabPanel>
-
-              {canEdit && (
-                <TabPanel value={tabValue} index={1}>
-                  <Grid container={true} spacing={2}>
-                    {privateWorkspaces.map((ws) => {
-                      return (
-                        <Grid
-                          item={true}
-                          key={ws.id}
-                          xs={12}
-                          sm={6}
-                          md={4}
-                          lg={4}
-                          xl={3}
-                        >
-                          <WorkspaceCard workspace={ws} user={currentUser} />
-                        </Grid>
-                      );
-                    })}
-                  </Grid>
-                </TabPanel>
-              )}
-
-              <TabPanel
-                value={tabValue}
-                index={
-                  currentUser &&
-                  (currentUser.id === user.id || currentUser.isAdmin)
-                    ? 2
-                    : 1
+                </>
+              }
+              {...a11yProps(0)}
+            />
+            {canEdit && (
+              <Tab
+                label={
+                  <>
+                    Private Workspaces
+                    <Chip
+                      size="small"
+                      color="primary"
+                      label={privateWorkspaces.length}
+                    />
+                  </>
                 }
-              >
-                <RepositoriesTable
-                  handleRepositoryClick={(repository: OSBRepository) =>
-                    openRepoUrl(repository.id)
-                  }
-                  user={currentUser}
-                  repositories={repositories}
-                  loading={loading}
-                />
-              </TabPanel>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      {canEdit && profileEditDialogOpen && (
+                {...a11yProps(1)}
+              />
+            )}
+            <Tab
+              label={
+                <>
+                  Repositories
+                  <Chip
+                    size="small"
+                    color="primary"
+                    label={repositories.length}
+                  />
+                </>
+              }
+              {...a11yProps(2)}
+            />
+          </Tabs>
+        </Box>
+        <Box className="scrollbar" height="100%" py={4} pl={4}>
+          <TabPanel value={tabValue} index={0}>
+            <Grid container={true} spacing={1}>
+              {publicWorkspaces.map((ws) => {
+                return (
+                  <Grid
+                    item={true}
+                    key={ws.id}
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={4}
+                    xl={3}
+                  >
+                    <WorkspaceCard workspace={ws} user={currentUser} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </TabPanel>
 
-          <UserEditor
-            user={user}
-            saveUser={handleUpdateUser}
-            close={() => setProfileEditDialogOpen(false)}
-          />
-      )}
-      {loading && <CircularProgress size={24} />}
-    </>
+          {canEdit && (
+            <TabPanel value={tabValue} index={1}>
+              <Grid container={true} spacing={2}>
+                {privateWorkspaces.map((ws) => {
+                  return (
+                    <Grid
+                      item={true}
+                      key={ws.id}
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={4}
+                      xl={3}
+                    >
+                      <WorkspaceCard workspace={ws} user={currentUser} />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </TabPanel>
+          )}
+
+          <TabPanel
+            value={tabValue}
+            index={
+              currentUser &&
+              (currentUser.id === user.id || currentUser.isAdmin)
+                ? 2
+                : 1
+            }
+          >
+            <RepositoriesTable
+              handleRepositoryClick={(repository: OSBRepository) =>
+                openRepoUrl(repository.id)
+              }
+              user={currentUser}
+              repositories={repositories}
+              loading={loading}
+            />
+          </TabPanel>
+        </Box>
+      </Grid>
+    </UserPageLayout>
   );
 };
