@@ -12,16 +12,25 @@
      <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
 
         <#if realm.password && social.providers??>
+
             <div id="kc-social-providers" class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}">
-                <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 4>${properties.kcFormSocialAccountDoubleListClass!}</#if>">
+
+
+                <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 3>${properties.kcFormSocialAccountListGridClass!}</#if>">
                     <#list social.providers as p>
-                        <li class="${properties.kcFormSocialAccountListLinkClass!}"><a href="${p.loginUrl}" id="zocial-${p.alias}" class="zocial ${p.providerId}"> <span>Sign in with ${p.displayName}</span></a></li>
+                        <li class="${properties.kcFormSocialAccountListLinkClass!}">
+                            <a id="social-${p.alias}"  type="button" href="${p.loginUrl}">
+                                    <i class="${properties.kcCommonLogoIdP!} ${p.iconClasses!}" aria-hidden="true"></i>
+                                    <span class="${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">Sign in with ${p.displayName!}</span>
+                            </a>
+                        </li>
                     </#list>
                 </ul>
             </div>
+            <div id="kc-form-separator" class="separator">or</div>
         </#if>
 
-         <div id="kc-form-separator" class="separator">or</div>
+         
 
         <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
                 <#if realm.password>

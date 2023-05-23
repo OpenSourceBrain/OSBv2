@@ -741,7 +741,7 @@ a.zocial {
 
 
 .login-pf-page .login-pf-social-link a:hover {
-  background: rgba(0, 188, 212, .1) !important;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .login-pf-page.login-pf-page-accounts {
@@ -821,4 +821,16 @@ form#kc-select-back-form div.login-pf-social-section {
 
 .login-pf-page .separator:not(:empty)::after {
   margin-left: .25em;
+}
+
+.orcid-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-image: url(../img/orcid.svg);
+}
+
+.fa {
+  font-size: 20px;
+  margin-right: 5px;
 }
