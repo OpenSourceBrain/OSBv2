@@ -117,6 +117,9 @@ body {
   border-radius: 2px;
 }
 
+.custom-checkbox .checkmark:hover {
+  background-color: rgba(0, 188, 212, .1) !important;
+}
 .custom-checkbox input:checked ~ .checkmark {
   background-color: #00BCD4;
 }
@@ -666,6 +669,8 @@ a.zocial {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
 }
 
 /*tablet*/
@@ -736,7 +741,7 @@ a.zocial {
 
 
 .login-pf-page .login-pf-social-link a:hover {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .login-pf-page.login-pf-page-accounts {
@@ -760,9 +765,8 @@ a.zocial {
   border: 0
 }
 
-.login-pf-page .btn-primary:active:focus {
-  background: #fff;
-  color: #4a4a4a;
+.login-pf-page .btn-primary:active:focus, .login-pf-page .btn-primary:hover {
+  background: rgba(0, 188, 212, .1);
   outline: 0;
 }
 
@@ -817,4 +821,16 @@ form#kc-select-back-form div.login-pf-social-section {
 
 .login-pf-page .separator:not(:empty)::after {
   margin-left: .25em;
+}
+
+.orcid-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-image: url(../img/orcid.svg);
+}
+
+.fa {
+  font-size: 20px;
+  margin-right: 5px;
 }

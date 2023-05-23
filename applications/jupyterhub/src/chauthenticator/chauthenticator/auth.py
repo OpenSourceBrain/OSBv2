@@ -57,6 +57,7 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
 
     def get_anonymous_user(self):
         import socket
+        print("Anonymous connection: ", self.request.remote_ip)
         return self.user_from_username("a-%s-%0.5x" % (socket.inet_aton(self.request.remote_ip).hex(), random.randint(0, 99999)))
 
 

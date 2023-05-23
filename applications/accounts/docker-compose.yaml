@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    image: quay.io/keycloak/keycloak:11.0.2
+    image: quay.io/keycloak/keycloak:16.1.0
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -27,11 +27,11 @@ services:
       - type: bind
         source: ./themes/custom
         target: /opt/jboss/keycloak/themes/custom
-      # disable cache
       - type: bind
-        source: ./standalone.xml
-        target: /opt/jboss/keycloak/standalone/configuration/standalone.xml
-
+        source: ./plugins
+        target: /opt/jboss/keycloak/standalone/deployments
+      # disable cache
+      - ./disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
       # - type: bind
       #   source: ./keycloak
       #   target: /opt/jboss/keycloak/themes/keycloak

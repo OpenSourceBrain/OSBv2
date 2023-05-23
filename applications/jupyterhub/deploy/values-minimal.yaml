@@ -1,0 +1,4 @@
+harness:
+  dependencies:
+    soft: [nfsserver, accounts]
+    hard: []
