@@ -198,6 +198,7 @@ components:
       type: object
     Url:
       description: ""
+      title: image
       type: string
     Profiles:
       additionalProperties: true
@@ -256,9 +257,11 @@ components:
           type: string
         avatar:
           description: ""
+          title: image
           type: string
         website:
           description: ""
+          title: image
           type: string
         quotas:
           additionalProperties: true
@@ -270,6 +273,7 @@ components:
     Group:
       description: ""
       example:
+        image: image
         quotas:
           key: ""
         keywords:
@@ -279,6 +283,7 @@ components:
         description: ""
         links:
           key: ""
+        email: email
       properties:
         quotas:
           additionalProperties: true
@@ -303,6 +308,14 @@ components:
             type: string
           title: keywords
           type: array
+        image:
+          description: ""
+          title: image
+          type: string
+        email:
+          description: ""
+          title: email
+          type: string
       required:
       - name
       title: Group
