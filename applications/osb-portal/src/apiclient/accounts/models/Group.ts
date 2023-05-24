@@ -49,6 +49,18 @@ export interface Group {
      * @memberof Group
      */
     keywords?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Group
+     */
+    image?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Group
+     */
+    email?: string;
 }
 
 export function GroupFromJSON(json: any): Group {
@@ -66,6 +78,8 @@ export function GroupFromJSONTyped(json: any, ignoreDiscriminator: boolean): Gro
         'description': !exists(json, 'description') ? undefined : json['description'],
         'links': !exists(json, 'links') ? undefined : json['links'],
         'keywords': !exists(json, 'keywords') ? undefined : json['keywords'],
+        'image': !exists(json, 'image') ? undefined : json['image'],
+        'email': !exists(json, 'email') ? undefined : json['email'],
     };
 }
 
@@ -83,6 +97,8 @@ export function GroupToJSON(value?: Group | null): any {
         'description': value.description,
         'links': value.links,
         'keywords': value.keywords,
+        'image': value.image,
+        'email': value.email,
     };
 }
 
