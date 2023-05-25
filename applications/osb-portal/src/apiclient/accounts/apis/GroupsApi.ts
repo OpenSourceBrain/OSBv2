@@ -37,7 +37,7 @@ export interface UpdateGroupRequest {
 }
 
 /**
- * 
+ *
  */
 export class GroupsApi extends runtime.BaseAPI {
 

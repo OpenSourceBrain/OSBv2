@@ -139,7 +139,7 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
-                    path="/user/groups/:userName"
+                    path="/user/:userName/groups/:groupname"
                     element={
                       <SidebarPageLayout>
                         <GroupsPage />
