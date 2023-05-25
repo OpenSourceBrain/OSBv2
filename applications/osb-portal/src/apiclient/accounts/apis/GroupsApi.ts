@@ -37,7 +37,7 @@ export interface UpdateGroupRequest {
 }
 
 /**
- *
+ * 
  */
 export class GroupsApi extends runtime.BaseAPI {
 
@@ -71,7 +71,7 @@ export class GroupsApi extends runtime.BaseAPI {
 
     /**
      */
-    async getGroupUsersRaw(requestParameters: GetGroupUsersRequest): Promise<runtime.ApiResponse<Group>> {
+    async getGroupUsersRaw(requestParameters: GetGroupUsersRequest): Promise<runtime.ApiResponse<Array<User>>> {
         if (requestParameters.groupname === null || requestParameters.groupname === undefined) {
             throw new runtime.RequiredError('groupname','Required parameter requestParameters.groupname was null or undefined when calling getGroupUsers.');
         }
@@ -87,12 +87,12 @@ export class GroupsApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GroupFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserFromJSON));
     }
 
     /**
      */
-    async getGroupUsers(requestParameters: GetGroupUsersRequest): Promise<Group> {
+    async getGroupUsers(requestParameters: GetGroupUsersRequest): Promise<Array<User>> {
         const response = await this.getGroupUsersRaw(requestParameters);
         return await response.value();
     }

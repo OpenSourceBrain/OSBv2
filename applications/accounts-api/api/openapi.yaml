@@ -158,7 +158,9 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Group'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
                     description: Get a user's public information
             operationId: getGroupUsers
         parameters:

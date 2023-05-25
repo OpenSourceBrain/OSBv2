@@ -80,7 +80,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Group'
+                items:
+                  $ref: '#/components/schemas/User'
+                type: array
           description: Get a user's public information
       tags:
       - groups
