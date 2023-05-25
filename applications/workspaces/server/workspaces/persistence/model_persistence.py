@@ -166,29 +166,25 @@ class WorkspaceResourceRepository(BaseModelRepository):
         # update the wsr based on found resources in the pvc
 
         # select all existing workspace resources of the workspace
-        all_wsr = self.model.query.filter_by(workspace_id=workspace_id).all()
+
         found_wsr = []  # array for storing found wsr, used for deletion detection
         for resource in resources:
-            folder, filename = os.path.split(resource)
-            # try to find by folder and name match
-            wsr = next((wsr for wsr in all_wsr if wsr.folder ==
-                        folder and wsr.name == filename), None)
-            if not wsr:
-                # not found, try by folder and "like" path
-                wsr = next((wsr for wsr in all_wsr if wsr.folder ==
-                            folder and filename in wsr.origin), None)
+            # try to find by path match
+            wsr = self.model.query.filter_by(workspace_id=workspace_id, path=resource).first()
+
             if not wsr:
                 # not found --> create a new wsr
+                filename = os.path.basename(resource)
                 wsr = WorkspaceResourceEntity(
                     name=filename,
-                    folder=folder,
+                    path=resource,
                     origin='{"path": "' + resource + '"}',
                     status=ResourceStatus.P,  # default status
                     resource_type=self.guess_resource_type(filename),
                     workspace_id=workspace_id,
                 )
                 logger.info(
-                    f"Created new workspace resources {filename} {folder} {resource}")
+                    f"Created new workspace resource {resource}")
             else:
                 found_wsr.append(wsr)  # add the wsr to the found list
 
@@ -198,11 +194,11 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 db.session.add(wsr)
                 db.session.commit()
 
-        for wsr in [wsr for wsr in all_wsr if wsr not in found_wsr]:
-            # delete non existing workspace resources
-            logger.info(f"Deleting resource: {wsr.id} {wsr.name} {wsr.folder}")
-            result = self.model.query.filter_by(id=wsr.id).delete()
-            db.session.commit()
+        # delete all wsr that were not found an more
+        self.model.query.filter_by(workspace_id=workspace_id)\
+            .filter(~self.model.id.any(w.id for w in found_wsr)).delete()
+        # TODO test again after the refactoring
+        db.session.commit()
         logger.info(
             f"Workspace resources update done for workspace {workspace_id}")
 

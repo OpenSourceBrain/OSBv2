@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Workspaces manager API
+ * OSB Workspaces manager API
  * Opensource Brain Platform - Reference Workspaces manager API
  *
  * The version of the OpenAPI document: 0.2.0
@@ -43,12 +43,6 @@ export interface WorkspaceResourceBase {
      */
     name: string;
     /**
-     * WorkspaceResource folder where the resource will stored in the pvc
-     * @type {string}
-     * @memberof WorkspaceResourceBase
-     */
-    folder?: string;
-    /**
      * 
      * @type {ResourceStatus}
      * @memberof WorkspaceResourceBase
@@ -78,6 +72,12 @@ export interface WorkspaceResourceBase {
      * @memberof WorkspaceResourceBase
      */
     resourceType: ResourceType;
+    /**
+     * WorkspaceResource path where the resource will stored in the pvc.
+     * @type {string}
+     * @memberof WorkspaceResourceBase
+     */
+    path?: string;
 }
 
 export function WorkspaceResourceBaseFromJSON(json: any): WorkspaceResourceBase {
@@ -92,12 +92,12 @@ export function WorkspaceResourceBaseFromJSONTyped(json: any, ignoreDiscriminato
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
+        'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
 
@@ -112,12 +112,12 @@ export function WorkspaceResourceBaseToJSON(value?: WorkspaceResourceBase | null
         
         'id': value.id,
         'name': value.name,
-        'folder': value.folder,
         'status': ResourceStatusToJSON(value.status),
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
+        'path': value.path,
     };
 }
 

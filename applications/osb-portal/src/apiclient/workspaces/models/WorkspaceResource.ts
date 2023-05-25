@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Workspaces manager API
+ * OSB Workspaces manager API
  * Opensource Brain Platform - Reference Workspaces manager API
  *
  * The version of the OpenAPI document: 0.2.0
@@ -55,12 +55,6 @@ export interface WorkspaceResource {
      */
     name: string;
     /**
-     * WorkspaceResource folder where the resource will stored in the pvc
-     * @type {string}
-     * @memberof WorkspaceResource
-     */
-    folder?: string;
-    /**
      * 
      * @type {ResourceStatus}
      * @memberof WorkspaceResource
@@ -91,6 +85,12 @@ export interface WorkspaceResource {
      */
     resourceType: ResourceType;
     /**
+     * WorkspaceResource path where the resource will stored in the pvc.
+     * @type {string}
+     * @memberof WorkspaceResource
+     */
+    path?: string;
+    /**
      * workspace_id
      * @type {number}
      * @memberof WorkspaceResource
@@ -116,12 +116,12 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
+        'path': !exists(json, 'path') ? undefined : json['path'],
         'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
         'origin': !exists(json, 'origin') ? undefined : ResourceOriginFromJSON(json['origin']),
     };
@@ -138,12 +138,12 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         
         'id': value.id,
         'name': value.name,
-        'folder': value.folder,
         'status': ResourceStatusToJSON(value.status),
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
+        'path': value.path,
         'workspace_id': value.workspaceId,
         'origin': ResourceOriginToJSON(value.origin),
     };
