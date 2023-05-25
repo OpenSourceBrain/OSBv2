@@ -8,6 +8,7 @@ from accounts_api.models.group import Group  # noqa: E501
 from accounts_api.models.user import User  # noqa: E501
 from accounts_api import util
 
+from accounts_api.services import group_service
 
 def get_group(groupname):  # noqa: E501
     """get_group
@@ -19,7 +20,11 @@ def get_group(groupname):  # noqa: E501
 
     :rtype: Union[Group, Tuple[Group, int], Tuple[Group, int, Dict[str, str]]
     """
-    return 'do some magic!'
+    try:
+        return group_service.get_group_by_name(groupname)
+    except group_service.GroupNotFound as e:
+        return "Group not found", 404
+
 
 
 def get_group_users(groupname):  # noqa: E501
@@ -32,7 +37,10 @@ def get_group_users(groupname):  # noqa: E501
 
     :rtype: Union[Group, Tuple[Group, int], Tuple[Group, int, Dict[str, str]]
     """
-    return 'do some magic!'
+    try:
+        return group_service.get_group_users(groupname)
+    except group_service.GroupNotFound as e:
+        return "Group not found", 404
 
 
 def update_group(groupname, request_body):  # noqa: E501

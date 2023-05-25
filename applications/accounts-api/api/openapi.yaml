@@ -246,6 +246,12 @@ components:
                     type: array
                     items:
                         type: string
+                image:
+                    $ref: '#/components/schemas/Url'
+                    description: Image url
+                email:
+                    description: ''
+                    type: string
     securitySchemes:
         bearerAuth:
             scheme: bearer

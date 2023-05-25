@@ -15,7 +15,7 @@ class Group(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, quotas=None, name=None, description=None, links=None, keywords=None):  # noqa: E501
+    def __init__(self, quotas=None, name=None, description=None, links=None, keywords=None, image=None, email=None):  # noqa: E501
         """Group - a model defined in OpenAPI
 
         :param quotas: The quotas of this Group.  # noqa: E501
@@ -28,13 +28,19 @@ class Group(Model):
         :type links: Dict[str, object]
         :param keywords: The keywords of this Group.  # noqa: E501
         :type keywords: List[str]
+        :param image: The image of this Group.  # noqa: E501
+        :type image: str
+        :param email: The email of this Group.  # noqa: E501
+        :type email: str
         """
         self.openapi_types = {
             'quotas': Dict[str, object],
             'name': str,
             'description': object,
             'links': Dict[str, object],
-            'keywords': List[str]
+            'keywords': List[str],
+            'image': str,
+            'email': str
         }
 
         self.attribute_map = {
@@ -42,7 +48,9 @@ class Group(Model):
             'name': 'name',
             'description': 'description',
             'links': 'links',
-            'keywords': 'keywords'
+            'keywords': 'keywords',
+            'image': 'image',
+            'email': 'email'
         }
 
         self._quotas = quotas
@@ -50,6 +58,8 @@ class Group(Model):
         self._description = description
         self._links = links
         self._keywords = keywords
+        self._image = image
+        self._email = email
 
     @classmethod
     def from_dict(cls, dikt) -> 'Group':
@@ -178,3 +188,49 @@ class Group(Model):
         """
 
         self._keywords = keywords
+
+    @property
+    def image(self):
+        """Gets the image of this Group.
+
+          # noqa: E501
+
+        :return: The image of this Group.
+        :rtype: str
+        """
+        return self._image
+
+    @image.setter
+    def image(self, image):
+        """Sets the image of this Group.
+
+          # noqa: E501
+
+        :param image: The image of this Group.
+        :type image: str
+        """
+
+        self._image = image
+
+    @property
+    def email(self):
+        """Gets the email of this Group.
+
+          # noqa: E501
+
+        :return: The email of this Group.
+        :rtype: str
+        """
+        return self._email
+
+    @email.setter
+    def email(self, email):
+        """Sets the email of this Group.
+
+          # noqa: E501
+
+        :param email: The email of this Group.
+        :type email: str
+        """
+
+        self._email = email
