@@ -63,8 +63,7 @@ class WorkspaceResourceService {
 
   getResourcePath(resource: WorkspaceResource) {
     return (
-      (resource.folder ? resource.folder + "/" : "") +
-      resource.origin.path.slice(resource.origin.path.lastIndexOf("/") + 1)
+      resource.path
     );
   }
 }
