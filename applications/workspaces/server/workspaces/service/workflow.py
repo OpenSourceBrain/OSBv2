@@ -2,7 +2,7 @@ import uuid
 
 from cloudharness import log as logger
 
-import workspaces.repository as repos
+import workspaces.persistence as repos
 import workspaces.service.events as events
 from workspaces.service.model_service import WorkspaceService
 

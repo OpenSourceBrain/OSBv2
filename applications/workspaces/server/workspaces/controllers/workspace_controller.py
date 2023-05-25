@@ -5,8 +5,8 @@ from pathlib import Path
 from cloudharness import log as logger
 
 from workspaces.config import Config
-from workspaces.repository.model_repository import WorkspaceImageRepository, WorkspaceRepository, db
-from workspaces.repository.models import WorkspaceEntity, WorkspaceImage
+from workspaces.persistence.model_persistence import WorkspaceImageRepository, WorkspaceRepository, db
+from workspaces.persistence.models import WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
 from workspaces.service.model_service import NotAuthorized, NotAllowed, WorkspaceService
 

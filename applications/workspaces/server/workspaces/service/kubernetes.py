@@ -6,7 +6,7 @@ from cloudharness.applications import get_configuration
 
 from cloudharness.applications import get_configuration
 
-import workspaces.repository as repos
+import workspaces.persistence as repos
 
 
 def create_volume(name, size="2G"):

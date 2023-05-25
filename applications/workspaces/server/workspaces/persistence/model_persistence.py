@@ -16,7 +16,7 @@ from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
 
 
-from .base_model_repository import BaseModelRepository
+from .base_model_persistence import BaseModelRepository
 from ..database import db
 from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *

@@ -1,4 +1,4 @@
-import workspaces.repository.model_repository as repos
+import workspaces.persistence.model_persistence as repos
 
 
 def get_class_attr(Cls):

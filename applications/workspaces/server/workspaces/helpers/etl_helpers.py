@@ -50,8 +50,9 @@ def delete_workspace_resource(workspace_resource):
     try:
         pvc_name = WorkspaceService.get_pvc_name(
             workspace_resource.workspace_id)
+        origin = json.loads(workspace_resource.origin)
         workflow.delete_resource(
-            workspace_resource=workspace_resource, pvc_name=pvc_name, resource_path=workspace_resource.folder
+            workspace_resource=workspace_resource, pvc_name=pvc_name, resource_path=f"{workspace_resource.folder}/{workspace_resource.}"
         )
     except Exception as e:
         logger.error(

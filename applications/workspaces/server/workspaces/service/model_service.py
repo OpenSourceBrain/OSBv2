@@ -19,15 +19,15 @@ from workspaces.models.resource_status import ResourceStatus
 from workspaces.models.resource_type import ResourceType
 from workspaces.models.tag import Tag
 from workspaces.models.user import User
-from workspaces.repository import (
+from workspaces.persistence import (
     OSBRepositoryRepository,
     VolumeStorageRepository,
     WorkspaceRepository,
     WorkspaceResourceRepository,
     TagRepository,
 )
-from workspaces.repository.base_model_repository import BaseModelRepository
-from workspaces.repository.models import TWorkspaceEntity, WorkspaceResourceEntity
+from workspaces.persistence.base_model_persistence import BaseModelRepository
+from workspaces.persistence.models import TWorkspaceEntity, WorkspaceResourceEntity
 from workspaces.service import osbrepository as osbrepository_helper
 from workspaces.service.kubernetes import create_volume
 from workspaces.service.auth import get_auth_client, keycloak_user_id

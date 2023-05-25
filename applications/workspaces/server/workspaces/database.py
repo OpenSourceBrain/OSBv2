@@ -21,7 +21,7 @@ def setup_db(app):
     
     db.init_app(app)
     db.create_all()
-    from .repository.fixtures import create_fixtures
+    from .persistence.fixtures import create_fixtures
 
     create_fixtures(app)
     return db

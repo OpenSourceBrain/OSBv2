@@ -1,7 +1,7 @@
 import json
 
 from workspaces.models import WorkspaceResource as WorkspaceResourceDTO
-from workspaces.repository.model_repository import WorkspaceRepository, WorkspaceResourceRepository
+from workspaces.persistence.model_persistence import WorkspaceRepository, WorkspaceResourceRepository
 from workspaces.views.api.rest_api_views import WorkspaceresourceView
 
 

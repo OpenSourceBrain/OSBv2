@@ -10,7 +10,7 @@ UPDATE_WORKSPACES_RESOURCE_QUEUE = "osb-update-workspace-resources"
 
 
 def update_workspace_resources(event_client, app, message):
-    import workspaces.repository.model_repository as repos
+    import workspaces.persistence.model_persistence as repos
     log.info(f"Got message: {message}")
     workspace_id = message["workspace_id"]
     # remove /project_download/ (mount point of the pvc) from the path

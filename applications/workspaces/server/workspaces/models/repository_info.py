@@ -61,6 +61,7 @@ class RepositoryInfo(Model):
     def contexts(self):
         """Gets the contexts of this RepositoryInfo.
 
+          # noqa: E501
 
         :return: The contexts of this RepositoryInfo.
         :rtype: List[str]
@@ -71,6 +72,7 @@ class RepositoryInfo(Model):
     def contexts(self, contexts):
         """Sets the contexts of this RepositoryInfo.
 
+          # noqa: E501
 
         :param contexts: The contexts of this RepositoryInfo.
         :type contexts: List[str]
@@ -82,6 +84,7 @@ class RepositoryInfo(Model):
     def name(self):
         """Gets the name of this RepositoryInfo.
 
+          # noqa: E501
 
         :return: The name of this RepositoryInfo.
         :rtype: str
@@ -92,6 +95,7 @@ class RepositoryInfo(Model):
     def name(self, name):
         """Sets the name of this RepositoryInfo.
 
+          # noqa: E501
 
         :param name: The name of this RepositoryInfo.
         :type name: str
@@ -103,6 +107,7 @@ class RepositoryInfo(Model):
     def summary(self):
         """Gets the summary of this RepositoryInfo.
 
+          # noqa: E501
 
         :return: The summary of this RepositoryInfo.
         :rtype: str
@@ -113,6 +118,7 @@ class RepositoryInfo(Model):
     def summary(self, summary):
         """Sets the summary of this RepositoryInfo.
 
+          # noqa: E501
 
         :param summary: The summary of this RepositoryInfo.
         :type summary: str
@@ -124,6 +130,7 @@ class RepositoryInfo(Model):
     def tags(self):
         """Gets the tags of this RepositoryInfo.
 
+          # noqa: E501
 
         :return: The tags of this RepositoryInfo.
         :rtype: List[str]
@@ -134,6 +141,7 @@ class RepositoryInfo(Model):
     def tags(self, tags):
         """Sets the tags of this RepositoryInfo.
 
+          # noqa: E501
 
         :param tags: The tags of this RepositoryInfo.
         :type tags: List[str]

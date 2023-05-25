@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-    title: Workspaces manager API
+    title: OSB Workspaces manager API
     version: 0.2.0
     description: Opensource Brain Platform - Reference Workspaces manager API
     license:
@@ -64,6 +64,9 @@ paths:
                     in: query
                     required: false
                 -
+                    examples:
+                        'Search by name, id and tag':
+                            value: 'name__like=Work%+id__=1+tags[tag]=Tag'
                     name: q
                     description: >-
                         The search string for filtering of the items to return. Multiple criteria are
@@ -142,10 +145,11 @@ paths:
                     description: The workspace.
                 '404':
                     description: The workspace was not found.
-            summary: Used to retrieve a workspace from the repository.
             security:
                 - {}
-                - bearerAuth: []
+                -
+                    bearerAuth: []
+            summary: Used to retrieve a workspace from the repository.
         put:
             requestBody:
                 description: The workspace to save.
@@ -1159,10 +1163,6 @@ components:
                     description: WorkspaceResource name
                     type: string
                     example: Workspace Resource One
-                folder:
-                    description: WorkspaceResource folder where the resource will stored in the pvc
-                    type: string
-                    example: Workspace Resource One
                 status:
                     $ref: '#/components/schemas/ResourceStatus'
                     description: WorkspaceResource status is the resource
@@ -1183,6 +1183,10 @@ components:
                 resource_type:
                     $ref: '#/components/schemas/ResourceType'
                     description: WorkspaceResource type
+                path:
+                    description: WorkspaceResource path where the resource will stored in the pvc.
+                    type: string
+                    example: repo/sample.nwb
         WorkspaceResource:
             description: Workspace Resource item of a Workspace
             allOf:

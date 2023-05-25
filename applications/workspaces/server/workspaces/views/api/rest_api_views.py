@@ -9,7 +9,7 @@ from workspaces.service.model_service import (
     WorkspaceresourceService,
     TagService,
 )
-from workspaces.repository.model_repository import OSBRepositoryRepository
+from workspaces.persistence.model_persistence import OSBRepositoryRepository
 from workspaces.utils import dao_entity2dict
 from workspaces.views.base_model_view import BaseModelView
 

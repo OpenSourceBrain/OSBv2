@@ -19,15 +19,13 @@ class WorkspaceResourceBase(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, folder=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None):  # noqa: E501
+    def __init__(self, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, path=None):  # noqa: E501
         """WorkspaceResourceBase - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceResourceBase.  # noqa: E501
         :type id: int
         :param name: The name of this WorkspaceResourceBase.  # noqa: E501
         :type name: str
-        :param folder: The folder of this WorkspaceResourceBase.  # noqa: E501
-        :type folder: str
         :param status: The status of this WorkspaceResourceBase.  # noqa: E501
         :type status: ResourceStatus
         :param timestamp_created: The timestamp_created of this WorkspaceResourceBase.  # noqa: E501
@@ -38,37 +36,39 @@ class WorkspaceResourceBase(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResourceBase.  # noqa: E501
         :type resource_type: ResourceType
+        :param path: The path of this WorkspaceResourceBase.  # noqa: E501
+        :type path: str
         """
         self.openapi_types = {
             'id': int,
             'name': str,
-            'folder': str,
             'status': ResourceStatus,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
-            'resource_type': ResourceType
+            'resource_type': ResourceType,
+            'path': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'name': 'name',
-            'folder': 'folder',
             'status': 'status',
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
-            'resource_type': 'resource_type'
+            'resource_type': 'resource_type',
+            'path': 'path'
         }
 
         self._id = id
         self._name = name
-        self._folder = folder
         self._status = status
         self._timestamp_created = timestamp_created
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
+        self._path = path
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResourceBase':
@@ -126,29 +126,6 @@ class WorkspaceResourceBase(Model):
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
-
-    @property
-    def folder(self):
-        """Gets the folder of this WorkspaceResourceBase.
-
-        WorkspaceResource folder where the resource will stored in the pvc  # noqa: E501
-
-        :return: The folder of this WorkspaceResourceBase.
-        :rtype: str
-        """
-        return self._folder
-
-    @folder.setter
-    def folder(self, folder):
-        """Sets the folder of this WorkspaceResourceBase.
-
-        WorkspaceResource folder where the resource will stored in the pvc  # noqa: E501
-
-        :param folder: The folder of this WorkspaceResourceBase.
-        :type folder: str
-        """
-
-        self._folder = folder
 
     @property
     def status(self):
@@ -262,3 +239,26 @@ class WorkspaceResourceBase(Model):
             raise ValueError("Invalid value for `resource_type`, must not be `None`")  # noqa: E501
 
         self._resource_type = resource_type
+
+    @property
+    def path(self):
+        """Gets the path of this WorkspaceResourceBase.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :return: The path of this WorkspaceResourceBase.
+        :rtype: str
+        """
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        """Sets the path of this WorkspaceResourceBase.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :param path: The path of this WorkspaceResourceBase.
+        :type path: str
+        """
+
+        self._path = path
