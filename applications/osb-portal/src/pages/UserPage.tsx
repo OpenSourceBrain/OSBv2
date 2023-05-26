@@ -1,7 +1,5 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
@@ -11,7 +9,6 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinkIcon from "@mui/icons-material/Link";
@@ -34,7 +31,6 @@ import WorkspaceCard from "../components/workspace/WorkspaceCard";
 import RepositoryService from "../service/RepositoryService";
 import {
   bgDarkest,
-  bgLightestShade,
   bgDarker,
   linkColor,
   paragraph,
@@ -42,13 +38,41 @@ import {
   bgLightest as lineColor,
 } from "../theme";
 
-import OSBDialog from "../components/common/OSBDialog";
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
 
 import RepositoriesTable from "../components/repository/RespositoriesTable";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { IconButton } from "@mui/material";
+
+export const Quotas = {
+  "quota-ws-maxcpu": {
+    label: "Maximum CPU",
+    showGB: false
+  },
+  "quota-ws-maxmem": {
+    label: "Maximum memory",
+    showGB: true
+  },
+  "quota-ws-max": {
+    label: "Maximum workspaces",
+    showGB: false
+  },
+  "quota-ws-open": {
+    label: "Concurrent workspaces",
+    showGB: false
+  },
+  "quota-ws-storage-max": {
+    label: "Available storage per workspace",
+    showGB: true
+  },
+  "quota-storage-max": {
+    label: "User shared storage",
+    showGB: true
+  }
+}
 
 const styles = {
   profileInformation: (theme) => ({
@@ -301,7 +325,11 @@ export const UserPage = (props: any) => {
         });
       });
   };
-  console.log(user)
+
+  const onGroupClick = (groupname) => {
+    navigate(`/user/${user.username}/groups/${groupname}`);
+  }
+
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
@@ -540,11 +568,77 @@ export const UserPage = (props: any) => {
                           label={group}
                           key={group}
                           variant="outlined"
+                          onClick={() => onGroupClick(group)}
                         />
                       );
                     })}
                 </Box>
               )}
+
+              {
+                canEdit &&
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                >
+                  <Typography component="h2" variant="h5">
+                    Maximum quotas
+                    <Tooltip
+                     title={
+                      <span>These are the maximum quotas assigned to your account. If you want more information or increase your quotas, please contact <strong>info@opensourcebrain.org</strong> </span>
+                     }
+                  >
+                    <IconButton
+                      sx={{
+                        padding: "0 0 0 10px",
+                        "&:hover": {
+                          background: "transparent",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: paragraph,
+                          width: 16,
+                          height: 16,
+                        }
+                      }}>
+                      <InfoOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
+                  </Typography>
+
+                  {
+                    Object.keys(user.quotas).map((row, index) =>
+                      Quotas[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
+                        <Tooltip title={Quotas[row].label}>
+                          <Typography
+                            component="p"
+                            variant="subtitle2"
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              lineHeight: "1.429",
+                              maxWidth: "75%",
+                              cursor: "default"
+                            }}
+                          >
+                            {
+                              Quotas[row].label
+                            }
+                          </Typography>
+                        </Tooltip>
+                        <Typography
+                          component="p"
+                          variant="subtitle2"
+                        >
+                          {user.quotas[row]} {Quotas[row].showGB && "GB"}
+                        </Typography>
+                      </Box>)
+                  }
+                </Box>
+              }
+
+
 
               {user.registrationDate && (
                 <Typography component="p" variant="body1">
@@ -689,11 +783,11 @@ export const UserPage = (props: any) => {
       </Box>
       {canEdit && profileEditDialogOpen && (
 
-          <UserEditor
-            user={user}
-            saveUser={handleUpdateUser}
-            close={() => setProfileEditDialogOpen(false)}
-          />
+        <UserEditor
+          user={user}
+          saveUser={handleUpdateUser}
+          close={() => setProfileEditDialogOpen(false)}
+        />
       )}
       {loading && <CircularProgress size={24} />}
     </>
