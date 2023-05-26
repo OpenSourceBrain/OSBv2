@@ -377,7 +377,7 @@ export const UserGroupsPage = (props: any) => {
                                     component="p"
                                     variant="subtitle2"
                                   >
-                                    {member.username}
+                                    {member.email}
                                   </Typography>
                                 </Stack>
                               </Stack>
