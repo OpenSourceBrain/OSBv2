@@ -45,14 +45,9 @@ const styles = {
     overflowY: 'auto',
     maxHeight: "100%",
 
-    "&.scrollbar": {
-      paddingRight: 0
-    },
-
     "&::-webkit-scrollbar": {
       display: 'none',
       width: 0,
-      paddingRight: 0
     },
 
     "& .MuiSvgIcon-root": {
@@ -357,7 +352,7 @@ export const UserGroupsPage = (props: any) => {
                 />
               </Tabs>
             </Box>
-            <Box className="scrollbar" height="100%" py={4} px={0}>
+            <Box className="scrollbar" height="100%" py={4} sx={{ paddingRight: '0 !important' }}>
               {
                 loading ? <CircularProgress size={24} /> : <TabPanel value={tabValue} index={0}>
                   <TableContainer>
