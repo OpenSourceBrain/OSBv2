@@ -2,22 +2,19 @@
 <@layout.registrationLayout displayInfo=social.displayInfo displayWide=(realm.password && social.providers??); section>
     <#if section = "header">
        <div class="login-register-link">
-       <span> ${msg("doLogIn")} </span>
-        <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-            <div id="kc-registration" class="kc-register">
-                <span>${msg("noAccount")} <a tabindex="6" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
-            </div>
-        </#if>
-        </div>
-        <div class="login-pf-logo"></div>
+            <span>${msg("doLogIn")} </span>
+            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                <div id="kc-registration" class="kc-register">
+                    <span>${msg("noAccount")} <a tabindex="6" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
+                </div>
+            </#if>
+       </div>
+      <div class="login-pf-logo"></div>
+
     <#elseif section = "form">
      <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
-
         <#if realm.password && social.providers??>
-
             <div id="kc-social-providers" class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}">
-
-
                 <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 3>${properties.kcFormSocialAccountListGridClass!}</#if>">
                     <#list social.providers as p>
                         <li class="${properties.kcFormSocialAccountListLinkClass!}">
@@ -31,8 +28,6 @@
             </div>
             <div id="kc-form-separator" class="separator">or</div>
         </#if>
-
-
 
         <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
                 <#if realm.password>

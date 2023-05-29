@@ -788,13 +788,14 @@ a.zocial {
 
 .login-pf-page .card-pf {
   margin-bottom: 10px;
-  padding: 24;
+  padding: 24px;
 }
 
 #kc-form-login div.form-group:last-of-type,
 #kc-register-form div.form-group:last-of-type,
 #kc-update-profile-form div.form-group:last-of-type {
   margin-bottom: 0px;
+  /*margin-top: 12px;*/
 }
 
 #kc-back {
@@ -843,4 +844,9 @@ form#kc-select-back-form div.login-pf-social-section {
 .fa {
   font-size: 20px;
   margin-right: 5px;
+}
+
+.register-footer {
+  margin-top: 12px;
+  justify-content: end;
 }
