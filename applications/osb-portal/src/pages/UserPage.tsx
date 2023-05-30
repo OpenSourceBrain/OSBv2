@@ -21,7 +21,6 @@ import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
 import BusinessIcon from "@mui/icons-material/Business";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-
 import Tooltip from "@mui/material/Tooltip";
 
 import { Workspace } from "../types/workspace";
@@ -37,42 +36,14 @@ import {
   textColor,
   bgLightest as lineColor,
 } from "../theme";
-
+import { USER_QUOTAS } from '../content.js'
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
-
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
-
-export const Quotas = {
-  "quota-ws-maxcpu": {
-    label: "Maximum CPU",
-    showGB: false
-  },
-  "quota-ws-maxmem": {
-    label: "Maximum memory",
-    showGB: true
-  },
-  "quota-ws-max": {
-    label: "Maximum workspaces",
-    showGB: false
-  },
-  "quota-ws-open": {
-    label: "Concurrent workspaces",
-    showGB: false
-  },
-  "quota-ws-storage-max": {
-    label: "Available storage per workspace",
-    showGB: true
-  },
-  "quota-storage-max": {
-    label: "User shared storage",
-    showGB: true
-  }
-}
 
 const styles = {
   profileInformation: (theme) => ({
@@ -204,10 +175,6 @@ export const UserPage = (props: any) => {
     newTabValue: number
   ) => {
     setTabValue(newTabValue);
-  };
-
-  const handleSeeMore = (exp: boolean) => {
-    setExpanded(!expanded);
   };
 
   React.useEffect(() => {
@@ -395,7 +362,7 @@ export const UserPage = (props: any) => {
                 )}
               </Typography>
 
-              {(user.profiles || user.website) && (
+              {(Object.keys(user.profiles).length !== 0 || user.website) && (
                 <Box
                   className="links"
                   display="flex"
@@ -608,8 +575,8 @@ export const UserPage = (props: any) => {
 
                   {
                     Object.keys(user.quotas).map((row, index) =>
-                      Quotas[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
-                        <Tooltip title={Quotas[row].label}>
+                      USER_QUOTAS[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
+                        <Tooltip title={<span><strong>{USER_QUOTAS[row].label}:</strong> {USER_QUOTAS[row]?.description}</span>}>
                           <Typography
                             component="p"
                             variant="subtitle2"
@@ -623,7 +590,7 @@ export const UserPage = (props: any) => {
                             }}
                           >
                             {
-                              Quotas[row].label
+                              USER_QUOTAS[row].label
                             }
                           </Typography>
                         </Tooltip>
@@ -631,7 +598,7 @@ export const UserPage = (props: any) => {
                           component="p"
                           variant="subtitle2"
                         >
-                          {user.quotas[row]} {Quotas[row].showGB && "GB"}
+                          {user.quotas[row]} {USER_QUOTAS[row].showGB && "GB"}
                         </Typography>
                       </Box>)
                   }
