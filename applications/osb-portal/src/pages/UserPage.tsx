@@ -21,7 +21,6 @@ import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
 import BusinessIcon from "@mui/icons-material/Business";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-
 import Tooltip from "@mui/material/Tooltip";
 
 import { Workspace } from "../types/workspace";
@@ -37,48 +36,14 @@ import {
   textColor,
   bgLightest as lineColor,
 } from "../theme";
-
+import { USER_QUOTAS } from '../general.js'
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
-
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
-
-export const Quotas = {
-  "quota-ws-maxcpu": {
-    label: "Maximum CPU",
-    showGB: false,
-    description: "sets the storage dedicated to the user data in Gb"
-  },
-  "quota-ws-maxmem": {
-    label: "Maximum memory",
-    showGB: true,
-    description: "Sets the memory limit on a single workspace in Gb",
-  },
-  "quota-ws-max": {
-    label: "Maximum workspaces",
-    showGB: false,
-    description: "Limits the number of total owned workspaces for the user"
-  },
-  "quota-ws-open": {
-    label: "Concurrent workspaces",
-    showGB: false,
-    description: "Limits the maximum number of workspaces open concurrently"
-  },
-  "quota-ws-storage-max": {
-    label: "Available storage per workspace",
-    showGB: true,
-    description: "Set the storage dedicated to a single workspace in Gb"
-  },
-  "quota-storage-max": {
-    label: "User shared storage",
-    showGB: true,
-    description: "Sets the storage dedicated to the user data in Gb"
-  }
-}
 
 const styles = {
   profileInformation: (theme) => ({
@@ -614,8 +579,8 @@ export const UserPage = (props: any) => {
 
                   {
                     Object.keys(user.quotas).map((row, index) =>
-                      Quotas[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
-                        <Tooltip title={<span><strong>{Quotas[row].label}:</strong> {Quotas[row]?.description}</span>}>
+                      USER_QUOTAS[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
+                        <Tooltip title={<span><strong>{USER_QUOTAS[row].label}:</strong> {USER_QUOTAS[row]?.description}</span>}>
                           <Typography
                             component="p"
                             variant="subtitle2"
