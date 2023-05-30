@@ -50,27 +50,33 @@ import { IconButton } from "@mui/material";
 export const Quotas = {
   "quota-ws-maxcpu": {
     label: "Maximum CPU",
-    showGB: false
+    showGB: false,
+    description: "sets the storage dedicated to the user data in Gb"
   },
   "quota-ws-maxmem": {
     label: "Maximum memory",
-    showGB: true
+    showGB: true,
+    description: "Sets the memory limit on a single workspace in Gb",
   },
   "quota-ws-max": {
     label: "Maximum workspaces",
-    showGB: false
+    showGB: false,
+    description: "Limits the number of total owned workspaces for the user"
   },
   "quota-ws-open": {
     label: "Concurrent workspaces",
-    showGB: false
+    showGB: false,
+    description: "Limits the maximum number of workspaces open concurrently"
   },
   "quota-ws-storage-max": {
     label: "Available storage per workspace",
-    showGB: true
+    showGB: true,
+    description: "Set the storage dedicated to a single workspace in Gb"
   },
   "quota-storage-max": {
     label: "User shared storage",
-    showGB: true
+    showGB: true,
+    description: "Sets the storage dedicated to the user data in Gb"
   }
 }
 
@@ -395,7 +401,7 @@ export const UserPage = (props: any) => {
                 )}
               </Typography>
 
-              {(user.profiles || user.website) && (
+              {(Object.keys(user.profiles).length !== 0 || user.website) && (
                 <Box
                   className="links"
                   display="flex"
@@ -609,7 +615,7 @@ export const UserPage = (props: any) => {
                   {
                     Object.keys(user.quotas).map((row, index) =>
                       Quotas[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
-                        <Tooltip title={Quotas[row].label}>
+                        <Tooltip title={<span><strong>{Quotas[row].label}:</strong> {Quotas[row]?.description}</span>}>
                           <Typography
                             component="p"
                             variant="subtitle2"
