@@ -36,7 +36,7 @@ import {
   textColor,
   bgLightest as lineColor,
 } from "../theme";
-import { USER_QUOTAS } from '../general.js'
+import { USER_QUOTAS } from '../content.js'
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
