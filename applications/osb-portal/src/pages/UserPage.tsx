@@ -177,10 +177,6 @@ export const UserPage = (props: any) => {
     setTabValue(newTabValue);
   };
 
-  const handleSeeMore = (exp: boolean) => {
-    setExpanded(!expanded);
-  };
-
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
@@ -594,7 +590,7 @@ export const UserPage = (props: any) => {
                             }}
                           >
                             {
-                              Quotas[row].label
+                              USER_QUOTAS[row].label
                             }
                           </Typography>
                         </Tooltip>
@@ -602,7 +598,7 @@ export const UserPage = (props: any) => {
                           component="p"
                           variant="subtitle2"
                         >
-                          {user.quotas[row]} {Quotas[row].showGB && "GB"}
+                          {user.quotas[row]} {USER_QUOTAS[row].showGB && "GB"}
                         </Typography>
                       </Box>)
                   }
