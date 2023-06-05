@@ -47,7 +47,8 @@ RUN pip install --no-cache-dir cython
 RUN groupadd -g $NB_GID jovyan && \
     usermod -g $NB_GID $NB_UID && \
     chown -R $NB_UID:$NB_GID /home/$NB_UID && \
-    chown -R $NB_UID:$NB_GID /opt/conda
+    chown -R $NB_UID:$NB_GID /opt/conda && \
+    chown -R $NB_UID:$NB_GID /opt
 
 USER $NB_UID
 
