@@ -56,7 +56,8 @@ RUN pip install -r requirements.txt --no-cache-dir
 COPY --from=clone $FOLDER .
 
 
-RUN mkdir -p /opt/workspace
+RUN mkdir -p /opt/workspace && \
+    chown -R $NB_UID:$NB_GID /opt/workspace
 RUN ln -s /opt/workspace workspace
 RUN mkdir -p /opt/home
 RUN python utilities/install.py --npm-skip --no-test
