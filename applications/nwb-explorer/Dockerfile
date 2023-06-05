@@ -25,6 +25,7 @@ RUN npm run build
 ###
 FROM jupyter/base-notebook:hub-1.4.2
 ENV NB_UID=jovyan
+ENV NB_GID=1001
 ENV FOLDER=nwb-explorer
 USER root
 
