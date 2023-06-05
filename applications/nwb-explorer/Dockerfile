@@ -40,7 +40,21 @@ RUN pip install cython --no-cache-dir
 RUN chown $NB_UID /opt
 RUN chown $NB_UID .
 
+--------
 
+RUN rm -rf /var/lib/apt/lists
+
+RUN apt-get update -qq && \
+    apt-get install -y python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq 
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir cython
+
+RUN groupadd -g $NB_GID jovyan && \
+    usermod -g $NB_GID $NB_UID && \
+    chown -R $NB_UID:$NB_GID /home/$NB_UID && \
+    chown -R $NB_UID:$NB_GID /opt/conda
 
 USER $NB_UID
 
