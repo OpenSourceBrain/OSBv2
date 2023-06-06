@@ -36,8 +36,6 @@ WORKDIR $FOLDER
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq && \
     apt-get install -y python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq 
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir cython
 
 RUN groupadd -g $NB_GID jovyan && \
