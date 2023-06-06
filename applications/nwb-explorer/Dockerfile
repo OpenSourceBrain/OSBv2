@@ -33,21 +33,16 @@ USER root
 
 WORKDIR $FOLDER
 
-
-
 RUN rm -rf /var/lib/apt/lists
-
 RUN apt-get update -qq && \
     apt-get install -y python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
 RUN pip install --no-cache-dir cython
 
 RUN groupadd -g $NB_GID jovyan && \
     usermod -g $NB_GID $NB_UID && \
     chown -R $NB_UID:$NB_GID /home/$NB_UID && \
-    chown -R $NB_UID:$NB_GID /opt/conda && \
     chown -R $NB_UID:$NB_GID /opt
 
 USER $NB_UID
@@ -57,8 +52,7 @@ RUN pip install -r requirements.txt --no-cache-dir
 COPY --from=clone $FOLDER .
 
 
-RUN mkdir -p /opt/workspace && \
-    chown -R $NB_UID:$NB_GID /opt/workspace
+RUN mkdir -p /opt/workspace
 RUN ln -s /opt/workspace workspace
 RUN mkdir -p /opt/home
 RUN python utilities/install.py --npm-skip --no-test
