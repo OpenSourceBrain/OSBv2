@@ -41,27 +41,6 @@ paths:
                     description: Application is not ready yet
             operationId: ready
             summary: Test if application is ready to take requests
-    /users:
-        post:
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-                required: true
-            tags:
-                - users
-            responses:
-                '200':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-                    description: The user as just saved
-            security:
-                -
-                    bearerAuth: []
-            operationId: createUser
     '/users/{userid}':
         get:
             tags:
@@ -170,6 +149,36 @@ paths:
                     type: string
                 in: path
                 required: true
+    /users:
+        get:
+            tags:
+                - users
+            parameters:
+                -
+                    name: query_string
+                    description: query filter
+                    schema:
+                        type: string
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    users:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/User'
+                    description: Get list of users
+            security:
+                -
+                    bearerAuth: []
+            operationId: get_users
+            summary: Get list of users based on query
+            x-openapi-router-controller: accounts_api.controllers.users_controller
 components:
     schemas:
         Valid:

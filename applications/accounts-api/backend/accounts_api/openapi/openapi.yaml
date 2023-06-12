@@ -120,23 +120,27 @@ paths:
       - infrastructure
       x-openapi-router-controller: accounts_api.controllers.infrastructure_controller
   /users:
-    post:
-      operationId: create_user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
+    get:
+      operationId: get_users
+      parameters:
+      - description: query filter
+        explode: true
+        in: query
+        name: query_string
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: The user as just saved
+                $ref: '#/components/schemas/get_users_200_response'
+          description: Get list of users
       security:
       - bearerAuth: []
+      summary: Get list of users based on query
       tags:
       - users
       x-openapi-router-controller: accounts_api.controllers.users_controller
@@ -321,6 +325,47 @@ components:
       required:
       - name
       title: Group
+      type: object
+    get_users_200_response:
+      example:
+        users:
+        - firstName: firstName
+          lastName: lastName
+          website: website
+          quotas:
+            key: ""
+          profiles:
+            key: ""
+          registrationDate: 2000-01-23
+          groups:
+          - groups
+          - groups
+          id: id
+          avatar: avatar
+          email: email
+          username: username
+        - firstName: firstName
+          lastName: lastName
+          website: website
+          quotas:
+            key: ""
+          profiles:
+            key: ""
+          registrationDate: 2000-01-23
+          groups:
+          - groups
+          - groups
+          id: id
+          avatar: avatar
+          email: email
+          username: username
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/User'
+          title: users
+          type: array
+      title: get_users_200_response
       type: object
   securitySchemes:
     bearerAuth:
