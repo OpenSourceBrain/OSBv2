@@ -30,7 +30,7 @@ const styles = ({
     display: 'flex',
     justifyContent: 'start',
     alignItems: 'center',
-    height: '22px',
+    height: '32px',
     overflow: 'hidden',
   },
   logoChip: {
@@ -39,6 +39,7 @@ const styles = ({
     fontSize: "9px",
     px: "5px",
     py: "2px",
+    mt: "4px",
     lineHeight: 1.4,
     fontWeight: 700,
   },
@@ -144,7 +145,7 @@ export const Header = (props: any) => {
       <Toolbar sx={styles.toolbar}>
         <Box display="flex" sx={{height: "100%", overflow: "hidden", alignItems: "center"}}>
         <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
-          <OSBLogo sx={{mr: "0.4rem", fontSize: "11rem"}}  />
+          <OSBLogo sx={{mr: "0.4rem", fontSize: "12rem"}}  />
           
         </Link>
         <Box component="sup" sx={styles.logoChip}>v2.0</Box>
