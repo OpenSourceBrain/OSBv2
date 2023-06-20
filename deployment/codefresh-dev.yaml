@@ -679,12 +679,16 @@ steps:
     - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/accounts
     - kubectl rollout status deployment/volumemanager
+    - kubectl rollout status deployment/proxy-public-gk
+    - kubectl rollout status deployment/argo-server-gk
     - kubectl rollout status deployment/common
+    - kubectl rollout status deployment/events-ui-gk
     - kubectl rollout status deployment/workflows
     - kubectl rollout status deployment/workspaces
     - kubectl rollout status deployment/accounts-api
     - kubectl rollout status deployment/osb-portal
     - kubectl rollout status deployment/backoffice
+    - kubectl rollout status deployment/backoffice-gk
     - sleep 60
     when:
       condition:

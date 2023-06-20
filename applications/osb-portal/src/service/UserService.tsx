@@ -2,7 +2,7 @@ import Keycloak from "keycloak-js";
 
 import workspaceService from "./WorkspaceService";
 import repositoryService from "./RepositoryService";
-
+import groupsService from "./GroupsService"
 import { UserInfo } from "../types/user";
 import { getBaseDomain } from "../utils";
 import { Workspace } from "../types/workspace";
@@ -25,6 +25,7 @@ export const initApis = (token: string) => {
     document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
     repositoryService.initApis(token);
     workspaceService.initApis(token);
+    groupsService.initApis(token);
     usersApi = new accountsApi.UsersApi(
       new Configuration({ basePath: accountsApiUri, accessToken: token })
     );

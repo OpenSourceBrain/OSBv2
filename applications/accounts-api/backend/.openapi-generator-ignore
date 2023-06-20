@@ -24,6 +24,7 @@
 setup.py
 */controllers/*
 Dockerfile
-src/__main__.py
+**/__main__.py
 requirements.txt
 test-requirements.txt
+*/.openapi-generator

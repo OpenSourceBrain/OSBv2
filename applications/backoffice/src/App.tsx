@@ -1,9 +1,13 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 
-import makeStyles from '@mui/styles/makeStyles';
 
 import HomePage from "./pages/HomePage";
 import theme from "./theme";
@@ -18,21 +22,21 @@ declare module '@mui/styles/defaultTheme' {
 
 
 
-const useStyles = makeStyles(() => ({
+const styles = {
   mainContainer: {
-    overflow: "auto",
+
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    [theme.breakpoints.up("md")]: {
-      height: "100vh",
-      overflow: "hidden",
-    }
+
+    height: { md: "100vh" },
+    overflow: { md: "hidden", xs: "auto" },
+
   },
-}));
+};
 
 export const App = (props: any) => {
-  const classes = useStyles();
+
 
   return (
     // tslint:disable-next-line:jsx-boolean-value
@@ -43,14 +47,15 @@ export const App = (props: any) => {
 
           {!props.error &&
             <Router>
-              <div className={classes.mainContainer}>
+              <Box sx={styles.mainContainer}>
 
-                  <Switch>
-                    <Route exact={true} path="/">
-                      <HomePage />
-                    </Route>
-                  </Switch>
-              </div>
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={<HomePage />}
+                    />
+                  </Routes>
+              </Box>
             </Router>
           }
 

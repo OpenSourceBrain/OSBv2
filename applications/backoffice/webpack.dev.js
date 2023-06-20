@@ -57,7 +57,7 @@ module.exports = env => {
             pathRewrite: { '^/proxy/workspaces': '' }
           },
           '/proxy/accounts-api': {
-            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN) : replaceHost(proxyTarget, 'api.accounts'),
+            target: env.ACCOUNTS_API_DOMAIN ? (env.ACCOUNTS_API_DOMAIN) : replaceHost(proxyTarget, 'api.accounts'),
             secure: false,
             changeOrigin: true,
             pathRewrite: { '^/proxy/accounts-api': '' }
@@ -76,6 +76,22 @@ module.exports = env => {
           'NAMESPACE': env.NAMESPACE || 'osb2',
           "ACCOUNTS_API_DOMAIN ": env.ACCOUNTS_API_DOMAIN || '',
           "WORKSPACES_DOMAIN ": env.WORKSPACES_DOMAIN || '',
+        }),
+        new CopyPlugin({
+          patterns: [
+            {
+              from: './src/assets-parametrized',
+              to: contentbase,
+              transform(content, path) {
+                return setEnv(content);
+              }
+            },
+            {
+              from: './src/assets',
+              to: contentbase,
+            },
+
+          ]
         }),
       ],
 

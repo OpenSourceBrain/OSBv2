@@ -41,27 +41,6 @@ paths:
                     description: Application is not ready yet
             operationId: ready
             summary: Test if application is ready to take requests
-    /users:
-        post:
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-                required: true
-            tags:
-                - users
-            responses:
-                '200':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-                    description: The user as just saved
-            security:
-                -
-                    bearerAuth: []
-            operationId: createUser
     '/users/{userid}':
         get:
             tags:
@@ -110,6 +89,96 @@ paths:
                     type: string
                 in: path
                 required: true
+    '/groups/{groupname}/':
+        get:
+            tags:
+                - groups
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Group'
+                    description: Get a user's public information
+            operationId: getGroup
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                required: true
+            tags:
+                - groups
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                    description: The user as just saved
+            security:
+                -
+                    bearerAuth: []
+            operationId: updateGroup
+        parameters:
+            -
+                name: groupname
+                schema:
+                    type: string
+                in: path
+                required: true
+    '/groups/{groupname}/users':
+        get:
+            tags:
+                - groups
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                    description: Get a user's public information
+            operationId: getGroupUsers
+        parameters:
+            -
+                name: groupname
+                schema:
+                    type: string
+                in: path
+                required: true
+    /users:
+        get:
+            tags:
+                - users
+            parameters:
+                -
+                    name: query_string
+                    description: query filter
+                    schema:
+                        type: string
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    users:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/User'
+                    description: Get list of users
+            security:
+                -
+                    bearerAuth: []
+            operationId: get_users
+            summary: Get list of users based on query
+            x-openapi-router-controller: accounts_api.controllers.users_controller
 components:
     schemas:
         Valid:
@@ -166,6 +235,34 @@ components:
                     $ref: '#/components/schemas/Profiles'
                     description: ''
             additionalProperties: true
+        Group:
+            description: ''
+            required:
+                - name
+            type: object
+            properties:
+                quotas:
+                    $ref: '#/components/schemas/Profiles'
+                    description: ''
+                name:
+                    description: ''
+                    type: string
+                description:
+                    description: ''
+                links:
+                    $ref: '#/components/schemas/Profiles'
+                    description: ''
+                keywords:
+                    description: ''
+                    type: array
+                    items:
+                        type: string
+                image:
+                    $ref: '#/components/schemas/Url'
+                    description: Image url
+                email:
+                    description: ''
+                    type: string
     securitySchemes:
         bearerAuth:
             scheme: bearer

@@ -23,26 +23,35 @@ body {
   background-size: contain;
   width: 132px;
   height: 20px;
-  position: absolute;
-  right: 0;
-  top: 20px;
   cursor: pointer;
 }
 
 .login-pf-header {
   position: relative;
   z-index: 20;
+  margin: 10px;
 }
+
+.login-register-link {
+  display: flex;
+}
+
+.login-pf-page .login-pf-header {
+  margin-bottom: 24px;
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .login-pf-page .login-pf-header h1 {
   display: flex;
   color: #fff;
-  margin-bottom: 17px;
   font-weight: 700;
   font-size: 14px;
   line-height: 14px;
-  display: flex;
   align-items: center;
+  justify-content: space-between;
   letter-spacing: 0.32px;
+  margin: 0;
 }
 
 
@@ -51,8 +60,6 @@ body {
   border-bottom: #eb5757 1px solid;
   box-shadow: none;
 }
-
-
 
 .form-group {
   margin-bottom: 12px;
@@ -94,7 +101,6 @@ body {
   color: #fff;
   font-weight: 400;
   font-size: 12px;
-  line-height: 20px;
   letter-spacing: 0.32px;
 }
 
@@ -108,20 +114,22 @@ body {
 
 .custom-checkbox .checkmark {
   position: absolute;
-  top: 1px;
+  top: 2.5px;
   left: 0;
   height: 15px;
   width: 15px;
   background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(103, 103, 103, 1);
   border-radius: 2px;
 }
 
 .custom-checkbox .checkmark:hover {
-  background-color: rgba(0, 188, 212, .1) !important;
+  border-color: #00BCD4 !important;
+  background-color: rgba(0, 188, 212, 0.5) !important;
 }
 .custom-checkbox input:checked ~ .checkmark {
   background-color: #00BCD4;
+  border-color: #00BCD4 !important;
 }
 
 .custom-checkbox .checkmark:after {
@@ -147,7 +155,7 @@ body {
 
 .kc-form-button {
   display: flex;
-  margin: 15px 0 0 auto;
+  margin: 0;
   align-items: center;
 }
 .kc-form-footer {
@@ -338,14 +346,14 @@ div.kc-logo-text span {
 
 #kc-form-options .checkbox {
   color: #72767b;
-  margin: 12px 0 0;
+  margin: 0;
 }
 
 #kc-terms-text {
   margin-bottom: 20px;
 }
 
-.login-pf-header span {
+.login-pf-header span:last-child {
   margin: 0 0 0 11px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 400;
@@ -727,7 +735,7 @@ a.zocial {
 
 .login-pf-page .login-pf-social-link a {
   padding: 2px 0;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 4px;
   color: #fff;
   box-shadow: none;
@@ -741,7 +749,7 @@ a.zocial {
 
 
 .login-pf-page .login-pf-social-link a:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .login-pf-page.login-pf-page-accounts {
@@ -766,7 +774,7 @@ a.zocial {
 }
 
 .login-pf-page .btn-primary:active:focus, .login-pf-page .btn-primary:hover {
-  background: rgba(0, 188, 212, .1);
+  background: #339DB8;
   outline: 0;
 }
 
@@ -780,12 +788,14 @@ a.zocial {
 
 .login-pf-page .card-pf {
   margin-bottom: 10px;
+  padding: 24px;
 }
 
 #kc-form-login div.form-group:last-of-type,
 #kc-register-form div.form-group:last-of-type,
 #kc-update-profile-form div.form-group:last-of-type {
   margin-bottom: 0px;
+  /*margin-top: 12px;*/
 }
 
 #kc-back {
@@ -799,6 +809,7 @@ form#kc-select-back-form div.login-pf-social-section {
 
 .login-pf-page .login-pf-settings {
   display: block;
+  margin-top: 24px;
 }
 .login-pf-page .separator {
   display: flex;
@@ -833,4 +844,9 @@ form#kc-select-back-form div.login-pf-social-section {
 .fa {
   font-size: 20px;
   margin-right: 5px;
+}
+
+.register-footer {
+  margin-top: 12px;
+  justify-content: end;
 }

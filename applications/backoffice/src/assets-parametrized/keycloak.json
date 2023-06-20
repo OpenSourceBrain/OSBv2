@@ -1,0 +1,9 @@
+{
+  "realm": "__NAMESPACE__",
+  "auth-server-url": "https://accounts.__DOMAIN__/auth/",
+  "ssl-required": "external",
+  "resource": "web-client",
+  "public-client": true,
+  "verify-token-audience": true,
+  "confidential-port": 0
+}

@@ -15,6 +15,78 @@ tags:
 - description: ""
   name: users
 paths:
+  /groups/{groupname}/:
+    get:
+      operationId: get_group
+      parameters:
+      - explode: false
+        in: path
+        name: groupname
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: Get a user's public information
+      tags:
+      - groups
+      x-openapi-router-controller: accounts_api.controllers.groups_controller
+    put:
+      operationId: update_group
+      parameters:
+      - explode: false
+        in: path
+        name: groupname
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: The user as just saved
+      security:
+      - bearerAuth: []
+      tags:
+      - groups
+      x-openapi-router-controller: accounts_api.controllers.groups_controller
+  /groups/{groupname}/users:
+    get:
+      operationId: get_group_users
+      parameters:
+      - explode: false
+        in: path
+        name: groupname
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+                type: array
+          description: Get a user's public information
+      tags:
+      - groups
+      x-openapi-router-controller: accounts_api.controllers.groups_controller
   /live:
     get:
       operationId: live
@@ -48,23 +120,27 @@ paths:
       - infrastructure
       x-openapi-router-controller: accounts_api.controllers.infrastructure_controller
   /users:
-    post:
-      operationId: create_user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
+    get:
+      operationId: get_users
+      parameters:
+      - description: query filter
+        explode: true
+        in: query
+        name: query_string
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: The user as just saved
+                $ref: '#/components/schemas/get_users_200_response'
+          description: Get list of users
       security:
       - bearerAuth: []
+      summary: Get list of users based on query
       tags:
       - users
       x-openapi-router-controller: accounts_api.controllers.users_controller
@@ -128,10 +204,12 @@ components:
       type: object
     Url:
       description: ""
+      title: image
       type: string
     Profiles:
       additionalProperties: true
       description: ""
+      title: quotas
       type: object
     User:
       additionalProperties: true
@@ -177,6 +255,7 @@ components:
         profiles:
           additionalProperties: true
           description: ""
+          title: quotas
           type: object
         registrationDate:
           description: ""
@@ -184,15 +263,109 @@ components:
           type: string
         avatar:
           description: ""
+          title: image
           type: string
         website:
           description: ""
+          title: image
           type: string
         quotas:
           additionalProperties: true
           description: ""
+          title: quotas
           type: object
       title: User
+      type: object
+    Group:
+      description: ""
+      example:
+        image: image
+        quotas:
+          key: ""
+        keywords:
+        - keywords
+        - keywords
+        name: name
+        description: ""
+        links:
+          key: ""
+        email: email
+      properties:
+        quotas:
+          additionalProperties: true
+          description: ""
+          title: quotas
+          type: object
+        name:
+          description: ""
+          title: name
+          type: string
+        description:
+          description: ""
+          title: description
+        links:
+          additionalProperties: true
+          description: ""
+          title: quotas
+          type: object
+        keywords:
+          description: ""
+          items:
+            type: string
+          title: keywords
+          type: array
+        image:
+          description: ""
+          title: image
+          type: string
+        email:
+          description: ""
+          title: email
+          type: string
+      required:
+      - name
+      title: Group
+      type: object
+    get_users_200_response:
+      example:
+        users:
+        - firstName: firstName
+          lastName: lastName
+          website: website
+          quotas:
+            key: ""
+          profiles:
+            key: ""
+          registrationDate: 2000-01-23
+          groups:
+          - groups
+          - groups
+          id: id
+          avatar: avatar
+          email: email
+          username: username
+        - firstName: firstName
+          lastName: lastName
+          website: website
+          quotas:
+            key: ""
+          profiles:
+            key: ""
+          registrationDate: 2000-01-23
+          groups:
+          - groups
+          - groups
+          id: id
+          avatar: avatar
+          email: email
+          username: username
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/User'
+          title: users
+          type: array
+      title: get_users_200_response
       type: object
   securitySchemes:
     bearerAuth:

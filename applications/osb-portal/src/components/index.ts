@@ -30,6 +30,7 @@ import { AnyAction, Dispatch } from "redux";
 import { RepositoryPage as repositoryPage } from "../pages/RepositoryPage";
 
 import { UserPage as userPage } from "../pages/UserPage";
+import { UserGroupsPage as UserGroupsPage } from "../pages/UserGroupsPage";
 import { RepositoriesPage as repositoriesPage } from "../pages/Repositories/index";
 import { WorkspacesPage as homePage } from "../pages/WorkspacesPage";
 import { retrieveAllTags, loadTags } from "../store/actions/tags";
@@ -184,6 +185,7 @@ export const WorkspacePage = connect(
 )(workspacePage);
 export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage);
 export const UserPage = connect(mapUserStateToProps)(userPage);
+export const GroupsPage = connect(mapUserStateToProps)(UserGroupsPage);
 export const RepositoriesPage = connect(mapRepositoriesPageToProps, {
   ...dispatchTagsProps,
   ...dispatchRepositoriesProps,
