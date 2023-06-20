@@ -1229,66 +1229,6 @@ components:
                     type: string
                     example: Storage Volume One
             x-tablename: volumestorage
-        OSBRepositoryBase:
-            description: OSB Repository Base model
-            required:
-                - name
-                - repository_type
-                - content_types
-                - uri
-            type: object
-            properties:
-                id:
-                    $ref: '#/components/schemas/PrimaryKey'
-                    description: Unique identifier of the repository
-                name:
-                    description: Repository name.
-                    type: string
-                    example: Repo One
-                summary:
-                    description: Summary describing the OSB Repository
-                    type: string
-                    example: Sample repository with experimental data
-                repository_type:
-                    $ref: '#/components/schemas/RepositoryType'
-                    description: Repository type
-                content_types:
-                    description: List of Repository Content Types
-                    type: string
-                auto_sync:
-                    description: Auto sync of the resources
-                    default: true
-                    type: boolean
-                    example: true
-                uri:
-                    description: URI of the repository
-                    type: string
-                    example: 'https://github.com/OpenSourceBrain/OSBv2'
-                default_context:
-                    description: The default branch to show for this repository
-                    type: string
-                    example: develop
-                user_id:
-                    description: 'OSBRepository keycloak user id, will be automatically be set to the logged in user'
-                    type: string
-                timestamp_created:
-                    format: date-time
-                    description: Date/time the Workspace is created
-                    type: string
-                    example: '2019-11-23T01:23:45.000Z'
-                timestamp_updated:
-                    format: date-time
-                    description: Date/time the Workspace is last updated
-                    type: string
-                    example: '2019-11-23T01:23:45.000Z'
-                tags:
-                    type: array
-                    items:
-                        allOf:
-                            -
-                                $ref: '#/components/schemas/Tag'
-                            -
-                                x-secondary: osbrepository_tag
         OSBRepositoryEntity:
             description: OSB Repository model
             allOf:
@@ -1467,6 +1407,66 @@ components:
                     type: array
                     items:
                         type: string
+        OSBRepositoryBase:
+            description: OSB Repository Base model
+            required:
+                - name
+                - repository_type
+                - content_types
+                - uri
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the repository
+                name:
+                    description: Repository name.
+                    type: string
+                    example: Repo One
+                summary:
+                    description: Summary describing the OSB Repository
+                    type: string
+                    example: Sample repository with experimental data
+                repository_type:
+                    $ref: '#/components/schemas/RepositoryType'
+                    description: Repository type
+                content_types:
+                    description: List of Repository Content Types
+                    type: string
+                auto_sync:
+                    description: Auto sync of the resources
+                    default: true
+                    type: boolean
+                    example: true
+                uri:
+                    description: URI of the repository
+                    type: string
+                    example: 'https://github.com/OpenSourceBrain/OSBv2'
+                default_context:
+                    description: The default branch to show for this repository
+                    type: string
+                    example: develop
+                user_id:
+                    description: 'OSBRepository keycloak user id, will be automatically be set to the logged in user'
+                    type: string
+                timestamp_created:
+                    format: date-time
+                    description: Date/time the Workspace is created
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_updated:
+                    format: date-time
+                    description: Date/time the Workspace is last updated
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                tags:
+                    type: array
+                    items:
+                        allOf:
+                            -
+                                $ref: '#/components/schemas/Tag'
+                            -
+                                x-secondary: osbrepository_tag
     securitySchemes:
         bearerAuth:
             scheme: bearer

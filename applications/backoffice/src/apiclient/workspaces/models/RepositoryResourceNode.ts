@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Workspaces manager API
+ * OSB Workspaces manager API
  * Opensource Brain Platform - Reference Workspaces manager API
  *
  * The version of the OpenAPI document: 0.2.0
@@ -18,7 +18,7 @@ import {
     RepositoryResourceFromJSON,
     RepositoryResourceFromJSONTyped,
     RepositoryResourceToJSON,
-} from '.';
+} from './';
 
 /**
  * Tree node (files/folders) of a Repository tree
