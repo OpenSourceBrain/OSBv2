@@ -1,12 +1,11 @@
 import json
-from multiprocessing import AuthenticationError
 import os
 import shutil
-from cloudharness.applications import get_configuration
 
 from cloudharness.service.pvc import create_persistent_volume_claim, delete_persistent_volume_claim
-
+from cloudharness import log
 from flask_sqlalchemy import Pagination
+from workspaces.models.base_model_ import Model
 
 from cloudharness import log as logger
 from cloudharness.events.decorators import send_event
@@ -14,11 +13,8 @@ import cloudharness.workflows.argo as argo
 from workspaces.config import Config
 
 
-from workspaces.models import OSBRepository, OSBRepositoryEntity, WorkspaceEntity, Workspace, WorkspaceResource
-from workspaces.models.resource_status import ResourceStatus
-from workspaces.models.resource_type import ResourceType
-from workspaces.models.tag import Tag
-from workspaces.models.user import User
+from workspaces.models import OSBRepository, Workspace, WorkspaceResource, ResourceOrigin, ResourceType, User, WorkspaceEntity
+
 from workspaces.persistence import (
     OSBRepositoryRepository,
     VolumeStorageRepository,
@@ -26,8 +22,8 @@ from workspaces.persistence import (
     WorkspaceResourceRepository,
     TagRepository,
 )
-from workspaces.persistence.base_model_persistence import BaseModelRepository
-from workspaces.persistence.models import TWorkspaceEntity, WorkspaceResourceEntity
+from workspaces.persistence.base_crud_persistence import BaseModelRepository
+from workspaces.persistence.models import OSBRepositoryEntity, TOSBRepositoryEntity, TWorkspaceEntity, TWorkspaceResourceEntity, WorkspaceResourceEntity
 from workspaces.service import osbrepository as osbrepository_helper
 from workspaces.service.kubernetes import create_volume
 from workspaces.service.auth import get_auth_client, keycloak_user_id
@@ -76,6 +72,8 @@ class BaseModelService:
 
     repository: BaseModelRepository = None
     user_service = UserService()
+
+    model: Model = None
     
     calculated_fields = set()
 
@@ -106,24 +104,39 @@ class BaseModelService:
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         return objects
+    
+    @classmethod
+    def to_dao(cls, d: dict):
+        d = rm_null_values(d)
+        return cls.repository.model.from_dict(**d)
+    
+    @classmethod
+    def to_dto(cls, dao) -> Model:
+        return cls.dict_to_dto(dao_entity2dict(dao))
+    
+    @classmethod
+    def dict_to_dto(cls, d) -> Model:
+        if cls.model:
+            return cls.model.from_dict(d)
+        return d
 
     def post(self, body):
         """Save an object to the repository."""
-        body = rm_null_values(body)
-
-        return self._calculated_fields_populate(self.repository.post(body))
+        
+        dao = self.to_dao(body)
+        return self._calculated_fields_populate(self.repository.post(dao))
 
     def get(self, id_):
         """Get an object from the repository."""
         res = self.repository.get(id_)
         if not self.is_authorized(res):
             raise NotAuthorized()
-        return self._calculated_fields_populate(res)
+        return self.to_dto(self._calculated_fields_populate(res))
 
     def put(self, body, id_):
         """Update an object in the repository."""
-        body = rm_null_values(body)
-        return self._calculated_fields_populate(self.repository.put(body, id_))
+        dao = self.to_dao(body)
+        return self._calculated_fields_populate(self.repository.put(dao, id_))
 
     def delete(self, id_):
         """Delete an object from the repository."""
@@ -140,6 +153,8 @@ class BaseModelService:
 class WorkspaceService(BaseModelService):
     repository = WorkspaceRepository()
     resource_repository = WorkspaceResourceRepository()
+
+    model = Workspace
 
     calculated_fields = {"user"}
 
@@ -250,45 +265,56 @@ class WorkspaceService(BaseModelService):
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         return objects
+    
+    @classmethod
+    def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
+        workspace = super().to_dto(workspace_entity)
+        if not workspace.resources:
+            workspace.resources = []
+        return workspace
+    
+    @classmethod
+    def to_dao(cls, d: dict) -> TWorkspaceEntity:
 
+        workspace: TWorkspaceEntity = super().to_dao(d)
+        workspace.tags = TagRepository().get_tags_daos(workspace.tags)
+        return workspace
+    
     def get(self, id_):
 
-        workspace_entity: TWorkspaceEntity = super().get(id_)
+        workspace: Workspace = super().get(id_)
 
-        workspace = dao_entity2dict(workspace_entity)
-
-        if workspace:
-            resources = workspace.get("resources")
-            if resources:
-                for r in resources:
-                    r.update({"origin": json.loads(r.get("origin"))})
-            else:
-                workspace.update({"resources": []})
+        
+            
         # check if there are running import tasks
         logger.debug(
-            "Post get, check workflows for workspace %....", workspace.get("id"))
-        workflows = argo.get_workflows(status="Running", limit=9999)
-        if workflows and workflows.items:
-            for workflow in workflows.items:
-                try:
-                    if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
-                            "workspace"
-                    ).strip() == str(workspace["id"]):
-                        fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
-                            "/", " of ")
-                        workspace["resources"].append(
-                            {
-                                "id": -1,
-                                "name": "Importing resources into workspace",
-                                "origin": {"path": fake_path},
-                                "resource_type": ResourceType.E,
-                                "workspace_id": workspace["id"],
-                            }
-                        )
-                    break
-                except Exception as e:
-                    # probably not a workspace import workflow job --> skip it
-                    pass
+            "Post get, check workflows for workspace %....", workspace.id)
+        try:
+            workflows = argo.get_workflows(status="Running", limit=9999)
+            if workflows and workflows.items:
+                for workflow in workflows.items:
+                    try:
+                        if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
+                                "workspace"
+                        ).strip() == str(workspace["id"]):
+                            fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
+                                "/", " of ")
+                            workspace.resources.append(WorkspaceResource.from_dict(
+                                {
+                                    "id": -1,
+                                    "name": "Importing resources into workspace",
+                                    "origin": {"path": fake_path},
+                                    "resource_type": ResourceType.E,
+                                    "workspace_id": workspace["id"],
+                                }
+                            ))
+                        break
+                    except Exception as e:
+                        # probably not a workspace import workflow job --> skip it
+                        pass    
+        except Exception as e:
+                log.exception("Error while checking workflows for workspace %s", workspace.id)
+                pass                                                               
         return workspace
 
     def user(self, workspace):
@@ -325,16 +351,15 @@ class OsbrepositoryService(BaseModelService):
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
 
-        self.map_entity(body)
         return super().post(body)
 
     def put(self, body, id_):
         osbrepository = OSBRepository.from_dict(body) # Validate
 
-        self.map_entity(body)
         return super().put(body, id_)
 
-    def map_entity(self, body):
+    @classmethod
+    def to_dao(cls, body: dict) -> TOSBRepositoryEntity:
         content_types = ""
         # convert the content types list to a content type comma separated string
         for ct in body["content_types_list"]:
@@ -342,6 +367,10 @@ class OsbrepositoryService(BaseModelService):
         body.update({"content_types": content_types.strip(",")})
         for del_attr in body.keys() & ['description', 'content_types_list']:
             del body[del_attr]
+
+        osbrepository: TOSBRepositoryEntity = super().to_dao(body)
+        osbrepository.tags = TagRepository().get_tags_daos(osbrepository.tags)
+        return osbrepository
 
     def is_authorized(self, repository):
         # All osbrepositories are public
@@ -366,9 +395,60 @@ class WorkspaceresourceService(BaseModelService):
     repository = WorkspaceResourceRepository()
     workspace_service = WorkspaceService()
 
-    def post(self, body):
-        body.update({"origin": json.dumps(body.get("origin"))})
-        return super().post(body)
+    model = WorkspaceResource
+
+    @classmethod
+    def to_dao(cls, ws_dict: dict) -> TWorkspaceResourceEntity:
+        if "origin" in ws_dict:
+            ws_dict.update({"origin": json.dumps(ws_dict.get("origin"))})
+
+        workspace_resource = super().to_dao(ws_dict)
+        if not workspace_resource.resource_type or workspace_resource.resource_type == "u":
+            origin = json.loads(workspace_resource.origin)
+            workspace_resource.resource_type = cls.guess_resource_type(
+                origin.get("path"))
+        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
+            workspace_resource.folder =  workspace_resource.name
+        return workspace_resource
+    
+    
+    @classmethod
+    def dict_to_dto(cls, d) -> WorkspaceResource:
+        if 'origin' not in d:
+            d['origin'] = json.loads(d['origin'])
+        
+        workspace_resource: WorkspaceResource = super().dict_to_dto(d)
+
+        # Legacy folder/path handling
+        if workspace_resource.path is None:
+            logger.debug(
+                f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
+            workspace_resource.path = workspace_resource.name
+        
+        if cls.guess_resource_type(workspace_resource.path) is None:
+            workspace_resource.path = os.path.join(workspace_resource.path, os.path.basename(workspace_resource.origin.path.split("?")[0]))
+        return workspace_resource
+    
+
+    @staticmethod
+    def guess_resource_type(resource_path):
+        resource_path = resource_path.split("?")[0]
+        extension = resource_path.split(".")[-1]
+        if extension == "nwb":
+            return ResourceType.E
+        elif extension == "np":
+            return ResourceType.M
+        elif extension == "ipynb":
+            return ResourceType.G
+        return None
+
+    def post(self, body) -> WorkspaceResource:
+        
+        workspace_resource = self.to_dto(super().post(body))
+        if workspace_resource.status == "p" and workspace_resource.origin:
+            from workspaces.helpers.etl_helpers import copy_workspace_resource
+            copy_workspace_resource(workspace_resource)
+        return workspace_resource    
 
     def is_authorized(self, resource: WorkspaceResourceEntity):
         # A resource is authorized if belongs to an authorized workspace
@@ -380,17 +460,16 @@ class WorkspaceresourceService(BaseModelService):
 
     def get(self, id_):
         workspace_resource: WorkspaceResourceEntity = super().get(id_)
-        workspace_resource = workspace_resource.to_dict()
-        if len(workspace_resource) > 2:
-            workspace_resource.update(
-                {"origin": json.loads(workspace_resource.get("origin"))})
-        return WorkspaceResource.from_dict(workspace_resource)
+        return self.to_dto(workspace_resource)
 
     def delete(self, id_):
         workspace_resource = self.get(id_)
         super().delete(id_)
         from workspaces.helpers.etl_helpers import delete_workspace_resource
         delete_workspace_resource(workspace_resource)
+
+
+
 
 class TagService(BaseModelService):
     repository = TagRepository()

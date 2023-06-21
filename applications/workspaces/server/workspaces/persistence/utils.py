@@ -1,4 +1,4 @@
-import workspaces.persistence.model_persistence as repos
+import workspaces.persistence.crud_persistence as repos
 
 
 def get_class_attr(Cls):

@@ -21,7 +21,7 @@ class WorkspaceResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, path=None, workspace_id=None, origin=None):  # noqa: E501
+    def __init__(self, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, workspace_id=None, origin=None, path=None):  # noqa: E501
         """WorkspaceResource - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceResource.  # noqa: E501
@@ -38,12 +38,12 @@ class WorkspaceResource(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResource.  # noqa: E501
         :type resource_type: ResourceType
-        :param path: The path of this WorkspaceResource.  # noqa: E501
-        :type path: str
         :param workspace_id: The workspace_id of this WorkspaceResource.  # noqa: E501
         :type workspace_id: int
         :param origin: The origin of this WorkspaceResource.  # noqa: E501
         :type origin: ResourceOrigin
+        :param path: The path of this WorkspaceResource.  # noqa: E501
+        :type path: str
         """
         self.openapi_types = {
             'id': int,
@@ -53,9 +53,9 @@ class WorkspaceResource(Model):
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
             'resource_type': ResourceType,
-            'path': str,
             'workspace_id': int,
-            'origin': ResourceOrigin
+            'origin': ResourceOrigin,
+            'path': str
         }
 
         self.attribute_map = {
@@ -66,9 +66,9 @@ class WorkspaceResource(Model):
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
             'resource_type': 'resource_type',
-            'path': 'path',
             'workspace_id': 'workspace_id',
-            'origin': 'origin'
+            'origin': 'origin',
+            'path': 'path'
         }
 
         self._id = id
@@ -78,9 +78,9 @@ class WorkspaceResource(Model):
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
-        self._path = path
         self._workspace_id = workspace_id
         self._origin = origin
+        self._path = path
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResource':
@@ -253,29 +253,6 @@ class WorkspaceResource(Model):
         self._resource_type = resource_type
 
     @property
-    def path(self):
-        """Gets the path of this WorkspaceResource.
-
-        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
-
-        :return: The path of this WorkspaceResource.
-        :rtype: str
-        """
-        return self._path
-
-    @path.setter
-    def path(self, path):
-        """Sets the path of this WorkspaceResource.
-
-        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
-
-        :param path: The path of this WorkspaceResource.
-        :type path: str
-        """
-
-        self._path = path
-
-    @property
     def workspace_id(self):
         """Gets the workspace_id of this WorkspaceResource.
 
@@ -318,3 +295,26 @@ class WorkspaceResource(Model):
         """
 
         self._origin = origin
+
+    @property
+    def path(self):
+        """Gets the path of this WorkspaceResource.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :return: The path of this WorkspaceResource.
+        :rtype: str
+        """
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        """Sets the path of this WorkspaceResource.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :param path: The path of this WorkspaceResource.
+        :type path: str
+        """
+
+        self._path = path

@@ -1,8 +1,5 @@
-import json
+from workspaces.persistence.crud_persistence import WorkspaceResourceRepository
 
-from workspaces.models import WorkspaceResource as WorkspaceResourceDTO
-from workspaces.persistence.model_persistence import WorkspaceRepository, WorkspaceResourceRepository
-from workspaces.views.api.rest_api_views import WorkspaceresourceView
 
 
 def open(id_=None, **kwargs):

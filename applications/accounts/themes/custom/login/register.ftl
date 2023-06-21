@@ -63,7 +63,7 @@
                         <li class="${properties.kcFormSocialAccountListLinkClass!}">
                             <a id="social-${p.alias}"  type="button" href="${p.loginUrl}">
                                     <i class="${properties.kcCommonLogoIdP!} ${p.iconClasses!}" aria-hidden="true"></i>
-                                    <span class="${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">Sign in with ${p.displayName!}</span>
+                                    <span class="${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">Register with ${p.displayName!}</span>
                             </a>
                         </li>
                     </#list>

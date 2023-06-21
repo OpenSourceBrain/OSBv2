@@ -19,7 +19,7 @@ class WorkspaceResourceEntity(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, path=None, origin=None, workspace_id=None):  # noqa: E501
+    def __init__(self, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, origin=None, workspace_id=None, folder=None):  # noqa: E501
         """WorkspaceResourceEntity - a model defined in OpenAPI
 
         :param id: The id of this WorkspaceResourceEntity.  # noqa: E501
@@ -36,12 +36,12 @@ class WorkspaceResourceEntity(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResourceEntity.  # noqa: E501
         :type resource_type: ResourceType
-        :param path: The path of this WorkspaceResourceEntity.  # noqa: E501
-        :type path: str
         :param origin: The origin of this WorkspaceResourceEntity.  # noqa: E501
         :type origin: str
         :param workspace_id: The workspace_id of this WorkspaceResourceEntity.  # noqa: E501
         :type workspace_id: int
+        :param folder: The folder of this WorkspaceResourceEntity.  # noqa: E501
+        :type folder: str
         """
         self.openapi_types = {
             'id': int,
@@ -51,9 +51,9 @@ class WorkspaceResourceEntity(Model):
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
             'resource_type': ResourceType,
-            'path': str,
             'origin': str,
-            'workspace_id': int
+            'workspace_id': int,
+            'folder': str
         }
 
         self.attribute_map = {
@@ -64,9 +64,9 @@ class WorkspaceResourceEntity(Model):
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
             'resource_type': 'resource_type',
-            'path': 'path',
             'origin': 'origin',
-            'workspace_id': 'workspace_id'
+            'workspace_id': 'workspace_id',
+            'folder': 'folder'
         }
 
         self._id = id
@@ -76,9 +76,9 @@ class WorkspaceResourceEntity(Model):
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
-        self._path = path
         self._origin = origin
         self._workspace_id = workspace_id
+        self._folder = folder
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResourceEntity':
@@ -251,29 +251,6 @@ class WorkspaceResourceEntity(Model):
         self._resource_type = resource_type
 
     @property
-    def path(self):
-        """Gets the path of this WorkspaceResourceEntity.
-
-        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
-
-        :return: The path of this WorkspaceResourceEntity.
-        :rtype: str
-        """
-        return self._path
-
-    @path.setter
-    def path(self, path):
-        """Sets the path of this WorkspaceResourceEntity.
-
-        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
-
-        :param path: The path of this WorkspaceResourceEntity.
-        :type path: str
-        """
-
-        self._path = path
-
-    @property
     def origin(self):
         """Gets the origin of this WorkspaceResourceEntity.
 
@@ -318,3 +295,26 @@ class WorkspaceResourceEntity(Model):
         """
 
         self._workspace_id = workspace_id
+
+    @property
+    def folder(self):
+        """Gets the folder of this WorkspaceResourceEntity.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :return: The folder of this WorkspaceResourceEntity.
+        :rtype: str
+        """
+        return self._folder
+
+    @folder.setter
+    def folder(self, folder):
+        """Sets the folder of this WorkspaceResourceEntity.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :param folder: The folder of this WorkspaceResourceEntity.
+        :type folder: str
+        """
+
+        self._folder = folder

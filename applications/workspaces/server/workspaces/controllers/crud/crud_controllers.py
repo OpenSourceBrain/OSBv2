@@ -1,6 +1,6 @@
 import workspaces.service.osbrepository as repository_service
 
-from workspaces.service.model_service import (
+from workspaces.service.crud_service import (
     NotAuthorized,
     NotAllowed,
     OsbrepositoryService,
@@ -9,9 +9,11 @@ from workspaces.service.model_service import (
     WorkspaceresourceService,
     TagService,
 )
-from workspaces.persistence.model_persistence import OSBRepositoryRepository
+
+
+from workspaces.persistence.crud_persistence import OSBRepositoryRepository
 from workspaces.utils import dao_entity2dict
-from workspaces.views.base_model_view import BaseModelView
+from workspaces.controllers.crud.base_model_controller import BaseModelView
 
 
 class WorkspaceView(BaseModelView):
@@ -55,16 +57,9 @@ class VolumestorageView(BaseModelView):
 
 class WorkspaceresourceView(BaseModelView):
     service = WorkspaceresourceService()
+    
 
 
 class TagView(BaseModelView):
     service = TagService()
 
-from workspaces.service.model_service import (
-    NotAuthorized,
-    OsbrepositoryService,
-    VolumestorageService,
-    WorkspaceService,
-    WorkspaceresourceService,
-    TagService,
-)

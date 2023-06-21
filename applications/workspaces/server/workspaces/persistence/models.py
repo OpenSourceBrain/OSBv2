@@ -414,176 +414,6 @@ class TWorkspaceImage(typing.Protocol):
 WorkspaceImage: TWorkspaceImage = models.WorkspaceImage  # type: ignore
 
 
-class _WorkspaceResourceEntityDictBase(typing.TypedDict, total=True):
-    """TypedDict for properties that are required."""
-
-    name: str
-    resource_type: str
-
-
-class WorkspaceResourceEntityDict(_WorkspaceResourceEntityDictBase, total=False):
-    """TypedDict for properties that are not required."""
-
-    id: int
-    folder: typing.Optional[str]
-    status: str
-    timestamp_created: typing.Optional[datetime.datetime]
-    timestamp_updated: typing.Optional[datetime.datetime]
-    timestamp_last_opened: typing.Optional[datetime.datetime]
-    origin: typing.Optional[str]
-    workspace_id: typing.Optional[int]
-
-
-class TWorkspaceResourceEntity(typing.Protocol):
-    """
-    SQLAlchemy model protocol.
-
-    Attrs:
-        id: The id of the WorkspaceResourceEntity.
-        name: WorkspaceResource name
-        folder: WorkspaceResource folder where the resource will stored in the
-            pvc
-        status: Resource status:  * a - Available  * e - Error, not available
-            * p - Pending
-        timestamp_created: Date/time of creation of the WorkspaceResource
-        timestamp_updated: Date/time of last updating of the WorkspaceResource
-        timestamp_last_opened: Date/time of last opening of the
-            WorkspaceResource
-        resource_type: Resource type:  * e - Experimental  * m - Model  * g -
-            Generic  * u - Unknown (to be defined)
-        origin: Origin data JSON formatted of the WorkspaceResource
-        workspace_id: workspace_id
-
-    """
-
-    # SQLAlchemy properties
-    __table__: sqlalchemy.Table
-    __tablename__: str
-    query: orm.Query
-
-    # Model properties
-    id: int
-    name: str
-    folder: typing.Optional[str]
-    status: str
-    timestamp_created: typing.Optional[datetime.datetime]
-    timestamp_updated: typing.Optional[datetime.datetime]
-    timestamp_last_opened: typing.Optional[datetime.datetime]
-    resource_type: str
-    origin: typing.Optional[str]
-    workspace_id: typing.Optional[int]
-
-    def __init__(
-        self,
-        name: str,
-        resource_type: str,
-        id: typing.Optional[int] = None,
-        folder: typing.Optional[str] = None,
-        status: str = "p",
-        timestamp_created: typing.Optional[datetime.datetime] = None,
-        timestamp_updated: typing.Optional[datetime.datetime] = None,
-        timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        origin: typing.Optional[str] = None,
-        workspace_id: typing.Optional[int] = None,
-    ) -> None:
-        """
-        Construct.
-
-        Args:
-            id: The id of the WorkspaceResourceEntity.
-            name: WorkspaceResource name
-            folder: WorkspaceResource folder where the resource will stored in
-                the pvc
-            status: Resource status:  * a - Available  * e - Error, not
-                available  * p - Pending
-            timestamp_created: Date/time of creation of the WorkspaceResource
-            timestamp_updated: Date/time of last updating of the
-                WorkspaceResource
-            timestamp_last_opened: Date/time of last opening of the
-                WorkspaceResource
-            resource_type: Resource type:  * e - Experimental  * m - Model  * g
-                - Generic  * u - Unknown (to be defined)
-            origin: Origin data JSON formatted of the WorkspaceResource
-            workspace_id: workspace_id
-
-        """
-        ...
-
-    @classmethod
-    def from_dict(
-        cls,
-        name: str,
-        resource_type: str,
-        id: typing.Optional[int] = None,
-        folder: typing.Optional[str] = None,
-        status: str = "p",
-        timestamp_created: typing.Optional[datetime.datetime] = None,
-        timestamp_updated: typing.Optional[datetime.datetime] = None,
-        timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        origin: typing.Optional[str] = None,
-        workspace_id: typing.Optional[int] = None,
-    ) -> "TWorkspaceResourceEntity":
-        """
-        Construct from a dictionary (eg. a POST payload).
-
-        Args:
-            id: The id of the WorkspaceResourceEntity.
-            name: WorkspaceResource name
-            folder: WorkspaceResource folder where the resource will stored in
-                the pvc
-            status: Resource status:  * a - Available  * e - Error, not
-                available  * p - Pending
-            timestamp_created: Date/time of creation of the WorkspaceResource
-            timestamp_updated: Date/time of last updating of the
-                WorkspaceResource
-            timestamp_last_opened: Date/time of last opening of the
-                WorkspaceResource
-            resource_type: Resource type:  * e - Experimental  * m - Model  * g
-                - Generic  * u - Unknown (to be defined)
-            origin: Origin data JSON formatted of the WorkspaceResource
-            workspace_id: workspace_id
-
-        Returns:
-            Model instance based on the dictionary.
-
-        """
-        ...
-
-    @classmethod
-    def from_str(cls, value: str) -> "TWorkspaceResourceEntity":
-        """
-        Construct from a JSON string (eg. a POST payload).
-
-        Returns:
-            Model instance based on the JSON string.
-
-        """
-        ...
-
-    def to_dict(self) -> WorkspaceResourceEntityDict:
-        """
-        Convert to a dictionary (eg. to send back for a GET request).
-
-        Returns:
-            Dictionary based on the model instance.
-
-        """
-        ...
-
-    def to_str(self) -> str:
-        """
-        Convert to a JSON string (eg. to send back for a GET request).
-
-        Returns:
-            JSON string based on the model instance.
-
-        """
-        ...
-
-
-WorkspaceResourceEntity: TWorkspaceResourceEntity = models.WorkspaceResourceEntity  # type: ignore
-
-
 class _VolumeStorageDictBase(typing.TypedDict, total=True):
     """TypedDict for properties that are required."""
 
@@ -947,3 +777,173 @@ class TTag(typing.Protocol):
 
 
 Tag: TTag = models.Tag  # type: ignore
+
+
+class _WorkspaceResourceEntityDictBase(typing.TypedDict, total=True):
+    """TypedDict for properties that are required."""
+
+    name: str
+    resource_type: str
+
+
+class WorkspaceResourceEntityDict(_WorkspaceResourceEntityDictBase, total=False):
+    """TypedDict for properties that are not required."""
+
+    id: int
+    status: str
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
+    timestamp_last_opened: typing.Optional[datetime.datetime]
+    origin: typing.Optional[str]
+    workspace_id: typing.Optional[int]
+    folder: typing.Optional[str]
+
+
+class TWorkspaceResourceEntity(typing.Protocol):
+    """
+    SQLAlchemy model protocol.
+
+    Attrs:
+        id: The id of the WorkspaceResourceEntity.
+        name: WorkspaceResource name
+        status: Resource status:  * a - Available  * e - Error, not available
+            * p - Pending
+        timestamp_created: Date/time of creation of the WorkspaceResource
+        timestamp_updated: Date/time of last updating of the WorkspaceResource
+        timestamp_last_opened: Date/time of last opening of the
+            WorkspaceResource
+        resource_type: Resource type:  * e - Experimental  * m - Model  * g -
+            Generic  * u - Unknown (to be defined)
+        origin: Origin data JSON formatted of the WorkspaceResource
+        workspace_id: workspace_id
+        folder: WorkspaceResource path where the resource will stored in the
+            pvc.
+
+    """
+
+    # SQLAlchemy properties
+    __table__: sqlalchemy.Table
+    __tablename__: str
+    query: orm.Query
+
+    # Model properties
+    id: int
+    name: str
+    status: str
+    timestamp_created: typing.Optional[datetime.datetime]
+    timestamp_updated: typing.Optional[datetime.datetime]
+    timestamp_last_opened: typing.Optional[datetime.datetime]
+    resource_type: str
+    origin: typing.Optional[str]
+    workspace_id: typing.Optional[int]
+    folder: typing.Optional[str]
+
+    def __init__(
+        self,
+        name: str,
+        resource_type: str,
+        id: typing.Optional[int] = None,
+        status: str = "p",
+        timestamp_created: typing.Optional[datetime.datetime] = None,
+        timestamp_updated: typing.Optional[datetime.datetime] = None,
+        timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        origin: typing.Optional[str] = None,
+        workspace_id: typing.Optional[int] = None,
+        folder: typing.Optional[str] = None,
+    ) -> None:
+        """
+        Construct.
+
+        Args:
+            id: The id of the WorkspaceResourceEntity.
+            name: WorkspaceResource name
+            status: Resource status:  * a - Available  * e - Error, not
+                available  * p - Pending
+            timestamp_created: Date/time of creation of the WorkspaceResource
+            timestamp_updated: Date/time of last updating of the
+                WorkspaceResource
+            timestamp_last_opened: Date/time of last opening of the
+                WorkspaceResource
+            resource_type: Resource type:  * e - Experimental  * m - Model  * g
+                - Generic  * u - Unknown (to be defined)
+            origin: Origin data JSON formatted of the WorkspaceResource
+            workspace_id: workspace_id
+            folder: WorkspaceResource path where the resource will stored in
+                the pvc.
+
+        """
+        ...
+
+    @classmethod
+    def from_dict(
+        cls,
+        name: str,
+        resource_type: str,
+        id: typing.Optional[int] = None,
+        status: str = "p",
+        timestamp_created: typing.Optional[datetime.datetime] = None,
+        timestamp_updated: typing.Optional[datetime.datetime] = None,
+        timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        origin: typing.Optional[str] = None,
+        workspace_id: typing.Optional[int] = None,
+        folder: typing.Optional[str] = None,
+    ) -> "TWorkspaceResourceEntity":
+        """
+        Construct from a dictionary (eg. a POST payload).
+
+        Args:
+            id: The id of the WorkspaceResourceEntity.
+            name: WorkspaceResource name
+            status: Resource status:  * a - Available  * e - Error, not
+                available  * p - Pending
+            timestamp_created: Date/time of creation of the WorkspaceResource
+            timestamp_updated: Date/time of last updating of the
+                WorkspaceResource
+            timestamp_last_opened: Date/time of last opening of the
+                WorkspaceResource
+            resource_type: Resource type:  * e - Experimental  * m - Model  * g
+                - Generic  * u - Unknown (to be defined)
+            origin: Origin data JSON formatted of the WorkspaceResource
+            workspace_id: workspace_id
+            folder: WorkspaceResource path where the resource will stored in
+                the pvc.
+
+        Returns:
+            Model instance based on the dictionary.
+
+        """
+        ...
+
+    @classmethod
+    def from_str(cls, value: str) -> "TWorkspaceResourceEntity":
+        """
+        Construct from a JSON string (eg. a POST payload).
+
+        Returns:
+            Model instance based on the JSON string.
+
+        """
+        ...
+
+    def to_dict(self) -> WorkspaceResourceEntityDict:
+        """
+        Convert to a dictionary (eg. to send back for a GET request).
+
+        Returns:
+            Dictionary based on the model instance.
+
+        """
+        ...
+
+    def to_str(self) -> str:
+        """
+        Convert to a JSON string (eg. to send back for a GET request).
+
+        Returns:
+            JSON string based on the model instance.
+
+        """
+        ...
+
+
+WorkspaceResourceEntity: TWorkspaceResourceEntity = models.WorkspaceResourceEntity  # type: ignore

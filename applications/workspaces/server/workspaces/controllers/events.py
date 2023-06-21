@@ -10,7 +10,7 @@ UPDATE_WORKSPACES_RESOURCE_QUEUE = "osb-update-workspace-resources"
 
 
 def update_workspace_resources(event_client, app, message):
-    import workspaces.persistence.model_persistence as repos
+    import workspaces.persistence.crud_persistence as repos
     log.info(f"Got message: {message}")
     workspace_id = message["workspace_id"]
     # remove /project_download/ (mount point of the pvc) from the path
@@ -22,7 +22,7 @@ def update_workspace_resources(event_client, app, message):
 
 _consumer_clients = []
 _consumer_queues = (
-    {"group": "workspaces", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE,
+    {"group": "workspaces2", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE,
         "handler": update_workspace_resources},
 )
 

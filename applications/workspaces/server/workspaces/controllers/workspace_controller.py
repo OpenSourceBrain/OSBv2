@@ -5,10 +5,10 @@ from pathlib import Path
 from cloudharness import log as logger
 
 from workspaces.config import Config
-from workspaces.persistence.model_persistence import WorkspaceImageRepository, WorkspaceRepository, db
+from workspaces.persistence.crud_persistence import WorkspaceImageRepository, WorkspaceRepository, db
 from workspaces.persistence.models import WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
-from workspaces.service.model_service import NotAuthorized, NotAllowed, WorkspaceService
+from workspaces.service.crud_service import NotAuthorized, NotAllowed, WorkspaceService
 
 def _save_image(id_=None, image=None, filename_base=None):
     ext = mimetypes.guess_extension(image.mimetype)

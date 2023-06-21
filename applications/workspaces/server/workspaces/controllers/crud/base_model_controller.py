@@ -1,7 +1,7 @@
 from flask.views import MethodView
 from flask_sqlalchemy import Pagination
 
-from workspaces.service.model_service import BaseModelService, NotAuthorized
+from workspaces.service.crud_service import BaseModelService, NotAuthorized
 from workspaces.utils import dao_entity2dict
 
 

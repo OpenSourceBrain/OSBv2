@@ -11,7 +11,7 @@ from .config import Config
 try:
     db = SQLAlchemy()
     SPEC_FILE = os.path.join(Config.OPENAPI_DIR, Config.OPENAPI_FILE)
-    MODELS_FILENAME = os.path.join(Config.BASE_DIR, "repository", "models.py")
+    MODELS_FILENAME = os.path.join(Config.BASE_DIR, "persistence", "models.py")
     init_yaml(SPEC_FILE, base=db.Model, models_filename=MODELS_FILENAME)
 except:
     log.error("An error occurred while initializing the database", exc_info=True)

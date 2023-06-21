@@ -5,6 +5,8 @@ from flask import request
 
 from cloudharness import log as logger
 from cloudharness.auth import AuthClient
+from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
+
 
 
 
@@ -29,12 +31,14 @@ def get_pvc_name(workspace_id):
 
 
 disallowed_class_types = ["BaseQuery", "type", "registry", "MetaData"]
-
+name_mappings = {WorkspaceResourceEntity.__name__: {"folder": "path"}}
 
 def dao_entity2dict(obj):
     disallowed_names = {name for name, value in getmembers(
         type(obj)) if isinstance(value, FunctionType)}
     result = {}
+    
+            
     for name in dir(obj):
         if name[0] != "_" and name not in disallowed_names and hasattr(obj, name):
             val = getattr(obj, name)
@@ -44,5 +48,9 @@ def dao_entity2dict(obj):
                     val = list(dao_entity2dict(r) for r in val)
                 if clas not in disallowed_class_types:
                     result.update({name: val})
+    if type(obj).__name__ in name_mappings:
+        for src, dest in name_mappings[type(obj).__name__].items():
+            result[dest] = result[src]
+            del result[src]
     return result
 

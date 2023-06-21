@@ -16,7 +16,7 @@ from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
 
 
-from .base_model_persistence import BaseModelRepository
+from .base_crud_persistence import BaseModelRepository
 from ..database import db
 from .models import OSBRepositoryEntity, VolumeStorage, WorkspaceEntity, WorkspaceImage, WorkspaceResourceEntity, Tag
 from .utils import *
@@ -27,9 +27,7 @@ repository_content_type_enum = get_class_attr_val(RepositoryContentType())
 
 class OwnerModel:
 
-    def pre_commit(self, obj):
-        logger.debug(f"Pre Commit for {obj} id: {obj.id}")
-        return obj
+    pass
 
 
 class WorkspaceRepository(BaseModelRepository, OwnerModel):
@@ -42,6 +40,11 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def get(self, id):
         workspace = self._get(id)
         return workspace
+    
+    def post(self, entity):
+        workspace: WorkspaceEntity = super().post(entity)
+        return workspace
+
 
     def check(self):
         self.model.query.count()
@@ -81,30 +84,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
     def delete(self, id):
         super().delete(id)
 
-    def pre_commit(self, workspace):
-        workspace.tags = TagRepository().get_tags_daos(workspace.tags)
-        return super().pre_commit(workspace)
-
-    def post_commit(self, workspace):
-        # Create a new Persistent Volume Claim for this workspace
-        logger.debug(f"Post Commit for workspace id: {workspace.id}")
-
-        wsrr = WorkspaceResourceRepository()
-        for workspace_resource in workspace.resources:
-            wsr = wsrr.post_commit(workspace_resource)
-            if wsr:
-                db.session.add(wsr)
-                db.session.commit()
-        return workspace
-
 
 class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
     model = OSBRepositoryEntity
-
-
-    def pre_commit(self, osbrepository):
-        osbrepository.tags = TagRepository().get_tags_daos(osbrepository.tags)
-        return super().pre_commit(osbrepository)
 
     def get(self, id):
         repository = self._get(id)
@@ -177,7 +159,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 filename = os.path.basename(resource)
                 wsr = WorkspaceResourceEntity(
                     name=filename,
-                    path=resource,
+                    folder=resource,
                     origin='{"path": "' + resource + '"}',
                     status=ResourceStatus.P,  # default status
                     resource_type=self.guess_resource_type(filename),
@@ -196,58 +178,15 @@ class WorkspaceResourceRepository(BaseModelRepository):
 
         # delete all wsr that were not found an more
         self.model.query.filter_by(workspace_id=workspace_id)\
-            .filter(~self.model.id.any(w.id for w in found_wsr)).delete()
+            .filter(~self.model.id.in_(w.id for w in found_wsr)).delete()
         # TODO test again after the refactoring
         db.session.commit()
         logger.info(
             f"Workspace resources update done for workspace {workspace_id}")
 
-    @staticmethod
-    def guess_resource_type(resource_path):
-        resource_path = resource_path.split("?")[0]
-        if resource_path[-3:] == "nwb":
-            return "e"
-        elif resource_path[-3:] == "np":
-            return "g"
-        return "g"
 
-    def pre_commit(self, workspace_resource):
-        # Check if we can determine the resource type
-        logger.debug(
-            f"Pre Commit for workspace resource id: {workspace_resource.id}")
 
-        if not workspace_resource.resource_type or workspace_resource.resource_type == "u":
-            origin = json.loads(workspace_resource.origin)
-            workspace_resource.resource_type = self.guess_resource_type(
-                origin.get("path"))
-        if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
-            workspace_resource.folder = workspace_resource.name
-        return workspace_resource
 
-    def post_commit(self, workspace_resource):
-        # Create a load WorkspaceResource workflow task
-        logger.debug(
-            f"Post Commit for workspace resource id: {workspace_resource.id}")
-        workspace = WorkspaceRepository().get(workspace_resource.workspace_id)
-        if workspace_resource.folder is None:
-            logger.debug(
-                f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
-            workspace_resource.folder = workspace_resource.name
-
-        if (
-            workspace is not None
-            and workspace_resource.status == "p"
-            and workspace_resource.origin
-            and len(workspace_resource.origin) > 0
-        ):
-            from workspaces.helpers.etl_helpers import copy_workspace_resource
-            copy_workspace_resource(workspace_resource)
-        return workspace_resource
-
-    def post_get(self, workspace_resource):
-        workspace = WorkspaceRepository().get(id=workspace_resource.workspace_id)
-
-        return workspace_resource
 
     def open(self, workspace_resource):
         # test if workspace resource status is "available"

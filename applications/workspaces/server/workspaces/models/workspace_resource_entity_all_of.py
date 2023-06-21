@@ -15,26 +15,31 @@ class WorkspaceResourceEntityAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, origin=None, workspace_id=None):  # noqa: E501
+    def __init__(self, origin=None, workspace_id=None, folder=None):  # noqa: E501
         """WorkspaceResourceEntityAllOf - a model defined in OpenAPI
 
         :param origin: The origin of this WorkspaceResourceEntityAllOf.  # noqa: E501
         :type origin: str
         :param workspace_id: The workspace_id of this WorkspaceResourceEntityAllOf.  # noqa: E501
         :type workspace_id: int
+        :param folder: The folder of this WorkspaceResourceEntityAllOf.  # noqa: E501
+        :type folder: str
         """
         self.openapi_types = {
             'origin': str,
-            'workspace_id': int
+            'workspace_id': int,
+            'folder': str
         }
 
         self.attribute_map = {
             'origin': 'origin',
-            'workspace_id': 'workspace_id'
+            'workspace_id': 'workspace_id',
+            'folder': 'folder'
         }
 
         self._origin = origin
         self._workspace_id = workspace_id
+        self._folder = folder
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResourceEntityAllOf':
@@ -92,3 +97,26 @@ class WorkspaceResourceEntityAllOf(Model):
         """
 
         self._workspace_id = workspace_id
+
+    @property
+    def folder(self):
+        """Gets the folder of this WorkspaceResourceEntityAllOf.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :return: The folder of this WorkspaceResourceEntityAllOf.
+        :rtype: str
+        """
+        return self._folder
+
+    @folder.setter
+    def folder(self, folder):
+        """Sets the folder of this WorkspaceResourceEntityAllOf.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :param folder: The folder of this WorkspaceResourceEntityAllOf.
+        :type folder: str
+        """
+
+        self._folder = folder

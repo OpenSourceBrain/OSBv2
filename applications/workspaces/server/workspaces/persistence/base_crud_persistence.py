@@ -39,21 +39,6 @@ class BaseModelRepository:
             return self.model.query.get(id)
         return None
 
-    def _post_get(self, new_obj):
-        if hasattr(self, "post_get"):
-            return self.post_get(new_obj)
-        return new_obj
-
-    def _pre_commit(self, new_obj):
-        if hasattr(self, "pre_commit"):
-            return self.pre_commit(new_obj)
-        return new_obj
-
-    def _post_commit(self, new_obj):
-        if hasattr(self, "post_commit"):
-            return self.post_commit(new_obj)
-        return new_obj
-
     def _get_and_copy_item(self, item):
         item_db = item.query.filter_by(id=item.id).first()
         if item_db:
@@ -190,39 +175,35 @@ class BaseModelRepository:
         objects = sqs.paginate(page, per_page, True)
 
         return objects
-
-    def post(self, body, do_pre=True, do_post=True):
+    
+    def post(self, entity):
         """Save an object to the repository."""
-        new_obj = self.model.from_dict(**body)
-        if new_obj.id is not None:
-            tmp_obj = self._get(new_obj.id)
+
+        if entity.id is not None:
+            tmp_obj = self._get(entity.id)
             if tmp_obj is not None:
                 return f"{self.model.__name__} with id {id} already exists.", 400
             # POST means create new record so clear the current object ID
-            new_obj.id = None
+            entity.id = None
 
         if "timestamp_created" in self.model.__dict__:
-            new_obj.timestamp_created = func.now()
+            entity.timestamp_created = func.now()
 
         if "timestamp_updated" in self.model.__dict__:
-            new_obj.timestamp_updated = func.now()
+            entity.timestamp_updated = func.now()
 
         if self.defaults:
             for fld, default in self.defaults.items():
-                setattr(new_obj, fld, default)
+                setattr(entity, fld, default)
         try:
             # trigger post operation
-            if do_pre:
-                new_obj = self._pre_commit(new_obj)
-            db.session.add(new_obj)
+            db.session.add(entity)
             db.session.commit()
-            if do_post:
-                new_obj = self._post_commit(new_obj)
         except IntegrityError as e:
             raise e
         else:
-            obj = self.get(id=new_obj.id)
-            return new_obj
+            obj = self.get(id=entity.id)
+            return obj
 
     def get(self, id):
         """Get an object from the repository."""
@@ -236,7 +217,6 @@ class BaseModelRepository:
 
     def save(self, obj):
         obj = self.set_timestamp_updated(obj)
-        self._pre_commit(obj)
         db.session.commit()
         return obj
 
@@ -247,7 +227,6 @@ class BaseModelRepository:
             return f"{self.model.__name__} with id {id} not found.", 404
 
         new_obj = self.model.from_dict(**body)
-        self._pre_commit(new_obj)
         obj = self._copy_attrs(obj, new_obj)
         obj = self.set_timestamp_updated(obj)
         db.session.commit()
