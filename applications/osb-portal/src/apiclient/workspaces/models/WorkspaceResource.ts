@@ -85,12 +85,6 @@ export interface WorkspaceResource {
      */
     resourceType: ResourceType;
     /**
-     * WorkspaceResource path where the resource will stored in the pvc.
-     * @type {string}
-     * @memberof WorkspaceResource
-     */
-    path?: string;
-    /**
      * workspace_id
      * @type {number}
      * @memberof WorkspaceResource
@@ -102,6 +96,12 @@ export interface WorkspaceResource {
      * @memberof WorkspaceResource
      */
     origin?: ResourceOrigin;
+    /**
+     * WorkspaceResource path where the resource will stored in the pvc.
+     * @type {string}
+     * @memberof WorkspaceResource
+     */
+    path?: string;
 }
 
 export function WorkspaceResourceFromJSON(json: any): WorkspaceResource {
@@ -121,9 +121,9 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
         'timestampLastOpened': !exists(json, 'timestamp_last_opened') ? undefined : (new Date(json['timestamp_last_opened'])),
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
-        'path': !exists(json, 'path') ? undefined : json['path'],
         'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
         'origin': !exists(json, 'origin') ? undefined : ResourceOriginFromJSON(json['origin']),
+        'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
 
@@ -143,9 +143,9 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
         'timestamp_last_opened': value.timestampLastOpened === undefined ? undefined : (value.timestampLastOpened.toISOString()),
         'resource_type': ResourceTypeToJSON(value.resourceType),
-        'path': value.path,
         'workspace_id': value.workspaceId,
         'origin': ResourceOriginToJSON(value.origin),
+        'path': value.path,
     };
 }
 

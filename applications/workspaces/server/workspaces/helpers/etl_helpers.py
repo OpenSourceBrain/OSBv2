@@ -44,8 +44,7 @@ def copy_origins(workspace_id, origins: List[ResourceOrigin]):
 def copy_workspace_resource(workspace_resource: WorkspaceResource):
     if workspace_resource.status == ResourceStatus.P and workspace_resource.origin:
         
-        workspace_resource.origin.name = workspace_resource.name,
-        workspace_resource.origin.path = workspace_resource.path
+        workspace_resource.origin.name = workspace_resource.origin.name or workspace_resource.name,
         copy_origins(workspace_resource.workspace_id, (workspace_resource.origin,))
 
 
@@ -53,7 +52,7 @@ def delete_workspace_resource(workspace_resource: WorkspaceResource):
     try:
         pvc_name = WorkspaceService.get_pvc_name(
             workspace_resource.workspace_id)
-        origin = json.loads(workspace_resource.origin)
+ 
         workflow.delete_resource(
             workspace_resource=workspace_resource, pvc_name=pvc_name, resource_path=workspace_resource.path
         )

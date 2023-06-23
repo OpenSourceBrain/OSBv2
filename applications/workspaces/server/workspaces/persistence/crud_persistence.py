@@ -14,6 +14,7 @@ from sqlalchemy.sql import func
 
 from workspaces.config import Config
 from workspaces.models import RepositoryContentType, ResourceStatus, User, Tag
+from workspaces.utils import guess_resource_type
 
 
 from .base_crud_persistence import BaseModelRepository
@@ -152,7 +153,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
         found_wsr = []  # array for storing found wsr, used for deletion detection
         for resource in resources:
             # try to find by path match
-            wsr = self.model.query.filter_by(workspace_id=workspace_id, path=resource).first()
+            wsr = self.model.query.filter_by(workspace_id=workspace_id, folder=resource).first()
 
             if not wsr:
                 # not found --> create a new wsr
@@ -162,13 +163,13 @@ class WorkspaceResourceRepository(BaseModelRepository):
                     folder=resource,
                     origin='{"path": "' + resource + '"}',
                     status=ResourceStatus.P,  # default status
-                    resource_type=self.guess_resource_type(filename),
+                    resource_type=guess_resource_type(filename),
                     workspace_id=workspace_id,
                 )
                 logger.info(
                     f"Created new workspace resource {resource}")
-            else:
-                found_wsr.append(wsr)  # add the wsr to the found list
+            
+            found_wsr.append(wsr)  # add the wsr to the found list
 
             if wsr.status != ResourceStatus.A:
                 # set wsr to active and write to database

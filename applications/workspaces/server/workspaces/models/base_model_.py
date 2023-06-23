@@ -2,7 +2,7 @@ import pprint
 
 import six
 import typing
-
+import datetime
 from workspaces import util
 
 T = typing.TypeVar('T')
@@ -44,6 +44,8 @@ class Model(object):
                     if hasattr(item[1], "to_dict") else item,
                     value.items()
                 ))
+            elif isinstance(value, datetime.datetime):
+                result[attr] = value.isoformat()
             else:
                 result[attr] = value
 

@@ -31,6 +31,12 @@ export interface WorkspaceResourceEntityAllOf {
      * @memberof WorkspaceResourceEntityAllOf
      */
     workspaceId?: number;
+    /**
+     * WorkspaceResource path where the resource will stored in the pvc.
+     * @type {string}
+     * @memberof WorkspaceResourceEntityAllOf
+     */
+    folder?: string;
 }
 
 export function WorkspaceResourceEntityAllOfFromJSON(json: any): WorkspaceResourceEntityAllOf {
@@ -45,6 +51,7 @@ export function WorkspaceResourceEntityAllOfFromJSONTyped(json: any, ignoreDiscr
         
         'origin': !exists(json, 'origin') ? undefined : json['origin'],
         'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
+        'folder': !exists(json, 'folder') ? undefined : json['folder'],
     };
 }
 
@@ -59,6 +66,7 @@ export function WorkspaceResourceEntityAllOfToJSON(value?: WorkspaceResourceEnti
         
         'origin': value.origin,
         'workspace_id': value.workspaceId,
+        'folder': value.folder,
     };
 }
 

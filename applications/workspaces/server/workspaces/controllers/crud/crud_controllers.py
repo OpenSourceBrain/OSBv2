@@ -48,7 +48,7 @@ class OsbrepositoryView(BaseModelView):
         osbrepository_ext.description = repository_service.get_description(
             osbrepository=osbrepository_ext, context=context
         )  # use context to get the files
-        return dao_entity2dict(osbrepository_ext), 200
+        return osbrepository_ext.to_dict(), 200
 
 
 class VolumestorageView(BaseModelView):

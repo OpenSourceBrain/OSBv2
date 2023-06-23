@@ -32,7 +32,7 @@ import OSBDialog from "../../common/OSBDialog";
 import { bgRegular as borderColor, paragraph } from "../../../theme";
 import { UserInfo } from "../../../types/user";
 import { Typography } from "@mui/material";
-import { update } from "lodash";
+
 
 const useStyles = makeStyles((theme) => ({
   drawerContent: {
@@ -97,6 +97,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(2),
   },
 }));
+
+function isWorkspaceWaiting(workspace: Workspace) {
+   return workspace.resources.find(r => r.id < 0)
+}
 
 interface WorkspaceProps {
   workspace: Workspace;
@@ -166,6 +170,11 @@ export default (props: WorkspaceProps | any) => {
     setAddResourceOpen(false);
     refreshWorkspace();
   };
+
+  React.useEffect(() => { 
+    if(!isWorkspaceWaiting(workspace) {
+      refreshWorkspaceResources() }
+   }, []);
 
   const handleRefreshResources = () => {
     refreshWorkspaceResources();

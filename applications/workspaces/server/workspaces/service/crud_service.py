@@ -5,6 +5,7 @@ import shutil
 from cloudharness.service.pvc import create_persistent_volume_claim, delete_persistent_volume_claim
 from cloudharness import log
 from flask_sqlalchemy import Pagination
+from workspaces.models import ResourceStatus
 from workspaces.models.base_model_ import Model
 
 from cloudharness import log as logger
@@ -29,7 +30,7 @@ from workspaces.service.kubernetes import create_volume
 from workspaces.service.auth import get_auth_client, keycloak_user_id
 from workspaces.service.user_quota_service import get_pvc_size, get_max_workspaces_for_user
 
-from workspaces.utils import dao_entity2dict
+from workspaces.utils import dao_entity2dict, guess_resource_type
 
 
 def rm_null_values(dikt):
@@ -74,7 +75,7 @@ class BaseModelService:
     user_service = UserService()
 
     model: Model = None
-    
+
     calculated_fields = set()
 
     def _calculated_fields_populate(self, obj):
@@ -104,16 +105,16 @@ class BaseModelService:
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         return objects
-    
+
     @classmethod
     def to_dao(cls, d: dict):
         d = rm_null_values(d)
         return cls.repository.model.from_dict(**d)
-    
+
     @classmethod
     def to_dto(cls, dao) -> Model:
         return cls.dict_to_dto(dao_entity2dict(dao))
-    
+
     @classmethod
     def dict_to_dto(cls, d) -> Model:
         if cls.model:
@@ -122,9 +123,9 @@ class BaseModelService:
 
     def post(self, body):
         """Save an object to the repository."""
-        
+
         dao = self.to_dao(body)
-        return self._calculated_fields_populate(self.repository.post(dao))
+        return self.to_dto(self._calculated_fields_populate(self.repository.post(dao)))
 
     def get(self, id_):
         """Get an object from the repository."""
@@ -161,7 +162,7 @@ class WorkspaceService(BaseModelService):
     @staticmethod
     def get_pvc_name(workspace_id):
         return f"workspace-{workspace_id}"
-    
+
     def check_max_num_workspaces_per_user(self, user_id=None):
         if not user_id:
             user_id = keycloak_user_id()
@@ -171,7 +172,7 @@ class WorkspaceService(BaseModelService):
             max_num_ws_current_user = get_max_workspaces_for_user(user_id)
             if num_ws_current_user >= max_num_ws_current_user:
                 raise NotAllowed(
-                    f"Max number of {max_num_ws_current_user} workspaces " \
+                    f"Max number of {max_num_ws_current_user} workspaces "
                     "limit exceeded"
                 )
 
@@ -182,7 +183,7 @@ class WorkspaceService(BaseModelService):
         self.check_max_num_workspaces_per_user(body['user_id'])
         for r in body.get("resources", []):
             r.update({"origin": json.dumps(r.get("origin"))})
-        workspace = Workspace.from_dict(body) # Validate
+        workspace = Workspace.from_dict(body)  # Validate
         workspace = super().post(body)
 
         create_volume(name=self.get_pvc_name(workspace.id),
@@ -190,7 +191,7 @@ class WorkspaceService(BaseModelService):
         return workspace
 
     def put(self, body, id_):
-        workspace = Workspace.from_dict(body) # Validate
+        workspace = Workspace.from_dict(body)  # Validate
         return super().put(body, id_)
 
     def get_workspace_volume_size(self, ws: Workspace):
@@ -212,14 +213,14 @@ class WorkspaceService(BaseModelService):
             name=f"Clone of {workspace['name']}",
             tags=workspace['tags'],
             user_id=user_id,
-            
+
             description=workspace['description'],
             publicable=False,
             featured=False
         )
         if workspace['thumbnail']:
-            cloned['thumbnail']=workspace['thumbnail']
-            
+            cloned['thumbnail'] = workspace['thumbnail']
+
         cloned = self.repository.post(cloned, do_post=False)
 
         create_volume(name=self.get_pvc_name(cloned.id),
@@ -265,56 +266,74 @@ class WorkspaceService(BaseModelService):
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         return objects
-    
+
     @classmethod
     def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
         workspace = super().to_dto(workspace_entity)
         if not workspace.resources:
             workspace.resources = []
         return workspace
-    
+
     @classmethod
     def to_dao(cls, d: dict) -> TWorkspaceEntity:
 
         workspace: TWorkspaceEntity = super().to_dao(d)
         workspace.tags = TagRepository().get_tags_daos(workspace.tags)
         return workspace
-    
+
     def get(self, id_):
 
         workspace: Workspace = super().get(id_)
 
-        
-            
-        # check if there are running import tasks
-        logger.debug(
-            "Post get, check workflows for workspace %....", workspace.id)
-        try:
-            workflows = argo.get_workflows(status="Running", limit=9999)
-            if workflows and workflows.items:
-                for workflow in workflows.items:
-                    try:
-                        if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
-                                "workspace"
-                        ).strip() == str(workspace["id"]):
-                            fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
-                                "/", " of ")
-                            workspace.resources.append(WorkspaceResource.from_dict(
-                                {
-                                    "id": -1,
-                                    "name": "Importing resources into workspace",
-                                    "origin": {"path": fake_path},
-                                    "resource_type": ResourceType.E,
-                                    "workspace_id": workspace["id"],
-                                }
-                            ))
-                        break
-                    except Exception as e:
-                        # probably not a workspace import workflow job --> skip it
-                        pass    
-        except Exception as e:
-                log.exception("Error while checking workflows for workspace %s", workspace.id)
-                pass                                                               
+        if any(wr.status == ResourceStatus.P for wr in workspace.resources):
+            fake_path = f"Importing resources"
+            workspace.resources.append(
+                WorkspaceResource.from_dict(
+                    {
+                        "id": -1,
+                        "name": "Importing resources into workspace",
+                        "origin": {"path": fake_path},
+                        "resource_type": ResourceType.U,
+                        "workspace_id": workspace.id,
+                    }
+                ))
+        else:
+            # check if there are running import tasks
+            logger.debug(
+                "Post get, check workflows for workspace %s....", workspace.id)
+            try:
+                workflows = argo.get_workflows(status="Running", limit=9999)
+                if workflows and workflows.items:
+                    for workflow in workflows.items:
+                        try:
+                            if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
+                                    "workspace"
+                            ).strip() == str(workspace.id):
+                                fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
+                                    "/", " of ")
+                                workspace.resources.append(
+                                    WorkspaceResource.from_dict(
+                                        {
+                                            "id": -1,
+                                            "name": "Importing resources into workspace",
+                                            "origin": {"path": fake_path},
+                                            "resource_type": ResourceType.U,
+                                            "workspace_id": workspace.id,
+                                        }
+                                    )
+                                )
+                            break                                                                                                                                            
+                        except Exception as e:
+                            logger.exception("Error checking workflow for workspace %s: %s",
+                             workspace.id, workflow.name)
+                            from pprint import pprint
+                            # pprint(workflow.raw)
+                            # probably not a workspace import workflow job --> skip it
+                            pass
+            except Exception as e:
+                logger.exception("Error checking workflows for workspace %s: %s",
+                             workspace.id, e)
+
         return workspace
 
     def user(self, workspace):
@@ -340,21 +359,23 @@ class WorkspaceService(BaseModelService):
             shutil.rmtree(os.path.join(Config.STATIC_DIR, folder))
             logger.info("deleted workspace files")
 
+
 class OsbrepositoryService(BaseModelService):
     repository = OSBRepositoryRepository()
     calculated_fields = {"user", "content_types_list"}
-    
+
+    model = OSBRepository
 
     @send_event(message_type="osbrepository", operation="create")
     def post(self, body):
-        osbrepository = OSBRepository.from_dict(body) # Validate
+        osbrepository = OSBRepository.from_dict(body)  # Validate
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
 
         return super().post(body)
 
     def put(self, body, id_):
-        osbrepository = OSBRepository.from_dict(body) # Validate
+        osbrepository = OSBRepository.from_dict(body)  # Validate
 
         return super().put(body, id_)
 
@@ -405,18 +426,17 @@ class WorkspaceresourceService(BaseModelService):
         workspace_resource = super().to_dao(ws_dict)
         if not workspace_resource.resource_type or workspace_resource.resource_type == "u":
             origin = json.loads(workspace_resource.origin)
-            workspace_resource.resource_type = cls.guess_resource_type(
+            workspace_resource.resource_type = guess_resource_type(
                 origin.get("path"))
         if workspace_resource.folder is None or len(workspace_resource.folder) == 0:
-            workspace_resource.folder =  workspace_resource.name
+            workspace_resource.folder = workspace_resource.name
         return workspace_resource
-    
-    
+
     @classmethod
     def dict_to_dto(cls, d) -> WorkspaceResource:
-        if 'origin' not in d:
+        if 'origin' in d:
             d['origin'] = json.loads(d['origin'])
-        
+
         workspace_resource: WorkspaceResource = super().dict_to_dto(d)
 
         # Legacy folder/path handling
@@ -424,31 +444,19 @@ class WorkspaceresourceService(BaseModelService):
             logger.debug(
                 f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
             workspace_resource.path = workspace_resource.name
-        
-        if cls.guess_resource_type(workspace_resource.path) is None:
-            workspace_resource.path = os.path.join(workspace_resource.path, os.path.basename(workspace_resource.origin.path.split("?")[0]))
-        return workspace_resource
-    
 
-    @staticmethod
-    def guess_resource_type(resource_path):
-        resource_path = resource_path.split("?")[0]
-        extension = resource_path.split(".")[-1]
-        if extension == "nwb":
-            return ResourceType.E
-        elif extension == "np":
-            return ResourceType.M
-        elif extension == "ipynb":
-            return ResourceType.G
-        return None
+        if guess_resource_type(workspace_resource.path) is None:
+            workspace_resource.path = os.path.join(workspace_resource.path, os.path.basename(
+                workspace_resource.origin.path.split("?")[0]))
+        return workspace_resource
 
     def post(self, body) -> WorkspaceResource:
-        
-        workspace_resource = self.to_dto(super().post(body))
+
+        workspace_resource = super().post(body)
         if workspace_resource.status == "p" and workspace_resource.origin:
             from workspaces.helpers.etl_helpers import copy_workspace_resource
             copy_workspace_resource(workspace_resource)
-        return workspace_resource    
+        return workspace_resource
 
     def is_authorized(self, resource: WorkspaceResourceEntity):
         # A resource is authorized if belongs to an authorized workspace
@@ -460,15 +468,13 @@ class WorkspaceresourceService(BaseModelService):
 
     def get(self, id_):
         workspace_resource: WorkspaceResourceEntity = super().get(id_)
-        return self.to_dto(workspace_resource)
+        return workspace_resource
 
     def delete(self, id_):
         workspace_resource = self.get(id_)
         super().delete(id_)
         from workspaces.helpers.etl_helpers import delete_workspace_resource
         delete_workspace_resource(workspace_resource)
-
-
 
 
 class TagService(BaseModelService):

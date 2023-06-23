@@ -246,11 +246,7 @@ function mapWorkspace(workspace: ApiWorkspace): Workspace {
     ? resources.find(
           (resource) => resource.id === defaultResourceId
         )
-    : {
-        workspaceId: workspace.id,
-        name: "Generic",
-        type: SampleResourceTypes.g,
-      };
+    : null;
   const tags: Tag[] = workspace.tags;
   const timestampUpdated: Date = workspace.timestampUpdated;
   const user: User = workspace.user;

@@ -5,8 +5,10 @@ from pathlib import Path
 from cloudharness import log as logger
 
 from workspaces.config import Config
+from workspaces.models.resource_origin import ResourceOrigin
+from workspaces.models.resource_status import ResourceStatus
 from workspaces.persistence.crud_persistence import WorkspaceImageRepository, WorkspaceRepository, db
-from workspaces.persistence.models import WorkspaceEntity, WorkspaceImage
+from workspaces.persistence.models import TWorkspaceEntity, WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
 from workspaces.service.crud_service import NotAuthorized, NotAllowed, WorkspaceService
 
@@ -88,11 +90,11 @@ def delimage(id_=None, image_id=None, **kwargs):
 
 
 def import_resources(id_, body, **kwargs):
-    workspace = WorkspaceRepository().get(id=id_)
+    workspace: TWorkspaceEntity = WorkspaceRepository().get(id=id_)
     if workspace is None:
         return f"Workspace with id {id_} not found.", 404
 
-    resource_origins = body.get("resourceorigins", [])
+    resource_origins = [ResourceOrigin.from_dict(r) for r in body.get("resourceorigins", [])]
     copy_origins(id_, resource_origins)
     return "Scheduled", 200
 

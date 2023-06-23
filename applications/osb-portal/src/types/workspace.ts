@@ -24,7 +24,7 @@ export interface WorkspaceResource {
   id?: number;
   name: string;
   origin?: ResourceOrigin;
-  folder?: string;
+  path?: string;
   type?: ResourceType;
   status?: ResourceStatus;
   timestampUpdated?: Date;

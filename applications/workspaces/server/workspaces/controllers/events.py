@@ -22,7 +22,7 @@ def update_workspace_resources(event_client, app, message):
 
 _consumer_clients = []
 _consumer_queues = (
-    {"group": "workspaces2", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE,
+    {"group": "workspaces", "name": UPDATE_WORKSPACES_RESOURCE_QUEUE,
         "handler": update_workspace_resources},
 )
 
