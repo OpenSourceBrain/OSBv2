@@ -59,6 +59,7 @@ import Resources from "./resources";
 import { EditRepoDialog } from "..";
 import { UserInfo } from "../../types/user";
 import { canEditRepository } from "../../service/UserService";
+import { AboutOSBPaper } from "../styled/AboutOSBPaper";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
@@ -120,14 +121,6 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
       },
     },
   },
-}));
-
-const AboutOSBPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  background: infoBoxBg,
-  borderRadius: inputRadius,
-  marginTop: theme.spacing(2),
-  overflow: "auto",
 }));
 
 const StyledViewButton = styled(Button)(({ theme }) => ({

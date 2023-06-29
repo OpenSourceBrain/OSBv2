@@ -33,12 +33,14 @@ import WorkspaceDetailsInfo from "../components/workspace/WorkspaceDetailsInfo";
 import { canEditWorkspace } from "../service/UserService";
 
 //types
-import { Workspace, OSBApplication } from "../types/workspace";
+import { Workspace, OSBApplication } from '../types/workspace';
 
 //icons
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { AboutOSBPaper } from "../components/styled/AboutOSBPaper";
+import MarkdownViewer from "../components/common/MarkdownViewer";
 
 
 const NavbarButton = styled(Button)(({ theme }) => ({
@@ -293,16 +295,14 @@ export const WorkspacePage = (props: any) => {
                         )}
                       </Box>
                       {workspace?.thumbnail && <Divider />}
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          color: lightWhite,
-                          letterSpacing: "0.01em",
-                          lineHeight: "24px",
-                        }}
-                      >
-                        {workspace?.description}
-                      </Typography>
+                      <Box className="verticalFit">
+                        <AboutOSBPaper className={`verticalFit`}>
+                          <MarkdownViewer
+                            text={workspace?.description}
+                            repository={workspace}
+                          />
+                        </AboutOSBPaper>
+                      </Box>
                     </Stack>
                   </Box>
                 </Grid>

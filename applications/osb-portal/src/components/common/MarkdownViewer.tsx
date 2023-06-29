@@ -16,6 +16,7 @@ import {
   radius,
 } from "../../theme";
 import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
+import { Workspace } from '../../types/workspace';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -132,7 +133,7 @@ export const MarkdownViewer = ({
   className,
 }: {
   text: string;
-  repository?: OSBRepository;
+  repository?: OSBRepository | Workspace;
   className?: string;
 }) => {
   const classes = useStyles();
