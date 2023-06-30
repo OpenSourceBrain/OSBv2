@@ -172,7 +172,7 @@ export default (props: WorkspaceProps | any) => {
   };
 
   React.useEffect(() => { 
-    if(!isWorkspaceWaiting(workspace) {
+    if(!isWorkspaceWaiting(workspace)) {
       refreshWorkspaceResources() }
    }, []);
 
