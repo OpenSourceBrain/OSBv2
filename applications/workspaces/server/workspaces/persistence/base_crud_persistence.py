@@ -226,7 +226,7 @@ class BaseModelRepository:
         if obj is None:
             return f"{self.model.__name__} with id {id} not found.", 404
 
-        new_obj = self.model.from_dict(**body)
+        new_obj = body
         obj = self._copy_attrs(obj, new_obj)
         obj = self.set_timestamp_updated(obj)
         db.session.commit()
