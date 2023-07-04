@@ -297,10 +297,9 @@ export const WorkspacePage = (props: any) => {
                       {workspace?.thumbnail && <Divider />}
                       <Box className="verticalFit">
                         <AboutOSBPaper className={`verticalFit`} sx={{backgroundColor: 'transparent'}}>
-                          <MarkdownViewer
-                            text={workspace?.description}
-                            repository={workspace}
-                          />
+                          <MarkdownViewer>
+                            {workspace?.description}
+                          </MarkdownViewer>
                         </AboutOSBPaper>
                       </Box>
                     </Stack>

@@ -35,7 +35,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import InputAdornment from "@mui/material/InputAdornment";
 import TableContainer from "@mui/material/TableContainer";
-import MarkdownViewer from "../../components/common/MarkdownViewer";
 import prettyBytes from "pretty-bytes";
 import TableHead from "@mui/material/TableHead";
 
@@ -60,6 +59,7 @@ import { EditRepoDialog } from "..";
 import { UserInfo } from "../../types/user";
 import { canEditRepository } from "../../service/UserService";
 import { AboutOSBPaper } from "../styled/AboutOSBPaper";
+import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
@@ -322,7 +322,7 @@ const RepositoryPageDetails = ({
               </Box>
               <Box className="verticalFit">
                 <AboutOSBPaper className={`verticalFit`}>
-                  <MarkdownViewer
+                  <RepositoryMarkdownViewer
                     text={repository?.description}
                     repository={repository}
                   />
