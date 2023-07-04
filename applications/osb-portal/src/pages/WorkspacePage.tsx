@@ -11,6 +11,7 @@ import {
   bgDarkest,
   bgDark,
   lightWhite,
+  inputRadius,
 } from "../theme";
 
 //components
@@ -23,6 +24,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
 import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
@@ -39,7 +41,6 @@ import { Workspace, OSBApplication } from '../types/workspace';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { AboutOSBPaper } from "../components/styled/AboutOSBPaper";
 import MarkdownViewer from "../components/common/MarkdownViewer";
 
 
@@ -296,11 +297,18 @@ export const WorkspacePage = (props: any) => {
                       </Box>
                       {workspace?.thumbnail && <Divider />}
                       <Box className="verticalFit">
-                        <AboutOSBPaper className={`verticalFit`} sx={{backgroundColor: 'transparent'}}>
+                        <Paper className={`verticalFit`}
+                          sx={{
+                            padding: 2,
+                            backgroundColor: 'transparent',
+                            borderRadius: inputRadius,
+                            marginTop: 2,
+                            overflow: "auto",
+                          }}>
                           <MarkdownViewer>
                             {workspace?.description}
                           </MarkdownViewer>
-                        </AboutOSBPaper>
+                        </Paper>
                       </Box>
                     </Stack>
                   </Box>

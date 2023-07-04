@@ -2,7 +2,6 @@ import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import gfm from "remark-gfm";
-
 import Box from "@mui/material/Box";
 
 import {
@@ -14,9 +13,9 @@ import {
   bgInputs,
   radius,
 } from "../../theme";
-import styled from "@mui/system/styled";
 
-const StyledBox = styled(Box)(({theme}) => ({
+
+const boxStyle = {
   color: "white",
   backgroundColor: "transparent",
   "& .preview-box": {
@@ -33,7 +32,7 @@ const StyledBox = styled(Box)(({theme}) => ({
       backgroundColor: bgLightestShade,
     },
     "& pre": {
-      padding: theme.spacing(2),
+      padding: 2,
       backgroundColor: bgLightestShade,
       borderRadius: radius,
       "&::-webkit-scrollbar": {
@@ -59,7 +58,7 @@ const StyledBox = styled(Box)(({theme}) => ({
       fontWeight: "normal",
     },
     "& h2": {
-      marginTop: theme.spacing(1),
+      marginTop: 2,
       fontWeight: "500",
       paddingBottom: "5px",
     },
@@ -78,7 +77,7 @@ const StyledBox = styled(Box)(({theme}) => ({
     },
     "& p img": {
       maxWidth: "30vw",
-      [theme.breakpoints.down("md")]: {
+      md: {
         maxWidth: "75vw",
       },
     },
@@ -121,7 +120,7 @@ const StyledBox = styled(Box)(({theme}) => ({
       },
     },
   },
-}))
+}
 
 export const MarkdownViewer = ({
   children,
@@ -132,15 +131,14 @@ export const MarkdownViewer = ({
 }) => {
 
   return (
-    <StyledBox className={`verticalFit ${className}`}>
-
+    <Box className={`verticalFit ${className}`} sx={boxStyle}>
       <ReactMarkdown
         rehypePlugins={[rehypeRaw, gfm]}
         className={`preview-box scrollbar `}
       >
         {children}
       </ReactMarkdown> 
-   </StyledBox>
+   </Box>
   );
 };
 

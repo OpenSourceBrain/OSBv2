@@ -58,7 +58,6 @@ import Resources from "./resources";
 import { EditRepoDialog } from "..";
 import { UserInfo } from "../../types/user";
 import { canEditRepository } from "../../service/UserService";
-import { AboutOSBPaper } from "../styled/AboutOSBPaper";
 import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
@@ -321,12 +320,19 @@ const RepositoryPageDetails = ({
                 </Link>
               </Box>
               <Box className="verticalFit">
-                <AboutOSBPaper className={`verticalFit`}>
+                <Paper className={`verticalFit`} 
+                  sx={{
+                    padding: 2,
+                    background: infoBoxBg,
+                    borderRadius: inputRadius,
+                    marginTop: 2,
+                    overflow: "auto",
+                  }}>
                   <RepositoryMarkdownViewer
                     text={repository?.description}
                     repository={repository}
                   />
-                </AboutOSBPaper>
+                </Paper>
               </Box>
             </Box>
           </Grid>
