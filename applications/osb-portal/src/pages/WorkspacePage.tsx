@@ -11,6 +11,7 @@ import {
   bgDarkest,
   bgDark,
   lightWhite,
+  inputRadius,
 } from "../theme";
 
 //components
@@ -23,6 +24,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
 import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
@@ -33,12 +35,13 @@ import WorkspaceDetailsInfo from "../components/workspace/WorkspaceDetailsInfo";
 import { canEditWorkspace } from "../service/UserService";
 
 //types
-import { Workspace, OSBApplication } from "../types/workspace";
+import { Workspace, OSBApplication } from '../types/workspace';
 
 //icons
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MarkdownViewer from "../components/common/MarkdownViewer";
 
 
 const NavbarButton = styled(Button)(({ theme }) => ({
@@ -293,16 +296,20 @@ export const WorkspacePage = (props: any) => {
                         )}
                       </Box>
                       {workspace?.thumbnail && <Divider />}
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          color: lightWhite,
-                          letterSpacing: "0.01em",
-                          lineHeight: "24px",
-                        }}
-                      >
-                        {workspace?.description}
-                      </Typography>
+                      <Box className="verticalFit">
+                        <Paper className={`verticalFit`}
+                          sx={{
+                            padding: 2,
+                            backgroundColor: 'transparent',
+                            borderRadius: inputRadius,
+                            marginTop: 2,
+                            overflow: "auto",
+                          }}>
+                          <MarkdownViewer>
+                            {workspace?.description}
+                          </MarkdownViewer>
+                        </Paper>
+                      </Box>
                     </Stack>
                   </Box>
                 </Grid>

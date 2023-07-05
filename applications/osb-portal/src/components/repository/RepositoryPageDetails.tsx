@@ -35,7 +35,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import InputAdornment from "@mui/material/InputAdornment";
 import TableContainer from "@mui/material/TableContainer";
-import MarkdownViewer from "../../components/common/MarkdownViewer";
 import prettyBytes from "pretty-bytes";
 import TableHead from "@mui/material/TableHead";
 
@@ -59,6 +58,7 @@ import Resources from "./resources";
 import { EditRepoDialog } from "..";
 import { UserInfo } from "../../types/user";
 import { canEditRepository } from "../../service/UserService";
+import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
 
 const RepoDetailsIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
@@ -120,14 +120,6 @@ const RepoDetailsBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
       },
     },
   },
-}));
-
-const AboutOSBPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  background: infoBoxBg,
-  borderRadius: inputRadius,
-  marginTop: theme.spacing(2),
-  overflow: "auto",
 }));
 
 const StyledViewButton = styled(Button)(({ theme }) => ({
@@ -328,12 +320,19 @@ const RepositoryPageDetails = ({
                 </Link>
               </Box>
               <Box className="verticalFit">
-                <AboutOSBPaper className={`verticalFit`}>
-                  <MarkdownViewer
+                <Paper className={`verticalFit`} 
+                  sx={{
+                    padding: 2,
+                    background: infoBoxBg,
+                    borderRadius: inputRadius,
+                    marginTop: 2,
+                    overflow: "auto",
+                  }}>
+                  <RepositoryMarkdownViewer
                     text={repository?.description}
                     repository={repository}
                   />
-                </AboutOSBPaper>
+                </Paper>
               </Box>
             </Box>
           </Grid>

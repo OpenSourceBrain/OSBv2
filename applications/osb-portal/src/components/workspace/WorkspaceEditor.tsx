@@ -354,7 +354,7 @@ export default (props: WorkspaceEditProps) => {
               defaultValue={workspace?.description}
               onChange={setDescriptionField}
               view={{ html: false, menu: true, md: true }}
-              renderHTML={(text: string) => <MarkdownViewer text={text} />}
+              renderHTML={(text: string) => <MarkdownViewer>{text}</MarkdownViewer>}
             />
           </Box>
           <Box mt={4} alignItems="stretch">
