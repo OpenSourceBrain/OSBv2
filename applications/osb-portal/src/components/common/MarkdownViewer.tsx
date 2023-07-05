@@ -20,6 +20,7 @@ const boxStyle = {
   backgroundColor: "transparent",
   "& .preview-box": {
     overflowWrap: "anywhere",
+    maxWidth: "100%",
     flexGrow: 1,
     "& a": {
       color: linkColor,
@@ -76,7 +77,7 @@ const boxStyle = {
       backgroundColor: "#c4c4c4",
     },
     "& p img": {
-      maxWidth: "30vw",
+      maxWidth: "100%",
       md: {
         maxWidth: "75vw",
       },
