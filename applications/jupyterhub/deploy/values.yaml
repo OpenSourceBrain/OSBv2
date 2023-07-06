@@ -69,3 +69,7 @@ prePuller:
   continuous:
     enabled: false
   pullProfileListImages: false
+proxy:
+  service:
+
+    type: LoadBalancer
