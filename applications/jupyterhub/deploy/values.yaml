@@ -69,17 +69,3 @@ prePuller:
   continuous:
     enabled: false
   pullProfileListImages: false
-proxy:
-  https:
-    enabled: "true"
-    hosts:
-      - netpyne.osb2.metacell.us
-      - hub.osb2.metacell.us
-      - notebooks.osb2.metacell.us
-      - nwbexplorer.osb2.metacell.us
-
-    letsencrypt:
-      email: filippo@metacell.us
-  service:
-
-    type: LoadBalancer
