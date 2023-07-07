@@ -75,6 +75,7 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
     pip install -r overrides/requirements.txt
 
 RUN mv workspace /opt/workspace/tutorials
+RUN chown -R $NB_UID /opt/workspace/tutorials
 RUN ln -s /opt/workspace workspace
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
