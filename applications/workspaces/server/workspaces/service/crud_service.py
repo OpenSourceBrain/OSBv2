@@ -188,6 +188,9 @@ class WorkspaceService(BaseModelService):
 
         create_volume(name=self.get_pvc_name(workspace.id),
                       size=self.get_workspace_volume_size(workspace))
+
+        for workspace_resource in workspace.resources:
+            WorkspaceresourceService.handle_resource_data(workspace_resource)
         return workspace
 
     def put(self, body, id_):
@@ -453,10 +456,14 @@ class WorkspaceresourceService(BaseModelService):
     def post(self, body) -> WorkspaceResource:
 
         workspace_resource = super().post(body)
-        if workspace_resource.status == "p" and workspace_resource.origin:
+        self.handle_resource_data(workspace_resource)
+        return workspace_resource
+
+    @staticmethod
+    def handle_resource_data(workspace_resource: WorkspaceResource) -> WorkspaceResource:
+         if workspace_resource.status == "p" and workspace_resource.origin:
             from workspaces.helpers.etl_helpers import copy_workspace_resource
             copy_workspace_resource(workspace_resource)
-        return workspace_resource
 
     def is_authorized(self, resource: WorkspaceResourceEntity):
         # A resource is authorized if belongs to an authorized workspace
