@@ -329,7 +329,7 @@ class WorkspaceService(BaseModelService):
                                     WorkspaceResource.from_dict(
                                         {
                                             "id": -1,
-                                            "name": "Importing resources into workspace",
+                                            "name": "Refreshing resources",
                                             "origin": {"path": fake_path},
                                             "resource_type": ResourceType.U,
                                             "workspace_id": workspace.id,
