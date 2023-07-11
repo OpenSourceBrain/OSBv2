@@ -104,7 +104,8 @@ class BaseModelService:
 
         for obj in objects.items:
             self._calculated_fields_populate(obj)
-        return [self.to_dto(obj) for obj in objects.items]
+        objects.items = [self.to_dto(obj) for obj in objects.items]
+        return objects
 
     @classmethod
     def to_dao(cls, d: dict):
@@ -354,7 +355,7 @@ class WorkspaceService(BaseModelService):
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
-        workspace = super().get(id)
+        workspace = self.repository.get(id)
 
         for resource in workspace.resources:
             logger.debug("deleting resource %s", resource.id)
