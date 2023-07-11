@@ -31,7 +31,7 @@ from workspaces.service.auth import get_auth_client, keycloak_user_id
 from workspaces.service.user_quota_service import get_pvc_size, get_max_workspaces_for_user
 
 from workspaces.utils import dao_entity2dict, guess_resource_type
-
+from ..database import db
 
 def rm_null_values(dikt):
     tmp = {}
@@ -104,7 +104,7 @@ class BaseModelService:
 
         for obj in objects.items:
             self._calculated_fields_populate(obj)
-        return objects
+        return [self.to_dto(obj) for obj in objects.items]
 
     @classmethod
     def to_dao(cls, d: dict):
@@ -260,27 +260,28 @@ class WorkspaceService(BaseModelService):
         if current_user_id is not None:
             # Admins see all workspaces, non admin users can see only their own workspaces
             if not get_auth_client().user_has_realm_role(user_id=current_user_id, role="administrator"):
-                objects = self.repository.search(
+                paged_results = self.repository.search(
                     page=page, per_page=per_page, user_id=current_user_id, *args, **kwargs)
             else:
-                objects = self.repository.search(
+                paged_results = self.repository.search(
                     page=page, per_page=per_page, user_id=current_user_id, show_all=True, *args, **kwargs)
         else:
-            objects = self.repository.search(
+            paged_results = self.repository.search(
                 page=page, per_page=per_page, *args, **kwargs)
-        for obj in objects.items:
-            self._calculated_fields_populate(obj)
-        return objects
+        with db.session.no_autoflush:
+            paged_results.items = [self.to_dto(w) for w in paged_results.items]
+
+            for obj in paged_results.items:
+                self._calculated_fields_populate(obj)
+        return paged_results
 
     @classmethod
     def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
-        if not workspace_entity.resources:
-            workspace_entity.resources = []
- 
+
         workspace = cls.dict_to_dto(dao_entity2dict(workspace_entity))
         for resource in workspace_entity.resources:
             resource.origin = json.loads(resource.origin)
-        workspace.resources = [WorkspaceresourceService.to_dto(r) for r in workspace_entity.resources]
+        workspace.resources = [WorkspaceresourceService.to_dto(r) for r in workspace_entity.resources] if workspace_entity.resources else []
         return workspace
 
     @classmethod

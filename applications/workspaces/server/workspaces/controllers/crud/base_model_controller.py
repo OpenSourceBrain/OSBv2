@@ -25,7 +25,6 @@ class BaseModelView(MethodView):
         """
         objects = self.service.search(
             page=page, per_page=per_page, *args, **kwargs)
-        obj_dicts = list(map(lambda obj: dao_entity2dict(obj), objects.items))
         list_name = str(self.service.repository)
         list_name_plural = list_name[:-1] + \
             list_name[-1:].replace("y", "ie") + "s"
@@ -35,7 +34,7 @@ class BaseModelView(MethodView):
                 "number_of_pages": objects.pages,
                 "total": objects.total
             },
-            list_name_plural: obj_dicts,
+            list_name_plural: objects.items,
         }
 
     def post(self, body):
