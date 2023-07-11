@@ -192,7 +192,7 @@ class WorkspaceService(BaseModelService):
         
         for workspace_resource in workspace.resources:
             WorkspaceresourceService.handle_resource_data(workspace_resource)
-            
+
         return workspace
 
     def put(self, body, id_):
@@ -274,9 +274,13 @@ class WorkspaceService(BaseModelService):
 
     @classmethod
     def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
-        workspace = super().to_dto(workspace_entity)
-        if not workspace.resources:
-            workspace.resources = []
+        if not workspace_entity.resources:
+            workspace_entity.resources = []
+ 
+        workspace = cls.dict_to_dto(dao_entity2dict(workspace_entity))
+        for resource in workspace_entity.resources:
+            resource.origin = json.loads(resource.origin)
+        workspace.resources = [WorkspaceresourceService.to_dto(r) for r in workspace_entity.resources]
         return workspace
 
     @classmethod
@@ -443,7 +447,7 @@ class WorkspaceresourceService(BaseModelService):
 
     @classmethod
     def dict_to_dto(cls, d) -> WorkspaceResource:
-        if 'origin' in d:
+        if 'origin' in d and isinstance(d['origin'], str):
             d['origin'] = json.loads(d['origin'])
 
         workspace_resource: WorkspaceResource = super().dict_to_dto(d)
