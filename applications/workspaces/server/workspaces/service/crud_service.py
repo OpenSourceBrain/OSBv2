@@ -181,16 +181,18 @@ class WorkspaceService(BaseModelService):
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
         self.check_max_num_workspaces_per_user(body['user_id'])
-        for r in body.get("resources", []):
-            r.update({"origin": json.dumps(r.get("origin"))})
-        workspace = Workspace.from_dict(body)  # Validate
+
+            
         workspace = super().post(body)
+
 
         create_volume(name=self.get_pvc_name(workspace.id),
                       size=self.get_workspace_volume_size(workspace))
-
+        
+        
         for workspace_resource in workspace.resources:
             WorkspaceresourceService.handle_resource_data(workspace_resource)
+            
         return workspace
 
     def put(self, body, id_):
@@ -279,9 +281,12 @@ class WorkspaceService(BaseModelService):
 
     @classmethod
     def to_dao(cls, d: dict) -> TWorkspaceEntity:
-
+        
+        resources = d.get("resources", [])
+        d["resources"] = []
         workspace: TWorkspaceEntity = super().to_dao(d)
         workspace.tags = TagRepository().get_tags_daos(workspace.tags)
+        workspace.resources = [WorkspaceresourceService.to_dao(r) for r in resources]
         return workspace
 
     def get(self, id_):
@@ -424,7 +429,8 @@ class WorkspaceresourceService(BaseModelService):
     @classmethod
     def to_dao(cls, ws_dict: dict) -> TWorkspaceResourceEntity:
         if "origin" in ws_dict:
-            ws_dict.update({"origin": json.dumps(ws_dict.get("origin"))})
+            wro_dao_dict = dict(ws_dict.get("origin"))
+            ws_dict.update({"origin": json.dumps(wro_dao_dict)})
 
         workspace_resource = super().to_dao(ws_dict)
         if not workspace_resource.resource_type or workspace_resource.resource_type == "u":
