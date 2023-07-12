@@ -79,7 +79,7 @@ RUN chown -R $NB_UID /opt/workspace/tutorials
 RUN ln -s /opt/workspace workspace
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
-
+RUN wget --no-check-certificate -P $NP_LFPYKIT_HEAD_FILE https://www.parralab.org/nyhead/sa_nyhead.mat
 
 USER $NB_UID
 
