@@ -357,9 +357,10 @@ class WorkspaceService(BaseModelService):
         resource_repository = WorkspaceResourceRepository()
         workspace = self.repository.get(id)
 
-        for resource in workspace.resources:
-            logger.debug("deleting resource %s", resource.id)
-            resource_repository.delete(resource.id)
+        if workspace.resources:
+            for resource in workspace.resources:
+                logger.debug("deleting resource %s", resource.id)
+                resource_repository.delete(resource.id)
         logger.info("deleting workspace %s", id)
         super().delete(id)
         logger.info("deleted workspace %s", id)
