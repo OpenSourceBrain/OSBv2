@@ -214,20 +214,16 @@ class WorkspaceService(BaseModelService):
         if workspace is None:
             raise Exception(
                 f"Cannot clone workspace with id {workspace_id}: not found.")
+        workspace.user = None
+        workspace.id = None
+        workspace.name = f"Clone of {workspace.name}"
+        workspace.publicable = False
+        workspace.featured = False
+        workspace.timestamp_created = None
+        cloned = self.to_dao(workspace.to_dict())
+        
 
-        cloned = dict(
-            name=f"Clone of {workspace['name']}",
-            tags=workspace['tags'],
-            user_id=user_id,
-
-            description=workspace['description'],
-            publicable=False,
-            featured=False
-        )
-        if workspace['thumbnail']:
-            cloned['thumbnail'] = workspace['thumbnail']
-
-        cloned = self.repository.post(cloned, do_post=False)
+        cloned = self.repository.post(cloned)
 
         create_volume(name=self.get_pvc_name(cloned.id),
                       size=self.get_workspace_volume_size(workspace))
