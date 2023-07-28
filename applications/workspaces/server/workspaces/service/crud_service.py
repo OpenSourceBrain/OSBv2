@@ -44,6 +44,8 @@ def rm_null_values(dikt):
 class NotAuthorized(Exception):
     pass
 
+class NotFoundException(Exception):
+    pass
 
 class NotAllowed(Exception):
     pass
@@ -211,20 +213,22 @@ class WorkspaceService(BaseModelService):
         self.check_max_num_workspaces_per_user(user_id)
         from workspaces.service.workflow import clone_workspaces_content
         with db.session.no_autoflush:
-            workspace = self.get(workspace_id)
+            workspace = self.repository.clone(workspace_id)
             if workspace is None:
-                raise Exception(
+                raise NotFoundException(
                     f"Cannot clone workspace with id {workspace_id}: not found.")
+            
             workspace.user = None
-            workspace.id = None
             workspace.name = f"Clone of {workspace.name}"
             workspace.publicable = False
             workspace.featured = False
             workspace.timestamp_created = None
-            cloned = self.to_dao(workspace.to_dict())
+            workspace.resources = []
+
+
             
 
-            cloned = self.repository.post(cloned)
+            cloned = self.repository.post(workspace)
 
             create_volume(name=self.get_pvc_name(cloned.id),
                         size=self.get_workspace_volume_size(workspace))
@@ -435,8 +439,10 @@ class WorkspaceresourceService(BaseModelService):
         if "origin" in ws_dict:
             wro_dao_dict = dict(ws_dict.get("origin"))
             ws_dict.update({"origin": json.dumps(wro_dao_dict)})
-
-        workspace_resource = super().to_dao(ws_dict)
+        if 'path' in ws_dict:
+            ws_dict['folder'] = ws_dict['path']
+            del ws_dict['path']
+        workspace_resource: TWorkspaceResourceEntity = super().to_dao(ws_dict)
         if not workspace_resource.resource_type or workspace_resource.resource_type == "u":
             origin = json.loads(workspace_resource.origin)
             workspace_resource.resource_type = guess_resource_type(

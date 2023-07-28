@@ -1,8 +1,7 @@
 from flask.views import MethodView
 from flask_sqlalchemy import Pagination
 
-from workspaces.service.crud_service import BaseModelService, NotAuthorized
-from workspaces.utils import dao_entity2dict
+from workspaces.service.crud_service import BaseModelService, NotAuthorized, NotFoundException
 
 
 class BaseModelView(MethodView):
@@ -51,6 +50,8 @@ class BaseModelView(MethodView):
             obj = self.service.get(id_)
         except NotAuthorized:
             return "Access to the requested resources not authorized", 401
+        except NotFoundException:
+            return f"{self.service.repository} with id {id_} not found.", 404
         if obj is None:
             return f"{self.service.repository} with id {id_} not found.", 404
         if isinstance(obj, dict):
