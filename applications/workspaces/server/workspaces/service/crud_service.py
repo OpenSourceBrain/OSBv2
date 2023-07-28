@@ -210,24 +210,25 @@ class WorkspaceService(BaseModelService):
         user_id = keycloak_user_id()
         self.check_max_num_workspaces_per_user(user_id)
         from workspaces.service.workflow import clone_workspaces_content
-        workspace = self.get(workspace_id)
-        if workspace is None:
-            raise Exception(
-                f"Cannot clone workspace with id {workspace_id}: not found.")
-        workspace.user = None
-        workspace.id = None
-        workspace.name = f"Clone of {workspace.name}"
-        workspace.publicable = False
-        workspace.featured = False
-        workspace.timestamp_created = None
-        cloned = self.to_dao(workspace.to_dict())
-        
+        with db.session.no_autoflush:
+            workspace = self.get(workspace_id)
+            if workspace is None:
+                raise Exception(
+                    f"Cannot clone workspace with id {workspace_id}: not found.")
+            workspace.user = None
+            workspace.id = None
+            workspace.name = f"Clone of {workspace.name}"
+            workspace.publicable = False
+            workspace.featured = False
+            workspace.timestamp_created = None
+            cloned = self.to_dao(workspace.to_dict())
+            
 
-        cloned = self.repository.post(cloned)
+            cloned = self.repository.post(cloned)
 
-        create_volume(name=self.get_pvc_name(cloned.id),
-                      size=self.get_workspace_volume_size(workspace))
-        clone_workspaces_content(workspace_id, cloned.id)
+            create_volume(name=self.get_pvc_name(cloned.id),
+                        size=self.get_workspace_volume_size(workspace))
+            clone_workspaces_content(workspace_id, cloned.id)
         return cloned
 
     def is_authorized(self, workspace):
