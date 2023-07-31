@@ -213,13 +213,13 @@ class WorkspaceService(BaseModelService):
         self.check_max_num_workspaces_per_user(user_id)
         from workspaces.service.workflow import clone_workspaces_content
         with db.session.no_autoflush:
-            workspace = self.repository.clone(workspace_id)
+            workspace: TWorkspaceEntity = self.repository.clone(workspace_id)
             if workspace is None:
                 raise NotFoundException(
                     f"Cannot clone workspace with id {workspace_id}: not found.")
             
-            workspace.user = None
             workspace.name = f"Clone of {workspace.name}"
+            workspace.user_id = user_id
             workspace.publicable = False
             workspace.featured = False
             workspace.timestamp_created = None
