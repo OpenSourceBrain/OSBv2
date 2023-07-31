@@ -8,11 +8,10 @@ from workspaces.service.crud_service import (
     WorkspaceService,
     WorkspaceresourceService,
     TagService,
+    NotFoundException
 )
 
 
-from workspaces.persistence.crud_persistence import OSBRepositoryRepository
-from workspaces.utils import dao_entity2dict
 from workspaces.controllers.crud.base_model_controller import BaseModelView
 
 
@@ -36,6 +35,8 @@ class OsbrepositoryView(BaseModelView):
             osbrepository_ext = self.service.get(id_)
         except NotAuthorized:
             return "Access to the requested resources not authorized", 401
+        except NotFoundException:
+            return f"{self.service.repository} with id {id_} not found.", 404
         if osbrepository_ext is None:
             return f"{self.service.repository} with id {id_} not found.", 404
 

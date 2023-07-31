@@ -214,6 +214,15 @@ class BaseModelRepository:
         if hasattr(obj, "timestamp_updated"):
             setattr(obj, "timestamp_updated", func.now())
         return obj
+    
+    def clone(self, id):
+        """Clone an object from the repository."""
+        obj = self._get(id)
+        db.session.expunge(obj)
+        from sqlalchemy.orm.session import make_transient
+        make_transient(obj)
+        obj.id = None
+        return obj
 
     def save(self, obj):
         obj = self.set_timestamp_updated(obj)

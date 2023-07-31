@@ -14,9 +14,7 @@ export function getBaseDomain() {
     // Dev
     return window.APP_DOMAIN;
   }
-  return window.location.host.includes("app.")
-    ? window.location.host.split(".").slice(1).join(".")
-    : window.location.host; // remove the first part of the hostname
+  return window.location.host.replace("www.", ""); // remove the first part of the hostname
 }
 
 export function getApplicationDomain(app: OSBApplication) {

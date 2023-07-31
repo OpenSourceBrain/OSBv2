@@ -1,8 +1,7 @@
 from flask.views import MethodView
 from flask_sqlalchemy import Pagination
 
-from workspaces.service.crud_service import BaseModelService, NotAuthorized
-from workspaces.utils import dao_entity2dict
+from workspaces.service.crud_service import BaseModelService, NotAuthorized, NotFoundException
 
 
 class BaseModelView(MethodView):
@@ -25,7 +24,6 @@ class BaseModelView(MethodView):
         """
         objects = self.service.search(
             page=page, per_page=per_page, *args, **kwargs)
-        obj_dicts = list(map(lambda obj: dao_entity2dict(obj), objects.items))
         list_name = str(self.service.repository)
         list_name_plural = list_name[:-1] + \
             list_name[-1:].replace("y", "ie") + "s"
@@ -35,7 +33,7 @@ class BaseModelView(MethodView):
                 "number_of_pages": objects.pages,
                 "total": objects.total
             },
-            list_name_plural: obj_dicts,
+            list_name_plural: objects.items,
         }
 
     def post(self, body):
@@ -52,6 +50,8 @@ class BaseModelView(MethodView):
             obj = self.service.get(id_)
         except NotAuthorized:
             return "Access to the requested resources not authorized", 401
+        except NotFoundException:
+            return f"{self.service.repository} with id {id_} not found.", 404
         if obj is None:
             return f"{self.service.repository} with id {id_} not found.", 404
         if isinstance(obj, dict):
