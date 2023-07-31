@@ -11,6 +11,7 @@ import {
   bgDarkest,
   bgDark,
   lightWhite,
+  inputRadius,
 } from "../theme";
 
 //components
@@ -23,6 +24,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
 import { WorkspaceEditor, WorkspaceInteractions } from "../components";
 import { OSBSplitButton } from "../components/common/OSBSplitButton";
 import { WorkspaceActionsMenu } from "../components";
@@ -39,7 +41,7 @@ import { Workspace, OSBApplication } from "../types/workspace";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import MarkdownViewer from "../components/common/MarkdownViewer";
 
 const NavbarButton = styled(Button)(({ theme }) => ({
   fontSize: "12px",
@@ -61,15 +63,12 @@ export const WorkspacePage = (props: any) => {
   const [error, setError] = React.useState<any>(null);
   const [anchorElmoreVert, setAnchorElmoreVert] = React.useState(null);
 
-
   const isWorkspaceOpen = Boolean(anchorElmoreVert);
 
   React.useEffect(() => {
     props.selectWorkspace(workspaceId);
-    return () => null
-  }
-    , [workspaceId]
-  )
+    return () => null;
+  }, [workspaceId]);
 
   if (error) {
     throw error;
@@ -85,7 +84,6 @@ export const WorkspacePage = (props: any) => {
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
-
 
   return workspace ? (
     <>
@@ -149,34 +147,32 @@ export const WorkspacePage = (props: any) => {
                   defaultSelected={workspace?.defaultApplication}
                   handleClick={openWithApp}
                 />
-                
+
                 <WorkspaceActionsMenu
                   workspace={workspace}
                   user={user}
                   isWorkspaceOpen={isWorkspaceOpen}
-                  ButtonComponent={(props) => (<NavbarButton
-                    {...props}
-                    
-                    size="small"
-                    variant="contained"
-                    aria-label="more"
-
-                    
-                    sx={{
-                      background: chipBg,
-                      boxShadow: "none",
-                      minWidth: "32px",
-                    }}
-                    
-                  >
-                    <MoreVertIcon fontSize="small" />
-                  </NavbarButton>)}
+                  ButtonComponent={(props) => (
+                    <NavbarButton
+                      {...props}
+                      size="small"
+                      variant="contained"
+                      aria-label="more"
+                      sx={{
+                        background: chipBg,
+                        boxShadow: "none",
+                        minWidth: "32px",
+                      }}
+                    >
+                      <MoreVertIcon fontSize="small" />
+                    </NavbarButton>
+                  )}
                 />
               </Grid>
             </Grid>
           </Box>
         </Box>
-        {(!workspace || workspace?.id !== parseInt(workspaceId)) ? (
+        {!workspace || workspace?.id !== parseInt(workspaceId) ? (
           <Box
             flex={1}
             px={2}
@@ -269,6 +265,7 @@ export const WorkspacePage = (props: any) => {
                       spacing={4}
                       sx={{
                         py: "24px",
+                        width: "100%",
                         maxWidth: {
                           xs: "100%",
                           sm: "100%",
@@ -293,16 +290,11 @@ export const WorkspacePage = (props: any) => {
                         )}
                       </Box>
                       {workspace?.thumbnail && <Divider />}
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          color: lightWhite,
-                          letterSpacing: "0.01em",
-                          lineHeight: "24px",
-                        }}
-                      >
-                        {workspace?.description}
-                      </Typography>
+                      <Box className="verticalFit">
+                        <MarkdownViewer>
+                          {workspace?.description}
+                        </MarkdownViewer>
+                      </Box>
                     </Stack>
                   </Box>
                 </Grid>
@@ -327,7 +319,9 @@ export const WorkspacePage = (props: any) => {
       )}
     </>
   ) : (
-    <Backdrop open={true}><CircularProgress /></Backdrop>
+    <Backdrop open={true}>
+      <CircularProgress />
+    </Backdrop>
   );
 };
 export default WorkspacePage;

@@ -119,14 +119,14 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
     } else if (workspace.lastOpen != null) {
       if (
         !app ||
-        workspace.lastOpen.type.application === OSBApplications[app]
+        workspace.lastOpen?.type?.application === OSBApplications[app]
       ) {
         return workspace.lastOpen;
       }
     } else if (app) {
       return workspace.resources.find(
         (resource) =>
-          resource.type.application === OSBApplications[app] &&
+          resource.type?.application === OSBApplications[app] &&
           resource.status === ResourceStatus.available
       );
     } else if (workspace.resources?.length) {

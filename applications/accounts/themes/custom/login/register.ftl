@@ -1,17 +1,21 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout; section>
     <#if section = "header">
-        ${msg("registerTitle")}
+    <div class="login-register-link">
+        <span>${msg("registerTitle")}</span>
         <div id="kc-form-options">
             <div class="${properties.kcFormOptionsWrapperClass!}">
                 <span>Already have an account? <a href="${url.loginUrl}">${kcSanitize(msg("Log In"))?no_esc}</a></span>
             </div>
         </div>
+        </div>
+
         <div class="login-pf-logo"></div>
     <#elseif section = "form">
+
         <form id="kc-register-form" class="kc-register-form" action="${url.registrationAction}" method="post">
             <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('firstName',properties.kcFormGroupErrorClass!)}">
-                <input type="text" id="firstName" class="${properties.kcInputClass!}" name="firstName" value="${(register.formData.firstName!'')}" placeholder="First Name" /> 
+                <input type="text" id="firstName" class="${properties.kcInputClass!}" name="firstName" value="${(register.formData.firstName!'')}" placeholder="First Name" />
             </div>
 
             <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('lastName',properties.kcFormGroupErrorClass!)}">
@@ -44,11 +48,30 @@
              </div>
             </#if>
 
-            <div class="form-group kc-form-footer">
+            <div class="form-group kc-form-footer register-footer">
                 <div id="kc-form-buttons" class="kc-form-button">
                     <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doRegister")}"/>
                 </div>
             </div>
         </form>
+        <div id="kc-form-separator" class="separator">or</div>
+
+        <#if realm.password && social.providers??>
+            <div id="kc-social-providers" class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}">
+                <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 3>${properties.kcFormSocialAccountListGridClass!}</#if>">
+                    <#list social.providers as p>
+                        <li class="${properties.kcFormSocialAccountListLinkClass!}">
+                            <a id="social-${p.alias}"  type="button" href="${p.loginUrl}">
+                                    <i class="${properties.kcCommonLogoIdP!} ${p.iconClasses!}" aria-hidden="true"></i>
+                                    <span class="${properties.kcFormSocialAccountNameClass!} kc-social-icon-text">Register with ${p.displayName!}</span>
+                            </a>
+                        </li>
+                    </#list>
+                </ul>
+            </div>
+        </#if>
     </#if>
+
+
+
 </@layout.registrationLayout>

@@ -13,7 +13,7 @@ from flask_cors import CORS
 
 from workspaces.config import Config
 from workspaces.database import setup_db
-from workspaces.service.events import start_kafka_consumers, stop_kafka_consumers
+from workspaces.controllers.events import start_kafka_consumers, stop_kafka_consumers
 
 logger = cloudharness.log
 
@@ -64,7 +64,7 @@ app = init_flask(
     title="Workspace Manager API",
     webapp=False,
     init_app_fn=init_app,
-    resolver=connexion.resolver.MethodViewResolver("workspaces.views.api"),
+    resolver=connexion.resolver.MethodViewResolver("workspaces.controllers.crud"),
     config=Config,
 )
 

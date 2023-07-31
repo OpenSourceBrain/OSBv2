@@ -2,7 +2,7 @@ import pprint
 
 import six
 import typing
-
+import datetime
 from workspaces import util
 
 T = typing.TypeVar('T')
@@ -11,11 +11,11 @@ T = typing.TypeVar('T')
 class Model(object):
     # openapiTypes: The key is attribute name and the
     # value is attribute type.
-    openapi_types = {}
+    openapi_types: typing.Dict[str, type] = {}
 
     # attributeMap: The key is attribute name and the
     # value is json key in definition.
-    attribute_map = {}
+    attribute_map: typing.Dict[str, str] = {}
 
     @classmethod
     def from_dict(cls: typing.Type[T], dikt) -> T:
@@ -44,6 +44,8 @@ class Model(object):
                     if hasattr(item[1], "to_dict") else item,
                     value.items()
                 ))
+            elif isinstance(value, datetime.datetime):
+                result[attr] = value.isoformat()
             else:
                 result[attr] = value
 

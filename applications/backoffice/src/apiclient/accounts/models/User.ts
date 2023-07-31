@@ -80,6 +80,12 @@ export interface User {
      * @memberof User
      */
     website?: string;
+    /**
+     * 
+     * @type {{ [key: string]: object; }}
+     * @memberof User
+     */
+    quotas?: { [key: string]: object; };
 }
 
 export function UserFromJSON(json: any): User {
@@ -103,6 +109,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         'registrationDate': !exists(json, 'registrationDate') ? undefined : (new Date(json['registrationDate'])),
         'avatar': !exists(json, 'avatar') ? undefined : json['avatar'],
         'website': !exists(json, 'website') ? undefined : json['website'],
+        'quotas': !exists(json, 'quotas') ? undefined : json['quotas'],
     };
 }
 
@@ -125,6 +132,7 @@ export function UserToJSON(value?: User | null): any {
         'registrationDate': value.registrationDate === undefined ? undefined : (value.registrationDate.toISOString().substr(0,10)),
         'avatar': value.avatar,
         'website': value.website,
+        'quotas': value.quotas,
     };
 }
 

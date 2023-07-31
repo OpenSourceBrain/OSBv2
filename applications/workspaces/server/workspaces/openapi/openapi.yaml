@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-    title: Workspaces manager API
+    title: OSB Workspaces manager API
     version: 0.2.0
     description: Opensource Brain Platform - Reference Workspaces manager API
     license:
@@ -64,6 +64,9 @@ paths:
                     in: query
                     required: false
                 -
+                    examples:
+                        'Search by name, id and tag':
+                            value: 'name__like=Work%+id__=1+tags[tag]=Tag'
                     name: q
                     description: >-
                         The search string for filtering of the items to return. Multiple criteria are
@@ -142,10 +145,11 @@ paths:
                     description: The workspace.
                 '404':
                     description: The workspace was not found.
-            summary: Used to retrieve a workspace from the repository.
             security:
                 - {}
-                - bearerAuth: []
+                -
+                    bearerAuth: []
+            summary: Used to retrieve a workspace from the repository.
         put:
             requestBody:
                 description: The workspace to save.
@@ -1146,71 +1150,6 @@ components:
                     $ref: '#/components/schemas/ImageType'
                     description: Workspace Image
             x-tablename: workspaceimage
-        WorkspaceResourceBase:
-            required:
-                - name
-                - resource_type
-            type: object
-            properties:
-                id:
-                    $ref: '#/components/schemas/PrimaryKey'
-                    description: Unique identifier of the WorkspaceResource
-                name:
-                    description: WorkspaceResource name
-                    type: string
-                    example: Workspace Resource One
-                folder:
-                    description: WorkspaceResource folder where the resource will stored in the pvc
-                    type: string
-                    example: Workspace Resource One
-                status:
-                    $ref: '#/components/schemas/ResourceStatus'
-                    description: WorkspaceResource status is the resource
-                timestamp_created:
-                    format: date-time
-                    description: Date/time of creation of the WorkspaceResource
-                    type: string
-                    example: '2019-11-23T01:23:45.000Z'
-                timestamp_updated:
-                    format: date-time
-                    description: Date/time of last updating of the WorkspaceResource
-                    type: string
-                    example: '2019-11-23T01:23:45.000Z'
-                timestamp_last_opened:
-                    format: date-time
-                    description: Date/time of last opening of the WorkspaceResource
-                    type: string
-                resource_type:
-                    $ref: '#/components/schemas/ResourceType'
-                    description: WorkspaceResource type
-        WorkspaceResource:
-            description: Workspace Resource item of a Workspace
-            allOf:
-                -
-                    $ref: '#/components/schemas/WorkspaceResourceBase'
-                -
-                    properties:
-                        workspace_id:
-                            description: workspace_id
-                            type: integer
-                        origin:
-                            $ref: '#/components/schemas/ResourceOrigin'
-                            description: Origin Resource where the WorkspaceResource is build from
-        WorkspaceResourceEntity:
-            description: Workspace Resource item of a Workspace
-            allOf:
-                -
-                    $ref: '#/components/schemas/WorkspaceResourceBase'
-                -
-                    properties:
-                        origin:
-                            description: Origin data JSON formatted of the WorkspaceResource
-                            type: string
-                        workspace_id:
-                            description: workspace_id
-                            type: integer
-                            x-foreign-key: workspace.id
-                    x-tablename: Workspaceresource
         VolumeStorage:
             description: Volume which can be connected to a workspace
             required:
@@ -1225,66 +1164,6 @@ components:
                     type: string
                     example: Storage Volume One
             x-tablename: volumestorage
-        OSBRepositoryBase:
-            description: OSB Repository Base model
-            required:
-                - name
-                - repository_type
-                - content_types
-                - uri
-            type: object
-            properties:
-                id:
-                    $ref: '#/components/schemas/PrimaryKey'
-                    description: Unique identifier of the repository
-                name:
-                    description: Repository name.
-                    type: string
-                    example: Repo One
-                summary:
-                    description: Summary describing the OSB Repository
-                    type: string
-                    example: Sample repository with experimental data
-                repository_type:
-                    $ref: '#/components/schemas/RepositoryType'
-                    description: Repository type
-                content_types:
-                    description: List of Repository Content Types
-                    type: string
-                auto_sync:
-                    description: Auto sync of the resources
-                    default: true
-                    type: boolean
-                    example: true
-                uri:
-                    description: URI of the repository
-                    type: string
-                    example: 'https://github.com/OpenSourceBrain/OSBv2'
-                default_context:
-                    description: The default branch to show for this repository
-                    type: string
-                    example: develop
-                user_id:
-                    description: 'OSBRepository keycloak user id, will be automatically be set to the logged in user'
-                    type: string
-                timestamp_created:
-                    format: date-time
-                    description: Date/time the Workspace is created
-                    type: string
-                    example: '2019-11-23T01:23:45.000Z'
-                timestamp_updated:
-                    format: date-time
-                    description: Date/time the Workspace is last updated
-                    type: string
-                    example: '2019-11-23T01:23:45.000Z'
-                tags:
-                    type: array
-                    items:
-                        allOf:
-                            -
-                                $ref: '#/components/schemas/Tag'
-                            -
-                                x-secondary: osbrepository_tag
         OSBRepositoryEntity:
             description: OSB Repository model
             allOf:
@@ -1463,6 +1342,135 @@ components:
                     type: array
                     items:
                         type: string
+        OSBRepositoryBase:
+            description: OSB Repository Base model
+            required:
+                - name
+                - repository_type
+                - content_types
+                - uri
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the repository
+                name:
+                    description: Repository name.
+                    type: string
+                    example: Repo One
+                summary:
+                    description: Summary describing the OSB Repository
+                    type: string
+                    example: Sample repository with experimental data
+                repository_type:
+                    $ref: '#/components/schemas/RepositoryType'
+                    description: Repository type
+                content_types:
+                    description: List of Repository Content Types
+                    type: string
+                auto_sync:
+                    description: Auto sync of the resources
+                    default: true
+                    type: boolean
+                    example: true
+                uri:
+                    description: URI of the repository
+                    type: string
+                    example: 'https://github.com/OpenSourceBrain/OSBv2'
+                default_context:
+                    description: The default branch to show for this repository
+                    type: string
+                    example: develop
+                user_id:
+                    description: 'OSBRepository keycloak user id, will be automatically be set to the logged in user'
+                    type: string
+                timestamp_created:
+                    format: date-time
+                    description: Date/time the Workspace is created
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_updated:
+                    format: date-time
+                    description: Date/time the Workspace is last updated
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                tags:
+                    type: array
+                    items:
+                        allOf:
+                            -
+                                $ref: '#/components/schemas/Tag'
+                            -
+                                x-secondary: osbrepository_tag
+        WorkspaceResourceBase:
+            required:
+                - name
+                - resource_type
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the WorkspaceResource
+                name:
+                    description: WorkspaceResource name
+                    type: string
+                    example: Workspace Resource One
+                status:
+                    $ref: '#/components/schemas/ResourceStatus'
+                    description: WorkspaceResource status is the resource
+                timestamp_created:
+                    format: date-time
+                    description: Date/time of creation of the WorkspaceResource
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_updated:
+                    format: date-time
+                    description: Date/time of last updating of the WorkspaceResource
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_last_opened:
+                    format: date-time
+                    description: Date/time of last opening of the WorkspaceResource
+                    type: string
+                resource_type:
+                    $ref: '#/components/schemas/ResourceType'
+                    description: WorkspaceResource type
+        WorkspaceResourceEntity:
+            description: Workspace Resource item of a Workspace
+            allOf:
+                -
+                    $ref: '#/components/schemas/WorkspaceResourceBase'
+                -
+                    properties:
+                        origin:
+                            description: Origin data JSON formatted of the WorkspaceResource
+                            type: string
+                        workspace_id:
+                            description: workspace_id
+                            type: integer
+                            x-foreign-key: workspace.id
+                        folder:
+                            description: WorkspaceResource path where the resource will stored in the pvc.
+                            type: string
+                            example: repo/sample.nwb
+                    x-tablename: Workspaceresource
+        WorkspaceResource:
+            description: Workspace Resource item of a Workspace
+            allOf:
+                -
+                    $ref: '#/components/schemas/WorkspaceResourceBase'
+                -
+                    properties:
+                        workspace_id:
+                            description: workspace_id
+                            type: integer
+                        origin:
+                            $ref: '#/components/schemas/ResourceOrigin'
+                            description: Origin Resource where the WorkspaceResource is build from
+                        path:
+                            description: WorkspaceResource path where the resource will stored in the pvc.
+                            type: string
+                            example: repo/sample.nwb
     securitySchemes:
         bearerAuth:
             scheme: bearer

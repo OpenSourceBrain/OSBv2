@@ -80,6 +80,8 @@ export const WorkspaceFrame = (props: {
 
     const domain = getBaseDomain();
 
+
+
     const userParam = user == null ? "" : `${user.id}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
@@ -88,9 +90,8 @@ export const WorkspaceFrame = (props: {
       setFrameUrl(`/testapp`);
     } else {
       // The frame url must be different for each user and workspace and application so jupyterhub does not return the same ws
-      setFrameUrl(
-        `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`
-      );
+      setFrameUrl(`//${applicationDomain}/hub/logout`);
+      setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`);
     }
     openResource();
   }, [currentResource]);

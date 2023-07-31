@@ -36,7 +36,6 @@ import {
   badgeBgLight,
   drawerText,
 } from "../../theme";
-import MarkdownViewer from "../common/MarkdownViewer";
 import { RepositoryType } from "../../apiclient/workspaces";
 import RepositoryService from "../../service/RepositoryService";
 import {
@@ -49,6 +48,7 @@ import { UserInfo } from "../../types/user";
 import { styled } from "@mui/system";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
 
 const DEFAULT_CONTEXTS = ["main", "master"];
 
@@ -612,7 +612,7 @@ export const EditRepoDialog = ({
             value={formValues.summary}
             onChange={(e) => handleInput(e, "summary")}
             view={{ html: false, menu: true, md: true }}
-            renderHTML={(text: string) => <MarkdownViewer text={text} />}
+            renderHTML={(text: string) => <RepositoryMarkdownViewer text={text} />}
           />
         </Box>
       </DialogContent>

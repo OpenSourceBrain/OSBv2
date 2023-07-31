@@ -36,25 +36,10 @@ export const Banner = (props: any) => {
     props.register();
   };
 
-  const text1 =
-    user === null
-      ? "Welcome to the Open Source Brain v2.0 beta release!"
-      : `Welcome back, ${user.firstName}`;
-  const text2 =
-    user === null
-      ? "Featuring model creation through NetPyNE, NWB data exploration and interactive JupyterLab based development sessions"
-      : "Let's do some science!";
-
   return (
     <Box className={classes.mainFeaturedPost}>
       <Box className={classes.mainFeaturedPostContent}>
         <Box>
-          <Typography component="h2" variant="h1" gutterBottom={true}>
-            {text1}
-          </Typography>
-          <Typography variant="subtitle1" paragraph={true}>
-            {text2}
-          </Typography>
           <Box display="flex" pt={1} flexDirection="row">
             {"" && ( // TODO temporarily disabled
               <Button variant="outlined">Take the tour</Button>

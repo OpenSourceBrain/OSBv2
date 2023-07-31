@@ -2,7 +2,7 @@ FROM node:14 as jsbuild
 ENV REPO=https://github.com/MetaCell/NetPyNE-UI.git
 ENV BRANCH_TAG=release/1.0.0
 ENV FOLDER=netpyne
-RUN echo "no-cache 2023-4-14"
+RUN echo "no-cache 2023-7-14"
 RUN git clone $REPO -b $BRANCH_TAG $FOLDER
 RUN rm -Rf .git
 
@@ -75,10 +75,11 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
     pip install -r overrides/requirements.txt
 
 RUN mv workspace /opt/workspace/tutorials
+RUN chown -R $NB_UID /opt/workspace/tutorials
 RUN ln -s /opt/workspace workspace
 
 RUN jupyter labextension disable @jupyterlab/hub-extension
-
+RUN wget --no-check-certificate -O $NP_LFPYKIT_HEAD_FILE https://www.parralab.org/nyhead/sa_nyhead.mat
 
 USER $NB_UID
 

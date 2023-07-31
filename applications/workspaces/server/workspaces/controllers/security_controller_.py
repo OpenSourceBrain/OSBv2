@@ -14,4 +14,3 @@ def info_from_bearerAuth(token):
     """
     return {'uid': 'user_id'}
 
-

@@ -15,15 +15,10 @@ import RepositoryService from "../service/RepositoryService";
 
 const BIG_NUMBER_OF_ITEMS = 5000;
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    overflow: "auto",
-  },
 
-}));
 
 export default (props: any) => {
-  const classes = useStyles();
+
   const [ users, setUsers ] = React.useState<any[]>(null);
   const [ workspaces, setWorkspaces ] = React.useState<any>(null);
   const [ repositories, setRepositories ] = React.useState<any>(null);

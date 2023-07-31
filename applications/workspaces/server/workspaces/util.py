@@ -67,6 +67,9 @@ def deserialize_date(string):
     :return: date.
     :rtype: date
     """
+    if string is None:
+      return None
+    
     try:
         from dateutil.parser import parse
         return parse(string).date()
@@ -74,7 +77,7 @@ def deserialize_date(string):
         return string
 
 
-def deserialize_datetime(string):
+def deserialize_datetime(string_or_datetime):
     """Deserializes string to datetime.
 
     The string should be in iso8601 datetime format.
@@ -84,11 +87,16 @@ def deserialize_datetime(string):
     :return: datetime.
     :rtype: datetime
     """
+    if type(string_or_datetime) is datetime.datetime:
+        return string_or_datetime
+    if string_or_datetime is None:
+      return None
+    
     try:
         from dateutil.parser import parse
-        return parse(string)
+        return parse(string_or_datetime)
     except ImportError:
-        return string
+        return string_or_datetime
 
 
 def deserialize_model(data, klass):
@@ -99,16 +107,21 @@ def deserialize_model(data, klass):
     :param klass: class literal.
     :return: model object.
     """
+
+    if type(data) == klass:
+        return data
     instance = klass()
 
     if not instance.openapi_types:
         return data
 
     for attr, attr_type in six.iteritems(instance.openapi_types):
+        
         if data is not None \
                 and instance.attribute_map[attr] in data \
                 and isinstance(data, (list, dict)):
             value = data[instance.attribute_map[attr]]
+            
             setattr(instance, attr, _deserialize(value, attr_type))
 
     return instance

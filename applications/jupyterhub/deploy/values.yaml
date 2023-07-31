@@ -1,6 +1,6 @@
 harness:
   subdomain: hub
-  secured: true
+  secured: false
   service:
     auto: false
     port: 80

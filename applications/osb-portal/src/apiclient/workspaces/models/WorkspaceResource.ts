@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Workspaces manager API
+ * OSB Workspaces manager API
  * Opensource Brain Platform - Reference Workspaces manager API
  *
  * The version of the OpenAPI document: 0.2.0
@@ -55,12 +55,6 @@ export interface WorkspaceResource {
      */
     name: string;
     /**
-     * WorkspaceResource folder where the resource will stored in the pvc
-     * @type {string}
-     * @memberof WorkspaceResource
-     */
-    folder?: string;
-    /**
      * 
      * @type {ResourceStatus}
      * @memberof WorkspaceResource
@@ -102,6 +96,12 @@ export interface WorkspaceResource {
      * @memberof WorkspaceResource
      */
     origin?: ResourceOrigin;
+    /**
+     * WorkspaceResource path where the resource will stored in the pvc.
+     * @type {string}
+     * @memberof WorkspaceResource
+     */
+    path?: string;
 }
 
 export function WorkspaceResourceFromJSON(json: any): WorkspaceResource {
@@ -116,7 +116,6 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
@@ -124,6 +123,7 @@ export function WorkspaceResourceFromJSONTyped(json: any, ignoreDiscriminator: b
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
         'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
         'origin': !exists(json, 'origin') ? undefined : ResourceOriginFromJSON(json['origin']),
+        'path': !exists(json, 'path') ? undefined : json['path'],
     };
 }
 
@@ -138,7 +138,6 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         
         'id': value.id,
         'name': value.name,
-        'folder': value.folder,
         'status': ResourceStatusToJSON(value.status),
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
@@ -146,6 +145,7 @@ export function WorkspaceResourceToJSON(value?: WorkspaceResource | null): any {
         'resource_type': ResourceTypeToJSON(value.resourceType),
         'workspace_id': value.workspaceId,
         'origin': ResourceOriginToJSON(value.origin),
+        'path': value.path,
     };
 }
 

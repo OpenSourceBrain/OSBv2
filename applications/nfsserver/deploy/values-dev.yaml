@@ -1,4 +1,4 @@
 nfs:
   useDNS: true
 server:
-  diskSize: 20Gi
+  diskSize: 40Gi

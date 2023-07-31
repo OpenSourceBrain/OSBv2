@@ -1,8 +1,11 @@
 import connexion
 import six
+from typing import Dict
+from typing import Tuple
+from typing import Union
 
 from workspaces import util
-from workspaces.repository import WorkspaceRepository
+
 
 def live():  # noqa: E501
     """Test if application is healthy
@@ -10,10 +13,9 @@ def live():  # noqa: E501
      # noqa: E501
 
 
-    :rtype: str
+    :rtype: Union[str, Tuple[str, int], Tuple[str, int, Dict[str, str]]
     """
-    
-    return ready()
+    return 'do some magic!'
 
 
 def ready():  # noqa: E501
@@ -22,8 +24,6 @@ def ready():  # noqa: E501
      # noqa: E501
 
 
-    :rtype: str
+    :rtype: Union[str, Tuple[str, int], Tuple[str, int, Dict[str, str]]
     """
-    
-    WorkspaceRepository().check()
-    return "ok"
+    return 'do some magic!'

@@ -196,11 +196,6 @@ export const MainDrawer = (props: {
   const navigate = useNavigate();
 
   
-
-  const text = props.user
-    ? `Welcome back, ${props.user.username}`
-    : "Lets do some science!";
-
   const handleOpenDialog = (type) => {
     setOpenDrawer(false);
     if (!props.user) {
@@ -248,16 +243,6 @@ export const MainDrawer = (props: {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: "0.857rem",
-            }}
-            variant="body2"
-            color={secondaryColor}
-          >
-            {text}
-          </Typography>
         </Toolbar>
       )}
       <Box
@@ -281,23 +266,15 @@ export const MainDrawer = (props: {
             sx={openDrawer ? styles.drawerContent : {}}
             className={openDrawer ? "verticalFit" : ""}
           >
-            <Toolbar sx={styles.toolbar}>
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  fontSize: "0.857rem",
-                }}
-                variant="body2"
-                color={secondaryColor}
-              >
-                {text}
-              </Typography>
-              {!isMdUp ? (
+            {!isMdUp && <Toolbar sx={styles.toolbar}>
+              
+               
                 <IconButton onClick={toggleDrawer}>
                   <CloseIcon />
                 </IconButton>
-              ) : null}
+              
             </Toolbar>
+            }
             <List
               subheader={
                 <ListSubheader>

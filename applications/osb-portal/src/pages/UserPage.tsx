@@ -1,7 +1,5 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
@@ -11,7 +9,6 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinkIcon from "@mui/icons-material/Link";
@@ -24,7 +21,6 @@ import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import { BitBucketIcon } from "../components/icons";
 import BusinessIcon from "@mui/icons-material/Business";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-
 import Tooltip from "@mui/material/Tooltip";
 
 import { Workspace } from "../types/workspace";
@@ -34,21 +30,20 @@ import WorkspaceCard from "../components/workspace/WorkspaceCard";
 import RepositoryService from "../service/RepositoryService";
 import {
   bgDarkest,
-  bgLightestShade,
   bgDarker,
   linkColor,
   paragraph,
   textColor,
   bgLightest as lineColor,
 } from "../theme";
-
-import OSBDialog from "../components/common/OSBDialog";
+import { USER_QUOTAS } from '../content.js'
 import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
-
 import RepositoriesTable from "../components/repository/RespositoriesTable";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { IconButton } from "@mui/material";
 
 const styles = {
   profileInformation: (theme) => ({
@@ -170,8 +165,8 @@ export const UserPage = (props: any) => {
   const navigate = useNavigate();
   const { userName } = useParams<{ userName: string }>();
   const [error, setError] = React.useState<any>(null);
-  
-  
+
+
   const [loading, setLoading] = React.useState(false);
   const currentUser: UserInfo = props.user;
 
@@ -182,14 +177,10 @@ export const UserPage = (props: any) => {
     setTabValue(newTabValue);
   };
 
-  const handleSeeMore = (exp: boolean) => {
-    setExpanded(!expanded);
-  };
-
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
-      
+
     });
   }, [userName, props.workspacesCounter]);
 
@@ -302,6 +293,10 @@ export const UserPage = (props: any) => {
       });
   };
 
+  const onGroupClick = (groupname) => {
+    navigate(`/user/${user.username}/groups/${groupname}`);
+  }
+
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
@@ -314,6 +309,7 @@ export const UserPage = (props: any) => {
             sm={4}
             lg={3}
             sx={styles.profileInformation}
+            className="scrollbar"
           >
             <Stack pt={5} px={4} spacing={4}>
               <Avatar alt="user-profile-avatar" src={user.avatar}>
@@ -366,7 +362,7 @@ export const UserPage = (props: any) => {
                 )}
               </Typography>
 
-              {(user.profiles || user.website) && (
+              {(Object.keys(user.profiles).length !== 0 || user.website) && (
                 <Box
                   className="links"
                   display="flex"
@@ -539,11 +535,77 @@ export const UserPage = (props: any) => {
                           label={group}
                           key={group}
                           variant="outlined"
+                          onClick={() => onGroupClick(group)}
                         />
                       );
                     })}
                 </Box>
               )}
+
+              {
+                canEdit &&
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                >
+                  <Typography component="h2" variant="h5">
+                    Maximum quotas
+                    <Tooltip
+                     title={
+                      <span>These are the maximum quotas assigned to your account. If you want more information or increase your quotas, please contact <strong>info@opensourcebrain.org</strong> </span>
+                     }
+                  >
+                    <IconButton
+                      sx={{
+                        padding: "0 0 0 10px",
+                        "&:hover": {
+                          background: "transparent",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: paragraph,
+                          width: 16,
+                          height: 16,
+                        }
+                      }}>
+                      <InfoOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
+                  </Typography>
+
+                  {
+                    Object.keys(user.quotas).map((row, index) =>
+                      USER_QUOTAS[row] &&  <Box display='flex' alignItems='center' justifyContent='space-between' mb='4px'>
+                        <Tooltip title={<span><strong>{USER_QUOTAS[row].label}:</strong> {USER_QUOTAS[row]?.description}</span>}>
+                          <Typography
+                            component="p"
+                            variant="subtitle2"
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              lineHeight: "1.429",
+                              maxWidth: "75%",
+                              cursor: "default"
+                            }}
+                          >
+                            {
+                              USER_QUOTAS[row].label
+                            }
+                          </Typography>
+                        </Tooltip>
+                        <Typography
+                          component="p"
+                          variant="subtitle2"
+                        >
+                          {user.quotas[row]} {USER_QUOTAS[row].showGB && "GB"}
+                        </Typography>
+                      </Box>)
+                  }
+                </Box>
+              }
+
+
 
               {user.registrationDate && (
                 <Typography component="p" variant="body1">
@@ -687,12 +749,12 @@ export const UserPage = (props: any) => {
         </Grid>
       </Box>
       {canEdit && profileEditDialogOpen && (
-        
-          <UserEditor
-            user={user}
-            saveUser={handleUpdateUser}
-            close={() => setProfileEditDialogOpen(false)}
-          />
+
+        <UserEditor
+          user={user}
+          saveUser={handleUpdateUser}
+          close={() => setProfileEditDialogOpen(false)}
+        />
       )}
       {loading && <CircularProgress size={24} />}
     </>
