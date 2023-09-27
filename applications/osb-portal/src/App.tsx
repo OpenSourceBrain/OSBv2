@@ -1,70 +1,184 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { CssBaseline, makeStyles } from "@material-ui/core";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import {
+  ThemeProvider,
+  Theme,
+  StyledEngineProvider,
+} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
-import HomePage from "./pages/HomePage";
 import theme from "./theme";
+import SidebarPageLayout from "./layouts/SidebarLayout";
+import * as UserService from "./service/UserService";
 
-import { Header, AboutDialog, WorkspaceOpenPage, ProtectedRoute, RepositoriesPage, RepositoryPage, WorkspacePage, UserPage } from "./components/index";
+import {
+  Header,
+  AboutDialog,
+  WorkspaceOpenPage,
+  ProtectedRoute,
+  RepositoryPage,
+  WorkspacePage,
+  UserPage,
+  RepositoriesPage,
+  HomePage,
+  GroupsPage
+} from "./components";
+import Box from "@mui/material/Box";
+import { UserInfo } from "./types/user";
+import SampleIframePage from "./pages/SampleIframePage";
 
-const useStyles = makeStyles(() => ({
+declare module "@mui/styles/defaultTheme" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+const styles = {
   mainContainer: {
-    overflow: "auto",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    [theme.breakpoints.up("md")]: {
-      height: "100vh",
-      overflow: "hidden",
-    }
+    height: {
+      md: "100vh",
+    },
+    overflow: {
+      xs: "auto",
+      md: "hidden",
+    },
   },
-}));
+};
 
-export const App = (props: any) => {
-  const classes = useStyles();
+const UserActionThenRedirect = ({ userAction, user }) => {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (user) {
+      navigate("/");
+    } else {
+      userAction();
+    }
+  }, [navigate, user, userAction]);
 
+  return <></>;
+};
+
+interface AppProps {
+  error: boolean;
+  user: UserInfo;
+}
+
+export const App = (props: AppProps) => {
   return (
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <OSBErrorBoundary>
+          <CssBaseline />
+          <AboutDialog />
+          {!props.error && (
+            <Router>
+              <Box sx={styles.mainContainer}>
+                <Box id="header">
+                  <Header />
+                </Box>
 
-    <ThemeProvider theme={theme}>
-      <OSBErrorBoundary>
-        <CssBaseline />
-        <AboutDialog />
-        {!props.error &&
-          <Router>
-            <div className={classes.mainContainer}>
-              <Header />
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspace/:workspaceId"
+                    element={
+                      <SidebarPageLayout>
+                        <WorkspacePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspace/open/:workspaceId/:app"
+                    element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
+                  />
+                  <Route
+                    path="/workspace/open/:workspaceId"
+                    element={
+                      <ProtectedRoute>
+                        <WorkspaceOpenPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/repositories"
+                    element={
+                      <SidebarPageLayout>
+                        <RepositoriesPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/repositories/:repositoryId"
+                    element={
+                      <SidebarPageLayout>
+                        <RepositoryPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/user/:userName"
+                    element={
+                      <SidebarPageLayout>
+                        <UserPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/user/:userName/groups/:groupname"
+                    element={
+                      <SidebarPageLayout>
+                        <GroupsPage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <UserActionThenRedirect
+                        userAction={UserService.login}
+                        user={props.user}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <UserActionThenRedirect
+                        userAction={UserService.register}
+                        user={props.user}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/testapp"
+                    element={
+                      <SampleIframePage
+                      />
+                    }
+                  />
+                </Routes>
+              </Box>
+            </Router>
 
-              <OSBErrorBoundary>
-                <Switch>
-                  <Route exact={true} path="/">
-                    <HomePage />
-                  </Route>
-                  <Route exact={true} path="/workspace/:workspaceId">
-                    <WorkspacePage />
-                  </Route>
-                  <ProtectedRoute exact={true} path="/workspace/open/:workspaceId/:app">
-                    <WorkspaceOpenPage />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact={true} path="/workspace/open/:workspaceId">
-                    <WorkspaceOpenPage />
-                  </ProtectedRoute>
-                  <Route exact={true} path="/repositories">
-                    <RepositoriesPage />
-                  </Route>
-                  <Route exact={true} path="/repositories/:repositoryId">
-                    <RepositoryPage />
-                  </Route>
-                  <Route exact={true} path="/user/:userId">
-                    <UserPage />
-                  </Route>
-                </Switch>
-              </OSBErrorBoundary>
-            </div>
-          </Router>
-        }
-      </OSBErrorBoundary>
-    </ThemeProvider>
+          )}
 
+        </OSBErrorBoundary>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };

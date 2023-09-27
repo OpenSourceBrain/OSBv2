@@ -19,7 +19,7 @@ print('*'*80)
 print(c.NotebookApp.tornado_settings)
 c.NotebookApp.tornado_settings = {
     'headers': {
-        'Content-Security-Policy': "frame-ancestors 'self' localhost *.osb.local *.opensourcebrain.org",
+        'Content-Security-Policy': "frame-ancestors 'self' localhost:3000 localhost *.osb.local *.opensourcebrain.org *.metacell.us",
     }
 }
 print(c.NotebookApp.tornado_settings)

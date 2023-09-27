@@ -1,6 +1,6 @@
 export default interface SearchFilter {
-  text?: string,
-  tags?: string[],
-  types?: string[],
-  user_id?: string,
+  text?: string;
+  tags?: any;
+  types?: string[];
+  user_id?: string;
 }

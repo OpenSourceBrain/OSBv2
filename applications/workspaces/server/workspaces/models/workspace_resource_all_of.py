@@ -17,26 +17,31 @@ class WorkspaceResourceAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, workspace_id=None, origin=None):  # noqa: E501
+    def __init__(self, workspace_id=None, origin=None, path=None):  # noqa: E501
         """WorkspaceResourceAllOf - a model defined in OpenAPI
 
         :param workspace_id: The workspace_id of this WorkspaceResourceAllOf.  # noqa: E501
         :type workspace_id: int
         :param origin: The origin of this WorkspaceResourceAllOf.  # noqa: E501
         :type origin: ResourceOrigin
+        :param path: The path of this WorkspaceResourceAllOf.  # noqa: E501
+        :type path: str
         """
         self.openapi_types = {
             'workspace_id': int,
-            'origin': ResourceOrigin
+            'origin': ResourceOrigin,
+            'path': str
         }
 
         self.attribute_map = {
             'workspace_id': 'workspace_id',
-            'origin': 'origin'
+            'origin': 'origin',
+            'path': 'path'
         }
 
         self._workspace_id = workspace_id
         self._origin = origin
+        self._path = path
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResourceAllOf':
@@ -92,3 +97,26 @@ class WorkspaceResourceAllOf(Model):
         """
 
         self._origin = origin
+
+    @property
+    def path(self):
+        """Gets the path of this WorkspaceResourceAllOf.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :return: The path of this WorkspaceResourceAllOf.
+        :rtype: str
+        """
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        """Sets the path of this WorkspaceResourceAllOf.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :param path: The path of this WorkspaceResourceAllOf.
+        :type path: str
+        """
+
+        self._path = path

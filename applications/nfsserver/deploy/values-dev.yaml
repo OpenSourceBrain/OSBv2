@@ -1,0 +1,4 @@
+nfs:
+  useDNS: true
+server:
+  diskSize: 40Gi

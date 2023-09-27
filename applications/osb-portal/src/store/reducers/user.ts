@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { UserInfo } from '../../types/user'
+import { UserInfo } from "../../types/user";
 
 export const initialState: UserInfo = null;
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     userLogin(state, action: PayloadAction<UserInfo>) {
@@ -17,8 +17,7 @@ export const userSlice = createSlice({
     userRegister(state, action: PayloadAction<UserInfo>) {
       return { ...action.payload };
     },
-  }
-
+  },
 });
 
 export const UserActions = userSlice.actions;

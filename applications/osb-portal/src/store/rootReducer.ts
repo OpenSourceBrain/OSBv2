@@ -1,11 +1,11 @@
-import { combineReducers } from '@reduxjs/toolkit'
-import workspaces from './reducers/workspaces'
-import user from './reducers/user'
-import drawer from './reducers/drawer';
-import error from './reducers/error';
-import tags from './reducers/tags';
-import aboutDialog from './reducers/aboutdialog'
-
+import { combineReducers } from "@reduxjs/toolkit";
+import workspaces from "./reducers/workspaces";
+import user from "./reducers/user";
+import drawer from "./reducers/drawer";
+import error from "./reducers/error";
+import tags from "./reducers/tags";
+import aboutDialog from "./reducers/aboutdialog";
+import repositories from "./reducers/repositories";
 const rootReducer = combineReducers({
   drawer,
   error,
@@ -13,9 +13,9 @@ const rootReducer = combineReducers({
   workspaces,
   tags,
   aboutDialog,
-})
+  repositories,
+});
 
+export type RootState = ReturnType<typeof rootReducer>;
 
-export type RootState = ReturnType<typeof rootReducer>
-
-export default rootReducer
+export default rootReducer;

@@ -15,19 +15,21 @@ import RepositoryService from "../service/RepositoryService";
 
 const BIG_NUMBER_OF_ITEMS = 5000;
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    overflow: "auto",
-  },
 
-}));
 
 export default (props: any) => {
-  const classes = useStyles();
+
   const [ users, setUsers ] = React.useState<any[]>(null);
   const [ workspaces, setWorkspaces ] = React.useState<any>(null);
   const [ repositories, setRepositories ] = React.useState<any>(null);
   const [ error, setError ] = React.useState<any>(null);
+
+  let realm = "osb2"
+  if (window.location.hostname.includes("local")) {
+    realm = "osblocal"
+  } else if (window.location.hostname.includes("dev")) {
+    realm = "osb2dev"
+  }
 
   const fetchInfo = () => {
     // Initialise APIs with token
@@ -83,20 +85,10 @@ export default (props: any) => {
       }
   }
 
-  const getKeyCloakProfile = () => {
-    const hostname = window.location.hostname;
-    let realm = ""
-    if (hostname.indexOf("local") !== -1) {
-      realm = "osblocal"
-    }
-    else if (hostname.indexOf("dev")) {
-      realm = "osb2dev"
-    }
-    else {
-      realm = "osb2"
-    }
+  const keycloakBaseUrl = React.useMemo(() => {
+
     return "/auth/admin/master/console/#/realms/" + realm + "/users/";
-  }
+  }, [realm]);
 
   // for links to profiles
   const osbProfile = "/user/";
@@ -121,7 +113,12 @@ export default (props: any) => {
 
   const dataColumns: GridColDef[] = [
     {
-      field: 'id', headerName: 'Profile', renderCell: (param) => {return <><Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>&nbsp;|&nbsp;<Link href={`${getHostname("accounts")}${getKeyCloakProfile()}${param.value}`} target="_blank"> KeyCloak </Link></>},
+      field: 'id', headerName: 'Profile', renderCell: (param: any) =>
+      <>
+        <Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>
+        &nbsp;|&nbsp;
+        <Link href={`${getHostname("accounts")}${keycloakBaseUrl}${param.value}`} target="_blank"> KeyCloak </Link>
+      </>,
       minWidth: 50, flex: 2,
     },
     {

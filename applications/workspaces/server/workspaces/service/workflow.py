@@ -2,9 +2,9 @@ import uuid
 
 from cloudharness import log as logger
 
-import workspaces.repository as repos
-import workspaces.service.events as events
-from workspaces.service.model_service import WorkspaceService
+import workspaces.persistence as repos
+import workspaces.controllers.events as events
+from workspaces.service.crud_service import WorkspaceService
 
 try:
     from cloudharness.workflows import operations, tasks
@@ -47,7 +47,7 @@ def delete_resource(workspace_resource, pvc_name, resource_path: str):
 
 def run_copy_tasks(workspace_id, tasks):
     pvc_name = WorkspaceService.get_pvc_name(workspace_id)
-    shared_directory = f"{pvc_name}:/project_download"
+    shared_directory = f"{pvc_name}:/project_download:rwx"
     op = operations.SimpleDagOperation(
         f"osb-copy-tasks-job",
         tasks,
@@ -62,7 +62,7 @@ def run_copy_tasks(workspace_id, tasks):
 
 def create_task(image_name, workspace_id, **kwargs):
     pvc_name = WorkspaceService.get_pvc_name(workspace_id)
-    shared_directory = f"{pvc_name}:/project_download"
+    shared_directory = f"{pvc_name}:/project_download:rwx"
     return tasks.CustomTask(
         name=f"{image_name}-{str(uuid.uuid4())[:8]}",
         image_name=image_name,
@@ -74,8 +74,7 @@ def create_task(image_name, workspace_id, **kwargs):
 
 def create_copy_task(workspace_id, name, folder, path, image_name="workflows-extract-download", **kwargs):
     name = name if name else path[path.rfind("/") + 1:]
-    folder = folder if folder else name
-    return create_task(image_name=image_name, workspace_id=workspace_id, folder=folder, url=path, **kwargs)
+    return create_task(image_name=image_name, workspace_id=workspace_id, folder=folder or '', url=path, **kwargs)
 
 
 def create_scan_task(workspace_id, **kwargs):
@@ -90,7 +89,7 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
     source_pvc_name = WorkspaceService.get_pvc_name(source_ws_id)
     dest_pvc_name = WorkspaceService.get_pvc_name(dest_ws_id)
     source_volume = f"{source_pvc_name}:/source"
-    dest_volume = f"{dest_pvc_name}:/project_download"
+    dest_volume = f"{dest_pvc_name}:/project_download:rwx"
 
     copy_task = tasks.BashTask(
         name=f"clone-workspace-data",

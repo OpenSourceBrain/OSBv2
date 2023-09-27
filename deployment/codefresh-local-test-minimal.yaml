@@ -1,0 +1,538 @@
+version: '1.0'
+stages:
+- prepare
+- build
+- unittest
+- deploy
+- qa
+steps:
+  main_clone:
+    title: Clone main repository
+    type: git-clone
+    stage: prepare
+    repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
+    revision: '${{CF_BRANCH}}'
+    git: github
+  post_main_clone:
+    title: Post main clone
+    type: parallel
+    stage: prepare
+    steps:
+    - title: Cloning cloud-harness repository...
+      type: git-clone
+      stage: prepare
+      repo: https://github.com/MetaCell/cloud-harness.git
+      revision: '${{CLOUDHARNESS_BRANCH}}'
+      working_directory: .
+      git: github
+  prepare_deployment:
+    title: Prepare helm chart
+    image: python:3.9.10
+    stage: prepare
+    working_directory: .
+    commands:
+    - bash cloud-harness/install.sh
+    - harness-deployment cloud-harness . -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+      -t ${{CF_BUILD_ID}} -d ${{CF_SHORT_REVISION}}.${{DOMAIN}} -r ${{REGISTRY}} -rs
+      ${{REGISTRY_SECRET}} -e local-test-minimal -N -i argo -i osb-portal
+  prepare_deployment_view:
+    commands:
+    - helm template ./deployment/helm --debug -n test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+    environment:
+    - ACTION=auth
+    - KUBE_CONTEXT=test-${{CF_BUILD_ID}}
+    image: codefresh/cfstep-helm:3.6.2
+    stage: prepare
+    title: View helm chart
+  build_base_images:
+    title: Build base images
+    type: parallel
+    stage: build
+    steps:
+      cloudharness-base:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-base
+        title: Cloudharness base
+        working_directory: ./cloud-harness
+      cloudharness-frontend-build:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/cloudharness-frontend-build
+        title: Cloudharness frontend build
+        working_directory: ./cloud-harness
+  build_static_images:
+    title: Build static images
+    type: parallel
+    stage: build
+    steps:
+      cloudharness-flask:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/cloudharness-flask
+        title: Cloudharness flask
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
+  build_application_images:
+    type: parallel
+    stage: build
+    steps:
+      notifications:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/notifications
+        title: Notifications
+        working_directory: ./.overrides/applications/notifications/server
+      accounts:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/accounts
+        title: Accounts
+        working_directory: ./.overrides/applications/accounts
+      jupyterhub:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/jupyterhub
+        title: Jupyterhub
+        working_directory: ./.overrides/applications/jupyterhub
+      common:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/common
+        title: Common
+        working_directory: ./.overrides/applications/common/server
+      events:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/events
+        title: Events
+        working_directory: ./cloud-harness/applications/events
+      workflows-send-result-event:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/workflows-send-result-event
+        title: Workflows send result event
+        working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
+      workflows-extract-download:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/workflows-extract-download
+        title: Workflows extract download
+        working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
+      workflows-notify-queue:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/workflows-notify-queue
+        title: Workflows notify queue
+        working_directory: ./cloud-harness/applications/workflows/tasks/notify-queue
+      workflows:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/workflows
+        title: Workflows
+        working_directory: ./cloud-harness/applications/workflows/server
+      workspaces-figshare-copy:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/workspaces-figshare-copy
+        title: Workspaces figshare copy
+        working_directory: ./applications/workspaces/tasks/figshare-copy
+      workspaces-scan-workspace:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/workspaces-scan-workspace
+        title: Workspaces scan workspace
+        working_directory: ./applications/workspaces/tasks/scan-workspace
+      workspaces-github-copy:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/workspaces-github-copy
+        title: Workspaces github copy
+        working_directory: ./applications/workspaces/tasks/github-copy
+      workspaces-dandi-copy:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/workspaces-dandi-copy
+        title: Workspaces dandi copy
+        working_directory: ./applications/workspaces/tasks/dandi-copy
+      workspaces:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/workspaces
+        title: Workspaces
+        working_directory: ./applications/workspaces/server
+      accounts-api:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CF_BUILD_ID}}
+        image_name: osb/accounts-api
+        title: Accounts api
+        working_directory: ./applications/accounts-api
+      osb-portal:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/osb-portal
+        title: Osb portal
+        working_directory: ./applications/osb-portal
+      jupyterlab-minimal:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/jupyterlab-minimal
+        title: Jupyterlab minimal
+        working_directory: ./applications/jupyterlab-minimal
+  prepare_cluster:
+    stage: deploy
+    image: codefresh/kubectl
+    fail_fast: false
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl create ns test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+  deployment:
+    stage: deploy
+    type: helm
+    working_directory: ./${{CF_REPO_NAME}}
+    title: Installing chart
+    arguments:
+      helm_version: 3.6.2
+      chart_name: deployment/helm
+      release_name: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+      kube_context: '${{CLUSTER_NAME}}'
+      namespace: test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+      chart_version: '${{CF_BUILD_ID}}'
+      cmd_ps: --timeout 600s
+      custom_value_files:
+      - ./deployment/helm/values.yaml
+      custom_values:
+      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_accounts_harness_secrets_api__user__password=${{API__USER__PASSWORD}}
+      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
+  build_test_images:
+    title: Build test images
+    type: parallel
+    stage: qa
+    steps:
+      test-e2e:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        image_name: osb/test-e2e
+        title: Test e2e
+        working_directory: ./cloud-harness/test/test-e2e
+      test-api:
+        type: build
+        stage: build
+        tag: '${{CF_BUILD_ID}}'
+        dockerfile: test/test-api/Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - TAG=${{CF_BUILD_ID}}
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CF_BUILD_ID}}
+        image_name: osb/test-api
+        title: Test api
+        working_directory: ./cloud-harness
+  wait_deployment:
+    stage: qa
+    title: Wait deployment to be ready
+    image: codefresh/kubectl
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl config set-context --current --namespace=test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}
+    - kubectl rollout status deployment/notifications
+    - kubectl rollout status deployment/accounts
+    - kubectl rollout status deployment/common
+    - kubectl rollout status deployment/events
+    - kubectl rollout status deployment/workflows
+    - kubectl rollout status deployment/workspaces
+    - kubectl rollout status deployment/accounts-api
+    - kubectl rollout status deployment/osb-portal
+    - sleep 60
+  tests_api:
+    stage: qa
+    title: Api tests
+    working_directory: /home/test
+    image: '${{test-api}}'
+    fail_fast: false
+    commands:
+    - echo $APP_NAME
+    scale:
+      common_api_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/.overrides/applications/common:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://common.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://common.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api -c all
+      workflows_api_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://workflows.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://workflows.${{CF_SHORT_REVISION}}.${{DOMAIN}}/api -c all
+    hooks:
+      on_fail:
+        exec:
+          image: alpine
+          commands:
+          - cf_export  FAILED=failed
+  tests_e2e:
+    stage: qa
+    title: End to end tests
+    working_directory: /home/test
+    image: '${{test-e2e}}'
+    fail_fast: false
+    commands:
+    - yarn test
+    scale:
+      osb-portal_e2e_test:
+        volumes:
+        - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
+        environment:
+        - APP_URL=https://www.${{CF_SHORT_REVISION}}.${{DOMAIN}}
+        - USERNAME=testuser
+        - PASSWORD=test
+    hooks:
+      on_fail:
+        exec:
+          image: alpine
+          commands:
+          - cf_export  FAILED=failed
+  approval:
+    type: pending-approval
+    stage: qa
+    title: Approve with failed tests
+    description: The pipeline will fail after ${{WAIT_ON_FAIL}} minutes
+    timeout:
+      timeUnit: minutes
+      duration: '${{WAIT_ON_FAIL}}'
+      finalState: denied
+    when:
+      condition:
+        all:
+          error: '"${{FAILED}}" == "failed"'
+          wait_on_fail: '${{WAIT_ON_FAIL}}'
+  dummy_end:
+    title: Dummy step
+    description: Without this, the on_finish hook is executed before the approval
+      step
+    image: python:3.9.10
+    stage: qa
+    when:
+      condition:
+        all:
+          error: '"${{FAILED}}" == "failed"'
+          wait_on_fail: '${{WAIT_ON_FAIL}}'
+hooks:
+  on_finish:
+    image: codefresh/kubectl
+    commands:
+    - kubectl config use-context ${{CLUSTER_NAME}}
+    - kubectl delete ns test-${{NAMESPACE_BASENAME}}-${{CF_SHORT_REVISION}}

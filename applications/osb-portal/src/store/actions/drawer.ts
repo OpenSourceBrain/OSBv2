@@ -1,3 +1,3 @@
-import { DrawerActions } from '../reducers/drawer'
+import { DrawerActions } from "../reducers/drawer";
 
 export const { toggleDrawer } = DrawerActions;

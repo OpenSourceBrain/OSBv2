@@ -1,4 +1,5 @@
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var path = require('path');
@@ -18,7 +19,8 @@ module.exports = env => {
     devtool: 'source-map',
     output: {
       path: path.resolve(__dirname, 'public'),
-      filename: path.join('js', 'bundle.js')
+      filename: "[name].[contenthash].js",
+      publicPath: "/"
     },
 
     performance: {
@@ -75,6 +77,13 @@ module.exports = env => {
           },
 
         ]
+      }),
+      new HtmlWebpackPlugin({
+        template: "src/index.ejs",
+        favicon: path.join(__dirname, "src/assets/favicon.ico"),
+        templateParameters: {
+          APP_DOMAIN: env.APP_DOMAIN,
+        },
       }),
     ],
   }

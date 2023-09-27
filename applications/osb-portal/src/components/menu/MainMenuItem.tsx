@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import CheckIcon from '@material-ui/icons/Check';
+import * as React from "react";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import CheckIcon from "@mui/icons-material/Check";
 
 const useStyles = makeStyles((theme) => ({
   popper: {
@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
   checkIcon: {
     paddingRight: theme.spacing(1),
-    marginLeft: "-1em"
-  }
+    marginLeft: "-1em",
+  },
 }));
 
 export interface MenuItem {
@@ -27,12 +27,11 @@ export interface MenuItem {
 }
 
 export type MenuItemProps = {
-  title: string | React.ReactNode,
-  className: string,
-  items: MenuItem[],
-  popperPlacement?: any,
-}
-
+  title: string | React.ReactNode;
+  className: string;
+  items: MenuItem[];
+  popperPlacement?: any;
+};
 
 export const MainMenuItem = (props: MenuItemProps) => {
   const classes = useStyles();
@@ -44,7 +43,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
     setOpen((newPrevOpen) => !newPrevOpen);
   };
 
-  const handleClose = (event: { target: any; }) => {
+  const handleClose = (event: { target: any }) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -52,8 +51,11 @@ export const MainMenuItem = (props: MenuItemProps) => {
     setOpen(false);
   };
 
-  function handleListKeyDown(event: { key: string; preventDefault: () => void; }) {
-    if (event.key === 'Tab') {
+  function handleListKeyDown(event: {
+    key: string;
+    preventDefault: () => void;
+  }) {
+    if (event.key === "Tab") {
       event.preventDefault();
       setOpen(false);
     }
@@ -74,40 +76,51 @@ export const MainMenuItem = (props: MenuItemProps) => {
       <Box>
         <Button
           ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
+          aria-controls={open ? "menu-list-grow" : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
           className={props.className}
         >
           {props.title}
         </Button>
-        <Popper open={open} anchorEl={anchorRef.current} transition={true} disablePortal={true} className={classes.popper} placement={typeof props.popperPlacement === "undefined" ? "bottom-start" : props.popperPlacement}>
+        <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          transition={true}
+          disablePortal={true}
+          className={classes.popper}
+          placement={
+            typeof props.popperPlacement === "undefined"
+              ? "bottom-start"
+              : props.popperPlacement
+          }
+        >
           {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-            >
+            <Grow {...TransitionProps}>
               <Paper square={true}>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {
-                      props.items.map(item =>
-                        <MenuItem
-                          key={item.label}
-                          onClick={
-                            (e) => {
-                              item.callback(e);
-                              handleClose(e);
-                            }
-                          }
-                        >
-                          {
-                            item.checked !== undefined && <CheckIcon className={classes.checkIcon} color={item.checked ? "primary" : "disabled"} />
-                          }
-                          {item.label}
-                        </MenuItem>
-                      )
-                    }
-
+                  <MenuList
+                    autoFocusItem={open}
+                    id="menu-list-grow"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    {props.items.map((item) => (
+                      <MenuItem
+                        key={item.label}
+                        onClick={(e) => {
+                          item.callback(e);
+                          handleClose(e);
+                        }}
+                      >
+                        {item.checked !== undefined && (
+                          <CheckIcon
+                            className={classes.checkIcon}
+                            color={item.checked ? "primary" : "disabled"}
+                          />
+                        )}
+                        {item.label}
+                      </MenuItem>
+                    ))}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -116,5 +129,5 @@ export const MainMenuItem = (props: MenuItemProps) => {
         </Popper>
       </Box>
     </Box>
-  )
-}
+  );
+};

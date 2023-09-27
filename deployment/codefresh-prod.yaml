@@ -29,8 +29,8 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
-    - harness-deployment cloud-harness . .overrides -t ${{CF_BUILD_ID}} -d ${{DOMAIN}}
-      -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}} -n ${{NAMESPACE}} -e prod -i osb-portal
+    - harness-deployment cloud-harness . -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}} -r
+      ${{REGISTRY}} -rs ${{REGISTRY_SECRET}} -n ${{NAMESPACE}} -e prod -i osb-portal
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
@@ -52,10 +52,14 @@ steps:
       kube_context: '${{CLUSTER_NAME}}'
       namespace: '${{NAMESPACE}}'
       chart_version: '${{DEPLOYMENT_TAG}}'
-      cmd_ps: --wait --timeout 600s
+      cmd_ps: --wait --timeout 600s --create-namespace
       custom_value_files:
       - ./deployment/helm/values.yaml
-      custom_values: []
+      custom_values:
+      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
+      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
+      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
+      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
     image: codefresh/cfstep-helm:3.6.2
     environment:
     - CHART_REF=./deployment/helm

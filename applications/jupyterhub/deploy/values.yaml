@@ -1,6 +1,6 @@
 harness:
   subdomain: hub
-  secured: true
+  secured: false
   service:
     auto: false
     port: 80
@@ -10,6 +10,25 @@ harness:
   dependencies:
     build:
       - cloudharness-base
+  quotas:
+    # default for User Quotas
+    # user quotas can be set as Keycloak attributes on Groups and Users
+    # quotas set on User level will always overrule Group quotas
+    # the following keys are valid for Jupyterhub pods (workspaces)
+
+    # sets the maximum number of (included named) servers open concurrently (int)
+    quota-ws-open: 3
+    # sets the cpu guaranteed on a single workspace in CPU units (float)
+    quota-ws-guaranteecpu: 0.2
+    # sets the cpu limit on a single workspace in CPU units (float)
+    quota-ws-maxcpu: 1
+    # sets the memory guaranteed on a single workspace in Gb units (float)
+    quota-ws-guaranteemem: 0.5
+    # sets the memory limit on a single workspace in Gb units (float)
+    quota-ws-maxmem: 1
+    # sets the storage dedicated to the user data in Gb units (float)
+    quota-storage-max : 1.25
+
 hub:
   config:
     JupyterHub:
@@ -20,16 +39,20 @@ hub:
       c.Spawner.port = 8000
       c.Spawner.http_timeout = 300
       c.Spawner.start_timeout = 300
-      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost *.osb.local *.opensourcebrain.org *.v2.opensourcebrain.org"}}
+      c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost localhost:3000 *.osb.local *.metacell.us *.opensourcebrain.org *.v2.opensourcebrain.org"}}
     spawner: >-
       c.Spawner.args = []
 singleuser:
   storage:
     type: dynamic
     capacity: 2Mi
+
     dynamic:
       pvcNameTemplate: osb-user-{userid}
       volumeNameTemplate: osb-user-{userid}
+      storageClass: "{{namespace}}-nfs-client"
+      storageAccessModes:
+      - "ReadWriteMany"
     homeMountPath: /opt/user
     extraLabels: {}
   cpu:
@@ -38,3 +61,11 @@ singleuser:
   memory:
     limit: 1G
     guarantee: 0.5G
+prePuller:
+
+  # hook relates to the hook-image-awaiter Job and hook-image-puller DaemonSet
+  hook:
+    enabled: false
+  continuous:
+    enabled: false
+  pullProfileListImages: false

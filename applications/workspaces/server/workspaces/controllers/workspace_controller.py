@@ -5,10 +5,12 @@ from pathlib import Path
 from cloudharness import log as logger
 
 from workspaces.config import Config
-from workspaces.repository.model_repository import WorkspaceImageRepository, WorkspaceRepository, db
-from workspaces.repository.models import WorkspaceEntity, WorkspaceImage
+from workspaces.models.resource_origin import ResourceOrigin
+from workspaces.models.resource_status import ResourceStatus
+from workspaces.persistence.crud_persistence import WorkspaceImageRepository, WorkspaceRepository, db
+from workspaces.persistence.models import TWorkspaceEntity, WorkspaceEntity, WorkspaceImage
 from workspaces.helpers.etl_helpers import copy_origins
-from workspaces.service.model_service import NotAuthorized, WorkspaceService
+from workspaces.service.crud_service import NotAuthorized, NotAllowed, WorkspaceService
 
 def _save_image(id_=None, image=None, filename_base=None):
     ext = mimetypes.guess_extension(image.mimetype)
@@ -88,11 +90,18 @@ def delimage(id_=None, image_id=None, **kwargs):
 
 
 def import_resources(id_, body, **kwargs):
-    resource_origins = body.get("resourceorigins", [])
+    workspace: TWorkspaceEntity = WorkspaceRepository().get(id=id_)
+    if workspace is None:
+        return f"Workspace with id {id_} not found.", 404
+
+    resource_origins = [ResourceOrigin.from_dict(r) for r in body.get("resourceorigins", [])]
     copy_origins(id_, resource_origins)
     return "Scheduled", 200
 
 def workspace_clone(id_, body=None):
+    workspace = WorkspaceRepository().get(id=id_)
+    if workspace is None:
+        return f"Workspace with id {id_} not found.", 404
     try:
         ws = WorkspaceService().clone(id_)
         if ws is None:
@@ -100,3 +109,5 @@ def workspace_clone(id_, body=None):
         return ws.to_dict()
     except NotAuthorized:
         return "Not authorized", 401
+    except NotAllowed:
+        return "Not allowed", 405

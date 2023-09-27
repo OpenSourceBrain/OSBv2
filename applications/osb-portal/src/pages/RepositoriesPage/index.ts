@@ -1,1 +1,0 @@
-export { RepositoriesPage } from './RepositoriesPage';

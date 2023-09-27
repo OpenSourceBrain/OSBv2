@@ -17,6 +17,9 @@ harness:
     - name: common
     - name: accounts-api
   dependencies:
+    build:
+      - cloudharness-base
+      - cloudharness-frontend-build
     soft:
       - accounts
       - accounts-api
@@ -30,3 +33,9 @@ harness:
       - jupyterlab
       - notifications
       - backoffice
+  test:
+    e2e:
+      enabled: true
+      smoketest: true
+      ignoreRequestErrors: false
+      ignoreConsoleErrors: false

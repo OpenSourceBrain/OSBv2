@@ -6,21 +6,17 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
-from workspaces.models.osb_repository_base import OSBRepositoryBase
+from workspaces.models.osb_repository_base_tags_inner import OSBRepositoryBaseTagsInner
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource_node import RepositoryResourceNode
 from workspaces.models.repository_type import RepositoryType
-from workspaces.models.tag import Tag
 from workspaces.models.user import User
 from workspaces import util
 
-from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf  # noqa: E501
-from workspaces.models.osb_repository_base import OSBRepositoryBase  # noqa: E501
+from workspaces.models.osb_repository_base_tags_inner import OSBRepositoryBaseTagsInner  # noqa: E501
 from workspaces.models.repository_content_type import RepositoryContentType  # noqa: E501
 from workspaces.models.repository_resource_node import RepositoryResourceNode  # noqa: E501
 from workspaces.models.repository_type import RepositoryType  # noqa: E501
-from workspaces.models.tag import Tag  # noqa: E501
 from workspaces.models.user import User  # noqa: E501
 
 class OSBRepository(Model):
@@ -55,7 +51,7 @@ class OSBRepository(Model):
         :param timestamp_updated: The timestamp_updated of this OSBRepository.  # noqa: E501
         :type timestamp_updated: datetime
         :param tags: The tags of this OSBRepository.  # noqa: E501
-        :type tags: List[Tag]
+        :type tags: List[OSBRepositoryBaseTagsInner]
         :param context_resources: The context_resources of this OSBRepository.  # noqa: E501
         :type context_resources: RepositoryResourceNode
         :param contexts: The contexts of this OSBRepository.  # noqa: E501
@@ -81,7 +77,7 @@ class OSBRepository(Model):
             'user_id': str,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
-            'tags': List[Tag],
+            'tags': List[OSBRepositoryBaseTagsInner],
             'context_resources': RepositoryResourceNode,
             'contexts': List[str],
             'user': User,
@@ -404,7 +400,7 @@ class OSBRepository(Model):
 
 
         :return: The tags of this OSBRepository.
-        :rtype: List[Tag]
+        :rtype: List[OSBRepositoryBaseTagsInner]
         """
         return self._tags
 
@@ -414,7 +410,7 @@ class OSBRepository(Model):
 
 
         :param tags: The tags of this OSBRepository.
-        :type tags: List[Tag]
+        :type tags: List[OSBRepositoryBaseTagsInner]
         """
 
         self._tags = tags

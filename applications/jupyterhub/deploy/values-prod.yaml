@@ -1,0 +1,31 @@
+harness:
+  quotas:
+    # default for User Quotas
+    # user quotas can be set as Keycloak attributes on Groups and Users
+    # quotas set on User level will always overrule Group quotas
+    # the following keys are valid for Jupyterhub pods (workspaces)
+
+    # sets the maximum number of (included named) servers open concurrently (int)
+    quota-ws-open: 3
+    # sets the cpu guaranteed on a single workspace in CPU units (float)
+    quota-ws-guaranteecpu: 0.2
+    # sets the cpu limit on a single workspace in CPU units (float)
+    quota-ws-maxcpu: 1
+    # sets the memory guaranteed on a single workspace in Gb units (float)
+    quota-ws-guaranteemem: 0.5
+    # sets the memory limit on a single workspace in Gb units (float)
+    quota-ws-maxmem: 1.5
+    # sets the storage dedicated to the user data in Gb units (float)
+    quota-storage-max: 2
+
+singleuser:
+  storage:
+    capacity: 2Gi
+  cpu:
+    limit: 1
+    guarantee: 0.2
+  memory:
+    limit: 1.5G
+    guarantee: 0.5G
+legacyusermax: 445
+legacyworkspacemax: 465

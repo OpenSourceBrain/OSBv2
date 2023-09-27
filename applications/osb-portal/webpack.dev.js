@@ -8,23 +8,25 @@ const contentbase = path.join(__dirname, 'public')
 
 PORT = 3000;
 
-var proxyTarget = 'https://__APP_NAME__/'
-if (process.env.USE_MOCKS) {
-  console.log('Using mocks')
-  proxyTarget = `http://localhost:${PORT}/api-mocks`
-}
+
+
 
 
 
 module.exports = env => {
-  const osbDomain = env && env.DOMAIN ? env.DOMAIN : 'osb.local';
-  const replaceHost = (uri, appName) => uri.replace("__APP_NAME__", appName + '.' + osbDomain);
+  var proxyTarget = env.DOMAIN
+  if (env.USE_MOCKS) {
+    console.log('Using mocks')
+    proxyTarget = `http://localhost:${PORT}/api-mocks`
+  }
+  const osbDomain = env && env.DOMAIN ? env.DOMAIN : 'http://osb.local';
+  const replaceHost = (uri, appName) => uri.replace("://", "://" + appName + ".");
 
   function setEnv(content) {
     console.log("Replacing ENV", env);
     let result = content.toString();
     for (const v in env) {
-      result = result.replace(new RegExp(`__${v}__`), env[v]);
+      result = result.replace(new RegExp(`__${v}__`), env[v] && env[v] !== true && env[v].includes("://") ? env[v].split("://")[1]: env[v]);
     }
     console.log(result);
     return result;
@@ -42,8 +44,8 @@ module.exports = env => {
 
 
         compress: true,
-        https: true,
-        allowedHosts: "all",
+        https: proxyTarget.includes("https://"),
+        allowedHosts: ["*", "localhost:3000"],
         historyApiFallback: true,
         static: [{
           directory: path.resolve(__dirname, 'public'),
@@ -57,7 +59,7 @@ module.exports = env => {
             pathRewrite: { '^/proxy/workspaces': '' }
           },
           '/proxy/accounts-api': {
-            target: env.ACCOUNTS_API_DOMAIN ? ('http://' + env.ACCOUNTS_API_DOMAIN) : replaceHost(proxyTarget, 'api.accounts'),
+            target: env.ACCOUNTS_API_DOMAIN ? (env.ACCOUNTS_API_DOMAIN) : replaceHost(proxyTarget, 'api.accounts'),
             secure: false,
             changeOrigin: true,
             pathRewrite: { '^/proxy/accounts-api': '' }
@@ -72,7 +74,7 @@ module.exports = env => {
           'process.env.NODE_ENV': JSON.stringify("development")
         }),
         new webpack.EnvironmentPlugin({
-          'DOMAIN': env.DOMAIN || 'v2.opensourcebrain.org',
+          'DOMAIN': env.DOMAIN || 'https://v2.opensourcebrain.org',
           'NAMESPACE': env.NAMESPACE || 'osb2',
           "ACCOUNTS_API_DOMAIN ": env.ACCOUNTS_API_DOMAIN || '',
           "WORKSPACES_DOMAIN ": env.WORKSPACES_DOMAIN || '',

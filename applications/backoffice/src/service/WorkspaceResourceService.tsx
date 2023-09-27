@@ -1,6 +1,5 @@
-import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest } from "../apiclient/workspaces/apis";
+import { WorkspaceresourceIdGetRequest, WorkspacesControllersWorkspaceResourceControllerOpenRequest, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from "../apiclient/workspaces";
 
-import { Configuration, WorkspaceResource as ApiWorkspaceResource, ResourceType, ResourceStatus as ApiResourceStatus } from '../apiclient/workspaces';
 import WorkspaceService from './WorkspaceService';
 import { WorkspaceResource, OSBApplications, SampleResourceTypes, Workspace, ResourceStatus } from "../types/workspace";
 
@@ -49,7 +48,7 @@ class WorkspaceResourceService {
   }
 
   getResourcePath(resource: WorkspaceResource) {
-    return (resource.folder ? resource.folder + "/" : "") + resource.origin.path.slice(resource.origin.path.lastIndexOf("/") + 1);
+    return resource.path;
   }
 
 }

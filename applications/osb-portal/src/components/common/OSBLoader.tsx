@@ -1,29 +1,27 @@
 // Derived from https://raw.githubusercontent.com/MetaCell/geppetto-meta/master/geppetto.js/geppetto-ui/src/loader/Loader.js
 
 import React, { Component, Fragment } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import {
-  primaryColor,
-} from "../../theme";
+import makeStyles from '@mui/styles/makeStyles';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import { primaryColor } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: primaryColor,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   root: {
-    position: 'absolute',
-    flex: '0 0 100%',
-    alignSelf: 'stretch',
+    position: "absolute",
+    flex: "0 0 100%",
+    alignSelf: "stretch",
   },
-}))
+}));
 
 interface OSBLoaderProps {
   active: boolean;
@@ -34,10 +32,9 @@ interface OSBLoaderProps {
   children?: Component;
   className?: string;
   messagesInterval?: number;
-};
+}
 
-
-export default(props: OSBLoaderProps) => {
+export default (props: OSBLoaderProps) => {
   const classes = useStyles();
 
   const {
@@ -58,30 +55,32 @@ export default(props: OSBLoaderProps) => {
       if (messages.length && active) {
         setMessageIndex((messageIndex + 1) % messages.length);
       }
-
     }, messagesInterval);
   }
 
-  const message = messages.length > 0 ? messages[messageIndex % messages.length] : '';
+  const message =
+    messages.length > 0 ? messages[messageIndex % messages.length] : "";
   const progress = elapsed ? (
     <LinearProgress
       variant="determinate"
       value={elapsed * 100}
-      style={{ width: '200px' }}
+      style={{ width: "200px" }}
     />
   ) : (
-    <CircularProgress
-      color="inherit"
-      variant="indeterminate"
-    />
+    <CircularProgress color="inherit" variant="indeterminate" />
   );
 
   const typedMessage = className ? (
-    <Typography className={className} display="block" variant="subtitle1" gutterBottom={true} >
+    <Typography
+      className={className}
+      display="block"
+      variant="subtitle1"
+      gutterBottom={true}
+    >
       {message}
     </Typography>
   ) : (
-    <Typography display="block" variant="subtitle1" gutterBottom={true} >
+    <Typography display="block" variant="subtitle1" gutterBottom={true}>
       {message}
     </Typography>
   );
@@ -90,10 +89,10 @@ export default(props: OSBLoaderProps) => {
     children
   ) : (
     <Grid container={true} spacing={1}>
-      <Grid container={true} item={true} spacing={3} xs={12} justify="center">
+      <Grid container={true} item={true} spacing={3} xs={12} justifyContent="center">
         <Grid item={true}>{progress}</Grid>
       </Grid>
-      <Grid container={true} item={true} spacing={3} xs={12} justify="center">
+      <Grid container={true} item={true} spacing={3} xs={12} justifyContent="center">
         <Grid item={true}>{typedMessage}</Grid>
       </Grid>
     </Grid>
@@ -115,7 +114,7 @@ export default(props: OSBLoaderProps) => {
         open={active}
         onClick={handleClose}
         className={classes.backdrop}
-        classes={{ root: classes.root, }} // class name, e.g. `classes-nesting-root-x`
+        classes={{ root: classes.root }} // class name, e.g. `classes-nesting-root-x`
       >
         {content}
       </Backdrop>
@@ -123,4 +122,4 @@ export default(props: OSBLoaderProps) => {
   );
 
   return backdrop;
-}
+};

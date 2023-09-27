@@ -4,7 +4,7 @@ import sys
 from setuptools import setup, find_packages
 
 NAME = "workspaces"
-VERSION = "0.5.0"
+VERSION = "0.7.0"
 
 # To install the library, run the following
 #
@@ -16,7 +16,7 @@ VERSION = "0.5.0"
 REQUIRES = [
     "connexion>=2.0.2",
     "swagger-ui-bundle>=0.0.2",
-    "python_dateutil>=2.6.0"
+    "python_dateutil>=2.6.0",
     "Flask-SQLAlchemy>=2.4.1",
     "OpenAlchemy>=1.1.0",
     "psycopg2-binary",

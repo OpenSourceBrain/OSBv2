@@ -1,14 +1,11 @@
 import * as React from "react";
 
-import { Typography, Grid, Box } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import DialogContentText from "@material-ui/core/DialogContentText";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import DialogContentText from "@mui/material/DialogContentText";
 
-
-
-export default (props: any) => {
-
+export const NewWorkspaceAskUser = (props: any) => {
   const handleUserLogin = () => {
     props.login();
   };
@@ -17,29 +14,30 @@ export default (props: any) => {
   };
 
   return (
-    <Box p={4}>
-      <Grid container={true} justify="space-between" alignItems="flex-end">
-        <Grid item={true} xs={12} sm={8} md={8}>
+    <Box>
+      <Grid container={true} justifyContent="center">
+        <Grid item={true} xs={12} mb={3}>
           <DialogContentText>
-          To use workspaces you need an Open Source Brain v2.0 account.
-          If you already have one, please sign in, if not create one for free.
-          Workspaces will let you save your own models and data, and run simulations and analyses.
+            To use {props.type} you need an Open Source Brain v2.0 account. If
+            you already have one, please sign in, if not create one for free.
+            Workspaces will let you save your own models and data, and run
+            simulations and analyses.
           </DialogContentText>
         </Grid>
-        <Grid item={true}>
+        <Grid item={true} xs={12}>
           <Box mr={2}>
             <Button onClick={handleUserLogin} autoFocus={true}>
               Sign In
-              </Button>
+            </Button>
           </Box>
           <Button
+            id="signup-workspace-dialog-button"
             variant="contained"
             color="secondary"
             onClick={handleSignup}
           >
             Sign Up
-            </Button>
-
+          </Button>
         </Grid>
       </Grid>
     </Box>

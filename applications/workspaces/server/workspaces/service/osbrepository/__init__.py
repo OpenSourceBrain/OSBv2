@@ -56,7 +56,7 @@ def get_tags(osbrepository, context=None):
 
 
 def create_copy_task(workspace_id, osbrepository_id, name, path):
-    from workspaces.repository.model_repository import OSBRepositoryRepository
+    from workspaces.persistence.crud_persistence import OSBRepositoryRepository
     osbrepository = OSBRepositoryRepository().get(id=osbrepository_id)
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
     return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, path=path)

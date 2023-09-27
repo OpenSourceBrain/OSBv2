@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Workspaces manager API
+ * OSB Workspaces manager API
  * Opensource Brain Platform - Reference Workspaces manager API
  *
  * The version of the OpenAPI document: 0.2.0
@@ -51,12 +51,6 @@ export interface WorkspaceResourceEntity {
      */
     name: string;
     /**
-     * WorkspaceResource folder where the resource will stored in the pvc
-     * @type {string}
-     * @memberof WorkspaceResourceEntity
-     */
-    folder?: string;
-    /**
      * 
      * @type {ResourceStatus}
      * @memberof WorkspaceResourceEntity
@@ -98,6 +92,12 @@ export interface WorkspaceResourceEntity {
      * @memberof WorkspaceResourceEntity
      */
     workspaceId?: number;
+    /**
+     * WorkspaceResource path where the resource will stored in the pvc.
+     * @type {string}
+     * @memberof WorkspaceResourceEntity
+     */
+    folder?: string;
 }
 
 export function WorkspaceResourceEntityFromJSON(json: any): WorkspaceResourceEntity {
@@ -112,7 +112,6 @@ export function WorkspaceResourceEntityFromJSONTyped(json: any, ignoreDiscrimina
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'status': !exists(json, 'status') ? undefined : ResourceStatusFromJSON(json['status']),
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
@@ -120,6 +119,7 @@ export function WorkspaceResourceEntityFromJSONTyped(json: any, ignoreDiscrimina
         'resourceType': ResourceTypeFromJSON(json['resource_type']),
         'origin': !exists(json, 'origin') ? undefined : json['origin'],
         'workspaceId': !exists(json, 'workspace_id') ? undefined : json['workspace_id'],
+        'folder': !exists(json, 'folder') ? undefined : json['folder'],
     };
 }
 
@@ -134,7 +134,6 @@ export function WorkspaceResourceEntityToJSON(value?: WorkspaceResourceEntity | 
         
         'id': value.id,
         'name': value.name,
-        'folder': value.folder,
         'status': ResourceStatusToJSON(value.status),
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),
@@ -142,6 +141,7 @@ export function WorkspaceResourceEntityToJSON(value?: WorkspaceResourceEntity | 
         'resource_type': ResourceTypeToJSON(value.resourceType),
         'origin': value.origin,
         'workspace_id': value.workspaceId,
+        'folder': value.folder,
     };
 }
 

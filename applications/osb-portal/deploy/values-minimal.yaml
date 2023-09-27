@@ -6,4 +6,5 @@ harness:
       - workspaces
       - jupyterhub
       - notifications
+      - jupyterlab-minimal
 

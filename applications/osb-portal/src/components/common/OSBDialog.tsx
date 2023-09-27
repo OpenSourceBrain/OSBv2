@@ -1,44 +1,32 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
+//components
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Typography from "@mui/material/Typography";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
 
-import DialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
+//icons
+import CloseIcon from "@mui/icons-material/Close";
 
-import * as Icons from "../icons";
-
+//style
 import {
-  checkBoxColor,
-  bgDarker,
+
+  drawerText,
 } from "../../theme";
 
 interface DialogProps {
   open: boolean;
   title: string | React.ReactNode;
-  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl"
+  subTitle?: string | React.ReactNode;
+  maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl";
   actions?: React.ReactElement;
   closeAction: () => void;
+  className?: string;
+  sx?: any
 }
-
-const useStyles = makeStyles((theme) => ({
-  dialog: {
-    padding: 0,
-    "& .MuiDialogContent-root": {
-      padding: 0,
-      backgroundColor: bgDarker,
-    },
-    "& .MuiDialogTitle-root": {
-      backgroundColor: bgDarker,
-    },
-  },
-  closeIcon: {
-    color: checkBoxColor,
-  },
-}));
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   closeAction,
@@ -46,7 +34,9 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
   title,
   children,
   actions,
-  maxWidth
+  maxWidth,
+  sx,
+  subTitle,
 }) => {
   const handleClose = () => {
     if (closeAction) {
@@ -56,19 +46,29 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
     }
   };
 
-  const classes = useStyles();
-
   return (
-    <Dialog className={classes.dialog} onClose={handleClose} open={open} fullWidth={true} maxWidth={maxWidth}>
-      <DialogTitle disableTypography={true}>
-        <Box display="flex" justifyContent="space-between">
+    <Dialog
+      onClose={handleClose}
+      open={open}
+      fullWidth={false}
+      maxWidth={maxWidth}
+      sx={sx}
+    >
+      <DialogTitle>
+        <Typography component="h3" variant="h6" sx={{m: 0}}>
           {title}
-          <IconButton className={classes.closeIcon} aria-label="close" onClick={handleClose} style={{ padding: 0 }} >
-            <Icons.CloseIcon fontSize="small" />
-          </IconButton>
-        </Box>
-      </DialogTitle>
+          <Typography
+            component="p"
+            variant="subtitle1"
+          >
+            {subTitle}
+          </Typography>
+        </Typography>
 
+        <IconButton sx={{p: 0, fontSize: "1rem"}} onClick={handleClose}>
+          <CloseIcon fontSize="inherit" sx={{ color: drawerText }} />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>{children}</DialogContent>
       {actions ? <DialogActions>{actions}</DialogActions> : null}
     </Dialog>

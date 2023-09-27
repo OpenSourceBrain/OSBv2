@@ -1,1393 +1,1492 @@
 openapi: 3.0.0
 info:
-  description: Opensource Brain Platform - Reference Workspaces manager API
-  license:
-    name: UNLICENSED
-  title: Workspaces manager API
-  version: 0.2.0
+    title: OSB Workspaces manager API
+    version: 0.2.0
+    description: Opensource Brain Platform - Reference Workspaces manager API
+    license:
+        name: UNLICENSED
 servers:
-- description: SwaggerHub API Auto Mocking
-  url: /api
-tags:
-- description: rest API for Workspaces manager
-  name: rest
-- description: Producer
-  name: Producer
-- description: Consumer
-  name: Consumer
-- description: Client
-  name: Client
+    -
+        url: /api
+        description: SwaggerHub API Auto Mocking
 paths:
-  /live:
-    get:
-      summary: Test if application is healthy
-      security: []
-      operationId: live
-      responses:
-        "500":
-          description: Application is not healthy
-        "200":
-          description: Healthy
-          content:
-            application/json:
-              schema:
-                type: string
-      x-openapi-router-controller: workspaces.controllers.k8s_controller
-      tags:
-        - k8s
-  /ready:
-    get:
-      summary: Test if application is ready to take requests
-      security: []
-      operationId: ready
-      responses:
-        "500":
-          description: Application is not ready yet
-        "200":
-          description: Ready
-          content:
-            application/json:
-              schema:
-                type: string
-      x-openapi-router-controller: workspaces.controllers.k8s_controller
-      tags:
-        - k8s
-  /workspace:
-    get:
-      tags:
-        - rest
-      summary: Used to list all available workspaces.
-      security:
-        - {}
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          required: false
-          description: The page number for starting to collect the result set.
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-            default: 20
-          required: false
-          description: The number of items to return.
-        - in: query
-          name: q
-          schema:
-            type: string
-            example: name__like=Work%+id__=1+tags[tag]=Tag
-          required: false
-          description: The search string for filtering of the items to return. Multiple criteria are seperated by '+' (and operator is applied). Format [field/relation[field]][comparator = , __not= , __like= ][value]
-        - in: query
-          name: tags
-          schema:
-            type: string
-            example: tag1+tag2
-            nullable: true
-          required: false
-          description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
-      responses:
-        "200":
-          description: Return all available workspaces
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-                  workspaces:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Workspace"
-    post:
-      tags:
-        - rest
-      summary: Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The Workspace to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Workspace'
-      responses:
-        "201":
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Workspace'
-        "400":
-          description: The Workspace already exists.
-  /workspace/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-    get:
-      summary: Used to retrieve a workspace from the repository.
-      security:
-        - {}
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The workspace.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Workspace'
-        "404":
-          description: The workspace was not found.
-      tags:
-        - rest
-    put:
-      summary: Update a workspace in the repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The workspace to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Workspace"
-      responses:
-        "200":
-          description: The workspace was updated.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Workspace'
-        "404":
-          description: The workspace was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete a workspace from the repository.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The workspace was deleted.
-        "404":
-          description: The workspace was not found.
-      tags:
-        - rest
-  /workspace/{id}/import:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-    post:
-      summary: Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
-      operationId: workspaces.controllers.workspace_controller.import_resources
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                resourceorigins:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/ResourceOrigin'
-      responses:
-        "200":
-          description: The workspace was updated with the thumbnail.
-        "404":
-          description: The workspace was not found or the thumbnail was not specified
-      tags:
-        - rest
-  /workspace/{id}/clone:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-    put:
-      summary: Clones a workspace
-      operationId: workspaces.controllers.workspace_controller.workspace_clone
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The workspace was cloned.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Workspace'
-        "404":
-          description: The workspace was not found
-      tags:
-        - rest
-  /workspace/{id}/thumbnail:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-    post:
-      summary: Sets the thumbnail of the workspace.
-      operationId: workspaces.controllers.workspace_controller.setthumbnail
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                thumbNail:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: The workspace was updated with the thumbnail.
-        "404":
-          description: The workspace was not found or the thumbnail was not specified
-      tags:
-        - rest
-  /workspace/{id}/gallery:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-    post:
-      summary: Adds and image to the workspace.
-      operationId: workspaces.controllers.workspace_controller.addimage
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: The image was added to the workspace.
-        "404":
-          description: The workspace was not found or the image was not specified
-      tags:
-        - rest
-  /workspace/{id}/gallery/{image_id}:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: Workspace ID of the workspace
-      - in: path
-        name: image_id
-        required: true
-        schema:
-          type: integer
-        description: Workspace Image Id to be deleted from the workspace
-    delete:
-      summary: Delete a Workspace Image from the workspace.
-      operationId: delimage
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The Workspace Image is successfully deleted from the workspace.
-        "404":
-          description: The workspace was not found.
-      tags:
-        - rest
-      x-openapi-router-controller: workspaces.controllers.workspace_controller
-
-  /workspaceresource:
-    post:
-      tags:
-        - rest
-      summary: Used to save a WorkspaceResource to the repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The WorkspaceResource to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WorkspaceResource'
-      responses:
-        "201":
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceResource'
-        "400":
-          description: The WorkspaceResource already exists.
-
-  /workspaceresource/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-    get:
-      summary: Used to retrieve a WorkspaceResource.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The WorkspaceResource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceResource'
-        "404":
-          description: The WorkspaceResource was not found.
-      tags:
-        - rest
-    put:
-      summary: Update the WorkspaceResource.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The WorkspaceResource to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WorkspaceResource'
-      responses:
-        "200":
-          description: The WorkspaceResource was updated.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceResource'
-        "404":
-          description: The WorkspaceResource was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete a WorkspaceResource.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The WorkspaceResource was deleted.
-        "404":
-          description: The WorkspaceResource was not found.
-      tags:
-      - rest
-
-  /workspaceresource/{id}/open:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        description: WorkspaceResource ID of the WorkspaceResource
-    get:
-      summary: Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
-      security:
-        - bearerAuth: []
-      operationId: workspaces.controllers.workspace_resource_controller.open
-      responses:
-        "200":
-          description: The WorkspaceResource was updated.
-        "404":
-          description: The WorkspaceResource was not found.
-      tags:
-        - rest
-
-  /osbrepository:
-    get:
-      tags:
-        - rest
-      summary: Used to list all available repositories.
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          required: false
-          description: The page number for starting to collect the result set.
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-            default: 20
-          required: false
-          description: The number of items to return.
-        - in: query
-          name: q
-          schema:
-            type: string
-            nullable: true
-            example: name=myrepo+summary__like=%reposi%
-          required: false
-          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]. Multiple parameters are concatenated with + (OR operator)
-        - in: query
-          name: tags
-          schema:
-            type: string
-            example: tag1+tag2
-            nullable: true
-          required: false
-          description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
-        - in: query
-          name: types
-          schema:
-            type: string
-            nullable: true
-            example: experimental+modeling
-          required: false
-          description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
-        - in: query
-          name: user_id
-          schema:
-            type: string
-            example: ccfbe969-f7e2-4191-80c4-821dc5a97a28
-            nullable: true
-          required: false
-          description: The id of the owner user to filter with
-      responses:
-        "200":
-          description: Return all available repositories
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-                  osbrepositories:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/OSBRepository"
-    post:
-      tags:
-        - rest
-      summary: Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The OSB repository to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OSBRepository'
-      responses:
-        "201":
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OSBRepository'
-        "400":
-          description: The OSB repository already exists.
-  /osbrepository/context:
-    parameters:
-      - in: query
-        name: uri
-        schema:
-          type: string
-        required: true
-      - in: query
-        name: repository_type
-        schema:
-          $ref: "#/components/schemas/RepositoryType"
-        required: true
-    get:
-      summary: Used to retrieve a list of contexts of a repository.
-      operationId: get_contexts
-      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
-      responses:
-        200:
-          description: The list of repository contexts.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        404:
-          description: The repository was not found.
-      tags:
-        - rest
-  /osbrepository/keywords:
-    parameters:
-      - in: query
-        name: uri
-        schema:
-          type: string
-        required: true
-      - in: query
-        name: repository_type
-        schema:
-          $ref: '#/components/schemas/RepositoryType'
-        required: true
-      - in: query
-        name: context
-        schema:
-          type: string
-        required: true
-    get:
-      summary: Used to retrieve keywords for a repository.
-      operationId: get_keywords
-      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
-      responses:
-        "200":
-          description: The keywords for repository.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        "404":
-          description: The repository was not found.
-      tags:
-        - rest
-  /osbrepository/description:
-    parameters:
-      - in: query
-        name: uri
-        schema:
-          type: string
-        required: true
-      - in: query
-        name: repository_type
-        schema:
-          $ref: '#/components/schemas/RepositoryType'
-        required: true
-      - in: query
-        name: context
-        schema:
-          type: string
-        required: true
-    get:
-      summary: Used to retrieve description for a repository.
-      operationId: get_description
-      x-openapi-router-controller: workspaces.controllers.osbrepository_controller
-      responses:
-        "200":
-          description: The description for repository.
-          content:
-            application/json:
-              schema:
-                type: string
-        "404":
-          description: The repository was not found.
-      tags:
-        - rest
-  /osbrepository/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      - in: query
-        name: context
-        schema:
-          type: string
-        description: the context for getting the resources, optional
-    get:
-      summary: Used to retrieve a repository.
-      # x-openapi-router-controller: workspaces.controllers.osbrepository_controller
-      # operationId: get
-      responses:
-        "200":
-          description: The repository.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OSBRepository"
-        "404":
-          description: The repository was not found.
-      tags:
-        - rest
-    put:
-      summary: Update a OSB repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The repository to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/OSBRepository"
-      responses:
-        "200":
-          description: The workspace was updated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OSBRepository"
-        "404":
-          description: The workspace was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete a OSBRepository.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The OSBRepository was deleted.
-        "404":
-          description: The OSBRepository was not found.
-      tags:
-        - rest
-  /volumestorage:
-    get:
-      tags:
-        - rest
-      summary: Used to list all available volumestorages.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          required: false
-          description: The page number for starting to collect the result set.
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-            default: 20
-          required: false
-          description: The number of items to return.
-        - in: query
-          name: q
-          schema:
-            type: string
-            example: name__like=%storage%
-          required: false
-          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
-      responses:
-        "200":
-          description: Return all available volumestorages
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-                  volumestorages:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VolumeStorage"
-    post:
-      tags:
-        - rest
-      summary: Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The VolumeStorage to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/VolumeStorage"
-      responses:
-        "201":
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VolumeStorage"
-        "400":
-          description: The VolumeStorage already exists.
-  /volumestorage/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-    get:
-      summary: Used to retrieve an volumestorage from the repository.
-      responses:
-        "200":
-          description: The volumestorage.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VolumeStorage"
-        "404":
-          description: The volumestorage was not found.
-      tags:
-        - rest
-    put:
-      summary: Update an volumestorage in the repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The volumestorage to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/VolumeStorage"
-      responses:
-        "200":
-          description: The volumestorage was updated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VolumeStorage"
-        "404":
-          description: The volumestorage was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete an volumestorage from the repository.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The volumestorage was deleted.
-        "404":
-          description: The volumestorage was not found.
-      tags:
-        - rest
-
-  /tag:
-    get:
-      tags:
-        - rest
-      summary: Used to list all available tags.
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          required: false
-          description: The page number for starting to collect the result set.
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-            default: 20
-          required: false
-          description: The number of items to return.
-        - in: query
-          name: q
-          schema:
-            type: string
-            example: name__like=%Tag 1%
-          required: false
-          description: The search string for filtering of the items to return. Format [field/relation[field]][comparator = , __not= , __like= ][value]
-      responses:
-        "200":
-          description: Return all available tags
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-                  tags:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Tag"
-    post:
-      tags:
-        - rest
-      summary: Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The Tag to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Tag"
-      responses:
-        "201":
-          description: Save successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "400":
-          description: The Tag already exists.
-  /tag/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-    get:
-      summary: Used to retrieve an tag from the repository.
-      responses:
-        "200":
-          description: The tag.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "404":
-          description: The tag was not found.
-      tags:
-        - rest
-    put:
-      summary: Update an tag in the repository.
-      security:
-        - bearerAuth: []
-      requestBody:
-        description: The tag to save.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Tag"
-      responses:
-        "200":
-          description: The tag was updated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "404":
-          description: The tag was not found.
-      tags:
-        - rest
-    delete:
-      summary: Delete an tag from the repository.
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: The tag was deleted.
-        "404":
-          description: The tag was not found.
-      tags:
-        - rest
-
+    /live:
+        get:
+            tags:
+                - k8s
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Healthy
+                '500':
+                    description: Application is not healthy
+            operationId: live
+            summary: Test if application is healthy
+            x-openapi-router-controller: workspaces.controllers.k8s_controller
+    /ready:
+        get:
+            tags:
+                - k8s
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Ready
+                '500':
+                    description: Application is not ready yet
+            operationId: ready
+            summary: Test if application is ready to take requests
+            x-openapi-router-controller: workspaces.controllers.k8s_controller
+    /workspace:
+        get:
+            tags:
+                - rest
+            parameters:
+                -
+                    name: page
+                    description: The page number for starting to collect the result set.
+                    schema:
+                        default: 1
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: per_page
+                    description: The number of items to return.
+                    schema:
+                        default: 20
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    examples:
+                        'Search by name, id and tag':
+                            value: 'name__like=Work%+id__=1+tags[tag]=Tag'
+                    name: q
+                    description: >-
+                        The search string for filtering of the items to return. Multiple criteria are
+                        seperated by '+' (and operator is applied). Format [field/relation[field]][comparator
+                        = , __not= , __like= ][value]
+                    schema:
+                        type: string
+                        example: 'name__like=Work%+id__=1+tags[tag]=Tag'
+                    in: query
+                    required: false
+                -
+                    name: tags
+                    description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
+                    schema:
+                        nullable: true
+                        type: string
+                        example: tag1+tag2
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    pagination:
+                                        $ref: '#/components/schemas/Pagination'
+                                    workspaces:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Workspace'
+                    description: Return all available workspaces
+            security:
+                - {}
+                -
+                    bearerAuth: []
+            summary: Used to list all available workspaces.
+        post:
+            requestBody:
+                description: The Workspace to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Workspace'
+                required: true
+            tags:
+                - rest
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Workspace'
+                    description: Save successful.
+                '400':
+                    description: The Workspace already exists.
+                '405':
+                    description: Not allowed to create a new workspace
+            security:
+                -
+                    bearerAuth: []
+            summary: >-
+                Used to save a Workspace to the repository. The user_id (keycloak user id) will be
+                automatically filled with the current user
+    '/workspace/{id}':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Workspace'
+                    description: The workspace.
+                '404':
+                    description: The workspace was not found.
+            security:
+                - {}
+                -
+                    bearerAuth: []
+            summary: Used to retrieve a workspace from the repository.
+        put:
+            requestBody:
+                description: The workspace to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Workspace'
+                required: true
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Workspace'
+                    description: The workspace was updated.
+                '404':
+                    description: The workspace was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Update a workspace in the repository.
+        delete:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The workspace was deleted.
+                '404':
+                    description: The workspace was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Delete a workspace from the repository.
+        parameters:
+            -
+                name: id
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspace/{id}/import':
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                resourceorigins:
+                                    type: array
+                                    items:
+                                        $ref: '#/components/schemas/ResourceOrigin'
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The workspace was updated with the thumbnail.
+                '404':
+                    description: The workspace was not found or the thumbnail was not specified
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.workspace_controller.import_resources
+            summary: Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspace/{id}/clone':
+        put:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Workspace'
+                    description: The workspace was cloned.
+                '404':
+                    description: The workspace was not found
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.workspace_controller.workspace_clone
+            summary: Clones a workspace
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspace/{id}/thumbnail':
+        post:
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                thumbNail:
+                                    format: binary
+                                    type: string
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The workspace was updated with the thumbnail.
+                '404':
+                    description: The workspace was not found or the thumbnail was not specified
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.workspace_controller.setthumbnail
+            summary: Sets the thumbnail of the workspace.
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspace/{id}/gallery':
+        post:
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                image:
+                                    format: binary
+                                    type: string
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The image was added to the workspace.
+                '404':
+                    description: The workspace was not found or the image was not specified
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.workspace_controller.addimage
+            summary: Adds and image to the workspace.
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspace/{id}/gallery/{image_id}':
+        delete:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The Workspace Image is successfully deleted from the workspace.
+                '404':
+                    description: The workspace was not found.
+            security:
+                -
+                    bearerAuth: []
+            operationId: delimage
+            summary: Delete a Workspace Image from the workspace.
+            x-openapi-router-controller: workspaces.controllers.workspace_controller
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+            -
+                name: image_id
+                description: Workspace Image Id to be deleted from the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+    /workspaceresource:
+        post:
+            requestBody:
+                description: The WorkspaceResource to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkspaceResource'
+                required: true
+            tags:
+                - rest
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WorkspaceResource'
+                    description: Save successful.
+                '400':
+                    description: The WorkspaceResource already exists.
+            security:
+                -
+                    bearerAuth: []
+            summary: Used to save a WorkspaceResource to the repository.
+    '/workspaceresource/{id}':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WorkspaceResource'
+                    description: The WorkspaceResource.
+                '404':
+                    description: The WorkspaceResource was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Used to retrieve a WorkspaceResource.
+        put:
+            requestBody:
+                description: The WorkspaceResource to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkspaceResource'
+                required: true
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WorkspaceResource'
+                    description: The WorkspaceResource was updated.
+                '404':
+                    description: The WorkspaceResource was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Update the WorkspaceResource.
+        delete:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The WorkspaceResource was deleted.
+                '404':
+                    description: The WorkspaceResource was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Delete a WorkspaceResource.
+        parameters:
+            -
+                name: id
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspaceresource/{id}/open':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The WorkspaceResource was updated.
+                '404':
+                    description: The WorkspaceResource was not found.
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.workspace_resource_controller.open
+            summary: >-
+                Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open
+                will be updated
+        parameters:
+            -
+                name: id
+                description: WorkspaceResource ID of the WorkspaceResource
+                schema:
+                    type: integer
+                in: path
+                required: true
+    /osbrepository:
+        get:
+            tags:
+                - rest
+            parameters:
+                -
+                    name: page
+                    description: The page number for starting to collect the result set.
+                    schema:
+                        default: 1
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: per_page
+                    description: The number of items to return.
+                    schema:
+                        default: 20
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: q
+                    description: >-
+                        The search string for filtering of the items to return. Format
+                        [field/relation[field]][comparator = , __not= , __like= ][value]. Multiple parameters
+                        are concatenated with + (OR operator)
+                    schema:
+                        nullable: true
+                        type: string
+                        example: name=myrepo+summary__like=%reposi%
+                    in: query
+                    required: false
+                -
+                    name: tags
+                    description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
+                    schema:
+                        nullable: true
+                        type: string
+                        example: tag1+tag2
+                    in: query
+                    required: false
+                -
+                    name: types
+                    description: The tags to filter with Multiple parameters are concatenated with + (OR operator)
+                    schema:
+                        nullable: true
+                        type: string
+                        example: experimental+modeling
+                    in: query
+                    required: false
+                -
+                    name: user_id
+                    description: The id of the owner user to filter with
+                    schema:
+                        nullable: true
+                        type: string
+                        example: ccfbe969-f7e2-4191-80c4-821dc5a97a28
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    pagination:
+                                        $ref: '#/components/schemas/Pagination'
+                                    osbrepositories:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/OSBRepository'
+                    description: Return all available repositories
+            summary: Used to list all available repositories.
+        post:
+            requestBody:
+                description: The OSB repository to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OSBRepository'
+                required: true
+            tags:
+                - rest
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OSBRepository'
+                    description: Save successful.
+                '400':
+                    description: The OSB repository already exists.
+            security:
+                -
+                    bearerAuth: []
+            summary: >-
+                Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled
+                with the current user
+    /osbrepository/description:
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: The description for repository.
+                '404':
+                    description: The repository was not found.
+            operationId: get_description
+            summary: Used to retrieve description for a repository.
+            x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+        parameters:
+            -
+                name: uri
+                schema:
+                    type: string
+                in: query
+                required: true
+            -
+                name: repository_type
+                schema:
+                    $ref: '#/components/schemas/RepositoryType'
+                in: query
+                required: true
+            -
+                name: context
+                schema:
+                    type: string
+                in: query
+                required: true
+    '/osbrepository/{id}':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OSBRepository'
+                    description: The repository.
+                '404':
+                    description: The repository was not found.
+            summary: Used to retrieve a repository.
+        put:
+            requestBody:
+                description: The repository to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OSBRepository'
+                required: true
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OSBRepository'
+                    description: The workspace was updated.
+                '404':
+                    description: The workspace was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Update a OSB repository.
+        delete:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The OSBRepository was deleted.
+                '404':
+                    description: The OSBRepository was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Delete a OSBRepository.
+        parameters:
+            -
+                name: id
+                schema:
+                    type: integer
+                in: path
+                required: true
+            -
+                name: context
+                description: 'the context for getting the resources, optional'
+                schema:
+                    type: string
+                in: query
+    /volumestorage:
+        get:
+            tags:
+                - rest
+            parameters:
+                -
+                    name: page
+                    description: The page number for starting to collect the result set.
+                    schema:
+                        default: 1
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: per_page
+                    description: The number of items to return.
+                    schema:
+                        default: 20
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: q
+                    description: >-
+                        The search string for filtering of the items to return. Format
+                        [field/relation[field]][comparator = , __not= , __like= ][value]
+                    schema:
+                        type: string
+                        example: name__like=%storage%
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    pagination:
+                                        $ref: '#/components/schemas/Pagination'
+                                    volumestorages:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/VolumeStorage'
+                    description: Return all available volumestorages
+            security:
+                -
+                    bearerAuth: []
+            summary: Used to list all available volumestorages.
+        post:
+            requestBody:
+                description: The VolumeStorage to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeStorage'
+                required: true
+            tags:
+                - rest
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VolumeStorage'
+                    description: Save successful.
+                '400':
+                    description: The VolumeStorage already exists.
+            security:
+                -
+                    bearerAuth: []
+            summary: >-
+                Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be
+                automatically filled with the current user
+    '/volumestorage/{id}':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VolumeStorage'
+                    description: The volumestorage.
+                '404':
+                    description: The volumestorage was not found.
+            summary: Used to retrieve an volumestorage from the repository.
+        put:
+            requestBody:
+                description: The volumestorage to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/VolumeStorage'
+                required: true
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VolumeStorage'
+                    description: The volumestorage was updated.
+                '404':
+                    description: The volumestorage was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Update an volumestorage in the repository.
+        delete:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The volumestorage was deleted.
+                '404':
+                    description: The volumestorage was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Delete an volumestorage from the repository.
+        parameters:
+            -
+                name: id
+                schema:
+                    type: integer
+                in: path
+                required: true
+    /tag:
+        get:
+            tags:
+                - rest
+            parameters:
+                -
+                    name: page
+                    description: The page number for starting to collect the result set.
+                    schema:
+                        default: 1
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: per_page
+                    description: The number of items to return.
+                    schema:
+                        default: 20
+                        type: integer
+                    in: query
+                    required: false
+                -
+                    name: q
+                    description: >-
+                        The search string for filtering of the items to return. Format
+                        [field/relation[field]][comparator = , __not= , __like= ][value]
+                    schema:
+                        type: string
+                        example: name__like=%Tag 1%
+                    in: query
+                    required: false
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    pagination:
+                                        $ref: '#/components/schemas/Pagination'
+                                    tags:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Tag'
+                    description: Return all available tags
+            summary: Used to list all available tags.
+        post:
+            requestBody:
+                description: The Tag to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Tag'
+                required: true
+            tags:
+                - rest
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Tag'
+                    description: Save successful.
+                '400':
+                    description: The Tag already exists.
+            security:
+                -
+                    bearerAuth: []
+            summary: >-
+                Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically
+                filled with the current user
+    '/tag/{id}':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Tag'
+                    description: The tag.
+                '404':
+                    description: The tag was not found.
+            summary: Used to retrieve an tag from the repository.
+        put:
+            requestBody:
+                description: The tag to save.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Tag'
+                required: true
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Tag'
+                    description: The tag was updated.
+                '404':
+                    description: The tag was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Update an tag in the repository.
+        delete:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The tag was deleted.
+                '404':
+                    description: The tag was not found.
+            security:
+                -
+                    bearerAuth: []
+            summary: Delete an tag from the repository.
+        parameters:
+            -
+                name: id
+                schema:
+                    type: integer
+                in: path
+                required: true
+    /osbrepository/info:
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RepositoryInfo'
+                    description: The list of repository contexts.
+                '404':
+                    description: The repository was not found.
+            operationId: get_info
+            summary: Used to retrieve a list of contexts of a repository.
+            x-openapi-router-controller: workspaces.controllers.osbrepository_controller
+        parameters:
+            -
+                name: uri
+                schema:
+                    type: string
+                in: query
+                required: true
+            -
+                name: repository_type
+                schema:
+                    $ref: '#/components/schemas/RepositoryType'
+                in: query
+                required: true
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      x-bearerInfoFunc: cloudharness.auth.AuthClient.decode_token
-  schemas:
-    Valid:
-      type: object
-      properties:
-        response:
-          type: string
-    Pagination:
-      type: object
-      properties:
-        current_page:
-          type: integer
-        number_of_pages:
-          type: integer
-        total:
-          type: integer
-    PrimaryKey:
-      type: integer
-      x-primary-key: true
-      x-autoincrement: true
-    RepositoryType:
-      description: |
-        Repository type:
-          * dandi - DANDI repository
-          * figshare - FigShare repository
-          * github - Github repository
-      type: string
-      enum:
-        - dandi
-        - figshare
-        - github
-    RepositoryContentType:
-      description: >
-        Repository Content type:
-          * experimental - Experimental data
-          * modeling - Modeling
-      type: string
-      enum:
-        - experimental
-        - modeling
-    ResourceType:
-      default: g
-      description: |
-        Resource type:
-         * e - Experimental
-         * m - Model
-         * g - Generic
-         * u - Unknown (to be defined)
-      type: string
-      enum:
-        - e
-        - m
-        - g
-        - u
-      example: g
-    ResourceStatus:
-        description: |
-          Resource status:
-           * a - Available
-           * e - Error, not available
-           * p - Pending
-        type: string
-        enum:
-          - a
-          - e
-          - p
-        default: p
-        example: p
-    ImageType:
-      type: string
-    User:
-      description: Keycloak User
-      type: object
-      properties:
-        id:
-          description: Keycloak user id
-          type: string
-        first_name:
-          description: First Name of the keycloak user
-          type: string
-        last_name:
-          description: Last Name of the keycloak user
-          type: string
-        username:
-          description: Username of the keycloak user
-          type: string
-        email:
-          description: Email address of the keycloak user
-          type: string
-    WorkspaceBase:
-      description: Workspace item
-      type: object
-      properties:
-        id:
-          description: Unique identifier of the Workspace
-          $ref: "#/components/schemas/PrimaryKey"
-        name:
-          description: Workspace name.
-          type: string
-          example: Workspace One
-        description:
-          description: Workspace description.
-          type: string
-          example: Workspace One description
-        timestamp_created:
-          description: Date/time the Workspace is created
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
-        timestamp_updated:
-          description: Date/time the Workspace is last updated
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
-        last_opened_resource_id:
-          description: The workspace resource id the workspace is opened last with
-          type: integer
-        thumbnail:
-          description: Workspace type icon.
-          $ref: "#/components/schemas/ImageType"
-        gallery:
-          description: Gallery with images of the workspace
-          type: array
-          items:
+    schemas:
+        Valid:
+            type: object
+            properties:
+                response:
+                    type: string
+        Pagination:
+            type: object
+            properties:
+                current_page:
+                    type: integer
+                number_of_pages:
+                    type: integer
+                total:
+                    type: integer
+        PrimaryKey:
+            type: integer
+            x-primary-key: true
+            x-autoincrement: true
+        RepositoryType:
+            description: |
+                Repository type:
+                  * dandi - DANDI repository
+                  * figshare - FigShare repository
+                  * github - Github repository
+            enum:
+                - dandi
+                - figshare
+                - github
+            type: string
+        RepositoryContentType:
+            description: |
+                Repository Content type:
+                  * experimental - Experimental data
+                  * modeling - Modeling
+            enum:
+                - experimental
+                - modeling
+            type: string
+        ResourceType:
+            description: |
+                Resource type:
+                 * e - Experimental
+                 * m - Model
+                 * g - Generic
+                 * u - Unknown (to be defined)
+            default: g
+            enum:
+                - e
+                - m
+                - g
+                - u
+            type: string
+            example: g
+        ResourceStatus:
+            description: |
+                Resource status:
+                 * a - Available
+                 * e - Error, not available
+                 * p - Pending
+            default: p
+            enum:
+                - a
+                - e
+                - p
+            type: string
+            example: p
+        ImageType:
+            type: string
+        User:
+            description: Keycloak User
+            type: object
+            properties:
+                id:
+                    description: Keycloak user id
+                    type: string
+                first_name:
+                    description: First Name of the keycloak user
+                    type: string
+                last_name:
+                    description: Last Name of the keycloak user
+                    type: string
+                username:
+                    description: Username of the keycloak user
+                    type: string
+                email:
+                    description: Email address of the keycloak user
+                    type: string
+        WorkspaceBase:
+            description: Workspace item
+            required:
+                - name
+                - description
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the Workspace
+                name:
+                    description: Workspace name.
+                    type: string
+                    example: Workspace One
+                description:
+                    description: Workspace description.
+                    type: string
+                    example: Workspace One description
+                timestamp_created:
+                    format: date-time
+                    description: Date/time the Workspace is created
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_updated:
+                    format: date-time
+                    description: Date/time the Workspace is last updated
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                last_opened_resource_id:
+                    description: The workspace resource id the workspace is opened last with
+                    type: integer
+                thumbnail:
+                    $ref: '#/components/schemas/ImageType'
+                    description: Workspace type icon.
+                gallery:
+                    description: Gallery with images of the workspace
+                    type: array
+                    items:
+                        allOf:
+                            -
+                                $ref: '#/components/schemas/WorkspaceImage'
+                user_id:
+                    description: 'Workspace keycloak user id, will be automatically be set to the logged in user'
+                    type: string
+                publicable:
+                    description: Is this a public workspace? Default false
+                    default: false
+                    type: boolean
+                    example: false
+                featured:
+                    description: Is this a featured workspace? Default false
+                    default: false
+                    type: boolean
+                    example: false
+                license:
+                    description: Workspace license
+                    type: string
+                    example: license
+                collaborators:
+                    description: Collaborators who work on the workspace
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/WorkspaceCollaborator'
+                storage:
+                    $ref: '#/components/schemas/VolumeStorage'
+                    description: Storage of the workspace
+                tags:
+                    type: array
+                    items:
+                        allOf:
+                            -
+                                $ref: '#/components/schemas/Tag'
+                            -
+                                x-secondary: workspace_tag
+        WorkspaceEntity:
+            description: Workspace model
             allOf:
-              - $ref: "#/components/schemas/WorkspaceImage"
-        user_id:
-          description: Workspace keycloak user id, will be automatically be set to the logged in user
-          type: string
-        publicable:
-          description: Is this a public workspace? Default false
-          type: boolean
-          default: false
-          example: false
-        featured:
-          description: Is this a featured workspace? Default false
-          type: boolean
-          default: false
-          example: false
-        license:
-          description: Workspace license
-          type: string
-          example: license
-        collaborators:
-          description: Collaborators who work on the workspace
-          type: array
-          items:
-            $ref: "#/components/schemas/WorkspaceCollaborator"
-        storage:
-          description: Storage of the workspace
-          $ref: "#/components/schemas/VolumeStorage"
-        tags:
-          type: array
-          items:
-           allOf:
-              - "$ref": "#/components/schemas/Tag"
-              - x-secondary: workspace_tag
-      required:
-        - name
-        - description
-    WorkspaceEntity:
-      description: Workspace model
-      allOf:
-        - $ref: '#/components/schemas/WorkspaceBase'
-        - x-tablename: workspace
-          properties:
-            resources:
-              description: Resources of the workspace
-              type: array
-              items:
-                  $ref: "#/components/schemas/WorkspaceResourceEntity"
-    Workspace:
-      description: Workspace extended
-      allOf:
-        - $ref: "#/components/schemas/WorkspaceBase"
-        - description: extra attributes
-          type: object
-          properties:
-            resources:
-              description: Resources of the workspace
-              type: array
-              items:
-                  $ref: "#/components/schemas/WorkspaceResource"
-            user:
-              $ref: "#/components/schemas/User"
-    WorkspaceCollaborator:
-      description: Workspace Collaborator of a workspace
-      type: object
-      x-tablename: workspacecollaborator
-      properties:
-        id:
-          description: Unique identifier of the WorkspaceCollaborator
-          $ref: "#/components/schemas/PrimaryKey"
-        user_id:
-          description: Workspace Collaborator keycloak user id
-          type: string
-      required:
-        - user_id
-    WorkspaceImage:
-      description: Workspace images of a workspace
-      type: object
-      x-tablename: workspaceimage
-      properties:
-        id:
-          description: Unique identifier of the WorkspaceImage
-          $ref: "#/components/schemas/PrimaryKey"
-        image:
-          description: Workspace Image
-          $ref: "#/components/schemas/ImageType"
-      required:
-        - image
-    WorkspaceResourceBase:
-      type: object
-      properties:
-        id:
-          description: Unique identifier of the WorkspaceResource
-          $ref: "#/components/schemas/PrimaryKey"
-        name:
-          description: WorkspaceResource name
-          type: string
-          example: Workspace Resource One
-        folder:
-          description: WorkspaceResource folder where the resource will stored in the pvc
-          type: string
-          example: Workspace Resource One
-        status:
-          description: WorkspaceResource status is the resource
-          $ref: "#/components/schemas/ResourceStatus"
-        timestamp_created:
-          description: Date/time of creation of the WorkspaceResource
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
-        timestamp_updated:
-          description: Date/time of last updating of the WorkspaceResource
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
-        timestamp_last_opened:
-          description: Date/time of last opening of the WorkspaceResource
-          type: string
-          format: 'date-time'
-        resource_type:
-          description: WorkspaceResource type
-          $ref: "#/components/schemas/ResourceType"
-      required:
-        - name
-        - resource_type
-    WorkspaceResource:
-      description: Workspace Resource item of a Workspace
-      allOf:
-        - $ref: '#/components/schemas/WorkspaceResourceBase'
-        - properties:
-            workspace_id:
-              description: workspace_id
-              type: integer
-            origin:
-              description: Origin Resource where the WorkspaceResource is build from
-              $ref: "#/components/schemas/ResourceOrigin"
-    WorkspaceResourceEntity:
-      description: Workspace Resource item of a Workspace
-      allOf:
-        - $ref: '#/components/schemas/WorkspaceResourceBase'
-        - x-tablename: Workspaceresource
-          properties:
-            origin:
-              description: Origin data JSON formatted of the WorkspaceResource
-              type: string
-            workspace_id:
-              description: workspace_id
-              type: integer
-              x-foreign-key: workspace.id
-    VolumeStorage:
-      description: Volume which can be connected to a workspace
-      type: object
-      x-tablename: volumestorage
-      properties:
-        id:
-          description: Unique identifier of the StorageVolume
-          $ref: "#/components/schemas/PrimaryKey"
-        name:
-          description: StorageVolume name
-          type: string
-          example: Storage Volume One
-      required:
-        - name
-    OSBRepositoryBase:
-      description: OSB Repository Base model
-      type: object
-      properties:
-        id:
-          description: Unique identifier of the repository
-          $ref: "#/components/schemas/PrimaryKey"
-        name:
-          description: Repository name.
-          type: string
-          example: Repo One
-        summary:
-          description: Summary describing the OSB Repository
-          type: string
-          example: Sample repository with experimental data
-        repository_type:
-          description: Repository type
-          $ref: "#/components/schemas/RepositoryType"
-        content_types:
-          description: List of Repository Content Types
-          type: string
-        auto_sync:
-          description: Auto sync of the resources
-          type: boolean
-          default: true
-          example: true
-        uri:
-          description: URI of the repository
-          type: string
-          example: https://github.com/OpenSourceBrain/OSBv2
-        default_context:
-          description: The default branch to show for this repository
-          type: string
-          example: develop
-        user_id:
-          description: OSBRepository keycloak user id, will be automatically be set to the logged in user
-          type: string
-        timestamp_created:
-          description: Date/time the Workspace is created
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
-        timestamp_updated:
-          description: Date/time the Workspace is last updated
-          type: string
-          format: 'date-time'
-          example: 2019-11-23T01:23:45Z
-        tags:
-          type: array
-          items:
-           allOf:
-              - "$ref": "#/components/schemas/Tag"
-              - x-secondary: osbrepository_tag
-      required:
-        - name
-        - repository_type
-        - content_types
-        - uri
-    OSBRepositoryEntity:
-      description: OSB Repository model
-      allOf:
-        - $ref: '#/components/schemas/OSBRepositoryBase'
-        - x-tablename: osbrepository
-    OSBRepository:
-      description: OSBRepository extended model
-      allOf:
-        - $ref: "#/components/schemas/OSBRepositoryBase"
-        - description: extra attributes
-          type: object
-          properties:
-            context_resources:
-              $ref: "#/components/schemas/RepositoryResourceNode"
-            contexts:
-              type: array
-              items:
-                type: string
-            user:
-              $ref: "#/components/schemas/User"
-            content_types_list:
-              type: array
-              items:
-                $ref: "#/components/schemas/RepositoryContentType"
-            description:
-              description: Repository description
-              type: string
-            timestamp_modified:
-              description: Date/time the OSBReposity is last modified
-              type: string
-              format: 'date-time'
-              example: 2019-11-23T01:23:45Z
-    ResourceBase:
-      description: Resource Base
-      type: object
-      properties:
-        name:
-          type: string
-          example: file.ext
-          description: file name
-        path:
-          type: string
-          example: https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/master/.gitignore
-          description: Download URL of the Resource
-    RepositoryResourceBase:
-      description: Resource (files/folders) of an OSBRepository
-      allOf:
-        - $ref: "#/components/schemas/ResourceBase"
-        - description: GIT hub specific attributes of the RepositoryResource
-          type: object
-          properties:
-            osbrepository_id:
-              type: integer
-              description: OSB Repository id
-              example: 1
-            size:
-              type: integer
-              format: int64
-              example: 65535
-              description: File size in bytes of the RepositoryResource
-            timestamp_modified:
-              description: Date/time the ReposityResource is last modified
-              type: string
-              format: 'date-time'
-              example: 2019-11-23T01:23:45Z
-    FigshareRepositoryResource:
-      description: figshare repository resource
-      allOf:
-        - $ref: "#/components/schemas/RepositoryResourceBase"
-    DandiRepositoryResource:
-      description: dandi repository resource
-      allOf:
-        - $ref: "#/components/schemas/RepositoryResourceBase"
-    GITRepositoryResource:
-      description: github repository resource
-      allOf:
-        - $ref: "#/components/schemas/RepositoryResourceBase"
-        - description: GIT hub specific attributes of the RepositoryResource
-          type: object
-          properties:
-            ref:
-              description: The GIT ref
-              type: string
-              example: develop
-            sha:
-              description: The GIT sha of the resource
-              type: string
-    DownloadResource:
-      description: Download Resource (files/folders)
-      allOf:
-        - $ref: "#/components/schemas/ResourceBase"
-    RepositoryResource:
-      description: Repository resource
-      oneOf:
-        - $ref: "#/components/schemas/FigshareRepositoryResource"
-        - $ref: "#/components/schemas/DandiRepositoryResource"
-        - $ref: "#/components/schemas/GITRepositoryResource"
-    ResourceOrigin:
-      description: optional Resource where the WorkspaceResource is build from
-      oneOf:
-        - $ref: "#/components/schemas/RepositoryResource"
-        - $ref: "#/components/schemas/DownloadResource"
-    RepositoryResourceNode:
-      description: Tree node (files/folders) of a Repository tree
-      type: object
-      properties:
-        resource:
-          $ref: "#/components/schemas/RepositoryResource"
-        children:
-          type: array
-          items:
-            $ref: "#/components/schemas/RepositoryResourceNode"
-      example:
-        name: /
-        timestamp_modified: 2019-11-23T01:23:45Z
-        children:
-          - name: README.md
-            timestamp_modified: 2019-11-23T01:23:45Z
-          - name: applications
-            timestamp_modified: 2019-11-23T01:23:45Z
-            children:
-              - name: accounts
-                timestamp_modified: 2019-11-23T01:23:45Z
+                -
+                    $ref: '#/components/schemas/WorkspaceBase'
+                -
+                    properties:
+                        resources:
+                            description: Resources of the workspace
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/WorkspaceResourceEntity'
+                    x-tablename: workspace
+        Workspace:
+            description: Workspace extended
+            allOf:
+                -
+                    $ref: '#/components/schemas/WorkspaceBase'
+                -
+                    description: extra attributes
+                    type: object
+                    properties:
+                        resources:
+                            description: Resources of the workspace
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/WorkspaceResource'
+                        user:
+                            $ref: '#/components/schemas/User'
+        WorkspaceCollaborator:
+            description: Workspace Collaborator of a workspace
+            required:
+                - user_id
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the WorkspaceCollaborator
+                user_id:
+                    description: Workspace Collaborator keycloak user id
+                    type: string
+            x-tablename: workspacecollaborator
+        WorkspaceImage:
+            description: Workspace images of a workspace
+            required:
+                - image
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the WorkspaceImage
+                image:
+                    $ref: '#/components/schemas/ImageType'
+                    description: Workspace Image
+            x-tablename: workspaceimage
+        VolumeStorage:
+            description: Volume which can be connected to a workspace
+            required:
+                - name
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the StorageVolume
+                name:
+                    description: StorageVolume name
+                    type: string
+                    example: Storage Volume One
+            x-tablename: volumestorage
+        OSBRepositoryEntity:
+            description: OSB Repository model
+            allOf:
+                -
+                    $ref: '#/components/schemas/OSBRepositoryBase'
+                -
+                    x-tablename: osbrepository
+        OSBRepository:
+            description: OSBRepository extended model
+            allOf:
+                -
+                    $ref: '#/components/schemas/OSBRepositoryBase'
+                -
+                    description: extra attributes
+                    type: object
+                    properties:
+                        context_resources:
+                            $ref: '#/components/schemas/RepositoryResourceNode'
+                        contexts:
+                            type: array
+                            items:
+                                type: string
+                        user:
+                            $ref: '#/components/schemas/User'
+                        content_types_list:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/RepositoryContentType'
+                        description:
+                            description: Repository description
+                            type: string
+                        timestamp_modified:
+                            format: date-time
+                            description: Date/time the OSBReposity is last modified
+                            type: string
+                            example: '2019-11-23T01:23:45.000Z'
+        ResourceBase:
+            description: Resource Base
+            type: object
+            properties:
+                name:
+                    description: file name
+                    type: string
+                    example: file.ext
+                path:
+                    description: Download URL of the Resource
+                    type: string
+                    example: 'https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/master/.gitignore'
+        RepositoryResourceBase:
+            description: Resource (files/folders) of an OSBRepository
+            allOf:
+                -
+                    $ref: '#/components/schemas/ResourceBase'
+                -
+                    description: GIT hub specific attributes of the RepositoryResource
+                    type: object
+                    properties:
+                        osbrepository_id:
+                            description: OSB Repository id
+                            type: integer
+                            example: 1
+                        size:
+                            format: int64
+                            description: File size in bytes of the RepositoryResource
+                            type: integer
+                            example: 65535
+                        timestamp_modified:
+                            format: date-time
+                            description: Date/time the ReposityResource is last modified
+                            type: string
+                            example: '2019-11-23T01:23:45.000Z'
+        FigshareRepositoryResource:
+            description: figshare repository resource
+            allOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResourceBase'
+        DandiRepositoryResource:
+            description: dandi repository resource
+            allOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResourceBase'
+        GITRepositoryResource:
+            description: github repository resource
+            allOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResourceBase'
+                -
+                    description: GIT hub specific attributes of the RepositoryResource
+                    type: object
+                    properties:
+                        ref:
+                            description: The GIT ref
+                            type: string
+                            example: develop
+                        sha:
+                            description: The GIT sha of the resource
+                            type: string
+        DownloadResource:
+            description: Download Resource (files/folders)
+            allOf:
+                -
+                    $ref: '#/components/schemas/ResourceBase'
+        RepositoryResource:
+            oneOf:
+                -
+                    $ref: '#/components/schemas/FigshareRepositoryResource'
+                -
+                    $ref: '#/components/schemas/DandiRepositoryResource'
+                -
+                    $ref: '#/components/schemas/GITRepositoryResource'
+            description: Repository resource
+        ResourceOrigin:
+            oneOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResource'
+                -
+                    $ref: '#/components/schemas/DownloadResource'
+            description: optional Resource where the WorkspaceResource is build from
+        RepositoryResourceNode:
+            description: Tree node (files/folders) of a Repository tree
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/RepositoryResource'
                 children:
-                  - name: Dockerfile
-                    timestamp_modified: 2019-11-23T01:23:45Z
-
-    Tag:
-      title: Tag
-      type: object
-      x-tablename: tag
-      description: Tags
-      properties:
-        id:
-          $ref: '#/components/schemas/PrimaryKey'
-        tag:
-          type: string
-          x-unique: true
-          x-index: true
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RepositoryResourceNode'
+            example:
+                name: /
+                timestamp_modified: '2019-11-23T01:23:45.000Z'
+                children:
+                    -
+                        name: README.md
+                        timestamp_modified: '2019-11-23T01:23:45.000Z'
+                    -
+                        name: applications
+                        timestamp_modified: '2019-11-23T01:23:45.000Z'
+                        children:
+                            -
+                                name: accounts
+                                timestamp_modified: '2019-11-23T01:23:45.000Z'
+                                children:
+                                    -
+                                        name: Dockerfile
+                                        timestamp_modified: '2019-11-23T01:23:45.000Z'
+        Tag:
+            title: Tag
+            description: Tags
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                tag:
+                    type: string
+                    x-unique: true
+                    x-index: true
+            x-tablename: tag
+        RepositoryInfo:
+            description: ''
+            type: object
+            properties:
+                contexts:
+                    description: ''
+                    type: array
+                    items:
+                        type: string
+                name:
+                    description: ''
+                    type: string
+                summary:
+                    description: ''
+                    type: string
+                tags:
+                    description: ''
+                    type: array
+                    items:
+                        type: string
+        OSBRepositoryBase:
+            description: OSB Repository Base model
+            required:
+                - name
+                - repository_type
+                - content_types
+                - uri
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the repository
+                name:
+                    description: Repository name.
+                    type: string
+                    example: Repo One
+                summary:
+                    description: Summary describing the OSB Repository
+                    type: string
+                    example: Sample repository with experimental data
+                repository_type:
+                    $ref: '#/components/schemas/RepositoryType'
+                    description: Repository type
+                content_types:
+                    description: List of Repository Content Types
+                    type: string
+                auto_sync:
+                    description: Auto sync of the resources
+                    default: true
+                    type: boolean
+                    example: true
+                uri:
+                    description: URI of the repository
+                    type: string
+                    example: 'https://github.com/OpenSourceBrain/OSBv2'
+                default_context:
+                    description: The default branch to show for this repository
+                    type: string
+                    example: develop
+                user_id:
+                    description: 'OSBRepository keycloak user id, will be automatically be set to the logged in user'
+                    type: string
+                timestamp_created:
+                    format: date-time
+                    description: Date/time the Workspace is created
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_updated:
+                    format: date-time
+                    description: Date/time the Workspace is last updated
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                tags:
+                    type: array
+                    items:
+                        allOf:
+                            -
+                                $ref: '#/components/schemas/Tag'
+                            -
+                                x-secondary: osbrepository_tag
+        WorkspaceResourceBase:
+            required:
+                - name
+                - resource_type
+            type: object
+            properties:
+                id:
+                    $ref: '#/components/schemas/PrimaryKey'
+                    description: Unique identifier of the WorkspaceResource
+                name:
+                    description: WorkspaceResource name
+                    type: string
+                    example: Workspace Resource One
+                status:
+                    $ref: '#/components/schemas/ResourceStatus'
+                    description: WorkspaceResource status is the resource
+                timestamp_created:
+                    format: date-time
+                    description: Date/time of creation of the WorkspaceResource
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_updated:
+                    format: date-time
+                    description: Date/time of last updating of the WorkspaceResource
+                    type: string
+                    example: '2019-11-23T01:23:45.000Z'
+                timestamp_last_opened:
+                    format: date-time
+                    description: Date/time of last opening of the WorkspaceResource
+                    type: string
+                resource_type:
+                    $ref: '#/components/schemas/ResourceType'
+                    description: WorkspaceResource type
+        WorkspaceResourceEntity:
+            description: Workspace Resource item of a Workspace
+            allOf:
+                -
+                    $ref: '#/components/schemas/WorkspaceResourceBase'
+                -
+                    properties:
+                        origin:
+                            description: Origin data JSON formatted of the WorkspaceResource
+                            type: string
+                        workspace_id:
+                            description: workspace_id
+                            type: integer
+                            x-foreign-key: workspace.id
+                        folder:
+                            description: WorkspaceResource path where the resource will stored in the pvc.
+                            type: string
+                            example: repo/sample.nwb
+                    x-tablename: Workspaceresource
+        WorkspaceResource:
+            description: Workspace Resource item of a Workspace
+            allOf:
+                -
+                    $ref: '#/components/schemas/WorkspaceResourceBase'
+                -
+                    properties:
+                        workspace_id:
+                            description: workspace_id
+                            type: integer
+                        origin:
+                            $ref: '#/components/schemas/ResourceOrigin'
+                            description: Origin Resource where the WorkspaceResource is build from
+                        path:
+                            description: WorkspaceResource path where the resource will stored in the pvc.
+                            type: string
+                            example: repo/sample.nwb
+    securitySchemes:
+        bearerAuth:
+            scheme: bearer
+            bearerFormat: JWT
+            type: http
+            x-bearerInfoFunc: cloudharness.auth.AuthClient.decode_token
+tags:
+    -
+        name: rest
+        description: rest API for Workspaces manager
+    -
+        name: Producer
+        description: Producer
+    -
+        name: Consumer
+        description: Consumer
+    -
+        name: Client
+        description: Client

@@ -1,111 +1,91 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Grid, Paper } from "@material-ui/core";
-
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import Box from "@material-ui/core/Box";
-
-
-
-import { UserInfo } from "../../types/user";
-import { ResourceType } from "../../types/global";
+//components
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
-import * as Icons from '../icons';
+//types
+import { UserInfo } from "../../types/user";
 
-const useStyles = makeStyles((theme) => ({
-  iconButton: {
-    width: "2em",
-    height: "2em",
-    padding: 0,
-  },
-  svgIcon: {},
+//icons
+import {
+  ComputationalModeling,
+  DataAnalystIcon,
+  WorkspaceFromRepositoryIcon,
+  WorkspaceIcon,
+} from "../icons";
 
-  dialogButtons: {
-    paddingRight: 0,
-  },
-  toolBoxHeading: {
-    textAlign: "center",
-    [theme.breakpoints.up("md")]: {
-      textAlign: "left",
-    },
-  },
-  justifyCenter: {
-    justifyContent: 'center'
-  },
-  cardText: {
-    display: "inline-block",
-    marginRight: "5px",
-    [theme.breakpoints.up("md")]: {
-      display: "block",
-      marginRight: "0",
-    },
-  },
-}));
 
+import Typography from "@mui/material/Typography";
 
 
 export const WorkspaceToolBox = (props: any) => {
-  const classes = useStyles();
-
   const user: UserInfo = props.user;
-
-  const type: string = props.type;
-
   return (
     <>
-
       <Box>
-        <Grid container={true} alignItems="center" justify="center" spacing={5}>
-          <Grid item={true} sm={12} md={4} lg={3}>
-            <Typography component="h2" variant="h5" className={classes.toolBoxHeading}>
-              <Box component="span" className={classes.cardText}>Create a</Box>
-              <Box component="span" className={classes.cardText}>new workspace</Box>
-            </Typography>
+        <Box pb={4} textAlign="center">
+          <Typography pb={2} variant="h1" component="h2">
+            {" "}
+            {props.title}
+          </Typography>
+          <Typography variant="body1">
+            Quickly create a workspace by choosing <br /> one of the predefined
+            templates
+          </Typography>
+        </Box>
+
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="computational-modeling">
+          <Grid item xs={12} lg={6}>
+
+              <WorkspaceItem
+                icon={<WorkspaceIcon />}
+                title="Computational modeling"
+                template={WorkspaceTemplateType.network}
+                user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+  
           </Grid>
-          <Grid item={true} xs={12} sm={12} md={8} lg={9}>
-            <Grid container={true} direction="row" justify="space-between" spacing={5} >
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
-                <WorkspaceItem
-                  icon={Icons.SquareCirclesIcon}
-                  title="Computational modeling"
-                  template={WorkspaceTemplateType.network}
-                  user={user}
-                  refreshWorkspaces={props.refreshWorkspaces}
+          <Grid item xs={12} lg={6} id="data-analysis">
+    
+              <WorkspaceItem
+                icon={<DataAnalystIcon />}
+                title="Data analysis"
+                template={WorkspaceTemplateType.explorer}
+                user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+    
+          </Grid>
+          <Grid item xs={12} lg={6} id="interactive-development">
 
-                />
-              </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
-                <WorkspaceItem
-                  icon={Icons.ChartIcon}
-                  title="Data analysis"
-                  template={WorkspaceTemplateType.explorer}
-                  user={user}
-                  refreshWorkspaces={props.refreshWorkspaces}
-                />
-              </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter}>
-                <WorkspaceItem
-                  icon={Icons.CubeIcon}
-                  title="Interactive development"
-                  template={WorkspaceTemplateType.playground}
-                  user={user}
-                  refreshWorkspaces={props.refreshWorkspaces}
-                />
-              </Grid>
-              <Grid item={true} xs={12} sm={3} className={classes.justifyCenter} >
-                <WorkspaceItem
-                  icon={<FolderOpenIcon />}
-                  title="Workspace from repository"
-                  template={null}
-                  user={user}
-                  refreshWorkspaces={props.refreshWorkspaces}
+              <WorkspaceItem
+                icon={<ComputationalModeling />}
+                title="Interactive development"
+                template={WorkspaceTemplateType.playground}
+                user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
 
-                />
-              </Grid>
-            </Grid>
+          </Grid>
+          <Grid item xs={12} lg={6} id="workspace-from-repository">
+
+              <WorkspaceItem
+                className="from-repository-create-workspace-item"
+                icon={<WorkspaceFromRepositoryIcon />}
+                title="Workspace from repository"
+                template={null}
+                user={user}
+                refreshWorkspaces={props.refreshWorkspaces}
+                closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
+              />
+
           </Grid>
         </Grid>
       </Box>

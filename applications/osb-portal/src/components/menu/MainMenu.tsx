@@ -1,10 +1,9 @@
 import * as React from "react";
-import { useHistory } from 'react-router-dom';
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import { useNavigate } from "react-router-dom";
+import makeStyles from '@mui/styles/makeStyles';
+import Box from "@mui/material/Box";
 import { MainMenuItem } from "./MainMenuItem";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -21,28 +20,46 @@ const useStyles = makeStyles(() => ({
   flipButton: {
     fontWeight: 700,
     textTransform: "uppercase",
-    padding: '5px',
-    fontSize: '0.75rem',
+    padding: "5px",
+    fontSize: "0.75rem",
   },
 }));
 
 export const MainMenu = (props: any) => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleDialogOpen = () => {
     props.openDialog();
   };
   return (
-
-    <Box display="flex" flexWrap="wrap" p={0} bgcolor="background.paper" justifyContent="space-between">
+    <Box
+      display="flex"
+      flexWrap="wrap"
+      p={0}
+      bgcolor="background.paper"
+      justifyContent="space-between"
+      className="main-menu"
+    >
       <Box display="flex" flexWrap="wrap" p={0}>
         <MainMenuItem
           title="OSB"
           className={classes.button + " " + classes.firstButton}
           items={[
-            { label: "Documentation", callback: () => window.open("https://docs.opensourcebrain.org/OSBv2/Overview.html") },
-            { label: "Chat", callback: () => window.open("https://matrix.to/#/%23OpenSourceBrain_community:gitter.im?utm_source=gitter") },
+            {
+              label: "Documentation",
+              callback: () =>
+                window.open(
+                  "https://docs.opensourcebrain.org/OSBv2/Overview.html"
+                ),
+            },
+            {
+              label: "Chat",
+              callback: () =>
+                window.open(
+                  "https://matrix.to/#/%23OpenSourceBrain_community:gitter.im?utm_source=gitter"
+                ),
+            },
             { label: "About", callback: handleDialogOpen },
           ]}
         />
@@ -50,33 +67,47 @@ export const MainMenu = (props: any) => {
           title="View"
           className={classes.button}
           items={[
-            { label: "Repositories", callback: () => history.push("/repositories"), checked: history.location.pathname === "/repositories" },
-            { label: "Workspaces", callback: () => history.push("/"), checked: history.location.pathname === '/' },
+            {
+              label: "Repositories",
+              callback: () => navigate("/repositories"),
+              checked: navigate.location.pathname === "/repositories",
+            },
+            {
+              label: "Workspaces",
+              callback: () => navigate("/"),
+              checked: navigate.location.pathname === "/",
+            },
           ]}
         />
       </Box>
-      {
-        history.location.pathname === "/" ?
-          <MainMenuItem
-            title={<>WORKSPACES <ExpandMoreIcon fontSize="small" /></>}
-            className={classes.flipButton}
-            items={[
-              { label: "Repositories", callback: () => history.push("/repositories") },
-            ]}
-            popperPlacement="bottom-end"
-          />
-          :
-          history.location.pathname === "/repositories" ?
-            <MainMenuItem
-              title={<>REPOSITORIES <ExpandMoreIcon fontSize="small" /></>}
-              className={classes.flipButton}
-              items={[
-                { label: "Workspaces", callback: () => history.push("/") },
-              ]}
-              popperPlacement="bottom-end"
-            />
-            : null
-      }
+      {navigate.location.pathname === "/" ? (
+        <MainMenuItem
+          title={
+            <>
+              WORKSPACES <ExpandMoreIcon fontSize="small" />
+            </>
+          }
+          className={classes.flipButton}
+          items={[
+            {
+              label: "Repositories",
+              callback: () => navigate("/repositories"),
+            },
+          ]}
+          popperPlacement="bottom-end"
+        />
+      ) : navigate.location.pathname === "/repositories" ? (
+        <MainMenuItem
+          title={
+            <>
+              REPOSITORIES <ExpandMoreIcon fontSize="small" />
+            </>
+          }
+          className={classes.flipButton}
+          items={[{ label: "Workspaces", callback: () => navigate("/") }]}
+          popperPlacement="bottom-end"
+        />
+      ) : null}
     </Box>
   );
 };

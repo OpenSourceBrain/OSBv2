@@ -5,7 +5,7 @@ import requests
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
 
-from workspaces.models import GITRepositoryResource, RepositoryResourceNode
+from workspaces.models import GITRepositoryResource, RepositoryResourceNode, RepositoryInfo
 from .utils import add_to_tree
 
 
@@ -50,6 +50,9 @@ class GitHubAdapter:
         else:
             raise Exception(
                 f"Failed getting GitHub content, url: {uri}, status code: {r.status_code}")
+
+    def get_base_uri(self):
+        return self.uri
 
     def get_contexts(self):
         branches = self.get_json(self.api_url + "branches?per_page=100")
@@ -114,7 +117,10 @@ class GitHubAdapter:
                 "unable to get the description from github, %", str(e))
             return ""
 
-    def get_tags(self, context):
+    def get_info(self) -> RepositoryInfo:
+        return RepositoryInfo(name=self.uri.split("/")[-1], contexts=self.get_contexts(), tags=self.get_tags(), summary="")
+
+    def get_tags(self, context=None):
         """Topics/keywords"""
         tags = self.get_json(self.api_url + "topics")
         return tags["names"]
@@ -124,7 +130,7 @@ class GitHubAdapter:
         import workspaces.service.workflow as workflow
         name = name if name != "/" else self.osbrepository.name
         folder = self.osbrepository.name + \
-            path.replace(self.download_base_url, "").replace("branches/", "/").replace("tags/", "/")
+            path.replace(self.uri, "").replace("branches/", "/").replace("tags/", "/")
         folder = folder[: folder.rfind("/")]
         # username / password are optional and future usage,
         # e.g. for accessing non public repos

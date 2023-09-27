@@ -15,17 +15,20 @@
 
 import * as runtime from '../runtime';
 import {
+    InlineResponse200,
+    InlineResponse200FromJSON,
+    InlineResponse200ToJSON,
     User,
     UserFromJSON,
     UserToJSON,
 } from '../models';
 
-export interface CreateUserRequest {
-    requestBody: { [key: string]: object; };
-}
-
 export interface GetUserRequest {
     userid: string;
+}
+
+export interface GetUsersRequest {
+    queryString?: string;
 }
 
 export interface UpdateUserRequest {
@@ -37,45 +40,6 @@ export interface UpdateUserRequest {
  * 
  */
 export class UsersApi extends runtime.BaseAPI {
-
-    /**
-     */
-    async createUserRaw(requestParameters: CreateUserRequest): Promise<runtime.ApiResponse<User>> {
-        if (requestParameters.requestBody === null || requestParameters.requestBody === undefined) {
-            throw new runtime.RequiredError('requestBody','Required parameter requestParameters.requestBody was null or undefined when calling createUser.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/users`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.requestBody,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async createUser(requestParameters: CreateUserRequest): Promise<User> {
-        const response = await this.createUserRaw(requestParameters);
-        return await response.value();
-    }
 
     /**
      */
@@ -102,6 +66,44 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async getUser(requestParameters: GetUserRequest): Promise<User> {
         const response = await this.getUserRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Get list of users based on query
+     */
+    async getUsersRaw(requestParameters: GetUsersRequest): Promise<runtime.ApiResponse<InlineResponse200>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.queryString !== undefined) {
+            queryParameters['query_string'] = requestParameters.queryString;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse200FromJSON(jsonValue));
+    }
+
+    /**
+     * Get list of users based on query
+     */
+    async getUsers(requestParameters: GetUsersRequest): Promise<InlineResponse200> {
+        const response = await this.getUsersRaw(requestParameters);
         return await response.value();
     }
 

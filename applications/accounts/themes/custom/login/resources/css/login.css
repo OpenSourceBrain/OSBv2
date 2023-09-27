@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .login-pf body {
@@ -23,22 +23,35 @@ body {
   background-size: contain;
   width: 132px;
   height: 20px;
-  position: absolute;
-  right: 0;
-  top: 20px;
   cursor: pointer;
 }
 
 .login-pf-header {
   position: relative;
   z-index: 20;
+  margin: 10px;
 }
+
+.login-register-link {
+  display: flex;
+}
+
+.login-pf-page .login-pf-header {
+  margin-bottom: 24px;
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .login-pf-page .login-pf-header h1 {
   display: flex;
-  font-size: 16px;
   color: #fff;
-  margin-bottom: 17px;
   font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.32px;
+  margin: 0;
 }
 
 
@@ -48,10 +61,8 @@ body {
   box-shadow: none;
 }
 
-
-
 .form-group {
-  margin-bottom: 9px;
+  margin-bottom: 12px;
 }
 
 .login-pf-page .form-control {
@@ -61,19 +72,18 @@ body {
   color: #fff;
   height: auto;
   font-size: 14px;
-  border-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .form-control:hover,
 .form-control:focus {
-  border-color: transparent;
   box-shadow: none;
 }
 
 .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
+  color: #FFFFFF;
   font-weight: 400;
+  font-size: 12px;
   font-style: normal;
 }
 
@@ -88,10 +98,10 @@ body {
 
 .custom-checkbox label {
   padding: 0;
-  min-height: inherit;
   color: #fff;
-  line-height: 18px;
-  font-weight: 100;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.32px;
 }
 
 .custom-checkbox input {
@@ -104,15 +114,22 @@ body {
 
 .custom-checkbox .checkmark {
   position: absolute;
-  top: 1px;
+  top: 2.5px;
   left: 0;
   height: 15px;
   width: 15px;
-  background-color: #eee;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(103, 103, 103, 1);
+  border-radius: 2px;
 }
 
+.custom-checkbox .checkmark:hover {
+  border-color: #00BCD4 !important;
+  background-color: rgba(0, 188, 212, 0.5) !important;
+}
 .custom-checkbox input:checked ~ .checkmark {
-  background-color: #fff;
+  background-color: #00BCD4;
+  border-color: #00BCD4 !important;
 }
 
 .custom-checkbox .checkmark:after {
@@ -126,11 +143,10 @@ body {
 }
 
 .custom-checkbox .checkmark:after {
-  left: 5px;
-  top: 1px;
+  left: 4px;
   width: 6px;
   height: 11px;
-  border: solid black;
+  border: solid #393f44;
   border-width: 0 2px 2px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -139,7 +155,7 @@ body {
 
 .kc-form-button {
   display: flex;
-  margin: 15px 0 0 auto;
+  margin: 0;
   align-items: center;
 }
 .kc-form-footer {
@@ -161,11 +177,12 @@ body {
 
 .kc-form-button a,
 .kc-form-button a:hover {
-  display: flex;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 13px;
   margin: 0 15px 0 0;
   outline: 0;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 12px;
+  color: #00BCD4;
   text-transform: uppercase;
 }
 .alert {
@@ -313,10 +330,6 @@ div.kc-logo-text span {
   padding-top: 8px;
 }
 
-/* #kc-content-wrapper {
-    overflow-y: hidden;
-} */
-
 #kc-info {
   padding-bottom: 200px;
   margin-bottom: -200px;
@@ -333,25 +346,29 @@ div.kc-logo-text span {
 
 #kc-form-options .checkbox {
   color: #72767b;
-  margin: 12px 0 0;
+  margin: 0;
 }
 
 #kc-terms-text {
   margin-bottom: 20px;
 }
 
-.login-pf-header span {
+.login-pf-header span:last-child {
   margin: 0 0 0 11px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 400;
-
+  text-decoration: underline;
 }
 .login-pf-header a,
 .login-pf-header a:hover {
-  text-decoration: underline;
+  text-decoration: none;
   font-weight: 400;
   color: inherit;
   outline: 0;
+}
+
+.login-pf-header span:hover {
+  color: #fff;
 }
 
 .kc-register-form {
@@ -496,15 +513,15 @@ a.zocial {
   font-size: 14px;
   text-shadow: none;
   border: 0;
-  background: #f5f5f5;
-  color: #72767b;
+  color: #fff;
   border-radius: 0;
-  white-space: normal;
 }
 
 .zocial:before {
   border-right: 0;
   margin-right: 0;
+  float: initial;
+  box-shadow: none;
 }
 
 .zocial span:before {
@@ -539,6 +556,11 @@ a.zocial {
   color: inherit;
 }
 
+.login-pf-page .login-pf-social-section {
+  max-width: 100%;
+  width: 100%;
+}
+
 @media (min-width: 768px) {
   #kc-container-wrapper {
     position: absolute;
@@ -546,6 +568,9 @@ a.zocial {
   }
   .login-pf .container {
     padding-right: 80px;
+  }
+  .login-pf-page .login-pf-social-section:last-of-type {
+    border-left: 0
   }
   #kc-locale {
     position: relative;
@@ -574,9 +599,7 @@ a.zocial {
     height: 32px;
     background-size: 100%;
   }
-  #kc-form {
-    float: none;
-  }
+
   #kc-info-wrapper {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 15px;
@@ -635,7 +658,7 @@ a.zocial {
 .card-pf {
   margin: 0 auto;
   padding: 0 20px;
-  width: 540px;
+  width: 580px;
   border-top: 0;
   background: rgba(0, 0, 0, 0.2);
   box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.5);
@@ -654,6 +677,8 @@ a.zocial {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
 }
 
 /*tablet*/
@@ -687,16 +712,16 @@ a.zocial {
 #kc-content-wrapper .row {
   margin-left: 0;
   margin-right: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 768px) {
   .login-pf-page .login-pf-social-section:first-of-type {
-    padding-right: 39px;
-    border-right: 1px solid #d1d1d1;
-    margin-right: -1px;
+    padding-right: 0;
   }
   .login-pf-page .login-pf-social-section:last-of-type {
-    padding-left: 40px;
+    padding-left: 0px;
   }
   .login-pf-page .login-pf-social-section .login-pf-social-link:last-of-type {
     margin-bottom: 0;
@@ -704,11 +729,27 @@ a.zocial {
 }
 
 .login-pf-page .login-pf-social-link {
-  margin-bottom: 25px;
+  margin-bottom: 12px;
+  height: 38px
 }
 
 .login-pf-page .login-pf-social-link a {
   padding: 2px 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  color: #fff;
+  box-shadow: none;
+  font-weight: 400;
+  font-size: 12px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.login-pf-page .login-pf-social-link a:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .login-pf-page.login-pf-page-accounts {
@@ -718,21 +759,22 @@ a.zocial {
 
 .login-pf-page .btn-primary {
   margin-top: 0;
-  background: #fff;
-  font-weight: 500;
-  font-size: 14px;
   outline: 0;
   text-transform: uppercase;
-  color: #4a4a4a;
   border-radius: 2px;
-  padding: 8px 17px;
-  width: auto !important;
   margin-left: auto;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FFFFFF;
+  height: 28px;
+  padding: 8px 16px;
+  background: #00BCD4;
+  border: 0
 }
 
-.login-pf-page .btn-primary:active:focus {
-  background: #fff;
-  color: #4a4a4a;
+.login-pf-page .btn-primary:active:focus, .login-pf-page .btn-primary:hover {
+  background: #339DB8;
   outline: 0;
 }
 
@@ -746,12 +788,14 @@ a.zocial {
 
 .login-pf-page .card-pf {
   margin-bottom: 10px;
+  padding: 24px;
 }
 
 #kc-form-login div.form-group:last-of-type,
 #kc-register-form div.form-group:last-of-type,
 #kc-update-profile-form div.form-group:last-of-type {
   margin-bottom: 0px;
+  /*margin-top: 12px;*/
 }
 
 #kc-back {
@@ -761,4 +805,48 @@ a.zocial {
 form#kc-select-back-form div.login-pf-social-section {
   padding-left: 0px;
   border-left: 0px;
+}
+
+.login-pf-page .login-pf-settings {
+  display: block;
+  margin-top: 24px;
+}
+.login-pf-page .separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.login-pf-page .separator::before,
+.login-pf-page .separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.login-pf-page .separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.login-pf-page .separator:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.orcid-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-image: url(../img/orcid.svg);
+}
+
+.fa {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.register-footer {
+  margin-top: 12px;
+  justify-content: end;
 }

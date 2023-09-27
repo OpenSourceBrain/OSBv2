@@ -2,14 +2,20 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "module": "commonjs",
-    "target": "es2020",
+    "target": "es2017",
+    "stripInternal": true,
+    "skipLibCheck": true,
+    "alwaysStrict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": false,
+    "strict": false,
+    "noUnusedLocals": false,
     "jsx": "react",
+    "types": [],
     "esModuleInterop": true,
-    "allowJs": true
+    "resolveJsonModule": true
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
