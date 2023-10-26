@@ -1,7 +1,7 @@
 FROM node:15 as clone
 ENV BRANCH_TAG="osb2"
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-RUN echo "cache 2023-10-26"
+RUN echo "cache 2023-10-26a"
 RUN git clone $REPO -b $BRANCH_TAG
 RUN rm -Rf .git
 
@@ -35,8 +35,7 @@ WORKDIR $FOLDER
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
-RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
-    pip install cython --no-cache-dir
+
 
 RUN chown $NB_UID /opt
 RUN chown $NB_UID .
@@ -47,7 +46,9 @@ USER $NB_UID
 
 COPY --from=clone $FOLDER/requirements.txt requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
-    pip install -r requirements.txt --no-cache-dir
+    pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+    pip install cython --no-cache-dir
 COPY --from=clone $FOLDER .
 
 
@@ -68,7 +69,6 @@ COPY hub/jupyter_notebook_config.py /opt/conda/etc/jupyter/nbconfig/jupyter_note
 
 RUN chown $NB_UID .
 COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/build webapp/build
-COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/node_modules/@geppettoengine webapp/node_modules/@geppettoengine
 
 USER $NB_UID
 CMD ./NWBE
