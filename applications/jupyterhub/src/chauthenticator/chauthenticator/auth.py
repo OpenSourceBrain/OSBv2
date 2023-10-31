@@ -108,7 +108,6 @@ class CloudHarnessAuthenticator(Authenticator):
         }
         return [
             ('/chkclogin', CloudHarnessAuthenticateHandler, extra_settings)
-            ('/nwbfile=.*', CloudHarnessAuthenticateHandler, extra_settings)
         ]
 
     def login_url(self, base_url):
