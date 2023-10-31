@@ -60,7 +60,7 @@ export const AboutContent = (props: any) => {
             Silver Lab at University College London
           </Link>{" "}
           in collaboration with{" "}
-          <Link href="http://metacell.us" target="_blank" underline="hover">
+          <Link href="https://metacell.us" target="_blank" underline="hover">
             MetaCell
           </Link>
           , and is funded by{" "}
