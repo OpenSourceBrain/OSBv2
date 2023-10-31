@@ -107,7 +107,8 @@ class CloudHarnessAuthenticator(Authenticator):
             'process_user': self.process_user
         }
         return [
-            ('/chkclogin', CloudHarnessAuthenticateHandler, extra_settings)
+            ('/chkclogin', CloudHarnessAuthenticateHandler, extra_settings),
+            ('/nwbfile=.*', CloudHarnessAuthenticateHandler, extra_settings)
         ]
 
     def login_url(self, base_url):
