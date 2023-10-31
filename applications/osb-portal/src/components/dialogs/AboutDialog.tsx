@@ -1,13 +1,9 @@
 import React from "react";
 import OSBDialog from "../common/OSBDialog";
 import Typography from "@mui/material/Typography";
-import DialogTitle from "@mui/material/DialogTitle";
-import makeStyles from '@mui/styles/makeStyles';
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import Icon from "@mui/material/Icon";
-import { secondaryColor, bgLight } from "../../theme";
+import { OSBLogo } from "../icons";
 
 const styles = {
   paper: {
@@ -19,13 +15,12 @@ const styles = {
 
 export const AboutContent = (props: any) => {
 
-  const logoOSB = "/images/osb-logo-full.png";
   const logoMetaCell = "/images/metacell.png";
   const logoWellcome = "/images/wellcome.png";
 
   return (
     <Box sx={styles.paper}>
-      <img width="250" src={logoOSB} />
+      <OSBLogo sx={{width: "300px", height: "auto"}} />
       <Box>
         <Link
           variant="h5"
