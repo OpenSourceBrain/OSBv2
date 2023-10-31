@@ -49,6 +49,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import OSBDialog from "../common/OSBDialog";
 import { NewWorkspaceAskUser } from "..";
 import { UserInfo } from "../../types/user";
+import TourIcon from '@mui/icons-material/Tour';
 
 const styles = {
   drawerContent: {
@@ -334,6 +335,19 @@ export const MainDrawer = (props: {
                 </ListItemIcon>
                 <ListItemText primary="About OSB" />
               </ListItemButton>
+
+              <ListItemButton
+                
+                component="a"
+                href="https://docs.opensourcebrain.org/OSBv2/Guided_tour.html"
+                target="_blank"
+              >
+                <ListItemIcon>
+                  <TourIcon />
+                </ListItemIcon>
+                <ListItemText primary="Guided tour" />
+              </ListItemButton>
+
               <ListItemButton
                 
                 component="a"
