@@ -50,6 +50,7 @@ import OSBDialog from "../common/OSBDialog";
 import { NewWorkspaceAskUser } from "..";
 import { UserInfo } from "../../types/user";
 import TourIcon from '@mui/icons-material/Tour';
+import HomeIcon from '@mui/icons-material/Home';
 
 const styles = {
   drawerContent: {
@@ -323,17 +324,29 @@ export const MainDrawer = (props: {
               subheader={
                 <ListSubheader>
                   <Typography mb={1} mt={4}>
-                    Support
+                    Info & Support
                   </Typography>
                 </ListSubheader>
               }
             >
+            <ListItemButton
+                
+                component="a"
+                href="https://www.opensourcebrain.org"
+                target="_blank"
+              >
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Main site" />
+              </ListItemButton>
+
               <ListItemButton 
               onClick={handleAboutDialogOpen}>
                 <ListItemIcon>
                   <InfoOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="About OSB" />
+                <ListItemText primary="About" />
               </ListItemButton>
 
               <ListItemButton
