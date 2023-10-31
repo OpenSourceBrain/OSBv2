@@ -50,6 +50,14 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
             self.request.cookies.clear()
             raw_user = self.get_anonymous_user()
 
+        if 'open=' in self.request.uri:
+            url = self.request.uri.split('=').pop()
+            self._set_cookie("nwbloadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
+
+        elif 'nwbfile=' in self.request.uri:
+            url = self.request.uri.split('=').pop()
+            self._set_cookie("loadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
+     
         print("JH user: ", raw_user.__dict__)
         self.set_login_cookie(raw_user)
         user = yield gen.maybe_future(self.process_user(raw_user, self))
@@ -100,6 +108,7 @@ class CloudHarnessAuthenticator(Authenticator):
         }
         return [
             ('/chkclogin', CloudHarnessAuthenticateHandler, extra_settings)
+            ('/nwbfile=.*', CloudHarnessAuthenticateHandler, extra_settings)
         ]
 
     def login_url(self, base_url):
