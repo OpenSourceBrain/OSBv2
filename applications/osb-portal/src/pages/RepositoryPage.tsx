@@ -405,7 +405,7 @@ export const RepositoryPage = (props: any) => {
         <WorkspaceEditor
           title={"Create new workspace"}
           open={showWorkspaceEditor}
-          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }}
+          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName(), tags: repository?.tags }}
           onLoadWorkspace={onWorkspaceCreated}
           closeHandler={openDialog}
           filesSelected={checked.length > 0}
