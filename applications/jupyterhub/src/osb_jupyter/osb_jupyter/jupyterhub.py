@@ -1,3 +1,4 @@
+import re 
 from jupyterhub.user import User
 from kubespawner.spawner import KubeSpawner
 
@@ -113,9 +114,12 @@ def change_pod_manifest(self: KubeSpawner):
                 'mountPath': '/opt/workspace',
                 'readOnly': not write_access
             })
-        if "image=" in self.request.uri and is_user_trusted(self.user):
-            image = parse_qs(urlparse(self.request.uri).query)['image'][0]
+        if "image=" in self.handler.request.uri and is_user_trusted(self.user):
+            print("Image override")
+            image = parse_qs(urlparse(self.handler.request.uri).query)['image'][0]
+            print("Image is", image)
             self.image = image
+            self.pod_name = f"{self.pod_name}--{re.sub('[^0-9a-zA-Z]+', '-', image)}"
 
     except CookieNotFound:
         # Setup a readonly default session

@@ -91,7 +91,7 @@ export const WorkspaceFrame = (props: {
     } else {
       // The frame url must be different for each user and workspace and application so jupyterhub does not return the same ws
       setFrameUrl(`//${applicationDomain}/hub/logout`);
-      setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`);
+      setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`);
     }
     openResource();
   }, [currentResource]);
