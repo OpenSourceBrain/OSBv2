@@ -12,8 +12,8 @@ WORKDIR $FOLDER/webapp
 RUN yarn install  --network-timeout 1000000000
 RUN yarn build-dev
 
+RUN rm -Rf node_modules/*
 
-RUN mv node_modules/@metacell . && rm -Rf node_modules/* && mv @metacell node_modules
 
 
 ###
@@ -37,9 +37,6 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
     pip install -r requirements.txt --prefer-binary
 
 COPY --from=jsbuild --chown=1000:1000 $FOLDER .
-
-COPY overrides/hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-
 
 # ToDo: fixme, for now remove the jupyter hub config json file because it overrides the default
 # and thus removes the frame ancestor cors settings

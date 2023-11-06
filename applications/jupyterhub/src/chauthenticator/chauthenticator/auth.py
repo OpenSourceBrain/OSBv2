@@ -52,11 +52,11 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
 
         if 'open=' in self.request.uri:
             url = self.request.uri.split('=').pop()
-            self._set_cookie("nwbloadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
+            self._set_cookie("loadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
 
         elif 'nwbfile=' in self.request.uri:
             url = self.request.uri.split('=').pop()
-            self._set_cookie("loadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
+            self._set_cookie("nwbloadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
      
         print("JH user: ", raw_user.__dict__)
         self.set_login_cookie(raw_user)

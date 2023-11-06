@@ -28,7 +28,6 @@ harness:
     quota-ws-maxmem: 1
     # sets the storage dedicated to the user data in Gb units (float)
     quota-storage-max : 1.25
-
 hub:
   config:
     JupyterHub:
