@@ -64,8 +64,6 @@ RUN rm -f ~/.jupyter/*.json
 USER root
 # sym link workspace pvc to $FOLDER
 RUN chown -R $NB_UID /opt/conda/etc/jupyter/nbconfig
-COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-COPY hub/jupyter_notebook_config.py /opt/conda/etc/jupyter/nbconfig/jupyter_notebook_config.py
 
 RUN chown $NB_UID .
 COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/build webapp/build

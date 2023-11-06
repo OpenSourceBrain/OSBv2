@@ -139,6 +139,14 @@ def change_pod_manifest(self: KubeSpawner):
         'mountPath': '/etc/jupyter/jupyter_notebook_config.py',
         'readOnly': True
     })
+    self.volume_mounts.append({
+        'name': 'jupyterhub-notebook-config',
+        'subPath': 'jupyter_notebook_config.py',
+        'mountPath': '/opt/conda/etc/jupyter/nbconfig/jupyter_notebook_config.py',
+        'readOnly': True
+    })
+
+    
 
 
 def get_app_user(user: User):
