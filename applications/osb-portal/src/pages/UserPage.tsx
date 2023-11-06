@@ -44,6 +44,7 @@ import { UserInfo } from "../types/user";
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
+import { getNotebooksNamedServerLink } from "../utils";
 
 const styles = {
   profileInformation: (theme) => ({
@@ -295,6 +296,14 @@ export const UserPage = (props: any) => {
 
   const onGroupClick = (groupname) => {
     navigate(`/user/${user.username}/groups/${groupname}`);
+  }
+
+  const navigateToNotebookNamedServerLink = () => {
+    const serverlink = getNotebooksNamedServerLink()
+    if (serverlink) {
+      window.open(serverlink, "_blank");
+    }
+    return
   }
 
   const canEdit =
@@ -604,7 +613,15 @@ export const UserPage = (props: any) => {
                   }
                 </Box>
               }
-
+              {canEdit && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => navigateToNotebookNamedServerLink()}
+                >
+                  Manage running workspaces
+                </Button>
+              )}
 
 
               {user.registrationDate && (
