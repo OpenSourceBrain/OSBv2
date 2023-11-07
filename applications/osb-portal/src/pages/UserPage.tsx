@@ -15,6 +15,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import LanguageIcon from "@mui/icons-material/Language";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
@@ -44,6 +45,7 @@ import { UserInfo } from "../types/user";
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
+import { getNotebooksNamedServerLink } from "../utils";
 
 const styles = {
   profileInformation: (theme) => ({
@@ -295,6 +297,14 @@ export const UserPage = (props: any) => {
 
   const onGroupClick = (groupname) => {
     navigate(`/user/${user.username}/groups/${groupname}`);
+  }
+
+  const navigateToNotebookNamedServerLink = () => {
+    const serverlink = getNotebooksNamedServerLink()
+    if (serverlink) {
+      window.open(serverlink, "_blank");
+    }
+    return
   }
 
   const canEdit =
@@ -601,10 +611,26 @@ export const UserPage = (props: any) => {
                           {user.quotas[row]} {USER_QUOTAS[row].showGB && "GB"}
                         </Typography>
                       </Box>)
-                  }
+                    }
+                    {canEdit && (
+                      <Button
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          textTransform: "capitalize",
+                          padding: "10px 0 0 0",
+                          textAlign: "left",
+                          "&:hover": { backgroundColor: "transparent" },
+                        }}
+                        endIcon={<OpenInNewIcon />}
+                        onClick={() => navigateToNotebookNamedServerLink()}
+                      >
+                        Manage running workspaces
+                      </Button>
+                    )}
                 </Box>
               }
-
 
 
               {user.registrationDate && (
