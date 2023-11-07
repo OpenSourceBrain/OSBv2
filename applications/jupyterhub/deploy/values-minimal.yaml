@@ -2,3 +2,4 @@ harness:
   dependencies:
     soft: [nfsserver, accounts]
     hard: []
+nfs_volumes: false

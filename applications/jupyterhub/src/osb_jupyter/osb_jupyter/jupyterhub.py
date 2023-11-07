@@ -91,7 +91,8 @@ def change_pod_manifest(self: KubeSpawner):
 
         self.common_labels = labels
         self.extra_labels = labels
-        self.storage_class = f'{self.config["namespace"]}-nfs-client'
+        if self.config['apps']['jupyterhub'].get('nfs_volumes', False):
+            self.storage_class = f'{self.config["namespace"]}-nfs-client'
 
         if not user_volume_is_legacy(self.user.id):
             # User pod affinity is by default added by cloudharness
