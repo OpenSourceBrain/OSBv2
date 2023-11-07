@@ -50,12 +50,14 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
             self.request.cookies.clear()
             raw_user = self.get_anonymous_user()
 
+        # open external resources
         if 'open=' in self.request.uri:
-            url = self.request.uri.split('=').pop()
+            url = self.request.uri.split('open=').pop()
             self._set_cookie("loadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
 
+        # legacy nwb explorer support
         elif 'nwbfile=' in self.request.uri:
-            url = self.request.uri.split('=').pop()
+            url = self.request.uri.split('nwbfile=').pop().split("&")[0]
             self._set_cookie("nwbloadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
      
         print("JH user: ", raw_user.__dict__)
