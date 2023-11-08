@@ -301,6 +301,12 @@ export const WorkspaceFromRepository = ({
                     width: 2,
                     height: 2,
                   },
+                  "& .MuiTable-root": {
+                    tableLayout: 'fixed'
+                  },
+                  "& .MuiTypography-h5": {
+                    wordWrap: 'break-word'
+                  }
                 }}
               >
                 <Repositories

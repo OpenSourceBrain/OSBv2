@@ -228,6 +228,12 @@ const styles = {
         padding: "0.6rem",
       },
     },
+    "& .MuiTable-root": {
+      tableLayout: 'fixed'
+    },
+    "& .MuiTypography-h5": {
+      wordWrap: 'break-word'
+    }
   },
 };
 
