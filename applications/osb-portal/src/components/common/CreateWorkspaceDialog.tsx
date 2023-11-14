@@ -26,7 +26,7 @@ export default ({
   dialogOpen: boolean;
   handleClose: (open: boolean) => any;
 }) => {
-  console.log(dialogOpen);
+
   return (
     <OSBDialog
       closeAction={() => handleClose(false)}
