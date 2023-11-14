@@ -81,8 +81,6 @@ const NewWorkspaceButton = styled(Button)(({ theme }) => ({
   height: "100%",
 }));
 
-// let confirmationDialogTitle = "";
-// let confirmationDialogContent = "";
 
 const defaultWorkspace: Workspace = {
   resources: [],
