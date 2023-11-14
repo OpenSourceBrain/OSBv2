@@ -1,7 +1,7 @@
 FROM node:15 as clone
 ENV BRANCH_TAG="osb2"
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-RUN echo "cache 2023-11-14"
+RUN echo "cache 2023-11-14a"
 RUN git clone $REPO -b $BRANCH_TAG
 RUN rm -Rf .git
 
