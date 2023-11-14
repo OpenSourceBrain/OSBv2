@@ -19,6 +19,7 @@ import OSBDialog from "../common/OSBDialog";
 import { fontColor, bgInputs, radius, bgLight, bgDarker } from "../../theme";
 import { RootState } from "../../store/rootReducer";
 import RepositoriesWorkspacesSearchField from "../common/RepositoriesWorkspacesSearchField";
+import WorkspaceConfirmDialog from "../dialogs/WorkspaceConfirmDialog";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -125,9 +126,11 @@ const useStyles = makeStyles((theme) => ({
 export const WorkspaceFromRepository = ({
   close,
   workspaceCreatedCallback,
+  closeMainDialog,
 }: {
   close: () => any;
-  workspaceCreatedCallback: (refresh?: boolean, workspace?: Workspace) => void;
+    workspaceCreatedCallback: (refresh?: boolean, workspace?: Workspace) => void;
+    closeMainDialog?: (isClosed: boolean) => void;
 }) => {
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
@@ -141,8 +144,17 @@ export const WorkspaceFromRepository = ({
     SELECT_FILES,
     EDIT_WORKSPACE,
     ERROR_NO_FILES,
+    SHOW_SUCCESS_OR_ERROR_MESSAGE,
   }
   const [stage, setStage] = React.useState(Stage.SELECT_REPO);
+
+  const [createdWorkspaceConfirmationContent, setCreatedWorkspaceConfirmationContent] = React.useState({
+    title: "",
+    content: "",
+    isSuccess: false,
+    showConfirmationDialog: true,
+  });
+  const [workspaceLink, setWorkspaceLink] = React.useState("");
 
   const handleBackAction = () => {
     if (stage > Stage.SELECT_REPO) {
@@ -152,7 +164,7 @@ export const WorkspaceFromRepository = ({
   };
 
   const handleContinue = () => {
-    if (stage < Stage.ERROR_NO_FILES) setStage(stage + 1);
+    if (stage < Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE) setStage(stage + 1);
   };
 
   const defaultWorkspace: Workspace = {
@@ -169,16 +181,30 @@ export const WorkspaceFromRepository = ({
   };
 
   const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
-    document.getElementById("your-all-workspaces-tab").click(); // TODO replace with redux action
     if (checked.length > 0) {
       WorkspaceService.importResourcesToWorkspace(
         ws.id,
         checked.map((c) => c.resource)
       ).then(() => {
-        setChecked([]);
-        workspaceCreatedCallback(refresh, ws);
+        setWorkspaceLink(`/workspace/${ws.id}`);
+        setCreatedWorkspaceConfirmationContent((prevContent) => ({
+          ...prevContent,
+          title: "Success!",
+          content: "New workspace created.",
+          isSuccess: true,
+        }));
+        setStage(Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE);
+      }).catch((err) => {
+        setCreatedWorkspaceConfirmationContent((prevContent) => ({
+          ...prevContent,
+          title: "Error!",
+          content: "Unexpected error submitting the workspace. Please try again later.",
+          isSuccess: false,
+        }));
+        setStage(Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE);
       });
     } else {
+      setStage(Stage.ERROR_NO_FILES)
       workspaceCreatedCallback(refresh, ws);
     }
   };
@@ -351,6 +377,18 @@ export const WorkspaceFromRepository = ({
     close();
   };
 
+  const handleCloseConfirmationDialog = () => {
+    if (createdWorkspaceConfirmationContent.isSuccess) { workspaceCreatedCallback(true, null) }
+    setCreatedWorkspaceConfirmationContent({
+      title: "",
+      content: "",
+      isSuccess: false,
+      showConfirmationDialog: false,
+    });
+    Stage ? setStage(Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE + 1) : null
+    closeMainDialog(false);
+  }
+
   const returnDialoged = (children: any) => {
     return (
       <OSBDialog
@@ -422,6 +460,17 @@ export const WorkspaceFromRepository = ({
           </Grid>
         </Grid>
       );
+    case Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE:
+
+      return (
+        <WorkspaceConfirmDialog
+          setChecked={setChecked}
+          createdWorkspaceConfirmationContent={createdWorkspaceConfirmationContent}
+          workspaceLink={workspaceLink}
+          handleCloseConfirmationDialog={handleCloseConfirmationDialog}
+        />
+      )
+
     default:
       return null;
   }
