@@ -468,12 +468,12 @@ export const RepositoryPage = (props: any) => {
       </OSBDialog>
 
       {/* Confirm to user if workspace creation/modification was successful */}
-      <WorkspaceConfirmDialog
+      { createdWorkspaceConfirmationContent.showConfirmationDialog && <WorkspaceConfirmDialog
         setChecked={setChecked}
         createdWorkspaceConfirmationContent={createdWorkspaceConfirmationContent}
         workspaceLink={workspaceLink}
         handleCloseConfirmationDialog={handleCloseConfirmationDialog}
-      />
+      /> }
     </>
   );
 };
