@@ -51,8 +51,6 @@ RUN cat ~/.bashrc
 
 USER root
 
-COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-
 # RUN chown jovyan /opt
 # RUN chown -R jovyan /opt/conda  # give user permission to update existing packages
 

@@ -20,6 +20,7 @@ import {
   badgeBgLight,
   lightWhite,
 } from "../../theme";
+import ConfirmationDialog from "../dialogs/WorkspaceConfirmDialog";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -145,19 +146,17 @@ export const NewWorkspaceItem = (props: ItemProps) => {
     setNewWorkspaceOpen(true);
   };
 
-  const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
-    document.getElementById("your-all-workspaces-tab")?.click();
-    setNewWorkspaceOpen(false);
-    props.closeMainDialog(false);
+
+  const onWorkspaceCreated = (refresh = false) => {
     if (refresh) {
       refreshWorkspaces();
     }
+    props.closeMainDialog(true);
   };
 
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
-
   return (
-<>
+    <>
       <Button sx={style} onClick={handleClick} className={className}>
         <Box textAlign="center">
           {icon}
@@ -186,9 +185,12 @@ export const NewWorkspaceItem = (props: ItemProps) => {
           <WorkspaceFromRepository
             close={() => setNewWorkspaceOpen(false)}
             workspaceCreatedCallback={onWorkspaceCreated}
+            closeMainDialog={(isClosed) => props.closeMainDialog(isClosed)}
           />
-        ))}
-  </>);
+        ))
+      }
+    </>
+  );
 };
 
 export default NewWorkspaceItem;

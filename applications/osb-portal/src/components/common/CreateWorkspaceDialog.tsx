@@ -1,23 +1,10 @@
 import * as React from "react";
 
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-
-
-//style
-import { bgDarker } from "../../theme";
-import styled from "@mui/system/styled";
 
 //custom components
 import OSBDialog from "./OSBDialog";
 import { WorkspaceToolBox } from "../index";
 
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  backgroundColor: bgDarker,
-  backgroundImage: "unset",
-}));
 
 export default ({
   dialogOpen,
@@ -26,7 +13,7 @@ export default ({
   dialogOpen: boolean;
   handleClose: (open: boolean) => any;
 }) => {
-  console.log(dialogOpen);
+
   return (
     <OSBDialog
       closeAction={() => handleClose(false)}
