@@ -151,6 +151,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
     if (refresh) {
       refreshWorkspaces();
     }
+    props.closeMainDialog(true);
   };
 
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
