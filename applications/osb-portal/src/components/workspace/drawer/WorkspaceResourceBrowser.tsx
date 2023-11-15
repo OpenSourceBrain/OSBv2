@@ -103,7 +103,7 @@ const OSBResourceItem = (props: {
     Icon,
   } = props;
   const canOpenFile: boolean =
-    resource.status === ResourceStatus.available && !active;
+    resource.status === ResourceStatus.available;
   const [waiting, setWaiting] = React.useState(
     resource.status === ResourceStatus.pending
   );
@@ -129,7 +129,7 @@ const OSBResourceItem = (props: {
   (e: any) => {
     navigate(
       {pathname: `/workspace/open/${workspaceId}/${resource.type.application.code}`,
-      search: `?resource=${resource.name}`},
+      search: `?resource=${encodeURIComponent(resource.name)}`},
     )
   };
 
