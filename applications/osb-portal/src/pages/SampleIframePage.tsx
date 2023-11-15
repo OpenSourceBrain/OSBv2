@@ -4,7 +4,8 @@ const SampleIframePage = () => {
   const [fileLoaded, setFileLoaded] = React.useState("");
   React.useEffect(() => {
     if (window !== window.parent) {
-      window.parent.postMessage({ type: "APP_READY" }, "*");
+      setTimeout(() => {
+      window.parent.postMessage({ type: "APP_READY" }, "*");}, 1000);
     }
     return () => {};
   }, []);
