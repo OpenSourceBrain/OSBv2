@@ -31,5 +31,5 @@ export function getNotebooksNamedServerLink() {
   if (window.location.host.includes("localhost")) {
     return null;
   }
-  return `${OSBAllApplications.jupyter.subdomain}.${getBaseDomain()}/hub/home`
+  return `//${OSBAllApplications.jupyter.subdomain}.${getBaseDomain()}/hub/home`
 }
