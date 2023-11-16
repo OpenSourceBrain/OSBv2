@@ -179,7 +179,7 @@ export const RepositoryPage = (props: any) => {
       isSuccess: false,
     }));
   }
-  const onWorkspaceCreated = (reload: boolean, success: boolean, ws: Workspace) => {
+  const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
     const toImport = checked.length ? checked : [repository.contextResources];
     WorkspaceService.importResourcesToWorkspace(
       ws.id,
