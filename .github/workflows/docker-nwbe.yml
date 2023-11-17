@@ -14,10 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Build the Docker image
       run: |
         cd applications/nwb-explorer
         docker build -t mynwbosb -f Dockerfile --no-cache .
+        
     - name: Info on Docker image sizes
       run: |
         docker images
