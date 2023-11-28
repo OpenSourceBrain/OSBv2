@@ -6,6 +6,7 @@ from workspaces_cli.api import rest_api, k8s_api
 import logging
 import datetime
 import json
+import sys
 
 from workspaces_cli.models import OSBRepository, RepositoryType, Tag, RepositoryContentType
 # Defining the host is optional and defaults to http://localhost/api
@@ -15,7 +16,14 @@ from workspaces_cli.models import OSBRepository, RepositoryType, Tag, Repository
 TOKEN = "EDITME"
 
 v2_or_v2dev = 'v2'
-v2_or_v2dev = 'v2dev'
+#v2_or_v2dev = 'v2dev'
+
+# Override if command line args set
+if '-v2' in sys.argv:
+    v2_or_v2dev = 'v2'
+if '-v2dev' in sys.argv:
+    v2_or_v2dev = 'v2dev'
+
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,

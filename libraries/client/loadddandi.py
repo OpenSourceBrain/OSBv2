@@ -4,6 +4,8 @@ import workspaces_cli
 from pprint import pprint
 from workspaces_cli.api import rest_api, k8s_api
 import logging
+import json
+import sys
 
 from workspaces_cli.models import OSBRepository, RepositoryType, Tag, RepositoryContentType
 # Defining the host is optional and defaults to http://localhost/api
@@ -11,9 +13,14 @@ from workspaces_cli.models import OSBRepository, RepositoryType, Tag, Repository
 
 # Take from the accessToken cookie after login
 TOKEN = "EDITME"
+if len(sys.argv) >1:
+    TOKEN = sys.argv[1]
 
 v2_or_v2dev = 'v2'
 v2_or_v2dev = 'v2dev'
+
+dry_run = False
+dry_run = True
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,
@@ -36,15 +43,22 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     except workspaces_cli.ApiException as e:
         print("Exception when calling K8sApi->live: %s\n" % e)
 
-dandi_csv_url = "https://raw.githubusercontent.com/OpenSourceBrain/DANDIArchiveShowcase/main/validation_folder/dandiset_summary.csv"
-response = urlopen(dandi_csv_url)
+dandishowcase_csv_url = "https://raw.githubusercontent.com/OpenSourceBrain/DANDIArchiveShowcase/main/validation_folder/dandiset_summary.csv"
+response = urlopen(dandishowcase_csv_url)
 
 import csv 
-cr = csv.DictReader(codecs.iterdecode(response, "utf-8"))
+dandishowcase_info_reader = csv.DictReader(codecs.iterdecode(response, "utf-8"))
+dandishowcase_info = list(dandishowcase_info_reader)
+
+filename = 'cached_info/dandishowcase_info.json'   
+
+strj = json.dumps(dandishowcase_info, indent='    ')
+with open(filename, "w") as fp:
+    fp.write(strj)
 
 index = 0
-min_index = 200
-max_index = 205
+min_index = 0
+max_index = 50000
 
 all_updated = []
 all_added = []
@@ -52,7 +66,9 @@ multi_matches = []
 
 with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
-    def add_dandiset(dandiset_url):
+
+    def add_dandiset(dandishowcase_entry):
+        dandiset_url = dandishowcase_entry['url']
         print("\n================ %i: %s ================"%(index, dandiset_url))
         info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
         found = api_instance.osbrepository_get(q=f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}")
@@ -69,52 +85,68 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev,  found.osbrepositories[0].id)
             print(url_info)
             all_updated.append(url_info)
+            print("    ------------ Current OSB info: ---------")
             print("    %s"%found)
-            
-            return api_instance.osbrepository_id_put(found.osbrepositories[0].id, OSBRepository(
-                uri=dandiset_url,
-                name=info.name,
-                summary=str(info.summary),
-                tags=[{"tag": tag} for tag in info.tags],
-                default_context=info.contexts[-1],
-                content_types_list=[RepositoryContentType(value="experimental")],
-                content_types="experimental",
-                user_id=user_id,
-                repository_type="dandi",
-                auto_sync=True,
+            print("    ------------ DANDI API info: ---------")
+            print("    %s"%info)
+            print("    ------------ DANDI Showcase info: ---------")
+            print("    %s"%dandishowcase_entry)
 
-            )
+            tags=[{"tag": tag} for tag in info.tags]
+
+            tags.append({"tag": '%s'%dandishowcase_entry['identifier']})
+            if dandishowcase_entry['species']:
+                tags.append({"tag": 'species:%s'%dandishowcase_entry['species']})
+
+            print("    ------------ Tags: ---------")
+            print("    %s"%tags)
+            
+            if not dry_run:
+
+                return api_instance.osbrepository_id_put(found.osbrepositories[0].id, OSBRepository(
+                    uri=dandiset_url,
+                    name=info.name,
+                    summary=str(info.summary),
+                    tags=tags,
+                    default_context=info.contexts[-1],
+                    content_types_list=[RepositoryContentType(value="experimental")],
+                    content_types="experimental",
+                    user_id=user_id,
+                    repository_type="dandi",
+                    auto_sync=True,
+
+                )
             )
         else:
             print("    Adding %s" % dandiset_url)
 
-            return api_instance.osbrepository_post(OSBRepository(
-                uri=dandiset_url,
-                name=info.name,
-                summary=str(info.summary),
-                tags=[{"tag": tag} for tag in info.tags],
-                default_context=info.contexts[-1],
-                content_types_list=[RepositoryContentType(value="experimental")],
-                content_types="experimental",
-                user_id=user_id,
-                repository_type="dandi",
-                auto_sync=True,
-            ))
+            if not dry_run:
+                return api_instance.osbrepository_post(OSBRepository(
+                    uri=dandiset_url,
+                    name=info.name,
+                    summary=str(info.summary),
+                    tags=[{"tag": tag} for tag in info.tags],
+                    default_context=info.contexts[-1],
+                    content_types_list=[RepositoryContentType(value="experimental")],
+                    content_types="experimental",
+                    user_id=user_id,
+                    repository_type="dandi",
+                    auto_sync=True,
+                ))
 
-            url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev, '???') # found.osbrepositories[0].id)
-            print(url_info)
-            all_updated.append(url_info)
+                url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev, '???') # found.osbrepositories[0].id)
+                print(url_info)
+                all_updated.append(url_info)
 
 
-    next(cr)
-    for row in cr: 
+    for dandishowcase_entry in dandishowcase_info: 
         if index>=min_index and index<max_index:
-            if int(row['num_files']) < 1: 
+            if int(dandishowcase_entry['num_files']) < 1: 
                 continue
             try:
-                added = add_dandiset(row['url'])
+                added = add_dandiset(dandishowcase_entry)
             except:
-                logging.exception("Error adding %s" % row['url'])
+                logging.exception("Error adding %s" % dandishowcase_entry['url'])
 
         index+=1
 
