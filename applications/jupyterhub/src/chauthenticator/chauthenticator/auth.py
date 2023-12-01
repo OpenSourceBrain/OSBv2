@@ -27,18 +27,18 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
 
     @gen.coroutine
     def get(self):
-
-        # open external resources
         if 'open=' in self.request.uri:
             url = self.request.uri.split('open=').pop()
-            self._set_cookie("loadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
+            self.request.cookies.set("loadurl", bytes(
+                url, 'utf-8'), encrypted=False, httponly=False)
 
         # legacy nwb explorer support
         elif 'nwbfile=' in self.request.uri:
             print("Nwb file found")
             url = self.request.uri.split('nwbfile=').pop().split("&")[0]
             print("NWB URL", url)
-            self._set_cookie("nwbloadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
+            self._set_cookie("nwbloadurl", bytes(
+                url, 'utf-8'), encrypted=False, httponly=False)
         self.clear_login_cookie()
         try:
 

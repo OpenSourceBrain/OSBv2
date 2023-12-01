@@ -1,13 +1,16 @@
-import re 
+import re
 from jupyterhub.user import User
 from kubespawner.spawner import KubeSpawner
 
 from cloudharness.auth import AuthClient
 from cloudharness import log
 from cloudharness import applications
+from cloudharness.auth.exceptions import UserNotFound
 from urllib.parse import parse_qs, urlparse
 
-allowed_chars = set("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+allowed_chars = set(
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
 
 def affinity_spec(key, value):
     return {
@@ -83,7 +86,8 @@ def change_pod_manifest(self: KubeSpawner):
         app_user = get_app_user(self.user)
 
         # Add labels to use for affinity
-        clean_username = "".join(c for c in app_user.username if c in allowed_chars)
+        clean_username = "".join(
+            c for c in app_user.username if c in allowed_chars)
         labels = {
             'workspace': str(workspace_id),
             'username': clean_username,
@@ -118,12 +122,14 @@ def change_pod_manifest(self: KubeSpawner):
             })
         if "image=" in self.handler.request.uri and is_user_trusted(self.user):
             print("Image override")
-            image = parse_qs(urlparse(self.handler.request.uri).query)['image'][0]
+            image = parse_qs(urlparse(self.handler.request.uri).query)[
+                'image'][0]
             print("Image is", image)
             self.image = image
             self.pod_name = f"{self.pod_name}--{re.sub('[^0-9a-zA-Z]+', '-', image)}"
+            # open external resources
 
-    except CookieNotFound:
+    except (CookieNotFound, UserNotFound):
         # Setup a readonly default session
         self.pod_name = f'anonymous-{self.user.name}-{appname}'
         self.storage_pvc_ensure = False
@@ -152,7 +158,7 @@ def change_pod_manifest(self: KubeSpawner):
         'readOnly': True
     })
 
-    
+
 
 
 def get_app_user(user: User):
