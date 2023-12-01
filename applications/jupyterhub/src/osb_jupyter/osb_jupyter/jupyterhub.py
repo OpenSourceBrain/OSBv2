@@ -7,6 +7,7 @@ from cloudharness import log
 from cloudharness import applications
 from urllib.parse import parse_qs, urlparse
 
+allowed_chars = set("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 def affinity_spec(key, value):
     return {
@@ -82,7 +83,7 @@ def change_pod_manifest(self: KubeSpawner):
         app_user = get_app_user(self.user)
 
         # Add labels to use for affinity
-        clean_username = "".join(c for c in app_user.username if c.isalnum())
+        clean_username = "".join(c for c in app_user.username if c in allowed_chars)
         labels = {
             'workspace': str(workspace_id),
             'username': clean_username,
