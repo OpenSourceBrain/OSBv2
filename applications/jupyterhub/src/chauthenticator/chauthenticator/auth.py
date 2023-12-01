@@ -39,7 +39,7 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
             url = self.request.uri.split('nwbfile=').pop().split("&")[0]
             print("NWB URL", url)
             self._set_cookie("nwbloadurl", bytes(url, 'utf-8'), encrypted=False, httponly=False)
-
+        self.clear_login_cookie()
         try:
 
             accessToken = self.request.cookies.get(
