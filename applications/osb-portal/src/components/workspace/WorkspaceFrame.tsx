@@ -92,7 +92,7 @@ export const WorkspaceFrame = (props: {
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
 
-    setFrameUrl(applicationDomain ? `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`: `/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
+    setFrameUrl(applicationDomain ? `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`: `/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
   }, [application]);
 
   const openResource = async () => {
