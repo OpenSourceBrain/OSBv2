@@ -56,7 +56,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             if tags:
                 q_base = q_base.filter(
                     *[self._create_filter(*f) for f in filter if f[0].key == "name"] )
-                q_base = q_base.union(self.model.query.join(self.model.tags).filter(
+                q_base = q_base.intersect(self.model.query.join(self.model.tags).filter(
                     func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+"))))
            
             q_base = q_base.filter(
