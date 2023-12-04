@@ -20,7 +20,7 @@ import notebook
 print(c.NotebookApp.tornado_settings)
 c.NotebookApp.tornado_settings = {
     'headers': {
-        'Content-Security-Policy': "frame-ancestors 'self' localhost:3000 localhost:* localhost *.osb.local *.opensourcebrain.org *.metacell.us",
+        'Content-Security-Policy': "frame-ancestors 'self' localhost:3000 localhost:* localhost:3000 *.osb.local *.*.opensourcebrain.org *.opensourcebrain.org *.metacell.us",
     }
 }
 print(c.NotebookApp.tornado_settings)
