@@ -116,6 +116,7 @@ export const WorkspaceFrame = (props: {
   return (
     <iframe
       id="workspace-frame"
+      key={frameUrl}
       src={frameUrl}
       className={classes.iframe}
     />
