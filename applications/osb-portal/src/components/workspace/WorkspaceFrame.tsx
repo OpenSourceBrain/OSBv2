@@ -70,7 +70,7 @@ export const WorkspaceFrame = (props: {
     window.addEventListener("message", messageListener, false);
 
     return () => window.removeEventListener("message", messageListener);
-  }, []);
+  }, [frameUrl]);
 
   const application = app
       ? OSBApplications[app]
