@@ -51,8 +51,6 @@ RUN cat ~/.bashrc
 
 USER root
 
-COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-
 # RUN chown jovyan /opt
 # RUN chown -R jovyan /opt/conda  # give user permission to update existing packages
 
@@ -91,6 +89,8 @@ USER jovyan
 RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #########################################################################
+# fix for https://github.com/jupyter/notebook/issues/7048
 
+RUN pip install traitlets==5.9.0
 COPY --chown=jovyan:users overrides/* /opt/conda/share/jupyter/lab/static/
 WORKDIR /opt/workspace

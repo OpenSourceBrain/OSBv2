@@ -17,10 +17,6 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Dialog from "@mui/material/Dialog";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
 import { EditRepoDialog, PageSider } from "../components";
@@ -34,6 +30,7 @@ import {
   ExistingWorkspaceEditorActions,
 } from "../components/workspace/ExistingWorkspaceSelector";
 import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
+import WorkspaceConfirmDialog from "../components/dialogs/WorkspaceConfirmDialog";
 
 //types
 import {
@@ -84,8 +81,6 @@ const NewWorkspaceButton = styled(Button)(({ theme }) => ({
   height: "100%",
 }));
 
-let confirmationDialogTitle = "";
-let confirmationDialogContent = "";
 
 const defaultWorkspace: Workspace = {
   resources: [],
@@ -103,8 +98,6 @@ export const RepositoryPage = (props: any) => {
   const navigate = useNavigate();
   const [repository, setRepository] = React.useState<OSBRepository>(null);
   const [showWorkspaceEditor, setShowWorkspaceEditor] = React.useState(false);
-  const [showConfirmationDialog, setShowConfirmationDialog] =
-    React.useState(false);
   const [showExistingWorkspaceEditor, setShowExisitngWorkspaceEditor] =
     React.useState(false);
   const [selectedWorkspace, setSelectedWorkspace] = React.useState<Workspace>();
@@ -118,6 +111,12 @@ export const RepositoryPage = (props: any) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
+  const [createdWorkspaceConfirmationContent, setCreatedWorkspaceConfirmationContent] = React.useState({
+    title: "",
+    content: "",
+    showConfirmationDialog: false,
+    isSuccess: false,
+  })
 
   if (error) {
     throw error;
@@ -139,10 +138,13 @@ export const RepositoryPage = (props: any) => {
     }
   };
 
-  const confirmAction = (dialogTitle: string, dialogContent: string) => {
-    confirmationDialogTitle = dialogTitle;
-    confirmationDialogContent = dialogContent;
-    setShowConfirmationDialog(true);
+  const confirmAction = (dialogTitle: string, dialogContent: string, isSuccess: boolean) => {
+    setCreatedWorkspaceConfirmationContent({
+      title: dialogTitle,
+      content: dialogContent,
+      showConfirmationDialog: true,
+      isSuccess: isSuccess,
+    })
   };
 
   const setCheckedChips = (newChecked: RepositoryResourceNode[]) => {
@@ -168,6 +170,15 @@ export const RepositoryPage = (props: any) => {
     }
   };
 
+  const handleCloseConfirmationDialog = () => {
+    setCreatedWorkspaceConfirmationContent((prevContent) => ({
+      ...prevContent,
+      showConfirmationDialog: false,
+      title: "",
+      content: "",
+      isSuccess: false,
+    }));
+  }
   const onWorkspaceCreated = (reload: boolean, ws: Workspace) => {
     const toImport = checked.length ? checked : [repository.contextResources];
     WorkspaceService.importResourcesToWorkspace(
@@ -177,13 +188,14 @@ export const RepositoryPage = (props: any) => {
       .then(() => {
         setShowWorkspaceEditor(false);
         setWorkspaceLink(`/workspace/${ws.id}`);
-        confirmAction("Success", "New workspace created!");
+        confirmAction("Success", "New workspace created!", true);
       })
       .catch((e) => {
         setShowWorkspaceEditor(false);
         confirmAction(
           "Error",
-          "There was an error creating the new workspace."
+          "There was an error creating the new workspace.",
+          false
         );
       });
     setRefresh(!refresh);
@@ -203,7 +215,7 @@ export const RepositoryPage = (props: any) => {
     )
       .then(() => {
         setSelectedWorkspace(null);
-        confirmAction("Success", "Resources added to workspace!");
+        confirmAction("Success", "Resources added to workspace!", true);
         setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
         setLoading(false);
         setShowExisitngWorkspaceEditor(false);
@@ -211,7 +223,8 @@ export const RepositoryPage = (props: any) => {
       .catch((e) => {
         confirmAction(
           "Error",
-          "There was an error adding the resources to the workspace"
+          "There was an error adding the resources to the workspace",
+          false
         );
         setLoading(false);
         setShowExisitngWorkspaceEditor(false);
@@ -405,7 +418,7 @@ export const RepositoryPage = (props: any) => {
         <WorkspaceEditor
           title={"Create new workspace"}
           open={showWorkspaceEditor}
-          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName() }}
+          workspace={{ ...defaultWorkspace, name: getDefaultWorkspaceName(), tags: repository?.tags }}
           onLoadWorkspace={onWorkspaceCreated}
           closeHandler={openDialog}
           filesSelected={checked.length > 0}
@@ -455,38 +468,12 @@ export const RepositoryPage = (props: any) => {
       </OSBDialog>
 
       {/* Confirm to user if workspace creation/modification was successful */}
-      {showConfirmationDialog && (
-        <Dialog
-          open={showConfirmationDialog}
-          onClose={() => setShowConfirmationDialog(false)}
-        >
-          <DialogTitle>{confirmationDialogTitle}</DialogTitle>
-          <DialogContent>{confirmationDialogContent}</DialogContent>
-          <DialogActions>
-            <Button
-              color="primary"
-              onClick={() => {
-                setChecked([]);
-                setShowConfirmationDialog(false);
-              }}
-            >
-              Close
-            </Button>
-            {workspaceLink && (
-              <Button color="primary" variant="contained">
-                <Link
-                  href={workspaceLink}
-                  target="_blank"
-                  color="secondary"
-                  underline="none"
-                >
-                  Go to workspace
-                </Link>
-              </Button>
-            )}
-          </DialogActions>
-        </Dialog>
-      )}
+      { createdWorkspaceConfirmationContent.showConfirmationDialog && <WorkspaceConfirmDialog
+        setChecked={setChecked}
+        createdWorkspaceConfirmationContent={createdWorkspaceConfirmationContent}
+        workspaceLink={workspaceLink}
+        handleCloseConfirmationDialog={handleCloseConfirmationDialog}
+      /> }
     </>
   );
 };

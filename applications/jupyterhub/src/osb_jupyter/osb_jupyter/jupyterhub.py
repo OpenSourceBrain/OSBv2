@@ -1,9 +1,15 @@
+import re
 from jupyterhub.user import User
 from kubespawner.spawner import KubeSpawner
 
 from cloudharness.auth import AuthClient
 from cloudharness import log
 from cloudharness import applications
+from cloudharness.auth.exceptions import UserNotFound
+from urllib.parse import parse_qs, urlparse
+
+allowed_chars = set(
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 
 def affinity_spec(key, value):
@@ -22,8 +28,10 @@ def affinity_spec(key, value):
         'topologyKey': 'kubernetes.io/hostname'
     }
 
+
 class CookieNotFound(Exception):
     pass
+
 
 def change_pod_manifest(self: KubeSpawner):
     """
@@ -47,7 +55,8 @@ def change_pod_manifest(self: KubeSpawner):
         return cookie.value
 
     def user_volume_is_legacy(user_id):
-        print("User id", user_id, "max", self.config['apps']['jupyterhub'].get('legacyusermax', 0))
+        print("User id", user_id, "max",
+              self.config['apps']['jupyterhub'].get('legacyusermax', 0))
         return int(user_id) < self.config['apps']['jupyterhub'].get('legacyusermax', 0)
 
     def workspace_volume_is_legacy(workspace_id):
@@ -75,21 +84,20 @@ def change_pod_manifest(self: KubeSpawner):
             self.volumes.append(ws_pvc)
 
         app_user = get_app_user(self.user)
-        
 
         # Add labels to use for affinity
-        clean_username = "".join(c for c in app_user.username if c.isalnum())
+        clean_username = "".join(
+            c for c in app_user.username if c in allowed_chars)
         labels = {
             'workspace': str(workspace_id),
             'username': clean_username,
             'user': str(self.user.id),
         }
 
-        
-
         self.common_labels = labels
         self.extra_labels = labels
-        self.storage_class = f'{self.config["namespace"]}-nfs-client'
+        if self.config['apps']['jupyterhub'].get('nfs_volumes', False):
+            self.storage_class = f'{self.config["namespace"]}-nfs-client'
 
         if not user_volume_is_legacy(self.user.id):
             # User pod affinity is by default added by cloudharness
@@ -98,10 +106,11 @@ def change_pod_manifest(self: KubeSpawner):
         workspace = get_workspace(workspace_id, get_from_cookie("accessToken"))
         write_access = has_user_write_access(
             workspace, self.user, app_user=app_user)
-        
+
         if workspace_volume_is_legacy(workspace_id):
             # Pods with write access must be on the same node
-            self.pod_affinity_required.append(affinity_spec('workspace', workspace_id))
+            self.pod_affinity_required.append(
+                affinity_spec('workspace', workspace_id))
         from pprint import pprint
         pprint(self.volumes)
         self.pod_name = f'ws-{clean_username}-{workspace_id}-{appname}'
@@ -111,7 +120,16 @@ def change_pod_manifest(self: KubeSpawner):
                 'mountPath': '/opt/workspace',
                 'readOnly': not write_access
             })
-    except CookieNotFound:
+        if "image=" in self.handler.request.uri and is_user_trusted(self.user):
+            print("Image override")
+            image = parse_qs(urlparse(self.handler.request.uri).query)[
+                'image'][0]
+            print("Image is", image)
+            self.image = image
+            self.pod_name = f"{self.pod_name}--{re.sub('[^0-9a-zA-Z]+', '-', image)}"
+            # open external resources
+
+    except (CookieNotFound, UserNotFound):
         # Setup a readonly default session
         self.pod_name = f'anonymous-{self.user.name}-{appname}'
         self.storage_pvc_ensure = False
@@ -122,29 +140,55 @@ def change_pod_manifest(self: KubeSpawner):
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
 
+    # Add customized config map for jupyter notebook config
+    self.volumes.append({
+        'name': 'jupyterhub-notebook-config',
+        'configMap': {'name': 'jupyterhub-notebook-config'}
+    })
+    self.volume_mounts.append({
+        'name': 'jupyterhub-notebook-config',
+        'subPath': 'jupyter_notebook_config.py',
+        'mountPath': '/etc/jupyter/jupyter_notebook_config.py',
+        'readOnly': True
+    })
+    self.volume_mounts.append({
+        'name': 'jupyterhub-notebook-config',
+        'subPath': 'jupyter_notebook_config.py',
+        'mountPath': '/opt/conda/etc/jupyter/nbconfig/jupyter_notebook_config.py',
+        'readOnly': True
+    })
+
+
+
 
 def get_app_user(user: User):
     auth_client = AuthClient()
     kc_user = auth_client.get_user(user.name)
     return kc_user
 
+
 def has_user_write_access(workspace, user: User, app_user=None):
     print('Checking access, name:', user.name, "workspace:", workspace["id"])
-
-    
     workspace_owner = workspace["user"]["id"]
-    print("Workspace owner", workspace_owner, "-", workspace["user"]["username"])
-    
-    if workspace_owner == user.name:
-        return True
+    print("Workspace owner", workspace_owner,
+          "-", workspace["user"]["username"])
+    return workspace_owner == user.name or is_user_trusted(user)
+
+
+def is_user_trusted(user: User):
     auth_client = AuthClient()
-    return auth_client.user_has_realm_role(app_user.id, 'administrator')
+    kc_user = auth_client.get_user(user.name)
+    return auth_client.user_has_realm_role(kc_user.id, 'administrator') or\
+        auth_client.user_has_realm_role(kc_user.id, 'trusted')
+
 
 def get_workspace(workspace_id, token, workspace_base_url=None):
     if workspace_base_url is None:
-        workspace_conf: applications.ApplicationConfiguration = applications.get_configuration('workspaces')
+        workspace_conf: applications.ApplicationConfiguration = applications.get_configuration(
+            'workspaces')
         workspace_base_url = workspace_conf.get_service_address()
     import requests
-    workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}", headers={"Authorization": f"Bearer {token}"}).json()
-    
+    workspace = requests.get(f"{workspace_base_url}/api/workspace/{workspace_id}",
+                             headers={"Authorization": f"Bearer {token}"}).json()
+
     return workspace

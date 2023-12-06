@@ -679,7 +679,6 @@ steps:
     - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/accounts
     - kubectl rollout status deployment/volumemanager
-    - kubectl rollout status deployment/proxy-public-gk
     - kubectl rollout status deployment/argo-server-gk
     - kubectl rollout status deployment/common
     - kubectl rollout status deployment/events-ui-gk
@@ -741,7 +740,7 @@ steps:
         volumes:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
-        - APP_URL=https://app.${{DOMAIN}}
+        - APP_URL=https://www.${{DOMAIN}}
     when:
       condition:
         all:

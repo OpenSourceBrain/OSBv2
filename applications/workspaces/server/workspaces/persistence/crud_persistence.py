@@ -52,11 +52,27 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def search_qs(self, filter=None, q=None, tags=None, user_id=None, show_all=False, *args, **kwargs):
         q_base = self.model.query
+
+        if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
+            pass
+        elif user_id is not None:
+            # Admins see all workspaces, non admin users can see only their own workspaces or shared with them
+            if not show_all:
+                q_base = q_base.filter_by(user_id=user_id)
+                q_base = q_base.union(q_base.filter(
+                    WorkspaceEntity.collaborators.any(user_id=user_id)))
+            else:
+                q_base = q_base
+        else:
+            # No logged in user, show only public (in case was not specified)
+            q_base = q_base.filter(WorkspaceEntity.publicable == True)
+
+
         if filter is not None:
             if tags:
                 q_base = q_base.filter(
                     *[self._create_filter(*f) for f in filter if f[0].key == "name"] )
-                q_base = q_base.union(self.model.query.join(self.model.tags).filter(
+                q_base = q_base.intersect(self.model.query.join(self.model.tags).filter(
                     func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+"))))
            
             q_base = q_base.filter(
@@ -65,22 +81,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             q_base = q_base.join(self.model.tags).filter(
                 func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
 
-        if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
-            q1 = q_base
-
-        elif user_id is not None:
-            # Admins see all workspaces, non admin users can see only their own workspaces or shared with them
-            if not show_all:
-                q1 = q_base.filter_by(user_id=user_id)
-                q1 = q1.union(q_base.filter(
-                    WorkspaceEntity.collaborators.any(user_id=user_id)))
-            else:
-                q1 = q_base
-        else:
-            # No logged in user, show only public (in case was not specified)
-            q1 = q_base.filter(WorkspaceEntity.publicable == True)
-
-        return q1.order_by(desc(WorkspaceEntity.timestamp_updated))
+        return q_base.order_by(desc(WorkspaceEntity.timestamp_updated))
 
     def delete(self, id):
         super().delete(id)

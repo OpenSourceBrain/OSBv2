@@ -173,7 +173,7 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                           }
                         >
                           <StyledContextChip
-                            label={row.defaultApplication.name}
+                            label={row.defaultApplication?.name}
                           />
                         </Tooltip>
                       </TableCell>

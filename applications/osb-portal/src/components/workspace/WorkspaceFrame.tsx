@@ -70,12 +70,18 @@ export const WorkspaceFrame = (props: {
     window.addEventListener("message", messageListener, false);
 
     return () => window.removeEventListener("message", messageListener);
-  }, []);
+  }, [frameUrl]);
 
-  React.useEffect(() => {
-    const application = app
+  const application = app
       ? OSBApplications[app]
       : currentResource?.type?.application ?? workspace.defaultApplication;
+  
+
+  React.useEffect(() => {
+    openResource();
+  }, [currentResource]);
+
+  React.useEffect(() => {
     const applicationDomain = getApplicationDomain(application);
 
     const domain = getBaseDomain();
@@ -85,18 +91,9 @@ export const WorkspaceFrame = (props: {
     const userParam = user == null ? "" : `${user.id}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
-    if (!applicationDomain) {
-      // Dev
-      setFrameUrl(`/testapp`);
-    } else {
-      // The frame url must be different for each user and workspace and application so jupyterhub does not return the same ws
-      setFrameUrl(`//${applicationDomain}/hub/logout`);
-      setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}`);
-    }
-    openResource();
-  }, [currentResource]);
 
-
+    setFrameUrl(applicationDomain ? `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`: `/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
+  }, [application]);
 
   const openResource = async () => {
     const resource: WorkspaceResource = currentResource;
@@ -119,6 +116,7 @@ export const WorkspaceFrame = (props: {
   return (
     <iframe
       id="workspace-frame"
+      key={frameUrl}
       src={frameUrl}
       className={classes.iframe}
     />

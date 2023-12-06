@@ -36,8 +36,6 @@ COPY --chown=1000:1000 theming/spawn_pending.html /usr/local/share/jupyterhub/te
 COPY --chown=1000:1000 theming/hot_fix_for_eventsource.js /usr/local/share/jupyterhub/static/hot_fix_for_eventsource.js
 COPY --chown=1000:1000 theming/arrow-dropdown.svg /usr/local/share/jupyterhub/static/arrow-dropdown.svg
 
-COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-
 RUN chmod 777 /usr/src/app -R
 USER jovyan
 

@@ -86,7 +86,6 @@ const useStyles = makeStyles((theme) => ({
     writingMode: "vertical-lr",
     textOrientation: "mixed",
     transform: "rotate(-180deg)",
-    margin: "auto",
     display: "flex",
     alignItems: "center",
   },
@@ -296,7 +295,7 @@ export default (props: WorkspaceProps | any) => {
         </SidebarBox>
       ) : (
         <>
-          <Box>
+          <Box display="flex" flexDirection="column" height="auto" alignItems="center">
             {canEdit ? (
               <IconButton onClick={showAddResource} size="large">
                 <AddIcon fontSize="small" />

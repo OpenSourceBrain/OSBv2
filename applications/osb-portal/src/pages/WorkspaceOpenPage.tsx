@@ -14,7 +14,9 @@ export default (props: any) => {
     app: string;
   }>();
 
-  props.selectWorkspace(workspaceId);
+  React.useEffect(() => {
+    props.selectWorkspace(workspaceId);
+  }, [workspaceId]);
 
   return (
     <Box className="verticalFill">

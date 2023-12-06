@@ -180,7 +180,6 @@ export default (props: WorkspaceEditProps) => {
             (e) => console.error("Error uploading thumbnail", e)
           );
         } else {
-          console.log("else");
           setLoading(true);
           props.onLoadWorkspace(true, returnedWorkspace);
         }
