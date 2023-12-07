@@ -30,7 +30,7 @@ import { Page } from "../types/model";
 
 import SearchFilter from "../types/searchFilter";
 
-const PER_PAGE_DEFAULT = 10;
+const PER_PAGE_DEFAULT = 24;
 const workspacesApiUri = "/proxy/workspaces/api";
 
 class WorkspaceService {
