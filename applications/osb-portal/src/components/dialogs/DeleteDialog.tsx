@@ -29,8 +29,8 @@ const DeleteDialog = ({
 			open={open}
 			onClose={() => setOpen(false)}
 		>
-			<DialogTitle>{'Delete Workspace ' + workspace.name}</DialogTitle>
-			<DialogContent>{'You are about to delete Workspace ' + workspace.name + '. This action cannot be undone. Are you sure?'}</DialogContent>
+			<DialogTitle>{'Delete Workspace "' + workspace.name + '"'}</DialogTitle>
+			<DialogContent>{'You are about to delete Workspace "' + workspace.name + '". This action cannot be undone. Are you sure?'}</DialogContent>
 			<DialogActions>
 				<Button
 					color="primary"
