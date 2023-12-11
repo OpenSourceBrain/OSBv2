@@ -124,6 +124,7 @@ class WorkspaceService {
 
     if (filter.text) {
       params.name__like = filter.text;
+      params.description__like = filter.text;
     }
 
     if (filter.user_id) {

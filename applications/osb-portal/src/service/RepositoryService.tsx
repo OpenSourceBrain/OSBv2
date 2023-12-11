@@ -18,7 +18,7 @@ type RepositoriesListAndPaginationDetails = InlineResponse2001;
 
 const workspacesApiUri = "/proxy/workspaces/api";
 
-const PER_PAGE_DEFAULT = 18;
+const PER_PAGE_DEFAULT = 24;
 
 class RepositoryService {
   workspacesApi: RestApi = null;
