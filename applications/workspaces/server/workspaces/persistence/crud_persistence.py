@@ -127,11 +127,13 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
     def search_qs(self, filter=None, q=None, tags=None, types=None, user_id=None):
         q_base = self.model.query
+        if user_id is not None:
+            q_base = q_base.filter_by(user_id=user_id)
+
         if filter is None:
             if tags:
                 q_base = self.filter_by_tags(tags, q_base)
         else:
-            # qfilter handles the search by name, summary, and user_id
             q_base = self.filter_by_qfilters(filter, q_base)
             q_base = self.filter_by_search_tags(filter, q_base)
             if tags:
