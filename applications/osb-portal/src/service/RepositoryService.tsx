@@ -108,7 +108,7 @@ class RepositoryService {
     return this.workspacesApi.osbrepositoryGet({
       page,
       perPage: size,
-      q: `user_id=${userId}`,
+      userId: userId
     });
   }
 
