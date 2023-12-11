@@ -157,7 +157,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
     def filter_by_search_tags(self, filter, q_base):
         search_tags = self.tags_from_search(filter)
-        q_base = q_base.union(self.model.query.join(self.model.tags).filter(
+        q_base = q_base.union(q_base.join(self.model.tags).filter(
             func.lower(Tag.tag).in_(func.lower(t) for t in search_tags.split("+"))))
         return q_base
 
