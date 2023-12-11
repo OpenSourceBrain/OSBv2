@@ -127,14 +127,12 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
     def search_qs(self, filter=None, q=None, tags=None, types=None, user_id=None):
         q_base = self.model.query
-        if user_id is not None:
-            q_base = q_base.filter_by(user_id=user_id)
-
         if filter is None:
             if tags:
                 q_base = self.filter_by_tags(tags, q_base)
         else:
-            q_base = self.filter_by_name_summary(filter, q_base)
+            # qfilter handles the search by name, summary, and user_id
+            q_base = self.filter_by_qfilters(filter, q_base)
             q_base = self.filter_by_search_tags(filter, q_base)
             if tags:
                 q_base = q_base.intersect(self.filter_by_tags(tags, q_base))
@@ -145,7 +143,7 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
 
         return q_base.order_by(desc(OSBRepositoryEntity.timestamp_updated))
 
-    def filter_by_name_summary(self, filter, q_base):
+    def filter_by_qfilters(self, filter, q_base):
         q_base = q_base.filter(
             or_(*[self._create_filter(*f) for f in filter]))
         return q_base
