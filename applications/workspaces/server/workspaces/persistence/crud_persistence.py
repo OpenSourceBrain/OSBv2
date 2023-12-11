@@ -59,14 +59,16 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             if tags:
                 q_base = self.filter_by_tags(tags, q_base)
         else:
-            q_base = self.filter_by_name_description(filter, q_base)
-            q_base = self.filter_by_search_tags(filter, q_base)
+            q_base_by_name_description = self.filter_by_name_description(
+                filter, q_base)
+            q_base = self.filter_by_search_tags(
+                filter, q_base, q_base_by_name_description)
 
             if tags:
                 q_base = q_base.intersect(self.filter_by_tags(tags, q_base))
 
             q_base = q_base.filter(
-                *[self._create_filter(*f) for f in filter if f[0].key != "name"])
+                or_(*[self._create_filter(*f) for f in filter if (f[0].key != "name" and f[0].key != "description")]))
 
         return q_base.order_by(desc(WorkspaceEntity.timestamp_updated))
 
@@ -91,9 +93,9 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
         return q_base
 
-    def filter_by_search_tags(self, filter, q_base):
+    def filter_by_search_tags(self, filter, q_base, q_base_by_name_description):
         search_tags = self.tags_from_search(filter)
-        q_base = q_base.union(q_base.join(self.model.tags).filter(
+        q_base = q_base_by_name_description.union(q_base.join(self.model.tags).filter(
             func.lower(Tag.tag).in_(func.lower(t) for t in search_tags.split("+"))))
 
         return q_base
@@ -134,8 +136,8 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
             if tags:
                 q_base = self.filter_by_tags(tags, q_base)
         else:
-            q_base = self.filter_by_qfilters(filter, q_base)
-            q_base = self.filter_by_search_tags(filter, q_base)
+            q_base_by_q = self.filter_by_qfilters(filter, q_base)
+            q_base = self.filter_by_search_tags(filter, q_base, q_base_by_q)
             if tags:
                 q_base = q_base.intersect(self.filter_by_tags(tags, q_base))
 
@@ -155,9 +157,9 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
             func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
         return q_base
 
-    def filter_by_search_tags(self, filter, q_base):
+    def filter_by_search_tags(self, filter, q_base, q_base_by_q):
         search_tags = self.tags_from_search(filter)
-        q_base = q_base.union(q_base.join(self.model.tags).filter(
+        q_base = q_base_by_q.union(q_base.join(self.model.tags).filter(
             func.lower(Tag.tag).in_(func.lower(t) for t in search_tags.split("+"))))
         return q_base
 
