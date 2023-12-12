@@ -6,6 +6,104 @@
             "content_types_list": [
                 "experimental"
             ],
+            "default_context": "master",
+            "id": 154,
+            "name": "DRF-YASG",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 1,
+                    "tag": "tutorial"
+                },
+                {
+                    "id": 2,
+                    "tag": "neuroml"
+                },
+                {
+                    "id": 5,
+                    "tag": "netpyne"
+                }
+            ],
+            "timestamp_created": "2023-12-11 07:02:24.820214+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/axnsan12/drf-yasg",
+            "user": {
+                "email": "gopal@metacell.us",
+                "first_name": "D. Gopal ",
+                "id": "0db2937f-6534-434f-9e38-ff6ed1cbe395",
+                "last_name": "Krishna",
+                "username": "gopal"
+            },
+            "user_id": "0db2937f-6534-434f-9e38-ff6ed1cbe395"
+        },
+        {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "develop",
+            "id": 153,
+            "name": "CH",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2023-12-11 06:52:25.324253+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/MetaCell/cloud-harness",
+            "user": {
+                "email": "gopal@metacell.us",
+                "first_name": "D. Gopal ",
+                "id": "0db2937f-6534-434f-9e38-ff6ed1cbe395",
+                "last_name": "Krishna",
+                "username": "gopal"
+            },
+            "user_id": "0db2937f-6534-434f-9e38-ff6ed1cbe395"
+        },
+        {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 152,
+            "name": "LFPy",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 106,
+                    "tag": "LFP"
+                },
+                {
+                    "id": 176,
+                    "tag": "ECoG"
+                },
+                {
+                    "id": 177,
+                    "tag": "MEG"
+                }
+            ],
+            "timestamp_created": "2023-12-05 14:00:39.554121+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/LFPy/LFPy",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
+                "last_name": "Gleeson Admin",
+                "username": "pgleeson"
+            },
+            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+        },
+        {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
             "default_context": "0.220126.1903",
             "id": 39,
             "name": "A cortico-cerebellar loop for motor planning",
@@ -26,9 +124,9 @@
             "uri": "https://dandiarchive.org/dandiset/000007/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -59,9 +157,9 @@
             "uri": "https://dandiarchive.org/dandiset/000006/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -92,9 +190,9 @@
             "uri": "https://dandiarchive.org/dandiset/000005/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -161,9 +259,9 @@
             "uri": "https://dandiarchive.org/dandiset/000004/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -185,9 +283,9 @@
             "uri": "https://dandiarchive.org/dandiset/000397/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -209,9 +307,9 @@
             "uri": "https://dandiarchive.org/dandiset/000363/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -233,9 +331,9 @@
             "uri": "https://dandiarchive.org/dandiset/000362/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -257,9 +355,9 @@
             "uri": "https://dandiarchive.org/dandiset/000351/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -322,9 +420,9 @@
             "uri": "https://dandiarchive.org/dandiset/000350/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -363,9 +461,9 @@
             "uri": "https://dandiarchive.org/dandiset/000008/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -392,7 +490,7 @@
             "uri": "https://dandiarchive.org/dandiset/000296",
             "user": {
                 "email": "simao@metacell.us",
-                "first_name": "Simao",
+                "first_name": "Sim\u00e3o",
                 "id": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
                 "last_name": "Bolota de Couto Sa",
                 "username": "simao-osb"
@@ -508,7 +606,7 @@
             "uri": "https://dandiarchive.org/dandiset/000296",
             "user": {
                 "email": "simao@metacell.us",
-                "first_name": "Simao",
+                "first_name": "Sim\u00e3o",
                 "id": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
                 "last_name": "Bolota de Couto Sa",
                 "username": "simao-osb"
@@ -3605,7 +3703,7 @@
             "uri": "https://github.com/OpenSourceBrain/OpenCortex",
             "user": {
                 "email": "simao@metacell.us",
-                "first_name": "Simao",
+                "first_name": "Sim\u00e3o",
                 "id": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
                 "last_name": "Bolota de Couto Sa",
                 "username": "simao-osb"
@@ -4472,7 +4570,7 @@
             "uri": "https://dandiarchive.org/dandiset/000293/draft",
             "user": {
                 "email": "simao@metacell.us",
-                "first_name": "Simao",
+                "first_name": "Sim\u00e3o",
                 "id": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
                 "last_name": "Bolota de Couto Sa",
                 "username": "simao-osb"
@@ -4509,9 +4607,9 @@
             "uri": "https://dandiarchive.org/dandiset/000293/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -4554,9 +4652,9 @@
             "uri": "https://github.com/OpenSourceBrain/OSBv2_Showcase",
             "user": {
                 "email": "p.gleeson@gmail.com",
-                "first_name": "PadraigDev",
+                "first_name": "Padraig",
                 "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "GleesonAdmin",
+                "last_name": "Gleeson Admin",
                 "username": "pgleeson"
             },
             "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
@@ -4565,6 +4663,6 @@
     "pagination": {
         "current_page": 1,
         "number_of_pages": 1,
-        "total": 134
+        "total": 137
     }
 }

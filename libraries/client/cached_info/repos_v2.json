@@ -7,6 +7,84 @@
                 "modeling"
             ],
             "default_context": "master",
+            "id": 174,
+            "name": "[OLD] NetPyNE interactive tutorials",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                },
+                {
+                    "id": 5,
+                    "tag": "Tutorial"
+                },
+                {
+                    "id": 267,
+                    "tag": "jupyter"
+                }
+            ],
+            "timestamp_created": "2023-06-28 14:40:40.506829+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/suny-downstate-medical-center/netpyne_tutorials",
+            "user": {
+                "email": "vbragin19@gmail.com",
+                "first_name": "Valery",
+                "id": "4158408e-7784-4397-be06-45523e3e105f",
+                "last_name": "Bragin",
+                "username": "vbragin"
+            },
+            "user_id": "4158408e-7784-4397-be06-45523e3e105f"
+        },
+        {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "development",
+            "id": 184,
+            "name": "NetPyNE Interactive Tutorials",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                },
+                {
+                    "id": 5,
+                    "tag": "Tutorial"
+                },
+                {
+                    "id": 279,
+                    "tag": "microcircuits"
+                },
+                {
+                    "id": 280,
+                    "tag": "multi-scale modeling"
+                }
+            ],
+            "timestamp_created": "2023-12-01 16:42:36.356589+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/suny-downstate-medical-center/netpyne",
+            "user": {
+                "email": "vbragin19@gmail.com",
+                "first_name": "Valery",
+                "id": "4158408e-7784-4397-be06-45523e3e105f",
+                "last_name": "Bragin",
+                "username": "vbragin"
+            },
+            "user_id": "4158408e-7784-4397-be06-45523e3e105f"
+        },
+        {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
             "id": 183,
             "name": "model-db-test",
             "repository_type": "github",
@@ -307,43 +385,6 @@
                 "username": "padraig"
             },
             "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
-        },
-        {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "master",
-            "id": 174,
-            "name": "NetPyNE interactive tutorials",
-            "repository_type": "github",
-            "summary": "",
-            "tags": [
-                {
-                    "id": 3,
-                    "tag": "netpyne"
-                },
-                {
-                    "id": 5,
-                    "tag": "Tutorial"
-                },
-                {
-                    "id": 267,
-                    "tag": "jupyter"
-                }
-            ],
-            "timestamp_created": "2023-06-28 14:40:40.506829+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://github.com/suny-downstate-medical-center/netpyne_tutorials",
-            "user": {
-                "email": "vbragin19@gmail.com",
-                "first_name": "Valery",
-                "id": "4158408e-7784-4397-be06-45523e3e105f",
-                "last_name": "Bragin",
-                "username": "vbragin"
-            },
-            "user_id": "4158408e-7784-4397-be06-45523e3e105f"
         },
         {
             "auto_sync": true,
@@ -5920,6 +5961,6 @@
     "pagination": {
         "current_page": 1,
         "number_of_pages": 1,
-        "total": 182
+        "total": 183
     }
 }
