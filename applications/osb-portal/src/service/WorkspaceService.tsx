@@ -30,7 +30,7 @@ import { Page } from "../types/model";
 
 import SearchFilter from "../types/searchFilter";
 
-const PER_PAGE_DEFAULT = 10;
+const PER_PAGE_DEFAULT = 24;
 const workspacesApiUri = "/proxy/workspaces/api";
 
 class WorkspaceService {
@@ -124,6 +124,7 @@ class WorkspaceService {
 
     if (filter.text) {
       params.name__like = filter.text;
+      params.description__like = filter.text;
     }
 
     if (filter.user_id) {

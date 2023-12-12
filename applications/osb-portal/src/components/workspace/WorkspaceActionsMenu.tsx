@@ -18,6 +18,7 @@ import OSBLoader from "../common/OSBLoader";
 import { bgDarkest, textColor, lightWhite } from "../../theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import * as Icons from "../icons";
+import DeleteDialog from "../dialogs/DeleteDialog";
 
 
 interface WorkspaceActionsMenuProps {
@@ -51,6 +52,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const canEdit = canEditWorkspace(props?.user, props?.workspace);
   const navigate = useNavigate();
+  const [showDeleteWorkspaceDialog, setShowDeleteWorkspaceDialog] = React.useState(false);
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -210,7 +212,10 @@ export default (props: WorkspaceActionsMenuProps) => {
         {canEdit && (
           <MenuItem
             className="delete-workspace"
-            onClick={handleDeleteWorkspace}
+            onClick={() => {
+              setShowDeleteWorkspaceDialog(true);
+              setAnchorEl(null);
+            }}
           >
             Delete
           </MenuItem>
@@ -261,6 +266,18 @@ export default (props: WorkspaceActionsMenuProps) => {
           </React.Fragment>
         }
       />
+      <>
+        {
+          showDeleteWorkspaceDialog && (
+            <DeleteDialog
+              open={showDeleteWorkspaceDialog}
+              setOpen={setShowDeleteWorkspaceDialog}
+              handleDeleteWorkspace={handleDeleteWorkspace}
+              workspace={props.workspace}
+            />
+          )
+        }
+      </>
     </>
   );
 };

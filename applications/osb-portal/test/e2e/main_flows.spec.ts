@@ -177,8 +177,8 @@ describe("OSB v2 Smoke Tests", () => {
       ],
       headless: !process.env.PUPPETEER_DISPLAY,
       defaultViewport: {
-        width: 1600,
-        height: 1000,
+        width: 1300,
+        height: 768,
       },
     });
 

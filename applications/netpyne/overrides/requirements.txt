@@ -1,3 +1,4 @@
 lfpykit==0.5.1
 pyNeuroML>=0.7.5
 git+https://github.com/Neurosim-lab/netpyne.git@osbv2
+traitlets==5.9.0
