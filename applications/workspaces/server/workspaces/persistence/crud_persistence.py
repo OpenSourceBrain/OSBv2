@@ -8,7 +8,7 @@ from types import SimpleNamespace
 
 from cloudharness import log as logger
 from cloudharness.service import pvc
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, or_, and_
 from sqlalchemy.sql import func
 
 
@@ -67,10 +67,14 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             if tags:
                 q_base = q_base.intersect(self.filter_by_tags(tags, q_base))
 
-            q_base = q_base.filter(
-                or_(*[self._create_filter(*f) for f in filter if (f[0].key != "name" and f[0].key != "description")]))
+            q_base = self.filter_by_publicable_and_featured(filter, q_base)
 
         return q_base.order_by(desc(WorkspaceEntity.timestamp_updated))
+
+    def filter_by_publicable_and_featured(self, filter, q_base):
+        q_base = q_base.filter(
+            and_(*[self._create_filter(*f) for f in filter if (f[0].key == "publicable" or f[0].key == "featured")]))
+        return q_base
 
     def filter_by_user_and_fieldkey(self, filter, user_id, show_all, q_base):
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
