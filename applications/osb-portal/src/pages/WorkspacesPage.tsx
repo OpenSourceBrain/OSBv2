@@ -88,9 +88,6 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
     setSearchFilterValues({
       ...searchFilterValues,
       text: newTextFilter,
-      tags: newTextFilter
-        ? [...searchFilterValues?.tags, newTextFilter]
-        : searchFilterValues?.tags,
     });
   }, 500);
 
