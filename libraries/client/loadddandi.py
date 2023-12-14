@@ -33,9 +33,21 @@ configuration = workspaces_cli.Configuration(
     access_token = TOKEN
 )
 
-user_id = "0103eaaf-6a34-4509-a025-14367a52aa2b" # Padraig
+known_users = {'Padraig_v2':"0103eaaf-6a34-4509-a025-14367a52aa2b", 
+               'Padraig_v2dev': "7089f659-90ad-4ed9-9715-2327f7e2e72f",
+               'Filippo_v2dev': 'a2514035-c47f-4d8a-b22b-081d91a5ce6b',
+               'Simao_v2dev': 'ee8a31d7-d54d-413c-a4c9-e140cf77404f'}
+
+def lookup_user(uid, url):
+    if not uid in known_users.values():
+        raise Exception('Unknown user: %s;%s'%(uid, url))
+    for user in known_users:
+        if uid == known_users[user]:
+            return user
+
+user_id = known_users['Padraig_v2']
 if v2_or_v2dev == 'v2dev':
-    user_id = "7089f659-90ad-4ed9-9715-2327f7e2e72f" # Padraig on v2dev
+    user_id = known_users['Padraig_v2dev']
 
 # Enter a context with an instance of the API client
 with workspaces_cli.ApiClient(configuration) as api_client:
@@ -63,8 +75,8 @@ with open(filename, "w") as fp:
     fp.write(strj)
 
 index = 0
-min_index = 20
-max_index = 22
+min_index = 0
+max_index = 12
 
 all_updated = []
 all_added = []
@@ -75,7 +87,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
     def add_dandiset(dandishowcase_entry):
         dandiset_url = dandishowcase_entry['url']
-        print("\n================ %i: %s ================"%(index, dandiset_url))
+        print("\n================ %i: %s ================\n"%(index, dandiset_url))
         info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
         search = f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}"
         found = api_instance.osbrepository_get(q=search)
@@ -83,16 +95,22 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             if len(found.osbrepositories) > 1:
                 info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
                 for r in found.osbrepositories:
+    
                     info +="      - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
+                    info +="         - Owner %s\n"%(lookup_user(r.user_id,''))
                     
                 print(info)
                 multi_matches.append(info)
                 return False
-            print("    %s already exists; updating..." % dandiset_url)
+            r = found.osbrepositories[0]
             url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev,  found.osbrepositories[0].id)
+            try:
+                print("    %s already exists (owner: %s); updating..." % (dandiset_url, lookup_user(r.user_id, url_info)))
+            except:
+                exit(-1)
             print(url_info)
             all_updated.append(url_info)
-            print("    ------------ Current OSB info: ---------")
+            print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
             print("    %s"%found)
             print("    ------------ DANDI API info: ---------")
             print("    %s"%info)
@@ -160,12 +178,12 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # print(added)
 
 
-print("\nDone! All updated (dry_run: %s):"%dry_run)  
+print("\nDone! All updated (%i total; dry_run: %s):"%(len(all_updated),dry_run))
 for m in all_updated:
     print(m)
-print("\nAll added:")  
+print("\nAll added (%i total):"%len(all_added))  
 for m in all_added:
     print(m)
-print("\nMultiple matches found:")  
+print("\nMultiple matches found (%i total):"%len(multi_matches))
 for m in multi_matches:
     print(m)
