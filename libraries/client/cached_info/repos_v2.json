@@ -2664,35 +2664,6 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1518",
-            "id": 104,
-            "name": "Internally organized mechanisms of the head direction sense",
-            "repository_type": "dandi",
-            "summary": "The head-direction (HD) system functions as a compass, with member neurons robustly increasing their firing rates when the animal's head points in a specific direction. HD neurons may be driven by peripheral sensors or, as computational models postulate, internally generated (attractor) mechanisms. We addressed the contributions of stimulus-driven and internally generated activity by recording ensembles of HD neurons in the antero-dorsal thalamic nucleus and the post-subiculum of mice by comparing their activity in various brain states. The temporal correlation structure of HD neurons was preserved during sleep, characterized by a 60\u00b0-wide correlated neuronal firing (activity packet), both within and across these two brain structures. During rapid eye movement sleep, the spontaneous drift of the activity packet was similar to that observed during waking and accelerated tenfold during slow-wave sleep. These findings demonstrate that peripheral inputs impinge on an internally organized network, which provides amplification and enhanced precision of the HD signal.",
-            "tags": [
-                {
-                    "id": 177,
-                    "tag": ""
-                }
-            ],
-            "timestamp_created": "2023-02-17 08:43:16.708526+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://dandiarchive.org/dandiset/000056/draft",
-            "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
-                "last_name": "Gleeson",
-                "username": "padraig"
-            },
-            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
-        },
-        {
-            "auto_sync": true,
-            "content_types": "experimental",
-            "content_types_list": [
-                "experimental"
-            ],
             "default_context": "0.220127.0436",
             "id": 103,
             "name": "AJILE12: Long-term naturalistic human intracranial neural recordings and pose",
@@ -5985,6 +5956,6 @@
     "pagination": {
         "current_page": 1,
         "number_of_pages": 1,
-        "total": 184
+        "total": 183
     }
 }

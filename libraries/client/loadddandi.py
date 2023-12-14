@@ -76,7 +76,7 @@ with open(filename, "w") as fp:
 
 index = 0
 min_index = 0
-max_index = 12
+max_index = 12000
 
 all_updated = []
 all_added = []
