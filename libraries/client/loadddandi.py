@@ -19,6 +19,12 @@ if len(sys.argv) >1:
 v2_or_v2dev = 'v2'
 v2_or_v2dev = 'v2dev'
 
+# Override if command line args set
+if '-v2' in sys.argv:
+    v2_or_v2dev = 'v2'
+if '-v2dev' in sys.argv:
+    v2_or_v2dev = 'v2dev'
+
 dry_run = False
 dry_run = True
 
@@ -57,8 +63,8 @@ with open(filename, "w") as fp:
     fp.write(strj)
 
 index = 0
-min_index = 0
-max_index = 50000
+min_index = 20
+max_index = 22
 
 all_updated = []
 all_added = []
@@ -71,12 +77,13 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         dandiset_url = dandishowcase_entry['url']
         print("\n================ %i: %s ================"%(index, dandiset_url))
         info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
-        found = api_instance.osbrepository_get(q=f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}")
+        search = f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}"
+        found = api_instance.osbrepository_get(q=search)
         if found.osbrepositories:
             if len(found.osbrepositories) > 1:
-                info = "    More than one match for %s:\n" % dandiset_url
+                info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
                 for r in found.osbrepositories:
-                    info +="      - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i\n"%(v2_or_v2dev, r.id)
+                    info +="      - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
                     
                 print(info)
                 multi_matches.append(info)
@@ -153,7 +160,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # print(added)
 
 
-print("\nDone! All updated:")  
+print("\nDone! All updated (dry_run: %s):"%dry_run)  
 for m in all_updated:
     print(m)
 print("\nAll added:")  
