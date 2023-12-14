@@ -1,3 +1,8 @@
+######################################################################################
+# A script to read the current state of the OSBv2 repos and cache a json file with
+# the current contents. Makes it easier to track (small) changes following API calls
+######################################################################################
+
 from urllib.request import urlopen
 import codecs
 import workspaces_cli
@@ -16,7 +21,7 @@ from workspaces_cli.models import OSBRepository, RepositoryType, Tag, Repository
 TOKEN = "EDITME"
 
 v2_or_v2dev = 'v2'
-#v2_or_v2dev = 'v2dev'
+v2_or_v2dev = 'v2dev'
 
 # Override if command line args set
 if '-v2' in sys.argv:
@@ -30,9 +35,6 @@ configuration = workspaces_cli.Configuration(
     access_token = TOKEN
 )
 
-user_id = "0103eaaf-6a34-4509-a025-14367a52aa2b" # Padraig
-if v2_or_v2dev == 'v2dev':
-    user_id = "7089f659-90ad-4ed9-9715-2327f7e2e72f" # Padraig on v2dev
 
 # Enter a context with an instance of the API client
 with workspaces_cli.ApiClient(configuration) as api_client:

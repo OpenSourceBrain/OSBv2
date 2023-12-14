@@ -6,6 +6,30 @@
             "content_types_list": [
                 "modeling"
             ],
+            "default_context": "new_file_format",
+            "id": 185,
+            "name": "M1 NetPyNE CellReports 2023",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2023-12-13 16:10:37.790156+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/suny-downstate-medical-center/M1_NetPyNE_CellReports_2023",
+            "user": {
+                "email": "vbragin19@gmail.com",
+                "first_name": "Valery",
+                "id": "4158408e-7784-4397-be06-45523e3e105f",
+                "last_name": "Bragin",
+                "username": "vbragin"
+            },
+            "user_id": "4158408e-7784-4397-be06-45523e3e105f"
+        },
+        {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
             "default_context": "master",
             "id": 174,
             "name": "[OLD] NetPyNE interactive tutorials",
@@ -5961,6 +5985,6 @@
     "pagination": {
         "current_page": 1,
         "number_of_pages": 1,
-        "total": 183
+        "total": 184
     }
 }
