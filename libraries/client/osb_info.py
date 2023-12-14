@@ -81,6 +81,6 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
 filename = 'cached_info/repos_%s.json'%(v2_or_v2dev)    
 
-strj = json.dumps(found_dict, indent='    ')
+strj = json.dumps(found_dict, indent='    ', sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)

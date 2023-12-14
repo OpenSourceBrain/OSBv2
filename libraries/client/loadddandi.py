@@ -58,7 +58,7 @@ dandishowcase_info = list(dandishowcase_info_reader)
 
 filename = 'cached_info/dandishowcase_info.json'   
 
-strj = json.dumps(dandishowcase_info, indent='    ')
+strj = json.dumps(dandishowcase_info, indent='    ', sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
 
