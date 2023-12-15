@@ -25,8 +25,12 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False
+dry_run = False # 
 dry_run = True
+
+index = 0
+min_index = 0
+max_index = 5
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,
@@ -36,7 +40,8 @@ configuration = workspaces_cli.Configuration(
 known_users = {'Padraig_v2':"0103eaaf-6a34-4509-a025-14367a52aa2b", 
                'Padraig_v2dev': "7089f659-90ad-4ed9-9715-2327f7e2e72f",
                'Filippo_v2dev': 'a2514035-c47f-4d8a-b22b-081d91a5ce6b',
-               'Simao_v2dev': 'ee8a31d7-d54d-413c-a4c9-e140cf77404f'}
+               'Simao_v2dev': 'ee8a31d7-d54d-413c-a4c9-e140cf77404f',
+               'OSBAdmin_v2dev': '095e311e-336f-47d6-b4f6-16f6dd771a8d'}
 
 def lookup_user(uid, url):
     if not uid in known_users.values():
@@ -45,9 +50,9 @@ def lookup_user(uid, url):
         if uid == known_users[user]:
             return user
 
-user_id = known_users['Padraig_v2']
+owner_user_id = known_users['Padraig_v2']
 if v2_or_v2dev == 'v2dev':
-    user_id = known_users['Padraig_v2dev']
+    owner_user_id = known_users['OSBAdmin_v2dev']
 
 # Enter a context with an instance of the API client
 with workspaces_cli.ApiClient(configuration) as api_client:
@@ -74,13 +79,30 @@ strj = json.dumps(dandishowcase_info, indent='    ', sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
 
-index = 0
-min_index = 0
-max_index = 12000
 
 all_updated = []
 all_added = []
 multi_matches = []
+
+def get_tags_info(dandi_api_info, dandishowcase_entry):
+    
+    tags=[{"tag": tag} for tag in dandi_api_info.tags]
+
+    tags.append({"tag": '%s'%dandishowcase_entry['identifier']})
+    tags.append({"tag": 'DANDI'})
+    if dandishowcase_entry['data_type']=='Neurodata Without Borders (NWB)':
+        tags.append({"tag": 'NWB'})
+    if dandishowcase_entry['data_type']=='Brain Imaging Data Structure (BIDS)':
+        tags.append({"tag": 'BIDS'})
+
+    if dandishowcase_entry['species']:
+        tags.append({"tag": '%s'%dandishowcase_entry['species']})
+
+    print("    ------------ Tags: ---------")
+    print("    %s"%tags)
+
+    return tags
+
 
 with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
@@ -88,19 +110,25 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     def add_dandiset(dandishowcase_entry):
         dandiset_url = dandishowcase_entry['url']
         print("\n================ %i: %s ================\n"%(index, dandiset_url))
-        info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
+        dandi_api_info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
         search = f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}"
         found = api_instance.osbrepository_get(q=search)
+
         if found.osbrepositories:
             if len(found.osbrepositories) > 1:
-                info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
+                err_info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
                 for r in found.osbrepositories:
     
-                    info +="      - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
-                    info +="         - Owner %s\n"%(lookup_user(r.user_id,''))
+                    err_info +="      - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
+                    err_info +="         - Owner %s\n"%(lookup_user(r.user_id,''))
                     
-                print(info)
-                multi_matches.append(info)
+                print(err_info)
+                '''
+                print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
+                print("    %s"%found)
+                print("    ------------ DANDI API info: ---------")
+                print("    %s"%dandi_api_info)'''
+                multi_matches.append(err_info)
                 return False
             r = found.osbrepositories[0]
             url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev,  found.osbrepositories[0].id)
@@ -113,30 +141,23 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
             print("    %s"%found)
             print("    ------------ DANDI API info: ---------")
-            print("    %s"%info)
+            print("    %s"%dandi_api_info)
             print("    ------------ DANDI Showcase info: ---------")
             print("    %s"%dandishowcase_entry)
 
-            tags=[{"tag": tag} for tag in info.tags]
-
-            tags.append({"tag": '%s'%dandishowcase_entry['identifier']})
-            if dandishowcase_entry['species']:
-                tags.append({"tag": 'species:%s'%dandishowcase_entry['species']})
-
-            print("    ------------ Tags: ---------")
-            print("    %s"%tags)
+            tags = get_tags_info(dandi_api_info, dandishowcase_entry)
             
             if not dry_run:
 
                 return api_instance.osbrepository_id_put(found.osbrepositories[0].id, OSBRepository(
                     uri=dandiset_url,
-                    name=info.name,
-                    summary=str(info.summary),
+                    name=dandi_api_info.name,
+                    summary=str(dandi_api_info.summary),
                     tags=tags,
-                    default_context=info.contexts[-1],
+                    default_context=dandi_api_info.contexts[-1],
                     content_types_list=[RepositoryContentType(value="experimental")],
                     content_types="experimental",
-                    user_id=user_id,
+                    user_id=owner_user_id,
                     repository_type="dandi",
                     auto_sync=True,
 
@@ -145,16 +166,18 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         else:
             print("    Adding %s" % dandiset_url)
 
+            tags = get_tags_info(dandi_api_info, dandishowcase_entry)
+
             if not dry_run:
                 return api_instance.osbrepository_post(OSBRepository(
                     uri=dandiset_url,
-                    name=info.name,
-                    summary=str(info.summary),
-                    tags=[{"tag": tag} for tag in info.tags],
-                    default_context=info.contexts[-1],
+                    name=dandi_api_info.name,
+                    summary=str(dandi_api_info.summary),
+                    tags=tags,
+                    default_context=dandi_api_info.contexts[-1],
                     content_types_list=[RepositoryContentType(value="experimental")],
                     content_types="experimental",
-                    user_id=user_id,
+                    user_id=owner_user_id,
                     repository_type="dandi",
                     auto_sync=True,
                 ))
