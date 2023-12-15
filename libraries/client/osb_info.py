@@ -58,6 +58,8 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
     #info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
     found = api_instance.osbrepository_get(q=f"uri__like=/", per_page=100000)
+    saved_dict = {}
+    saved_dict['repositories'] = {}
     found_dict = found.to_dict()
     print("Found %i matching %s repositories" %(len(found.osbrepositories), v2_or_v2dev))
 
@@ -73,6 +75,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             print(url_info)
             found_dict['osbrepositories'][index]['timestamp_updated'] = '---'
             found_dict['osbrepositories'][index]['timestamp_created'] = str(repo.timestamp_created)
+            saved_dict['repositories'][repo.id]=found_dict['osbrepositories'][index]
 
         index+=1
 
@@ -81,6 +84,6 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
 filename = 'cached_info/repos_%s.json'%(v2_or_v2dev)    
 
-strj = json.dumps(found_dict, indent='    ', sort_keys=True)
+strj = json.dumps(saved_dict, indent='    ', sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
