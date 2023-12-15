@@ -1251,13 +1251,17 @@
             ],
             "default_context": "0.211014.0809",
             "id": 40,
-            "name": "Phenotypic variation within and across transcriptomic cell types in mouse motor cortexnnnnn",
+            "name": "Phenotypic variation within and across transcriptomic cell types in mouse motor cortex",
             "repository_type": "dandi",
-            "summary": "We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. Contained in this dandiset are the intracellular electrophysiological recordings. See Dandiset #35 for an additional dataset, recorded under the physiological temperature. dddd",
+            "summary": "We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. Contained in this dandiset are the intracellular electrophysiological recordings. See Dandiset #35 for an additional dataset, recorded under the physiological temperature. ",
             "tags": [
                 {
                     "id": 8,
                     "tag": "cortex"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
                     "id": 27,
@@ -1270,115 +1274,195 @@
                 {
                     "id": 29,
                     "tag": "mouse"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 185,
+                    "tag": "species:Mus musculus - House mouse"
+                },
+                {
+                    "id": 188,
+                    "tag": "DANDI:000008"
                 }
             ],
             "timestamp_created": "2023-02-16 09:19:19.251485+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000008/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "41": {
             "auto_sync": true,
-            "content_types": "modeling",
+            "content_types": "experimental",
             "content_types_list": [
-                "modeling"
+                "experimental"
             ],
             "default_context": "0.220126.1903",
             "id": 41,
             "name": "Maintenance of persistent activity in a frontal thalamocortical loop",
             "repository_type": "dandi",
             "summary": "We recorded spikes from the ALM and thalamus during tactile discrimination  with a delayed directional response. Here we show that, similar to ALM  neurons, thalamic neurons exhibited selective persistent delay activity  that predicted movement direction. Unilateral photoinhibition of delay  activity in the ALM or thalamus produced contralesional neglect.  Photoinhibition of the thalamus caused a short-latency and near-complete  collapse of ALM activity. Similarly, photoinhibition of the ALM diminished  thalamic activity. Our results show that the thalamus is a circuit hub in  motor preparation and suggest that persistent activity requires reciprocal  excitation across multiple brain areas.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 172,
+                    "tag": "species:House mouse"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 189,
+                    "tag": "DANDI:000009"
+                }
+            ],
             "timestamp_created": "2023-02-16 09:19:21.525200+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000009/draft",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "42": {
             "auto_sync": true,
-            "content_types": "modeling",
+            "content_types": "experimental",
             "content_types_list": [
-                "modeling"
+                "experimental"
             ],
             "default_context": "0.220126.1905",
             "id": 42,
             "name": "A motor cortex circuit for motor planning and movement",
             "repository_type": "dandi",
             "summary": "Data from \"A motor cortex circuit for motor planning and movement\" Li et al. Nature 2015",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 172,
+                    "tag": "species:House mouse"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 190,
+                    "tag": "DANDI:000010"
+                }
+            ],
             "timestamp_created": "2023-02-16 09:19:23.705784+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000010/draft",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "43": {
             "auto_sync": true,
-            "content_types": "modeling",
+            "content_types": "experimental",
             "content_types_list": [
-                "modeling"
+                "experimental"
             ],
             "default_context": "0.220126.1907",
             "id": 43,
             "name": "Robust neuronal dynamics in premotor cortex during motor planning",
             "repository_type": "dandi",
             "summary": "Data from \"Robust neuronal dynamics in premotor cortex during motor planning\" Nature 2016",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 172,
+                    "tag": "species:House mouse"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 191,
+                    "tag": "DANDI:000011"
+                }
+            ],
             "timestamp_created": "2023-02-16 09:19:25.970388+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000011/draft",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "44": {
             "auto_sync": true,
-            "content_types": "modeling",
+            "content_types": "experimental",
             "content_types_list": [
-                "modeling"
+                "experimental"
             ],
             "default_context": "draft",
             "id": 44,
             "name": "Kriegstein2020",
             "repository_type": "dandi",
             "summary": "Data from the Kriegstein Lab as part of the BICCN",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 170,
+                    "tag": "species:Human"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 192,
+                    "tag": "DANDI:000012"
+                }
+            ],
             "timestamp_created": "2023-02-16 09:19:29.045161+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000012/draft",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "45": {
             "auto_sync": true,
