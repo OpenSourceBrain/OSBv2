@@ -5690,6 +5690,75 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "156": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.231213.2047",
+            "id": 156,
+            "name": "Dataset of human-single neuron activity during a Sternberg working memory task.",
+            "repository_type": "dandi",
+            "summary": "We present a dataset of 1809 single neurons  recorded from the human medial temporal lobe (amygdala and hippocampus) and medial frontal lobe (anterior cingulate cortex, pre-supplementary motor area, ventral medial prefrontal cortex) across 41 sessions from 21 patients that underwent intracranial monitoring for epileptic activity. Subjects first performed a screening task (907 neurons), based on which we identified images for which highly selective cells were present in the medial temporal lobe. Subjects then performed a working memory task (902 neurons), in which they were sequentially presented with 1-3 images, and following a maintenance period, were asked if a probe was identical to one of the currently maintained images. This Neural data without borders (NWB) formatted dataset includes spike times, extracellular spike waveforms, stimuli presented, behavior, electrode locations, and subject demographics. As validation, we replicate previous findings on the existence of concept cells and their persistent activity during working memory maintenance.  This dataset provides a substantial amount of rare human single neuron recordings together with behavior, thereby enabling investigation of the neural mechanisms of working memory at the single-neuron level.\n\nSample code to access and analyze this dataset has been provided: \nhttps://github.com/rutishauserlab/workingmem-release-NWB\n",
+            "tags": [
+                {
+                    "id": 18,
+                    "tag": "cognitive neuroscience"
+                },
+                {
+                    "id": 19,
+                    "tag": "data standardization"
+                },
+                {
+                    "id": 22,
+                    "tag": "neurophysiology"
+                },
+                {
+                    "id": 23,
+                    "tag": "neurosurgery"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 25,
+                    "tag": "open source"
+                },
+                {
+                    "id": 26,
+                    "tag": "single-neurons"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
+                },
+                {
+                    "id": 280,
+                    "tag": "working memory"
+                },
+                {
+                    "id": 281,
+                    "tag": "DANDI:000469"
+                }
+            ],
+            "timestamp_created": "2023-12-15 18:25:14.295269+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000469/draft",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }
