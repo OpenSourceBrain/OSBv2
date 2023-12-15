@@ -4139,6 +4139,10 @@
             "summary": "When a behavior repeatedly fails to achieve its goal, animals often give up and become passive, which can be strategic for preserving energy or regrouping between attempts. It is unknown how the brain identifies behavioral failures and mediates this behavioral-state switch. In larval zebrafish swimming in virtual reality, visual feedback can be withheld so that swim attempts fail to trigger expected visual flow. After tens of seconds of such motor futility, animals became passive for similar durations. Whole-brain calcium imaging revealed noradrenergic neurons that responded specifically to failed swim attempts and radial astrocytes whose calcium levels accumulated with increasing numbers of failed attempts. Using cell ablation and optogenetic or chemogenetic activation, we found that noradrenergic neurons progressively activated brainstem radial astrocytes, which then suppressed swimming. Thus, radial astrocytes perform a computation critical for behavior: they accumulate evidence that current actions are ineffective and consequently drive changes in behavioral states.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 159,
                     "tag": "neuroscience"
                 },
@@ -4177,19 +4181,31 @@
                 {
                     "id": 168,
                     "tag": "zebrafish"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 182,
+                    "tag": "DANDI:000350"
+                },
+                {
+                    "id": 183,
+                    "tag": "species:Danio rerio - Zebra fish"
                 }
             ],
             "timestamp_created": "2023-11-27 17:44:17.412979+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000350/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "148": {
             "auto_sync": true,
@@ -4202,18 +4218,35 @@
             "name": "Jeong et al (2022) Mesolimbic dopamine release conveys causal associations",
             "repository_type": "dandi",
             "summary": "This dataset includes fiber photometry (NAcc) and behavioral data from Jeong et al., 2022: \"Mesolimbic dopamine release conveys causal associations\". Animals names and session numbers used for each figure can be found from 'Subject and session information' in Related resource.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 184,
+                    "tag": "DANDI:000351"
+                },
+                {
+                    "id": 185,
+                    "tag": "species:Mus musculus - House mouse"
+                }
+            ],
             "timestamp_created": "2023-11-27 17:44:18.983514+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000351/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "149": {
             "auto_sync": true,
@@ -4384,6 +4417,47 @@
                 "username": "gopal"
             },
             "user_id": "0db2937f-6534-434f-9e38-ff6ed1cbe395"
+        },
+        "155": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 155,
+            "name": "Multiphoton imaging in macaque visual cortex (preliminary data)",
+            "repository_type": "dandi",
+            "summary": "Two- and three-photon imaging from V1/V2 labeled with GCaMP6s. Grating stimuli (sf x dir).",
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 186,
+                    "tag": "DANDI:000347"
+                },
+                {
+                    "id": 187,
+                    "tag": "species:Macaca nemestrina - Pig-tailed macaque"
+                }
+            ],
+            "timestamp_created": "2023-12-15 17:57:29.816642+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000347/draft",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }
