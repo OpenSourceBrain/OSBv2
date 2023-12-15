@@ -1019,6 +1019,10 @@
                     "tag": "optogenetics"
                 },
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 172,
                     "tag": "species:House mouse"
                 },
@@ -1035,13 +1039,13 @@
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000003/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "36": {
             "auto_sync": true,
@@ -1108,13 +1112,13 @@
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000004/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "37": {
             "auto_sync": true,
@@ -1128,6 +1132,10 @@
             "repository_type": "dandi",
             "summary": "intracellular and extracellular electrophysiology recordings performed on mouse barrel cortex and ventral posterolateral nucleus (vpm) in whisker-based object locating task.",
             "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
                 {
                     "id": 171,
                     "tag": "DANDI:000005"
@@ -1145,13 +1153,13 @@
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000005/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "38": {
             "auto_sync": true,
@@ -1165,6 +1173,10 @@
             "repository_type": "dandi",
             "summary": "Extracellular electrophysiology recordings performed on mouse anterior lateral motor cortex (ALM) in delay response task. Neural activity from two neuron populations, pyramidal track upper and lower, were characterized, in relation to movement execution. Some files, as originally (re)distributed from e.g. http://datasets.datalad.org/?dir=/labs/svoboda/Economo_2018 were found to be broken and would not be able available among reorganized files under sub-* directories.",
             "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
                 {
                     "id": 172,
                     "tag": "species:House mouse"
@@ -1182,13 +1194,13 @@
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000006/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "39": {
             "auto_sync": true,
@@ -1203,25 +1215,33 @@
             "summary": "Extracellular recording in ALM",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 172,
                     "tag": "species:House mouse"
                 },
                 {
                     "id": 174,
                     "tag": "DANDI:000007"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
                 }
             ],
             "timestamp_created": "2023-02-16 09:19:14.142177+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000007/draft",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-                "last_name": "Gleeson Admin",
-                "username": "pgleeson"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "40": {
             "auto_sync": true,
@@ -4105,35 +4125,6 @@
                 "username": "padraig6"
             },
             "user_id": "b611c83e-483f-4b8c-a5c9-32ce5de9990f"
-        },
-        "146": {
-            "auto_sync": true,
-            "content_types": "experimental",
-            "content_types_list": [
-                "experimental"
-            ],
-            "default_context": "0.210712.1903",
-            "id": 146,
-            "name": "Dandi dev dataset",
-            "repository_type": "dandi",
-            "summary": "",
-            "tags": [
-                {
-                    "id": 158,
-                    "tag": "dev"
-                }
-            ],
-            "timestamp_created": "2023-11-13 13:19:24.485227+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://dandiarchive.org/dandiset/000029",
-            "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
-            },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
         },
         "147": {
             "auto_sync": true,
