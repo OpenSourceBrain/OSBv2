@@ -777,39 +777,6 @@
             },
             "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
         },
-        "28": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "master",
-            "id": 28,
-            "name": "OpenCortex",
-            "repository_type": "github",
-            "summary": "",
-            "tags": [
-                {
-                    "id": 2,
-                    "tag": "neuroml"
-                },
-                {
-                    "id": 8,
-                    "tag": "cortex"
-                }
-            ],
-            "timestamp_created": "2023-02-03 15:14:38.826474+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://github.com/OpenSourceBrain/OpenCortex",
-            "user": {
-                "email": "p.gl.eeson@gmail.com",
-                "first_name": "Padraig6",
-                "id": "b611c83e-483f-4b8c-a5c9-32ce5de9990f",
-                "last_name": "Gleeson",
-                "username": "padraig6"
-            },
-            "user_id": "b611c83e-483f-4b8c-a5c9-32ce5de9990f"
-        },
         "29": {
             "auto_sync": true,
             "content_types": "experimental",
