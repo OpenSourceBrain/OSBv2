@@ -21,6 +21,7 @@ import {
   lightWhite,
 } from "../../theme";
 import ConfirmationDialog from "../dialogs/WorkspaceConfirmDialog";
+import WorkspaceConfirmDialog from "../dialogs/WorkspaceConfirmDialog";
 
 export interface WorkspaceTemplate {
   title: string;
@@ -141,19 +142,49 @@ export const NewWorkspaceItem = (props: ItemProps) => {
   const { template, title, refreshWorkspaces, className, icon } = props;
 
   const [newWorkspaceOpen, setNewWorkspaceOpen] = React.useState(false);
+  const [workspaceLink, setWorkspaceLink] = React.useState("");
 
   const handleClick = () => {
     setNewWorkspaceOpen(true);
   };
 
+  const [createdWorkspaceConfirmationContent, setCreatedWorkspaceConfirmationContent] = React.useState({
+    title: "",
+    content: "",
+    isSuccess: false,
+    showConfirmationDialog: false,
+  });
 
-  const onWorkspaceCreated = (refresh = false) => {
+  const handleCloseConfirmationDialog = () => {
+    setCreatedWorkspaceConfirmationContent({
+      title: "",
+      content: "",
+      isSuccess: false,
+      showConfirmationDialog: false,
+    });
+    props.closeMainDialog(false);
+  }
+
+  const onWorkspaceCreated = (refresh = false, ws: Workspace) => {
     if (refresh) {
       refreshWorkspaces();
     }
-    props.closeMainDialog(true);
+
+    // if non-default workspace
+    if (defaultWorkspace) {
+      setWorkspaceLink(`/workspace/${ws.id}`);
+      setCreatedWorkspaceConfirmationContent((prevContent) => ({
+        ...prevContent,
+        title: "Success!",
+        content: "New workspace created.",
+        isSuccess: true,
+        showConfirmationDialog: true,
+      }));
+    }
   };
 
+  // default workspace - other - computational modeling, data analysis, interactive development
+  // non default workspace - Create new workspace from repository
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
   return (
     <>
@@ -173,14 +204,27 @@ export const NewWorkspaceItem = (props: ItemProps) => {
 
       {newWorkspaceOpen &&
         (defaultWorkspace ? (
-          <WorkspaceEditor
-            title="Create new workspace"
-            open={newWorkspaceOpen}
-            user={props.user}
-            workspace={defaultWorkspace}
-            onLoadWorkspace={onWorkspaceCreated}
-            closeHandler={() => setNewWorkspaceOpen(false)}
-          />
+        <>
+          {createdWorkspaceConfirmationContent.showConfirmationDialog
+            ? (
+              <WorkspaceConfirmDialog
+                setChecked={(x) => null}
+                createdWorkspaceConfirmationContent={createdWorkspaceConfirmationContent}
+                workspaceLink={workspaceLink}
+                handleCloseConfirmationDialog={handleCloseConfirmationDialog}
+              />
+            ) : (
+              <WorkspaceEditor
+                title="Create new workspace"
+                open={newWorkspaceOpen}
+                user={props.user}
+                workspace={defaultWorkspace}
+                onLoadWorkspace={onWorkspaceCreated}
+                closeHandler={() => setNewWorkspaceOpen(false)}
+              />
+            )
+          }
+        </>
         ) : (
           <WorkspaceFromRepository
             close={() => setNewWorkspaceOpen(false)}
