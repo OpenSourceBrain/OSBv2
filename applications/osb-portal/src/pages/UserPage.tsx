@@ -307,6 +307,10 @@ export const UserPage = (props: any) => {
     return
   }
 
+  const openWorkspaceUrl = (workspaceId: number) => {
+    navigate(`/workspace/${workspaceId}`);
+  };
+
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
   return (
@@ -723,7 +727,13 @@ export const UserPage = (props: any) => {
                         lg={4}
                         xl={3}
                       >
-                        <WorkspaceCard workspace={ws} user={currentUser} />
+                        <WorkspaceCard
+                          workspace={ws}
+                          user={currentUser}
+                          handleWorkspaceClick={(workspace: Workspace) =>
+                            openWorkspaceUrl(workspace.id)
+                          }
+                        />
                       </Grid>
                     );
                   })}
@@ -744,7 +754,13 @@ export const UserPage = (props: any) => {
                           lg={4}
                           xl={3}
                         >
-                          <WorkspaceCard workspace={ws} user={currentUser} />
+                          <WorkspaceCard
+                            workspace={ws}
+                            user={currentUser}
+                            handleWorkspaceClick={(workspace: Workspace) =>
+                              openWorkspaceUrl(workspace.id)
+                            }
+                          />
                         </Grid>
                       );
                     })}
