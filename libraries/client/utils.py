@@ -15,7 +15,13 @@ def lookup_user(uid, url):
 
 def get_dandi_tags_info(dandi_api_info, dandishowcase_entry):
     
-    tags=[{"tag": tag} for tag in dandi_api_info.tags]
+    tags = []
+    for tag in dandi_api_info.tags:
+        if len(tag)>0:
+            tag = tag.strip()
+            if tag.endswith(','):
+                tag = tag[:-1]
+            tags.append({"tag": tag})
 
     tags.append({"tag": '%s'%dandishowcase_entry['identifier']})
     tags.append({"tag": 'DANDI'})

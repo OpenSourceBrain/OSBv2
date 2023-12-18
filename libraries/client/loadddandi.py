@@ -28,8 +28,7 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False # 
-dry_run = True
+dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
@@ -95,7 +94,12 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         found = api_instance.osbrepository_get(q=search)
 
         if found.osbrepositories:
-            if len(found.osbrepositories) > 1:
+            matching_repos = []
+            for r in found.osbrepositories:
+                if r.uri==dandiset_url:
+                    matching_repos.append("URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri))
+            print('Matching: %s'%matching_repos)
+            if len(matching_repos) > 1:
                 err_info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
                 for r in found.osbrepositories:
     
@@ -103,11 +107,11 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     err_info +="         - Owner %s\n"%(lookup_user(r.user_id,''))
                     
                 print(err_info)
-                '''
-                print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
-                print("    %s"%found)
-                print("    ------------ DANDI API info: ---------")
-                print("    %s"%dandi_api_info)'''
+                if verbose:
+                    print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
+                    print("    %s"%found)
+                    print("    ------------ DANDI API info: ---------")
+                    print("    %s"%dandi_api_info)
                 multi_matches.append(err_info)
                 return False
             r = found.osbrepositories[0]

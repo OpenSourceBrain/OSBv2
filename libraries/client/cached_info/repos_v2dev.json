@@ -1881,10 +1881,6 @@
                     "tag": "neocortex"
                 },
                 {
-                    "id": 41,
-                    "tag": " layer 2/3"
-                },
-                {
                     "id": 203,
                     "tag": "DANDI:000023"
                 },
@@ -1899,6 +1895,10 @@
                 {
                     "id": 77,
                     "tag": "Human"
+                },
+                {
+                    "id": 286,
+                    "tag": "layer 2/3"
                 }
             ],
             "timestamp_created": "2023-02-16 09:19:56.683686+00:00",
@@ -3226,9 +3226,9 @@
         },
         "82": {
             "auto_sync": true,
-            "content_types": "modeling",
+            "content_types": "experimental",
             "content_types_list": [
-                "modeling"
+                "experimental"
             ],
             "default_context": "draft",
             "id": 82,
@@ -3236,10 +3236,6 @@
             "repository_type": "dandi",
             "summary": "Recordings made by Jason Chung in the Frank laboratory at UCSF using 64 channel polymer probes across 4 regions in an animal resting in a box. Note that the position data is duplicated, one copy for each epoch.",
             "tags": [
-                {
-                    "id": 87,
-                    "tag": "rat, "
-                },
                 {
                     "id": 88,
                     "tag": "polymer probe"
@@ -3267,19 +3263,31 @@
                 {
                     "id": 93,
                     "tag": "sleep"
+                },
+                {
+                    "id": 287,
+                    "tag": "rat"
+                },
+                {
+                    "id": 288,
+                    "tag": "DANDI:000065"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
                 }
             ],
             "timestamp_created": "2023-02-16 09:20:37.248664+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000065/draft",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "83": {
             "auto_sync": true,
@@ -5792,6 +5800,47 @@
             "timestamp_created": "2023-12-15 18:30:57.250975+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000470/draft",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "165": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.210812.1518",
+            "id": 165,
+            "name": "Internally organized mechanisms of the head direction sense",
+            "repository_type": "dandi",
+            "summary": "The head-direction (HD) system functions as a compass, with member neurons robustly increasing their firing rates when the animal's head points in a specific direction. HD neurons may be driven by peripheral sensors or, as computational models postulate, internally generated (attractor) mechanisms. We addressed the contributions of stimulus-driven and internally generated activity by recording ensembles of HD neurons in the antero-dorsal thalamic nucleus and the post-subiculum of mice by comparing their activity in various brain states. The temporal correlation structure of HD neurons was preserved during sleep, characterized by a 60\u00b0-wide correlated neuronal firing (activity packet), both within and across these two brain structures. During rapid eye movement sleep, the spontaneous drift of the activity packet was similar to that observed during waking and accelerated tenfold during slow-wave sleep. These findings demonstrate that peripheral inputs impinge on an internally organized network, which provides amplification and enhanced precision of the HD signal.",
+            "tags": [
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 193,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 283,
+                    "tag": "DANDI:000056"
+                }
+            ],
+            "timestamp_created": "2023-12-18 13:22:46.591695+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000056/draft",
             "user": {
                 "email": "info@opensourcebrain.org",
                 "first_name": "OSB",
