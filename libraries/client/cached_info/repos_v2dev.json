@@ -70,20 +70,20 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
+                    "id": 326,
+                    "tag": "DANDI:000293"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 326,
-                    "tag": "DANDI:000293"
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2022-12-16 08:43:13.310387+00:00",
@@ -1502,6 +1502,10 @@
             "summary": "The enclosed data is collected using a high-density 256-channel electrocorticography (ECoG) array implanted in human patients during treatment for epilepsy. The subjects are reading aloud consonant-vowel syllables from a list. The data was collected by Dr. Edward Chang and Dr. Kristofer Bouchard at the University of California, San Francisco, and curated by Dr. Kristofer Bouchard and Dr. Benjamin Dichter.\n\n\nData is organized by subject ID, and each file is a continuous recording session in Neurodata Without Borders (NWB) 2.0 format. Voltage traces are included for each of the recorded 256 channels. Microphone signal was recorded at the time but is removed for HIPAA compliance. Detailed hand-marked annotations are provided which mark what syllable was said, and the times of the start, consonant-vowel transition, and end of each syllable. A rest-period time is also included when the subject was silent, which can be used as a baseline. Hand-marked anatomical labels are included for electrodes in the relevant brain regions. All dates have been removed for HIPAA compliance and replaced with Jan 1, 1900.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 31,
                     "tag": "electrocorticography (ECoG)"
                 },
@@ -1510,20 +1514,16 @@
                     "tag": "speech production"
                 },
                 {
-                    "id": 199,
-                    "tag": "DANDI:000019"
+                    "id": 77,
+                    "tag": "Human"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 77,
-                    "tag": "Human"
+                    "id": 199,
+                    "tag": "DANDI:000019"
                 }
             ],
             "timestamp_created": "2023-02-16 09:19:50.974579+00:00",
@@ -2024,6 +2024,10 @@
             "summary": "SpikeInterface is a Python framework designed to make the analysis of extracellular electrophysiology data more accessible and standardized. The SpikeInterface documentation can be found at https://spikeinterface.readthedocs.io/en/latest/.\n\nThis dataset contains all recordings analysed in the paper: \"SpikeInterface, a unified framework for spike sorting.\" Alessio P. Buccino, Cole L. Hurwitz, Samuel Garcia, Jeremy Magland, Joshua H. Siegle, Roger Hurwitz, Matthias H. Hennig, eLife - doi: https://doi.org/10.7554/eLife.61834; ",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 51,
                     "tag": "Spike Sorting"
                 },
@@ -2032,20 +2036,16 @@
                     "tag": "extracellular electrophysiology"
                 },
                 {
-                    "id": 211,
-                    "tag": "DANDI:000034"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 193,
                     "tag": "House mouse"
+                },
+                {
+                    "id": 211,
+                    "tag": "DANDI:000034"
                 }
             ],
             "timestamp_created": "2023-02-16 09:20:06.624265+00:00",
@@ -2750,6 +2750,10 @@
             "summary": "This dataset contains two task types. The first is tetrode recordings from medial entorhinal cortex during open field navigation with simultaneous inertial measurements of the head, and the second is Neuropixel recordings from medial entorhinal cortex during navigation down a virtual linear track with simultaneous eye measurements.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 81,
                     "tag": "neuropixel"
                 },
@@ -2758,20 +2762,16 @@
                     "tag": "entorhinal cortex"
                 },
                 {
-                    "id": 228,
-                    "tag": "DANDI:000053"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 193,
                     "tag": "House mouse"
+                },
+                {
+                    "id": 228,
+                    "tag": "DANDI:000053"
                 }
             ],
             "timestamp_created": "2023-02-16 09:20:25.810154+00:00",
@@ -3634,6 +3634,10 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a reaching task with perturbations. In the experimental task, the subject performed delayed center-out reaches using a manipulandum to control a cursor. On a portion of the trials, the manipulandum applied a bump during the center hold prior to the reach. Neural activity was recorded from an electrode array implanted in somatosensory area 2. Hand position, cursor position, force applied to the manipulandum, length and velocity of various arm muscles, and angle and velocity of various arm joints were all recorded during the experiment. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3642,20 +3646,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 251,
-                    "tag": "DANDI:000127"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 251,
+                    "tag": "DANDI:000127"
                 }
             ],
             "timestamp_created": "2023-02-16 10:12:56.798832+00:00",
@@ -3683,6 +3683,10 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3691,20 +3695,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 252,
-                    "tag": "DANDI:000128"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 252,
+                    "tag": "DANDI:000128"
                 }
             ],
             "timestamp_created": "2023-02-16 10:12:58.014063+00:00",
@@ -3732,6 +3732,10 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a self-paced reaching task. In the experimental task, the subject reached between targets randomly selected from an 8x8 grid without gaps or pre-movement delay intervals. Neural activity was recorded from an electrode array implanted in the primary motor cortex. Finger position, cursor position, and target position were also recorded during the experiment. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3740,20 +3744,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 253,
-                    "tag": "DANDI:000129"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 253,
+                    "tag": "DANDI:000129"
                 }
             ],
             "timestamp_created": "2023-02-16 10:12:59.185028+00:00",
@@ -3781,6 +3781,10 @@
             "summary": "This dataset contains sorted unit spiking times from a macaque performing a time-interval reproduction task. In the experimental task, the monkey was presented with two stimuli separated by a specific interval of time. The monkey then attempted to time their response such that the interval between the second stimulus and their response matched the interval separating the two stimuli. Neural activity was recorded from neural probes implanted in the dorsomedial frontal cortex. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3789,20 +3793,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 254,
-                    "tag": "DANDI:000130"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 254,
+                    "tag": "DANDI:000130"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:00.393194+00:00",
@@ -3830,6 +3830,10 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. The provided data has been limited to 500 train trials and 100 test trials. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3838,20 +3842,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 255,
-                    "tag": "DANDI:000138"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 255,
+                    "tag": "DANDI:000138"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:01.624413+00:00",
@@ -3879,6 +3879,10 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. The provided data has been limited to 250 train trials and 100 test trials. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3887,20 +3891,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 256,
-                    "tag": "DANDI:000139"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 256,
+                    "tag": "DANDI:000139"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:02.933264+00:00",
@@ -3928,6 +3928,10 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. The provided data has been limited to 100 train trials and 100 test trials. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
                     "id": 101,
                     "tag": "Neural Latents Benchmark"
                 },
@@ -3936,20 +3940,16 @@
                     "tag": "NLB"
                 },
                 {
-                    "id": 257,
-                    "tag": "DANDI:000140"
-                },
-                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 242,
                     "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 257,
+                    "tag": "DANDI:000140"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:04.230012+00:00",
@@ -6698,32 +6698,16 @@
             "summary": "This dataset contains single-neuron recordings from two tetraplegic human participants as they attempted individual finger movements. One participant had an electrode array implanted in the left posterior parietal cortex (PPC) at the junction of the postcentral and intraparietal sulci (PC-IP). The other participant had one electrode array implanted in the hand knob of the left motor cortex (MC) and one electrode array implanted in the superior parietal lobule (SPL) of the left PPC.",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 28,
-                    "tag": "motor cortex"
-                },
-                {
                     "id": 104,
                     "tag": "PPC"
                 },
                 {
+                    "id": 7,
+                    "tag": "human"
+                },
+                {
                     "id": 105,
                     "tag": "finger"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
                 },
                 {
                     "id": 320,
@@ -6734,12 +6718,28 @@
                     "tag": "posterior parietal cortex"
                 },
                 {
+                    "id": 28,
+                    "tag": "motor cortex"
+                },
+                {
                     "id": 322,
                     "tag": "ipsilateral"
                 },
                 {
                     "id": 323,
                     "tag": "DANDI:000252"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:26.690989+00:00",
@@ -6824,24 +6824,24 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 29,
                     "tag": "mouse"
+                },
+                {
+                    "id": 325,
+                    "tag": "DANDI:000292"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 194,
-                    "tag": "Mus musculus - House mouse"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 325,
-                    "tag": "DANDI:000292"
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:29.692699+00:00",
@@ -6967,20 +6967,20 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
+                    "id": 330,
+                    "tag": "DANDI:000297"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 330,
-                    "tag": "DANDI:000297"
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:35.907148+00:00",
@@ -7217,44 +7217,44 @@
             "summary": "In this study, we investigate how transcranial focused ultrasound (tFUS) modulates neural interaction and response to peripheral electrical stimulation at hindlimb through intracranial multi-electrode recordings in the rat somatosensory cortex. Recordings were performed using a 32-channel NeuroNexus\u00ae multi-electrode array. Rats were anesthetized using isoflurane at 2%. Recordings were taken while delivering peripheral electrical stimulation once every 5 seconds to analyze the neural response in the rat S1HL region, before ultrasound for 30 minutes and then afterwards for an hour, in order to determine how the ultrasound modulated the electrical stimulation induced local field potential (LFP) waveforms. We delivered ultrasound for 5 minutes in a pulsed pattern at 5 levels of sonication repetition frequencies (SRF) (10 Hz, 50 Hz, 75 Hz, 100 Hz, and 125 Hz) to induce frequency dependent plasticity in a manner similar to that is found following tetanic electrical stimulation. We investigated whether delivering tFUS that alters connectivity/correlation between the targeted neurons may alter collective responses manifested in the modulated LFP waveforms. The applied fundamental frequency of ultrasound was 0.5 MHz, the pulse repetition frequency (PRF) was 3 kHz, and the total duty cycle was 36%. This dataset contains LFP recordings, with 32 channels for each datafile.\nIn each subject, recordings are provided with \"pre\" and \"post\" tFUS for two different frequencies (SRF), and most contain recordings during the delivery of ultrasound and during rest periods between sessions of different ultrasound parameters. For example, a single subject may include \"100Hz_pre\", \"100Hz_post\", \"50Hz_pre\", \"50Hz_post\", which are the pre and post tFUS recordings for the two used parameters, and then \"50Hz\" and \"100Hz\", which are the recordings taken during stimulation, and \"rest1\" and \"rest2\", which are the rest periods between sessions. These names are preceded by a label such as \"BH280\", which is the animal subject label. Ultrasound is delivered in a continuous paradigm, with pulses delivered at the stimulation repetition frequency continuously throughout the 5 minutes of stimulation. During the \"pre\" and \"post\" recordings, the peripheral electrical stimulation is delivered once every 5 seconds approximately. Electrical stimulation event trigger is not included in the dataset as it was not recorded due to using a separate system to deliver the electrical stimulation. We were using threshold detection on a channel of LFP recordings in order to detect the electrical stimulation events, in which events can be recognized by the quick rising of voltage. One could also approximate it by detecting the first event, and then add periods of 5 seconds to generate the rest of the trigger times.\nMore details about the experimental details can be found in our paper published by Journal of Neural Engineering (DOI: 10.1088/1741-2552/ac889f).",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 119,
                     "tag": "Ultrasound"
-                },
-                {
-                    "id": 120,
-                    "tag": "Plasticity"
-                },
-                {
-                    "id": 121,
-                    "tag": "Rat"
                 },
                 {
                     "id": 122,
                     "tag": "tFUS"
                 },
                 {
-                    "id": 123,
-                    "tag": "Somatosensory Cortex"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
+                    "id": 120,
+                    "tag": "Plasticity"
                 },
                 {
                     "id": 337,
                     "tag": "Somatosensory"
                 },
                 {
+                    "id": 121,
+                    "tag": "Rat"
+                },
+                {
+                    "id": 123,
+                    "tag": "Somatosensory Cortex"
+                },
+                {
                     "id": 338,
                     "tag": "DANDI:000339"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:43.497224+00:00",
@@ -7282,24 +7282,12 @@
             "summary": "Patch-clamp recordings of Layer 1 interneurons in the human and rodent neocortex. Data comes from Gabor Tamas Lab (ELKH-SZTE Research Group for Cortical Microcircuits; University of Szeged, Hungary).",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
-                },
-                {
                     "id": 339,
                     "tag": "Layer 1 interneurons"
+                },
+                {
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 340,
@@ -7328,6 +7316,18 @@
                 {
                     "id": 346,
                     "tag": "DANDI:000341"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:44.762552+00:00",
@@ -7478,24 +7478,12 @@
             "summary": "This dataset includes binned spike count data (chronic microwire arrays in PMd/M1) and brain-machine-interface behavioral data (2D cursor kinematics, target locations, trials) from Athalye, V*, Khanna, P*, Gowda S, Orsborn, AL, Costa RM**, Carmena, JC**, (2023) \"Invariant neural dynamics drive commands to control different movements\": https://www.biorxiv.org/content/10.1101/2021.08.27.457931v2. \n\nFor more information about this data, please contact Vivek Athalye and/or Preeya Khanna. \n\nCode for analyzing this data and re-creating manuscript figures is located: https://github.com/pkhanna104/bmi_dynamics_code and archived at https://zenodo.org/record/8006653",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
+                    "id": 354,
+                    "tag": "neural population dynamics"
                 },
                 {
                     "id": 28,
                     "tag": "motor cortex"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 210,
-                    "tag": "Macaca mulatta - Rhesus monkey"
-                },
-                {
-                    "id": 354,
-                    "tag": "neural population dynamics"
                 },
                 {
                     "id": 355,
@@ -7528,6 +7516,18 @@
                 {
                     "id": 362,
                     "tag": "DANDI:000404"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 210,
+                    "tag": "Macaca mulatta - Rhesus monkey"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:56.859123+00:00",
@@ -7596,24 +7596,8 @@
             "summary": "The International Brain lab (IBL) aims to understand the neural basis of decision-making in the mouse by gathering a whole-brain activity map composed of electrophysiological recordings pooled from multiple laboratories. We have systematically recorded from nearly all major brain areas with Neuropixels probes, using a grid system for unbiased sampling and replicating each recording site in at least two laboratories. These data have been used to construct a brain-wide map of activity at single-spike cellular resolution during a decision-making task. In addition to the map, this data set contains other information gathered during the task: sensory stimuli presented to the mouse; mouse decisions and response times; and mouse pose information from video recordings and DeepLabCut analysis.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 80,
                     "tag": "International Brain Laboratory"
-                },
-                {
-                    "id": 84,
-                    "tag": "decision-making"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 194,
-                    "tag": "Mus musculus - House mouse"
                 },
                 {
                     "id": 364,
@@ -7636,12 +7620,28 @@
                     "tag": "head-fixed"
                 },
                 {
+                    "id": 84,
+                    "tag": "decision-making"
+                },
+                {
                     "id": 369,
                     "tag": "face-tracking"
                 },
                 {
                     "id": 370,
                     "tag": "DANDI:000409"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:59.347570+00:00",
@@ -7878,24 +7878,12 @@
             "summary": "In this set of experiments, we recorded neural signals using an electroencephalography (EEG) array and Neuropixels probes while directly electrically stimulating the cortex in awake and anesthetized head-fixed mice. Details of the experiments can be found in the associated manuscript (Claar, Rembado et al., 2023). Briefly, the recordings and stimulation commenced while the mouse was awake, free to rest or move on a rotating disc. After delivering a series of stimuli, anesthesia was induced with isoflurane (5% via inhalation). Once a surgical level of anesthesia was reached, the mouse was maintained unconscious (1-1.5% isoflurane) during the delivery of another series of stimuli. In some subjects another series of stimuli was delivered after the isoflurane was turned off, this epoch/state is referred to as \u201crecovery\u201d in the dataset.\n\nEach session file includes the following data: raw EEG signals from all 30 surface electrodes and the associated electrode information; raw LFP signals from all electrodes on all Neuropixels probes (if used) and the associated electrode information; spike times for all units (spike sorted with Kilosort 2.0) that passed our quality threshold with associated information (brain region, spike waveform duration, etc.); subject\u2019s speed computed from the rotation of the disc for the entire session; epochs marking when isoflurane was induced and when it was maintained; and a trial table containing information about every stimulus delivered throughout the session.\n\nAll sessions included an awake and an isoflurane epoch, but not all sessions included a recovery epoch. Some subjects received visual stimulation trials (visual stimuli presented on a screen in the subject\u2019s right field of view) interleaved with the electrical stimulation trials.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 52,
-                    "tag": "extracellular electrophysiology"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 194,
-                    "tag": "Mus musculus - House mouse"
-                },
-                {
                     "id": 378,
                     "tag": "EEG"
+                },
+                {
+                    "id": 365,
+                    "tag": "Neuropixels"
                 },
                 {
                     "id": 379,
@@ -7910,12 +7898,24 @@
                     "tag": "cortico-thalamic interactions"
                 },
                 {
+                    "id": 52,
+                    "tag": "extracellular electrophysiology"
+                },
+                {
                     "id": 382,
                     "tag": "DANDI:000458"
                 },
                 {
-                    "id": 365,
-                    "tag": "Neuropixels"
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-12-18 16:41:06.667095+00:00",
