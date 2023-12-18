@@ -7,6 +7,9 @@ import logging
 import json
 import sys
 
+from utils import get_dandi_tags_info
+from utils import known_users, lookup_user
+
 from workspaces_cli.models import OSBRepository, RepositoryType, Tag, RepositoryContentType
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -30,25 +33,14 @@ dry_run = True
 
 index = 0
 min_index = 0
-max_index = 5
+max_index = 100
+
+verbose = False
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,
     access_token = TOKEN
 )
-
-known_users = {'Padraig_v2':"0103eaaf-6a34-4509-a025-14367a52aa2b", 
-               'Padraig_v2dev': "7089f659-90ad-4ed9-9715-2327f7e2e72f",
-               'Filippo_v2dev': 'a2514035-c47f-4d8a-b22b-081d91a5ce6b',
-               'Simao_v2dev': 'ee8a31d7-d54d-413c-a4c9-e140cf77404f',
-               'OSBAdmin_v2dev': '095e311e-336f-47d6-b4f6-16f6dd771a8d'}
-
-def lookup_user(uid, url):
-    if not uid in known_users.values():
-        raise Exception('Unknown user: %s;%s'%(uid, url))
-    for user in known_users:
-        if uid == known_users[user]:
-            return user
 
 owner_user_id = known_users['Padraig_v2']
 if v2_or_v2dev == 'v2dev':
@@ -83,34 +75,22 @@ with open(filename, "w") as fp:
 all_updated = []
 all_added = []
 multi_matches = []
-
-def get_tags_info(dandi_api_info, dandishowcase_entry):
-    
-    tags=[{"tag": tag} for tag in dandi_api_info.tags]
-
-    tags.append({"tag": '%s'%dandishowcase_entry['identifier']})
-    tags.append({"tag": 'DANDI'})
-    if dandishowcase_entry['data_type']=='Neurodata Without Borders (NWB)':
-        tags.append({"tag": 'NWB'})
-    if dandishowcase_entry['data_type']=='Brain Imaging Data Structure (BIDS)':
-        tags.append({"tag": 'BIDS'})
-
-    if dandishowcase_entry['species']:
-        tags.append({"tag": '%s'%dandishowcase_entry['species']})
-
-    print("    ------------ Tags: ---------")
-    print("    %s"%tags)
-
-    return tags
+dandi_errors = []
 
 
 with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
 
-    def add_dandiset(dandishowcase_entry):
+    def add_dandiset(dandishowcase_entry, index):
         dandiset_url = dandishowcase_entry['url']
         print("\n================ %i: %s ================\n"%(index, dandiset_url))
-        dandi_api_info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
+        try:
+            dandi_api_info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
+        except: 
+            err_info = 'Problem accessing %s'%dandiset_url
+            print(err_info)
+            dandi_errors.append(err_info)
+            return
         search = f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}"
         found = api_instance.osbrepository_get(q=search)
 
@@ -119,7 +99,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 err_info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
                 for r in found.osbrepositories:
     
-                    err_info +="      - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
+                    err_info +="         - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
                     err_info +="         - Owner %s\n"%(lookup_user(r.user_id,''))
                     
                 print(err_info)
@@ -138,14 +118,16 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 exit(-1)
             print(url_info)
             all_updated.append(url_info)
-            print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
-            print("    %s"%found)
-            print("    ------------ DANDI API info: ---------")
-            print("    %s"%dandi_api_info)
-            print("    ------------ DANDI Showcase info: ---------")
-            print("    %s"%dandishowcase_entry)
 
-            tags = get_tags_info(dandi_api_info, dandishowcase_entry)
+            if verbose:
+                print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
+                print("    %s"%found)
+                print("    ------------ DANDI API info: ---------")
+                print("    %s"%dandi_api_info)
+                print("    ------------ DANDI Showcase info: ---------")
+                print("    %s"%dandishowcase_entry)
+
+            tags = get_dandi_tags_info(dandi_api_info, dandishowcase_entry)
             
             if not dry_run:
 
@@ -166,7 +148,9 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         else:
             print("    Adding %s" % dandiset_url)
 
-            tags = get_tags_info(dandi_api_info, dandishowcase_entry)
+            tags = get_dandi_tags_info(dandi_api_info, dandishowcase_entry)
+
+            all_added.append("%s, index %i"%(dandiset_url, index))
 
             if not dry_run:
                 return api_instance.osbrepository_post(OSBRepository(
@@ -182,9 +166,8 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     auto_sync=True,
                 ))
 
-                url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev, '???') # found.osbrepositories[0].id)
-                print(url_info)
-                all_updated.append(url_info)
+            url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%s"%(v2_or_v2dev, '???') # found.osbrepositories[0].id)
+            print(url_info)
 
 
     for dandishowcase_entry in dandishowcase_info: 
@@ -192,7 +175,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             if int(dandishowcase_entry['num_files']) < 1: 
                 continue
             try:
-                added = add_dandiset(dandishowcase_entry)
+                added = add_dandiset(dandishowcase_entry, index)
             except:
                 logging.exception("Error adding %s" % dandishowcase_entry['url'])
 
@@ -201,12 +184,19 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # print(added)
 
 
-print("\nDone! All updated (%i total; dry_run: %s):"%(len(all_updated),dry_run))
+print("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+
+      "\n\nDone! All updated (%i total; dry_run: %s):"%(len(all_updated),dry_run))
 for m in all_updated:
     print(m)
+
 print("\nAll added (%i total):"%len(all_added))  
 for m in all_added:
     print(m)
+
 print("\nMultiple matches found (%i total):"%len(multi_matches))
 for m in multi_matches:
     print(m)
+
+print("\nErrors found (%i total):"%len(dandi_errors))
+for de in dandi_errors:
+    print(de)
