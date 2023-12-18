@@ -128,6 +128,7 @@ export const RepositoryPage = (props: any) => {
     if (showWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
+      setResetChecked(true);
     }
   };
 
