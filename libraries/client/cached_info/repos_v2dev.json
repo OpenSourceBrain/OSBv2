@@ -127,26 +127,38 @@
             ],
             "default_context": "draft",
             "id": 5,
-            "name": "Electrophysiological properties of adult mouse spinal cord neurons - 22Q1_Ephys_DANDI salam",
+            "name": "Electrophysiological properties of adult mouse spinal cord neurons - 22Q1_Ephys_DANDI",
             "repository_type": "dandi",
             "summary": "Whole-cell patch clamp recording of specific cell types in the adult mouse spinal cord. Neurons are either input defined, output defined or expressing specific molecular markers. ",
             "tags": [
                 {
-                    "id": 1,
-                    "tag": "tutorial"
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 319,
+                    "tag": "DANDI:000245"
                 }
             ],
             "timestamp_created": "2023-01-17 11:48:59.537288+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000245/draft",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "6": {
             "auto_sync": true,
