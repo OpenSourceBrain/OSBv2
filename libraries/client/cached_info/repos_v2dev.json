@@ -4602,10 +4602,6 @@
             "summary": "In this study, we investigate how transcranial focused ultrasound (tFUS) modulates neural interaction and response to peripheral electrical limb stimulation through intracranial multi-electrode recordings in the rat somatosensory cortex. Rats were anesthetized using isoflurane anesthesia at 2%. Recordings were taken while delivering peripheral electrical stimulation once every 5 seconds to analyze the neural response in the rat S1HL region, before and after ultrasound. We delivered ultrasound for 5 minutes in a pulsed pattern at 5 different stimulation repetition frequencies (10 Hz, 50 Hz, 75 Hz, 100 Hz, and 125 Hz) to induce frequency dependent plasticity in a manner similar to that found following tetanic electrical stimulation. The fundamental frequency of ultrasound used was 0.5 MHz, the pulse repetition frequency (PRF) was 3 kHz, and the total duty cycle was 36%. This dataset includes spike timing data from the recordings including time before and after ultrasound stimulation, for both true ultrasound conditions and sham ultrasound conditions in which ultrasound is directed off target. Details of the study are in the following publication: S. Ramachandran, X. Niu, K. Yu, B. He, \"Transcranial ultrasound neuromodulation induces neuronal correlation change in the rat somatosensory cortex\", 2022 J. Neural Eng. 19 056002 https://pubmed.ncbi.nlm.nih.gov/35947970/. Please cite this publication if you would use a portion of the data. ",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 119,
                     "tag": "Ultrasound"
                 },
@@ -4626,16 +4622,20 @@
                     "tag": "Somatosensory Cortex"
                 },
                 {
+                    "id": 269,
+                    "tag": "DANDI:000173"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 269,
-                    "tag": "DANDI:000173"
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:18.072407+00:00",
@@ -4781,32 +4781,32 @@
             "summary": "U01 Lein PatchSeq upload December 2021",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
                 },
                 {
-                    "id": 77,
-                    "tag": "Human"
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 103,
                     "tag": "neocortical"
                 },
                 {
+                    "id": 272,
+                    "tag": "DANDI:000209"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 272,
-                    "tag": "DANDI:000209"
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 77,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:21.773180+00:00",
@@ -4834,14 +4834,6 @@
             "summary": "Dataset on the egg-laying behavior of flies used to understand how flies make egg-laying decisions. Each NWB file contains time series data from an individual fly: the x-y position of the fly, egg-deposition moments of the fly, and sucrose concentration underneath the fly. A variety of fly genotypes and a variety of environments (egg-laying chambers) were used. Data and methods are described in \"A rise-to-threshold signal for a relative value deliberation\" (https://www.biorxiv.org/content/10.1101/2021.09.23.461548v1) and \u201cAn internal expectation guides Drosophila egg-laying decisions\u201d (https://doi.org/10.1126/sciadv.abn3852). Please contact Vikram Vijayan and/or Gaby Maimon for more information including different download options and different raw/processed data formats.",
             "tags": [
                 {
-                    "id": 20,
-                    "tag": "decision making"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 132,
                     "tag": "Drosophila"
                 },
@@ -4854,16 +4846,24 @@
                     "tag": "flies"
                 },
                 {
+                    "id": 20,
+                    "tag": "decision making"
+                },
+                {
                     "id": 135,
                     "tag": "internal expectation"
+                },
+                {
+                    "id": 273,
+                    "tag": "DANDI:000212"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 273,
-                    "tag": "DANDI:000212"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
                     "id": 274,
@@ -4895,14 +4895,6 @@
             "summary": "The hippocampus constructs a map of the environment. How this \u201ccognitive map\u201d is utilized by other brain regions to guide behavior remains unexplored. To examine how neuronal firing patterns in the hippocampus are transmitted and transformed, we recorded neurons in its principal subcortical target, the lateral septum (LS). We observed that LS neurons carry reliable spatial information in the phase of action potentials, relative to hippocampal theta oscillations, while the firing rates of LS neurons remained uninformative. Furthermore, this spatial phase code had an anatomical microstructure within the LS and was bound to the hippocampal spatial code by synchronous gamma frequency cell assemblies. Using a data-driven model, we show that rate-independent spatial tuning arises through the dynamic weighting of CA1 and CA3 cell assemblies. Our findings demonstrate that transformation of the hippocampal spatial map depends on higher-order theta-dependent neuronal sequences.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 35,
-                    "tag": "electrophysiology"
-                },
-                {
                     "id": 92,
                     "tag": "hippocampus"
                 },
@@ -4911,16 +4903,24 @@
                     "tag": "lateral septum"
                 },
                 {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
+                    "id": 35,
+                    "tag": "electrophysiology"
                 },
                 {
                     "id": 275,
                     "tag": "DANDI:000213"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:24.372506+00:00",
@@ -4989,10 +4989,6 @@
             "summary": "The mnemonic functions of hippocampal sharp wave ripples (SPW-Rs) have been studied extensively. Because hippocampal outputs affect not only cortical but also subcortical targets, we examined the impact of SPW-Rs on the firing patterns of lateral septal (LS) neurons in behaving rats. A large fraction of SPW-Rs were temporally locked to high-frequency oscillations (HFOs) (120\u2013180 Hz) in LS, with strongest coupling during non-rapid eye movement (NREM) sleep, followed by waking immobility. However, coherence and spike-local field potential (LFP) coupling between the two structures were low, suggesting that HFOs are generated locally within the LS GABAergic population. This hypothesis was supported by optogenetic induction of HFOs in LS. Spiking of LS neurons was largely independent of the sequential order of spiking in SPW-Rs but instead correlated with the magnitude of excitatory synchrony of the hippocampal output. Thus, LS is strongly activated by SPW-Rs and may convey hippocampal population events to its hypothalamic and brainstem targets.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 92,
                     "tag": "hippocampus"
                 },
@@ -5005,16 +5001,20 @@
                     "tag": "electrophyisology"
                 },
                 {
+                    "id": 277,
+                    "tag": "DANDI:000218"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 277,
-                    "tag": "DANDI:000218"
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:27.133551+00:00",
@@ -5712,6 +5712,10 @@
                     "tag": "data standardization"
                 },
                 {
+                    "id": 280,
+                    "tag": "working memory"
+                },
+                {
                     "id": 22,
                     "tag": "neurophysiology"
                 },
@@ -5732,20 +5736,16 @@
                     "tag": "single-neurons"
                 },
                 {
+                    "id": 281,
+                    "tag": "DANDI:000469"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
                     "id": 262,
                     "tag": "Homo sapiens - Human"
-                },
-                {
-                    "id": 280,
-                    "tag": "working memory"
-                },
-                {
-                    "id": 281,
-                    "tag": "DANDI:000469"
                 }
             ],
             "timestamp_created": "2023-12-15 18:25:14.295269+00:00",
