@@ -33,7 +33,7 @@ dry_run = True
 
 index = 0
 min_index = 0
-max_index = 15
+max_index = 1500
 
 verbose = False
 

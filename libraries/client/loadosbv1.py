@@ -32,9 +32,10 @@ dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
-max_index = 2
+max_index = 10
 
-verbose = True
+verbose = True # 
+verbose = False
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,
@@ -73,6 +74,9 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
     def add_osbv1_project(osbv1_proj, index):
         osbv1_proj_id = osbv1_proj['identifier']
+        if not 'GitHub repository' in osbv1_proj:
+            all_errors.append("  %i, %s doesn't have a Github repo..."%(index, osbv1_proj_id))
+            return
         osbv1_github_git = osbv1_proj['GitHub repository']
         osbv1_github = osbv1_github_git.split('.git')[0]
 
