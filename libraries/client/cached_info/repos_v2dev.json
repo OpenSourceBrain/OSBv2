@@ -11304,6 +11304,51 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "280": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 280,
+            "name": "Primary Auditory Cortex network",
+            "repository_type": "github",
+            "summary": "Primary Auditory Cortex network",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 541,
+                    "tag": "Pyramidal cell"
+                },
+                {
+                    "id": 542,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 543,
+                    "tag": "Auditory system"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                }
+            ],
+            "timestamp_created": "2023-12-18 17:56:01.965658+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/ACnet2",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }

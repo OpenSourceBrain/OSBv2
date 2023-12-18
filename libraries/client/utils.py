@@ -13,25 +13,40 @@ def lookup_user(uid, url):
             return user
             
 
-def get_dandi_tags_info(dandi_api_info, dandishowcase_entry):
+def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None):
     
     tags = []
-    for tag in dandi_api_info.tags:
-        if len(tag)>0:
-            tag = tag.strip()
-            if tag.endswith(','):
-                tag = tag[:-1]
-            tags.append({"tag": tag})
 
-    tags.append({"tag": '%s'%dandishowcase_entry['identifier']})
-    tags.append({"tag": 'DANDI'})
-    if dandishowcase_entry['data_type']=='Neurodata Without Borders (NWB)':
-        tags.append({"tag": 'NWB'})
-    if dandishowcase_entry['data_type']=='Brain Imaging Data Structure (BIDS)':
-        tags.append({"tag": 'BIDS'})
+    if osbv1_info is not None:
+        tags.append({"tag": 'OSBv1'})
+        if 'Tags' in osbv1_info:  # osbv1...
+            ts = osbv1_info['Tags'].split(',')
+            for tag in ts:
+                if len(tag)>0:
+                    tag = tag.strip()
+                    if tag.endswith(','):
+                        tag = tag[:-1]
+                    tags.append({"tag": tag})
+    
+    if dandi_api_info is not None:
 
-    if dandishowcase_entry['species']:
-        tags.append({"tag": '%s'%dandishowcase_entry['species']})
+        for tag in dandi_api_info.tags:
+            if len(tag)>0:
+                tag = tag.strip()
+                if tag.endswith(','):
+                    tag = tag[:-1]
+                tags.append({"tag": tag})
+
+    if dandishowcase_info is not None:
+        tags.append({"tag": '%s'%dandishowcase_info['identifier']})
+        tags.append({"tag": 'DANDI'})
+        if dandishowcase_info['data_type']=='Neurodata Without Borders (NWB)':
+            tags.append({"tag": 'NWB'})
+        if dandishowcase_info['data_type']=='Brain Imaging Data Structure (BIDS)':
+            tags.append({"tag": 'BIDS'})
+
+        if dandishowcase_info['species']:
+            tags.append({"tag": '%s'%dandishowcase_info['species']})
 
     print("    ------------ Tags: ---------")
     print("       %s"%tags)
