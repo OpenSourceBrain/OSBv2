@@ -198,7 +198,7 @@ class TagRepository(BaseModelRepository):
 
     def get_tags_daos(self, tags):
         tags_list = []
-        for tag in tags:    
+        for tag in tags:
             z = tag.tag
             items = self.search(q=f"tag__={z}").items
             if len(items) > 0:
