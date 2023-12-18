@@ -27,6 +27,7 @@
         "description": "github:README.md\r\n",
         "id": 73,
         "identifier": "acnet2",
+        "main_branch": "master",
         "name": "Primary Auditory Cortex network"
     },
     "alleninstituteneuroml": {
@@ -55,6 +56,7 @@
         "description": "github:README.md",
         "id": 116,
         "identifier": "alleninstituteneuroml",
+        "main_branch": "master",
         "name": "Allen Institute & NeuroML"
     },
     "almog-korngreen-pyramidal-neuron": {
@@ -86,6 +88,7 @@
         "description": "Conversion to neuroConstruct and NeuroML of the L5 Pyramidal cell model described in:\n\nAlmog M, Korngreen A (2014) [A Quantitative Description of Dendritic Conductances and Its Application to Dendritic Excitation in Layer 5 Pyramidal Neurons](http://www.jneurosci.org/content/34/1/182) J Neurosci 34(1):182-196\n",
         "id": 100,
         "identifier": "almog-korngreen-pyramidal-neuron",
+        "main_branch": "master",
         "name": "L5 Pyramidal Neuron - Almog and Korngreen 2014"
     },
     "arbor-showcase": {
@@ -110,6 +113,7 @@
         "description": "github:README.md",
         "id": 265,
         "identifier": "arbor-showcase",
+        "main_branch": "master",
         "name": "Arbor Showcase"
     },
     "bahletal2012_reducedl5pyrcell": {
@@ -138,6 +142,7 @@
         "description": "github:README.md",
         "id": 246,
         "identifier": "bahletal2012_reducedl5pyrcell",
+        "main_branch": "master",
         "name": "Reduced L5 Pyramidal Cell - Bahl et al. 2012 "
     },
     "blender-to-neuroml": {
@@ -166,6 +171,7 @@
         "description": "Test of Blender to NeuroML conversion\n",
         "id": 96,
         "identifier": "blender-to-neuroml",
+        "main_branch": "master",
         "name": "Blender to NeuroML for C elegans connectome"
     },
     "blue-brain-project-showcase": {
@@ -194,6 +200,7 @@
         "description": "github:README.md.",
         "id": 136,
         "identifier": "blue-brain-project-showcase",
+        "main_branch": "master",
         "name": "Blue Brain Project Showcase"
     },
     "brunel2000": {
@@ -223,6 +230,7 @@
         "description": "github:README.md\r\n",
         "id": 50,
         "identifier": "brunel2000",
+        "main_branch": "master",
         "name": "Sparsely connected spiking neuron network - Brunel 2000"
     },
     "c302": {
@@ -251,6 +259,7 @@
         "description": "github:README.md",
         "id": 199,
         "identifier": "c302",
+        "main_branch": "master",
         "name": "c302"
     },
     "ca1-oriens-lacunosum-moleculare-lawrence-et-al-2006": {
@@ -276,6 +285,7 @@
         "description": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nLawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. J Neurosci 26:12325-38",
         "id": 138,
         "identifier": "ca1-oriens-lacunosum-moleculare-lawrence-et-al-2006",
+        "main_branch": "master",
         "name": "CA1 Oriens Lacunosum Moleculare - Lawrence et al. 2006"
     },
     "ca1-oriens-lacunosum-moleculare-saraga-et-al-2003": {
@@ -299,6 +309,7 @@
         "description": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nSaraga F, Wu CP, Zhang L, Skinner FK (2003) Active Dendrites and Spike Propagation in Multi-compartment Models of Oriens-Lacunosum/Moleculare Hippocampal Interneurons. J Physiol 552(3):673-689",
         "id": 137,
         "identifier": "ca1-oriens-lacunosum-moleculare-saraga-et-al-2003",
+        "main_branch": "master",
         "name": "CA1 Oriens Lacunosum Moleculare - Saraga et al. 2003"
     },
     "ca1-pv-fast-firing-cell-ferguson-et-al-2013": {
@@ -328,6 +339,7 @@
         "description": "<!-- This reuses the README.md contents at https://github.com/OpenSourceBrain/FergusonEtAl2013-PVFastFiringCell/blob/master/README.md.\r\n\r\nTo edit this, go to: https://github.com/OpenSourceBrain/FergusonEtAl2013-PVFastFiringCell/edit/master/README.md. You'll need a GitHub account -->\r\n\r\ngithub:README.md",
         "id": 132,
         "identifier": "ca1-pv-fast-firing-cell-ferguson-et-al-2013",
+        "main_branch": "master",
         "name": "CA1 PV+ fast firing cell - Ferguson et al. 2013"
     },
     "ca1-pyr-cell-ferguson-et-al-2014": {
@@ -358,6 +370,7 @@
         "description": "<!-- This reuses the README.md contents at https://github.com/OpenSourceBrain/FergusonEtAl2014-CA1PyrCell/blob/master/README.md.\r\n\r\nTo edit this, go to: https://github.com/OpenSourceBrain/FergusonEtAl2014-CA1PyrCell/edit/master/README.md. You'll need a GitHub account -->\r\n\r\ngithub:README.md",
         "id": 129,
         "identifier": "ca1-pyr-cell-ferguson-et-al-2014",
+        "main_branch": "master",
         "name": "CA1 pyramidal cell - Ferguson et al. 2014"
     },
     "ca1pyramidalcell": {
@@ -388,6 +401,7 @@
         "description": "![](/attachments/download/1/CA1-spike.PNG)\r\nConversion of [hippocampal CA1 pyramidal cell](http://neurolex.org/wiki/Category:Hippocampus_CA1_pyramidal_cell) from [Migliore et al 2005](http://senselab.med.yale.edu/ModelDB/ShowModel.asp?model=55035).\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell)\r\n",
         "id": 15,
         "identifier": "ca1pyramidalcell",
+        "main_branch": "master",
         "name": "CA1 Pyramidal Cell - Migliore et al. 2005"
     },
     "catmaidshowcase": {
@@ -415,6 +429,7 @@
         "description": "Project for example NeuroML files generated by [CATMAID](http://www.catmaid.org).\n",
         "id": 67,
         "identifier": "catmaidshowcase",
+        "main_branch": "master",
         "name": "CATMAID Showcase"
     },
     "celegans": {
@@ -444,6 +459,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/22/medium.png)\r\n\r\n**The latest version of this model can be found at http://www.opensourcebrain.org/projects/c302**\r\nNote: the development of the OpenWorm model of [C. elegans](http://en.wikipedia.org/wiki/Caenorhabditis_elegans) is taking place at [http://www.openworm.org](http://www.openworm.org).\r\n\r\nA full list of those involved in that project can be found [here](http://www.openworm.org/people.html).\r\n\r\nThe C. elegans 3D model this was derived from was produced by Dr. Christian Grove and Dr. Paul Sternberg at the VirtualWorm project (WormBase, CalTech) and released into the public domain. You can visit the VirtualWorm home page at http://caltech.wormbase.org/virtualworm/ .\r\n\r\nFor details on running this neuroConstruct project see: https://github.com/openworm/OpenWorm/wiki/Running-the-C.-elegans-model-in-neuroConstruct.\r\n\r\nThis is a **work in progress**. Please [get in contact](http://www.openworm.org/contacts.html) for more information.\r\n",
         "id": 19,
         "identifier": "celegans",
+        "main_branch": "master",
         "name": "OpenWorm C. elegans network model"
     },
     "cerebellarnucleusneuron": {
@@ -473,6 +489,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/34/medium.png)\r\n\r\n[Deep cerebellar nucleus neuron](http://neurolex.org/wiki/Category:Cerebellum_nucleus_reciprocal_projections_neuron) model from: Determinants of synaptic integration and heterogeneity in rebound firing explored with data-driven models of deep cerebellar nucleus cells. Steuber V, Schultheiss NW, Silver RA, De Schutter E, Jaeger D. J Comput Neurosci. 2011 Jun;30(3):633-58\r\n",
         "id": 16,
         "identifier": "cerebellarnucleusneuron",
+        "main_branch": "master",
         "name": "Cerebellar Nucleus Neuron - Steuber et al. 2011"
     },
     "cerebellum--cerebellar-golgi-cell--solinasetal-golgicell": {
@@ -503,6 +520,7 @@
         "description": "Multicompartmental model of cerebellar Golgi cell from: Solinas S, Forti L, Cesana E, Mapelli J, De Schutter E, D\u2019Angelo E. **Computational reconstruction of pacemaking and intrinsic electroresponsiveness in cerebellar Golgi cells**. [Front Cell Neurosci. 2007;1:2](http://journal.frontiersin.org/article/10.3389/neuro.03.002.2007/abstract). \r\n\r\nBased on implementation in NEURON taken from: http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=112685.\r\n",
         "id": 4,
         "identifier": "cerebellum--cerebellar-golgi-cell--solinasetal-golgicell",
+        "main_branch": "master",
         "name": "Cerebellar Golgi Cell - Solinas et al. 2007"
     },
     "channelworm": {
@@ -526,6 +544,7 @@
         "description": "An OpenWorm repository to integrate data, information, scripts, and models of ion channels in C. elegans",
         "id": 142,
         "identifier": "channelworm",
+        "main_branch": "master",
         "name": "ChannelWorm"
     },
     "cnoshowcase": {
@@ -551,6 +570,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/103/CNO_image.jpg)\r\nScripts for interacting with the Computational Neuroscience Ontology:\r\nhttp://www.incf.org/programs/modeling/cno\r\n\r\nSee the [[Wiki]] for more details.\r\n",
         "id": 75,
         "identifier": "cnoshowcase",
+        "main_branch": "master",
         "name": "Computational Neuroscience Ontology Showcase"
     },
     "connectivityshowcase": {
@@ -575,6 +595,7 @@
         "description": "github:README.md",
         "id": 206,
         "identifier": "connectivityshowcase",
+        "main_branch": "master",
         "name": "ConnectivityShowcase"
     },
     "csashowcase": {
@@ -603,6 +624,7 @@
         "description": "![](http://www.opensourcebrain.org/projects/csashowcase/repository/revisions/master/entry/images/gaussian_sm.png)\n\nA project highlighting some of the features of the [Connection Set Algebra](http://software.incf.org/software/csa) library, and how it can interact with NeuroML & PyNN.\n\nFor more details see the [[Wiki]].\n",
         "id": 44,
         "identifier": "csashowcase",
+        "main_branch": "master",
         "name": "Connection Set Algebra Showcase"
     },
     "dentate": {
@@ -633,6 +655,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/109/DG_500.jpg)\r\n\r\nDentate Gyrus network model developed by the [Soltesz lab](http://www.ivansolteszlab.org). This is an ongoing update to the large scale dentate gyrus model presented in Schneider CJ, Bezaire M, Soltesz I.\r\nToward a full-scale computational model of the rat dentate gyrus. Front Neural Circuits. (2012) 6:83.\r\n\r\n\r\nSee also [CA1 Local Network, Bezaire and Soltesz 2013](http://www.opensourcebrain.org/projects/nc_ca1) and [CA1 Pyramidal Sublayer Microcircuit, Lee et al 2014](http://www.opensourcebrain.org/projects/nc_superdeep) from the [Soltesz lab](http://www.opensourcebrain.org/groups/201).\r\n",
         "id": 79,
         "identifier": "dentate",
+        "main_branch": "master",
         "name": "Dentate Gyrus network model - Soltesz lab"
     },
     "dentategyrus2005": {
@@ -663,6 +686,7 @@
         "description": "github:README.md",
         "id": 76,
         "identifier": "dentategyrus2005",
+        "main_branch": "master",
         "name": "Dentate Gyrus - Santhakumar et al 2005"
     },
     "destexhe_jcns_2009": {
@@ -693,6 +717,7 @@
         "description": "Network simulations of self-sustained activity in networks of adaptive exponential integrate and fire neurons.\r\n\r\nFrom: Self-sustained asynchronous irregular states and Up\u2013Down states in thalamic, cortical and thalamocortical networks of nonlinear integrate-and-fire neurons, Alain Destexhe, [J Comp Neuroscience 2009](http://link.springer.com/article/10.1007%2Fs10827-009-0164-4)\r\n",
         "id": 31,
         "identifier": "destexhe_jcns_2009",
+        "main_branch": "master",
         "name": "Self Sustained Network Activity - Destexhe 2009"
     },
     "dlgninterneuronhalnesetal2011": {
@@ -718,6 +743,7 @@
         "description": "A multi-compartment model for interneurons in the dLGN",
         "id": 125,
         "identifier": "dlgninterneuronhalnesetal2011",
+        "main_branch": "master",
         "name": "dLGN Interneuron - Halnes et al 2011"
     },
     "drosophila-acc-l3-motoneuron-gunay-et-al-2014": {
@@ -747,6 +773,7 @@
         "description": "github:README.md",
         "id": 97,
         "identifier": "drosophila-acc-l3-motoneuron-gunay-et-al-2014",
+        "main_branch": "master",
         "name": "Drosophila 3rd instar larval aCC motoneuron - Gunay et al 2014"
     },
     "drosophila_projection_neuron": {
@@ -777,6 +804,7 @@
         "description": "![](/attachments/download/50/Selection_140.png)\r\n\r\nIn early stages of development!\r\n\r\nCell model based on pubmed:19439602. \r\n",
         "id": 38,
         "identifier": "drosophila_projection_neuron",
+        "main_branch": "master",
         "name": "Drosophila Projection Neuron - Gouwens and Wilson, 2009"
     },
     "ebneretal2019": {
@@ -804,6 +832,7 @@
         "description": "github:README.md",
         "id": 228,
         "identifier": "ebneretal2019",
+        "main_branch": "master",
         "name": "Ebner et al. 2019 - Unified synaptic plasticity model"
     },
     "farinellaetal_nmdaspikes": {
@@ -832,6 +861,7 @@
         "description": "Model from: **Glutamate-bound NMDARs arising from in vivo-like network activity extend spatio-temporal integration in a L5 cortical pyramidal cell model**\r\nMatteo Farinella, Daniel T. Ruedt, Padraig Gleeson, Frederic Lanore and\r\nR. Angus Silver\r\n\r\nThis paper has just [been published](http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003590).\r\n\r\nThe cell model used is based on: [Synaptic integration in L5 Pyramidal cell, Larkum et al. 2009](http://www.opensourcebrain.org/projects/larkumetal2009)\r\n",
         "id": 108,
         "identifier": "farinellaetal_nmdaspikes",
+        "main_branch": "master",
         "name": "NMDA spikes in L5 Pyramidal cells - Farinella et al 2014"
     },
     "fast-genesis-vogels-abbott-model": {
@@ -859,6 +889,7 @@
         "description": "This is an improved and much more efficient GENESIS implementation of\nthe dual exponential conductance version of the Vogels-Abbott (2005)\nnetwork model with Hodgkin-Huxley neurons and conductance-based\nsynaptic activation (COBA). Details are given in Brette et al. (2007).\nIt uses hsolve and runs 16 times faster than the original. The\n\u2018VAnet2-batch.g\u2019 script is intended to be extended for testing GENESIS\nspike timing dependent plasticity (STDP) implementations with hsolve.\n",
         "id": 82,
         "identifier": "fast-genesis-vogels-abbott-model",
+        "main_branch": "master",
         "name": "VAnet2-GENESIS"
     },
     "fitzhugh-nagumo-fitzhugh-1969": {
@@ -886,6 +917,7 @@
         "description": "github:README.md",
         "id": 63,
         "identifier": "fitzhugh-nagumo-fitzhugh-1969",
+        "main_branch": "master",
         "name": "FitzHugh Nagumo - FitzHugh 1969"
     },
     "fpgashowcase": {
@@ -910,6 +942,7 @@
         "description": "Information on various packages available for executing neuronal simulations on FPGA boards.\r\n\r\nFor more information, see the [[Wiki]].\r\n",
         "id": 94,
         "identifier": "fpgashowcase",
+        "main_branch": "master",
         "name": "FPGA Based Simulations Showcase"
     },
     "functional-balanced-network": {
@@ -938,6 +971,7 @@
         "description": "Orientation selectivity in inhibition-dominated networks of spiking neurons",
         "id": 140,
         "identifier": "functional-balanced-network",
+        "main_branch": "master",
         "name": "Functional Balanced Network"
     },
     "geppettoshowcase": {
@@ -963,6 +997,7 @@
         "description": "![](/attachments/download/210/geppettologo.png)\r\n\r\nGeppetto is a web-based multi-algorithm, multi-scale simulation platform engineered to support the simulation of complex biological systems and their surrounding environment.\r\n\r\nExamples of NeuroML 2 files along with scripts for visualising/executing them in Geppetto (http://www.geppetto.org).\r\n",
         "id": 101,
         "identifier": "geppettoshowcase",
+        "main_branch": "master",
         "name": "Geppetto Showcase"
     },
     "ghk-nernst": {
@@ -987,6 +1022,7 @@
         "description": "Examples of cell models with currents using the [GHK flux equation](http://en.wikipedia.org/wiki/GHK_flux_equation), or using\n [Nernst\u2019s Equation](http://en.wikipedia.org/wiki/Nernst_equation) for the reversal potential in NeuroML 2 and a number of other formats.\n\nSee the [[Wiki]] for more details.\n",
         "id": 102,
         "identifier": "ghk-nernst",
+        "main_branch": "master",
         "name": "GHK & Nernst examples"
     },
     "golgicelldendgapjunctions": {
@@ -1015,6 +1051,7 @@
         "description": "github:README.md",
         "id": 152,
         "identifier": "golgicelldendgapjunctions",
+        "main_branch": "master",
         "name": "Golgi Cell Dendritic Gap Junctions - Szoboszlay et al. 2016"
     },
     "gpushowcase": {
@@ -1039,6 +1076,7 @@
         "description": "github:README.md\r\n",
         "id": 93,
         "identifier": "gpushowcase",
+        "main_branch": "master",
         "name": "GPU Based Simulation Showcase"
     },
     "grancelllayer": {
@@ -1065,6 +1103,7 @@
         "description": "github:README.md",
         "id": 10,
         "identifier": "grancelllayer",
+        "main_branch": "master",
         "name": "Granule Cell Layer - Maex and De Schutter 1998"
     },
     "grancellrothmanif": {
@@ -1091,6 +1130,7 @@
         "description": "This project contains an integrate and fire model of the cerebellar granule cell and a simple model of the mossy fibre to granule cell synapse. The cell model (IaF\\_GrC.nml) is the average (ie the one whose parameters have the average value) of the model population developed by Jason Rothman and published in Schwartz et, J Neurosci (2012). The synaptic model is based on the one used in that same paper, but it has been developed further to improve the fit to the experimental data and to ensure LEMS/NeuroMLv2 compatibility.\n",
         "id": 5,
         "identifier": "grancellrothmanif",
+        "main_branch": "master",
         "name": "I&F granule cell model - Rothman & Piasini"
     },
     "grancellsolinasetal10": {
@@ -1120,6 +1160,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/24/solinasal10.png)\r\nInitial version of Granule cell from: Solinas S., Nieus T, d\u2019Angelo E. (2010) **A Realistic Large-Scale Model of the Cerebellum Granular Layer Predicts Circuit Spatio-Temporal Filtering Properties**. Front Cell Neurosci. 2010;4:12.\r\n\r\nFor more information, see the [[Wiki]]\r\n\r\n[![Build Status](https://travis-ci.com/OpenSourceBrain/GranCellSolinasEtAl10.svg?branch=master)](https://travis-ci.com/OpenSourceBrain/GranCellSolinasEtAl10)\r\n",
         "id": 6,
         "identifier": "grancellsolinasetal10",
+        "main_branch": "master",
         "name": "Cerebellar Granule Cell - Solinas et al. 2010"
     },
     "granularlayersolinasnieusdangelo2010": {
@@ -1149,6 +1190,7 @@
         "description": "Cerebellar granular layer network model from: Solinas S., Nieus T, d'Angelo E. (2010) [A Realistic Large-Scale Model of the Cerebellum Granular Layer Predicts Circuit Spatio-Temporal Filtering Properties](http://journal.frontiersin.org/article/10.3389/fncel.2010.00012/abstract). Front Cell Neurosci. 2010;4:12.",
         "id": 126,
         "identifier": "granularlayersolinasnieusdangelo2010",
+        "main_branch": "master",
         "name": "Granular Layer Network Model - Solinas, Nieus & D'Angelo 2010"
     },
     "granule-cell-layer-piasini-2014": {
@@ -1178,6 +1220,7 @@
         "description": "github:README.md\r\n\r\nThis model has been used in pubmed:25123311.",
         "id": 112,
         "identifier": "granule-cell-layer-piasini-2014",
+        "main_branch": "master",
         "name": "Granule Cell Layer - Piasini et al. "
     },
     "granulecell": {
@@ -1207,6 +1250,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/25/shutter98.png)\r\nA project illustrating the behaviour of the cerebellar granule cell model from: Maex, R and De Schutter, E. [Synchronization of Golgi and Granule Cell Firing in a Detailed Network Model of the Cerebellar Granule Cell Layer](http://www.ncbi.nlm.nih.gov/pubmed/9819260) J Neurophysiol, Nov 1998; 80: 2521 - 2537. \r\n\r\nBased on scripts obtained from: http://www.tnb.ua.ac.be/models/network.shtml.\r\n\r\nFor more details see the [[Wiki]].\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/GranuleCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/GranuleCell)\r\n",
         "id": 7,
         "identifier": "granulecell",
+        "main_branch": "master",
         "name": "Cerebellar Granule Cell - Maex De Schutter 1998"
     },
     "granulecellvscs": {
@@ -1235,6 +1279,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/26/steubersaviane.png)\nConversion to NeuroML of a model granule cell developed by Volker Steuber and Chiara Saviane (Silver lab).\n\nBased on a Granule cell model from Michiel Berends, Neural Comp 15, 2531-47 (2005) originally modified by Chiara Saviane and further modified by VS, July 2006.\n",
         "id": 8,
         "identifier": "granulecellvscs",
+        "main_branch": "master",
         "name": "Granule Cell - Steuber, Saviane & Berends"
     },
     "grclayer-caycogajic2017": {
@@ -1262,6 +1307,7 @@
         "description": "github:README.md",
         "id": 187,
         "identifier": "grclayer-caycogajic2017",
+        "main_branch": "master",
         "name": "Granule Cell Layer - CaycoGajicClopathSilver2017"
     },
     "hindmarshrose1984": {
@@ -1290,6 +1336,7 @@
         "description": "The Hindmarsh Rose model consists of a fast spiking subsystem, which is a generalization of the Fitzhugh-Nagumo (aka Bonhoeffer-van der Pol) oscillator, coupled to a slower subsystem which allows the system to fire bursts of spikes.\n\nImplemented according to:\nHindmarsh J. L., and Rose R. M. (1984) A model of neuronal bursting using three coupled first order differential equations. Proc. R. Soc. London, Ser. B 221:87\u2013102.\n",
         "id": 62,
         "identifier": "hindmarshrose1984",
+        "main_branch": "master",
         "name": "Hindmarsh and Rose 1984"
     },
     "hippocampus3ddemo": {
@@ -1317,6 +1364,7 @@
         "description": "github:README.md",
         "id": 145,
         "identifier": "hippocampus3ddemo",
+        "main_branch": "master",
         "name": "Hippocampus 3D Demo"
     },
     "hnn": {
@@ -1344,6 +1392,7 @@
         "description": "github:README.md",
         "id": 262,
         "identifier": "hnn",
+        "main_branch": "master",
         "name": "HNN"
     },
     "hodgkin-huxley-tutorial": {
@@ -1371,6 +1420,7 @@
         "description": "github:README.md",
         "id": 134,
         "identifier": "hodgkin-huxley-tutorial",
+        "main_branch": "master",
         "name": "Hodgkin Huxley Tutorial"
     },
     "izhikevichmodel": {
@@ -1402,6 +1452,7 @@
         "description": "github:README.md\r\n",
         "id": 18,
         "identifier": "izhikevichmodel",
+        "main_branch": "master",
         "name": "Izhikevich Spiking Neuron Model"
     },
     "joglekaretal18": {
@@ -1429,6 +1480,7 @@
         "description": "# JoglekarEtAl18\r\n\r\nInter-areal Balanced Amplification Enhances Signal Propagation in a Large-Scale Circuit Model of the Primate Cortex\r\nMadhura R. Joglekar, Jorge F. Mejia\r\ns, Guangyu Robert Yang, Xiao-Jing Wang\r\n\r\nhttps://www.cell.com/neuron/fulltext/S0896-6273(18)30152-1",
         "id": 252,
         "identifier": "joglekaretal18",
+        "main_branch": "master",
         "name": "Large-Scale Circuit Model of the Primate Cortex - Joglekar et al. 2018"
     },
     "l23dendriticspikes": {
@@ -1459,6 +1511,7 @@
         "description": "github:README.md",
         "id": 122,
         "identifier": "l23dendriticspikes",
+        "main_branch": "master",
         "name": "Dendritic spikes in L2/3 pyramidal cells - Smith et al. 2013"
     },
     "l23pyramidalcelltutorial": {
@@ -1487,6 +1540,7 @@
         "description": "github:README.md",
         "id": 204,
         "identifier": "l23pyramidalcelltutorial",
+        "main_branch": "master",
         "name": "L2/3 Pyramidal Cell Tutorial"
     },
     "l5bpyrcellhayetal2011": {
@@ -1518,6 +1572,7 @@
         "description": "![](https://raw.github.com/OpenSourceBrain/L5bPyrCellHayEtAl2011/master/neuroConstruct/images/large.png)\r\nLayer 5b Pyramidal cell constrained by experimental data on perisomatic firing properties as well as dendritic activity during backpropagation of the action potential.\r\n\r\n\r\nFrom: **Models of Neocortical Layer 5b Pyramidal Cells Capturing a Wide Range of Dendritic and Perisomatic Active Properties**, Etay Hay, Sean Hill, Felix Sch\u00fcrmann, Henry Markram and Idan Segev, [PLoS Comp Biol 2011](http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1002107)\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/L5bPyrCellHayEtAl2011.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/L5bPyrCellHayEtAl2011)\r\n",
         "id": 45,
         "identifier": "l5bpyrcellhayetal2011",
+        "main_branch": "master",
         "name": "Layer 5b Pyramidal cell - Hay et al. 2011"
     },
     "larkumetal2009": {
@@ -1549,6 +1604,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/172/L5Spike.png)\n\nConversion to neuroConstruct/NeuroML of Layer 5 Pyramidal cell model from:\n\nLarkum ME, Nevian T, Sandler M, Polsky A, Schiller J (2009) Synaptic\nintegration in tuft dendrites of layer 5 pyramidal neurons: a new\nunifying principle. Science 325:756-60\n",
         "id": 98,
         "identifier": "larkumetal2009",
+        "main_branch": "master",
         "name": "Synaptic integration in L5 Pyramidal cell - Larkum et al. 2009"
     },
     "m1networkmodel": {
@@ -1577,6 +1633,7 @@
         "description": "github:README.md",
         "id": 155,
         "identifier": "m1networkmodel",
+        "main_branch": "master",
         "name": "M1 Network Model"
     },
     "mainenetalpyramidalcell": {
@@ -1608,6 +1665,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/27/mainen95.png)\r\n\r\nImplementation of the Mainen et al. pyramidal cell model from: Mainen ZF, Joerges J, Huguenard JR, Sejnowski TJ (1995) A model of spike initiation in neocortical pyramidal neurons. [Neuron 15:1427-39](http://www.ncbi.nlm.nih.gov/pubmed/8845165). This project is based on scripts obtained from: http://senselab.med.yale.edu/senselab/modeldb/ShowModel.asp?model=8210\r\n",
         "id": 12,
         "identifier": "mainenetalpyramidalcell",
+        "main_branch": "master",
         "name": "L5 Pyramidal Cell - Mainen et al. 1995"
     },
     "mejiasetal2016": {
@@ -1636,6 +1694,7 @@
         "description": "github:README.md",
         "id": 205,
         "identifier": "mejiasetal2016",
+        "main_branch": "master",
         "name": "Large scale laminar cortical network - Mejias et al. 2016"
     },
     "miglioreetal14_olfactorybulb3d": {
@@ -1666,6 +1725,7 @@
         "description": "github:README.md",
         "id": 123,
         "identifier": "miglioreetal14_olfactorybulb3d",
+        "main_branch": "master",
         "name": "3D Olfactory Bulb - Migliore et al. 2014"
     },
     "modeldbshowcase": {
@@ -1689,6 +1749,7 @@
         "description": "OSB Showcase project for investigating options for interactions between [ModelDB](http://senselab.med.yale.edu/modeldb/) and OSB",
         "id": 110,
         "identifier": "modeldbshowcase",
+        "main_branch": "master",
         "name": "ModelDB Showcase"
     },
     "morrislecarmodel": {
@@ -1718,6 +1779,7 @@
         "description": "Definition in LEMS/NeuroML 2 of the Morris Lecar Model. Code originally contributed by Daniel Salles Chevitarese and Yiyin Zhou.\r\n\r\nFor more information & latest status, see the [[Wiki]]\r\n",
         "id": 30,
         "identifier": "morrislecarmodel",
+        "main_branch": "master",
         "name": "Morris Lecar Model"
     },
     "mouselightshowcase": {
@@ -1746,6 +1808,7 @@
         "description": "github:README.md",
         "id": 184,
         "identifier": "mouselightshowcase",
+        "main_branch": "master",
         "name": "MouseLight Showcase"
     },
     "multicompgrc": {
@@ -1776,6 +1839,7 @@
         "description": "Multicompartmental cerebellar granule cell model.\n\nBased on: Diwakar S, Magistretti J, Goldfarb M, Naldi G, D\\`Angelo E (2009) Axonal Na+ channels ensure fast spike activation and back-propagation in cerebellar granule cells J Neurophysiol 101(2):519-32\n",
         "id": 72,
         "identifier": "multicompgrc",
+        "main_branch": "master",
         "name": "Multicompartmental granule cell - Diwakar et al. 2009"
     },
     "multiscale": {
@@ -1803,6 +1867,7 @@
         "description": "Testing networks at multiple scales",
         "id": 181,
         "identifier": "multiscale",
+        "main_branch": "master",
         "name": "MultiTest"
     },
     "multiscaleisn": {
@@ -1830,6 +1895,7 @@
         "description": "Inhibition Stabilized Networks at multiple scales based on Sadeh et al. 2017 ",
         "id": 195,
         "identifier": "multiscaleisn",
+        "main_branch": "master",
         "name": "MultiscaleISN"
     },
     "muscle_model": {
@@ -1858,6 +1924,7 @@
         "description": "![](http://www.openworm.org/img/OpenWormLogo.png)\r\n\r\nThis project is being developed as part of the [OpenWorm](http://www.openworm.org) project. This is an attempt to convert the model of [Boyle & Cohen, 2008](http://www.sciencedirect.com/science/article/pii/S0303264708001408) into NeuroML format for use on NEURON and other simulators.\r\n\r\nSee [here](/projects/muscle_model/wiki) for more details.\r\n",
         "id": 32,
         "identifier": "muscle_model",
+        "main_branch": "master",
         "name": "Muscle cell model - Boyle & Cohen 2008"
     },
     "musicshowcase": {
@@ -1882,6 +1949,7 @@
         "description": "[MUlti-SImulation Coordinator, MUSIC, ](http://incf.org/core/programs/modeling/projects/music/music-multi-simulation-coordinator/) is a software that allows large scale neuron simulators to communicate during runtime.\n\nThis OSB Showcase project will highlight some of the examples in development to illustrate its functionality.\n",
         "id": 56,
         "identifier": "musicshowcase",
+        "main_branch": "master",
         "name": "MUSIC Showcase"
     },
     "nc_ca1": {
@@ -1912,6 +1980,7 @@
         "description": "CA1 Network Model - Bezaire et al 2016\r\n",
         "id": 178,
         "identifier": "nc_ca1",
+        "main_branch": "master",
         "name": "CA1 Network Model - Bezaire et al 2016"
     },
     "nc_superdeep": {
@@ -1941,6 +2010,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/204/Figure1B.jpg)\r\n\r\nThis model examines the interactions between the pyramidal cells of the superficial and deep layers of CA1. It is featured in: pubmed:24836505. Specifically, this model shows how the experimentally observed differences in synapse strength and number between PV+ basket cells and either superficial and deep pyramidal cells could have significant effects at the network level.\r\n",
         "id": 107,
         "identifier": "nc_superdeep",
+        "main_branch": "master",
         "name": "CA1 Pyramidal Sublayer Microcircuit - Lee et al 2014 "
     },
     "nengoneuroml": {
@@ -1968,6 +2038,7 @@
         "description": "![](http://nengo.ca/sites/nengo.ca/files/logo_ctn.png)\n\nProject to test scenarios for NeuroML & [Nengo](http://nengo.ca) interoperability\n",
         "id": 39,
         "identifier": "nengoneuroml",
+        "main_branch": "master",
         "name": "Nengo - NeuroML interoperability"
     },
     "nestshowcase": {
@@ -1995,6 +2066,7 @@
         "description": "github:README.md",
         "id": 171,
         "identifier": "nestshowcase",
+        "main_branch": "master",
         "name": "NEST Showcase"
     },
     "netpyneshowcase": {
@@ -2019,6 +2091,7 @@
         "description": "github:README.md",
         "id": 153,
         "identifier": "netpyneshowcase",
+        "main_branch": "master",
         "name": "NetPyNE Showcase"
     },
     "neuroconstructshowcase": {
@@ -2044,6 +2117,7 @@
         "description": "![](/attachments/download/111/logoMain.png)\n\nExample projects illustrating the functionality of [neuroConstruct](http://www.neuroconstruct.org/)\n",
         "id": 81,
         "identifier": "neuroconstructshowcase",
+        "main_branch": "master",
         "name": "neuroConstruct Showcase"
     },
     "neuroelectrosciunit": {
@@ -2071,6 +2145,7 @@
         "description": "![](/images/neuroelectro_logo.png)\r\n\r\nA project highlighting some of the possible interactions between OSB and [NeuroElectro](http://neuroelectro.org/) and [SciUnit](https://github.com/rgerkin/sciunit).\r\n\r\nNeuroElectro is one of the key external resources OSB will interact with, see [Interactions with other Neuroinformatics resources](http://www.opensourcebrain.org/projects/neuroinformatics/wiki/Wiki)\r\n",
         "id": 40,
         "identifier": "neuroelectrosciunit",
+        "main_branch": "master",
         "name": "NeuroElectro & SciUnit Showcase"
     },
     "neuroml2": {
@@ -2098,6 +2173,7 @@
         "description": "The standard examples for NeuroML 2 from the repository for the specification.",
         "id": 165,
         "identifier": "neuroml2",
+        "main_branch": "master",
         "name": "NeuroML2 Showcase "
     },
     "neuromllite-showcase": {
@@ -2120,6 +2196,7 @@
         "description": "Work in progress...",
         "id": 193,
         "identifier": "neuromllite-showcase",
+        "main_branch": "master",
         "name": "NeuroMLlite Showcase"
     },
     "neuromorpho": {
@@ -2148,6 +2225,7 @@
         "description": "github:README.md\r\n",
         "id": 42,
         "identifier": "neuromorpho",
+        "main_branch": "master",
         "name": "NeuroMorpho.Org Showcase"
     },
     "neurosciences-repository": {
@@ -2175,6 +2253,7 @@
         "description": "Reproduction of a model of action selection in the basal ganglia (Guthrie et al., 2013)",
         "id": 121,
         "identifier": "neurosciences-repository",
+        "main_branch": "master",
         "name": "Action Selection in the Basal Ganglia - Guthrie et al, 2013"
     },
     "nifshowcase": {
@@ -2198,6 +2277,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/85/nifneurolex.png)\n\nA repository for information, scripts and configuration files which demonstrate the interactions possible between [NIF](https://www.neuinfo.org), [NeuroLex](http://neurolex.org/wiki/Main_Page) and OSB.\n\nSee the [[Wiki]] for more details.\n",
         "id": 66,
         "identifier": "nifshowcase",
+        "main_branch": "master",
         "name": "NIF and NeuroLex Showcase"
     },
     "ninemlshowcase": {
@@ -2226,6 +2306,7 @@
         "description": "![](/attachments/download/53/image_mini.png)\n\nExamples of models in [NineML](http://software.incf.org/software/nineml) (and the related language [SpineML](http://bimpa.group.shef.ac.uk/SpineML/index.php/Home)) and conversion to/from NeuroML/LEMS.\n\nSee the [[Wiki]] for more details.\n",
         "id": 54,
         "identifier": "ninemlshowcase",
+        "main_branch": "master",
         "name": "NineML Showcase"
     },
     "norenbergetal2010_dgbasketcell": {
@@ -2255,6 +2336,7 @@
         "description": "github:README.md",
         "id": 172,
         "identifier": "norenbergetal2010_dgbasketcell",
+        "main_branch": "master",
         "name": "DG Basket Cell - Norenberg et al. 2010"
     },
     "nwbshowcase": {
@@ -2280,6 +2362,7 @@
         "description": "Showcasing the interaction with [Neurodata Without Borders (NWB)](https://www.nwb.org) format experimental data on OSB.",
         "id": 218,
         "identifier": "nwbshowcase",
+        "main_branch": "master",
         "name": "NWB Showcase"
     },
     "olfactory-bulb": {
@@ -2307,6 +2390,7 @@
         "description": "A detailed network model of part of the rat olfactory bulb comprising compartmental mitral, granule and PG cells developed by Aditya Gilra and Upinder S. Bhalla (manuscript in preparation, 16 Apr 2013). The cell morphologies and network connections are in NeuroML v1.8.\n",
         "id": 57,
         "identifier": "olfactory-bulb",
+        "main_branch": "master",
         "name": "Olfactory Bulb"
     },
     "olfactory-bulb-network-model-o-connor-angelo-and-jacob-2012": {
@@ -2337,6 +2421,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/92/Mitral_Cell_Model.png)\r\nA model of olfactory bulb mitral cells connected by apical dendrite gap junctions in a glomerular network\r\n",
         "id": 74,
         "identifier": "olfactory-bulb-network-model-o-connor-angelo-and-jacob-2012",
+        "main_branch": "master",
         "name": "Olfactory Bulb Network Model - O'Connor, Angelo and Jacob 2012"
     },
     "opencortex": {
@@ -2364,6 +2449,7 @@
         "description": "github:README.md",
         "id": 149,
         "identifier": "opencortex",
+        "main_branch": "master",
         "name": "OpenCortex"
     },
     "pinskyrinzelmodel": {
@@ -2393,6 +2479,7 @@
         "description": "Reduced CA3 cell model from [Pinsky & Rinzel, Intrinsic and network rhythmogenesis in a reduced Traub model for CA3 neurons, Journal of Computational Neuroscience, 1994, Volume 1, Issue 1-2, pp 39-60](http://dx.doi.org/10.1007/BF00962717).\r\n\r\nFor more details, see the [Wiki](http://www.opensourcebrain.org/projects/pinskyrinzelmodel/wiki).\r\n\r\n \r\n",
         "id": 49,
         "identifier": "pinskyrinzelmodel",
+        "main_branch": "master",
         "name": "Reduced CA3 model - Pinsky and Rinzel 1994"
     },
     "piriformcortexvanier": {
@@ -2421,6 +2508,7 @@
         "description": "A conversion to NeuroML of the Piriform Cortex pyramidal cell model developed by Mike Vanier on GENESIS, see [here](http://users.cms.caltech.edu/~mvanier/science/parampaper/param.html).\r\n",
         "id": 48,
         "identifier": "piriformcortexvanier",
+        "main_branch": "master",
         "name": "Piriform Cortex Pyramidal Neuron"
     },
     "pospischiletal2008": {
@@ -2452,6 +2540,7 @@
         "description": "Conversion to NeuroML of cell models from: [Minimal Hodgkin\u2013Huxley type models for different classes of cortical and thalamic neurons](http://link.springer.com/article/10.1007/s00422-008-0263-8), Martin Pospischil, Maria Toledo-Rodriguez, Cyril Monier, Zuzanna Piwkowska, Thierry Bal, Yves Fr\u00e9gnac, Henry Markram and Alain Destexhe, Biological Cybernetics, 2008.\r\n",
         "id": 37,
         "identifier": "pospischiletal2008",
+        "main_branch": "master",
         "name": "Minimal HH models - Pospischil et al. 2008"
     },
     "potjansdiesmann2014": {
@@ -2479,6 +2568,7 @@
         "description": "github:README.md",
         "id": 113,
         "identifier": "potjansdiesmann2014",
+        "main_branch": "master",
         "name": "Spiking cortical network model - Potjans and Diesmann 2014"
     },
     "purkinjecell": {
@@ -2508,6 +2598,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/28/shutterbower94.png)\nAn initial implementation in NeuroML of the Purkinje Cell model from De Schutter, E. and Bower, J. M. (1994). Based on Arnd Roth el al\u2019s conversion of the original GENESIS code to NEURON. Note: conversion not fully complete.\n",
         "id": 9,
         "identifier": "purkinjecell",
+        "main_branch": "master",
         "name": "Purkinje Cell - De Schutter and Bower 1994"
     },
     "pyloricnetwork": {
@@ -2536,6 +2627,7 @@
         "description": "Implementation of the pyloric network of the lobster stomatogastric ganglion system of Prinz, Marder, et al.\r\n\r\nWork in progress! For more details see the [[Wiki]].\r\n",
         "id": 69,
         "identifier": "pyloricnetwork",
+        "main_branch": "master",
         "name": "Pyloric pacemaker network - Prinz et al. 2003/04"
     },
     "pynnshowcase": {
@@ -2560,6 +2652,7 @@
         "description": "github:README.md",
         "id": 154,
         "identifier": "pynnshowcase",
+        "main_branch": "master",
         "name": "PyNN Showcase"
     },
     "rothmanetalkoleetalpyrcell": {
@@ -2591,6 +2684,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/29/rothman2009.png)\nA project which was used in Rothman et al. \u201cSynaptic depression enables neuronal gain control\u201d Nature 2009 to demonstrate gain control in realistic cell models. Based on cell model from Kole et al. 2008 (obtained from http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=114394).\n",
         "id": 13,
         "identifier": "rothmanetalkoleetalpyrcell",
+        "main_branch": "master",
         "name": "L5 Pyramidal cell - Rothman et al. 2009"
     },
     "sadehetal2017-inhibitionstabilizednetworks": {
@@ -2618,6 +2712,7 @@
         "description": "github:README.md",
         "id": 194,
         "identifier": "sadehetal2017-inhibitionstabilizednetworks",
+        "main_branch": "master",
         "name": "SadehEtAl2017-InhibitionStabilizedNetworks"
     },
     "sbmlshowcase": {
@@ -2643,6 +2738,7 @@
         "description": "![](/attachments/download/55/Official-sbml-supported-70.jpg)\r\n\r\nOSB showcase of interactions between SBML and NeuroML/LEMS.\r\n\r\nSee the [[Wiki]] for more details.\r\n",
         "id": 59,
         "identifier": "sbmlshowcase",
+        "main_branch": "master",
         "name": "SBML Showcase"
     },
     "spineshowcase": {
@@ -2667,6 +2763,7 @@
         "description": "github:README.md",
         "id": 189,
         "identifier": "spineshowcase",
+        "main_branch": "master",
         "name": "SpineShowcase"
     },
     "striatalspinyprojectionneuron": {
@@ -2696,6 +2793,7 @@
         "description": "[Striatal spiny projection neuron](http://neurolex.org/wiki/Category:Neostriatum_direct_pathway_spiny_neuron) model being developed by Avrama Blackwell. A version of this model in \u201cpure\u201d NeuroML v2.0 is being developed here.\n\nFor more information, see the [[Wiki]]\n",
         "id": 17,
         "identifier": "striatalspinyprojectionneuron",
+        "main_branch": "master",
         "name": "Striatal Spiny Projection Neuron - Blackwell"
     },
     "synapticintegrationdemo": {
@@ -2724,6 +2822,7 @@
         "description": "github:README.md",
         "id": 163,
         "identifier": "synapticintegrationdemo",
+        "main_branch": "master",
         "name": "Synaptic Integration Demo"
     },
     "tcrelay-neuron-in-high-conductance-state-zeldenrust-et-al-2018": {
@@ -2749,6 +2848,7 @@
         "description": "github:README.md",
         "id": 222,
         "identifier": "tcrelay-neuron-in-high-conductance-state-zeldenrust-et-al-2018",
+        "main_branch": "master",
         "name": "TCrelay neuron in high conductance state  - Zeldenrust et al. 2018"
     },
     "thalamocortical": {
@@ -2779,6 +2879,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/125/Column3_S.png)\r\nThis is a project implementing cells from the thalamocortical network model of Traub et al 2005 in NeuroML. Based on the NEURON implementation from: http://senselab.med.yale.edu/ModelDB/ShowModel.asp?model=45539.\r\n\r\nThe [[Wiki]] gives details of running this project with neuroConstruct.\r\n",
         "id": 14,
         "identifier": "thalamocortical",
+        "main_branch": "master",
         "name": "Thalamocortical network - Traub et al. 2005"
     },
     "thevirtualbrainshowcase": {
@@ -2804,6 +2905,7 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/177/Logo_VB.png)\r\n\r\nRepository for an OSB project to show the interaction between neural mass models implemented in [The Virtual Brain](http://www.thevirtualbrain.org) and how they can make use of model based description languages like NeuroML\r\n",
         "id": 104,
         "identifier": "thevirtualbrainshowcase",
+        "main_branch": "master",
         "name": "The Virtual Brain Showcase"
     },
     "tobinetal2017": {
@@ -2831,6 +2933,7 @@
         "description": "github:README.md",
         "id": 207,
         "identifier": "tobinetal2017",
+        "main_branch": "master",
         "name": "Tobin et al. 2017"
     },
     "tvb_neuroml": {
@@ -2857,6 +2960,7 @@
         "description": "Project to test scenarios for [TVB](http://www.thevirtualbrain.org) & NeuroML interoperability\r\n",
         "id": 103,
         "identifier": "tvb_neuroml",
+        "main_branch": "master",
         "name": "TVB NeuroML"
     },
     "v1networkmodels": {
@@ -2885,6 +2989,7 @@
         "description": "<To edit this description, change README.md in the GitHub repository>\r\ngithub:README.md",
         "id": 111,
         "identifier": "v1networkmodels",
+        "main_branch": "master",
         "name": "Network models of V1"
     },
     "vertexshowcase": {
@@ -2912,6 +3017,7 @@
         "description": "github:README.md",
         "id": 130,
         "identifier": "vertexshowcase",
+        "main_branch": "master",
         "name": "VERTEX Showcase"
     },
     "vervaekeetalgolgicellnetwork": {
@@ -2942,6 +3048,7 @@
         "description": "github:README.md\r\n",
         "id": 11,
         "identifier": "vervaekeetalgolgicellnetwork",
+        "main_branch": "master",
         "name": "Golgi Cell Network - Vervaeke et al 2010"
     },
     "vfb_showcase": {
@@ -2969,6 +3076,7 @@
         "description": "![](/attachments/download/46/flyBrain.gif)\r\n\r\nShowcase of some *Drosophila melanogaster* neuronal morphologies processed by [Virtual Fly Brain](http://www.virtualflybrain.org) team. These will likely include examples based on raw data available from http://flybrain.stanford.edu and http://flycircuit.tw.\r\n",
         "id": 43,
         "identifier": "vfb_showcase",
+        "main_branch": "master",
         "name": "Virtual Fly Brain Showcase"
     },
     "vierlingclaassenetal2010": {
@@ -2999,6 +3107,7 @@
         "description": "github:README.md",
         "id": 118,
         "identifier": "vierlingclaassenetal2010",
+        "main_branch": "master",
         "name": "VierlingClaassenEtAl2010"
     },
     "vogelsetal2011": {
@@ -3030,6 +3139,7 @@
         "description": "![](/attachments/download/107/test_full.png)\n\nNetwork model from: Vogels TP, Sprekeler H, Zenke F, Clopath C, Gerstner W (2011) [Inhibitory plasticity balances excitation and inhibition in sensory pathways and memory networks](http://www.sciencemag.org/content/334/6062/1569.abstract). Science 334:1569-73.\n\nSee the [[Wiki]] for more details.\n",
         "id": 68,
         "identifier": "vogelsetal2011",
+        "main_branch": "master",
         "name": "Balanced network with inhibitory plasticity - Vogels et al. 2011"
     },
     "wangbuzsaki1996": {
@@ -3058,6 +3168,7 @@
         "description": "github:README.md",
         "id": 148,
         "identifier": "wangbuzsaki1996",
+        "main_branch": "master",
         "name": "Wang & Buzsaki 1996"
     },
     "weileretal08-laminarcortex": {
@@ -3086,6 +3197,7 @@
         "description": "github:README.md",
         "id": 127,
         "identifier": "weileretal08-laminarcortex",
+        "main_branch": "master",
         "name": "Laminar organization of motor cortex - Weiler et al 2008"
     },
     "wilsoncowan": {
@@ -3115,6 +3227,7 @@
         "description": "github:README.md",
         "id": 198,
         "identifier": "wilsoncowan",
+        "main_branch": "master",
         "name": "Wilson and Cowan model"
     }
 }

@@ -32,7 +32,7 @@ dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
-max_index = 1
+max_index = 2
 
 verbose = True
 
@@ -123,10 +123,15 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             
             if not dry_run:
 
+                desc = osbv1_proj['description']
+                if 'github:README.md' in desc:
+                    desc = ''
+
+
                 return api_instance.osbrepository_id_put(found.osbrepositories[0].id, OSBRepository(
                     uri=osbv1_github,
                     name=osbv1_proj['name'],
-                    summary=osbv1_proj['name'],
+                    summary=desc,
                     tags=tags,
                     default_context=found.osbrepositories[0].default_context,
                     content_types_list=[RepositoryContentType(value="modeling")],
@@ -145,16 +150,21 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             all_added.append("%s, index %i"%(osbv1_github, index))
 
             if not dry_run:
+
+                desc = osbv1_proj['description']
+                if 'github:README.md' in desc:
+                    desc = ''
+
                 return api_instance.osbrepository_post(OSBRepository(
-                    uri=dandiset_url,
-                    name=dandi_api_info.name,
-                    summary=str(dandi_api_info.summary),
+                    uri=osbv1_github,
+                    name=osbv1_proj['name'],
+                    summary=desc,
                     tags=tags,
-                    default_context=dandi_api_info.contexts[-1],
-                    content_types_list=[RepositoryContentType(value="experimental")],
-                    content_types="experimental",
+                    default_context=osbv1_proj['main_branch'],
+                    content_types_list=[RepositoryContentType(value="modeling")],
+                    content_types="modeling",
                     user_id=owner_user_id,
-                    repository_type="dandi",
+                    repository_type="github",
                     auto_sync=True,
                 ))
 

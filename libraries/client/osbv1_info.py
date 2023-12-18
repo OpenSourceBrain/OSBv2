@@ -45,6 +45,7 @@ if __name__ == "__main__":
             info[project.identifier]['name'] = project.name
             info[project.identifier]['identifier'] = project.identifier
             info[project.identifier]['description'] = project.description
+            info[project.identifier]['main_branch'] = 'master'
 
             for cf in custom_fields:
                 cfv = project.get_custom_field(cf)
