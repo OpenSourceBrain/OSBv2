@@ -8,3 +8,4 @@ skaffold.yaml
 .pytest_cache
 /.overrides
 .hypothesis
+/libraries/client/__pycache__ 

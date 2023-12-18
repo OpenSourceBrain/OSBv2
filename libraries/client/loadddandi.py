@@ -32,7 +32,7 @@ dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
-max_index = 100
+max_index = 150
 
 verbose = False
 
@@ -98,8 +98,8 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             for r in found.osbrepositories:
                 if r.uri==dandiset_url:
                     matching_repos.append("URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri))
-            print('Matching: %s'%matching_repos)
             if len(matching_repos) > 1:
+                print('     *** Matching: %s'%matching_repos)
                 err_info = "    More than one match for %s (search: %s):\n" % (dandiset_url, search)
                 for r in found.osbrepositories:
     
