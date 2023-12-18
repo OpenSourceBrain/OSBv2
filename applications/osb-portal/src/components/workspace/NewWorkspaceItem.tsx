@@ -183,7 +183,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
     }
   };
 
-  // default workspace - other - computational modeling, data analysis, interactive development
+  // default workspace - other - computational modeling (NETPYNE), data analysis (NWB Explorer), interactive development (JupyterLab)
   // non default workspace - Create new workspace from repository
   const defaultWorkspace: Workspace = WORKSPACE_TEMPLATES[template];
   return (
