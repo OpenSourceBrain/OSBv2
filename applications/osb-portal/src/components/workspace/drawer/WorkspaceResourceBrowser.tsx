@@ -38,6 +38,7 @@ import {
   bgInputs,
 } from "../../../theme";
 import { ResourceType } from "../../../apiclient/workspaces";
+import { Typography } from "@mui/material";
 
 
 
@@ -45,6 +46,8 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
   padding: 0,
   "& .MuiSvgIcon-root": {
     color: paragraph,
+    width: '1rem', 
+    height: '1rem'
   },
   "&:hover": {
     background: "none",
@@ -57,9 +60,7 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
     color: lightWhite,
   },
   "& .MuiListItemButton-root": {
-    paddingLeft: "2.571rem",
-    paddingTop: 0,
-    paddingBottom: 0,
+    padding: '0.25rem 1rem 0.25rem 2.25rem',
     "&:hover": {
       background: workspaceItemBg,
     },
@@ -85,6 +86,10 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
   "& .active .MuiTypography-root": {
     color: orangeText,
   },
+  "& .MuiListItemText-root": {
+    margin: 0,
+    maxWidth: '10rem'
+  }
 }));
 
 const OSBResourceItem = (props: {
@@ -218,7 +223,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
 
     return (
       <>
-        <ListItemButton onClick={() => setOpen(!open)}>
+        <ListItemButton sx={{ pt: '4px', pb: '4px' }} onClick={() => setOpen(!open)}>
           <SidebarIconButton>
             {open ? (
               <ExpandLess fontSize="small" />
@@ -234,8 +239,9 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               pl: "0.286rem",
             }}
           />
+          <Typography>{resources.length}</Typography>
         </ListItemButton>
-        <Box className="scrollbar">
+        <Box className="scrollbar" sx={{ paddingRight: '0 !important' }}>
           {open &&
             resources.map((resource) => (
               <OSBResourceItem
@@ -256,7 +262,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   return (
     <Box className="verticalFill">
       <Box width="100%" className="verticalFill">
-        <List className="verticalFill">
+        <List className="verticalFill" sx={{ pt: 0, pb: 0 }}>
           {experimentalResources.length > 0 && (
             <ResourceTreeGroup
               resources={experimentalResources}

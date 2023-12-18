@@ -116,7 +116,7 @@ interface WorkspaceProps {
 }
 
 const SidebarBox = styled(Box)(({ theme }) => ({
-  borderRight: `0.085rem solid ${borderColor}`,
+  // borderRight: `0.085rem solid ${borderColor}`,
   width: "100%",
 }));
 
@@ -132,7 +132,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ maxHeight: 480, overflowY: "scroll" }}>{children}</Box>
+        <Box sx={{ maxHeight: 480 }}>{children}</Box>
       )}
     </div>
   );
@@ -142,6 +142,9 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
   padding: 0,
   "& .MuiSvgIcon-root": {
     color: paragraph,
+    width: '1rem',
+    height: '1rem',
+    marginLeft: '0.25rem'
   },
   "&:hover": {
     background: "none",
@@ -198,31 +201,37 @@ export default (props: WorkspaceProps | any) => {
     <>
       {props.open ? (
         <SidebarBox>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            {!hideTabs && (
+          {!hideTabs && (
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
-                value={tabValue}
-                onChange={handleTabChange}
-                variant="fullWidth"
-              >
-                <Tab
-                  label="Workspace"
-                  sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
-                />
-                <Tab
-                  label="My Assets"
-                  sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
-                />
-              </Tabs>
-            )}
+                  value={tabValue}
+                  onChange={handleTabChange}
+                  variant="fullWidth"
+                >
+                  <Tab
+                    label="Workspace"
+                    sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
+                  />
+                  <Tab
+                    label="My Assets"
+                    sx={{ pl: "0.75rem", pr: "0.75rem", fontSize: "0.75rem" }}
+                  />
+                </Tabs>
           </Box>
+          )}
           <TabPanel value={tabValue} index={0}>
             <ListItem
               component="div"
               className="workspace-tab-header"
               disablePadding
+              sx={{
+                marginTop: '0.75rem',
+                marginBottom: '0.75rem'
+              }}
             >
-              <ListItemButton>
+              <ListItemButton sx={{
+                padding: '0.25rem 0.75rem 0.25rem 1rem'
+              }}>
                 <ListItemText
                   primary="Workspace resources"
                   primaryTypographyProps={{
@@ -230,7 +239,7 @@ export default (props: WorkspaceProps | any) => {
                     variant: "body2",
                   }}
                 />
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row">
                   <SidebarIconButton>
                     <Tooltip
                       sx={{ marginLeft: "0.3em" }}
@@ -270,7 +279,9 @@ export default (props: WorkspaceProps | any) => {
                     </>
                   ) : (
                     <Tooltip title="You do not have permissions to modify this workspace. Either clone it or create a new one if you need edit access.">
-                      <LockOutlinedIcon sx={{ color: paragraph }} />
+                      <SidebarIconButton>
+                        <LockOutlinedIcon sx={{ color: paragraph }} />
+                      </SidebarIconButton>
                     </Tooltip>
                   )}
                 </Stack>
