@@ -28,12 +28,11 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False # 
-dry_run = True
+dry_run = False # dry_run = True
 
 index = 0
-min_index = 0
-max_index = 1500
+min_index = 200
+max_index = 202
 
 verbose = False
 

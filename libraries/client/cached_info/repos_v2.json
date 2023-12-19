@@ -643,7 +643,24 @@
             "name": "Electrophysiology data from thalamic and cortical neurons during somatosensation",
             "repository_type": "dandi",
             "summary": "intracellular and extracellular electrophysiology recordings performed on mouse barrel cortex and ventral posterolateral nucleus (vpm) in whisker-based object locating task.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 281,
+                    "tag": "DANDI:000005"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                }
+            ],
             "timestamp_created": "2022-03-31 11:32:50.820944+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000005/draft",
@@ -1902,7 +1919,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.221219.1506",
             "id": 61,
             "name": "Glia Accumulate Evidence that Actions Are Futile and Suppress Unsuccessful Behavior",
             "repository_type": "dandi",
@@ -1947,19 +1964,35 @@
                 {
                     "id": 108,
                     "tag": "zebrafish"
+                },
+                {
+                    "id": 286,
+                    "tag": "DANDI:000350"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 287,
+                    "tag": "Danio rerio - Zebra fish"
                 }
             ],
             "timestamp_created": "2023-01-18 09:37:51.569908+00:00",
             "timestamp_updated": "---",
-            "uri": "https://dandiarchive.org/dandiset/000350",
+            "uri": "https://dandiarchive.org/dandiset/000350/draft",
             "user": {
-                "email": "filippo.ledda@gmail.com",
-                "first_name": "Filippo",
-                "id": "1839ee9a-d481-4261-b7dc-b282c34e0ac6",
-                "last_name": "ledda",
-                "username": "filippo"
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
             },
-            "user_id": "1839ee9a-d481-4261-b7dc-b282c34e0ac6"
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         },
         "62": {
             "auto_sync": true,
@@ -2256,7 +2289,24 @@
             "name": "Mouse anterior lateral motor cortex (ALM) in delay response task",
             "repository_type": "dandi",
             "summary": "Extracellular electrophysiology recordings performed on mouse anterior lateral motor cortex (ALM) in delay response task. Neural activity from two neuron populations, pyramidal track upper and lower, were characterized, in relation to movement execution. Some files, as originally (re)distributed from e.g. http://datasets.datalad.org/?dir=/labs/svoboda/Economo_2018 were found to be broken and would not be able available among reorganized files under sub-* directories.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 283,
+                    "tag": "DANDI:000006"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:27.863281+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000006/draft",
@@ -5951,6 +6001,47 @@
                 "username": "vbragin"
             },
             "user_id": "4158408e-7784-4397-be06-45523e3e105f"
+        },
+        "186": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 186,
+            "name": "Multiphoton imaging in macaque visual cortex (preliminary data)",
+            "repository_type": "dandi",
+            "summary": "Two- and three-photon imaging from V1/V2 labeled with GCaMP6s. Grating stimuli (sf x dir).",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 284,
+                    "tag": "DANDI:000347"
+                },
+                {
+                    "id": 285,
+                    "tag": "Macaca nemestrina - Pig-tailed macaque"
+                }
+            ],
+            "timestamp_created": "2023-12-19 10:12:45.528315+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000347/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         }
     }
 }
