@@ -22,10 +22,10 @@ import styled from "@mui/system/styled";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
-import { CodeBranchIcon, RepositoriesCardIcon } from "../../components/icons";
+import { CodeBranchIcon, RepositoriesCardIcon, GithubCardIcon, FigshareCardIcon, DandiArchiveCardIcon } from "../../components/icons";
 
 //types
-import { OSBRepository } from "../../apiclient/workspaces";
+import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 
 //utils
@@ -101,10 +101,16 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                         justifyContent="center"
                         alignItems="center"
                         display="flex"
-                        mb={2}
+                        mb={4}
                         onClick={() => handleRepositoryClick(repository)}
                       >
-                        <RepositoriesCardIcon />
+                        {repository.repositoryType === RepositoryType.Github ? (
+                          <GithubCardIcon />
+                        ) : repository.repositoryType === RepositoryType.Figshare ? (
+                          <FigshareCardIcon />
+                        ) : repository.repositoryType === RepositoryType.Dandi ? (
+                          <DandiArchiveCardIcon />
+                        ) : (<RepositoriesCardIcon />)}
                       </Box>
 
                       <Box sx={{ px: 1, py: 0 }}>
