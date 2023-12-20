@@ -7,18 +7,10 @@ from cloudharness import log
 from cloudharness import applications
 from cloudharness.auth.exceptions import UserNotFound
 from urllib.parse import parse_qs, urlparse
-from jupyterhub.handlers.pages import SpawnHandler
 
 allowed_chars = set(
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-old_get = SpawnHandler.get
-
-async def get(self, for_user=None, server_name=''):
-    print("get spawn", for_user, server_name)
-    return old_get(self, for_user=None, server_name=server_name)
-
-SpawnHandler.get = get
 
 def affinity_spec(key, value):
     return {
