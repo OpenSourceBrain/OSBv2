@@ -619,7 +619,24 @@
             "name": "Example intracellular ephys data from LNMC & BBP",
             "repository_type": "dandi",
             "summary": "This is a single session showing example intracellular electrophysiology data collected at the Laboratory of Neural Microcircuitry, EPFL. This session holds a variety of different stimulation patterns. \n\nIt also serves as an example of the hierarchy of metadata tables (/general/intracellular_ephys/) and groups (/data_organization) storing sweeps of a complex experimental protocol.\n\nLoad this file in pynwb with load_namespaces = True.\n",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 314,
+                    "tag": "DANDI:000025"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                }
+            ],
             "timestamp_created": "2022-03-31 11:27:55.530573+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000025/draft",
@@ -704,6 +721,22 @@
                 {
                     "id": 21,
                     "tag": "signal processing"
+                },
+                {
+                    "id": 310,
+                    "tag": "DANDI:000021"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2022-04-13 15:06:57.257854+00:00",
@@ -827,16 +860,16 @@
             "repository_type": "github",
             "tags": [
                 {
-                    "id": 17,
-                    "tag": "electrophysiology"
-                },
-                {
                     "id": 25,
                     "tag": "python"
                 },
                 {
                     "id": 26,
                     "tag": "data-analysis"
+                },
+                {
+                    "id": 17,
+                    "tag": "electrophysiology"
                 },
                 {
                     "id": 27,
@@ -2264,6 +2297,18 @@
                 {
                     "id": 128,
                     "tag": "single-neurons"
+                },
+                {
+                    "id": 296,
+                    "tag": "DANDI:000004"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:12.632540+00:00",
@@ -2330,7 +2375,24 @@
             "name": "A cortico-cerebellar loop for motor planning",
             "repository_type": "dandi",
             "summary": "Extracellular recording in ALM",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 297,
+                    "tag": "DANDI:000007"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:29.075043+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000007/draft",
@@ -2356,20 +2418,36 @@
             "summary": "We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. Contained in this dandiset are the intracellular electrophysiological recordings. See Dandiset #35 for an additional dataset, recorded under the physiological temperature. ",
             "tags": [
                 {
+                    "id": 129,
+                    "tag": "Patch-seq"
+                },
+                {
                     "id": 96,
                     "tag": "cortex"
+                },
+                {
+                    "id": 130,
+                    "tag": "motor cortex"
                 },
                 {
                     "id": 97,
                     "tag": "mouse"
                 },
                 {
-                    "id": 129,
-                    "tag": "Patch-seq"
+                    "id": 298,
+                    "tag": "DANDI:000008"
                 },
                 {
-                    "id": 130,
-                    "tag": "motor cortex"
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:30.856436+00:00",
@@ -2395,7 +2473,24 @@
             "name": "Maintenance of persistent activity in a frontal thalamocortical loop",
             "repository_type": "dandi",
             "summary": "We recorded spikes from the ALM and thalamus during tactile discrimination  with a delayed directional response. Here we show that, similar to ALM  neurons, thalamic neurons exhibited selective persistent delay activity  that predicted movement direction. Unilateral photoinhibition of delay  activity in the ALM or thalamus produced contralesional neglect.  Photoinhibition of the thalamus caused a short-latency and near-complete  collapse of ALM activity. Similarly, photoinhibition of the ALM diminished  thalamic activity. Our results show that the thalamus is a circuit hub in  motor preparation and suggest that persistent activity requires reciprocal  excitation across multiple brain areas.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 300,
+                    "tag": "DANDI:000009"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:32.103846+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000009/draft",
@@ -2419,7 +2514,24 @@
             "name": "A motor cortex circuit for motor planning and movement",
             "repository_type": "dandi",
             "summary": "Data from \"A motor cortex circuit for motor planning and movement\" Li et al. Nature 2015",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 301,
+                    "tag": "DANDI:000010"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:33.310029+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000010/draft",
@@ -2443,7 +2555,24 @@
             "name": "Robust neuronal dynamics in premotor cortex during motor planning",
             "repository_type": "dandi",
             "summary": "Data from \"Robust neuronal dynamics in premotor cortex during motor planning\" Nature 2016",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 302,
+                    "tag": "DANDI:000011"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:34.461291+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000011/draft",
@@ -2467,7 +2596,24 @@
             "name": "Kriegstein2020",
             "repository_type": "dandi",
             "summary": "Data from the Kriegstein Lab as part of the BICCN",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
+                    "id": 303,
+                    "tag": "DANDI:000012"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:35.602778+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000012/draft",
@@ -2491,7 +2637,24 @@
             "name": "Low-noise encoding of active touch by layer 4 in the somatosensory cortex",
             "repository_type": "dandi",
             "summary": "Data from \"Low-noise encoding of active touch by layer 4 in the somatosensory cortex\" Hires, Gutnisky et al. Elife 2015",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 304,
+                    "tag": "DANDI:000013"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:36.755612+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000013/draft",
@@ -2515,7 +2678,24 @@
             "name": "A Map of Anticipatory Activity in Mouse Motor Cortex",
             "repository_type": "dandi",
             "summary": "Data from \"A Map of Anticipatory Activity in Mouse Motor Cortex\" Chen et al. Neuron 2017",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 305,
+                    "tag": "DANDI:000015"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:37.917910+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000015/draft",
@@ -2539,7 +2719,20 @@
             "name": "Excitatory and inhibitory subnetworks are equally selective during decision-making and emerge simultaneously during learning",
             "repository_type": "dandi",
             "summary": "This package contains data, in NWB (Neurodata Without Borders) format, from the 4 mice included in \"Najafi, Farzaneh, Gamaleldin F. Elsayed, Robin Cao, Eftychios Pnevmatikakis, Peter E. Latham, John P. Cunningham, and Anne K. Churchland. \"Excitatory and inhibitory subnetworks are equally selective during decision-making and emerge simultaneously during learning.\" Neuron 105, no. 1 (2020): 165-179.\u201d Each NWB file represents the data and metadata associated with one recording session. In each NWB file, the metadata related to the session (mouse name, session date/time, lab/institution name, etc.) can be found under \"general\". Information related to ROI-segmentation such as ROI mask, ROI type (excitatory or inhibitory), poor or good quality, etc. can be found under \"modules/Image-Segmentation/pln-seg\". Trial information (e.g. start, end times, trial types, trial outcomes, etc.) can be found under \"trials\". Recorded trial-segmented neuronal responses aligned to different time event (e.g. stimulus start, animal choice, etc.) can be found under \"modules/ Trial-based-Segmentation\". A jupyter notebook presenting in detail how to work with NWB files is provided at https://github.com/ttngu207/najafi-2018-nwb/blob/master/notebooks/Najafi-2018_example.ipynb.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 306,
+                    "tag": "DANDI:000016"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:39.061106+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000016/draft",
@@ -2565,8 +2758,24 @@
             "summary": "Data from \"Distributed coding of choice, action and engagement across the mouse brain\" Steinmetz et. al Nature 2019",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 131,
                     "tag": "neuropixels"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 307,
+                    "tag": "DANDI:000017"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:40.201705+00:00",
@@ -2594,12 +2803,28 @@
             "summary": "The enclosed data is collected using a high-density 256-channel electrocorticography (ECoG) array implanted in human patients during treatment for epilepsy. The subjects are reading aloud consonant-vowel syllables from a list. The data was collected by Dr. Edward Chang and Dr. Kristofer Bouchard at the University of California, San Francisco, and curated by Dr. Kristofer Bouchard and Dr. Benjamin Dichter.\n\n\nData is organized by subject ID, and each file is a continuous recording session in Neurodata Without Borders (NWB) 2.0 format. Voltage traces are included for each of the recorded 256 channels. Microphone signal was recorded at the time but is removed for HIPAA compliance. Detailed hand-marked annotations are provided which mark what syllable was said, and the times of the start, consonant-vowel transition, and end of each syllable. A rest-period time is also included when the subject was silent, which can be used as a baseline. Hand-marked anatomical labels are included for electrodes in the relevant brain regions. All dates have been removed for HIPAA compliance and replaced with Jan 1, 1900.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
                     "id": 132,
                     "tag": "electrocorticography (ECoG)"
                 },
                 {
                     "id": 133,
                     "tag": "speech production"
+                },
+                {
+                    "id": 308,
+                    "tag": "DANDI:000019"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:41.361544+00:00",
@@ -2627,12 +2852,12 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the mouse visual cortex from the Allen Institute for Brain Science, released in June 2020. The majority of cells in this dataset are GABAergic interneurons, but there are also a small number of glutamatergic neurons from layer 2/3 of the mouse visual cortex.",
             "tags": [
                 {
-                    "id": 97,
-                    "tag": "mouse"
-                },
-                {
                     "id": 129,
                     "tag": "Patch-seq"
+                },
+                {
+                    "id": 97,
+                    "tag": "mouse"
                 },
                 {
                     "id": 134,
@@ -2641,6 +2866,22 @@
                 {
                     "id": 135,
                     "tag": "interneuron"
+                },
+                {
+                    "id": 309,
+                    "tag": "DANDI:000020"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:43.238231+00:00",
@@ -2686,6 +2927,22 @@
                 {
                     "id": 21,
                     "tag": "signal processing"
+                },
+                {
+                    "id": 311,
+                    "tag": "DANDI:000022"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:45.208884+00:00",
@@ -2713,20 +2970,36 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the human neocortex from the Allen Institute for Brain Science, released in June 2020.",
             "tags": [
                 {
-                    "id": 98,
-                    "tag": "human"
-                },
-                {
                     "id": 129,
                     "tag": "Patch-seq"
+                },
+                {
+                    "id": 98,
+                    "tag": "human"
                 },
                 {
                     "id": 136,
                     "tag": "neocortex"
                 },
                 {
-                    "id": 137,
-                    "tag": " layer 2/3"
+                    "id": 312,
+                    "tag": "layer 2/3"
+                },
+                {
+                    "id": 313,
+                    "tag": "DANDI:000023"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:46.392132+00:00",
@@ -3616,16 +3889,16 @@
             "summary": "Recordings made by Jason Chung in the Frank laboratory at UCSF using 64 channel polymer probes across 4 regions in an animal resting in a box. Note that the position data is duplicated, one copy for each epoch.",
             "tags": [
                 {
-                    "id": 17,
-                    "tag": "electrophysiology"
-                },
-                {
                     "id": 181,
                     "tag": "rat, "
                 },
                 {
                     "id": 182,
                     "tag": "polymer probe"
+                },
+                {
+                    "id": 17,
+                    "tag": "electrophysiology"
                 },
                 {
                     "id": 183,
@@ -5525,16 +5798,12 @@
                     "tag": "International Brain Laboratory"
                 },
                 {
-                    "id": 178,
-                    "tag": "decision-making"
+                    "id": 256,
+                    "tag": "multi-probe"
                 },
                 {
                     "id": 255,
                     "tag": "Neuropixels"
-                },
-                {
-                    "id": 256,
-                    "tag": "multi-probe"
                 },
                 {
                     "id": 257,
@@ -5547,6 +5816,10 @@
                 {
                     "id": 259,
                     "tag": "head-fixed"
+                },
+                {
+                    "id": 178,
+                    "tag": "decision-making"
                 },
                 {
                     "id": 260,
@@ -6034,6 +6307,75 @@
             "timestamp_created": "2023-12-19 10:12:45.528315+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000347/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "187": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.230629.1955",
+            "id": 187,
+            "name": "Physiological Properties and Behavioral Correlates of Hippocampal Granule Cells and Mossy Cells",
+            "repository_type": "dandi",
+            "summary": "Data from \"Physiological Properties and Behavioral Correlates of Hippocampal Granule Cells and Mossy Cells\" Senzai, Buzsaki, Neuron 2017. Electrophysiology recordings of hippocampus during theta maze exploration.",
+            "tags": [
+                {
+                    "id": 288,
+                    "tag": "cell types"
+                },
+                {
+                    "id": 289,
+                    "tag": "current source density"
+                },
+                {
+                    "id": 290,
+                    "tag": "laminar recordings"
+                },
+                {
+                    "id": 291,
+                    "tag": "oscillations"
+                },
+                {
+                    "id": 292,
+                    "tag": "mossy cells"
+                },
+                {
+                    "id": 293,
+                    "tag": "granule cells"
+                },
+                {
+                    "id": 294,
+                    "tag": "optogenetics"
+                },
+                {
+                    "id": 295,
+                    "tag": "DANDI:000003"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                }
+            ],
+            "timestamp_created": "2023-12-19 10:15:50.694640+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000003/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",
