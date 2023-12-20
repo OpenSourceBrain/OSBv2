@@ -233,7 +233,6 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
     onToggle: () => void;
   }) => {
     const { label, Icon, open, resources, onToggle } = tprops;
-    // const [open, setOpen] = React.useState(defaultOpen);
 
     return (
       <>
@@ -272,7 +271,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
       </>
     );
   };
-  console.log("resourceOpenState: ", resourceOpenState)
+
   return (
     <Box className="verticalFill">
       <Box width="100%" className="verticalFill">
