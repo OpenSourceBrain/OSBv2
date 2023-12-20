@@ -91,8 +91,14 @@ export const WorkspaceFrame = (props: {
     const userParam = user == null ? "" : `${user.id}`;
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
+    if(applicationDomain) {
+      fetch(`//${applicationDomain}/hub/logout`).then(() => {
+      setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`);
+    });
+    } else {
+      setFrameUrl(`/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
+    }
 
-    setFrameUrl(applicationDomain ? `//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`: `/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
   }, [application]);
 
   const openResource = async () => {
