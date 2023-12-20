@@ -245,9 +245,19 @@
             ],
             "default_context": "master",
             "id": 10,
-            "name": "AllenInstitute & NeuroML",
+            "name": "Allen Institute & NeuroML",
             "repository_type": "github",
-            "tags": [],
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 317,
+                    "tag": "Large scale brain initiative"
+                }
+            ],
             "timestamp_created": "2021-07-02 11:43:01.315856+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/OpenSourceBrain/AllenInstituteNeuroML",
@@ -6376,6 +6386,51 @@
             "timestamp_created": "2023-12-19 10:15:50.694640+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000003/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "188": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 188,
+            "name": "Primary Auditory Cortex network",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 318,
+                    "tag": "Pyramidal cell"
+                },
+                {
+                    "id": 319,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 320,
+                    "tag": "Auditory system"
+                },
+                {
+                    "id": 321,
+                    "tag": "Detailed cell model"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:08:19.848056+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/ACnet2",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",
