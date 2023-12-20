@@ -131,7 +131,8 @@ const OSBResourceItem = (props: {
   };
 
   const handleOpenResource =
-  (e: any) => {
+  (e: any | Event) => {
+    e.preventDefault();
     navigate(
       {pathname: `/workspace/open/${workspaceId}/${resource.type.application.code}`,
       search: `?resource=${encodeURIComponent(resource.name)}`},
@@ -189,6 +190,11 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace, currentResource } = props;
 
   const currentResourceId = currentResource?.id ?? -1;
+  const [resourceOpenState, setResourceOpenState] = React.useState({
+    experimental: currentResource && currentResource.resourceType === ResourceType.E,
+    model: currentResource && currentResource.resourceType === ResourceType.M,
+    notebook: currentResource && currentResource.resourceType === ResourceType.G,
+  });
 
   if (!workspace.resources || workspace.resources.length === 0) {
     return null;
@@ -198,7 +204,12 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
     (resource) => resource.id !== undefined && resource.id !== -1
   );
 
-
+  const toggleResourceGroup = (resourceType: string) => {
+    setResourceOpenState((prev) => ({
+      ...prev,
+      [resourceType]: !prev[resourceType],
+    }));
+  };
 
   const experimentalResources = resources.filter(
     (resource) => resource.resourceType === ResourceType.E
@@ -215,15 +226,16 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const ResourceTreeGroup = (tprops: {
     label: string;
     Icon: JSX.Element;
-    defaultOpen?: boolean;
+    open?: boolean;
     resources: WorkspaceResource[];
+    onToggle: () => void;
   }) => {
-    const { label, Icon, defaultOpen, resources } = tprops;
-    const [open, setOpen] = React.useState(defaultOpen);
+    const { label, Icon, open, resources, onToggle } = tprops;
+    // const [open, setOpen] = React.useState(defaultOpen);
 
     return (
       <>
-        <ListItemButton sx={{ pt: '4px', pb: '4px' }} onClick={() => setOpen(!open)}>
+        <ListItemButton sx={{ pt: '4px', pb: '4px' }} onClick={onToggle}>
           <SidebarIconButton>
             {open ? (
               <ExpandLess fontSize="small" />
@@ -258,7 +270,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
       </>
     );
   };
-
+  console.log("resourceOpenState: ", resourceOpenState)
   return (
     <Box className="verticalFill">
       <Box width="100%" className="verticalFill">
@@ -266,25 +278,28 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           {experimentalResources.length > 0 && (
             <ResourceTreeGroup
               resources={experimentalResources}
-              defaultOpen={currentResource && currentResource.resourceType === ResourceType.E}
+              open={resourceOpenState.experimental}
               label={"Experiment Data"}
               Icon={<AreaChartIcon fontSize="small" />}
+              onToggle={() => toggleResourceGroup('experimental')}
             />
           )}
           {modelResources.length > 0 && (
             <ResourceTreeGroup
               resources={modelResources}
-              defaultOpen={currentResource && currentResource.resourceType === ResourceType.M}
+              open={resourceOpenState.model}
               label={"Models"}
               Icon={<ViewInArIcon fontSize="small" />}
+              onToggle={() => toggleResourceGroup('model')}
             />
           )}
           {notebookResources.length > 0 && (
             <ResourceTreeGroup
               resources={notebookResources}
-              defaultOpen={currentResource && currentResource.resourceType === ResourceType.G}
+              open={resourceOpenState.notebook}
               label={"Notebooks"}
               Icon={<StickyNote2OutlinedIcon fontSize="small" />}
+              onToggle={() => toggleResourceGroup('notebook')}
             />
           )}
         </List>

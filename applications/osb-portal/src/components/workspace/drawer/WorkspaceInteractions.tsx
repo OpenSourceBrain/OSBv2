@@ -132,7 +132,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ maxHeight: 480 }}>{children}</Box>
+        <Box sx={{ maxHeight: 480, overflowY: "auto" }}>{children}</Box>
       )}
     </div>
   );
