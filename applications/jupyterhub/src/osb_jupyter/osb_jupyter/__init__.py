@@ -1,1 +1,1 @@
-from .jupyterhub import change_pod_manifest
+from .osb_jupyterhub import change_pod_manifest
