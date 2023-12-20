@@ -124,7 +124,7 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Box
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -132,9 +132,9 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ maxHeight: 480, overflowY: "auto" }}>{children}</Box>
+        children
       )}
-    </div>
+    </Box>
   );
 }
 

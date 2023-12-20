@@ -88,7 +88,6 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
   },
   "& .MuiListItemText-root": {
     margin: 0,
-    maxWidth: '10rem'
   }
 }));
 
@@ -151,7 +150,10 @@ const OSBResourceItem = (props: {
             visibility: "hidden",
           }}
         >
-          {!active && <DeleteOutlinedIcon fontSize="small" onClick={handleDeleteResource} />}
+          {!active && <Tooltip title="Delete resource" placement="right">
+            <DeleteOutlinedIcon fontSize="small" onClick={handleDeleteResource} />
+            </Tooltip>
+            }
         </SidebarIconButton>
       }
     >
