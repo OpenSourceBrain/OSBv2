@@ -70,20 +70,20 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
+                    "id": 326,
+                    "tag": "DANDI:000293"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 326,
-                    "tag": "DANDI:000293"
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2022-12-16 08:43:13.310387+00:00",
@@ -2097,10 +2097,6 @@
             "summary": "Despite significant progress in understanding neural coding, it remains unclear how the coordinated activity of large populations of neurons relates to what an observer actually perceives. Since neurophysiological differences must underlie differences among percepts, differentiation analysis-quantifying distinct patterns of neurophysiological activity-has been proposed as an \"inside-out\" approach that addresses this question. This methodology contrasts with \"outside-in\" approaches such as feature tuning and decoding analyses, which are defined in terms of extrinsic experimental variables. Here, we used two-photon calcium imaging in mice of both sexes to systematically survey stimulus-evoked neurophysiological differentiation (ND) in excitatory neuronal populations in layers (L)2/3, L4, and L5 across five visual cortical areas (primary, lateromedial, anterolateral, posteromedial, and anteromedial) in response to naturalistic and phase-scrambled movie stimuli. We find that unscrambled stimuli evoke greater ND than scrambled stimuli specifically in L2/3 of the anterolateral and anteromedial areas, and that this effect is modulated by arousal state and locomotion. By contrast, decoding performance was far above chance and did not vary substantially across areas and layers. Differentiation also differed within the unscrambled stimulus set, suggesting that differentiation analysis may be used to probe the ethological relevance of individual stimuli.\n\nFor more details, consult the associated publication : https://doi.org/10.1523/eneuro.0280-21.2021",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 53,
                     "tag": "two photon imaging"
                 },
@@ -2117,12 +2113,16 @@
                     "tag": "openscope"
                 },
                 {
+                    "id": 213,
+                    "tag": "DANDI:000036"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 213,
-                    "tag": "DANDI:000036"
+                    "id": 24,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-16 09:20:09.212509+00:00",
@@ -2545,32 +2545,32 @@
             "summary": "A two photon calcium imaging dataset from Allen Institute measuring responses to full-field drifting gratings (approx. 120x90 degrees of visual space) moving in 4 different directions, at 5 spatial frequencies (0.02, 0.04, 0.08, 0.16, 0.32 cpd), and 5 temporal frequencies (0.5, 1, 2, 4, 8 Hz). The ratio of TF/SF is speed (deg/sec) and the extent to which visual neurons exhibit speed tuning has been shown to vary across some cortical areas (Andermann et al. 2011).\nMouse Cre lines expressing GCaMPf were imaged to record responses of pyramidal neurons across cortical layers (Cux2: layer 2/3; Rorb: layer 4; Rbp4: layer 5; Ntsr1: layer 6) as well as somatostatin inhibitory interneurons (Sst). All Cre lines were imaged in VISp, and some (Cux2 and Sst) were also imaged in VISl, VISal, VISpm, VISam, and VISrl. All experimental sessions took place on the same data collection pipeline as the Allen Brain Observatory (see de Vries, Lecoq, Buice et al. 2020) and have the same visual stimulus monitor calibration and positioning, two photon imaging systems and image processing pipeline, and running wheel to track locomotion. Data are subject to Allen Institute Terms of Use policy, available at: http://www.alleninstitute.org/legal/terms-use/",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 33,
-                    "tag": "visual cortex"
-                },
-                {
                     "id": 79,
                     "tag": "Mouse"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 193,
-                    "tag": "House mouse"
                 },
                 {
                     "id": 222,
                     "tag": "2-photon calcium imaging"
                 },
                 {
+                    "id": 33,
+                    "tag": "visual cortex"
+                },
+                {
                     "id": 223,
                     "tag": "DANDI:000049"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 193,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-16 09:20:20.713691+00:00",
@@ -3368,32 +3368,32 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the human neocortex from the Allen Institute for Brain Science, released in June 2021.",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
+                },
+                {
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 40,
                     "tag": "neocortex"
                 },
                 {
-                    "id": 77,
-                    "tag": "Human"
+                    "id": 245,
+                    "tag": "DANDI:000109"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 245,
-                    "tag": "DANDI:000109"
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 77,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-16 10:12:50.648282+00:00",
@@ -3507,10 +3507,6 @@
             "summary": "This experiment examines how the motor cortex is activated during a finger-tapping task. Participants are asked to either tap their left thumb to fingers, tap their right thumb to fingers, or no cue is given (control). Tapping lasts for 5 seconds and is prompted by an auditory cue. Sensors are placed over the motor cortex as described in the montage section in the link below, short channels are attached to the scalp too. Further details about the experiment (including presentation code) can be found at https://github.com/rob-luke/experiment-fNIRS-tapping.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 97,
                     "tag": "fNIRS"
                 },
@@ -3527,12 +3523,16 @@
                     "tag": "Finger Tapping Task"
                 },
                 {
+                    "id": 249,
+                    "tag": "DANDI:000122"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 249,
-                    "tag": "DANDI:000122"
+                    "id": 24,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-16 10:12:54.299101+00:00",
@@ -3944,32 +3944,32 @@
             "summary": "U01 Lein PatchSeq upload September 2021",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
                 },
                 {
-                    "id": 77,
-                    "tag": "Human"
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 103,
                     "tag": "neocortical"
                 },
                 {
+                    "id": 258,
+                    "tag": "DANDI:000142"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 258,
-                    "tag": "DANDI:000142"
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 77,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:05.609810+00:00",
@@ -4071,28 +4071,28 @@
             "summary": "This dataset contains neural activity and trial information from a tetraplegic human participant performing a brain-computer interface (BCI) finger press task. Neural activity was recorded from a 96-channel Utah array (Blackrock) implanted in the left posterior parietal cortex (PPC) at the junction of the postcentral and intraparietal sulci (PC-IP). On each trial, a finger cue, at a pseudorandom location on a screen, was selected. The participant immediately looked at the cue and pressed the cued finger until decoder feedback was shown (1.5 seconds after the cue).\n\nThis dataset includes sorted unit spiking times, finger cue, in-session classified finger, cue location, and trial timing.",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 104,
                     "tag": "PPC"
+                },
+                {
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 105,
                     "tag": "finger"
                 },
                 {
+                    "id": 261,
+                    "tag": "DANDI:000147"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 261,
-                    "tag": "DANDI:000147"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
                     "id": 262,
@@ -4206,32 +4206,32 @@
             "summary": "The experiment consisted of three cohorts of PVCre, SSTCre, and PVCre/SSTCre mice injected with either AAV5-hSyn-DIO-hM4D(Gi)-mCherry (hM4D) or AAV5-hSyn-DIO-mCherry (empty vector) in DG and CA3, then injected with vehicle or CNO prior to recordings. Recordings from all layers of CA1, CA3, and DG were taken during home cage rest and linear track movement. Data are described in Aery Jones et al, 2021, bioRxiv: \"Dentate Gyrus and CA3 GABAergic Interneurons Bidirectionally Modulate Signatures of Internal and External Drive to CA1\". For more information about this data, please contact Emily Aery Jones, Yadong Huang, or Loren Frank.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
+                    "id": 92,
+                    "tag": "hippocampus"
                 },
                 {
                     "id": 29,
                     "tag": "mouse"
                 },
                 {
-                    "id": 92,
-                    "tag": "hippocampus"
-                },
-                {
                     "id": 106,
                     "tag": "LFP"
+                },
+                {
+                    "id": 265,
+                    "tag": "DANDI:000165"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 193,
-                    "tag": "House mouse"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 265,
-                    "tag": "DANDI:000165"
+                    "id": 193,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:12.864708+00:00",
@@ -4629,32 +4629,32 @@
             "summary": "U01 Lein PatchSeq upload December 2021",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
                 },
                 {
-                    "id": 77,
-                    "tag": "Human"
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 103,
                     "tag": "neocortical"
                 },
                 {
+                    "id": 272,
+                    "tag": "DANDI:000209"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 272,
-                    "tag": "DANDI:000209"
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 77,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:21.773180+00:00",
@@ -4743,14 +4743,6 @@
             "summary": "The hippocampus constructs a map of the environment. How this \u201ccognitive map\u201d is utilized by other brain regions to guide behavior remains unexplored. To examine how neuronal firing patterns in the hippocampus are transmitted and transformed, we recorded neurons in its principal subcortical target, the lateral septum (LS). We observed that LS neurons carry reliable spatial information in the phase of action potentials, relative to hippocampal theta oscillations, while the firing rates of LS neurons remained uninformative. Furthermore, this spatial phase code had an anatomical microstructure within the LS and was bound to the hippocampal spatial code by synchronous gamma frequency cell assemblies. Using a data-driven model, we show that rate-independent spatial tuning arises through the dynamic weighting of CA1 and CA3 cell assemblies. Our findings demonstrate that transformation of the hippocampal spatial map depends on higher-order theta-dependent neuronal sequences.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 35,
-                    "tag": "electrophysiology"
-                },
-                {
                     "id": 92,
                     "tag": "hippocampus"
                 },
@@ -4759,16 +4751,24 @@
                     "tag": "lateral septum"
                 },
                 {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
+                    "id": 35,
+                    "tag": "electrophysiology"
                 },
                 {
                     "id": 275,
                     "tag": "DANDI:000213"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:24.372506+00:00",
@@ -4837,10 +4837,6 @@
             "summary": "The mnemonic functions of hippocampal sharp wave ripples (SPW-Rs) have been studied extensively. Because hippocampal outputs affect not only cortical but also subcortical targets, we examined the impact of SPW-Rs on the firing patterns of lateral septal (LS) neurons in behaving rats. A large fraction of SPW-Rs were temporally locked to high-frequency oscillations (HFOs) (120\u2013180 Hz) in LS, with strongest coupling during non-rapid eye movement (NREM) sleep, followed by waking immobility. However, coherence and spike-local field potential (LFP) coupling between the two structures were low, suggesting that HFOs are generated locally within the LS GABAergic population. This hypothesis was supported by optogenetic induction of HFOs in LS. Spiking of LS neurons was largely independent of the sequential order of spiking in SPW-Rs but instead correlated with the magnitude of excitatory synchrony of the hippocampal output. Thus, LS is strongly activated by SPW-Rs and may convey hippocampal population events to its hypothalamic and brainstem targets.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 92,
                     "tag": "hippocampus"
                 },
@@ -4853,16 +4849,20 @@
                     "tag": "electrophyisology"
                 },
                 {
+                    "id": 277,
+                    "tag": "DANDI:000218"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 277,
-                    "tag": "DANDI:000218"
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:27.133551+00:00",
@@ -5115,32 +5115,32 @@
             "summary": "U01 Lein PatchSeq upload March 2022",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
+                },
+                {
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 103,
                     "tag": "neocortical"
                 },
                 {
+                    "id": 298,
+                    "tag": "DANDI:000228"
+                },
+                {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 298,
-                    "tag": "DANDI:000228"
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-02-16 10:13:34.848105+00:00",
@@ -5864,20 +5864,8 @@
             "summary": "Maternal care, including by non-biological parents, is important for offspring survival. Oxytocin which is released by the hypothalamic paraventricular nucleus (PVN), is a critical maternal hormone. In mice, oxytocin enables neuroplasticity in the auditory cortex for maternal recognition of pup distress. However, it is unclear how initial parental experience promotes hypothalamic signalling and cortical plasticity for reliable maternal care. Here we continuously monitored the behaviour of female virgin mice co-housed with an experienced mother and litter. This documentary approach was synchronized with neural recordings from the virgin PVN, including oxytocin neurons. These cells were activated as virgins were enlisted in maternal care by experienced mothers, who shepherded virgins into the nest and demonstrated pup retrieval. Virgins visually observed maternal retrieval, which activated PVN oxytocin neurons and promoted alloparenting. Thus rodents can acquire maternal behaviour by social transmission, providing a mechanism for adapting the brains of adult caregivers to infant needs via endogenous oxytocin.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 155,
                     "tag": "oxytocin"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 194,
-                    "tag": "Mus musculus - House mouse"
                 },
                 {
                     "id": 292,
@@ -5890,6 +5878,18 @@
                 {
                     "id": 294,
                     "tag": "DANDI:000114"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-12-18 13:28:48.286680+00:00",
@@ -6080,32 +6080,32 @@
             "summary": "The hippocampus has previously been implicated in both cognitive and endocrine functions. We simultaneously measured electrophysiological activity from the hippocampus and interstitial glucose concentrations in the body of freely behaving rats to identify an activity pattern that may link these disparate functions of the hippocampus. Here we report that clusters of sharp wave-ripples recorded from the hippocampus reliably predicted a decrease in peripheral glucose concentrations within about 10 min. This correlation was not dependent on circadian, ultradian or meal-triggered fluctuations, could be mimicked with optogenetically induced ripples in the hippocampus (but not in the parietal cortex) and was attenuated to chance levels by pharmacogenetically suppressing activity of the lateral septum, which is the major conduit between the hippocampus and the hypothalamus. Our findings demonstrate that a function of the sharp wave-ripple is to modulate peripheral glucose homeostasis, and offer a mechanism for the link between sleep disruption and blood glucose dysregulation in type 2 diabetes.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 152,
                     "tag": "glucose"
-                },
-                {
-                    "id": 154,
-                    "tag": "pharmacology"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 205,
-                    "tag": "Rattus norvegicus - Norway rat"
                 },
                 {
                     "id": 302,
                     "tag": "ecephys"
                 },
                 {
+                    "id": 154,
+                    "tag": "pharmacology"
+                },
+                {
                     "id": 303,
                     "tag": "DANDI:000233"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 205,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-12-18 13:29:39.790200+00:00",
@@ -6791,24 +6791,24 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 29,
                     "tag": "mouse"
+                },
+                {
+                    "id": 325,
+                    "tag": "DANDI:000292"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 194,
-                    "tag": "Mus musculus - House mouse"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 325,
-                    "tag": "DANDI:000292"
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:29.692699+00:00",
@@ -6934,20 +6934,20 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 24,
-                    "tag": "NWB"
+                    "id": 330,
+                    "tag": "DANDI:000297"
                 },
                 {
                     "id": 181,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
-                    "id": 330,
-                    "tag": "DANDI:000297"
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-12-18 16:40:35.907148+00:00",
@@ -9112,18 +9112,6 @@
             "summary": "The incorporation of novel information into the hippocampal network is likely be constrained by its innate architecture and internally generated activity patterns. However, the origin, organization, and consequences of such patterns remain poorly understood. Here, we show that hippocampal network dynamics are affected by sequential neurogenesis. We birthdated CA1 pyramidal neurons with in-utero electroporation over 4 embryonic days encompassing the peak of hippocampal neurogenesis, and compared their functional features in freely moving, adult mice. Neurons of the same birthdate displayed distinct connectivity, coactivity across brain states, and assembly dynamics. Same birthdate hippocampal neurons were topographically organized, in that anatomically clustered (<500\u00b5m) neurons exhibited overlapping spatial representations. Overall, the wiring and functional features of CA1 pyramidal neurons reflected a combination of birthdate and the rate of neurogenesis. These observations demonstrate that sequential neurogenesis in embryonic development shapes the preconfigured forms of adult network dynamics.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 194,
-                    "tag": "Mus musculus - House mouse"
-                },
-                {
                     "id": 439,
                     "tag": "Hippocampus"
                 },
@@ -9138,6 +9126,18 @@
                 {
                     "id": 442,
                     "tag": "DANDI:000552"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 194,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-12-18 16:51:51.409405+00:00",
@@ -9206,24 +9206,12 @@
             "summary": "Spontaneous animal behaviour is built from action modules that are concatenated by the brain into sequences. However, the neural mechanisms that guide the composition of naturalistic, self-motivated behaviour remain unknown. Here we show that dopamine systematically fluctuates in the dorsolateral striatum (DLS) as mice spontaneously express sub-second behavioural modules, despite the absence of task structure, sensory cues or exogenous reward. Photometric recordings and calibrated closed-loop optogenetic manipulations during open field behaviour demonstrate that DLS dopamine fluctuations increase sequence variation over seconds, reinforce the use of associated behavioural modules over minutes, and modulate the vigour with which modules are expressed, without directly influencing movement initiation or moment-to-moment kinematics. Although the reinforcing effects of optogenetic DLS dopamine manipulations vary across behavioural modules and individual mice, these differences are well predicted by observed variation in the relationships between endogenous dopamine and module use. Consistent with the possibility that DLS dopamine fluctuations act as a teaching signal, mice build sequences during exploration as if to maximize dopamine. Together, these findings suggest a model in which the same circuits and computations that govern action choices in structured tasks have a key role in sculpting the content of unconstrained, high-dimensional, spontaneous behaviour.",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 444,
+                    "tag": "Basal Ganglia"
                 },
                 {
                     "id": 440,
                     "tag": "Neural circuits"
-                },
-                {
-                    "id": 444,
-                    "tag": "Basal Ganglia"
                 },
                 {
                     "id": 445,
@@ -9232,6 +9220,18 @@
                 {
                     "id": 446,
                     "tag": "DANDI:000559"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-12-18 16:51:53.977911+00:00",
@@ -9382,16 +9382,8 @@
             "summary": "HMBA Lein PatchSeq upload (Q2 2023)",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
                 },
                 {
                     "id": 450,
@@ -9404,6 +9396,14 @@
                 {
                     "id": 452,
                     "tag": "DANDI:000569"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
                     "id": 453,
@@ -9435,24 +9435,12 @@
             "summary": "U01 Lein Patch-seq data upload (Q2 2023)",
             "tags": [
                 {
-                    "id": 7,
-                    "tag": "human"
-                },
-                {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
                 },
                 {
-                    "id": 181,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 262,
-                    "tag": "Homo sapiens - Human"
+                    "id": 7,
+                    "tag": "human"
                 },
                 {
                     "id": 451,
@@ -9461,6 +9449,18 @@
                 {
                     "id": 454,
                     "tag": "DANDI:000570"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 262,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-12-18 16:52:00.540907+00:00",
@@ -10447,16 +10447,8 @@
             "summary": "HMBA Lein PatchSeq upload (Q3 2023)",
             "tags": [
                 {
-                    "id": 24,
-                    "tag": "NWB"
-                },
-                {
                     "id": 27,
                     "tag": "Patch-seq"
-                },
-                {
-                    "id": 181,
-                    "tag": "DANDI"
                 },
                 {
                     "id": 450,
@@ -10469,6 +10461,14 @@
                 {
                     "id": 505,
                     "tag": "DANDI:000635"
+                },
+                {
+                    "id": 181,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 24,
+                    "tag": "NWB"
                 },
                 {
                     "id": 506,
@@ -11641,6 +11641,874 @@
             "timestamp_created": "2023-12-18 18:45:47.281102+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/agmccrei/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "290": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 290,
+            "name": "CA1 Oriens Lacunosum Moleculare - Saraga et al. 2003",
+            "repository_type": "github",
+            "summary": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nSaraga F, Wu CP, Zhang L, Skinner FK (2003) Active Dendrites and Spike Propagation in Multi-compartment Models of Oriens-Lacunosum/Moleculare Hippocampal Interneurons. J Physiol 552(3):673-689",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 553,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 554,
+                    "tag": "CA1"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:01.612075+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/agmccrei/CA1-Oriens-Lacunosum-Moleculare---Saraga-et-al.-2003",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "291": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 291,
+            "name": "CA1 PV+ fast firing cell - Ferguson et al. 2013",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 553,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 555,
+                    "tag": "Interneuron"
+                },
+                {
+                    "id": 556,
+                    "tag": "Izhikevich neuron model"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:02.533028+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FergusonEtAl2013-PVFastFiringCell",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "292": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 292,
+            "name": "CA1 pyramidal cell - Ferguson et al. 2014",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 553,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 554,
+                    "tag": "CA1"
+                },
+                {
+                    "id": 556,
+                    "tag": "Izhikevich neuron model"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:03.253179+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FergusonEtAl2014-CA1PyrCell",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "293": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 293,
+            "name": "CA1 Pyramidal Cell - Migliore et al. 2005",
+            "repository_type": "github",
+            "summary": "![](/attachments/download/1/CA1-spike.PNG)\r\nConversion of [hippocampal CA1 pyramidal cell](http://neurolex.org/wiki/Category:Hippocampus_CA1_pyramidal_cell) from [Migliore et al 2005](http://senselab.med.yale.edu/ModelDB/ShowModel.asp?model=55035).\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell)\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 553,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 554,
+                    "tag": "CA1"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:03.875006+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/CA1PyramidalCell",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "294": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 294,
+            "name": "CATMAID Showcase",
+            "repository_type": "github",
+            "summary": "Project for example NeuroML files generated by [CATMAID](http://www.catmaid.org).\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 550,
+                    "tag": "Neuronal reconstruction"
+                },
+                {
+                    "id": 557,
+                    "tag": "Connectomics"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:04.469476+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/CATMAIDShowcase",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "295": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 295,
+            "name": "OpenWorm C. elegans network model",
+            "repository_type": "github",
+            "summary": "![](http://www.opensourcebrain.org/attachments/download/22/medium.png)\r\n\r\n**The latest version of this model can be found at http://www.opensourcebrain.org/projects/c302**\r\nNote: the development of the OpenWorm model of [C. elegans](http://en.wikipedia.org/wiki/Caenorhabditis_elegans) is taking place at [http://www.openworm.org](http://www.openworm.org).\r\n\r\nA full list of those involved in that project can be found [here](http://www.openworm.org/people.html).\r\n\r\nThe C. elegans 3D model this was derived from was produced by Dr. Christian Grove and Dr. Paul Sternberg at the VirtualWorm project (WormBase, CalTech) and released into the public domain. You can visit the VirtualWorm home page at http://caltech.wormbase.org/virtualworm/ .\r\n\r\nFor details on running this neuroConstruct project see: https://github.com/openworm/OpenWorm/wiki/Running-the-C.-elegans-model-in-neuroConstruct.\r\n\r\nThis is a **work in progress**. Please [get in contact](http://www.openworm.org/contacts.html) for more information.\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 549,
+                    "tag": "OpenWorm"
+                },
+                {
+                    "id": 558,
+                    "tag": "Whole brain model"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:04.983784+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/openworm/CElegansNeuroML",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "296": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 296,
+            "name": "Cerebellar Nucleus Neuron - Steuber et al. 2011",
+            "repository_type": "github",
+            "summary": "![](http://www.opensourcebrain.org/attachments/download/34/medium.png)\r\n\r\n[Deep cerebellar nucleus neuron](http://neurolex.org/wiki/Category:Cerebellum_nucleus_reciprocal_projections_neuron) model from: Determinants of synaptic integration and heterogeneity in rebound firing explored with data-driven models of deep cerebellar nucleus cells. Steuber V, Schultheiss NW, Silver RA, De Schutter E, Jaeger D. J Comput Neurosci. 2011 Jun;30(3):633-58\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 542,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 546,
+                    "tag": "Goldman-Hodgkin-Katz current"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:05.512991+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/CerebellarNucleusNeuron",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "297": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 297,
+            "name": "Cerebellar Golgi Cell - Solinas et al. 2007",
+            "repository_type": "github",
+            "summary": "Multicompartmental model of cerebellar Golgi cell from: Solinas S, Forti L, Cesana E, Mapelli J, De Schutter E, D\u2019Angelo E. **Computational reconstruction of pacemaking and intrinsic electroresponsiveness in cerebellar Golgi cells**. [Front Cell Neurosci. 2007;1:2](http://journal.frontiersin.org/article/10.3389/neuro.03.002.2007/abstract). \r\n\r\nBased on implementation in NEURON taken from: http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=112685.\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 542,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:06.009875+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/SolinasEtAl-GolgiCell",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "298": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 298,
+            "name": "ChannelWorm",
+            "repository_type": "github",
+            "summary": "An OpenWorm repository to integrate data, information, scripts, and models of ion channels in C. elegans",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 549,
+                    "tag": "OpenWorm"
+                },
+                {
+                    "id": 559,
+                    "tag": "C. elegans"
+                },
+                {
+                    "id": 560,
+                    "tag": "Ion channels"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:06.513872+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/openworm/ChannelWorm",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "299": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 299,
+            "name": "Computational Neuroscience Ontology Showcase",
+            "repository_type": "github",
+            "summary": "![](http://www.opensourcebrain.org/attachments/download/103/CNO_image.jpg)\r\nScripts for interacting with the Computational Neuroscience Ontology:\r\nhttp://www.incf.org/programs/modeling/cno\r\n\r\nSee the [[Wiki]] for more details.\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 561,
+                    "tag": "Ontology"
+                },
+                {
+                    "id": 562,
+                    "tag": "Model annotation"
+                },
+                {
+                    "id": 563,
+                    "tag": "Metadata"
+                }
+            ],
+            "timestamp_created": "2023-12-21 18:21:07.000204+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/CNOShowcase",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "300": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 300,
+            "name": "Low Threshold Calcium Currents in TC cells (Destexhe et al 1998)",
+            "repository_type": "github",
+            "summary": "In Destexhe, Neubig, Ulrich, and Huguenard (1998) experiments and models examine low threshold calcium current's (IT, or T-current) distribution in thalamocortical (TC) cells.  Multicompartmental modeling supports the hypothesis that IT currents have a density at least several fold higher in the dendrites than the soma.  The IT current contributes significantly to rebound bursts and is thought to have important network behavior consequences.  See the paper for details. See also http://cns.iaf.cnrs-gif.fr   Correspondance may be addressed to Alain Destexhe: Destexhe@iaf.cnrs-gif.fr",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 565,
+                    "tag": "Dendritic Action Potentials"
+                },
+                {
+                    "id": 566,
+                    "tag": "Bursting"
+                },
+                {
+                    "id": 567,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 568,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 569,
+                    "tag": "Simplified Models"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 572,
+                    "tag": "Calcium dynamics"
+                },
+                {
+                    "id": 573,
+                    "tag": "Rebound firing"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 575,
+                    "tag": "I T low threshold"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2023-12-21 19:19:58.668787+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/ModelDBRepository/279",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "301": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 301,
+            "name": "Influence of dendritic structure on neocortical neuron firing patterns (Mainen and Sejnowski 1996)",
+            "repository_type": "github",
+            "summary": "This package contains compartmental models of four reconstructed neocortical neurons (layer 3 Aspiny, layer 4 Stellate, layer 3 and layer 5 Pyramidal neurons) with active dendritic currents using NEURON.  Running this simulation demonstrates that an entire spectrum of firing patterns can be reproduced in this set of model neurons which share a common distribution of ion channels and differ only in their dendritic geometry. The reference paper is: Z. F. Mainen and T. J. Sejnowski (1996) Influence of dendritic structure on firing pattern in model neocortical neurons.  Nature 382: 363-366. See also http://www.cnl.salk.edu/~zach/methods.html and http://www.cnl.salk.edu/~zach/  More info in readme.txt file below made visible by clicking on the patdemo folder and then on the readme.txt file.",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 578,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 579,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 580,
+                    "tag": "I M"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                }
+            ],
+            "timestamp_created": "2023-12-21 19:21:18.543996+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/ModelDBRepository/2488",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "302": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 302,
+            "name": "Olfactory Bulb Network (Davison et al 2003)",
+            "repository_type": "github",
+            "summary": "A biologically-detailed model of the mammalian olfactory bulb, incorporating \r\nthe mitral and granule cells and the dendrodendritic synapses between them. \r\nThe results of simulation experiments with electrical stimulation agree \r\nclosely in most details with published experimental data. The model predicts \r\nthat the time course of dendrodendritic inhibition is dependent on the \r\nnetwork connectivity as well as on the intrinsic parameters of the synapses. \r\nIn response to simulated odor stimulation, strongly activated mitral cells \r\ntend to suppress neighboring cells, the mitral cells readily synchronize \r\ntheir firing, and increasing the stimulus intensity increases the degree of \r\nsynchronization. For more details, see the reference below.",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 580,
+                    "tag": "I M"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 585,
+                    "tag": "Oscillations"
+                },
+                {
+                    "id": 586,
+                    "tag": "Synchronization"
+                },
+                {
+                    "id": 587,
+                    "tag": "Spatio-temporal Activity Patterns"
+                },
+                {
+                    "id": 588,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 589,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                }
+            ],
+            "timestamp_created": "2023-12-21 19:21:19.729653+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/ModelDBRepository/2730",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "303": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 303,
+            "name": "Olfactory Mitral Cell (Bhalla, Bower 1993)",
+            "repository_type": "github",
+            "summary": "This is a conversion to NEURON of the mitral cell model described in Bhalla \r\nand Bower (1993). \r\nThe original model was written in GENESIS and is available by joining BABEL, the GENESIS users' group here http://www.genesis-sim.org/GENESIS/babel.html",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 568,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 578,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 588,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 589,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                }
+            ],
+            "timestamp_created": "2023-12-21 19:21:20.692262+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/ModelDBRepository/2733",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "304": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 304,
+            "name": "Thalamocortical and Thalamic Reticular Network (Destexhe et al 1996)",
+            "repository_type": "github",
+            "summary": "NEURON model of oscillations in networks of thalamocortical and thalamic reticular neurons in the ferret. (more applications for a model quantitatively identical to previous DLGN model; updated for NEURON v4 and above)",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 572,
+                    "tag": "Calcium dynamics"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 575,
+                    "tag": "I T low threshold"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 578,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 585,
+                    "tag": "Oscillations"
+                },
+                {
+                    "id": 586,
+                    "tag": "Synchronization"
+                },
+                {
+                    "id": 587,
+                    "tag": "Spatio-temporal Activity Patterns"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 592,
+                    "tag": "Sleep"
+                },
+                {
+                    "id": 593,
+                    "tag": "Spindles"
+                },
+                {
+                    "id": 594,
+                    "tag": "I h"
+                }
+            ],
+            "timestamp_created": "2023-12-21 19:23:33.524160+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/ModelDBRepository/3343",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "305": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 305,
+            "name": "Coincidence detection in avian brainstem (Simon et al 1999)",
+            "repository_type": "github",
+            "summary": "A detailed biophysical model of coincidence\r\ndetector neurons in the nucleus laminaris (auditory brainstem) which are\r\npurported to detect interaural time differences (ITDs) from Simon et al 1999.",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 595,
+                    "tag": "Coincidence Detection"
+                },
+                {
+                    "id": 596,
+                    "tag": "Synaptic Integration"
+                }
+            ],
+            "timestamp_created": "2023-12-21 19:23:34.519206+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/ModelDBRepository/3434",
             "user": {
                 "email": "info@opensourcebrain.org",
                 "first_name": "OSB",

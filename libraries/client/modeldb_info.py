@@ -16,6 +16,7 @@ with_gitrepo = 0
 if __name__ == "__main__":
     
     max_num = 10
+    index = 0
 
     if len(sys.argv) >= 2:
         max_num = int(sys.argv[1])
@@ -27,14 +28,16 @@ if __name__ == "__main__":
     models = json.loads(models_json)
     pprint.pprint(models, compact=True)
 
-    for model in models[:max_num]:
-
-        print("\n--------   Model: %s:\n" % (model))
+    selection = models[:max_num]
+    for model in selection:
+        print("\n--------   Model (%i/%i): %s:\n" % (index, len(selection), model))
 
         info[model]= json.loads(get_page('https://modeldb.science/api/v1/models/%s'%model))
-        if info[model]['gitrepo']:
+
+        if 'gitrepo' in info[model] and info[model]['gitrepo']:
             with_gitrepo+=1
            
+        index +=1
     infop = pprint.pprint(info, compact=True)
 
     print("\nThere were %i models, %i of which had gitrepo\n"%(len(info), with_gitrepo))

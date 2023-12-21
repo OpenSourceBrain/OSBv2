@@ -15,9 +15,15 @@ def lookup_user(uid, url):
             return user
             
 
-def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None):
+def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None, modeldb_info=None):
     
     tags = []
+
+    if modeldb_info is not None:
+        tags.append({"tag": 'ModelDB'})
+        for category in ["model_concept", "currents","modeling_application"]:
+            for v in modeldb_info[category]["value"]:
+                tags.append({"tag": v["object_name"]})
 
     if osbv1_info is not None:
         tags.append({"tag": 'OSBv1'})
