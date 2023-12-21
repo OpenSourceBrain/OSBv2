@@ -870,16 +870,16 @@
             "repository_type": "github",
             "tags": [
                 {
+                    "id": 17,
+                    "tag": "electrophysiology"
+                },
+                {
                     "id": 25,
                     "tag": "python"
                 },
                 {
                     "id": 26,
                     "tag": "data-analysis"
-                },
-                {
-                    "id": 17,
-                    "tag": "electrophysiology"
                 },
                 {
                     "id": 27,
@@ -5909,21 +5909,25 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 37,
-                    "tag": "neuroml"
+                    "id": 38,
+                    "tag": "OpenWorm"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
                 }
             ],
             "timestamp_created": "2023-05-16 13:22:31.638553+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/openworm/c302",
             "user": {
-                "email": "p.gle.eson@gmail.com",
-                "first_name": "Pat6",
-                "id": "6bd142c3-05c1-4509-9cd6-5475af86bc46",
-                "last_name": "GleeTest",
-                "username": "padraig6"
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
             },
-            "user_id": "6bd142c3-05c1-4509-9cd6-5475af86bc46"
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         },
         "174": {
             "auto_sync": true,
@@ -6431,6 +6435,273 @@
             "timestamp_created": "2023-12-20 16:08:19.848056+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/OpenSourceBrain/ACnet2",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "189": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 189,
+            "name": "L5 Pyramidal Neuron - Almog and Korngreen 2014",
+            "repository_type": "github",
+            "summary": "Conversion to neuroConstruct and NeuroML of the L5 Pyramidal cell model described in:\n\nAlmog M, Korngreen A (2014) [A Quantitative Description of Dendritic Conductances and Its Application to Dendritic Excitation in Layer 5 Pyramidal Neurons](http://www.jneurosci.org/content/34/1/182) J Neurosci 34(1):182-196\n",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 318,
+                    "tag": "Pyramidal cell"
+                },
+                {
+                    "id": 319,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 321,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 322,
+                    "tag": "Goldman-Hodgkin-Katz current"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:37.235236+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/korngreen-pyramidal",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "190": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 190,
+            "name": "Arbor Showcase",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 32,
+                    "tag": "Showcase"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 323,
+                    "tag": "Arbor"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:37.768398+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/ArborShowcase",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "191": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 191,
+            "name": "Reduced L5 Pyramidal Cell - Bahl et al. 2012 ",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:38.333332+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/BahlEtAl2012_ReducedL5PyrCell",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "192": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 192,
+            "name": "Blender to NeuroML for C elegans connectome",
+            "repository_type": "github",
+            "summary": "Test of Blender to NeuroML conversion\n",
+            "tags": [
+                {
+                    "id": 38,
+                    "tag": "OpenWorm"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:38.965040+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/openworm/Blender2NeuroML",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "193": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 193,
+            "name": "Blue Brain Project Showcase",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 317,
+                    "tag": "Large scale brain initiative"
+                },
+                {
+                    "id": 318,
+                    "tag": "Pyramidal cell"
+                },
+                {
+                    "id": 321,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 324,
+                    "tag": "Neuronal reconstruction"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:39.418884+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/BlueBrainProjectShowcase",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "194": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 194,
+            "name": "Sparsely connected spiking neuron network - Brunel 2000",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 325,
+                    "tag": "Point neuron network"
+                },
+                {
+                    "id": 326,
+                    "tag": "Integrate and fire neuron"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:39.860805+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/Brunel2000",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "195": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 195,
+            "name": "CA1 Oriens Lacunosum Moleculare - Lawrence et al. 2006",
+            "repository_type": "github",
+            "summary": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nLawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. J Neurosci 26:12325-38",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 327,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 328,
+                    "tag": "CA1"
+                },
+                {
+                    "id": 329,
+                    "tag": "Interneuron"
+                }
+            ],
+            "timestamp_created": "2023-12-20 16:09:40.597357+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/agmccrei/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",
