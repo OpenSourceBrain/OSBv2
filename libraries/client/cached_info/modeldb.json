@@ -1,0 +1,1554 @@
+{
+    "279": {
+        "class_id": 19,
+        "created": "2001-01-01T00:00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 245,
+                    "object_name": "I T low threshold"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                }
+            ]
+        },
+        "gitrepo": true,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 279,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33744,
+                    "object_name": "Destexhe, Alain [Destexhe at iaf.cnrs-gif.fr]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3629,
+                    "object_name": "Dendritic Action Potentials"
+                },
+                {
+                    "object_id": 3630,
+                    "object_name": "Bursting"
+                },
+                {
+                    "object_id": 3631,
+                    "object_name": "Ion Channel Kinetics"
+                },
+                {
+                    "object_id": 3637,
+                    "object_name": "Parameter Fitting"
+                },
+                {
+                    "object_id": 3638,
+                    "object_name": "Simplified Models"
+                },
+                {
+                    "object_id": 3640,
+                    "object_name": "Influence of Dendritic Geometry"
+                },
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                },
+                {
+                    "object_id": 98012,
+                    "object_name": "Calcium dynamics"
+                },
+                {
+                    "object_id": 136252,
+                    "object_name": "Rebound firing"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4161,
+                    "object_name": "Destexhe A, Neubig M, Ulrich D, Huguenard J (1998)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "279_1",
+                    "name": "Burst behavior in single-compartment model"
+                },
+                {
+                    "id": "279_2",
+                    "name": "Burst behavior in 3-compartment model"
+                },
+                {
+                    "id": "279_3",
+                    "name": "Burst behavior in detailed cell model"
+                },
+                {
+                    "id": "279_4",
+                    "name": "Voltage-clamp in detailed cell model"
+                },
+                {
+                    "id": "279_5",
+                    "name": "Voltage-clamp in dissociated cell model"
+                }
+            ],
+            "default": "279_1"
+        },
+        "name": "Low Threshold Calcium Currents in TC cells (Destexhe et al 1998)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 262,
+                    "object_name": "Thalamus geniculate nucleus/lateral principal GLU cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "In Destexhe, Neubig, Ulrich, and Huguenard (1998) experiments and models examine low threshold calcium current's (IT, or T-current) distribution in thalamocortical (TC) cells.  Multicompartmental modeling supports the hypothesis that IT currents have a density at least several fold higher in the dendrites than the soma.  The IT current contributes significantly to rebound bursts and is thought to have important network behavior consequences.  See the paper for details. See also http://cns.iaf.cnrs-gif.fr   Correspondance may be addressed to Alain Destexhe: Destexhe@iaf.cnrs-gif.fr"
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181344,
+                    "object_name": "279_4"
+                },
+                {
+                    "object_id": 181345,
+                    "object_name": "279_5"
+                },
+                {
+                    "object_id": 181346,
+                    "object_name": "279_2"
+                },
+                {
+                    "object_id": 181347,
+                    "object_name": "279_3"
+                },
+                {
+                    "object_id": 181348,
+                    "object_name": "279_1"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 275
+        },
+        "ver_date": "2015-01-02T22:01:45",
+        "ver_number": 24
+    },
+    "2487": {
+        "class_id": 19,
+        "created": "2001-04-05T22:35:35",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 243,
+                    "object_name": "I L high threshold"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 249,
+                    "object_name": "I K,leak"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 2405,
+                    "object_name": "I Potassium"
+                }
+            ]
+        },
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2487,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33739,
+                    "object_name": "Davison, Andrew [Andrew.Davison at iaf.cnrs-gif.fr]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3637,
+                    "object_name": "Parameter Fitting"
+                },
+                {
+                    "object_id": 3638,
+                    "object_name": "Simplified Models"
+                },
+                {
+                    "object_id": 245690,
+                    "object_name": "Olfaction"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4036,
+                    "object_name": "Davison AP, Feng J, Brown D (2000)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "2487_1",
+                    "name": "Stimulate soma with 0.2 uA/cm2"
+                },
+                {
+                    "id": "2487_2",
+                    "name": "Stimulate soma with 1.6 uA/cm2"
+                },
+                {
+                    "id": "2487_3",
+                    "name": "Stimulate glomerulus with 0.2 uA/cm2"
+                },
+                {
+                    "id": "2487_4",
+                    "name": "Stimulate glomerulus with 1.6 uA/cm2"
+                }
+            ],
+            "default": "2487_1"
+        },
+        "name": "Olfactory Mitral Cell (Davison et al 2000)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 267,
+                    "object_name": "Olfactory bulb main mitral GLU cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "A four-compartment model of a mammalian olfactory bulb mitral cell, reduced \r\nfrom the complex 286-compartment model described by Bhalla and Bower (1993).  \r\nThe compartments are soma/axon, secondary dendrites, primary dendrite shaft \r\nand primary dendrite tuft. The reduced model runs 75 or more times faster \r\nthan the full model, making its use in large, realistic network models of the \r\nolfactory bulb practical."
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181441,
+                    "object_name": "2487_4"
+                },
+                {
+                    "object_id": 181443,
+                    "object_name": "2487_2"
+                },
+                {
+                    "object_id": 181444,
+                    "object_name": "2487_3"
+                },
+                {
+                    "object_id": 181445,
+                    "object_name": "2487_1"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 304
+        },
+        "ver_date": "2022-05-27T18:13:12.8",
+        "ver_number": 14
+    },
+    "2488": {
+        "class_id": 19,
+        "created": "2001-04-05T22:36:18",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 250,
+                    "object_name": "I M"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 2405,
+                    "object_name": "I Potassium"
+                }
+            ]
+        },
+        "gitrepo": true,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2488,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33763,
+                    "object_name": "Mainen, Zach [Mainen at cshl.edu]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3543,
+                    "object_name": "Activity Patterns"
+                },
+                {
+                    "object_id": 3639,
+                    "object_name": "Active Dendrites"
+                },
+                {
+                    "object_id": 3640,
+                    "object_name": "Influence of Dendritic Geometry"
+                },
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4252,
+                    "object_name": "Mainen ZF, Sejnowski TJ (1996)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "2488_1",
+                    "name": "1a. L3 Aspiny"
+                },
+                {
+                    "id": "2488_2",
+                    "name": "1b. L4 Stellate"
+                },
+                {
+                    "id": "2488_3",
+                    "name": "1c. L3 Pyramid"
+                },
+                {
+                    "id": "2488_4",
+                    "name": "1d. L5 Pyramid"
+                },
+                {
+                    "id": "2488_5",
+                    "name": "2"
+                }
+            ],
+            "default": "2488_4"
+        },
+        "name": "Influence of dendritic structure on neocortical neuron firing patterns (Mainen and Sejnowski 1996)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 265,
+                    "object_name": "Neocortex L5/6 pyramidal GLU cell"
+                },
+                {
+                    "object_id": 266,
+                    "object_name": "Neocortex L2/3 pyramidal GLU cell"
+                },
+                {
+                    "object_id": 52425,
+                    "object_name": "Myelinated neuron"
+                },
+                {
+                    "object_id": 114635,
+                    "object_name": "Neocortex spiny stellate cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "This package contains compartmental models of four reconstructed neocortical neurons (layer 3 Aspiny, layer 4 Stellate, layer 3 and layer 5 Pyramidal neurons) with active dendritic currents using NEURON.  Running this simulation demonstrates that an entire spectrum of firing patterns can be reproduced in this set of model neurons which share a common distribution of ion channels and differ only in their dendritic geometry. The reference paper is: Z. F. Mainen and T. J. Sejnowski (1996) Influence of dendritic structure on firing pattern in model neocortical neurons.  Nature 382: 363-366. See also http://www.cnl.salk.edu/~zach/methods.html and http://www.cnl.salk.edu/~zach/  More info in readme.txt file below made visible by clicking on the patdemo folder and then on the readme.txt file."
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181358,
+                    "object_name": "2488_4"
+                },
+                {
+                    "object_id": 181361,
+                    "object_name": "2488_1"
+                },
+                {
+                    "object_id": 181363,
+                    "object_name": "2488_3"
+                },
+                {
+                    "object_id": 181364,
+                    "object_name": "2488_2"
+                },
+                {
+                    "object_id": 181648,
+                    "object_name": "2488_5"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 315
+        },
+        "ver_date": "2018-11-16T15:29:16.747",
+        "ver_number": 24
+    },
+    "2730": {
+        "class_id": 19,
+        "created": "2001-05-16T10:13:42",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 243,
+                    "object_name": "I L high threshold"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 249,
+                    "object_name": "I K,leak"
+                },
+                {
+                    "object_id": 250,
+                    "object_name": "I M"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 2405,
+                    "object_name": "I Potassium"
+                }
+            ]
+        },
+        "gitrepo": true,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2730,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33739,
+                    "object_name": "Davison, Andrew [Andrew.Davison at iaf.cnrs-gif.fr]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3634,
+                    "object_name": "Oscillations"
+                },
+                {
+                    "object_id": 3635,
+                    "object_name": "Synchronization"
+                },
+                {
+                    "object_id": 3636,
+                    "object_name": "Spatio-temporal Activity Patterns"
+                },
+                {
+                    "object_id": 245690,
+                    "object_name": "Olfaction"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 22120,
+                    "object_name": "Davison AP, Feng J, Brown D (2003)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3536,
+                    "object_name": "Realistic Network"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "2730_1",
+                    "name": "Fig 2 (Olfactory nerve shock)"
+                }
+            ],
+            "default": "2730_1"
+        },
+        "name": "Olfactory Bulb Network (Davison et al 2003)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 267,
+                    "object_name": "Olfactory bulb main mitral GLU cell"
+                },
+                {
+                    "object_id": 3979,
+                    "object_name": "Olfactory bulb main interneuron granule MC GABA cell"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": [
+                {
+                    "object_id": 232,
+                    "object_name": "Gaba"
+                },
+                {
+                    "object_id": 233,
+                    "object_name": "Glutamate"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "A biologically-detailed model of the mammalian olfactory bulb, incorporating \r\nthe mitral and granule cells and the dendrodendritic synapses between them. \r\nThe results of simulation experiments with electrical stimulation agree \r\nclosely in most details with published experimental data. The model predicts \r\nthat the time course of dendrodendritic inhibition is dependent on the \r\nnetwork connectivity as well as on the intrinsic parameters of the synapses. \r\nIn response to simulated odor stimulation, strongly activated mitral cells \r\ntend to suppress neighboring cells, the mitral cells readily synchronize \r\ntheir firing, and increasing the stimulus intensity increases the degree of \r\nsynchronization. For more details, see the reference below."
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": [
+                {
+                    "object_id": 202,
+                    "object_name": "GabaA"
+                },
+                {
+                    "object_id": 205,
+                    "object_name": "AMPA"
+                },
+                {
+                    "object_id": 206,
+                    "object_name": "NMDA"
+                }
+            ]
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 115950,
+                    "object_name": "Olfactory bulb"
+                }
+            ]
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181170,
+                    "object_name": "2730_2"
+                },
+                {
+                    "object_id": 181171,
+                    "object_name": "2730_1"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 302
+        },
+        "ver_date": "2022-05-27T18:15:00.95",
+        "ver_number": 50
+    },
+    "2733": {
+        "class_id": 19,
+        "created": "2001-05-18T15:26:52",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 243,
+                    "object_name": "I L high threshold"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 249,
+                    "object_name": "I K,leak"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 2405,
+                    "object_name": "I Potassium"
+                }
+            ]
+        },
+        "gitrepo": true,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2733,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33739,
+                    "object_name": "Davison, Andrew [Andrew.Davison at iaf.cnrs-gif.fr]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3543,
+                    "object_name": "Activity Patterns"
+                },
+                {
+                    "object_id": 3637,
+                    "object_name": "Parameter Fitting"
+                },
+                {
+                    "object_id": 3640,
+                    "object_name": "Influence of Dendritic Geometry"
+                },
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                },
+                {
+                    "object_id": 245690,
+                    "object_name": "Olfaction"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4675,
+                    "object_name": "Bhalla US, Bower JM (1993)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "2733",
+                    "name": "ModelView"
+                }
+            ],
+            "default": "2733"
+        },
+        "name": "Olfactory Mitral Cell (Bhalla, Bower 1993)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 267,
+                    "object_name": "Olfactory bulb main mitral GLU cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "This is a conversion to NEURON of the mitral cell model described in Bhalla \r\nand Bower (1993). \r\nThe original model was written in GENESIS and is available by joining BABEL, the GENESIS users' group here http://www.genesis-sim.org/GENESIS/babel.html"
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 303
+        },
+        "ver_date": "2022-05-27T18:16:56.667",
+        "ver_number": 29
+    },
+    "2796": {
+        "class_id": 19,
+        "created": "2001-06-05T17:25:25",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                }
+            ]
+        },
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2796,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33737,
+                    "object_name": "Migliore, Michele [Michele.Migliore at Yale.edu]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3629,
+                    "object_name": "Dendritic Action Potentials"
+                },
+                {
+                    "object_id": 3639,
+                    "object_name": "Active Dendrites"
+                },
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 26749,
+                    "object_name": "Migliore M, Hoffman DA, Magee JC, Johnston D (1999)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "CA1 pyramidal neuron (Migliore et al 1999)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 258,
+                    "object_name": "Hippocampus CA1 pyramidal GLU cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Hippocampal CA1 pyramidal neuron model from the paper \r\nM.Migliore, D.A Hoffman, J.C. Magee and D. Johnston (1999) Role of an A-type K+ conductance in the back-propagation of action potentials in the dendrites of hippocampal pyramidal neurons,\r\nJ. Comput. Neurosci. 7, 5-15. Instructions are provided in the below README file.Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model."
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181645,
+                    "object_name": "2796_2"
+                },
+                {
+                    "object_id": 181646,
+                    "object_name": "2796_1"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 165
+        },
+        "ver_date": "2015-01-02T22:00:55",
+        "ver_number": 15
+    },
+    "2798": {
+        "class_id": 19,
+        "created": "2001-06-05T17:29:19",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                }
+            ]
+        },
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2798,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33737,
+                    "object_name": "Migliore, Michele [Michele.Migliore at Yale.edu]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3542,
+                    "object_name": "Pattern Recognition"
+                },
+                {
+                    "object_id": 3632,
+                    "object_name": "Coincidence Detection"
+                },
+                {
+                    "object_id": 3633,
+                    "object_name": "Temporal Pattern Generation"
+                },
+                {
+                    "object_id": 3635,
+                    "object_name": "Synchronization"
+                },
+                {
+                    "object_id": 83539,
+                    "object_name": "Attractor Neural Network"
+                },
+                {
+                    "object_id": 245690,
+                    "object_name": "Olfaction"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4655,
+                    "object_name": "Hopfield JJ, Brody CD (2001)"
+                },
+                {
+                    "object_id": 4656,
+                    "object_name": "Hopfield JJ, Brody CD (2000)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3536,
+                    "object_name": "Realistic Network"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "2798_1",
+                    "name": "before training"
+                },
+                {
+                    "id": "2798_2",
+                    "name": "after training"
+                },
+                {
+                    "id": "2798_3",
+                    "name": "random activation"
+                }
+            ],
+            "default": "2798_1"
+        },
+        "name": "Hopfield and Brody model (Hopfield, Brody 2000)",
+        "notes": {
+            "attr_id": 24,
+            "value": "NEURON implementation of the Hopfield and Brody model from the papers:\r\nJJ Hopfield and CD Brody (2000)\r\nJJ Hopfield and CD Brody (2001). Instructions are provided in the below readme.txt file."
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": [
+                {
+                    "object_id": 205,
+                    "object_name": "AMPA"
+                },
+                {
+                    "object_id": 213,
+                    "object_name": "Gaba"
+                }
+            ]
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 115949,
+                    "object_name": "Olfactory cortex"
+                }
+            ]
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181642,
+                    "object_name": "2798_1"
+                },
+                {
+                    "object_id": 181643,
+                    "object_name": "2798_3"
+                },
+                {
+                    "object_id": 181644,
+                    "object_name": "2798_2"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 263
+        },
+        "ver_date": "2018-10-17T14:23:47.05",
+        "ver_number": 13
+    },
+    "2937": {
+        "class_id": 19,
+        "created": "2001-06-19T18:03:07",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 250,
+                    "object_name": "I M"
+                },
+                {
+                    "object_id": 251,
+                    "object_name": "I h"
+                }
+            ]
+        },
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 2937,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33737,
+                    "object_name": "Migliore, Michele [Michele.Migliore at Yale.edu]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3629,
+                    "object_name": "Dendritic Action Potentials"
+                },
+                {
+                    "object_id": 3639,
+                    "object_name": "Active Dendrites"
+                },
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                },
+                {
+                    "object_id": 64174,
+                    "object_name": "Synaptic Integration"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4236,
+                    "object_name": "Migliore M (1996)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "CA1 Pyramidal Neuron: slow Na+ inactivation (Migliore 1996)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 258,
+                    "object_name": "Hippocampus CA1 pyramidal GLU cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Model files from the paper: \r\nM. Migliore, Modeling the attenuation and failure of action potentials in \r\nthe dendrites of hippocampal neurons, Biophys. J. 71:2394-403 (1996).  Please see the below readme file for installation and use instructions. Contact michele.migliore@pa.ibf.cnr.it\r\n if you have any questions about the implementation of the model."
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181303,
+                    "object_name": "2937_2"
+                },
+                {
+                    "object_id": 181304,
+                    "object_name": "2937_3"
+                },
+                {
+                    "object_id": 181305,
+                    "object_name": "2937_1"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 162
+        },
+        "ver_date": "2015-01-02T22:06:31",
+        "ver_number": 13
+    },
+    "3167": {
+        "class_id": 19,
+        "created": "2001-08-27T10:14:31",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                }
+            ]
+        },
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "id": 3167,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33737,
+                    "object_name": "Migliore, Michele [Michele.Migliore at Yale.edu]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3638,
+                    "object_name": "Simplified Models"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 3891,
+                    "object_name": "Migliore M, Messineo L, Cardaci M, Ayala GF (2001)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "3167",
+                    "name": "ModelView"
+                }
+            ],
+            "default": "3167"
+        },
+        "name": "Estimation and Production of Time Intervals (Migliore et al 2001)",
+        "notes": {
+            "attr_id": 24,
+            "value": "NEURON model files from the paper \r\nM. Migliore, L. Messineo, M. Cardaci, G.F. Ayala, \r\nQuantitative modeling of perception and production of time intervals, J.Neurophysiol. 86, 2754-2760 (2001). Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model."
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": [
+                {
+                    "object_id": 205,
+                    "object_name": "AMPA"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 239
+        },
+        "ver_date": "2015-07-26T07:44:54.557",
+        "ver_number": 12
+    },
+    "3263": {
+        "class_id": 19,
+        "created": "2001-09-20T14:50:19",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 243,
+                    "object_name": "I L high threshold"
+                },
+                {
+                    "object_id": 244,
+                    "object_name": "I N"
+                },
+                {
+                    "object_id": 245,
+                    "object_name": "I T low threshold"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 250,
+                    "object_name": "I M"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                }
+            ]
+        },
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": true
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 3263,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 33737,
+                    "object_name": "Migliore, Michele [Michele.Migliore at Yale.edu]"
+                }
+            ]
+        },
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3630,
+                    "object_name": "Bursting"
+                },
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                },
+                {
+                    "object_id": 64174,
+                    "object_name": "Synaptic Integration"
+                }
+            ]
+        },
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 4307,
+                    "object_name": "Migliore M, Cook EP, Jaffe DB, Turner DA, Johnston D (1995)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "modelviews": {
+            "all": [
+                {
+                    "id": "3263_1",
+                    "name": "burst"
+                },
+                {
+                    "id": "3263_2",
+                    "name": "no-burst short"
+                },
+                {
+                    "id": "3263_3",
+                    "name": "no-burst long"
+                }
+            ],
+            "default": "3263_1"
+        },
+        "name": "CA3 Pyramidal Neuron (Migliore et al 1995)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 259,
+                    "object_name": "Hippocampus CA3 pyramidal GLU cell"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Model files from the paper:\r\nM. Migliore, E. Cook, D.B. Jaffe, D.A. Turner and D. Johnston, Computer\r\nsimulations of morphologically reconstructed CA3 hippocampal neurons, J.\r\nNeurophysiol. 73, 1157-1168 (1995).\r\n\r\nDemonstrates how the same cell could be bursting or non bursting according to the Ca-independent conductance densities. Includes calculation of intracellular Calcium.  Instructions are provided in the below README file. Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model."
+        },
+        "runprotocols": {
+            "attr_id": 613,
+            "value": [
+                {
+                    "object_id": 181579,
+                    "object_name": "3263_1"
+                },
+                {
+                    "object_id": 181581,
+                    "object_name": "3263_3"
+                },
+                {
+                    "object_id": 181582,
+                    "object_name": "3263_2"
+                }
+            ]
+        },
+        "simPFid": {
+            "attr_id": 488,
+            "value": 180
+        },
+        "ver_date": "2015-01-02T22:07:07",
+        "ver_number": 14
+    }
+}

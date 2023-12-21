@@ -224,18 +224,19 @@
             "id": 9,
             "name": "NetPyNE source code",
             "repository_type": "github",
+            "summary": "",
             "tags": [],
             "timestamp_created": "2021-07-02 11:29:33.074854+00:00",
             "timestamp_updated": "---",
-            "uri": "https://github.com/Neurosim-lab/netpyne",
+            "uri": "https://github.com/suny-downstate-medical-center/netpyne",
             "user": {
-                "email": "p.gleeson@gmail.com",
-                "first_name": "Padraig",
-                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
-                "last_name": "Gleeson",
-                "username": "padraig"
+                "email": "filippo.ledda@gmail.com",
+                "first_name": "Filippo",
+                "id": "1839ee9a-d481-4261-b7dc-b282c34e0ac6",
+                "last_name": "ledda",
+                "username": "filippo"
             },
-            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+            "user_id": "1839ee9a-d481-4261-b7dc-b282c34e0ac6"
         },
         "10": {
             "auto_sync": true,

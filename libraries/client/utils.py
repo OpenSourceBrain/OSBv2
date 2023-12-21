@@ -1,8 +1,9 @@
 
 known_users = {'Padraig_v2':"0103eaaf-6a34-4509-a025-14367a52aa2b", 
+               'Padraig_test_v2': '6bd142c3-05c1-4509-9cd6-5475af86bc46',
+               'Filippo_v2': '1839ee9a-d481-4261-b7dc-b282c34e0ac6',
                'Padraig_v2dev': "7089f659-90ad-4ed9-9715-2327f7e2e72f",
                'Filippo_v2dev': 'a2514035-c47f-4d8a-b22b-081d91a5ce6b',
-               'Filippo_v2': '1839ee9a-d481-4261-b7dc-b282c34e0ac6',
                'Simao_v2dev': 'ee8a31d7-d54d-413c-a4c9-e140cf77404f',
                'OSBAdmin_v2dev': '095e311e-336f-47d6-b4f6-16f6dd771a8d'}
 
