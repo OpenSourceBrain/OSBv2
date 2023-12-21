@@ -92,9 +92,7 @@ export const WorkspaceFrame = (props: {
     const type = application.subdomain.slice(0, 4);
     document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
     if(applicationDomain) {
-      fetch(`//${applicationDomain}/hub/logout`).then(() => {
       setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`);
-    });
     } else {
       setFrameUrl(`/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
     }
