@@ -272,8 +272,10 @@ export default (props: WorkspaceActionsMenuProps) => {
             <DeleteDialog
               open={showDeleteWorkspaceDialog}
               setOpen={setShowDeleteWorkspaceDialog}
-              handleDeleteWorkspace={handleDeleteWorkspace}
-              workspace={props.workspace}
+              handleDeleteCallback={handleDeleteWorkspace}
+              navigateToPath="/"
+              title={'Delete Workspace "' + props.workspace.name + '"'}
+              description={'You are about to delete Workspace "' + props.workspace.name + '". This action cannot be undone. Are you sure?'}
             />
           )
         }
