@@ -109,6 +109,7 @@ export const RepositoryPage = (props: any) => {
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
   const [error, setError] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [resetChecked, setResetChecked] = React.useState<boolean>(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
   const [createdWorkspaceConfirmationContent, setCreatedWorkspaceConfirmationContent] = React.useState({
@@ -127,6 +128,7 @@ export const RepositoryPage = (props: any) => {
     if (showWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
+      setResetChecked(true);
     }
   };
 
@@ -135,6 +137,7 @@ export const RepositoryPage = (props: any) => {
     if (showExistingWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
+      setResetChecked(true);
     }
   };
 
@@ -401,6 +404,8 @@ export const RepositoryPage = (props: any) => {
               r && setRepository({ ...repository, ...r })
             }
             user={user}
+            resetChecked={resetChecked}
+            setResetChecked={setResetChecked}
           />
         </>
       )}
