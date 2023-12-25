@@ -49,6 +49,7 @@ import { styled } from "@mui/system";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
+import ThumbnailUploadArea from "../common/ThumbnailUploadArea";
 
 const DEFAULT_CONTEXTS = ["main", "master"];
 
@@ -613,6 +614,14 @@ export const EditRepoDialog = ({
             onChange={(e) => handleInput(e, "summary")}
             view={{ html: false, menu: true, md: true }}
             renderHTML={(text: string) => <RepositoryMarkdownViewer text={text} />}
+          />
+        </Box>
+        <Box>
+          <ThumbnailUploadArea
+            thumbnail={ }
+            setThumbnai={ }
+            thumbnailPreview={ }
+            thumbnailError={ }
           />
         </Box>
       </DialogContent>
