@@ -68,7 +68,7 @@ class OSBErrorBoundary extends React.Component<OSBErrorBoundaryProps, OwnState> 
     if (nextProps.error) {
       return { ...prevState, hasError: 'true', message: nextProps.error };
     }
-    return null;
+    return { ...prevState };
   }
 
   render() {
