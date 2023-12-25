@@ -98,8 +98,13 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return q_base
 
     def filter_by_tags(self, tags, q_base):
-        q_base = q_base.join(self.model.tags).filter(
-            func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
+        q_base = q_base.join(self.model.tags)
+        filters = []
+        for i_tag in tags.split("+"):
+            filters.append(q_base.filter(
+                func.lower(Tag.tag) == func.lower(i_tag)))
+        q_base = q_base.intersect(*filters)
+
         return q_base
 
     def filter_by_search_tags(self, filter, q_base, q_base_by_name_description):
