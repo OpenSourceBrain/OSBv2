@@ -140,12 +140,16 @@ const RepositoryPageDetails = ({
   checkedChanged,
   user,
   onAction,
+  resetChecked,
+  setResetChecked
 }: {
   repository: OSBRepository;
   openRepoUrl: () => void;
   checkedChanged: (checked: RepositoryResourceNode[]) => any;
   user: UserInfo;
   onAction: (r: OSBRepository) => void;
+  resetChecked: boolean;
+  setResetChecked: (value: boolean) => any;
 }) => {
   const [currentPath, setCurrentPath] = React.useState<
     RepositoryResourceNode[]
@@ -182,6 +186,7 @@ const RepositoryPageDetails = ({
     }
     setChecked({ ...checked });
     checkedChanged(Object.values(checked));
+    setResetChecked(false);
   };
 
   const addToCurrentPath = (n: RepositoryResourceNode) => {
@@ -192,8 +197,10 @@ const RepositoryPageDetails = ({
     if (value) {
       setChecked(resourcesListObject);
       checkedChanged(resourcesList);
+      setResetChecked(false);
     } else {
       setChecked({});
+      checkedChanged([])
     }
   };
 
@@ -208,6 +215,12 @@ const RepositoryPageDetails = ({
   const handleCloseDialog = () => {
     setRepositoryEditorOpen(false);
   };
+
+  React.useEffect(() => {
+    if(resetChecked){
+      setChecked({})
+    }
+  },[resetChecked])
 
   return (
     repository && (

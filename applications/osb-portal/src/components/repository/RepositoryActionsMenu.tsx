@@ -16,6 +16,8 @@ import { styled } from "@mui/styles";
 import { chipBg } from "../../theme";
 import IconButton from "@mui/material/IconButton";
 import RepositoryService from "../../service/RepositoryService";
+import DeleteDialog from "../dialogs/DeleteDialog";
+
 
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
@@ -37,6 +39,7 @@ const ThreeDotButton = styled(Button)(({ theme }) => ({
 export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
+  const [showDeleteRepositoryDialog, setShowDeleteRepositoryDialog] = React.useState(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
   const navigate = useNavigate();
@@ -96,7 +99,10 @@ export default (props: RepositoryActionsMenuProps) => {
         {canEdit && (
         <MenuItem
               className="open-repository"
-              onClick={handleDeleteRepository}
+            onClick={() => {
+              setShowDeleteRepositoryDialog(true);
+              setAnchorEl(null);
+            }}
             >
               Delete
             </MenuItem>
@@ -113,6 +119,19 @@ export default (props: RepositoryActionsMenuProps) => {
           repository={props.repository}
         />
       )}
+
+      {
+        showDeleteRepositoryDialog && (
+          <DeleteDialog
+            open={showDeleteRepositoryDialog}
+            setOpen={setShowDeleteRepositoryDialog}
+            handleDeleteCallback={handleDeleteRepository}
+            navigateToPath={'/repositories'}
+            title={'Delete Repository "' + props.repository.name + '"'}
+            description={'You are about to delete Repository "' + props.repository.name + '". This action cannot be undone. Are you sure?'}
+          />
+        )
+      }
     </>
   );
 };
