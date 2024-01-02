@@ -2429,32 +2429,32 @@
             "summary": "We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. Contained in this dandiset are the intracellular electrophysiological recordings. See Dandiset #35 for an additional dataset, recorded under the physiological temperature. ",
             "tags": [
                 {
-                    "id": 129,
-                    "tag": "Patch-seq"
-                },
-                {
-                    "id": 96,
-                    "tag": "cortex"
-                },
-                {
-                    "id": 130,
-                    "tag": "motor cortex"
-                },
-                {
-                    "id": 97,
-                    "tag": "mouse"
-                },
-                {
-                    "id": 298,
-                    "tag": "DANDI:000008"
+                    "id": 10,
+                    "tag": "NWB"
                 },
                 {
                     "id": 11,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 10,
-                    "tag": "NWB"
+                    "id": 96,
+                    "tag": "cortex"
+                },
+                {
+                    "id": 97,
+                    "tag": "mouse"
+                },
+                {
+                    "id": 129,
+                    "tag": "Patch-seq"
+                },
+                {
+                    "id": 130,
+                    "tag": "motor cortex"
+                },
+                {
+                    "id": 298,
+                    "tag": "DANDI:000008"
                 },
                 {
                     "id": 299,
@@ -2863,12 +2863,20 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the mouse visual cortex from the Allen Institute for Brain Science, released in June 2020. The majority of cells in this dataset are GABAergic interneurons, but there are also a small number of glutamatergic neurons from layer 2/3 of the mouse visual cortex.",
             "tags": [
                 {
-                    "id": 129,
-                    "tag": "Patch-seq"
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
                 },
                 {
                     "id": 97,
                     "tag": "mouse"
+                },
+                {
+                    "id": 129,
+                    "tag": "Patch-seq"
                 },
                 {
                     "id": 134,
@@ -2879,20 +2887,12 @@
                     "tag": "interneuron"
                 },
                 {
-                    "id": 309,
-                    "tag": "DANDI:000020"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
                     "id": 282,
                     "tag": "House mouse"
+                },
+                {
+                    "id": 309,
+                    "tag": "DANDI:000020"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:43.238231+00:00",
@@ -2981,12 +2981,24 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the human neocortex from the Allen Institute for Brain Science, released in June 2020.",
             "tags": [
                 {
-                    "id": 129,
-                    "tag": "Patch-seq"
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
                 },
                 {
                     "id": 98,
                     "tag": "human"
+                },
+                {
+                    "id": 129,
+                    "tag": "Patch-seq"
                 },
                 {
                     "id": 136,
@@ -2999,18 +3011,6 @@
                 {
                     "id": 313,
                     "tag": "DANDI:000023"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 94,
-                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:46.392132+00:00",
@@ -3037,6 +3037,10 @@
             "repository_type": "dandi",
             "summary": "Magnetic resonance imaging (MRI) is used to establish a macroscopic reference coordinate system of laminar and cytoarchitectural boundaries. Cell counting is obtained with both traditional immunohistochemistry, to provide a stereological gold standard, and with a custom-made inverted confocal light-sheet fluorescence microscope (LSM) for 3D imaging at cellular resolution. Finally, polarization-sensitive optical coherence tomography (PSOCT) enables registration of the distorted histological cell typing obtained with LSM to the MRI-based atlas coordinate system.",
             "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
                 {
                     "id": 138,
                     "tag": "multi-modal imaging"
@@ -3068,6 +3072,10 @@
                 {
                     "id": 145,
                     "tag": "Stereology"
+                },
+                {
+                    "id": 330,
+                    "tag": "DANDI:000026"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:50.716843+00:00",
@@ -3097,6 +3105,22 @@
                 {
                     "id": 146,
                     "tag": "development"
+                },
+                {
+                    "id": 331,
+                    "tag": "DANDI:000027"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:51.878012+00:00",
@@ -3122,7 +3146,24 @@
             "name": "Simulated cortical Neuropixels recording with ground truth",
             "repository_type": "dandi",
             "summary": "A 10 minute Neuropixels recording simulated using the MEArec Python package (Buccino et al., 2020). The recording contains the spiking activity of 250 biophysically detailed neurons (200 excitatory and 50 inhibitory cells from the Neocortical Micro Circuit Portal with independent Poisson firing patterns, and additive Gaussian noise with 10uV standard deviation.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 332,
+                    "tag": "DANDI:000028"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:42:53.033182+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000028/draft",
@@ -3141,15 +3182,31 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.221107.2344",
+            "default_context": "0.231017.2004",
             "id": 86,
             "name": "Test dataset for development purposes",
             "repository_type": "dandi",
-            "summary": "Should be ignored by regular mortals, and not relied upon being static or ever correct.\n\u0414\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u0432\u0432\u0435\u0434\u0435\u043d\u043e \u043d\u0430 \u0410\u043d\u0433\u043b\u0438\u0439\u0441\u043a\u043e\u043c, \u043d\u043e \u043f\u043e\u0447\u0435\u043c\u0443 \u0431\u044b \u043d\u0430\u043c \u043d\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u0441\u044e \u044d\u0442\u0443 \u043a\u0443\u0445\u043d\u044e \n\u0394\u0419\u05e7\u0645\u0e57\u3042\nabcdefg",
+            "summary": "Should be ignored by regular mojgjhhj.  fjrtalddgdfgdfgs, and not relied upon being static or ever correct.\n\u0414\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u0432\u0432\u0435\u0434\u0435\u043d\u043e \u043d\u0430 \u0410\u043d\u0433\u043b\u0438\u0439\u0441\u043a\u043e\u043c, \u043d\u043e \u043f\u043e\u0447\u0435\u043c\u0443 \u0431\u044b \u043d\u0430\u043c \u043d\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u0441\u044e \u044d\u0442\u0443 \u043a\u0443\u0445\u043d\u044e \n\u0394\u0419\u05e7\u0645\u0e57\u3042\nabcdefghi",
             "tags": [
                 {
                     "id": 146,
                     "tag": "development"
+                },
+                {
+                    "id": 333,
+                    "tag": "DANDI:000029"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 334,
+                    "tag": "Macaca mulatta - Rhesus monkey"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:54.240971+00:00",
@@ -3177,12 +3234,28 @@
             "summary": "SpikeInterface is a Python framework designed to make the analysis of extracellular electrophysiology data more accessible and standardized. The SpikeInterface documentation can be found at https://spikeinterface.readthedocs.io/en/latest/.\n\nThis dataset contains all recordings analysed in the paper: \"SpikeInterface, a unified framework for spike sorting.\" Alessio P. Buccino, Cole L. Hurwitz, Samuel Garcia, Jeremy Magland, Joshua H. Siegle, Roger Hurwitz, Matthias H. Hennig, eLife - doi: https://doi.org/10.7554/eLife.61834; ",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 147,
                     "tag": "Spike Sorting"
                 },
                 {
                     "id": 148,
                     "tag": "extracellular electrophysiology"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 335,
+                    "tag": "DANDI:000034"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:55.664784+00:00",
@@ -3210,6 +3283,14 @@
             "summary": " We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. This dataset contains rectangular stimulation of cells under temperature-controlled conditions (34 \u2103). See Dandiset #8 for the main dataset, recorded under the room temperature.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 96,
                     "tag": "cortex"
                 },
@@ -3224,6 +3305,14 @@
                 {
                     "id": 130,
                     "tag": "motor cortex"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 336,
+                    "tag": "DANDI:000035"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:56.881625+00:00",
@@ -3244,12 +3333,20 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230515.1917",
             "id": 89,
-            "name": "Allen Institute Openscope - Meaningful project",
+            "name": "Allen Institute Openscope - Measuring Stimulus-Evoked Neurophysiological Differentiation in Distinct Populations of Neurons in Mouse Visual Cortex",
             "repository_type": "dandi",
             "summary": "Despite significant progress in understanding neural coding, it remains unclear how the coordinated activity of large populations of neurons relates to what an observer actually perceives. Since neurophysiological differences must underlie differences among percepts, differentiation analysis-quantifying distinct patterns of neurophysiological activity-has been proposed as an \"inside-out\" approach that addresses this question. This methodology contrasts with \"outside-in\" approaches such as feature tuning and decoding analyses, which are defined in terms of extrinsic experimental variables. Here, we used two-photon calcium imaging in mice of both sexes to systematically survey stimulus-evoked neurophysiological differentiation (ND) in excitatory neuronal populations in layers (L)2/3, L4, and L5 across five visual cortical areas (primary, lateromedial, anterolateral, posteromedial, and anteromedial) in response to naturalistic and phase-scrambled movie stimuli. We find that unscrambled stimuli evoke greater ND than scrambled stimuli specifically in L2/3 of the anterolateral and anteromedial areas, and that this effect is modulated by arousal state and locomotion. By contrast, decoding performance was far above chance and did not vary substantially across areas and layers. Differentiation also differed within the unscrambled stimulus set, suggesting that differentiation analysis may be used to probe the ethological relevance of individual stimuli.\n\nFor more details, consult the associated publication : https://doi.org/10.1523/eneuro.0280-21.2021",
             "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
                 {
                     "id": 149,
                     "tag": "two photon imaging"
@@ -3265,6 +3362,10 @@
                 {
                     "id": 152,
                     "tag": "openscope"
+                },
+                {
+                    "id": 337,
+                    "tag": "DANDI:000036"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:58.022918+00:00",
@@ -3285,11 +3386,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230426.0054",
             "id": 90,
-            "name": "Allen Institute Openscope - Credit Assignment project",
+            "name": "Allen Institute Openscope - Responses to inconsistent stimuli in somata and distal apical dendrites in primary visual cortex",
             "repository_type": "dandi",
-            "summary": "This dataset was collected for the Credit Assignment project, as part of the Allen Institute for Brain Science's OpenScope project, and is published in Gillon et al., 2021, bioRxiv.\n\nEach session file includes: (1) ROI dF/F traces, (2) ROI masks, (3) running velocity traces, (4) pupil diameter traces, (5) stimulus parameters, and (6) stimulus frame images.\n\nBriefly, mice were habituated to head-fixation on a running disc over a period of 11 days. Over the last 6 days, mice were presented with repeating stimulus sequences, with expected features. These sessions are not included in the dataset, as imaging was not performed.\n\nFollowing habituation, sequences with unexpected features were introduced over three sessions, while two-photon calcium imaging was performed in pyramidal neurons of primary visual cortex (VisP). Specifically, recordings for each mouse were made in one of four planes: L2/3 somata, L5 somata, L2/3 distal apical dendrites or L5 distal apical dendrites. \n\nAs mice gained experience with the unexpected sequences, responses to these events were found to evolve in opposite ways in the dendritic and somatic compartments.\n\nDataset includes 13 subjects, and at least 3 sessions per subject. Dataset includes sessions that were excluded from analysis for quality control reasons. See metadata Github repository for information on each session.",
+            "summary": "This dataset was collected for the Credit Assignment project, as part of the Allen Institute for Brain Science's OpenScope project. The most up-to-date links to the publications associated with this dataset (a dataset descriptor paper and an analysis paper) can be found by going to the metadata Github repository, linked below.\n\nBriefly, mice were habituated to head-fixation on a running disc over a period of 11 days. Over the last 6 days, mice were presented with repeating stimulus sequences, with consistent features. These sessions are not included in the dataset, as imaging was not performed. Following habituation, sequences with inconsistent features were introduced over three sessions, while two-photon calcium imaging was performed in pyramidal neurons of primary visual cortex (VisP). Specifically, recordings for each mouse were made in one of four planes: L2/3 somata, L5 somata, L2/3 distal apical dendrites or L5 distal apical dendrites. As mice gained experience with the inconsistent sequences, responses to these events were found to evolve in opposite ways in the dendritic and somatic compartments.\n\nThe dataset includes 50 sessions total, recorded in 13 subjects, with at least 3 sessions per subject. Each session file includes: **(1)** ROI dF/F traces, **(2)** ROI masks, **(3)** ROI tracking information (where applicable), **(4)** running velocity traces, **(5)** pupil diameter traces, **(6)** pupil centroid position traces in x and y, **(7)** stimulus parameters. Note that gaze was not computed for this dataset. What is provided is the position of the pupil centroid in the pupil recording videos. In addition, a second, slightly larger version of each file was created, also including: **(8)** stimulus frame images (identifiable by `+image` in the file name). Lastly, a third, much larger version of each file was created, also including: **(9)** the motion corrected imaging stack (identifiable by `_obj-raw` in the file name).\n\nCertain sessions in this dataset were excluded from our analyses for quality control reasons. They are provided here, as the reasons we excluded them from our analyses may not pose a problem for all use cases. The metadata Github repository, linked below, provides detailed information about each session. ",
             "tags": [
                 {
                     "id": 153,
@@ -3334,6 +3435,22 @@
                 {
                     "id": 162,
                     "tag": "credit assignment"
+                },
+                {
+                    "id": 338,
+                    "tag": "DANDI:000037"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:59.193357+00:00",
@@ -3354,12 +3471,20 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210902.2328",
+            "default_context": "0.230223.1216",
             "id": 91,
             "name": "Allen Institute \u2013 Contrast tuning in mouse visual cortex with calcium imaging",
             "repository_type": "dandi",
             "summary": "A two photon calcium imaging dataset from Allen Institute measuring responses to full-field drifting gratings (approx. 120x90 degrees of visual space) of 8 directions and 6 contrasts (5%, 10%, 20%, 40%, 60%, 80%). Mouse Cre lines expressing GCaMP6f were imaged to record responses of   pyramidal neurons across cortical layers (Cux2: layer 2/3; Rorb: layer 4; Rbp4: layer 5; Ntsr1: layer 6) as well as inhibitory interneurons (Vip and Sst). All experimental sessions took place on the same data collection pipeline as the Allen Brain Observatory (see http://observatory.brain-map.org/visualcoding) and have the same visual stimulus monitor calibration and positioning, two photon imaging systems and image processing pipeline, and running wheel to track locomotion.\n\n Data are subject to Allen Institute Terms of Use policy, available at: http://www.alleninstitute.org/legal/terms-use/",
             "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
                 {
                     "id": 134,
                     "tag": "visual cortex"
@@ -3383,6 +3508,14 @@
                 {
                     "id": 167,
                     "tag": "gain control"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 339,
+                    "tag": "DANDI:000039"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:00.367528+00:00",
@@ -3410,6 +3543,14 @@
             "summary": "Data was recorded using silicon probe electrodes in the frontal cortices of male Long Evans rats between 4-7 months of age. The design was to have no specific behavior, task or stimulus, rather the animal was left alone in it\u2019s home cage (which it lives in at all\ntimes). Data includes both local field potentials (LFP) and spikes. 11 total animals, 27 recording sessions, 1360 total units recorded, 1121 units considered stable, 995 putative excitatory units and 126 putative inhibitory units. Only recordings including a \u201cWAKE-SLEEP\u201d episode wherein at least 7 minutes of wake are followed by 20 minutes of sleep. On average 2 such WAKE-SLEEP episodes per recording session. ",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 168,
                     "tag": "Firing patterns"
                 },
@@ -3424,6 +3565,14 @@
                 {
                     "id": 171,
                     "tag": "Homeostasis"
+                },
+                {
+                    "id": 340,
+                    "tag": "DANDI:000041"
+                },
+                {
+                    "id": 341,
+                    "tag": "Brown rat"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:01.611818+00:00",
@@ -3900,16 +4049,16 @@
             "summary": "Recordings made by Jason Chung in the Frank laboratory at UCSF using 64 channel polymer probes across 4 regions in an animal resting in a box. Note that the position data is duplicated, one copy for each epoch.",
             "tags": [
                 {
+                    "id": 17,
+                    "tag": "electrophysiology"
+                },
+                {
                     "id": 181,
                     "tag": "rat, "
                 },
                 {
                     "id": 182,
                     "tag": "polymer probe"
-                },
-                {
-                    "id": 17,
-                    "tag": "electrophysiology"
                 },
                 {
                     "id": 183,
@@ -5809,12 +5958,16 @@
                     "tag": "International Brain Laboratory"
                 },
                 {
-                    "id": 256,
-                    "tag": "multi-probe"
+                    "id": 178,
+                    "tag": "decision-making"
                 },
                 {
                     "id": 255,
                     "tag": "Neuropixels"
+                },
+                {
+                    "id": 256,
+                    "tag": "multi-probe"
                 },
                 {
                     "id": 257,
@@ -5827,10 +5980,6 @@
                 {
                     "id": 259,
                     "tag": "head-fixed"
-                },
-                {
-                    "id": 178,
-                    "tag": "decision-making"
                 },
                 {
                     "id": 260,
@@ -5910,12 +6059,12 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 38,
-                    "tag": "OpenWorm"
-                },
-                {
                     "id": 316,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 38,
+                    "tag": "OpenWorm"
                 }
             ],
             "timestamp_created": "2023-05-16 13:22:31.638553+00:00",
@@ -6466,12 +6615,12 @@
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 319,
-                    "tag": "neuroConstruct"
-                },
-                {
                     "id": 321,
                     "tag": "Detailed cell model"
+                },
+                {
+                    "id": 319,
+                    "tag": "neuroConstruct"
                 },
                 {
                     "id": 322,
@@ -6503,16 +6652,16 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 32,
-                    "tag": "Showcase"
-                },
-                {
                     "id": 316,
                     "tag": "OSBv1"
                 },
                 {
                     "id": 323,
                     "tag": "Arbor"
+                },
+                {
+                    "id": 32,
+                    "tag": "Showcase"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:37.768398+00:00",
@@ -6569,12 +6718,12 @@
             "summary": "Test of Blender to NeuroML conversion\n",
             "tags": [
                 {
-                    "id": 38,
-                    "tag": "OpenWorm"
-                },
-                {
                     "id": 316,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 38,
+                    "tag": "OpenWorm"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:38.965040+00:00",
@@ -6606,20 +6755,20 @@
                     "tag": "OSBv1"
                 },
                 {
-                    "id": 317,
-                    "tag": "Large scale brain initiative"
+                    "id": 321,
+                    "tag": "Detailed cell model"
                 },
                 {
                     "id": 318,
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 321,
-                    "tag": "Detailed cell model"
-                },
-                {
                     "id": 324,
                     "tag": "Neuronal reconstruction"
+                },
+                {
+                    "id": 317,
+                    "tag": "Large scale brain initiative"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:39.418884+00:00",

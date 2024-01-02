@@ -28,12 +28,15 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False # 
-dry_run = True
+dry_run = False # dry_run = True
+
+known_missing_dandisets = ['https://dandiarchive.org/dandiset/000069/draft',
+                           'https://dandiarchive.org/dandiset/000477/draft',
+                           'https://dandiarchive.org/dandiset/000561/draft']
 
 index = 0
 min_index = 0
-max_index = 200000
+max_index = 30
 
 verbose = False
 
@@ -87,7 +90,8 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         try:
             dandi_api_info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
         except: 
-            err_info = 'Problem accessing %s'%dandiset_url
+            but_ok = ' (known to be missing...)' if dandiset_url in known_missing_dandisets else ''
+            err_info = 'Problem accessing %s%s'%(dandiset_url, but_ok)
             print(err_info)
             dandi_errors.append(err_info)
             return
@@ -182,7 +186,8 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             try:
                 added = add_dandiset(dandishowcase_entry, index)
             except:
-                logging.exception("Error adding %s" % dandishowcase_entry['url'])
+                logging.exception("Error adding/updating %s" % dandishowcase_entry['url'])
+                exit()
 
         index+=1
 
