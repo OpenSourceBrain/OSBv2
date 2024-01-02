@@ -707,27 +707,32 @@
         },
         "25": {
             "auto_sync": true,
-            "content_types": "experimental",
+            "content_types": "modeling",
             "content_types_list": [
-                "experimental"
+                "modeling"
             ],
             "default_context": "master",
             "id": 25,
             "name": "ConnectivityShowcase",
             "repository_type": "github",
             "summary": "",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                }
+            ],
             "timestamp_created": "2023-01-18 11:36:45.265497+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/OpenSourceBrain/ConnectivityShowcase",
             "user": {
-                "email": "filippo@metacell.us",
-                "first_name": "Filippo",
-                "id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-                "last_name": "Ledda",
-                "username": "a"
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
             },
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
         "26": {
             "auto_sync": true,
@@ -12509,6 +12514,109 @@
             "timestamp_created": "2023-12-21 19:23:34.519206+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/ModelDBRepository/3434",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "306": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 306,
+            "name": "Connection Set Algebra Showcase",
+            "repository_type": "github",
+            "summary": "![](http://www.opensourcebrain.org/projects/csashowcase/repository/revisions/master/entry/images/gaussian_sm.png)\n\nA project highlighting some of the features of the [Connection Set Algebra](http://software.incf.org/software/csa) library, and how it can interact with NeuroML & PyNN.\n\nFor more details see the [[Wiki]].\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 597,
+                    "tag": "Python tools for computational neuroscience"
+                }
+            ],
+            "timestamp_created": "2024-01-02 12:02:30.697835+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/CSAShowcase",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "307": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 307,
+            "name": "Dentate Gyrus - Santhakumar et al 2005",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 553,
+                    "tag": "Hippocampal formation"
+                }
+            ],
+            "timestamp_created": "2024-01-02 12:02:31.586706+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/DentateGyrus2005",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "308": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 308,
+            "name": "Self Sustained Network Activity - Destexhe 2009",
+            "repository_type": "github",
+            "summary": "Network simulations of self-sustained activity in networks of adaptive exponential integrate and fire neurons.\r\n\r\nFrom: Self-sustained asynchronous irregular states and Up\u2013Down states in thalamic, cortical and thalamocortical networks of nonlinear integrate-and-fire neurons, Alain Destexhe, [J Comp Neuroscience 2009](http://link.springer.com/article/10.1007%2Fs10827-009-0164-4)\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 551,
+                    "tag": "Point neuron network"
+                },
+                {
+                    "id": 598,
+                    "tag": "Adaptive exponential integrate and fire neuron"
+                }
+            ],
+            "timestamp_created": "2024-01-02 12:02:32.274908+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/destexhe_jcns_2009",
             "user": {
                 "email": "info@opensourcebrain.org",
                 "first_name": "OSB",
