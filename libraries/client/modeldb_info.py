@@ -15,7 +15,7 @@ with_gitrepo = 0
 
 if __name__ == "__main__":
     
-    max_num = 10
+    max_num = 10000
     index = 0
 
     if len(sys.argv) >= 2:

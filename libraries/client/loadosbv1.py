@@ -34,9 +34,10 @@ dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
-max_index = 25
+max_index = 10
 
-verbose = True # verbose = False
+verbose = True # 
+verbose = False
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,
@@ -111,7 +112,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 multi_matches.append(err_info)
                 return False
             r = found.osbrepositories[0]
-            url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev,  found.osbrepositories[0].id)
+            url_info = "    OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)"%(v2_or_v2dev,  found.osbrepositories[0].id, osbv1_github)
             try:
                 print("    %s already exists (owner: %s); updating..." % (osbv1_proj_id, lookup_user(r.user_id, url_info)))
             except:
