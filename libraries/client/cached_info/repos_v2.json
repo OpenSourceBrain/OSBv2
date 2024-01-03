@@ -3038,10 +3038,6 @@
             "summary": "Magnetic resonance imaging (MRI) is used to establish a macroscopic reference coordinate system of laminar and cytoarchitectural boundaries. Cell counting is obtained with both traditional immunohistochemistry, to provide a stereological gold standard, and with a custom-made inverted confocal light-sheet fluorescence microscope (LSM) for 3D imaging at cellular resolution. Finally, polarization-sensitive optical coherence tomography (PSOCT) enables registration of the distorted histological cell typing obtained with LSM to the MRI-based atlas coordinate system.",
             "tags": [
                 {
-                    "id": 11,
-                    "tag": "DANDI"
-                },
-                {
                     "id": 138,
                     "tag": "multi-modal imaging"
                 },
@@ -3076,6 +3072,10 @@
                 {
                     "id": 330,
                     "tag": "DANDI:000026"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:50.716843+00:00",
@@ -3103,24 +3103,24 @@
             "summary": "Should be ignored by regular mortals.\n\nATM contains only a few files from http://github.com/dandi-datasets/nwb_test_data which more or less appropriate (do not lack critical metadata) for testing",
             "tags": [
                 {
-                    "id": 146,
-                    "tag": "development"
-                },
-                {
-                    "id": 331,
-                    "tag": "DANDI:000027"
+                    "id": 10,
+                    "tag": "NWB"
                 },
                 {
                     "id": 11,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 10,
-                    "tag": "NWB"
+                    "id": 146,
+                    "tag": "development"
                 },
                 {
                     "id": 315,
                     "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 331,
+                    "tag": "DANDI:000027"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:51.878012+00:00",
@@ -3148,20 +3148,20 @@
             "summary": "A 10 minute Neuropixels recording simulated using the MEArec Python package (Buccino et al., 2020). The recording contains the spiking activity of 250 biophysically detailed neurons (200 excitatory and 50 inhibitory cells from the Neocortical Micro Circuit Portal with independent Poisson firing patterns, and additive Gaussian noise with 10uV standard deviation.",
             "tags": [
                 {
-                    "id": 332,
-                    "tag": "DANDI:000028"
+                    "id": 10,
+                    "tag": "NWB"
                 },
                 {
                     "id": 11,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
                     "id": 282,
                     "tag": "House mouse"
+                },
+                {
+                    "id": 332,
+                    "tag": "DANDI:000028"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:53.033182+00:00",
@@ -3189,20 +3189,20 @@
             "summary": "Should be ignored by regular mojgjhhj.  fjrtalddgdfgdfgs, and not relied upon being static or ever correct.\n\u0414\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u0432\u0432\u0435\u0434\u0435\u043d\u043e \u043d\u0430 \u0410\u043d\u0433\u043b\u0438\u0439\u0441\u043a\u043e\u043c, \u043d\u043e \u043f\u043e\u0447\u0435\u043c\u0443 \u0431\u044b \u043d\u0430\u043c \u043d\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u0441\u044e \u044d\u0442\u0443 \u043a\u0443\u0445\u043d\u044e \n\u0394\u0419\u05e7\u0645\u0e57\u3042\nabcdefghi",
             "tags": [
                 {
-                    "id": 146,
-                    "tag": "development"
-                },
-                {
-                    "id": 333,
-                    "tag": "DANDI:000029"
+                    "id": 10,
+                    "tag": "NWB"
                 },
                 {
                     "id": 11,
                     "tag": "DANDI"
                 },
                 {
-                    "id": 10,
-                    "tag": "NWB"
+                    "id": 146,
+                    "tag": "development"
+                },
+                {
+                    "id": 333,
+                    "tag": "DANDI:000029"
                 },
                 {
                     "id": 334,
@@ -3478,20 +3478,12 @@
             "summary": "A two photon calcium imaging dataset from Allen Institute measuring responses to full-field drifting gratings (approx. 120x90 degrees of visual space) of 8 directions and 6 contrasts (5%, 10%, 20%, 40%, 60%, 80%). Mouse Cre lines expressing GCaMP6f were imaged to record responses of   pyramidal neurons across cortical layers (Cux2: layer 2/3; Rorb: layer 4; Rbp4: layer 5; Ntsr1: layer 6) as well as inhibitory interneurons (Vip and Sst). All experimental sessions took place on the same data collection pipeline as the Allen Brain Observatory (see http://observatory.brain-map.org/visualcoding) and have the same visual stimulus monitor calibration and positioning, two photon imaging systems and image processing pipeline, and running wheel to track locomotion.\n\n Data are subject to Allen Institute Terms of Use policy, available at: http://www.alleninstitute.org/legal/terms-use/",
             "tags": [
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
+                    "id": 163,
+                    "tag": "vision"
                 },
                 {
                     "id": 134,
                     "tag": "visual cortex"
-                },
-                {
-                    "id": 163,
-                    "tag": "vision"
                 },
                 {
                     "id": 164,
@@ -3510,12 +3502,20 @@
                     "tag": "gain control"
                 },
                 {
-                    "id": 282,
-                    "tag": "House mouse"
-                },
-                {
                     "id": 339,
                     "tag": "DANDI:000039"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:00.367528+00:00",
@@ -3600,14 +3600,6 @@
             "summary": "Patch clamp recordings from human premotor cortex, macaque M1 and mouse MOp.",
             "tags": [
                 {
-                    "id": 16,
-                    "tag": "Mouse"
-                },
-                {
-                    "id": 94,
-                    "tag": "Human"
-                },
-                {
                     "id": 129,
                     "tag": "Patch-seq"
                 },
@@ -3620,8 +3612,32 @@
                     "tag": "Betz cell"
                 },
                 {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
                     "id": 173,
                     "tag": "Macaque"
+                },
+                {
+                    "id": 16,
+                    "tag": "Mouse"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 342,
+                    "tag": "DANDI:000043"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:02.790691+00:00",
@@ -3647,7 +3663,24 @@
             "name": "Diversity in neural firing dynamics supports both rigid and learned hippocampal sequences",
             "repository_type": "dandi",
             "summary": "This data set is composed of eight bilateral silicon-probe multi-cellular electrophysiological recordings performed on four male Long-Evans rats in the Buzs\u00e1ki lab at NYU. These recordings were performed to assess the effect of novel spatial learning on hippocampal CA1 neural firing and LFP patterns in na\u00efve animals. Each session consisted of a long (~4 hour) PRE rest/sleep epoch home-cage recordings performed in a familiar room, followed by a Novel MAZE running epoch (~45 minutes) in which the animals were transferred to a novel room, and water-rewarded to run on a novel maze. These mazes were either A) a wooden 1.6m linear platform, B) a wooden 1m diameter circular platform or C) a 2m metal linear platform. Animals were rewarded either at both ends of the linear platform, or at a predetermined location on the circular platform. The animal was gently encouraged to run unidirectionally on the circular platform. After the MAZE epochs the animals were transferred back to their home-cage in the familiar room where a long (~4 hour) POST rest/sleep was recorded. All eight sessions were concatenated from the PRE, MAZE, and POST recording epochs. In addition to hippocampal electrophysiological recordings, neck EMG and head-mounted accelerometer signals were recorded, and the animal\u2019s position during MAZE running epochs was tracked via head-mounted LEDs.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 341,
+                    "tag": "Brown rat"
+                },
+                {
+                    "id": 343,
+                    "tag": "DANDI:000044"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:03.952334+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000044/draft",
@@ -3673,8 +3706,24 @@
             "summary": "This dataset is a result of a multi-institution, cross country collaboration of labs, called International Brain Laboratory conducting standardized experiments on decision-making in mice. In the experiment, mice are shown a visual grating on screen with varying levels of contrast, and they are trained to rotate a wheel to move the on-screen stimulus from either side of their visual field to the center. These NWB files contain datasets corresponding to this wheel movement, camera footage of mice and information about the visual stimulus at every trial. \nPaper: \nAguillon, V., Angelaki, D., Bayer, H. M., Bonacchi, N., Carandini, M., Cazettes, F., Churchland, A. K., Chapuis, G., Dan, Y., Dewitt, E., Faulkner, M., Hamish, F., Haetzel, L., Hausser, M., Hofer, S., Hu, F., Khanal, A., Krasniak, C., Laranjeira, I., \u2026 Zador, A. (2020). A standardized and reproducible method to measure decision-making in mice. BioRxiv, 2020.01.17.909838. https://doi.org/10.1101/2020.01.17.909838",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 174,
                     "tag": "International Brain Laboratory"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 344,
+                    "tag": "DANDI:000045"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:05.790818+00:00",
@@ -3700,7 +3749,20 @@
             "name": "Electrical and optical physiology in in vivo population-scale two-photon calcium imaging",
             "repository_type": "dandi",
             "summary": "Spiking activity and simultaneously recorded fluorescence signals in transgenic mice expressing GCaMP6\n\nWe present a dataset consisting of simultaneously measured fluorescence and spiking activity of pyramidal neurons in layer 2/3 of primary visual cortex in transgenic mouse lines expressing genetically-encoded calcium indicators (GECIs) GCaMP6s or GCaMP6f.\n\nReference: https://portal.brain-map.org/explore/circuits/oephys",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 345,
+                    "tag": "DANDI:000048"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:06.929567+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000048/draft",
@@ -3719,15 +3781,39 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230223.1424",
             "id": 97,
-            "name": "Allen Institute \u2013 TFxSF tuning in mouse visual cortex with calcium imaging",
+            "name": "Allen Institute \u2013 TF x SF tuning in mouse visual cortex with calcium imaging",
             "repository_type": "dandi",
-            "summary": "Allen Institute MindScope project",
+            "summary": "A two photon calcium imaging dataset from Allen Institute measuring responses to full-field drifting gratings (approx. 120x90 degrees of visual space) moving in 4 different directions, at 5 spatial frequencies (0.02, 0.04, 0.08, 0.16, 0.32 cpd), and 5 temporal frequencies (0.5, 1, 2, 4, 8 Hz). The ratio of TF/SF is speed (deg/sec) and the extent to which visual neurons exhibit speed tuning has been shown to vary across some cortical areas (Andermann et al. 2011).\nMouse Cre lines expressing GCaMPf were imaged to record responses of pyramidal neurons across cortical layers (Cux2: layer 2/3; Rorb: layer 4; Rbp4: layer 5; Ntsr1: layer 6) as well as somatostatin inhibitory interneurons (Sst). All Cre lines were imaged in VISp, and some (Cux2 and Sst) were also imaged in VISl, VISal, VISpm, VISam, and VISrl. All experimental sessions took place on the same data collection pipeline as the Allen Brain Observatory (see de Vries, Lecoq, Buice et al. 2020) and have the same visual stimulus monitor calibration and positioning, two photon imaging systems and image processing pipeline, and running wheel to track locomotion. Data are subject to Allen Institute Terms of Use policy, available at: http://www.alleninstitute.org/legal/terms-use/",
             "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
                 {
                     "id": 16,
                     "tag": "Mouse"
+                },
+                {
+                    "id": 134,
+                    "tag": "visual cortex"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 346,
+                    "tag": "2-photon calcium imaging"
+                },
+                {
+                    "id": 347,
+                    "tag": "DANDI:000049"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:08.061716+00:00",
@@ -3753,7 +3839,24 @@
             "name": "Allen Institute - Run Tuning in the Mouse Visual Cortex",
             "repository_type": "dandi",
             "summary": "Allen Institute for Brain Science, MindScope Project.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 348,
+                    "tag": "DANDI:000050"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:09.537806+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000050/draft",
@@ -3777,7 +3880,24 @@
             "name": "pons8-yo_16xdownsampled",
             "repository_type": "dandi",
             "summary": "Downsampled image of pons slice #8 stained with a nuclear dye. For testing only.\n",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
+                    "id": 349,
+                    "tag": "DANDI:000051"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:10.677600+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000051/draft",
@@ -3801,7 +3921,20 @@
             "name": "Pons8-BIDS-16xdownsampled",
             "repository_type": "dandi",
             "summary": "A test upload of Pons8 YO and Lectin, downsampled 16x using the BIDS schema",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 72,
+                    "tag": "BIDS"
+                },
+                {
+                    "id": 350,
+                    "tag": "DANDI:000052"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:11.847435+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000052/draft",
@@ -3827,12 +3960,28 @@
             "summary": "This dataset contains two task types. The first is tetrode recordings from medial entorhinal cortex during open field navigation with simultaneous inertial measurements of the head, and the second is Neuropixel recordings from medial entorhinal cortex during navigation down a virtual linear track with simultaneous eye measurements.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 175,
                     "tag": "neuropixel"
                 },
                 {
                     "id": 176,
                     "tag": "entorhinal cortex"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 351,
+                    "tag": "DANDI:000053"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:13.057388+00:00",
@@ -3858,7 +4007,24 @@
             "name": "Plitt & Giocomo (2021) Experience Dependent Contextual Codes in the Hippocampus. Nat Neuro",
             "repository_type": "dandi",
             "summary": "Data included in Plitt & Giocomo (2021) Nature Neuroscience",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 352,
+                    "tag": "DANDI:000054"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:14.349502+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000054/draft",
@@ -6059,12 +6225,12 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
                     "id": 38,
                     "tag": "OpenWorm"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
                 }
             ],
             "timestamp_created": "2023-05-16 13:22:31.638553+00:00",
@@ -6615,12 +6781,12 @@
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 321,
-                    "tag": "Detailed cell model"
-                },
-                {
                     "id": 319,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 321,
+                    "tag": "Detailed cell model"
                 },
                 {
                     "id": 322,
@@ -6652,16 +6818,16 @@
             "summary": "",
             "tags": [
                 {
+                    "id": 32,
+                    "tag": "Showcase"
+                },
+                {
                     "id": 316,
                     "tag": "OSBv1"
                 },
                 {
                     "id": 323,
                     "tag": "Arbor"
-                },
-                {
-                    "id": 32,
-                    "tag": "Showcase"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:37.768398+00:00",
@@ -6718,12 +6884,12 @@
             "summary": "Test of Blender to NeuroML conversion\n",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
                     "id": 38,
                     "tag": "OpenWorm"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:38.965040+00:00",
@@ -6755,20 +6921,20 @@
                     "tag": "OSBv1"
                 },
                 {
-                    "id": 321,
-                    "tag": "Detailed cell model"
+                    "id": 317,
+                    "tag": "Large scale brain initiative"
                 },
                 {
                     "id": 318,
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 324,
-                    "tag": "Neuronal reconstruction"
+                    "id": 321,
+                    "tag": "Detailed cell model"
                 },
                 {
-                    "id": 317,
-                    "tag": "Large scale brain initiative"
+                    "id": 324,
+                    "tag": "Neuronal reconstruction"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:39.418884+00:00",
