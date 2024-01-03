@@ -2442,32 +2442,32 @@
             "summary": "We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. Contained in this dandiset are the intracellular electrophysiological recordings. See Dandiset #35 for an additional dataset, recorded under the physiological temperature. ",
             "tags": [
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
+                    "id": 129,
+                    "tag": "Patch-seq"
                 },
                 {
                     "id": 96,
                     "tag": "cortex"
                 },
                 {
-                    "id": 97,
-                    "tag": "mouse"
-                },
-                {
-                    "id": 129,
-                    "tag": "Patch-seq"
-                },
-                {
                     "id": 130,
                     "tag": "motor cortex"
                 },
                 {
+                    "id": 97,
+                    "tag": "mouse"
+                },
+                {
                     "id": 298,
                     "tag": "DANDI:000008"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 },
                 {
                     "id": 299,
@@ -2876,20 +2876,12 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the mouse visual cortex from the Allen Institute for Brain Science, released in June 2020. The majority of cells in this dataset are GABAergic interneurons, but there are also a small number of glutamatergic neurons from layer 2/3 of the mouse visual cortex.",
             "tags": [
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
+                    "id": 129,
+                    "tag": "Patch-seq"
                 },
                 {
                     "id": 97,
                     "tag": "mouse"
-                },
-                {
-                    "id": 129,
-                    "tag": "Patch-seq"
                 },
                 {
                     "id": 134,
@@ -2900,12 +2892,20 @@
                     "tag": "interneuron"
                 },
                 {
-                    "id": 282,
-                    "tag": "House mouse"
-                },
-                {
                     "id": 309,
                     "tag": "DANDI:000020"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:43.238231+00:00",
@@ -2994,24 +2994,12 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the human neocortex from the Allen Institute for Brain Science, released in June 2020.",
             "tags": [
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 94,
-                    "tag": "Human"
+                    "id": 129,
+                    "tag": "Patch-seq"
                 },
                 {
                     "id": 98,
                     "tag": "human"
-                },
-                {
-                    "id": 129,
-                    "tag": "Patch-seq"
                 },
                 {
                     "id": 136,
@@ -3024,6 +3012,18 @@
                 {
                     "id": 313,
                     "tag": "DANDI:000023"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:46.392132+00:00",
@@ -3296,36 +3296,36 @@
             "summary": " We used Patch-seq to combine patch-clamp recording, biocytin staining, and single-cell RNA sequencing of over 1300 neurons in adult mouse motor cortex, providing a comprehensive morpho-electric annotation of almost all transcriptomically defined neural cell types. This dataset contains rectangular stimulation of cells under temperature-controlled conditions (34 \u2103). See Dandiset #8 for the main dataset, recorded under the room temperature.",
             "tags": [
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
-                },
-                {
-                    "id": 96,
-                    "tag": "cortex"
+                    "id": 129,
+                    "tag": "Patch-seq"
                 },
                 {
                     "id": 97,
                     "tag": "mouse"
                 },
                 {
-                    "id": 129,
-                    "tag": "Patch-seq"
+                    "id": 96,
+                    "tag": "cortex"
                 },
                 {
                     "id": 130,
                     "tag": "motor cortex"
                 },
                 {
-                    "id": 282,
-                    "tag": "House mouse"
-                },
-                {
                     "id": 336,
                     "tag": "DANDI:000035"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:56.881625+00:00",
@@ -3556,14 +3556,6 @@
             "summary": "Data was recorded using silicon probe electrodes in the frontal cortices of male Long Evans rats between 4-7 months of age. The design was to have no specific behavior, task or stimulus, rather the animal was left alone in it\u2019s home cage (which it lives in at all\ntimes). Data includes both local field potentials (LFP) and spikes. 11 total animals, 27 recording sessions, 1360 total units recorded, 1121 units considered stable, 995 putative excitatory units and 126 putative inhibitory units. Only recordings including a \u201cWAKE-SLEEP\u201d episode wherein at least 7 minutes of wake are followed by 20 minutes of sleep. On average 2 such WAKE-SLEEP episodes per recording session. ",
             "tags": [
                 {
-                    "id": 10,
-                    "tag": "NWB"
-                },
-                {
-                    "id": 11,
-                    "tag": "DANDI"
-                },
-                {
                     "id": 168,
                     "tag": "Firing patterns"
                 },
@@ -3582,6 +3574,14 @@
                 {
                     "id": 340,
                     "tag": "DANDI:000041"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 },
                 {
                     "id": 341,
@@ -5251,7 +5251,20 @@
             "name": "croat-test",
             "repository_type": "dandi",
             "summary": "Testing",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 389,
+                    "tag": "DANDI:000144"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:06.692699+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000144/draft",
@@ -5277,6 +5290,14 @@
             "summary": "This dataset contains neural activity and trial information from a tetraplegic human participant performing a brain-computer interface (BCI) finger press task. Neural activity was recorded from a 96-channel Utah array (Blackrock) implanted in the left posterior parietal cortex (PPC) at the junction of the postcentral and intraparietal sulci (PC-IP). On each trial, a finger cue, at a pseudorandom location on a screen, was selected. The participant immediately looked at the cue and pressed the cued finger until decoder feedback was shown (1.5 seconds after the cue).\n\nThis dataset includes sorted unit spiking times, finger cue, in-session classified finger, cue location, and trial timing.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 98,
                     "tag": "human"
                 },
@@ -5287,6 +5308,14 @@
                 {
                     "id": 201,
                     "tag": "finger"
+                },
+                {
+                    "id": 390,
+                    "tag": "DANDI:000147"
+                },
+                {
+                    "id": 391,
+                    "tag": "Homo sapiens - Human"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:07.865725+00:00",
@@ -5312,7 +5341,24 @@
             "name": "Electrophysiological properties of adult mouse spinal cord neurons - 01_Oct_2021",
             "repository_type": "dandi",
             "summary": "Patch-clamp recording data from spinal cord neurons. Data was generated at Huizhong Tao's lab at USC(htao@usc.edu). The recording was performed by Can Tao(cantao@usc.edu) and Bo Peng(pengb@usc.edu).",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 392,
+                    "tag": "DANDI:000148"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:08.991900+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000148/draft",
@@ -5336,7 +5382,24 @@
             "name": "IBL ephys data",
             "repository_type": "dandi",
             "summary": "This dataset is a result of a multi-institution, cross country collaboration of labs, called International Brain Laboratory conducting standardized experiments on decision-making in mice.  This dataset contains contains data similar to the dandiset https://dandiarchive.org/dandiset/000045 with additional ephys data.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 393,
+                    "tag": "DANDI:000149"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:10.141476+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000149/draft",
@@ -5362,6 +5425,14 @@
             "summary": "The experiment consisted of three cohorts of PVCre, SSTCre, and PVCre/SSTCre mice injected with either AAV5-hSyn-DIO-hM4D(Gi)-mCherry (hM4D) or AAV5-hSyn-DIO-mCherry (empty vector) in DG and CA3, then injected with vehicle or CNO prior to recordings. Recordings from all layers of CA1, CA3, and DG were taken during home cage rest and linear track movement. Data are described in Aery Jones et al, 2021, bioRxiv: \"Dentate Gyrus and CA3 GABAergic Interneurons Bidirectionally Modulate Signatures of Internal and External Drive to CA1\". For more information about this data, please contact Emily Aery Jones, Yadong Huang, or Loren Frank.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 40,
                     "tag": "LFP"
                 },
@@ -5372,6 +5443,14 @@
                 {
                     "id": 186,
                     "tag": "hippocampus"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 394,
+                    "tag": "DANDI:000165"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:11.344206+00:00",
@@ -5399,6 +5478,14 @@
             "summary": "The relationship between mesoscopic local field potentials (LFPs) and single-neuron firing in the multi-layered neocortex is poorly understood. Simultaneous recordings from all layers in the primary visual cortex (V1) of the behaving mouse revealed functionally defined layers in V1. The depth of maximum spike power and sink-source distributions of LFPs provided consistent laminar landmarks across animals. Coherence of gamma oscillations (30-100 Hz) and spike-LFP coupling identified six physiological layers and further sublayers. Firing rates, burstiness, and other electrophysiological features of neurons displayed unique layer and brain state dependence. Spike transmission strength from layer 2/3 cells to layer 5 pyramidal cells and interneurons was stronger during waking compared with non-REM sleep but stronger during non-REM sleep among deep-layer excitatory neurons. A subset of deep-layer neurons was active exclusively in the DOWN state of non-REM sleep. These results bridge mesoscopic LFPs and single-neuron interactions with laminar structure in V1.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 17,
                     "tag": "electrophysiology"
                 },
@@ -5407,12 +5494,20 @@
                     "tag": "cortex"
                 },
                 {
-                    "id": 202,
-                    "tag": "current source density "
+                    "id": 282,
+                    "tag": "House mouse"
                 },
                 {
-                    "id": 203,
-                    "tag": "laminar recordings "
+                    "id": 289,
+                    "tag": "current source density"
+                },
+                {
+                    "id": 290,
+                    "tag": "laminar recordings"
+                },
+                {
+                    "id": 395,
+                    "tag": "DANDI:000166"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:12.518840+00:00",
@@ -5433,12 +5528,29 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.220928.1306",
+            "default_context": "0.230720.2001",
             "id": 136,
             "name": "Two photon calcium imaging of mice piriform cortex under passive odor presentation",
             "repository_type": "dandi",
-            "summary": "Two-photon calcium imaging of mouse piriform cortex pyramidal population, under head-fixed condition and passive odor stimulus delivery. There were 10 different odors used (8 trials each), delivered at 10-second for each of the 30-second trial. Temperature sensor was also recorded as a proxy for sniffing behaviors. Imaging was preprocessed with suite2p. The data was collected by Simon Daste in the Fleischmann lab at Brown university. Showcase notebook available at: https://gitlab.com/fleischmann-lab/datasets/daste-odor-set-2021-11",
-            "tags": [],
+            "summary": "Two-photon calcium imaging of mouse piriform cortex pyramidal population, under head-fixed condition and passive odor stimulus delivery. There were 10 different odors used (8 trials each), delivered at 10-second for each of the 30-second trial. Imaging was preprocessed with Suite2p. The data was collected by Simon Daste in the Fleischmann lab at Brown University. Showcase notebook available at: https://gitlab.com/fleischmann-lab/datasets/daste-odor-set-2021-11",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 396,
+                    "tag": "DANDI:000167"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:13.774589+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000167/draft",
@@ -5514,6 +5626,22 @@
                 {
                     "id": 215,
                     "tag": "XCaMP-Gf"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 397,
+                    "tag": "DANDI:000168"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:14.975052+00:00",
@@ -5541,6 +5669,14 @@
             "summary": "In this study, we investigate how transcranial focused ultrasound (tFUS) modulates neural interaction and response to peripheral electrical limb stimulation through intracranial multi-electrode recordings in the rat somatosensory cortex. Rats were anesthetized using isoflurane anesthesia at 2%. Recordings were taken while delivering peripheral electrical stimulation once every 5 seconds to analyze the neural response in the rat S1HL region, before and after ultrasound. We delivered ultrasound for 5 minutes in a pulsed pattern at 5 different stimulation repetition frequencies (10 Hz, 50 Hz, 75 Hz, 100 Hz, and 125 Hz) to induce frequency dependent plasticity in a manner similar to that found following tetanic electrical stimulation. The fundamental frequency of ultrasound used was 0.5 MHz, the pulse repetition frequency (PRF) was 3 kHz, and the total duty cycle was 36%. This dataset includes spike timing data from the recordings including time before and after ultrasound stimulation, for both true ultrasound conditions and sham ultrasound conditions in which ultrasound is directed off target. Details of the study are in the following publication: S. Ramachandran, X. Niu, K. Yu, B. He, \"Transcranial ultrasound neuromodulation induces neuronal correlation change in the rat somatosensory cortex\", 2022 J. Neural Eng. 19 056002 https://pubmed.ncbi.nlm.nih.gov/35947970/. Please cite this publication if you would use a portion of the data. ",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 216,
                     "tag": "Ultrasound"
                 },
@@ -5559,6 +5695,14 @@
                 {
                     "id": 220,
                     "tag": "Somatosensory Cortex"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 398,
+                    "tag": "DANDI:000173"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:16.224285+00:00",
@@ -5584,7 +5728,24 @@
             "name": "Visual cortical activity in mice performing naturalistic virtual foraging task",
             "repository_type": "dandi",
             "summary": "Large FOV two-photon calcium imaging dataset recorded from V1 L2/3 neurons from mouse performing a naturalistic foraging task in virtual reality.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 399,
+                    "tag": "DANDI:000206"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:17.379366+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000206/draft",
@@ -5603,7 +5764,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.220721.1915",
+            "default_context": "0.230530.1822",
             "id": 140,
             "name": "Data for: Neurons detect cognitive boundaries to structure episodic memories in humans (Zheng et al., 2022, Nat Neuro in press)",
             "repository_type": "dandi",
@@ -5644,6 +5805,22 @@
                 {
                     "id": 228,
                     "tag": "ROH consortium"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 400,
+                    "tag": "DANDI:000207"
+                },
+                {
+                    "id": 391,
+                    "tag": "Homo sapiens - Human"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:18.563912+00:00",
@@ -5664,12 +5841,24 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230522.1918",
             "id": 141,
             "name": "20211223_AIBS_Patchseq_human",
             "repository_type": "dandi",
             "summary": "U01 Lein PatchSeq upload December 2021",
             "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
                 {
                     "id": 98,
                     "tag": "human"
@@ -5681,6 +5870,10 @@
                 {
                     "id": 197,
                     "tag": "neocortical"
+                },
+                {
+                    "id": 401,
+                    "tag": "DANDI:000209"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:19.707961+00:00",
@@ -5708,6 +5901,14 @@
             "summary": "Dataset on the egg-laying behavior of flies used to understand how flies make egg-laying decisions. Each NWB file contains time series data from an individual fly: the x-y position of the fly, egg-deposition moments of the fly, and sucrose concentration underneath the fly. A variety of fly genotypes and a variety of environments (egg-laying chambers) were used. Data and methods are described in \"A rise-to-threshold signal for a relative value deliberation\" (https://www.biorxiv.org/content/10.1101/2021.09.23.461548v1) and \u201cAn internal expectation guides Drosophila egg-laying decisions\u201d (https://doi.org/10.1126/sciadv.abn3852). Please contact Vikram Vijayan and/or Gaby Maimon for more information including different download options and different raw/processed data formats.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 124,
                     "tag": "decision making"
                 },
@@ -5726,6 +5927,14 @@
                 {
                     "id": 232,
                     "tag": "internal expectation"
+                },
+                {
+                    "id": 402,
+                    "tag": "DANDI:000212"
+                },
+                {
+                    "id": 403,
+                    "tag": "Drosophila melanogaster - Fruit fly"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:20.944919+00:00",
@@ -5753,6 +5962,14 @@
             "summary": "The hippocampus constructs a map of the environment. How this \u201ccognitive map\u201d is utilized by other brain regions to guide behavior remains unexplored. To examine how neuronal firing patterns in the hippocampus are transmitted and transformed, we recorded neurons in its principal subcortical target, the lateral septum (LS). We observed that LS neurons carry reliable spatial information in the phase of action potentials, relative to hippocampal theta oscillations, while the firing rates of LS neurons remained uninformative. Furthermore, this spatial phase code had an anatomical microstructure within the LS and was bound to the hippocampal spatial code by synchronous gamma frequency cell assemblies. Using a data-driven model, we show that rate-independent spatial tuning arises through the dynamic weighting of CA1 and CA3 cell assemblies. Our findings demonstrate that transformation of the hippocampal spatial map depends on higher-order theta-dependent neuronal sequences.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 17,
                     "tag": "electrophysiology"
                 },
@@ -5763,6 +5980,14 @@
                 {
                     "id": 233,
                     "tag": "lateral septum"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 404,
+                    "tag": "DANDI:000213"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:22.091341+00:00",
@@ -5788,7 +6013,24 @@
             "name": "Sniff-synchronized, gradient-guided olfactory search by freely moving mice -- Behavioral Dataset",
             "repository_type": "dandi",
             "summary": "This dataset contains the movement tracking, sniff recording, and trial statistics for the dataset used in the publication: Sniff-synchronized, gradient-guided olfactory search by freely moving mice in eLife (Findley et al. 2021)",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 405,
+                    "tag": "DANDI:000217"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:23.659481+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000217/draft",
@@ -5814,6 +6056,14 @@
             "summary": "The mnemonic functions of hippocampal sharp wave ripples (SPW-Rs) have been studied extensively. Because hippocampal outputs affect not only cortical but also subcortical targets, we examined the impact of SPW-Rs on the firing patterns of lateral septal (LS) neurons in behaving rats. A large fraction of SPW-Rs were temporally locked to high-frequency oscillations (HFOs) (120\u2013180 Hz) in LS, with strongest coupling during non-rapid eye movement (NREM) sleep, followed by waking immobility. However, coherence and spike-local field potential (LFP) coupling between the two structures were low, suggesting that HFOs are generated locally within the LS GABAergic population. This hypothesis was supported by optogenetic induction of HFOs in LS. Spiking of LS neurons was largely independent of the sequential order of spiking in SPW-Rs but instead correlated with the magnitude of excitatory synchrony of the hippocampal output. Thus, LS is strongly activated by SPW-Rs and may convey hippocampal population events to its hypothalamic and brainstem targets.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 186,
                     "tag": "hippocampus"
                 },
@@ -5824,6 +6074,14 @@
                 {
                     "id": 234,
                     "tag": "electrophyisology"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 406,
+                    "tag": "DANDI:000218"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:24.925774+00:00",
@@ -5849,7 +6107,24 @@
             "name": "Two photon calcium imaging in the CA1 region of the hippocampus in neonatal mice.",
             "repository_type": "dandi",
             "summary": "We performed in vivo 2-photon calcium imaging in the CA1 region of the hippocampus in awake mouse pups aged between 5 and 12 days postnatal. We used GCaMP6s calcium indicator in WT mice or GCaMP6s and flex-tdTomato in GadCre mice to record calcium dynamics from both pyramidal cells and interneurons. The imaging data set was acquired at 8 Hz, in field of view of 400x400 \u00b5m. Simultaneously with imaging, we record the spontaneous motor behavior of the mouse pups.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 407,
+                    "tag": "DANDI:000219"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:26.080707+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000219/draft",
@@ -5873,7 +6148,24 @@
             "name": "Electrophysiological properties of adult mouse spinal cord neurons - 25_Jan_2022",
             "repository_type": "dandi",
             "summary": "Patch-clamp recording data from spinal cord neurons. Data was generated at Huizhong Tao's lab at USC(htao@usc.edu). The recording was performed by Can Tao(cantao@usc.edu) and Bo Peng(pengb@usc.edu).",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 408,
+                    "tag": "DANDI:000220"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:27.224114+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000220/draft",
@@ -5899,6 +6191,14 @@
             "summary": "Data from \"A midbrain-thalamus-cortex circuit reorganizes cortical dynamics to initiate movement\" Inagaki & Chen et al\nExample codes to plot data is at https://github.com/hidehikoinagaki/InagakiAndChenEtAl2022",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 235,
                     "tag": "Midbrain"
                 },
@@ -5913,6 +6213,14 @@
                 {
                     "id": 238,
                     "tag": "movement initiation"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 409,
+                    "tag": "DANDI:000221"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:28.409579+00:00",
@@ -5940,8 +6248,24 @@
             "summary": "This dataset contains paired calcium imaging and high-density microelectrode array (HD-MEA) recordings from cortical embryonic cell cultures. \nThe data is used to infer monosynaptic connections using dendritic spine calcium traces and extracellular spiking.\nEach file includes:\n- raw extracellular recordings \n- spike-sorted units\n- imaging series\n- segmentation ROIs (of the target spines and adjacent dendritic shaft)",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 239,
                     "tag": "calcium imaging; extracellular recordings; HD-MEA; spike sorting; dendritic spines"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 410,
+                    "tag": "DANDI:000223"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:29.581734+00:00",
@@ -5962,12 +6286,29 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230607.1747",
             "id": 150,
             "name": "Active Touch and Self-Motion Encoding by Merkel Cell-Associated Afferents",
             "repository_type": "dandi",
             "summary": "Touch perception depends on integrating signals from multiple types of peripheral mechanoreceptors. Merkel-cell associated afferents are thought to play a major role in form perception by encoding surface features of touched objects. However, activity of Merkel afferents during active touch has not been directly measured. Here, we show that Merkel and unidentified slowly adapting afferents in the whisker system of behaving mice respond to both self-motion and active touch. Touch responses were dominated by sensitivity to bending moment (torque) at the base of the whisker and its rate of change and largely explained by a simple mechanical model. Self-motion responses encoded whisker position within a whisk cycle (phase), not absolute whisker angle, and arose from stresses reflecting whisker inertia and activity of specific muscles. Thus, Merkel afferents send to the brain multiplexed information about whisker position and surface features, suggesting that proprioception and touch converge at the earliest neural level.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 411,
+                    "tag": "DANDI:000226"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:30.714265+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000226/draft",
@@ -5993,6 +6334,14 @@
             "summary": "U01 Lein PatchSeq upload March 2022",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 98,
                     "tag": "human"
                 },
@@ -6003,6 +6352,14 @@
                 {
                     "id": 197,
                     "tag": "neocortical"
+                },
+                {
+                    "id": 391,
+                    "tag": "Homo sapiens - Human"
+                },
+                {
+                    "id": 412,
+                    "tag": "DANDI:000228"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:31.919441+00:00",
@@ -6028,7 +6385,24 @@
             "name": "Jacobsen 2022",
             "repository_type": "dandi",
             "summary": "Data for \"All-viral tracing of monosynaptic inputs to single birthdate-defined neurons in the intact brain\", Jacobsen et al 2022. \n\nPhotostimulation laser power: sessions are labelled with the set point power. Actual power can be derived as follows: (set [mW] | actual [mW]), (20 | 7.5), (40 | 15.1)\n",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 413,
+                    "tag": "DANDI:000230"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:33.078957+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000230/draft",
@@ -6092,6 +6466,22 @@
                 {
                     "id": 248,
                     "tag": "single unit recordings"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 414,
+                    "tag": "DANDI:000231"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:34.732261+00:00",
@@ -6117,7 +6507,24 @@
             "name": "Rule-based modulation of  a sensorimotor transformation across cortical areas",
             "repository_type": "dandi",
             "summary": "Flexibly responding to sensory stimuli depending on rules is critical for adapting in a constantly changing environment. However, it remains unclear how the brain encodes rule information and uses this information to guide behavioral responses to sensory stimuli. Here, we made single-unit recordings while head-fixed mice performed a cross-modal sensory selection task in which they switched between two rules in different blocks of trials: licking in response to tactile stimuli while rejecting visual stimuli, or licking to visual stimuli while rejecting tactile stimuli. Along the cortical processing stream, touch-evoked responses in primary (S1) and secondary (S2) somatosensory cortical areas, and in the medial (MM) and anterolateral (ALM) motor cortical areas were modulated by rules at a single-neuron level. In addition, the activity of individual cortical neurons prior to stimulus delivery also changed in a rule-dependent manner. We proposed that rule-dependent pre-stimulus activity may contribute to setting the cortical areas in different initial conditions, which prepares them to process sensory information according to the appropriate rule. This hypothesis was supported by our findings that (1) the task rules could be decoded from the pre-stimulus population states of the sensory and motor cortical areas, (2) cortical areas with a larger difference in pre-stimulus state between rules used better separated subspaces to process subsequent tactile signals, and (3) optogenetic disruption of pre-stimulus states within the motor cortical areas impaired rule-dependent tactile detection. Taken together, our findings suggest that rule-guided sensorimotor flexibility may occur via appropriate configuration of pre-stimulus states within motor cortical networks, enabling distinct actions in response to the same sensory input.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 415,
+                    "tag": "DANDI:000232"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:35.890939+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000232/draft",
@@ -6136,23 +6543,39 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230223.0815",
             "id": 155,
             "name": "A metabolic function of the hippocampal sharp wave-ripple",
             "repository_type": "dandi",
             "summary": "The hippocampus has previously been implicated in both cognitive and endocrine functions. We simultaneously measured electrophysiological activity from the hippocampus and interstitial glucose concentrations in the body of freely behaving rats to identify an activity pattern that may link these disparate functions of the hippocampus. Here we report that clusters of sharp wave-ripples recorded from the hippocampus reliably predicted a decrease in peripheral glucose concentrations within about 10 min. This correlation was not dependent on circadian, ultradian or meal-triggered fluctuations, could be mimicked with optogenetically induced ripples in the hippocampus (but not in the parietal cortex) and was attenuated to chance levels by pharmacogenetically suppressing activity of the lateral septum, which is the major conduit between the hippocampus and the hypothalamus. Our findings demonstrate that a function of the sharp wave-ripple is to modulate peripheral glucose homeostasis, and offer a mechanism for the link between sleep disruption and blood glucose dysregulation in type 2 diabetes.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 249,
                     "tag": "glucose"
                 },
                 {
-                    "id": 250,
-                    "tag": "ecephys "
-                },
-                {
                     "id": 251,
                     "tag": "pharmacology"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 416,
+                    "tag": "DANDI:000233"
+                },
+                {
+                    "id": 417,
+                    "tag": "ecephys"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:37.084149+00:00",
@@ -6537,16 +6960,12 @@
                     "tag": "International Brain Laboratory"
                 },
                 {
-                    "id": 178,
-                    "tag": "decision-making"
+                    "id": 256,
+                    "tag": "multi-probe"
                 },
                 {
                     "id": 255,
                     "tag": "Neuropixels"
-                },
-                {
-                    "id": 256,
-                    "tag": "multi-probe"
                 },
                 {
                     "id": 257,
@@ -6559,6 +6978,10 @@
                 {
                     "id": 259,
                     "tag": "head-fixed"
+                },
+                {
+                    "id": 178,
+                    "tag": "decision-making"
                 },
                 {
                     "id": 260,
@@ -7558,6 +7981,88 @@
             "timestamp_created": "2024-01-03 17:18:37.170654+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000114/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "199": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.230316.1600",
+            "id": 199,
+            "name": "Thermoregulatory Responses Forebrain",
+            "repository_type": "dandi",
+            "summary": "Imaging in the forebrain of nac -/-; Elavl3-H2B:GCaMP6s +/-; vglut2a-mCherry +/- larval zebrafish during random wave temperature stimulus presentation",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 287,
+                    "tag": "Danio rerio - Zebra fish"
+                },
+                {
+                    "id": 418,
+                    "tag": "DANDI:000235"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:22:06.758787+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000235/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "200": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.230316.2031",
+            "id": 200,
+            "name": "Thermoregulatory Responses Midbrain",
+            "repository_type": "dandi",
+            "summary": "Imaging in the midbrain of nac -/-; Elavl3-H2B:GCaMP6s +/-; vglut2a-mCherry +/- larval zebrafish during random wave temperature stimulus presentation",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 287,
+                    "tag": "Danio rerio - Zebra fish"
+                },
+                {
+                    "id": 419,
+                    "tag": "DANDI:000236"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:22:07.910016+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000236/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",
