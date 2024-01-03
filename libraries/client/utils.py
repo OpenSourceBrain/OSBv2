@@ -64,6 +64,6 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
 
     print("    ------------ Tags: ---------")
     print("       %s"%tags)
-    print("       %s"%tags_list)
+    #print("       %s"%tags_list)
 
     return tags_list

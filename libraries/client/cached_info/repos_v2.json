@@ -1432,7 +1432,20 @@
             "name": "IHC Validation Data",
             "repository_type": "dandi",
             "summary": "Confocal images of constained CDI and commercially available antibodies to the same target in mouse and human brain tissues",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 72,
+                    "tag": "BIDS"
+                },
+                {
+                    "id": 388,
+                    "tag": "DANDI:000143"
+                }
+            ],
             "timestamp_created": "2022-07-26 11:48:09.836649+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000143/draft",
@@ -4048,7 +4061,24 @@
             "name": "AJILE12: Long-term naturalistic human intracranial neural recordings and pose",
             "repository_type": "dandi",
             "summary": "Understanding the neural basis of human movement in naturalistic scenarios is critical for expanding neuroscience research beyond constrained laboratory paradigms. The neural correlates of unstructured, spontaneous movements in completely naturalistic settings have rarely been studied, due in large part to a lack of available data. Here, we present our Annotated Joints in Long-term Electrocorticography for 12 human participants (AJILE12) dataset, the largest human neurobehavioral dataset that is publicly available; the dataset was recorded opportunistically during passive clinical epilepsy monitoring. AJILE12 includes synchronized intracranial neural recordings and upper body pose trajectories across 55 semi-continuous days of naturalistic movements, along with relevant metadata, including thousands of wrist movement events and annotated behavioral states. Neural recordings are available at 500 Hz from at least 64 electrodes per participant, for a total of 1280 hours. Pose trajectories at 9 upper-body keypoints, including wrist, elbow, and shoulder joints, were sampled at 30 frames per second and estimated from 118 million video frames. In adherence with the FAIR data principles, we have shared AJILE12 on The Dandi Archive in the Neurodata Without Borders (NWB) data standard and developed a browser-based dashboard to facilitate data exploration and reuse.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
+                    "id": 353,
+                    "tag": "DANDI:000055"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:15.504036+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000055/draft",
@@ -4072,7 +4102,20 @@
             "name": "MITU01 Dataset",
             "repository_type": "dandi",
             "summary": "7T MR structural images. B0 and B1+ code corrected parameter maps. ",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 72,
+                    "tag": "BIDS"
+                },
+                {
+                    "id": 355,
+                    "tag": "DANDI:000058"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:17.886886+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000058/draft",
@@ -4091,12 +4134,29 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1514",
+            "default_context": "0.230907.2101",
             "id": 106,
             "name": "Cooling of Medial Septum Reveals Theta Phase Lag Coordination of Hippocampal Cell Assemblies",
             "repository_type": "dandi",
             "summary": "Hippocampal theta oscillations coordinate neuronal firing to support memory and spatial navigation. The medial septum (MS) is critical in theta generation by two possible mechanisms: either a unitary \u201cpacemaker\u201d timing signal is imposed on the hippocampal system, or it may assist in organizing target subcircuits within the phase space of theta oscillations. We used temperature manipulation of the MS to test these models. Cooling of the MS reduced both theta frequency and power and was associated with an enhanced incidence of errors in a spatial navigation task, but it did not affect spatial correlates of neurons. MS cooling decreased theta frequency oscillations of place cells and reduced distance-time compression but preserved distance-phase compression of place field sequences within the theta cycle. Thus, the septum is critical for sustaining precise theta phase coordination of cell assemblies in the hippocampal system, a mechanism needed for spatial memory.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                },
+                {
+                    "id": 356,
+                    "tag": "DANDI:000059"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:19.015692+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000059/draft",
@@ -4140,6 +4200,22 @@
                 {
                     "id": 180,
                     "tag": "optogenetic stimulation"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 357,
+                    "tag": "DANDI:000060"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:20.165181+00:00",
@@ -4165,7 +4241,24 @@
             "name": "Reactivations of emotional memory in the hippocampus\u2013amygdala system during sleep",
             "repository_type": "dandi",
             "summary": "The consolidation of context-dependent emotional memory requires communication between the hippocampus and the basolateral amygdala (BLA), but the mechanisms of this process are unknown. We recorded neuronal ensembles in the hippocampus and BLA while rats learned the location of an aversive air puff on a linear track, as well as during sleep before and after training. We found coordinated reactivations between the hippocampus and the BLA during non-REM sleep following training. These reactivations peaked during hippocampal sharp wave\u2013ripples (SPW-Rs) and involved a subgroup of BLA cells positively modulated during hippocampal SPW-Rs. Notably, reactivation was stronger for the hippocampus\u2013BLA correlation patterns representing the run direction that involved the air puff than for the 'safe' direction. These findings suggest that consolidation of contextual emotional memory occurs during ripple-reactivation of hippocampus\u2013amygdala circuits.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 341,
+                    "tag": "Brown rat"
+                },
+                {
+                    "id": 358,
+                    "tag": "DANDI:000061"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:21.310530+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000061/draft",
@@ -4189,7 +4282,20 @@
             "name": "Simulation extension example",
             "repository_type": "dandi",
             "summary": "This is data produced by the Soltesz Lab NeuroH5 software (https://github.com/iraikov/neuroh5). The data has been converted to NWB using the ndx-simulation-output extension (https://github.com/catalystneuro/ndx-simulation-output).",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 359,
+                    "tag": "DANDI:000064"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:22.539305+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000064/draft",
@@ -4215,16 +4321,12 @@
             "summary": "Recordings made by Jason Chung in the Frank laboratory at UCSF using 64 channel polymer probes across 4 regions in an animal resting in a box. Note that the position data is duplicated, one copy for each epoch.",
             "tags": [
                 {
-                    "id": 17,
-                    "tag": "electrophysiology"
-                },
-                {
-                    "id": 181,
-                    "tag": "rat, "
-                },
-                {
                     "id": 182,
                     "tag": "polymer probe"
+                },
+                {
+                    "id": 17,
+                    "tag": "electrophysiology"
                 },
                 {
                     "id": 183,
@@ -4245,13 +4347,31 @@
                 {
                     "id": 187,
                     "tag": "sleep"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 360,
+                    "tag": "DANDI:000065"
+                },
+                {
+                    "id": 361,
+                    "tag": "rat"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:23.761747+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000065/draft",
-            "user": {},
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         },
         "111": {
             "auto_sync": true,
@@ -4264,7 +4384,20 @@
             "name": "Allen Mouse Common Coordinate Framework - Average Brain Template",
             "repository_type": "dandi",
             "summary": "The reference space or brain template was constructed as a population average of 1,675 young adult C57BL/6J mice brains imaged using serial two photon tomography (STPT) for the Allen Mouse Brain Connectivity Atlas. The average template was created from tissue autofluorescence detected in the red channel. To maximize input data and create a symmetrical atlas, each dataset was reflected across the midline, for a total of 3,350 (2 x 1,675) hemisphere datasets. Creation of the template followed a two-step iterative process: (1) We deformably registered each specimen to the current iteration of the template and computed an intensity average. (2) We then computed the average deformation field, inverted it, and applied it to the intensity average created in (1). This resulted in a volume with an average unbiased shape and intensity to be used as the template in the next iteration until convergence.\n\nThe axes the average template volume is a +X=Posterior, +Y=Inferior(Ventral) and +Z=Right frame with the origin at the corner of the volume.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 72,
+                    "tag": "BIDS"
+                },
+                {
+                    "id": 362,
+                    "tag": "DANDI:000066"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:24.915859+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000066/draft",
@@ -4288,7 +4421,24 @@
             "name": "Behavior-dependent short-term assembly dynamics in the medial prefrontal cortex",
             "repository_type": "dandi",
             "summary": "Although short-term plasticity is believed to play a fundamental role in cortical computation, empirical evidence bearing on its role during behavior is scarce. Here we looked for the signature of short-term plasticity in the fine-timescale spiking relationships of a simultaneously recorded population of physiologically identified pyramidal cells and interneurons, in the medial prefrontal cortex of the rat, in a working memory task. On broader timescales, sequentially organized and transiently active neurons reliably differentiated between different trajectories of the rat in the maze. On finer timescales, putative monosynaptic interactions reflected short-term plasticity in their dynamic and predictable modulation across various aspects of the task, beyond a statistical accounting for the effect of the neurons' co-varying firing rates. Seeking potential mechanisms for such effects, we found evidence for both firing pattern\u2013dependent facilitation and depression, as well as for a supralinear effect of presynaptic coincidence on the firing of postsynaptic targets.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 341,
+                    "tag": "Brown rat"
+                },
+                {
+                    "id": 363,
+                    "tag": "DANDI:000067"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:26.097696+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000067/draft",
@@ -4312,7 +4462,20 @@
             "name": "Testing",
             "repository_type": "dandi",
             "summary": "Nothing to see",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 364,
+                    "tag": "DANDI:000068"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:27.241424+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000068/draft",
@@ -4336,7 +4499,24 @@
             "name": "Neural population dynamics during reaching",
             "repository_type": "dandi",
             "summary": "Monkeys recordings of Motor Cortex (M1) and dorsal Premotor Cortex (PMd) using two 96 channel high density Utah Arrays (Blackrock Microsystems) while performing reaching tasks with right hand.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 365,
+                    "tag": "DANDI:000070"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:28.759972+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000070/draft",
@@ -4360,7 +4540,20 @@
             "name": "MGH19-1-021520",
             "repository_type": "dandi",
             "summary": "Pons section from acccession MGH 19-1_021520 stained with YOYO1",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 72,
+                    "tag": "BIDS"
+                },
+                {
+                    "id": 367,
+                    "tag": "DANDI:000105"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:29.879920+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000105/draft",
@@ -4386,19 +4579,37 @@
             "summary": "Allen Institute for Brain Science IVSCC (In-vitro Single Cell Characterization) project stimulus sets stored in NWB format",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 17,
                     "tag": "electrophysiology"
                 },
                 {
-                    "id": 188,
-                    "tag": "MIES "
+                    "id": 368,
+                    "tag": "DANDI:000107"
+                },
+                {
+                    "id": 369,
+                    "tag": "MIES"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:31.115877+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000107/draft",
-            "user": {},
-            "user_id": "a2514035-c47f-4d8a-b22b-081d91a5ce6b"
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         },
         "117": {
             "auto_sync": true,
@@ -4413,6 +4624,18 @@
             "summary": "Whole-cell Patch-seq recordings from neurons of the human neocortex from the Allen Institute for Brain Science, released in June 2021.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
                     "id": 98,
                     "tag": "human"
                 },
@@ -4423,6 +4646,10 @@
                 {
                     "id": 136,
                     "tag": "neocortex"
+                },
+                {
+                    "id": 371,
+                    "tag": "DANDI:000109"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:32.408141+00:00",
@@ -4448,7 +4675,24 @@
             "name": "Gillespie et al (2021) Hippocampal replay reflects specific past experiences rather than a plan for subsequent choice",
             "repository_type": "dandi",
             "summary": "This dataset includes the electrophysiological (dorsal CA1 tetrodes) and behavioral (port triggers, reward delivery, and position tracking) data from Gillespie et al, Neuron 2021: \"Hippocampal replay reflects specific past experiences rather than a plan for subsequent choice\". For more information about this data, please contact Anna Gillespie or Loren Frank. ",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 375,
+                    "tag": "DANDI:000115"
+                },
+                {
+                    "id": 376,
+                    "tag": "Rat; norway rat; rats; brown rat"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:33.618099+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000115/draft",
@@ -4474,12 +4718,24 @@
             "summary": "Patch-clamp recording data from spinal cord neurons. Data was generated at Huizhong Tao's lab at USC(htao@usc.edu). The recording was performed by Can Tao(cantao@usc.edu) and Bo Peng(pengb@usc.edu).",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 189,
                     "tag": "spinal cord"
                 },
                 {
                     "id": 190,
                     "tag": "patch-clamp"
+                },
+                {
+                    "id": 377,
+                    "tag": "DANDI:000117"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:34.766790+00:00",
@@ -4507,6 +4763,14 @@
             "summary": "This experiment examines how the motor cortex is activated during a finger-tapping task. Participants are asked to either tap their left thumb to fingers, tap their right thumb to fingers, or no cue is given (control). Tapping lasts for 5 seconds and is prompted by an auditory cue. Sensors are placed over the motor cortex as described in the montage section in the link below, short channels are attached to the scalp too. Further details about the experiment (including presentation code) can be found at https://github.com/rob-luke/experiment-fNIRS-tapping.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 191,
                     "tag": "fNIRS"
                 },
@@ -4521,6 +4785,10 @@
                 {
                     "id": 194,
                     "tag": "Finger Tapping Task"
+                },
+                {
+                    "id": 378,
+                    "tag": "DANDI:000122"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:35.906428+00:00",
@@ -4546,7 +4814,24 @@
             "name": "NWB API Test Data",
             "repository_type": "dandi",
             "summary": "This dandiset consists of NWB files used for testing the NWB APIs (PyNWB, MatNWB).",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 379,
+                    "tag": "DANDI:000126"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:43:37.091508+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000126/draft",
@@ -4572,12 +4857,28 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a reaching task with perturbations. In the experimental task, the subject performed delayed center-out reaches using a manipulandum to control a cursor. On a portion of the trials, the manipulandum applied a bump during the center hold prior to the reach. Neural activity was recorded from an electrode array implanted in somatosensory area 2. Hand position, cursor position, force applied to the manipulandum, length and velocity of various arm muscles, and angle and velocity of various arm joints were all recorded during the experiment. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 380,
+                    "tag": "DANDI:000127"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:38.257581+00:00",
@@ -4605,12 +4906,28 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 381,
+                    "tag": "DANDI:000128"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:39.392679+00:00",
@@ -4638,12 +4955,28 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a self-paced reaching task. In the experimental task, the subject reached between targets randomly selected from an 8x8 grid without gaps or pre-movement delay intervals. Neural activity was recorded from an electrode array implanted in the primary motor cortex. Finger position, cursor position, and target position were also recorded during the experiment. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 382,
+                    "tag": "DANDI:000129"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:40.530797+00:00",
@@ -4671,12 +5004,28 @@
             "summary": "This dataset contains sorted unit spiking times from a macaque performing a time-interval reproduction task. In the experimental task, the monkey was presented with two stimuli separated by a specific interval of time. The monkey then attempted to time their response such that the interval between the second stimulus and their response matched the interval separating the two stimuli. Neural activity was recorded from neural probes implanted in the dorsomedial frontal cortex. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 383,
+                    "tag": "DANDI:000130"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:41.669488+00:00",
@@ -4704,12 +5053,28 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. The provided data has been limited to 500 train trials and 100 test trials. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 384,
+                    "tag": "DANDI:000138"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:42.825684+00:00",
@@ -4737,12 +5102,28 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. The provided data has been limited to 250 train trials and 100 test trials. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 385,
+                    "tag": "DANDI:000139"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:44.031033+00:00",
@@ -4770,12 +5151,28 @@
             "summary": "This dataset contains sorted unit spiking times and behavioral data from a macaque performing a delayed reaching task. The experimental task was a center-out reaching task with obstructing barriers forming a maze, resulting in a variety of straight and curved reaches. Neural activity was recorded from electrode arrays implanted in the motor cortex (M1) and dorsal premotor cortex (PMd). Cursor position, hand position, and eye position were also recorded during the experiment, and hand velocity was calculated offline from hand position. The provided data has been limited to 100 train trials and 100 test trials. Provided as part of the Neural Latents Benchmark: https://neurallatents.github.io.",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
                     "id": 195,
                     "tag": "Neural Latents Benchmark"
                 },
                 {
                     "id": 196,
                     "tag": "NLB"
+                },
+                {
+                    "id": 366,
+                    "tag": "Rhesus monkey"
+                },
+                {
+                    "id": 386,
+                    "tag": "DANDI:000140"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:45.181113+00:00",
@@ -4803,6 +5200,18 @@
             "summary": "U01 Lein PatchSeq upload September 2021",
             "tags": [
                 {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 94,
+                    "tag": "Human"
+                },
+                {
                     "id": 98,
                     "tag": "human"
                 },
@@ -4813,6 +5222,10 @@
                 {
                     "id": 197,
                     "tag": "neocortical"
+                },
+                {
+                    "id": 387,
+                    "tag": "DANDI:000142"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:46.446700+00:00",
@@ -7018,6 +7431,133 @@
             "timestamp_created": "2023-12-20 16:09:40.597357+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/agmccrei/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "196": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.210812.1518",
+            "id": 196,
+            "name": "Internally organized mechanisms of the head direction sense",
+            "repository_type": "dandi",
+            "summary": "The head-direction (HD) system functions as a compass, with member neurons robustly increasing their firing rates when the animal's head points in a specific direction. HD neurons may be driven by peripheral sensors or, as computational models postulate, internally generated (attractor) mechanisms. We addressed the contributions of stimulus-driven and internally generated activity by recording ensembles of HD neurons in the antero-dorsal thalamic nucleus and the post-subiculum of mice by comparing their activity in various brain states. The temporal correlation structure of HD neurons was preserved during sleep, characterized by a 60\u00b0-wide correlated neuronal firing (activity packet), both within and across these two brain structures. During rapid eye movement sleep, the spontaneous drift of the activity packet was similar to that observed during waking and accelerated tenfold during slow-wave sleep. These findings demonstrate that peripheral inputs impinge on an internally organized network, which provides amplification and enhanced precision of the HD signal.",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 282,
+                    "tag": "House mouse"
+                },
+                {
+                    "id": 354,
+                    "tag": "DANDI:000056"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:12:42.162867+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000056/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "197": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 197,
+            "name": "Light sheet imaging of the human brain",
+            "repository_type": "dandi",
+            "summary": "This dataset contains images of 1 mm sections of human brain tissue showing nuclei, NeuN+ cells and blood vessels. Each tissue section was first SHIELD-processed for protein protection and delipidated to clear the tissue. The tissues were stained with YOYO1 (nuclei), anti-NeuN antibody (with Rhodamine Red-X secondary antibody) and Lectin (blood vessel) for 8 days in total and then optically cleared using ExPROTOS (a refractive matching solution). The sample was imaged using light sheet microscopy at a resolution of ~2.5 um x 3.6 um x 2.5 um. Each slab was imaged using multiple stacks. Offset transforms are included with the dataset to enable reconstruction of each slab.",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 370,
+                    "tag": "DANDI:000108"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:18:34.723542+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000108/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "198": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.230602.1643",
+            "id": 198,
+            "name": "Oxytocin neurons enable social transmission of maternal behaviour",
+            "repository_type": "dandi",
+            "summary": "Maternal care, including by non-biological parents, is important for offspring survival. Oxytocin which is released by the hypothalamic paraventricular nucleus (PVN), is a critical maternal hormone. In mice, oxytocin enables neuroplasticity in the auditory cortex for maternal recognition of pup distress. However, it is unclear how initial parental experience promotes hypothalamic signalling and cortical plasticity for reliable maternal care. Here we continuously monitored the behaviour of female virgin mice co-housed with an experienced mother and litter. This documentary approach was synchronized with neural recordings from the virgin PVN, including oxytocin neurons. These cells were activated as virgins were enlisted in maternal care by experienced mothers, who shepherded virgins into the nest and demonstrated pup retrieval. Virgins visually observed maternal retrieval, which activated PVN oxytocin neurons and promoted alloparenting. Thus rodents can acquire maternal behaviour by social transmission, providing a mechanism for adapting the brains of adult caregivers to infant needs via endogenous oxytocin.",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 252,
+                    "tag": "oxytocin"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 372,
+                    "tag": "DANDI:000114"
+                },
+                {
+                    "id": 373,
+                    "tag": "alloparenting"
+                },
+                {
+                    "id": 374,
+                    "tag": "maternal behavior"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:18:37.170654+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000114/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",
