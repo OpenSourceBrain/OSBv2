@@ -1589,7 +1589,24 @@
             "name": "Electrophysiological properties of adult mouse spinal cord neurons - 22Q1_Ephys_DANDI",
             "repository_type": "dandi",
             "summary": "Whole-cell patch clamp recording of specific cell types in the adult mouse spinal cord. Neurons are either input defined, output defined or expressing specific molecular markers. ",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 425,
+                    "tag": "DANDI:000245"
+                }
+            ],
             "timestamp_created": "2022-09-20 08:18:34.554558+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000245/draft",
@@ -6596,12 +6613,29 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.230607.1752",
             "id": 156,
             "name": "Cortical processing of flexible and context-dependent sensorimotor sequences",
             "repository_type": "dandi",
             "summary": "The brain generates complex sequences of movements that can be flexibly configured based on behavioural context or real-time sensory feedback, but how this occurs is not fully understood. Here we developed a \u2018sequence licking\u2019 task in which mice directed their tongue to a target that moved through a series of locations. Mice could rapidly branch the sequence online based on tactile feedback. Closed-loop optogenetics and electrophysiology revealed that the tongue and jaw regions of the primary somatosensory (S1TJ) and motor (M1TJ) cortices encoded and controlled tongue kinematics at the level of individual licks. By contrast, the tongue \u2018premotor\u2019 (anterolateral motor) cortex encoded latent variables including intended lick angle, sequence identity and progress towards the reward that marked successful sequence execution. Movement-nonspecific sequence branching signals occurred in the anterolateral motor cortex and M1TJ. Our results reveal a set of key cortical areas for flexible and context-informed sequence generation.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 422,
+                    "tag": "DANDI:000239"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:38.272873+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000239/draft",
@@ -6625,7 +6659,20 @@
             "name": "MRI of human ex vivo brainstem",
             "repository_type": "dandi",
             "summary": "This dataset contains MRI images associated with an ex vivo specimen of a human brainstem.",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 72,
+                    "tag": "BIDS"
+                },
+                {
+                    "id": 423,
+                    "tag": "DANDI:000243"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:39.386677+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000243/draft",
@@ -6649,7 +6696,24 @@
             "name": "One photon mesoscale calcium imaging of multiple cell types",
             "repository_type": "dandi",
             "summary": "One photon dual wavelength mesoscale calcium imaging of mouse isocortex. Includes data from awake and anesthetized subjects with excitatory neuron sensitive GECIs, and data from awake subjects with GECIs sensitive to three different inhibitory interneuron cell types (PV, SOM and VIP).",
-            "tags": [],
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 424,
+                    "tag": "DANDI:000244"
+                }
+            ],
             "timestamp_created": "2023-02-17 08:53:40.547721+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000244/draft",
@@ -8063,6 +8127,88 @@
             "timestamp_created": "2024-01-03 17:22:07.910016+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/000236/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "201": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.230316.1655",
+            "id": 201,
+            "name": "Thermoregulatory Responses Hindbrain",
+            "repository_type": "dandi",
+            "summary": "Imaging in the hindbrain of nac -/-; Elavl3-H2B:GCaMP6s +/-; vglut2a-mCherry +/- larval zebrafish during random wave temperature stimulus presentation",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 287,
+                    "tag": "Danio rerio - Zebra fish"
+                },
+                {
+                    "id": 420,
+                    "tag": "DANDI:000237"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:25:23.260873+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000237/draft",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "202": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.230316.1519",
+            "id": 202,
+            "name": "Thermoregulatory Responses Reticulospinal system",
+            "repository_type": "dandi",
+            "summary": "Imaging in the hindbrain and midbrain of nac -/-; Elavl3-H2B:GCaMP6s +/- larval zebrafish after reticulospinal backfills with Texas-Red Dextran during random wave temperature stimulus presentation",
+            "tags": [
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 287,
+                    "tag": "Danio rerio - Zebra fish"
+                },
+                {
+                    "id": 421,
+                    "tag": "DANDI:000238"
+                }
+            ],
+            "timestamp_created": "2024-01-03 17:25:24.521983+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000238/draft",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",
