@@ -21,13 +21,13 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
     tags = []
 
     if modeldb_info is not None:
-        tags.append({"tag": 'ModelDB'})
+        tags.append('ModelDB')
         for category in ["model_concept", "currents","modeling_application"]:
             for v in modeldb_info[category]["value"]:
-                tags.append({"tag": v["object_name"]})
+                tags.append(v["object_name"])
 
     if osbv1_info is not None:
-        tags.append({"tag": 'OSBv1'})
+        tags.append('OSBv1')
         if 'Tags' in osbv1_info:  # osbv1...
             ts = osbv1_info['Tags'].split(',')
             for tag in ts:
@@ -35,7 +35,7 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
                     tag = tag.strip()
                     if tag.endswith(','):
                         tag = tag[:-1]
-                    tags.append({"tag": tag})
+                    tags.append(tag)
     
     if dandi_api_info is not None:
 
@@ -44,20 +44,26 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
                 tag = tag.strip()
                 if tag.endswith(','):
                     tag = tag[:-1]
-                tags.append({"tag": tag})
+                tags.append(tag)
 
     if dandishowcase_info is not None:
-        tags.append({"tag": '%s'%dandishowcase_info['identifier']})
-        tags.append({"tag": 'DANDI'})
+        tags.append('%s'%dandishowcase_info['identifier'])
+        tags.append('DANDI')
         if dandishowcase_info['data_type']=='Neurodata Without Borders (NWB)':
-            tags.append({"tag": 'NWB'})
+            tags.append('NWB')
         if dandishowcase_info['data_type']=='Brain Imaging Data Structure (BIDS)':
-            tags.append({"tag": 'BIDS'})
+            tags.append('BIDS')
 
         if dandishowcase_info['species']:
-            tags.append({"tag": '%s'%dandishowcase_info['species']})
+            tags.append('%s'%dandishowcase_info['species'])
+
+    tags_list = []
+    tags = sorted(tags)
+    for tag in tags:
+        tags_list.append({"tag": tag})
 
     print("    ------------ Tags: ---------")
     print("       %s"%tags)
+    print("       %s"%tags_list)
 
-    return tags
+    return tags_list
