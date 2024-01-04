@@ -12625,6 +12625,30 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "309": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 309,
+            "name": "CovidWebProject",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2024-01-04 09:40:26.895316+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/D-GopalKrishna/CovidWebProject",
+            "user": {
+                "email": "gopal@metacell.us",
+                "first_name": "D. Gopal ",
+                "id": "0db2937f-6534-434f-9e38-ff6ed1cbe395",
+                "last_name": "Krishna",
+                "username": "gopal"
+            },
+            "user_id": "0db2937f-6534-434f-9e38-ff6ed1cbe395"
         }
     }
 }
