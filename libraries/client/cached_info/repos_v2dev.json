@@ -720,6 +720,10 @@
                 {
                     "id": 540,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 615,
+                    "tag": "Multiple"
                 }
             ],
             "timestamp_created": "2023-01-18 11:36:45.265497+00:00",
@@ -11549,6 +11553,22 @@
                 {
                     "id": 549,
                     "tag": "OpenWorm"
+                },
+                {
+                    "id": 559,
+                    "tag": "C. elegans"
+                },
+                {
+                    "id": 602,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 608,
+                    "tag": "Blender"
+                },
+                {
+                    "id": 609,
+                    "tag": "Nervous system"
                 }
             ],
             "timestamp_created": "2023-12-18 18:45:44.995820+00:00",
@@ -11594,6 +11614,22 @@
                 {
                     "id": 550,
                     "tag": "Neuronal reconstruction"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 601,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 604,
+                    "tag": "Network"
                 }
             ],
             "timestamp_created": "2023-12-18 18:45:45.496755+00:00",
@@ -11631,6 +11667,22 @@
                 {
                     "id": 552,
                     "tag": "Integrate and fire neuron"
+                },
+                {
+                    "id": 601,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 602,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 610,
+                    "tag": "Generic"
+                },
+                {
+                    "id": 611,
+                    "tag": "NEST"
                 }
             ],
             "timestamp_created": "2023-12-18 18:45:45.990102+00:00",
@@ -11664,6 +11716,22 @@
                 {
                     "id": 549,
                     "tag": "OpenWorm"
+                },
+                {
+                    "id": 559,
+                    "tag": "C. elegans"
+                },
+                {
+                    "id": 602,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 609,
+                    "tag": "Nervous system"
+                },
+                {
+                    "id": 612,
+                    "tag": "NeuroML2"
                 }
             ],
             "timestamp_created": "2023-12-18 18:45:46.486166+00:00",
@@ -11691,6 +11759,10 @@
             "summary": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nLawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. J Neurosci 26:12325-38",
             "tags": [
                 {
+                    "id": 439,
+                    "tag": "Hippocampus"
+                },
+                {
                     "id": 540,
                     "tag": "OSBv1"
                 },
@@ -11705,6 +11777,18 @@
                 {
                     "id": 555,
                     "tag": "Interneuron"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 613,
+                    "tag": "Oriens Lacunosum Moleculare"
                 }
             ],
             "timestamp_created": "2023-12-18 18:45:47.281102+00:00",
@@ -11732,6 +11816,10 @@
             "summary": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nSaraga F, Wu CP, Zhang L, Skinner FK (2003) Active Dendrites and Spike Propagation in Multi-compartment Models of Oriens-Lacunosum/Moleculare Hippocampal Interneurons. J Physiol 552(3):673-689",
             "tags": [
                 {
+                    "id": 439,
+                    "tag": "Hippocampus"
+                },
+                {
                     "id": 540,
                     "tag": "OSBv1"
                 },
@@ -11746,6 +11834,18 @@
                 {
                     "id": 554,
                     "tag": "CA1"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 613,
+                    "tag": "Oriens Lacunosum Moleculare"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:01.612075+00:00",
@@ -11855,6 +11955,10 @@
             "summary": "![](/attachments/download/1/CA1-spike.PNG)\r\nConversion of [hippocampal CA1 pyramidal cell](http://neurolex.org/wiki/Category:Hippocampus_CA1_pyramidal_cell) from [Migliore et al 2005](http://senselab.med.yale.edu/ModelDB/ShowModel.asp?model=55035).\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell)\r\n",
             "tags": [
                 {
+                    "id": 439,
+                    "tag": "Hippocampus"
+                },
+                {
                     "id": 540,
                     "tag": "OSBv1"
                 },
@@ -11869,6 +11973,18 @@
                 {
                     "id": 554,
                     "tag": "CA1"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 614,
+                    "tag": "CA1 Pyramidal cell"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:03.875006+00:00",
@@ -11896,6 +12012,10 @@
             "summary": "Project for example NeuroML files generated by [CATMAID](http://www.catmaid.org).\n",
             "tags": [
                 {
+                    "id": 132,
+                    "tag": "Drosophila"
+                },
+                {
                     "id": 540,
                     "tag": "OSBv1"
                 },
@@ -11906,6 +12026,14 @@
                 {
                     "id": 557,
                     "tag": "Connectomics"
+                },
+                {
+                    "id": 615,
+                    "tag": "Multiple"
+                },
+                {
+                    "id": 616,
+                    "tag": "Other"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:04.469476+00:00",
@@ -11943,6 +12071,22 @@
                 {
                     "id": 558,
                     "tag": "Whole brain model"
+                },
+                {
+                    "id": 559,
+                    "tag": "C. elegans"
+                },
+                {
+                    "id": 602,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 608,
+                    "tag": "Blender"
+                },
+                {
+                    "id": 609,
+                    "tag": "Nervous system"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:04.983784+00:00",
@@ -11984,6 +12128,22 @@
                 {
                     "id": 546,
                     "tag": "Goldman-Hodgkin-Katz current"
+                },
+                {
+                    "id": 600,
+                    "tag": "GENESIS"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 617,
+                    "tag": "Cerebellar Nucleus Neuron"
+                },
+                {
+                    "id": 618,
+                    "tag": "Cerebellum"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:05.512991+00:00",
@@ -12021,6 +12181,22 @@
                 {
                     "id": 544,
                     "tag": "Detailed cell model"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 618,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 619,
+                    "tag": "Golgi cell"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:06.009875+00:00",
@@ -12103,6 +12279,10 @@
                 {
                     "id": 563,
                     "tag": "Metadata"
+                },
+                {
+                    "id": 620,
+                    "tag": "Python"
                 }
             ],
             "timestamp_created": "2023-12-21 18:21:07.000204+00:00",
@@ -12606,6 +12786,10 @@
                 {
                     "id": 597,
                     "tag": "Python tools for computational neuroscience"
+                },
+                {
+                    "id": 620,
+                    "tag": "Python"
                 }
             ],
             "timestamp_created": "2024-01-02 12:02:30.697835+00:00",
@@ -12639,6 +12823,22 @@
                 {
                     "id": 553,
                     "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 602,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 623,
+                    "tag": "Dentate gyrus"
                 }
             ],
             "timestamp_created": "2024-01-02 12:02:31.586706+00:00",
@@ -12674,8 +12874,24 @@
                     "tag": "Point neuron network"
                 },
                 {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
                     "id": 598,
                     "tag": "Adaptive exponential integrate and fire neuron"
+                },
+                {
+                    "id": 601,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 602,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 610,
+                    "tag": "Generic"
                 }
             ],
             "timestamp_created": "2024-01-02 12:02:32.274908+00:00",
@@ -12713,6 +12929,259 @@
                 "username": "gopal"
             },
             "user_id": "0db2937f-6534-434f-9e38-ff6ed1cbe395"
+        },
+        "310": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 310,
+            "name": "dLGN Interneuron - Halnes et al 2011",
+            "repository_type": "github",
+            "summary": "A multi-compartment model for interneurons in the dLGN",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 624,
+                    "tag": "Dorsal geniculate interneuron"
+                },
+                {
+                    "id": 625,
+                    "tag": "Thalamus"
+                }
+            ],
+            "timestamp_created": "2024-01-04 15:04:50.257934+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/dLGNinterneuronHalnesEtAl2011",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "311": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 311,
+            "name": "Drosophila 3rd instar larval aCC motoneuron - Gunay et al 2014",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 132,
+                    "tag": "Drosophila"
+                },
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 626,
+                    "tag": "Motoneuron"
+                },
+                {
+                    "id": 627,
+                    "tag": "Neuromuscular system"
+                },
+                {
+                    "id": 628,
+                    "tag": "XPP; NEURON"
+                },
+                {
+                    "id": 629,
+                    "tag": "aCC motoneuron"
+                }
+            ],
+            "timestamp_created": "2024-01-04 15:33:48.760501+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/cengique/drosophila-aCC-L3-motoneuron-model",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "312": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 312,
+            "name": "Drosophila Projection Neuron - Gouwens and Wilson, 2009",
+            "repository_type": "github",
+            "summary": "![](/attachments/download/50/Selection_140.png)\r\n\r\nIn early stages of development!\r\n\r\nCell model based on pubmed:19439602. \r\n",
+            "tags": [
+                {
+                    "id": 132,
+                    "tag": "Drosophila"
+                },
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 542,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 630,
+                    "tag": "Antennal lobe"
+                },
+                {
+                    "id": 631,
+                    "tag": "Projection neuron"
+                }
+            ],
+            "timestamp_created": "2024-01-04 15:34:28.427023+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/Drosophila_Projection_Neuron",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "313": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 313,
+            "name": "Ebner et al. 2019 - Unified synaptic plasticity model",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 601,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 632,
+                    "tag": "Synapse model"
+                }
+            ],
+            "timestamp_created": "2024-01-04 15:35:20.347593+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/EbnerEtAl2019",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "314": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 314,
+            "name": "NMDA spikes in L5 Pyramidal cells - Farinella et al 2014",
+            "repository_type": "github",
+            "summary": "Model from: **Glutamate-bound NMDARs arising from in vivo-like network activity extend spatio-temporal integration in a L5 cortical pyramidal cell model**\r\nMatteo Farinella, Daniel T. Ruedt, Padraig Gleeson, Frederic Lanore and\r\nR. Angus Silver\r\n\r\nThis paper has just [been published](http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003590).\r\n\r\nThe cell model used is based on: [Synaptic integration in L5 Pyramidal cell, Larkum et al. 2009](http://www.opensourcebrain.org/projects/larkumetal2009)\r\n",
+            "tags": [
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 541,
+                    "tag": "Pyramidal cell"
+                },
+                {
+                    "id": 542,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 544,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 601,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 606,
+                    "tag": "L5 pyramidal cell"
+                },
+                {
+                    "id": 633,
+                    "tag": "NMDAR synapse"
+                }
+            ],
+            "timestamp_created": "2024-01-04 15:36:17.392018+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FarinellaEtAl_NMDAspikes",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }
