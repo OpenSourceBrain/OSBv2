@@ -30,11 +30,14 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False # dry_run = True
+if '-dry' in sys.argv:
+    dry_run = True
+else:
+    dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
-max_index = 10
+max_index = 30
 
 verbose = True # 
 verbose = False
@@ -124,7 +127,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
                 print("    %s"%found)
                 print("    ------------ OSB API info: ---------")
-                print("    %s"%osbv1_proj)
+                pprint(osbv1_proj)
 
             tags = get_tags_info(osbv1_info=osbv1_proj)
             
@@ -184,8 +187,13 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         if index>=min_index and index<max_index:
             try:
                 added = add_osbv1_project(osbv1_proj, index)
-            except:
+            except Exception as e:
+                print('----------')
                 logging.exception("Error adding %s" % osbv1_proj)
+                print('----------')
+                if not 'context_resources' in str(e):
+                    print("Exiting due to unknown error...")
+                    #exit()
 
         index+=1
 
