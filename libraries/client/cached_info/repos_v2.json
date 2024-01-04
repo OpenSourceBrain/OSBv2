@@ -257,6 +257,22 @@
                 {
                     "id": 317,
                     "tag": "Large scale brain initiative"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 653,
+                    "tag": "Network"
+                },
+                {
+                    "id": 654,
+                    "tag": "SWC & others"
                 }
             ],
             "timestamp_created": "2021-07-02 11:43:01.315856+00:00",
@@ -7843,6 +7859,22 @@
                 {
                     "id": 321,
                     "tag": "Detailed cell model"
+                },
+                {
+                    "id": 649,
+                    "tag": "GENESIS"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 651,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2023-12-20 16:08:19.848056+00:00",
@@ -7888,6 +7920,22 @@
                 {
                     "id": 322,
                     "tag": "Goldman-Hodgkin-Katz current"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 655,
+                    "tag": "L5 pyramidal cell"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:37.235236+00:00",
@@ -7954,6 +8002,22 @@
                 {
                     "id": 316,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 657,
+                    "tag": "Layer 5 Pyramidal cell"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:38.333332+00:00",
