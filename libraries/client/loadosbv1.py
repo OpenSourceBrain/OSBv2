@@ -37,7 +37,7 @@ else:
 
 index = 0
 min_index = 0
-max_index = 30
+max_index = 40
 
 verbose = True # 
 verbose = False
@@ -191,9 +191,13 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 print('----------')
                 logging.exception("Error adding %s" % osbv1_proj)
                 print('----------')
+                print('Error: %s'%str(e))
+                print('----------')
                 if not 'context_resources' in str(e):
                     print("Exiting due to unknown error...")
-                    #exit()
+                    exit()
+                else:
+                    print('Known error...')
 
         index+=1
 

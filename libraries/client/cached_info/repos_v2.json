@@ -7955,24 +7955,16 @@
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 319,
-                    "tag": "neuroConstruct"
-                },
-                {
                     "id": 321,
                     "tag": "Detailed cell model"
                 },
                 {
+                    "id": 319,
+                    "tag": "neuroConstruct"
+                },
+                {
                     "id": 322,
                     "tag": "Goldman-Hodgkin-Katz current"
-                },
-                {
-                    "id": 650,
-                    "tag": "Neocortex"
-                },
-                {
-                    "id": 652,
-                    "tag": "Rodent"
                 },
                 {
                     "id": 655,
@@ -7981,6 +7973,14 @@
                 {
                     "id": 656,
                     "tag": "NEURON"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:37.235236+00:00",
@@ -8143,36 +8143,36 @@
                     "tag": "OSBv1"
                 },
                 {
-                    "id": 317,
-                    "tag": "Large scale brain initiative"
+                    "id": 321,
+                    "tag": "Detailed cell model"
                 },
                 {
                     "id": 318,
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 321,
-                    "tag": "Detailed cell model"
-                },
-                {
                     "id": 324,
                     "tag": "Neuronal reconstruction"
+                },
+                {
+                    "id": 317,
+                    "tag": "Large scale brain initiative"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
                 },
                 {
                     "id": 650,
                     "tag": "Neocortex"
                 },
                 {
-                    "id": 652,
-                    "tag": "Rodent"
-                },
-                {
                     "id": 653,
                     "tag": "Network"
                 },
                 {
-                    "id": 656,
-                    "tag": "NEURON"
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:39.418884+00:00",
@@ -8273,16 +8273,16 @@
                     "tag": "Hippocampus"
                 },
                 {
-                    "id": 652,
-                    "tag": "Rodent"
-                },
-                {
                     "id": 656,
                     "tag": "NEURON"
                 },
                 {
                     "id": 663,
                     "tag": "Oriens Lacunosum Moleculare"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2023-12-20 16:09:40.597357+00:00",
@@ -13262,8 +13262,8 @@
             "summary": "CA1 Oriens Lacunosum Moleculare multi-compartment model:\r\nSaraga F, Wu CP, Zhang L, Skinner FK (2003) Active Dendrites and Spike Propagation in Multi-compartment Models of Oriens-Lacunosum/Moleculare Hippocampal Interneurons. J Physiol 552(3):673-689",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
+                    "id": 328,
+                    "tag": "CA1"
                 },
                 {
                     "id": 321,
@@ -13274,24 +13274,24 @@
                     "tag": "Hippocampal formation"
                 },
                 {
-                    "id": 328,
-                    "tag": "CA1"
-                },
-                {
                     "id": 550,
                     "tag": "Hippocampus"
-                },
-                {
-                    "id": 652,
-                    "tag": "Rodent"
                 },
                 {
                     "id": 656,
                     "tag": "NEURON"
                 },
                 {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
                     "id": 663,
                     "tag": "Oriens Lacunosum Moleculare"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2024-01-04 16:08:25.891479+00:00",
@@ -13319,36 +13319,36 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 327,
-                    "tag": "Hippocampal formation"
+                    "id": 664,
+                    "tag": "Brain"
                 },
                 {
                     "id": 328,
                     "tag": "CA1"
                 },
                 {
-                    "id": 550,
-                    "tag": "Hippocampus"
-                },
-                {
-                    "id": 652,
-                    "tag": "Rodent"
-                },
-                {
-                    "id": 664,
-                    "tag": "Brain"
-                },
-                {
                     "id": 665,
                     "tag": "CA1 Pyramidal cell"
                 },
                 {
+                    "id": 327,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 550,
+                    "tag": "Hippocampus"
+                },
+                {
                     "id": 666,
                     "tag": "Izhikevich neuron model"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2024-01-04 16:10:39.955561+00:00",
@@ -13376,8 +13376,12 @@
             "summary": "![](/attachments/download/1/CA1-spike.PNG)\r\nConversion of [hippocampal CA1 pyramidal cell](http://neurolex.org/wiki/Category:Hippocampus_CA1_pyramidal_cell) from [Migliore et al 2005](http://senselab.med.yale.edu/ModelDB/ShowModel.asp?model=55035).\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/CA1PyramidalCell)\r\n",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
+                    "id": 328,
+                    "tag": "CA1"
+                },
+                {
+                    "id": 665,
+                    "tag": "CA1 Pyramidal cell"
                 },
                 {
                     "id": 321,
@@ -13388,24 +13392,20 @@
                     "tag": "Hippocampal formation"
                 },
                 {
-                    "id": 328,
-                    "tag": "CA1"
-                },
-                {
                     "id": 550,
                     "tag": "Hippocampus"
-                },
-                {
-                    "id": 652,
-                    "tag": "Rodent"
                 },
                 {
                     "id": 656,
                     "tag": "NEURON"
                 },
                 {
-                    "id": 665,
-                    "tag": "CA1 Pyramidal cell"
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2024-01-04 16:10:40.492999+00:00",
@@ -13531,36 +13531,36 @@
             "summary": "![](http://www.opensourcebrain.org/attachments/download/34/medium.png)\r\n\r\n[Deep cerebellar nucleus neuron](http://neurolex.org/wiki/Category:Cerebellum_nucleus_reciprocal_projections_neuron) model from: Determinants of synaptic integration and heterogeneity in rebound firing explored with data-driven models of deep cerebellar nucleus cells. Steuber V, Schultheiss NW, Silver RA, De Schutter E, Jaeger D. J Comput Neurosci. 2011 Jun;30(3):633-58\r\n",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 319,
-                    "tag": "neuroConstruct"
-                },
-                {
-                    "id": 321,
-                    "tag": "Detailed cell model"
-                },
-                {
-                    "id": 322,
-                    "tag": "Goldman-Hodgkin-Katz current"
-                },
-                {
-                    "id": 649,
-                    "tag": "GENESIS"
-                },
-                {
-                    "id": 652,
-                    "tag": "Rodent"
-                },
-                {
                     "id": 670,
                     "tag": "Cerebellar Nucleus Neuron"
                 },
                 {
                     "id": 671,
                     "tag": "Cerebellum"
+                },
+                {
+                    "id": 321,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 649,
+                    "tag": "GENESIS"
+                },
+                {
+                    "id": 322,
+                    "tag": "Goldman-Hodgkin-Katz current"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 319,
+                    "tag": "neuroConstruct"
                 }
             ],
             "timestamp_created": "2024-01-04 16:10:41.922246+00:00",
@@ -14042,6 +14042,22 @@
             "summary": "Model from: **Glutamate-bound NMDARs arising from in vivo-like network activity extend spatio-temporal integration in a L5 cortical pyramidal cell model**\r\nMatteo Farinella, Daniel T. Ruedt, Padraig Gleeson, Frederic Lanore and\r\nR. Angus Silver\r\n\r\nThis paper has just [been published](http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003590).\r\n\r\nThe cell model used is based on: [Synaptic integration in L5 Pyramidal cell, Larkum et al. 2009](http://www.opensourcebrain.org/projects/larkumetal2009)\r\n",
             "tags": [
                 {
+                    "id": 321,
+                    "tag": "Detailed cell model"
+                },
+                {
+                    "id": 655,
+                    "tag": "L5 pyramidal cell"
+                },
+                {
+                    "id": 688,
+                    "tag": "NMDAR synapse"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
                     "id": 316,
                     "tag": "OSBv1"
                 },
@@ -14050,12 +14066,225 @@
                     "tag": "Pyramidal cell"
                 },
                 {
-                    "id": 319,
-                    "tag": "neuroConstruct"
+                    "id": 652,
+                    "tag": "Rodent"
                 },
                 {
-                    "id": 321,
-                    "tag": "Detailed cell model"
+                    "id": 319,
+                    "tag": "neuroConstruct"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:10:47.428150+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FarinellaEtAl_NMDAspikes",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "317": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 317,
+            "name": "CA1 PV+ fast firing cell - Ferguson et al. 2013",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 9,
+                    "tag": "Brian"
+                },
+                {
+                    "id": 689,
+                    "tag": "CA1 PV fast-firing cell"
+                },
+                {
+                    "id": 327,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 550,
+                    "tag": "Hippocampus"
+                },
+                {
+                    "id": 329,
+                    "tag": "Interneuron"
+                },
+                {
+                    "id": 666,
+                    "tag": "Izhikevich neuron model"
+                },
+                {
+                    "id": 16,
+                    "tag": "Mouse"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:46.522998+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FergusonEtAl2013-PVFastFiringCell",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "318": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 318,
+            "name": "VAnet2-GENESIS",
+            "repository_type": "github",
+            "summary": "This is an improved and much more efficient GENESIS implementation of\nthe dual exponential conductance version of the Vogels-Abbott (2005)\nnetwork model with Hodgkin-Huxley neurons and conductance-based\nsynaptic activation (COBA). Details are given in Brette et al. (2007).\nIt uses hsolve and runs 16 times faster than the original. The\n\u2018VAnet2-batch.g\u2019 script is intended to be extended for testing GENESIS\nspike timing dependent plasticity (STDP) implementations with hsolve.\n",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 649,
+                    "tag": "GENESIS"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 651,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 660,
+                    "tag": "Generic"
+                },
+                {
+                    "id": 690,
+                    "tag": "Single compartment conductance based neuron model"
+                },
+                {
+                    "id": 691,
+                    "tag": "Synaptic plasticity"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:52.672118+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/dbeeman/VAnet2-GENESIS",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "319": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 319,
+            "name": "FitzHugh Nagumo - FitzHugh 1969",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 660,
+                    "tag": "Generic"
+                },
+                {
+                    "id": 692,
+                    "tag": "Abstract neuron model"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:53.168643+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FitzHugh-Nagumo",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "320": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 320,
+            "name": "FPGA Based Simulations Showcase",
+            "repository_type": "github",
+            "summary": "Information on various packages available for executing neuronal simulations on FPGA boards.\r\n\r\nFor more information, see the [[Wiki]].\r\n",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 693,
+                    "tag": "FPGA"
+                },
+                {
+                    "id": 694,
+                    "tag": "Hardware based simulation"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:53.624195+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/FPGAShowcase",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "321": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 321,
+            "name": "Functional Balanced Network",
+            "repository_type": "github",
+            "summary": "Orientation selectivity in inhibition-dominated networks of spiking neurons",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
                 },
                 {
                     "id": 650,
@@ -14066,17 +14295,287 @@
                     "tag": "Rodent"
                 },
                 {
-                    "id": 655,
-                    "tag": "L5 pyramidal cell"
+                    "id": 653,
+                    "tag": "Network"
+                },
+                {
+                    "id": 661,
+                    "tag": "NEST"
+                },
+                {
+                    "id": 695,
+                    "tag": "Visual system"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:54.161017+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/sdrsd/SadehRotter_2015_PLOS_ComputBiol",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "322": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 322,
+            "name": "Geppetto Showcase",
+            "repository_type": "github",
+            "summary": "![](/attachments/download/210/geppettologo.png)\r\n\r\nGeppetto is a web-based multi-algorithm, multi-scale simulation platform engineered to support the simulation of complex biological systems and their surrounding environment.\r\n\r\nExamples of NeuroML 2 files along with scripts for visualising/executing them in Geppetto (http://www.geppetto.org).\r\n",
+            "tags": [
+                {
+                    "id": 23,
+                    "tag": "NeuroML"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 696,
+                    "tag": "Simulator showcase"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:54.762149+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/openworm/org.geppetto.samples",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "323": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 323,
+            "name": "GHK & Nernst examples",
+            "repository_type": "github",
+            "summary": "Examples of cell models with currents using the [GHK flux equation](http://en.wikipedia.org/wiki/GHK_flux_equation), or using\n [Nernst\u2019s Equation](http://en.wikipedia.org/wiki/Nernst_equation) for the reversal potential in NeuroML 2 and a number of other formats.\n\nSee the [[Wiki]] for more details.\n",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 322,
+                    "tag": "Goldman-Hodgkin-Katz current"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:55.228015+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/ghk-nernst",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "324": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 324,
+            "name": "Golgi Cell Dendritic Gap Junctions - Szoboszlay et al. 2016",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 671,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 672,
+                    "tag": "Golgi cell"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:55.679400+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/GolgiCellDendGapJunctions",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "325": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 325,
+            "name": "GPU Based Simulation Showcase",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 694,
+                    "tag": "Hardware based simulation"
+                },
+                {
+                    "id": 697,
+                    "tag": "GPU"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:56.147642+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/GPUShowcase",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "326": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 326,
+            "name": "Granule Cell Layer - Maex and De Schutter 1998",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 671,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 649,
+                    "tag": "GENESIS"
                 },
                 {
                     "id": 688,
                     "tag": "NMDAR synapse"
+                },
+                {
+                    "id": 651,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 690,
+                    "tag": "Single compartment conductance based neuron model"
+                },
+                {
+                    "id": 319,
+                    "tag": "neuroConstruct"
                 }
             ],
-            "timestamp_created": "2024-01-04 16:10:47.428150+00:00",
+            "timestamp_created": "2024-01-04 16:30:56.785060+00:00",
             "timestamp_updated": "---",
-            "uri": "https://github.com/OpenSourceBrain/FarinellaEtAl_NMDAspikes",
+            "uri": "https://github.com/OpenSourceBrain/GranCellLayer",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "327": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 327,
+            "name": "I&F granule cell model - Rothman & Piasini",
+            "repository_type": "github",
+            "summary": "This project contains an integrate and fire model of the cerebellar granule cell and a simple model of the mossy fibre to granule cell synapse. The cell model (IaF\\_GrC.nml) is the average (ie the one whose parameters have the average value) of the model population developed by Jason Rothman and published in Schwartz et, J Neurosci (2012). The synaptic model is based on the one used in that same paper, but it has been developed further to improve the fit to the experimental data and to ensure LEMS/NeuroMLv2 compatibility.\n",
+            "tags": [
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 319,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 326,
+                    "tag": "Integrate and fire neuron"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 671,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 698,
+                    "tag": "Granule cell"
+                },
+                {
+                    "id": 699,
+                    "tag": "Igor Pro"
+                }
+            ],
+            "timestamp_created": "2024-01-04 16:30:57.321873+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/GranCellRothmanIf",
             "user": {
                 "email": "p.gleeson@gmail.com",
                 "first_name": "Padraig",

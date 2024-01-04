@@ -43,7 +43,7 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
             if field in osbv1_info:  
                 val = osbv1_info[field]
                 if not val in ['None','Other','']:
-                    tags.append(val)
+                    tags.append(val.replace('PV+','PV'))
     
     if dandi_api_info is not None:
 
