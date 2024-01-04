@@ -29,6 +29,7 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
+print("Retrieving all info on repositories in OSB %s"%v2_or_v2dev)
 
 configuration = workspaces_cli.Configuration(
     host = "https://workspaces.%s.opensourcebrain.org/api"%v2_or_v2dev,

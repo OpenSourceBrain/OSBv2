@@ -28,7 +28,13 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False # dry_run = True
+
+if '-dry' in sys.argv:
+    dry_run = True
+else:
+    dry_run = False # dry_run = True
+
+
 
 known_missing_dandisets = ['https://dandiarchive.org/dandiset/000069/draft',
                            'https://dandiarchive.org/dandiset/000477/draft',
@@ -36,7 +42,7 @@ known_missing_dandisets = ['https://dandiarchive.org/dandiset/000069/draft',
 
 index = 0
 min_index = 0
-max_index = 30
+max_index = 10
 
 verbose = False
 
@@ -45,7 +51,7 @@ configuration = workspaces_cli.Configuration(
     access_token = TOKEN
 )
 
-owner_user_id = known_users['Padraig_v2']
+owner_user_id = known_users['OSBAdmin_v2']
 if v2_or_v2dev == 'v2dev':
     owner_user_id = known_users['OSBAdmin_v2dev']
 
@@ -185,9 +191,9 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 continue
             try:
                 added = add_dandiset(dandishowcase_entry, index)
-            except:
+            except Exception as e:
                 logging.exception("Error adding/updating %s" % dandishowcase_entry['url'])
-                exit()
+                #exit()
 
         index+=1
 
