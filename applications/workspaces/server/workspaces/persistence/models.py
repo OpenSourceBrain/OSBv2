@@ -528,6 +528,7 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     tags: typing.Sequence["TagDict"]
+    thumbnail: typing.Optional[str]
 
 
 class TOSBRepositoryEntity(typing.Protocol):
@@ -551,6 +552,7 @@ class TOSBRepositoryEntity(typing.Protocol):
         timestamp_created: Date/time the Workspace is created
         timestamp_updated: Date/time the Workspace is last updated
         tags: The tags of the OSBRepositoryEntity.
+        thumbnail: The thumbnail of the OSBRepositoryEntity.
 
     """
 
@@ -572,6 +574,7 @@ class TOSBRepositoryEntity(typing.Protocol):
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     tags: typing.Sequence["TTag"]
+    thumbnail: typing.Optional[str]
 
     def __init__(
         self,
@@ -587,6 +590,7 @@ class TOSBRepositoryEntity(typing.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["TTag"]] = None,
+        thumbnail: typing.Optional[str] = None,
     ) -> None:
         """
         Construct.
@@ -606,6 +610,7 @@ class TOSBRepositoryEntity(typing.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: The tags of the OSBRepositoryEntity.
+            thumbnail: The thumbnail of the OSBRepositoryEntity.
 
         """
         ...
@@ -625,6 +630,7 @@ class TOSBRepositoryEntity(typing.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         tags: typing.Optional[typing.Sequence["TagDict"]] = None,
+        thumbnail: typing.Optional[str] = None,
     ) -> "TOSBRepositoryEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -644,6 +650,7 @@ class TOSBRepositoryEntity(typing.Protocol):
             timestamp_created: Date/time the Workspace is created
             timestamp_updated: Date/time the Workspace is last updated
             tags: The tags of the OSBRepositoryEntity.
+            thumbnail: The thumbnail of the OSBRepositoryEntity.
 
         Returns:
             Model instance based on the dictionary.
