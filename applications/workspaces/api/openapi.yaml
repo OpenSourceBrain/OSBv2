@@ -932,6 +932,37 @@ paths:
                     $ref: '#/components/schemas/RepositoryType'
                 in: query
                 required: true
+    '/osbrepository/{id}/thumbnail/':
+        post:
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                thumbNail:
+                                    format: binary
+                                    type: string
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The repository was updated with the thumbnail.
+                '404':
+                    description: The repository was not found or the thumbnail was not specified
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.osbrepository_controller.setthumbnail
+            summary: Sets the thumbnail of the workspace.
+        parameters:
+            -
+                name: id
+                description: 'Repository ID '
+                schema:
+                    type: integer
+                in: path
+                required: true
 components:
     schemas:
         Valid:
@@ -1441,36 +1472,35 @@ components:
                 -
                     $ref: '#/components/schemas/WorkspaceResourceBase'
                 -
-                    properties:
-                        origin:
-                            description: Origin data JSON formatted of the WorkspaceResource
-                            type: string
-                        workspace_id:
-                            description: workspace_id
-                            type: integer
-                            x-foreign-key: workspace.id
-                        folder:
-                            description: WorkspaceResource path where the resource will stored in the pvc.
-                            type: string
-                            example: repo/sample.nwb
                     x-tablename: Workspaceresource
+            properties:
+                origin:
+                    description: Origin data JSON formatted of the WorkspaceResource
+                    type: string
+                workspace_id:
+                    description: workspace_id
+                    type: integer
+                    x-foreign-key: workspace.id
+                folder:
+                    description: WorkspaceResource path where the resource will stored in the pvc.
+                    type: string
+                    example: repo/sample.nwb
         WorkspaceResource:
             description: Workspace Resource item of a Workspace
             allOf:
                 -
                     $ref: '#/components/schemas/WorkspaceResourceBase'
-                -
-                    properties:
-                        workspace_id:
-                            description: workspace_id
-                            type: integer
-                        origin:
-                            $ref: '#/components/schemas/ResourceOrigin'
-                            description: Origin Resource where the WorkspaceResource is build from
-                        path:
-                            description: WorkspaceResource path where the resource will stored in the pvc.
-                            type: string
-                            example: repo/sample.nwb
+            properties:
+                workspace_id:
+                    description: workspace_id
+                    type: integer
+                origin:
+                    $ref: '#/components/schemas/ResourceOrigin'
+                    description: Origin Resource where the WorkspaceResource is build from
+                path:
+                    description: WorkspaceResource path where the resource will stored in the pvc.
+                    type: string
+                    example: repo/sample.nwb
     securitySchemes:
         bearerAuth:
             scheme: bearer
