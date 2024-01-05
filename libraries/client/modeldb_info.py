@@ -9,13 +9,20 @@ import osb
 import operator
 import pprint
 
+from utils import get_github
+
+verbose = True # 
+verbose = False
+
 
 info = {}
 with_gitrepo = 0
+gh = get_github()
+
 
 if __name__ == "__main__":
     
-    max_num = 10000
+    max_num = 4
     index = 0
 
     if len(sys.argv) >= 2:
@@ -34,14 +41,36 @@ if __name__ == "__main__":
 
         info[model]= json.loads(get_page('https://modeldb.science/api/v1/models/%s'%model))
 
+        print('    %s'%info[model]['name'])
         if 'gitrepo' in info[model] and info[model]['gitrepo']:
             with_gitrepo+=1
-           
+            print('    gitrepo: %s'%info[model]['gitrepo'])
+        else:
+            print('    gitrepo: %s'%False)
+
+        possible_mdb_repo = 'ModelDBRepository/%s'%(info[model]['id'])
+        mdb_repo = gh.get_repo(possible_mdb_repo)
+
+        repo_to_use = mdb_repo
+        print('    Exists at: %s (def branch: %s; forks: %i)'%(mdb_repo.html_url, mdb_repo.default_branch, mdb_repo.forks))
+
+        possible_osbgh_repo = 'OpenSourceBrain/%s'%(info[model]['id'])
+        try:
+            osb_repo = gh.get_repo(possible_osbgh_repo)
+            print('    Exists at: %s (def branch: %s; forks: %i)'%(osb_repo.html_url, osb_repo.default_branch, osb_repo.forks))
+            repo_to_use = osb_repo
+        except:
+            pass
+
+        info[model]['osbv2_gh_repo'] = repo_to_use.html_url
+        info[model]['osbv2_gh_branch'] = repo_to_use.default_branch
+
         index +=1
-    infop = pprint.pprint(info, compact=True)
+
+    if verbose:
+        infop = pprint.pprint(info, compact=True)
 
     print("\nThere were %i models, %i of which had gitrepo\n"%(len(info), with_gitrepo))
-
 
 filename = 'cached_info/modeldb.json'  
 

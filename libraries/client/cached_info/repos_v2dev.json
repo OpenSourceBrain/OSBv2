@@ -16688,6 +16688,334 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "397": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 397,
+            "name": "Low Threshold Calcium Currents in TC cells (Destexhe et al 1998)",
+            "repository_type": "github",
+            "summary": "In Destexhe, Neubig, Ulrich, and Huguenard (1998) experiments and models examine low threshold calcium current's (IT, or T-current) distribution in thalamocortical (TC) cells.  Multicompartmental modeling supports the hypothesis that IT currents have a density at least several fold higher in the dendrites than the soma.  The IT current contributes significantly to rebound bursts and is thought to have important network behavior consequences.  See the paper for details. See also http://cns.iaf.cnrs-gif.fr   Correspondance may be addressed to Alain Destexhe: Destexhe@iaf.cnrs-gif.fr",
+            "tags": [
+                {
+                    "id": 566,
+                    "tag": "Bursting"
+                },
+                {
+                    "id": 572,
+                    "tag": "Calcium dynamics"
+                },
+                {
+                    "id": 565,
+                    "tag": "Dendritic Action Potentials"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 575,
+                    "tag": "I T low threshold"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 567,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 568,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 573,
+                    "tag": "Rebound firing"
+                },
+                {
+                    "id": 569,
+                    "tag": "Simplified Models"
+                }
+            ],
+            "timestamp_created": "2024-01-05 14:49:54.137757+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/279",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "398": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 398,
+            "name": "Olfactory Mitral Cell (Davison et al 2000)",
+            "repository_type": "github",
+            "summary": "A four-compartment model of a mammalian olfactory bulb mitral cell, reduced \r\nfrom the complex 286-compartment model described by Bhalla and Bower (1993).  \r\nThe compartments are soma/axon, secondary dendrites, primary dendrite shaft \r\nand primary dendrite tuft. The reduced model runs 75 or more times faster \r\nthan the full model, making its use in large, realistic network models of the \r\nolfactory bulb practical.",
+            "tags": [
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 589,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 588,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 568,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 569,
+                    "tag": "Simplified Models"
+                }
+            ],
+            "timestamp_created": "2024-01-05 14:51:42.956889+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2487",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "399": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 399,
+            "name": "Influence of dendritic structure on neocortical neuron firing patterns (Mainen and Sejnowski 1996)",
+            "repository_type": "github",
+            "summary": "This package contains compartmental models of four reconstructed neocortical neurons (layer 3 Aspiny, layer 4 Stellate, layer 3 and layer 5 Pyramidal neurons) with active dendritic currents using NEURON.  Running this simulation demonstrates that an entire spectrum of firing patterns can be reproduced in this set of model neurons which share a common distribution of ion channels and differ only in their dendritic geometry. The reference paper is: Z. F. Mainen and T. J. Sejnowski (1996) Influence of dendritic structure on firing pattern in model neocortical neurons.  Nature 382: 363-366. See also http://www.cnl.salk.edu/~zach/methods.html and http://www.cnl.salk.edu/~zach/  More info in readme.txt file below made visible by clicking on the patdemo folder and then on the readme.txt file.",
+            "tags": [
+                {
+                    "id": 579,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 578,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 580,
+                    "tag": "I M"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2024-01-05 14:51:43.627369+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2488",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "400": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 400,
+            "name": "Olfactory Bulb Network (Davison et al 2003)",
+            "repository_type": "github",
+            "summary": "A biologically-detailed model of the mammalian olfactory bulb, incorporating \r\nthe mitral and granule cells and the dendrodendritic synapses between them. \r\nThe results of simulation experiments with electrical stimulation agree \r\nclosely in most details with published experimental data. The model predicts \r\nthat the time course of dendrodendritic inhibition is dependent on the \r\nnetwork connectivity as well as on the intrinsic parameters of the synapses. \r\nIn response to simulated odor stimulation, strongly activated mitral cells \r\ntend to suppress neighboring cells, the mitral cells readily synchronize \r\ntheir firing, and increasing the stimulus intensity increases the degree of \r\nsynchronization. For more details, see the reference below.",
+            "tags": [
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 589,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 580,
+                    "tag": "I M"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 588,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 585,
+                    "tag": "Oscillations"
+                },
+                {
+                    "id": 587,
+                    "tag": "Spatio-temporal Activity Patterns"
+                },
+                {
+                    "id": 586,
+                    "tag": "Synchronization"
+                }
+            ],
+            "timestamp_created": "2024-01-05 14:51:44.290571+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2730",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }

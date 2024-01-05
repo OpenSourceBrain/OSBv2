@@ -77,3 +77,21 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
     #print("       %s"%tags_list)
 
     return tags_list
+
+def get_github():
+    from github import Github
+
+    # Authentication is defined via github.Auth
+    from github import Auth
+
+    # using an access token
+    auth_token = str(open('github.auth','r').readline())
+    auth = Auth.Token(auth_token)
+
+    # First create a Github instance:
+
+    # Public Web Github
+    gh = Github(auth=auth)
+
+    return gh
+

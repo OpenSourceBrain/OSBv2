@@ -3,26 +3,17 @@ Script to get OSB repo info on GitHub
 '''
 import json 
 import pprint
-from github import Github
 
-# Authentication is defined via github.Auth
-from github import Auth
-
-# using an access token
-auth_token = str(open('github.auth','r').readline())
-auth = Auth.Token(auth_token)
-
-# First create a Github instance:
-
-# Public Web Github
-g = Github(auth=auth)
+from utils import get_github
 
 info = {}
 
 verbose = True # 
 verbose = False
 
-for repo in g.get_user().get_repos():
+gh = get_github()
+
+for repo in gh.get_user().get_repos():
     if 'OpenSourceBrain' in repo.url:
         print('=============== %s ============'%repo.url)
         

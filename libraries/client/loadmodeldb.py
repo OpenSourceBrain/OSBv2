@@ -28,11 +28,14 @@ if '-v2' in sys.argv:
 if '-v2dev' in sys.argv:
     v2_or_v2dev = 'v2dev'
 
-dry_run = False # dry_run = True
+if '-dry' in sys.argv:
+    dry_run = True
+else:
+    dry_run = False # dry_run = True
 
 index = 0
 min_index = 0
-max_index = 20
+max_index = 10
 
 verbose = True # 
 verbose = False
@@ -75,11 +78,11 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     def add_modeldb_model(modeldb_model, index):
 
         modeldb_model_id = modeldb_model['id']
-        if not 'gitrepo' in modeldb_model or not modeldb_model['gitrepo']:
+        if not 'osbv2_gh_repo' in modeldb_model or not modeldb_model['osbv2_gh_repo']:
             all_errors.append("  %i, %s doesn't have a Github repo..."%(index, modeldb_model_id))
             return
 
-        modeldb_github = 'https://github.com/ModelDBRepository/%s'%modeldb_model_id
+        modeldb_github = modeldb_model['osbv2_gh_repo']
 
         print("\n================ %i: %s, %s ================\n"%(index, modeldb_model_id, modeldb_github))
 
@@ -160,7 +163,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     name=modeldb_model['name'],
                     summary=desc,
                     tags=tags,
-                    default_context=modeldb_model['main_branch'] if 'main_branch' in modeldb_model else 'master',
+                    default_context=modeldb_model['osbv2_gh_branch'],
                     content_types_list=[RepositoryContentType(value="modeling")],
                     content_types="modeling",
                     user_id=owner_user_id,
@@ -177,8 +180,17 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         if index>=min_index and index<max_index:
             try:
                 added = add_modeldb_model(modeldb_model, index)
-            except:
+            except Exception as e:
+                print('----------')
                 logging.exception("Error adding %s" % modeldb_model)
+                print('----------')
+                print('Error: %s'%str(e))
+                print('----------')
+                if not 'context_resources' in str(e):
+                    print("Exiting due to unknown error...")
+                    exit()
+                else:
+                    print('Known error...')
 
         index+=1
 
