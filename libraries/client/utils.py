@@ -42,8 +42,10 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
         for field in ['Original format','Cell type','Brain region', 'Specie']:
             if field in osbv1_info:  
                 val = osbv1_info[field]
-                if not val in ['None','Other','']:
-                    tags.append(val.replace('PV+','PV'))
+                if not val in ['None','Other','','C++']:
+                    val = val.replace('PV+','PV')
+                    if not val in tags:
+                        tags.append(val)
     
     if dandi_api_info is not None:
 
