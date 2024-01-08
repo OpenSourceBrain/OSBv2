@@ -90,6 +90,11 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         else:
             # No logged in user, show only public (in case was not specified)
             q_base = q_base.filter(WorkspaceEntity.publicable == True)
+        
+        # if filter has user_id, then filter it with the user_id
+        if filter and any(field for field, condition, value in filter if field.key == "user_id"):
+            q_base = q_base.filter(
+                *[self._create_filter(*f) for f in filter if (f[0].key == "user_id")])
         return q_base
 
     def filter_by_tags(self, tags, q_base):

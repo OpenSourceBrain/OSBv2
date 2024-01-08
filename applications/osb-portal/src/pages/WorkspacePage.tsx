@@ -230,7 +230,7 @@ export const WorkspacePage = (props: any) => {
                   item
                   xs={12}
                   sm={3}
-                  lg={2}
+                  lg={2.5}
                   sx={{
                     borderRight: `1px solid ${bgLightest}`,
                   }}
@@ -251,7 +251,7 @@ export const WorkspacePage = (props: any) => {
                   justifyContent={workspace?.thumbnail ? "center" : "start"}
                   xs={12}
                   sm={6}
-                  lg={8}
+                  lg={6.5}
                   id="workspace-detail-content"
                   className="verticalFit"
                 >
@@ -298,7 +298,7 @@ export const WorkspacePage = (props: any) => {
                     </Stack>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={3} lg={2}>
+                <Grid item xs={12} sm={3} lg={2.5}>
                   <WorkspaceDetailsInfo workspace={workspace} />
                 </Grid>
               </Grid>
