@@ -1,6 +1,8 @@
 from cloudharness import log
 import workspaces.service.osbrepository as repository_service
-
+from workspaces.persistence.crud_persistence import OSBRepositoryRepository, db
+from .workspace_controller import _save_image
+from workspaces.config import Config
 
 def get_contexts(uri=None, repository_type=None, **kwargs):
     # get the branches of the repository
@@ -50,3 +52,17 @@ def get_info(uri=None, repository_type=None):
     except Exception as e:
         log.error("Error getting repo info", exc_info=True)
         return str(e), 500
+    
+
+def setthumbnail(id_=None, thumb_nail=None, body=None, **kwargs):
+    repository = OSBRepositoryRepository().get(id=id_)
+    if repository is None:
+        return f"Repository with id {id_} not found.", 404
+    if not thumb_nail:
+        return f"Thumbnail is not specified.", 404
+    
+    saved_filename = _save_image(id_=id_, image=thumb_nail, filename_base="thumbnail", dirname=Config.REPOSITORY_DIR)
+    repository.thumbnail = saved_filename
+    db.session.add(repository)
+    db.session.commit()
+    return "Saved", 200
