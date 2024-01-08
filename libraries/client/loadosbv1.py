@@ -47,7 +47,7 @@ configuration = workspaces_cli.Configuration(
     access_token = TOKEN
 )
 
-owner_user_id = known_users['Padraig_v2']
+owner_user_id = known_users['OSBAdmin_v2']
 if v2_or_v2dev == 'v2dev':
     owner_user_id = known_users['OSBAdmin_v2dev']
 
