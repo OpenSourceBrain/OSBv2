@@ -9,6 +9,9 @@ import json
 import osb
 import operator
 import pprint
+from utils import get_github
+
+gh = get_github()
 
 projects = 0
 with_tags = 0
@@ -45,7 +48,7 @@ if __name__ == "__main__":
             info[project.identifier]['name'] = project.name
             info[project.identifier]['identifier'] = project.identifier
             info[project.identifier]['description'] = project.description
-            info[project.identifier]['main_branch'] = 'master'
+
 
             for cf in custom_fields:
                 cfv = project.get_custom_field(cf)
@@ -60,6 +63,16 @@ if __name__ == "__main__":
                     if not tag in tags:
                         tags[tag] = 0
                     tags[tag] +=1
+
+            if 'GitHub repository' in info[project.identifier]:
+                gh_repo_url = info[project.identifier]['GitHub repository']
+                gh_repo_name = '%s/%s'%(gh_repo_url.split('/')[3],gh_repo_url.split('/')[4].replace('.git',''))
+                #print(gh_repo_url)
+                #print(gh_repo_name)
+                gh_repo = gh.get_repo(gh_repo_name)
+                info[project.identifier]['main_branch'] = gh_repo.default_branch
+
+                print("    GH repo: %s\t(def branch: %s)"%(gh_repo_url, gh_repo.default_branch))
 
 
     print("\nThere were %i projects (min_curation_level=%s), %i of which had tags\n"%(projects, min_curation_level, with_tags))

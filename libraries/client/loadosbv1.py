@@ -143,7 +143,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     name=osbv1_proj['name'],
                     summary=desc,
                     tags=tags,
-                    default_context=found.osbrepositories[0].default_context,
+                    default_context=osbv1_proj['main_branch'],
                     content_types_list=[RepositoryContentType(value="modeling")],
                     content_types="modeling",
                     user_id=owner_user_id,

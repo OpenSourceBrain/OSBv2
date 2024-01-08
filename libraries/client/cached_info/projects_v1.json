@@ -113,7 +113,7 @@
         "description": "github:README.md",
         "id": 265,
         "identifier": "arbor-showcase",
-        "main_branch": "master",
+        "main_branch": "main",
         "name": "Arbor Showcase"
     },
     "bahletal2012_reducedl5pyrcell": {
@@ -655,7 +655,6 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/109/DG_500.jpg)\r\n\r\nDentate Gyrus network model developed by the [Soltesz lab](http://www.ivansolteszlab.org). This is an ongoing update to the large scale dentate gyrus model presented in Schneider CJ, Bezaire M, Soltesz I.\r\nToward a full-scale computational model of the rat dentate gyrus. Front Neural Circuits. (2012) 6:83.\r\n\r\n\r\nSee also [CA1 Local Network, Bezaire and Soltesz 2013](http://www.opensourcebrain.org/projects/nc_ca1) and [CA1 Pyramidal Sublayer Microcircuit, Lee et al 2014](http://www.opensourcebrain.org/projects/nc_superdeep) from the [Soltesz lab](http://www.opensourcebrain.org/groups/201).\r\n",
         "id": 79,
         "identifier": "dentate",
-        "main_branch": "master",
         "name": "Dentate Gyrus network model - Soltesz lab"
     },
     "dentategyrus2005": {
@@ -1392,7 +1391,7 @@
         "description": "github:README.md",
         "id": 262,
         "identifier": "hnn",
-        "main_branch": "master",
+        "main_branch": "main",
         "name": "HNN"
     },
     "hodgkin-huxley-tutorial": {
@@ -2010,7 +2009,6 @@
         "description": "![](http://www.opensourcebrain.org/attachments/download/204/Figure1B.jpg)\r\n\r\nThis model examines the interactions between the pyramidal cells of the superficial and deep layers of CA1. It is featured in: pubmed:24836505. Specifically, this model shows how the experimentally observed differences in synapse strength and number between PV+ basket cells and either superficial and deep pyramidal cells could have significant effects at the network level.\r\n",
         "id": 107,
         "identifier": "nc_superdeep",
-        "main_branch": "master",
         "name": "CA1 Pyramidal Sublayer Microcircuit - Lee et al 2014 "
     },
     "nengoneuroml": {
@@ -2960,7 +2958,6 @@
         "description": "Project to test scenarios for [TVB](http://www.thevirtualbrain.org) & NeuroML interoperability\r\n",
         "id": 103,
         "identifier": "tvb_neuroml",
-        "main_branch": "master",
         "name": "TVB NeuroML"
     },
     "v1networkmodels": {

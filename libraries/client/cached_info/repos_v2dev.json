@@ -801,7 +801,7 @@
             "content_types_list": [
                 "modeling"
             ],
-            "default_context": "experimental",
+            "default_context": "master",
             "id": 29,
             "name": "OpenCortex",
             "repository_type": "github",
@@ -11499,7 +11499,7 @@
             "content_types_list": [
                 "modeling"
             ],
-            "default_context": "master",
+            "default_context": "main",
             "id": 283,
             "name": "Arbor Showcase",
             "repository_type": "github",
@@ -13662,7 +13662,7 @@
             "content_types_list": [
                 "modeling"
             ],
-            "default_context": "master",
+            "default_context": "main",
             "id": 335,
             "name": "HNN",
             "repository_type": "github",

@@ -83,7 +83,7 @@ def get_github():
 
     # Authentication is defined via github.Auth
     from github import Auth
-
+    
     # using an access token
     auth_token = str(open('github.auth','r').readline())
     auth = Auth.Token(auth_token)
@@ -92,6 +92,8 @@ def get_github():
 
     # Public Web Github
     gh = Github(auth=auth)
+
+    print("Authenticated using PyGitHub with user: %s"%gh.get_user().login)
 
     return gh
 

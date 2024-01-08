@@ -19,9 +19,10 @@ for repo in gh.get_user().get_repos():
         
         if verbose:
             pprint.pprint(repo.__dict__, compact=True)
-        info[repo.url]={}
-        for k, v in repo.__dict__['_rawData'].items():
-            info[repo.url][k]=v
+        if not repo.private:
+            info[repo.url]={}
+            for k, v in repo.__dict__['_rawData'].items():
+                info[repo.url][k]=v
 
 filename = 'cached_info/osb_gh.json'  
 
