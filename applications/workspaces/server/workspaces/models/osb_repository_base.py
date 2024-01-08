@@ -19,7 +19,7 @@ class OSBRepositoryBase(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, summary=None, repository_type=None, content_types=None, auto_sync=True, uri=None, default_context=None, user_id=None, timestamp_created=None, timestamp_updated=None, tags=None):  # noqa: E501
+    def __init__(self, id=None, name=None, summary=None, repository_type=None, content_types=None, auto_sync=True, uri=None, default_context=None, thumbnail=None, user_id=None, timestamp_created=None, timestamp_updated=None, tags=None):  # noqa: E501
         """OSBRepositoryBase - a model defined in OpenAPI
 
         :param id: The id of this OSBRepositoryBase.  # noqa: E501
@@ -38,6 +38,8 @@ class OSBRepositoryBase(Model):
         :type uri: str
         :param default_context: The default_context of this OSBRepositoryBase.  # noqa: E501
         :type default_context: str
+        :param thumbnail: The thumbnail of this OSBRepositoryBase.  # noqa: E501
+        :type thumbnail: str
         :param user_id: The user_id of this OSBRepositoryBase.  # noqa: E501
         :type user_id: str
         :param timestamp_created: The timestamp_created of this OSBRepositoryBase.  # noqa: E501
@@ -56,6 +58,7 @@ class OSBRepositoryBase(Model):
             'auto_sync': bool,
             'uri': str,
             'default_context': str,
+            'thumbnail': str,
             'user_id': str,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
@@ -71,6 +74,7 @@ class OSBRepositoryBase(Model):
             'auto_sync': 'auto_sync',
             'uri': 'uri',
             'default_context': 'default_context',
+            'thumbnail': 'thumbnail',
             'user_id': 'user_id',
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
@@ -85,6 +89,7 @@ class OSBRepositoryBase(Model):
         self._auto_sync = auto_sync
         self._uri = uri
         self._default_context = default_context
+        self._thumbnail = thumbnail
         self._user_id = user_id
         self._timestamp_created = timestamp_created
         self._timestamp_updated = timestamp_updated
@@ -288,6 +293,27 @@ class OSBRepositoryBase(Model):
         """
 
         self._default_context = default_context
+
+    @property
+    def thumbnail(self):
+        """Gets the thumbnail of this OSBRepositoryBase.
+
+
+        :return: The thumbnail of this OSBRepositoryBase.
+        :rtype: str
+        """
+        return self._thumbnail
+
+    @thumbnail.setter
+    def thumbnail(self, thumbnail):
+        """Sets the thumbnail of this OSBRepositoryBase.
+
+
+        :param thumbnail: The thumbnail of this OSBRepositoryBase.
+        :type thumbnail: str
+        """
+
+        self._thumbnail = thumbnail
 
     @property
     def user_id(self):
