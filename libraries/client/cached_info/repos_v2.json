@@ -18078,6 +18078,95 @@
                 "username": "padraig"
             },
             "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "393": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 393,
+            "name": "Olfactory Mitral Cell (Bhalla, Bower 1993)",
+            "repository_type": "github",
+            "summary": "This is a conversion to NEURON of the mitral cell model described in Bhalla \r\nand Bower (1993). \r\nThe original model was written in GENESIS and is available by joining BABEL, the GENESIS users' group here http://www.genesis-sim.org/GENESIS/babel.html",
+            "tags": [
+                {
+                    "id": 74,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 767,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 771,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 774,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 785,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                },
+                {
+                    "id": 778,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 779,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 780,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 781,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 782,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 783,
+                    "tag": "I Sodium"
+                }
+            ],
+            "timestamp_created": "2024-01-08 12:20:38.332269+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2733",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         }
     }
 }

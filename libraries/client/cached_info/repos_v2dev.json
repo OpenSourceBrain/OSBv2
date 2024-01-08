@@ -17016,6 +17016,95 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "401": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 401,
+            "name": "Olfactory Mitral Cell (Bhalla, Bower 1993)",
+            "repository_type": "github",
+            "summary": "This is a conversion to NEURON of the mitral cell model described in Bhalla \r\nand Bower (1993). \r\nThe original model was written in GENESIS and is available by joining BABEL, the GENESIS users' group here http://www.genesis-sim.org/GENESIS/babel.html",
+            "tags": [
+                {
+                    "id": 578,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 589,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 588,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 568,
+                    "tag": "Parameter Fitting"
+                }
+            ],
+            "timestamp_created": "2024-01-08 11:43:21.510572+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2733",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }
