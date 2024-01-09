@@ -12,7 +12,14 @@ cd "${download_path}"
 export filename=`echo "${url##*/}"`
 
 echo GitHub copy "$filename" to "$download_path"
-svn export --username "${username}" --password "${password}" --force "${url}" "${download_path}"/"${filename}"
+# do the next command only if download path does not exist
+if [ ! -d "${filename}" ]; then
+  git clone -n "${url}" --branch $branch "${filename}"
+fi
+
+cd "${download_path}"/"${filename}"
+
+git checkout HEAD "${path}"
 
 # fix permissions
 chown -R 1000:1000 "${download_path}"

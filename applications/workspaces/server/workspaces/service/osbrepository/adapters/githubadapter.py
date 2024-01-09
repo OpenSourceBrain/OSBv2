@@ -124,24 +124,25 @@ class GitHubAdapter:
         """Topics/keywords"""
         tags = self.get_json(self.api_url + "topics")
         return tags["names"]
-
+    
     def create_copy_task(self, workspace_id, name, path):
         # download the resource
         import workspaces.service.workflow as workflow
         name = name if name != "/" else self.osbrepository.name
-        folder = self.osbrepository.name + \
-            path.replace(self.uri, "").replace("branches/", "/").replace("tags/", "/")
+        relative_path = path.replace(self.uri, "").\
+            replace(self.uri, "").replace("branches/", "/").replace("tags/", "/").replace("//", "/")
+        folder = self.osbrepository.name + relative_path
+            
         folder = folder[: folder.rfind("/")]
-        # username / password are optional and future usage,
-        # e.g. for accessing non public repos
+
         return workflow.create_copy_task(
             image_name="workspaces-github-copy",
             workspace_id=workspace_id,
             name=name,
             folder=folder,
-            path=path,
-            username="",
-            password="",
+            url=self.uri,
+            path=relative_path.split(self.osbrepository.default_context)[1][1:],
+            branch=self.osbrepository.default_context,
         )
 
 

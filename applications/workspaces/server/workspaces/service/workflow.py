@@ -74,7 +74,12 @@ def create_task(image_name, workspace_id, **kwargs):
 
 def create_copy_task(workspace_id, name, folder, path, image_name="workflows-extract-download", **kwargs):
     name = name if name else path[path.rfind("/") + 1:]
-    return create_task(image_name=image_name, workspace_id=workspace_id, folder=folder or '', url=path, **kwargs)
+    return create_task(
+        image_name=image_name, 
+        workspace_id=workspace_id, 
+        folder=folder or '',
+        path=path,
+        **kwargs)
 
 
 def create_scan_task(workspace_id, **kwargs):
