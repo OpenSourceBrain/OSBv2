@@ -25,8 +25,9 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
     if modeldb_info is not None:
         tags.append('ModelDB')
         for category in ["model_concept", "currents","modeling_application"]:
-            for v in modeldb_info[category]["value"]:
-                tags.append(v["object_name"])
+            if category in modeldb_info:
+                for v in modeldb_info[category]["value"]:
+                    tags.append(v["object_name"])
 
     if osbv1_info is not None:
         tags.append('OSBv1')

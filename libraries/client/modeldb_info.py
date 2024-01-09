@@ -31,7 +31,7 @@ errors = []
 if __name__ == "__main__":
     
     min_num = 0
-    max_num = 3700
+    max_num = 100
     index = 0
 
     from osb.utils import get_page
@@ -110,7 +110,7 @@ with open(filename, "w") as fp:
 print("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+
       "\n\nDone!")
  
-print("\nStill to be forked(%i total):"%len(to_be_forked))     
+print("\nStill to be forked (%i total):"%len(to_be_forked))     
 for m in to_be_forked:
     print(m)
 
