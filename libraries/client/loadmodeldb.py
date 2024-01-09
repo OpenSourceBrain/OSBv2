@@ -35,7 +35,7 @@ else:
 
 index = 0
 min_index = 0
-max_index = 6
+max_index = 20
 
 verbose = True # 
 verbose = False
@@ -92,18 +92,23 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
         if found.osbrepositories:
             matching_repos = []
+            matches = []
+
             for r in found.osbrepositories:
                 if r.uri==modeldb_github:
-                    matching_repos.append("URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri))
+                    matching_repos.append("M: URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s) - %s\n"%(v2_or_v2dev, r.id, r.uri, modeldb_github))
+                    matches.append(r)
+
             if len(matching_repos) > 1:
                 print('Matching: %s'%matching_repos)
-                err_info = "    More than one match for %s (search: %s):\n" % (modeldb_github, search)
+                err_info = "    More than one match for [%s] (search: %s):\n" % (modeldb_github, search)
                 for r in found.osbrepositories:
     
                     err_info +="         - URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"%(v2_or_v2dev, r.id, r.uri)
                     err_info +="         - Owner %s\n"%(lookup_user(r.user_id,''))
                     
                 print(err_info)
+                exit()
                 if verbose:
                     print("\n    ------------ Current OSB %s repo info: ---------" % v2_or_v2dev)
                     print("    %s"%found)
@@ -112,10 +117,11 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
                 multi_matches.append(err_info)
                 return False
-            r = found.osbrepositories[0]
-            url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev,  found.osbrepositories[0].id)
+
+            existing_repo = matches[0]
+            url_info = "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"%(v2_or_v2dev,  existing_repo.id)
             try:
-                print("    %s already exists (owner: %s); updating..." % (modeldb_model_id, lookup_user(r.user_id, url_info)))
+                print("    %s already exists (owner: %s); updating..." % (modeldb_model_id, lookup_user(existing_repo.user_id, url_info)))
             except:
                 exit(-1)
             print(url_info)
@@ -133,12 +139,12 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
                 desc = modeldb_model['notes']['value']
 
-                return api_instance.osbrepository_id_put(found.osbrepositories[0].id, OSBRepository(
+                return api_instance.osbrepository_id_put(existing_repo.id, OSBRepository(
                     uri=modeldb_github,
                     name=modeldb_model['name'],
                     summary=desc,
                     tags=tags,
-                    default_context=found.osbrepositories[0].default_context,
+                    default_context=existing_repo.default_context,
                     content_types_list=[RepositoryContentType(value="modeling")],
                     content_types="modeling",
                     user_id=owner_user_id,
