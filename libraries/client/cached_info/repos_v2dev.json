@@ -17952,6 +17952,51 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "424": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 424,
+            "name": "Retinal Ganglion Cell: I-A (Benison et al 2001)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the K-A current from the papers: (model) Benison G, Keizer J, Chalupa LM, Robinson DW.  Modeling temporal behavior of postnatal cat retinal ganglion cells. J.Theor.Biol. 210:187-199 (2001) and (experiment) Skaliora I, Robinson DW, Scobey RP, Chalupa LM., Properties of K+ conductances in cat retinal ganglion cells during the period of activity-mediated refinements in retinofugal pathways. Eur.J.Neurosci. 7:1558-1568 (1995).",
+            "tags": [
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 567,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:16:11.635795+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3488",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }

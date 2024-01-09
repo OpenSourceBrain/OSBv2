@@ -2364,24 +2364,28 @@
             "summary": "![](http://www.opensourcebrain.org/attachments/download/125/Column3_S.png)\r\nThis is a project implementing cells from the thalamocortical network model of Traub et al 2005 in NeuroML. Based on the NEURON implementation from: http://senselab.med.yale.edu/ModelDB/ShowModel.asp?model=45539.\r\n\r\nThe [[Wiki]] gives details of running this project with neuroConstruct.\r\n",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 318,
-                    "tag": "Pyramidal cell"
-                },
-                {
-                    "id": 319,
-                    "tag": "neuroConstruct"
-                },
-                {
                     "id": 321,
                     "tag": "Detailed cell model"
                 },
                 {
+                    "id": 756,
+                    "tag": "FORTRAN"
+                },
+                {
+                    "id": 757,
+                    "tag": "Gap junctions"
+                },
+                {
+                    "id": 724,
+                    "tag": "High Performance Computing"
+                },
+                {
                     "id": 329,
                     "tag": "Interneuron"
+                },
+                {
+                    "id": 708,
+                    "tag": "Large scale network simulation"
                 },
                 {
                     "id": 650,
@@ -2392,24 +2396,20 @@
                     "tag": "Network model"
                 },
                 {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 318,
+                    "tag": "Pyramidal cell"
+                },
+                {
                     "id": 652,
                     "tag": "Rodent"
                 },
                 {
-                    "id": 708,
-                    "tag": "Large scale network simulation"
-                },
-                {
-                    "id": 724,
-                    "tag": "High Performance Computing"
-                },
-                {
-                    "id": 756,
-                    "tag": "FORTRAN"
-                },
-                {
-                    "id": 757,
-                    "tag": "Gap junctions"
+                    "id": 319,
+                    "tag": "neuroConstruct"
                 }
             ],
             "timestamp_created": "2023-02-02 16:55:15.278149+00:00",
@@ -17258,12 +17258,8 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 325,
-                    "tag": "Point neuron network"
+                    "id": 705,
+                    "tag": "Google Summer of Code"
                 },
                 {
                     "id": 650,
@@ -17274,20 +17270,24 @@
                     "tag": "Network model"
                 },
                 {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 325,
+                    "tag": "Point neuron network"
+                },
+                {
+                    "id": 760,
+                    "tag": "PyNN"
+                },
+                {
                     "id": 652,
                     "tag": "Rodent"
                 },
                 {
                     "id": 695,
                     "tag": "Visual system"
-                },
-                {
-                    "id": 705,
-                    "tag": "Google Summer of Code"
-                },
-                {
-                    "id": 760,
-                    "tag": "PyNN"
                 }
             ],
             "timestamp_created": "2024-01-05 12:09:36.348133+00:00",
@@ -17360,16 +17360,16 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 319,
-                    "tag": "neuroConstruct"
+                    "id": 671,
+                    "tag": "Cerebellum"
                 },
                 {
                     "id": 321,
                     "tag": "Detailed cell model"
+                },
+                {
+                    "id": 757,
+                    "tag": "Gap junctions"
                 },
                 {
                     "id": 329,
@@ -17380,16 +17380,16 @@
                     "tag": "Network model"
                 },
                 {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
                     "id": 652,
                     "tag": "Rodent"
                 },
                 {
-                    "id": 671,
-                    "tag": "Cerebellum"
-                },
-                {
-                    "id": 757,
-                    "tag": "Gap junctions"
+                    "id": 319,
+                    "tag": "neuroConstruct"
                 }
             ],
             "timestamp_created": "2024-01-05 12:09:37.453059+00:00",
@@ -17507,20 +17507,8 @@
             "summary": "![](/attachments/download/107/test_full.png)\n\nNetwork model from: Vogels TP, Sprekeler H, Zenke F, Clopath C, Gerstner W (2011) [Inhibitory plasticity balances excitation and inhibition in sensory pathways and memory networks](http://www.sciencemag.org/content/334/6062/1569.abstract). Science 334:1569-73.\n\nSee the [[Wiki]] for more details.\n",
             "tags": [
                 {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 325,
-                    "tag": "Point neuron network"
-                },
-                {
-                    "id": 650,
-                    "tag": "Neocortex"
-                },
-                {
-                    "id": 651,
-                    "tag": "Network model"
+                    "id": 761,
+                    "tag": "C/Matlab"
                 },
                 {
                     "id": 660,
@@ -17531,12 +17519,24 @@
                     "tag": "Google Summer of Code"
                 },
                 {
-                    "id": 761,
-                    "tag": "C/Matlab"
-                },
-                {
                     "id": 762,
                     "tag": "Inhibition"
+                },
+                {
+                    "id": 650,
+                    "tag": "Neocortex"
+                },
+                {
+                    "id": 651,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 325,
+                    "tag": "Point neuron network"
                 }
             ],
             "timestamp_created": "2024-01-05 12:09:38.949051+00:00",
@@ -17711,10 +17711,6 @@
             "summary": "In Destexhe, Neubig, Ulrich, and Huguenard (1998) experiments and models examine low threshold calcium current's (IT, or T-current) distribution in thalamocortical (TC) cells.  Multicompartmental modeling supports the hypothesis that IT currents have a density at least several fold higher in the dendrites than the soma.  The IT current contributes significantly to rebound bursts and is thought to have important network behavior consequences.  See the paper for details. See also http://cns.iaf.cnrs-gif.fr   Correspondance may be addressed to Alain Destexhe: Destexhe@iaf.cnrs-gif.fr",
             "tags": [
                 {
-                    "id": 656,
-                    "tag": "NEURON"
-                },
-                {
                     "id": 764,
                     "tag": "Bursting"
                 },
@@ -17755,6 +17751,10 @@
                     "tag": "ModelDB"
                 },
                 {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
                     "id": 774,
                     "tag": "Parameter Fitting"
                 },
@@ -17792,40 +17792,16 @@
             "summary": "A four-compartment model of a mammalian olfactory bulb mitral cell, reduced \r\nfrom the complex 286-compartment model described by Bhalla and Bower (1993).  \r\nThe compartments are soma/axon, secondary dendrites, primary dendrite shaft \r\nand primary dendrite tuft. The reduced model runs 75 or more times faster \r\nthan the full model, making its use in large, realistic network models of the \r\nolfactory bulb practical.",
             "tags": [
                 {
-                    "id": 74,
-                    "tag": "Olfaction"
-                },
-                {
-                    "id": 656,
-                    "tag": "NEURON"
-                },
-                {
-                    "id": 768,
-                    "tag": "I K"
-                },
-                {
-                    "id": 769,
-                    "tag": "I Na,t"
-                },
-                {
-                    "id": 773,
-                    "tag": "ModelDB"
-                },
-                {
-                    "id": 774,
-                    "tag": "Parameter Fitting"
-                },
-                {
-                    "id": 776,
-                    "tag": "Simplified Models"
-                },
-                {
                     "id": 777,
                     "tag": "I A"
                 },
                 {
                     "id": 778,
                     "tag": "I Calcium"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
                 },
                 {
                     "id": 779,
@@ -17840,12 +17816,36 @@
                     "tag": "I L high threshold"
                 },
                 {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
                     "id": 782,
                     "tag": "I Potassium"
                 },
                 {
                     "id": 783,
                     "tag": "I Sodium"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 74,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 774,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 776,
+                    "tag": "Simplified Models"
                 }
             ],
             "timestamp_created": "2024-01-05 15:00:32.249864+00:00",
@@ -17873,20 +17873,44 @@
             "summary": "This package contains compartmental models of four reconstructed neocortical neurons (layer 3 Aspiny, layer 4 Stellate, layer 3 and layer 5 Pyramidal neurons) with active dendritic currents using NEURON.  Running this simulation demonstrates that an entire spectrum of firing patterns can be reproduced in this set of model neurons which share a common distribution of ion channels and differ only in their dendritic geometry. The reference paper is: Z. F. Mainen and T. J. Sejnowski (1996) Influence of dendritic structure on firing pattern in model neocortical neurons.  Nature 382: 363-366. See also http://www.cnl.salk.edu/~zach/methods.html and http://www.cnl.salk.edu/~zach/  More info in readme.txt file below made visible by clicking on the patdemo folder and then on the readme.txt file.",
             "tags": [
                 {
-                    "id": 656,
-                    "tag": "NEURON"
+                    "id": 784,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 785,
+                    "tag": "Activity Patterns"
                 },
                 {
                     "id": 767,
                     "tag": "Detailed Neuronal Models"
                 },
                 {
+                    "id": 778,
+                    "tag": "I Calcium"
+                },
+                {
                     "id": 768,
                     "tag": "I K"
                 },
                 {
+                    "id": 779,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 786,
+                    "tag": "I M"
+                },
+                {
                     "id": 769,
                     "tag": "I Na,t"
+                },
+                {
+                    "id": 782,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 783,
+                    "tag": "I Sodium"
                 },
                 {
                     "id": 771,
@@ -17897,32 +17921,8 @@
                     "tag": "ModelDB"
                 },
                 {
-                    "id": 784,
-                    "tag": "Active Dendrites"
-                },
-                {
-                    "id": 785,
-                    "tag": "Activity Patterns"
-                },
-                {
-                    "id": 786,
-                    "tag": "I M"
-                },
-                {
-                    "id": 778,
-                    "tag": "I Calcium"
-                },
-                {
-                    "id": 779,
-                    "tag": "I K,Ca"
-                },
-                {
-                    "id": 782,
-                    "tag": "I Potassium"
-                },
-                {
-                    "id": 783,
-                    "tag": "I Sodium"
+                    "id": 656,
+                    "tag": "NEURON"
                 }
             ],
             "timestamp_created": "2024-01-05 15:00:32.995687+00:00",
@@ -17950,48 +17950,16 @@
             "summary": "A biologically-detailed model of the mammalian olfactory bulb, incorporating \r\nthe mitral and granule cells and the dendrodendritic synapses between them. \r\nThe results of simulation experiments with electrical stimulation agree \r\nclosely in most details with published experimental data. The model predicts \r\nthat the time course of dendrodendritic inhibition is dependent on the \r\nnetwork connectivity as well as on the intrinsic parameters of the synapses. \r\nIn response to simulated odor stimulation, strongly activated mitral cells \r\ntend to suppress neighboring cells, the mitral cells readily synchronize \r\ntheir firing, and increasing the stimulus intensity increases the degree of \r\nsynchronization. For more details, see the reference below.",
             "tags": [
                 {
-                    "id": 74,
-                    "tag": "Olfaction"
-                },
-                {
-                    "id": 656,
-                    "tag": "NEURON"
-                },
-                {
-                    "id": 768,
-                    "tag": "I K"
-                },
-                {
-                    "id": 769,
-                    "tag": "I Na,t"
-                },
-                {
-                    "id": 773,
-                    "tag": "ModelDB"
-                },
-                {
-                    "id": 787,
-                    "tag": "Oscillations"
-                },
-                {
-                    "id": 788,
-                    "tag": "Spatio-temporal Activity Patterns"
-                },
-                {
-                    "id": 789,
-                    "tag": "Synchronization"
-                },
-                {
-                    "id": 786,
-                    "tag": "I M"
-                },
-                {
                     "id": 777,
                     "tag": "I A"
                 },
                 {
                     "id": 778,
                     "tag": "I Calcium"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
                 },
                 {
                     "id": 779,
@@ -18006,12 +17974,44 @@
                     "tag": "I L high threshold"
                 },
                 {
+                    "id": 786,
+                    "tag": "I M"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
                     "id": 782,
                     "tag": "I Potassium"
                 },
                 {
                     "id": 783,
                     "tag": "I Sodium"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 74,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 787,
+                    "tag": "Oscillations"
+                },
+                {
+                    "id": 788,
+                    "tag": "Spatio-temporal Activity Patterns"
+                },
+                {
+                    "id": 789,
+                    "tag": "Synchronization"
                 }
             ],
             "timestamp_created": "2024-01-05 15:00:33.613204+00:00",
@@ -18039,40 +18039,12 @@
             "summary": "This is a conversion to NEURON of the mitral cell model described in Bhalla \r\nand Bower (1993). \r\nThe original model was written in GENESIS and is available by joining BABEL, the GENESIS users' group here http://www.genesis-sim.org/GENESIS/babel.html",
             "tags": [
                 {
-                    "id": 74,
-                    "tag": "Olfaction"
-                },
-                {
-                    "id": 656,
-                    "tag": "NEURON"
+                    "id": 785,
+                    "tag": "Activity Patterns"
                 },
                 {
                     "id": 767,
                     "tag": "Detailed Neuronal Models"
-                },
-                {
-                    "id": 768,
-                    "tag": "I K"
-                },
-                {
-                    "id": 769,
-                    "tag": "I Na,t"
-                },
-                {
-                    "id": 771,
-                    "tag": "Influence of Dendritic Geometry"
-                },
-                {
-                    "id": 773,
-                    "tag": "ModelDB"
-                },
-                {
-                    "id": 774,
-                    "tag": "Parameter Fitting"
-                },
-                {
-                    "id": 785,
-                    "tag": "Activity Patterns"
                 },
                 {
                     "id": 777,
@@ -18081,6 +18053,10 @@
                 {
                     "id": 778,
                     "tag": "I Calcium"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
                 },
                 {
                     "id": 779,
@@ -18095,12 +18071,36 @@
                     "tag": "I L high threshold"
                 },
                 {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
                     "id": 782,
                     "tag": "I Potassium"
                 },
                 {
                     "id": 783,
                     "tag": "I Sodium"
+                },
+                {
+                    "id": 771,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 74,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 774,
+                    "tag": "Parameter Fitting"
                 }
             ],
             "timestamp_created": "2024-01-08 12:20:38.332269+00:00",
@@ -18159,6 +18159,898 @@
             "timestamp_created": "2024-01-08 12:30:34.654590+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/OpenSourceBrain/GranuleCellVSCS",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "395": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 395,
+            "name": "CA1 pyramidal neuron (Migliore et al 1999)",
+            "repository_type": "github",
+            "summary": "Hippocampal CA1 pyramidal neuron model from the paper \r\nM.Migliore, D.A Hoffman, J.C. Magee and D. Johnston (1999) Role of an A-type K+ conductance in the back-propagation of action potentials in the dendrites of hippocampal pyramidal neurons,\r\nJ. Comput. Neurosci. 7, 5-15. Instructions are provided in the below README file.Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 784,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 766,
+                    "tag": "Dendritic Action Potentials"
+                },
+                {
+                    "id": 767,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:20:43.105826+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2796",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "396": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 396,
+            "name": "Hopfield and Brody model (Hopfield, Brody 2000)",
+            "repository_type": "github",
+            "summary": "NEURON implementation of the Hopfield and Brody model from the papers:\r\nJJ Hopfield and CD Brody (2000)\r\nJJ Hopfield and CD Brody (2001). Instructions are provided in the below readme.txt file.",
+            "tags": [
+                {
+                    "id": 790,
+                    "tag": "Attractor Neural Network"
+                },
+                {
+                    "id": 791,
+                    "tag": "Coincidence Detection"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 74,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 792,
+                    "tag": "Pattern Recognition"
+                },
+                {
+                    "id": 789,
+                    "tag": "Synchronization"
+                },
+                {
+                    "id": 793,
+                    "tag": "Temporal Pattern Generation"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:07.304893+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2798",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "397": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 397,
+            "name": "CA1 Pyramidal Neuron: slow Na+ inactivation (Migliore 1996)",
+            "repository_type": "github",
+            "summary": "Model files from the paper: \r\nM. Migliore, Modeling the attenuation and failure of action potentials in \r\nthe dendrites of hippocampal neurons, Biophys. J. 71:2394-403 (1996).  Please see the below readme file for installation and use instructions. Contact michele.migliore@pa.ibf.cnr.it\r\n if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 784,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 766,
+                    "tag": "Dendritic Action Potentials"
+                },
+                {
+                    "id": 767,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 786,
+                    "tag": "I M"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 794,
+                    "tag": "I h"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 795,
+                    "tag": "Synaptic Integration"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:07.959126+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2937",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "398": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 398,
+            "name": "Estimation and Production of Time Intervals (Migliore et al 2001)",
+            "repository_type": "github",
+            "summary": "NEURON model files from the paper \r\nM. Migliore, L. Messineo, M. Cardaci, G.F. Ayala, \r\nQuantitative modeling of perception and production of time intervals, J.Neurophysiol. 86, 2754-2760 (2001). Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 776,
+                    "tag": "Simplified Models"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:08.552967+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3167",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "399": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 399,
+            "name": "CA3 Pyramidal Neuron (Migliore et al 1995)",
+            "repository_type": "github",
+            "summary": "Model files from the paper:\r\nM. Migliore, E. Cook, D.B. Jaffe, D.A. Turner and D. Johnston, Computer\r\nsimulations of morphologically reconstructed CA3 hippocampal neurons, J.\r\nNeurophysiol. 73, 1157-1168 (1995).\r\n\r\nDemonstrates how the same cell could be bursting or non bursting according to the Ca-independent conductance densities. Includes calculation of intracellular Calcium.  Instructions are provided in the below README file. Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 764,
+                    "tag": "Bursting"
+                },
+                {
+                    "id": 767,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                },
+                {
+                    "id": 778,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 779,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 781,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 786,
+                    "tag": "I M"
+                },
+                {
+                    "id": 796,
+                    "tag": "I N"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 770,
+                    "tag": "I T low threshold"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 795,
+                    "tag": "Synaptic Integration"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:09.299883+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3263",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "400": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 400,
+            "name": "Short term plasticity of synapses onto V1 layer 2/3 pyramidal neuron  (Varela et al 1997)",
+            "repository_type": "github",
+            "summary": "This archive contains 3 mod files for NEURON that implement the short term \r\nsynaptic plasticity model described in\r\n  Varela, J.A., Sen, K., Gibson, J., Fost, J., Abbott, L.R., \r\n  and Nelson, S.B.. \r\n  A quantitative description of short-term plasticity at \r\n  excitatory synapses in layer 2/3 of rat primary visual cortex.\r\n  Journal of Neuroscience 17:7926-7940, 1997.\r\n\r\nContact ted.carnevale@yale.edu if you have questions \r\nabout this implementation of the model.",
+            "tags": [
+                {
+                    "id": 797,
+                    "tag": "Depression"
+                },
+                {
+                    "id": 798,
+                    "tag": "Facilitation"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 799,
+                    "tag": "Short-term Synaptic Plasticity"
+                },
+                {
+                    "id": 275,
+                    "tag": "Synaptic Plasticity"
+                },
+                {
+                    "id": 800,
+                    "tag": "Vision"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:09.821248+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3264",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "401": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 401,
+            "name": "Pyramidal Neuron Deep: K+ kinetics (Korngreen, Sakmann 2000)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the slow and fast K+ currents from the paper:\r\nVoltage-gated K+ channels in layer 5 neocortical pyramidal neurones from young rats: subtypes and gradients\r\nA. Korngreen and B. Sakmann, J.Physiol. 525.3, 621-639 (2000).",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 772,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:10.290488+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3289",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "402": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 402,
+            "name": "CN Octopus Cell: Ih current (Bal, Oertel 2000)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the Ih current from the paper \r\nR. Bal and D. Oertel\r\nHyperpolarization-Activated, Mixed-Cation Current (Ih) in Octopus Cells of the Mammalian Cochlear Nucleus, J. Neurophysiol. 84, 806-817 (2000).\r\nContact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 772,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 794,
+                    "tag": "I h"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:10.733203+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3332",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "403": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 403,
+            "name": "Action potential initiation in the olfactory mitral cell (Shen et al 1999)",
+            "repository_type": "github",
+            "summary": "Mitral cell model with standard parameters for the paper:\r\nShen, G.Y., Chen, W. R., Midtgaard, J., Shepherd, G.M., and Hines, M.L.\r\n(1999)\r\nComputational Analysis of Action Potential Initiation in Mitral\r\nCell Soma and Dendrites Based on Dual Patch Recordings.\r\nJournal of Neurophysiology 82:3006. Contact Michael.Hines@yale.edu if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 801,
+                    "tag": "Action Potential Initiation"
+                },
+                {
+                    "id": 784,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 766,
+                    "tag": "Dendritic Action Potentials"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 782,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 783,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 74,
+                    "tag": "Olfaction"
+                },
+                {
+                    "id": 774,
+                    "tag": "Parameter Fitting"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:11.190945+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3342",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "404": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 404,
+            "name": "Thalamocortical and Thalamic Reticular Network (Destexhe et al 1996)",
+            "repository_type": "github",
+            "summary": "NEURON model of oscillations in networks of thalamocortical and thalamic reticular neurons in the ferret. (more applications for a model quantitatively identical to previous DLGN model; updated for NEURON v4 and above)",
+            "tags": [
+                {
+                    "id": 785,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 765,
+                    "tag": "Calcium dynamics"
+                },
+                {
+                    "id": 780,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 770,
+                    "tag": "I T low threshold"
+                },
+                {
+                    "id": 794,
+                    "tag": "I h"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 787,
+                    "tag": "Oscillations"
+                },
+                {
+                    "id": 802,
+                    "tag": "Sleep"
+                },
+                {
+                    "id": 788,
+                    "tag": "Spatio-temporal Activity Patterns"
+                },
+                {
+                    "id": 803,
+                    "tag": "Spindles"
+                },
+                {
+                    "id": 789,
+                    "tag": "Synchronization"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:11.652053+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3343",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "405": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 405,
+            "name": "DG granule cell: I-A model (Beck et al 1992)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the I-A current from the paper:\r\nBeck H, Ficker E, Heinemann U.\r\nProperties of two voltage-activated potassium currents in \r\nacutely isolated juvenile rat dentate gyrus granule cells.\r\nJ. Neurophysiol. 68, 2086-2099 (1992) Contact michele.migliore@pa.ibf.cnr.it if you have any questions about the implementation of the model.",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 772,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:12.098578+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3344",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "406": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 406,
+            "name": "Coincidence detection in avian brainstem (Simon et al 1999)",
+            "repository_type": "github",
+            "summary": "A detailed biophysical model of coincidence\r\ndetector neurons in the nucleus laminaris (auditory brainstem) which are\r\npurported to detect interaural time differences (ITDs) from Simon et al 1999.",
+            "tags": [
+                {
+                    "id": 791,
+                    "tag": "Coincidence Detection"
+                },
+                {
+                    "id": 767,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 771,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 795,
+                    "tag": "Synaptic Integration"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:12.565162+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3434",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "407": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 407,
+            "name": "MNTB Neuron: Kv3.1 currents (Wang et al 1998)",
+            "repository_type": "github",
+            "summary": "Model of Medial Nucleus of the Trapezoid Body (MNTB) neurons described in Lu-Yang Wang, Li Gan, Ian D. Forsythe and Leonard K. Kaczmarek. Contribution of the Kv3.1 potassium channel to high-frequency firing in mouse auditory neurones.  J. Physiol (1998) 509.1 183-194. Created by David Kornfeld, Byram Hills High School, Armonk NY.  Please email dbk1@mindspring.com for questions about the model. See Readme.txt below for more info.",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 768,
+                    "tag": "I K"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 782,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 783,
+                    "tag": "I Sodium"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:13.070522+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3454",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "408": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 408,
+            "name": "Retinal Ganglion Cell: I-CaN and I-CaL (Benison et al. 2001)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the CaN and CaL currents from the papers:\r\nHuang, S.-J. & Robinson, D.W. (1998). Activation and Inactivation properties of voltage-gated calcium currents in developing cat retinal ganglion cells. Neuroscience 85:239-247 (experimental) and\r\nBenison G. Keizer J., Chalupa L.M., Robinson D.W., (2001) J. theor. Biol. 210:187-199 (theoretical).",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 772,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 781,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 796,
+                    "tag": "I N"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:13.517511+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3457",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "409": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 409,
+            "name": "Retinal Ganglion Cell: I-Na,t (Benison et al 2001)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the Na current from the papers:\r\n(model)\r\nBenison G, Keizer J, Chalupa LM, Robinson DW.     Modeling temporal behavior of postnatal cat retinal ganglion cells. J Theor Biol. 2001 210:187-99 and a reference from this paper: (experimental)\r\nSkaliora I, Scobey RP, Chalupa LM. Prenatal development of excitability in cat retinal ganglion cells: action potentials and sodium currents. J Neurosci 1993 13:313-23.  See the readme.txt file below for more information.",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 769,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 772,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 783,
+                    "tag": "I Sodium"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:13.958342+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3483",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "410": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "master",
+            "id": 410,
+            "name": "Retinal Ganglion Cell: I-A (Benison et al 2001)",
+            "repository_type": "github",
+            "summary": "NEURON mod files for the K-A current from the papers: (model) Benison G, Keizer J, Chalupa LM, Robinson DW.  Modeling temporal behavior of postnatal cat retinal ganglion cells. J.Theor.Biol. 210:187-199 (2001) and (experiment) Skaliora I, Robinson DW, Scobey RP, Chalupa LM., Properties of K+ conductances in cat retinal ganglion cells during the period of activity-mediated refinements in retinofugal pathways. Eur.J.Neurosci. 7:1558-1568 (1995).",
+            "tags": [
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 772,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 777,
+                    "tag": "I A"
+                },
+                {
+                    "id": 782,
+                    "tag": "I Potassium"
+                }
+            ],
+            "timestamp_created": "2024-01-09 11:22:14.393535+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/3488",
             "user": {
                 "email": "p.glee.s.on@gmail.com",
                 "first_name": "OSB",
