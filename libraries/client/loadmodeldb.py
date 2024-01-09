@@ -35,7 +35,7 @@ else:
 
 index = 0
 min_index = 0
-max_index = 21
+max_index = 100
 
 verbose = True # 
 verbose = False
