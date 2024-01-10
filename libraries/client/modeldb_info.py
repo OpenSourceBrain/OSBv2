@@ -27,11 +27,13 @@ known_to_have_other_forks = [2730, 3343, 3658]
 many_forks = []
 to_be_forked = []
 errors = []
+on_osbv2 = []
+forked_now = []
 
 if __name__ == "__main__":
     
-    min_num = 0
-    max_num = 100
+    min_num = 500
+    max_num = 600
     index = 0
 
     from osb.utils import get_page
@@ -65,7 +67,9 @@ if __name__ == "__main__":
             possible_osbgh_repo = 'OpenSourceBrain/%s'%(info[model]['id'])
             try:
                 osb_repo = gh.get_repo(possible_osbgh_repo)
-                print('    Exists at: %s (def branch: %s; forks: %i)'%(osb_repo.html_url, osb_repo.default_branch, osb_repo.forks))
+                msg = '    Exists at: %s (def branch: %s; forks: %i)'%(osb_repo.html_url, osb_repo.default_branch, osb_repo.forks)
+                on_osbv2.append(msg)
+                print(msg)
                 repo_to_use = osb_repo
                 expected_forks+=1
 
@@ -77,9 +81,12 @@ if __name__ == "__main__":
                     print('    Forking to: %s...'%possible_osbgh_repo)
                     org = gh.get_organization('OpenSourceBrain')
                     org.create_fork(mdb_repo,default_branch_only=False)
-                    print('    Forked!')
+                    msg = '    Forked to: %s...'%possible_osbgh_repo
+                    forked_now.append(forked_now)
+
+                    print(msg)
                 else:
-                    msg = '    Yet to be forked: %i %s'%(info[model]['id'],info[model]['name'])
+                    msg = '    Yet to be forked: %i; %s'%(info[model]['id'],info[model]['name'])
                     print(msg)
                     to_be_forked.append(msg)
 
@@ -88,7 +95,7 @@ if __name__ == "__main__":
                 many_forks.append('Unexpected forks for %i (%s != %s)...'%(info[model]['id'], mdb_repo.forks,expected_forks))
 
         except:
-            msg = '    Problem locating repo for: %i %s'%(info[model]['id'],info[model]['name'])
+            msg = '    Problem locating repo for: %i (%i/%i) %s'%(info[model]['id'],index, len(selection), info[model]['name'])
             print(msg)
             errors.append(msg)
     
@@ -109,6 +116,14 @@ with open(filename, "w") as fp:
 
 print("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+
       "\n\nDone!")
+ 
+print("\nAll on osb (%i total):"%len(on_osbv2))     
+for m in on_osbv2:
+    print(m)
+ 
+print("\nJust forked (%i total):"%len(forked_now))     
+for m in forked_now:
+    print(m)
  
 print("\nStill to be forked (%i total):"%len(to_be_forked))     
 for m in to_be_forked:
