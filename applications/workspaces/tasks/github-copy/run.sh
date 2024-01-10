@@ -13,7 +13,7 @@ cd "${download_path}"
 
 echo GitHub copy "$paths" to "$download_path"
 ls -la
-git config --global --add safe.directory $download_path
+git config --global --add safe.directory "$download_path"
 # do the next command only if download path does not exist
 if [ ! -d "${download_path}/.git" ]; then
   git clone -n "${url}" --branch $branch "${download_path}"
