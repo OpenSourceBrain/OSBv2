@@ -13,22 +13,23 @@ from workspaces.models.resource_status import ResourceStatus
 
 def copy_origins(workspace_id, origins: List[ResourceOrigin]):
     tasks = []
-    for origin in origins:
-        osbrepository_id = origin.osbrepository_id
-        if osbrepository_id:
+    osbrepository_id = origins[0].osbrepository_id
+    
+        
+    if osbrepository_id:
             # osb repository origin
             
-            task = osbrepository_service.create_copy_task(
+        task = osbrepository_service.create_copy_task(
                 workspace_id=workspace_id,
                 osbrepository_id=osbrepository_id,
-                name=origin.name,
-                path=origin.path,
-            )
-            if type(task) is list:
-                tasks.extend(task)
-            else:
-                tasks.append(task)
+                origins=origins,
+        )
+        if type(task) is list:
+            tasks.extend(task)
         else:
+            tasks.append(task)
+    else:
+        for origin in origins:
             # download origin
             tasks.append(
                 workflow.create_copy_task(

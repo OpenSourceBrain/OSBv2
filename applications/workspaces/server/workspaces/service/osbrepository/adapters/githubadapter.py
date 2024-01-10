@@ -1,11 +1,13 @@
 import os
 import base64
+from typing import List
 import requests
 
 from cloudharness import log as logger
 from cloudharness.utils.secrets import get_secret
 
 from workspaces.models import GITRepositoryResource, RepositoryResourceNode, RepositoryInfo
+from workspaces.models.resource_origin import ResourceOrigin
 from .utils import add_to_tree
 
 
@@ -125,23 +127,18 @@ class GitHubAdapter:
         tags = self.get_json(self.api_url + "topics")
         return tags["names"]
     
-    def create_copy_task(self, workspace_id, name, path):
+    def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
         # download the resource
         import workspaces.service.workflow as workflow
-        name = name if name != "/" else self.osbrepository.name
-        relative_path = path.replace(self.uri, "").\
-            replace(self.uri, "").replace("branches/", "/").replace("tags/", "/").replace("//", "/")
-        folder = self.osbrepository.name + relative_path
             
-        folder = folder[: folder.rfind("/")]
+        folder = os.path.join(self.osbrepository.name, self.osbrepository.default_context)
 
         return workflow.create_copy_task(
             image_name="workspaces-github-copy",
             workspace_id=workspace_id,
-            name=name,
             folder=folder,
             url=self.uri,
-            path=relative_path.split(self.osbrepository.default_context)[1][1:],
+            paths="'" + "' '".join(o.path.split(self.osbrepository.default_context)[1][1:] for o in origins) + "'",
             branch=self.osbrepository.default_context,
         )
 
