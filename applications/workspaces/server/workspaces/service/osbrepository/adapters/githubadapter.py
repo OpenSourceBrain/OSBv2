@@ -131,14 +131,14 @@ class GitHubAdapter:
         # download the resource
         import workspaces.service.workflow as workflow
             
-        folder = os.path.join(self.osbrepository.name, self.osbrepository.default_context)
+        folder = os.path.join(os.path.basename(self.uri), self.osbrepository.default_context)
 
         return workflow.create_copy_task(
             image_name="workspaces-github-copy",
             workspace_id=workspace_id,
             folder=folder,
             url=self.uri,
-            paths="'" + "' '".join(o.path.split(self.osbrepository.default_context)[1][1:] for o in origins) + "'",
+            paths=" ".join(o.path.split(self.osbrepository.default_context)[1][1:] for o in origins if " " not in o.path),
             branch=self.osbrepository.default_context,
         )
 
