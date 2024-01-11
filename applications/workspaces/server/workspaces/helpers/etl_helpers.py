@@ -13,7 +13,8 @@ from workspaces.models.resource_status import ResourceStatus
 
 def copy_origins(workspace_id, origins: List[ResourceOrigin]):
     tasks = []
-    osbrepository_id = origins[0].osbrepository_id
+    
+    osbrepository_id = origins[0].osbrepository_id if origins else None
     
         
     if osbrepository_id:
