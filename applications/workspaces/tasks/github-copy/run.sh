@@ -33,5 +33,5 @@ else
   done
 fi
 # fix permissions
-chown -R 1000:1000 "${download_path}"
+chown -R 1000:100 "${download_path}"
 ls -la
