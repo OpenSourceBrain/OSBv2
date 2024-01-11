@@ -34,7 +34,6 @@ def copy_origins(workspace_id, origins: List[ResourceOrigin]):
             tasks.append(
                 workflow.create_copy_task(
                     workspace_id=workspace_id,
-                    name=origin.name,
                     folder="",
                     path=origin.path,
                 )
