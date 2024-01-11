@@ -19,13 +19,19 @@ if [ ! -d "${download_path}/.git" ]; then
   git clone -n "${url}" --branch $branch "${download_path}"
 fi
 
-# Split paths by ## and checkout each path
-IFS='\'
-for path in $paths; do
-  echo "Checking out $path"
-  git checkout HEAD "$path"
-done
-
+# check is paths has a value. In that case, checkout everything
+if [ -z "$paths" ]; then
+  echo "Checking out everything"
+  git checkout HEAD
+  exit 0
+else
+  # Split paths by ## and checkout each path
+  IFS='\'
+  for path in $paths; do
+    echo "Checking out $path"
+    git checkout HEAD "$path"
+  done
+fi
 # fix permissions
 chown -R 1000:1000 "${download_path}"
 ls -la
