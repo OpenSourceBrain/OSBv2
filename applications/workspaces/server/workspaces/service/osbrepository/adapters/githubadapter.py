@@ -138,7 +138,7 @@ class GitHubAdapter:
             workspace_id=workspace_id,
             folder=folder,
             url=self.uri,
-            paths=" ".join(o.path.split(self.osbrepository.default_context)[1][1:] for o in origins if " " not in o.path),
+            paths="\\".join(o.path.split(self.osbrepository.default_context)[1][1:] for o in origins),
             branch=self.osbrepository.default_context,
         )
 
