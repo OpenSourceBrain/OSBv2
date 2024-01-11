@@ -42,3 +42,5 @@ payload = {
 }
 
 notify_queue(queue, payload)
+
+os.system(f"chown -R 1000:1000 {folder}")
