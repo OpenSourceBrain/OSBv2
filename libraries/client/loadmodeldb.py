@@ -34,8 +34,8 @@ else:
     dry_run = False # dry_run = True
 
 index = 0
-min_index = 0
-max_index = 100
+min_index = 200
+max_index = 500
 
 verbose = True # 
 verbose = False

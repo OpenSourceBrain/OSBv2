@@ -24,10 +24,14 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
 
     if modeldb_info is not None:
         tags.append('ModelDB')
+        tags.append('ModelDB:%s'%modeldb_info['id'])
         for category in ["model_concept", "currents","modeling_application"]:
             if category in modeldb_info:
                 for v in modeldb_info[category]["value"]:
-                    tags.append(v["object_name"])
+                    val = v["object_name"]
+
+                    val = val.replace('++','plusplus')
+                    tags.append(val)
 
     if osbv1_info is not None:
         tags.append('OSBv1')
@@ -43,8 +47,9 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
         for field in ['Original format','Cell type','Brain region', 'Specie']:
             if field in osbv1_info:  
                 val = osbv1_info[field]
-                if not val in ['None','Other','','C++']:
+                if not val in ['None','Other','']:
                     val = val.replace('PV+','PV')
+                    val = val.replace('C++','Cplusplus')
                     if not val in tags:
                         tags.append(val)
     

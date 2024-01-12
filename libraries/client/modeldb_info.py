@@ -32,8 +32,8 @@ forked_now = []
 
 if __name__ == "__main__":
     
-    min_num = 500
-    max_num = 600
+    min_index = 0  
+    max_index = 2000
     index = 0
 
     from osb.utils import get_page
@@ -43,9 +43,9 @@ if __name__ == "__main__":
     models = json.loads(models_json)
     pprint.pprint(models, compact=True)
 
-    selection = models[min_num:max_num]
+    selection = models[min_index:max_index]
     for model in selection:
-        print("\n--------   Model (%i/%i): %s:\n" % (index, len(selection), model))
+        print("\n--------   Model (%i/%i, order %i): %s:\n" % (index, len(selection), index+min_index, model))
 
         info[model]= json.loads(get_page('https://modeldb.science/api/v1/models/%s'%model))
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             possible_osbgh_repo = 'OpenSourceBrain/%s'%(info[model]['id'])
             try:
                 osb_repo = gh.get_repo(possible_osbgh_repo)
-                msg = '    Exists at: %s (def branch: %s; forks: %i)'%(osb_repo.html_url, osb_repo.default_branch, osb_repo.forks)
+                msg = '    Exists at: %s (def branch: %s; forks: %i), order %i'%(osb_repo.html_url, osb_repo.default_branch, osb_repo.forks, index+min_index)
                 on_osbv2.append(msg)
                 print(msg)
                 repo_to_use = osb_repo
@@ -82,25 +82,25 @@ if __name__ == "__main__":
                     org = gh.get_organization('OpenSourceBrain')
                     org.create_fork(mdb_repo,default_branch_only=False)
                     msg = '    Forked to: %s...'%possible_osbgh_repo
-                    forked_now.append(forked_now)
-
                     print(msg)
+                    forked_now.append(msg)
+
                 else:
-                    msg = '    Yet to be forked: %i; %s'%(info[model]['id'],info[model]['name'])
+                    msg = '    Yet to be forked: %i, order %i; %s'%(info[model]['id'], index+min_index,info[model]['name'])
                     print(msg)
                     to_be_forked.append(msg)
 
 
             if (not mdb_repo.forks==expected_forks) and (not (info[model]['id'] in known_to_have_other_forks)):
-                many_forks.append('Unexpected forks for %i (%s != %s)...'%(info[model]['id'], mdb_repo.forks,expected_forks))
+                msg = '    Unexpected forks for %i (%s != %s)...'%(info[model]['id'], mdb_repo.forks,expected_forks)
+                print(msg)
+                many_forks.append(msg)
 
         except:
             msg = '    Problem locating repo for: %i (%i/%i) %s'%(info[model]['id'],index, len(selection), info[model]['name'])
             print(msg)
             errors.append(msg)
     
-            
-
         index +=1
 
     if verbose:
