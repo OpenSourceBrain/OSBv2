@@ -32,4 +32,4 @@ ENV WORKERS=4
 ENV TIMEOUT=360
 
 RUN pip3 install -e .
-CMD gunicorn --workers=$WORKERS --timeout $TIMEOUT--bind=0.0.0.0:$PORT $FLASK_APP:app
+CMD gunicorn --workers=$WORKERS --timeout $TIMEOUT --bind=0.0.0.0:$PORT $FLASK_APP:app
