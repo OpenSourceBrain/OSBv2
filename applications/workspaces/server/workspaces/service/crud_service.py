@@ -104,7 +104,7 @@ class BaseModelService:
         logger.debug("Search kwargs %s", kwargs)
         objects = self.repository.search(
             page=page, per_page=per_page, *args, **kwargs)
-        pass
+
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         objects.items = [self.to_dto(obj) for obj in objects.items]
@@ -352,6 +352,7 @@ class WorkspaceService(BaseModelService):
 
         return workspace
 
+    @cache
     def user(self, workspace):
         return self.user_service.get(workspace.user_id)
 
