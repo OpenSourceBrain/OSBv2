@@ -1,3 +1,4 @@
+from functools import cache
 import json
 import os
 import shutil
@@ -103,7 +104,7 @@ class BaseModelService:
         logger.debug("Search kwargs %s", kwargs)
         objects = self.repository.search(
             page=page, per_page=per_page, *args, **kwargs)
-
+        pass
         for obj in objects.items:
             self._calculated_fields_populate(obj)
         objects.items = [self.to_dto(obj) for obj in objects.items]
@@ -416,6 +417,7 @@ class OsbrepositoryService(BaseModelService):
     def content_types_list(self, osb_repository):
         return osb_repository.content_types.split(",")
 
+    @cache
     def user(self, osbrepo):
         return self.user_service.get(osbrepo.user_id)
 
