@@ -28,9 +28,10 @@ def get_tags_info(dandi_api_info=None, dandishowcase_info=None, osbv1_info=None,
         for category in ["model_concept", "currents","modeling_application"]:
             if category in modeldb_info:
                 for v in modeldb_info[category]["value"]:
-                    val = v["object_name"]
+                    val = v["object_name"].strip()
 
                     val = val.replace('++','plusplus')
+                    val = val.replace('Na+','Na')
                     tags.append(val)
 
     if osbv1_info is not None:

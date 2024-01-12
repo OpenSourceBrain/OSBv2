@@ -58,13 +58,32 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
 
     #info = api_instance.get_info(uri=dandiset_url, repository_type="dandi")
-    found = api_instance.osbrepository_get(q=f"uri__like=/", per_page=100000)
+    page = 1
+    all_found = []
+
+    while True:
+        try:
+            print('Checking page %i'%page)
+            found = api_instance.osbrepository_get(q=f"uri__like=/", per_page=500, page=page)
+            for f in found.osbrepositories:
+                all_found.append(f)
+            print("Found so far: %i"%len(all_found))
+            page+=1
+            #if page>3: break
+        except:
+            print("All done")
+            break
+
+
     saved_dict = {}
     saved_dict['repositories'] = {}
-    found_dict = found.to_dict()
-    print("Found %i matching %s repositories" %(len(found.osbrepositories), v2_or_v2dev))
+    ff = {'osbrepositories':[a.to_dict() for a in all_found]}
+    found_dict = ff
 
-    for repo in found.osbrepositories:
+
+    print("Found %i matching %s repositories" %(len(all_found), v2_or_v2dev))
+
+    for repo in all_found:
 
         if index>=min_index and index<max_index:
             id = repo.id
@@ -81,7 +100,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         index+=1
 
 
-    print("\nFinished listing %i matching %s repositories" %(len(found.osbrepositories), v2_or_v2dev))
+    print("\nFinished listing %i matching %s repositories" %(len(all_found), v2_or_v2dev))
 
 filename = 'cached_info/repos_%s.json'%(v2_or_v2dev)    
 

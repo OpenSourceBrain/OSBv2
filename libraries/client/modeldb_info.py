@@ -32,7 +32,7 @@ forked_now = []
 
 if __name__ == "__main__":
     
-    min_index = 0  
+    min_index = 0 
     max_index = 2000
     index = 0
 

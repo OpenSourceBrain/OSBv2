@@ -35,7 +35,7 @@ else:
 
 index = 0
 min_index = 0
-max_index = 3000
+max_index = 2000
 
 verbose = True # 
 verbose = False
@@ -137,7 +137,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             
             if not dry_run:
 
-                desc = modeldb_model['notes']['value']
+                desc = modeldb_model['notes']['value'] if 'notes' in modeldb_model else modeldb_model['name']
 
                 return api_instance.osbrepository_id_put(existing_repo.id, OSBRepository(
                     uri=modeldb_github,
