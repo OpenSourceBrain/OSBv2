@@ -153,6 +153,10 @@ class BaseModelService:
     def is_authorized(self, object):
         raise NotImplementedError(
             f"Authorization not implemented for {self.__class__.__name__}")
+    
+    @cache
+    def get_user_cached(self, user_id):
+        return self.user_service.get(user_id)
 
 
 class WorkspaceService(BaseModelService):
@@ -352,9 +356,8 @@ class WorkspaceService(BaseModelService):
 
         return workspace
 
-    @cache
     def user(self, workspace):
-        return self.user_service.get(workspace.user_id)
+        return self.get_user_cached(workspace.user_id)
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
@@ -418,9 +421,10 @@ class OsbrepositoryService(BaseModelService):
     def content_types_list(self, osb_repository):
         return osb_repository.content_types.split(",")
 
-    @cache
+
     def user(self, osbrepo):
-        return self.user_service.get(osbrepo.user_id)
+        return self.get_user_cached(osbrepo.user_id)
+
 
 
 class VolumestorageService(BaseModelService):
