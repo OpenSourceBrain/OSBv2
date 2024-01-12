@@ -34,8 +34,8 @@ else:
     dry_run = False # dry_run = True
 
 index = 0
-min_index = 200
-max_index = 500
+min_index = 0
+max_index = 3000
 
 verbose = True # 
 verbose = False
@@ -79,7 +79,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
         modeldb_model_id = modeldb_model['id']
         if not 'osbv2_gh_repo' in modeldb_model or not modeldb_model['osbv2_gh_repo']:
-            all_errors.append("  %i, %s doesn't have a Github repo..."%(index, modeldb_model_id))
+            all_errors.append("  %i, %s (%s) doesn't have a Github repo..."%(index, modeldb_model['name'], modeldb_model_id))
             return
 
         modeldb_github = modeldb_model['osbv2_gh_repo']
@@ -154,7 +154,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 )
             )
         else:
-            print("    Adding %s" % modeldb_github)
+            print("    Adding %s: %s" % (modeldb_github, modeldb_model['name']))
 
             tags = get_tags_info(modeldb_info=modeldb_model)
 
@@ -162,7 +162,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
             if not dry_run:
 
-                desc = modeldb_model['notes']['value']
+                desc = modeldb_model['notes']['value'] if 'notes' in modeldb_model else modeldb_model['name']
 
                 return api_instance.osbrepository_post(OSBRepository(
                     uri=modeldb_github,
