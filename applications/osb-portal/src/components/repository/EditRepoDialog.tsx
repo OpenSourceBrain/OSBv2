@@ -617,12 +617,12 @@ export const EditRepoDialog = ({
           />
         </Box>
         <Box>
-          <ThumbnailUploadArea
+          {/* <ThumbnailUploadArea
             thumbnail={ }
             setThumbnai={ }
             thumbnailPreview={ }
             thumbnailError={ }
-          />
+          /> */}
         </Box>
       </DialogContent>
       <DialogActions>
