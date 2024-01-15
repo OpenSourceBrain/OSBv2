@@ -23,6 +23,8 @@ for repo in gh.get_user().get_repos():
             info[repo.url]={}
             for k, v in repo.__dict__['_rawData'].items():
                 info[repo.url][k]=v
+        else:
+            print("Ignoring, as it's private: %s"%repo.url)
 
 filename = 'cached_info/osb_gh.json'  
 
