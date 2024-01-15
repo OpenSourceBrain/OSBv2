@@ -10,3 +10,4 @@ skaffold.yaml
 .hypothesis
 /libraries/client/__pycache__
 /libraries/client/github.auth
+skaffold-overrides.yaml

@@ -8,6 +8,7 @@ import requests
 from cloudharness import log as logger
 
 from workspaces.models import DandiRepositoryResource, RepositoryInfo, RepositoryResource, RepositoryResourceNode
+from workspaces.models.resource_origin import ResourceOrigin
 
 from .utils import add_to_tree
 
@@ -166,25 +167,30 @@ class DandiAdapter:
             logger.debug("unable to get the tags from Dandi, %", str(e))
             return []
 
-    def create_copy_task(self, workspace_id, name, path):
+    def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
         # download the resource
-        name = name if name != "/" else self.osbrepository.name
-        folder = re.search(".*folder=(.*)$", path).group(1)
-        # remove query param delimiters
-        downloadpath = re.search(
-            "(.*)folder=.*$", path).group(1).strip("&").strip("?")
-        if "path_prefix" in downloadpath:
-            context = folder.split("/")[0]
-            tree = self.create_tree_node()
-            futures = self.__retrieve_files(
-                tree, context, path_prefix="/".join(folder.split("/")[1:]))
-            for future in concurrent.futures.as_completed(futures):
-                pass
-            tasks = []
-            self._create_copy_task_assets_of_folder(workspace_id, tree, tasks)
-            return tasks
-        else:
-            return self._create_copy_asset_task(workspace_id, name, path)
+        all_tasks = []
+        for origin in origins:
+            path = origin.path
+            folder = re.search(".*folder=(.*)$", path).group(1)
+            # remove query param delimiters
+            downloadpath = re.search(
+                "(.*)folder=.*$", path).group(1).strip("&").strip("?")
+            if "path_prefix" in downloadpath:
+                context = folder.split("/")[0]
+                tree = self.create_tree_node()
+                futures = self.__retrieve_files(
+                    tree, context, path_prefix="/".join(folder.split("/")[1:]))
+                for future in concurrent.futures.as_completed(futures):
+                    pass
+                tasks = []
+                self._create_copy_task_assets_of_folder(
+                    workspace_id, tree, tasks)
+                all_tasks.extend(tasks)
+            else:
+                all_tasks.append(
+                    self._create_copy_asset_task(workspace_id, path))
+        return all_tasks
 
     def _create_copy_task_assets_of_folder(self, workspace_id, tree, tasks):
         children = tree.children
@@ -195,21 +201,21 @@ class DandiAdapter:
         else:
             resource = tree.resource
             task = self._create_copy_asset_task(
-                workspace_id=workspace_id, name=resource.name, path=resource.path)
+                workspace_id=workspace_id, path=resource.path)
             tasks.append(task)
 
-    def _create_copy_asset_task(self, workspace_id, name, path):
-        name = name if name != "/" else self.osbrepository.name
+    def _create_copy_asset_task(self, workspace_id, path):
+
+        import workspaces.service.workflow as workflow
+
         folder = re.search(".*folder=(.*)$", path).group(1)
         folder = f"{self.osbrepository.name}/{folder}"
         downloadpath = re.search("(.*)\?folder=.*$", path).group(1)
-        print(f"Copy task: {name} - {folder} - {downloadpath}")
-        import workspaces.service.workflow as workflow
+        print(f"Copy task: {folder} - {downloadpath}")
 
         return workflow.create_copy_task(
             image_name="workspaces-dandi-copy",
             workspace_id=workspace_id,
-            name=name,
             folder=folder,
-            path=downloadpath,
+            url=downloadpath,
         )

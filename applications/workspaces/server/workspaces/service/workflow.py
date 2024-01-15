@@ -72,9 +72,14 @@ def create_task(image_name, workspace_id, **kwargs):
     )
 
 
-def create_copy_task(workspace_id, name, folder, path, image_name="workflows-extract-download", **kwargs):
-    name = name if name else path[path.rfind("/") + 1:]
-    return create_task(image_name=image_name, workspace_id=workspace_id, folder=folder or '', url=path, **kwargs)
+def create_copy_task(workspace_id, folder, image_name="workflows-extract-download", **kwargs):
+    if not kwargs.get("url", None):
+        kwargs["url"] = kwargs["path"]
+    return create_task(
+        image_name=image_name, 
+        workspace_id=workspace_id, 
+        folder=folder or '',
+        **kwargs)
 
 
 def create_scan_task(workspace_id, **kwargs):
@@ -93,7 +98,7 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
 
     copy_task = tasks.BashTask(
         name=f"clone-workspace-data",
-        source="sleep 1 && cp -R /source/* /project_download"
+        source="sleep 1 && cp -R /source/* /project_download && chown -R 1000:1000 /project_download"
     )
 
     scan_task = create_scan_task(dest_ws_id)
