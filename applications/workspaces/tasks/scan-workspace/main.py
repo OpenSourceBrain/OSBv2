@@ -29,6 +29,8 @@ logger.info(f"Scanning folder: {folder}, workspace id: {workspace_id}, queue: {q
 # notify_queue(queue, message)
 resources = []
 for root, dirs, files in os.walk(folder):
+    if ".ipynb_checkpoints" in root:
+        continue
     for file in files:
         full_file_name = os.path.join(root, file)
         filename, file_extension = os.path.splitext(full_file_name)
@@ -42,3 +44,5 @@ payload = {
 }
 
 notify_queue(queue, payload)
+
+os.system(f"chown -R 1000:100 {folder}")

@@ -1,7 +1,7 @@
 ARG CLOUDHARNESS_BASE
 FROM $CLOUDHARNESS_BASE
 
-RUN apk add subversion
+RUN apk add git
 
 ADD . /
 

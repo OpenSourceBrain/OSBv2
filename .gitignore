@@ -8,3 +8,4 @@ skaffold.yaml
 .pytest_cache
 /.overrides
 .hypothesis
+skaffold-overrides.yaml

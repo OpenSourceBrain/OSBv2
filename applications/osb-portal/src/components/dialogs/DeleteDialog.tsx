@@ -12,15 +12,17 @@ import { Button } from "@mui/material";
 const DeleteDialog = ({
 	open,
 	setOpen,
-	workspace,
-	handleDeleteWorkspace,
+	title,
+	description,
+	handleDeleteCallback,
+	navigateToPath
 }) => {
 	const navigate = useNavigate();
 
 	const handleDelete = () => {
-		handleDeleteWorkspace();
-		if (window.location.pathname !== "/") {
-			navigate("/");
+		handleDeleteCallback();
+		if (navigateToPath && window.location.pathname !== "/") {
+			navigate(navigateToPath)
 		}
 	}
 
@@ -29,8 +31,8 @@ const DeleteDialog = ({
 			open={open}
 			onClose={() => setOpen(false)}
 		>
-			<DialogTitle>{'Delete Workspace "' + workspace.name + '"'}</DialogTitle>
-			<DialogContent>{'You are about to delete Workspace "' + workspace.name + '". This action cannot be undone. Are you sure?'}</DialogContent>
+			<DialogTitle>{title}</DialogTitle>
+			<DialogContent>{description}</DialogContent>
 			<DialogActions>
 				<Button
 					color="primary"
