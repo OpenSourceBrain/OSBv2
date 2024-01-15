@@ -34,3 +34,6 @@ test-requirements.txt
 **/encoder.py
 openapi
 **/controllers
+
+**/test/test_k8s_controller.py
+**/test/test_rest_controller.py
