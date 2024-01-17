@@ -50,6 +50,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
 import ThumbnailUploadArea from "../common/ThumbnailUploadArea";
+import { readFile } from "../../utils";
 
 const DEFAULT_CONTEXTS = ["main", "master"];
 
@@ -199,6 +200,8 @@ export const EditRepoDialog = ({
   const [contexts, setContexts] = useState<string[]>();
 
   const [uri, setUri] = useState<string>(repository?.uri);
+  const [thumbnail, setThumbnail] = React.useState<Blob | null>(null);
+  const [thumbnailError, setThumbnailError] = React.useState<any>(null);
 
   const [error, setError] = useState({
     uri: "",
@@ -270,6 +273,31 @@ export const EditRepoDialog = ({
     setFormValues({ ...formValues, defaultContext: value });
   };
 
+  async function submitRepositoryThumbnail(obj: any) {
+    if (thumbnail && !thumbnailError) {
+      const fileThumbnail: any = await readFile(thumbnail);
+      RepositoryService.updateRepostioryThumbnail(
+        obj.id,
+        new Blob([fileThumbnail])
+      ).then(
+        () => {
+          refreshRepositories();
+          // Computed fields are not updated: remove so that the repo can be merged by the caller
+          Object.keys(obj).forEach((key) => obj[key] === undefined ? delete obj[key] : {}
+          );
+          onSubmit(obj);
+        },
+        (e) => {
+          console.error(e);
+          throw new Error("Error updating the repository thumbnail");
+        });
+      setThumbnail(null);
+    } else {
+      setLoading(true);
+      refreshRepositories();
+    }
+  }
+
   const addOrUpdateRepository = () => {
     console.log("original repository", repository);
     const errors = {
@@ -289,16 +317,11 @@ export const EditRepoDialog = ({
       setLoading(true);
       if (repository === RepositoryService.EMPTY_REPOSITORY) {
         RepositoryService.addRepository(formValues).then(
-          (r) => {
+          async (returnedRepository) => {
             setLoading(false);
             handleClose(false);
-            refreshRepositories();
-            const obj: any = r;
-            // Computed fields are not updated: remove so that the repo can be merged by the caller
-            Object.keys(r).forEach((key) =>
-              obj[key] === undefined ? delete obj[key] : {}
-            );
-            onSubmit(r);
+            const obj: any = returnedRepository;
+            await submitRepositoryThumbnail(obj);
           },
           (e) => {
             setLoading(false);
@@ -314,16 +337,16 @@ export const EditRepoDialog = ({
         console.log("sending this repository", putRequestRepository);
         RepositoryService.updateRepository(putRequestRepository)
           .then(
-            (r: OSBRepository) => {
+            async (returnedRepository) => {
               setLoading(false);
               handleClose(false);
-              refreshRepositories();
-              const obj: any = r;
+              const obj: any = returnedRepository;
               // Computed fields are not updated: remove so that the repo can be merged by the caller
-              Object.keys(r).forEach((key) =>
+              Object.keys(returnedRepository).forEach((key) =>
                 obj[key] === undefined ? delete obj[key] : {}
               );
-              onSubmit(r);
+              onSubmit(returnedRepository);
+              await submitRepositoryThumbnail(obj);
             },
             (e) => {
               setLoading(false);
@@ -617,12 +640,14 @@ export const EditRepoDialog = ({
           />
         </Box>
         <Box>
-          {/* <ThumbnailUploadArea
-            thumbnail={ }
-            setThumbnai={ }
-            thumbnailPreview={ }
-            thumbnailError={ }
-          /> */}
+          <ThumbnailUploadArea
+            thumbnail={thumbnail}
+            setThumbnail={setThumbnail}
+            // thumbnailPreview={thumbnailPreview}
+            thumbnailError={thumbnailError}
+            setThumbnailError={setThumbnailError}
+            workspace={repository}
+          />
         </Box>
       </DialogContent>
       <DialogActions>

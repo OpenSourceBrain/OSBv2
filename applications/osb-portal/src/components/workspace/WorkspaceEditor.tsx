@@ -35,9 +35,7 @@ import { Tag } from "../../apiclient/workspaces";
 import WorkspaceService from "../../service/WorkspaceService";
 import StyledLabel from "../styled/FormLabel";
 
-
-
-
+import { readFile } from "../../utils";
 
 
 
@@ -69,19 +67,6 @@ interface WorkspaceEditProps {
 }
 
 
-async function readFile(file: Blob) {
-  return new Promise((resolve, reject) => {
-    const fileReader: FileReader = new FileReader();
-
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-
-    fileReader.onerror = reject;
-
-    fileReader.readAsArrayBuffer(file);
-  });
-}
 
 // let thumbnail: Blob;
 
