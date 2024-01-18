@@ -33,3 +33,11 @@ export function getNotebooksNamedServerLink() {
   }
   return `//${OSBAllApplications.jupyter.subdomain}.${getBaseDomain()}/hub/home`
 }
+
+export function getCleanPath(path: string) {
+  const pathParts = path.split("/")
+  if (pathParts[pathParts.length - 1] === "") {
+    pathParts.pop()
+  }
+  return pathParts
+}

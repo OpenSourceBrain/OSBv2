@@ -182,7 +182,8 @@ export const UserPage = (props: any) => {
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
-
+    }).catch((e) => {
+      setError(e);
     });
   }, [userName, props.workspacesCounter]);
 
