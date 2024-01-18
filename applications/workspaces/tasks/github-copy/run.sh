@@ -6,6 +6,8 @@ set -e
 # and append the folder
 export download_path=`echo $shared_directory | cut -d ":" -f 2`/"${folder}"
 
+timestamp="$(date +"%Y%m%d%H%M%S-osbv2")"
+
 mkdir -p "${download_path}"
 cd "${download_path}"
 
@@ -23,7 +25,6 @@ fi
 if [ -z "$paths" ]; then
   echo "Checking out everything"
   git checkout HEAD
-  exit 0
 else
   # Split paths by ## and checkout each path
   IFS='\'
@@ -32,6 +33,20 @@ else
     git checkout HEAD "$path"
   done
 fi
+
+# set username for commit
+git config user.name "OSBv2"
+git config user.email "info@opensourcebrain.org"
+
+# create new branch, commit there
+git checkout -b "$timestamp"
+git commit -m "checked out on osbv2"
+
+# unset username
+git config user.name ""
+git config user.email ""
+
+
 # fix permissions
 chown -R 1000:100 "${download_path}"
 ls -la
