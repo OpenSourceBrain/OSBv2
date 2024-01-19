@@ -182,7 +182,8 @@ export const UserPage = (props: any) => {
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
-
+    }).catch((e) => {
+      setError(e);
     });
   }, [userName, props.workspacesCounter]);
 
@@ -793,7 +794,7 @@ export const UserPage = (props: any) => {
       {canEdit && profileEditDialogOpen && (
 
         <UserEditor
-          user={user}
+          user={{...currentUser, ...user}}
           saveUser={handleUpdateUser}
           close={() => setProfileEditDialogOpen(false)}
         />

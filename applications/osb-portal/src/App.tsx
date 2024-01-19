@@ -32,6 +32,7 @@ import {
 import Box from "@mui/material/Box";
 import { UserInfo } from "./types/user";
 import SampleIframePage from "./pages/SampleIframePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -75,7 +76,7 @@ export const App = (props: AppProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <OSBErrorBoundary>
+        <OSBErrorBoundary error={props.error} >
           <CssBaseline />
           <AboutDialog />
           {!props.error && (
@@ -171,6 +172,7 @@ export const App = (props: AppProps) => {
                       />
                     }
                   />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Box>
             </Router>

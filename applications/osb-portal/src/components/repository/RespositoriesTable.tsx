@@ -214,8 +214,8 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               size="small"
                               clickable={true}
                               onDelete={
-                                handleTagUnclick && searchFilterValues?.tags?.includes(
-                                  tagObject.tag
+                                handleTagUnclick && searchFilterValues?.tags?.map((t) => t.toLowerCase()).includes(
+                                  tagObject.tag.toLowerCase()
                                 )
                                   ? () => handleTagUnclick(tagObject)
                                   : null

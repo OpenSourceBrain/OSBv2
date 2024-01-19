@@ -14,14 +14,17 @@ VERSION = "0.7.0"
 # http://pypi.python.org/pypi/setuptools
 
 REQUIRES = [
-    "connexion>=2.0.2",
+    "connexion[swagger-ui]>=2.6.0",
     "swagger-ui-bundle>=0.0.2",
     "python_dateutil>=2.6.0",
-    "Flask-SQLAlchemy>=2.4.1",
-    "OpenAlchemy>=1.1.0",
+    "Flask-SQLAlchemy>3.0.0",
+    "OpenAlchemy==1.1.0",
     "psycopg2-binary",
     "cloudharness",
-    "flask_cors"
+    "flask_cors",
+    "sentry-sdk",
+    "responses==0.22.0",
+    "jinja2<3.1.0"
 ]
 
 setup(
