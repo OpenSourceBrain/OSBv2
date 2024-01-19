@@ -28,7 +28,7 @@ if [ ! -d "${download_path}/.git" ]; then
   git config user.name "OSBv2"
   git config user.email "info@opensourcebrain.org"
 
-  # check is paths has a value. In that case, checkout everything
+  # check is paths has a value, otherwise check out everything
   if [ -z "$paths" ]; then
       echo "Git: checking out everything"
       git checkout HEAD
@@ -46,8 +46,9 @@ if [ ! -d "${download_path}/.git" ]; then
   git checkout -b "$timestamp"
   git commit -m "osbv2: checked out repository"
 
-  # unset username
-  echo "Git: unsetting user/email"
+  # unset username: ensure that user has to set it manually if they
+  # do anything with git in the repo
+  echo "Git: unsetting user/email for repo"
   git config --unset user.name
   git config --unset user.email
 
@@ -88,10 +89,24 @@ else
   echo "Git: removing temporary remote"
   # remove temporary remote
   git remote remove "$timestamp"
-  # reset user
+
+  # reset user to whatever it was before
+  # setting to "" is not the same as unsetting
+  # git still adds an entry to the config file
   echo "Git: resetting user/email"
-  git config user.name "$gituser"
-  git config user.email "$gitemail"
+  if [ -z "$gituser" ]
+  then
+    git config --unset user.name
+  else
+    git config user.name "$gituser"
+  fi
+
+  if [ -z "$gitemail" ]
+  then
+    git config --unset user.email
+  else
+    git config user.name "$gitemail"
+  fi
 fi
 
 
