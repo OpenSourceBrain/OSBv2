@@ -154,9 +154,8 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                               label={tagObject.tag}
                               clickable={true}
                               onDelete={
-                                searchFilterValues?.tags?.includes(
-                                  tagObject.tag
-                                )
+                                searchFilterValues?.tags?.map((tag) =>
+                                  tag.toLowerCase()).includes(tagObject.tag.toLowerCase())
                                   ? () => handleTagUnclick(tagObject)
                                   : null
                               }

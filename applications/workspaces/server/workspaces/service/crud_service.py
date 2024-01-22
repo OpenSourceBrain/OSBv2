@@ -1,3 +1,4 @@
+from functools import cache
 import json
 import os
 import shutil
@@ -152,6 +153,10 @@ class BaseModelService:
     def is_authorized(self, object):
         raise NotImplementedError(
             f"Authorization not implemented for {self.__class__.__name__}")
+    
+    @cache
+    def get_user_cached(self, user_id):
+        return self.user_service.get(user_id)
 
 
 class WorkspaceService(BaseModelService):
@@ -237,6 +242,8 @@ class WorkspaceService(BaseModelService):
 
     def is_authorized(self, workspace):
         current_user_id = keycloak_user_id()
+        if not current_user_id:
+            return False
         return workspace and (workspace.publicable or
                               (workspace.user_id and workspace.user_id == current_user_id) or
                               (get_auth_client().user_has_realm_role(user_id=current_user_id, role="administrator")))
@@ -299,6 +306,8 @@ class WorkspaceService(BaseModelService):
     def get(self, id_):
 
         workspace: Workspace = super().get(id_)
+        if not self.is_authorized(workspace):
+            raise NotAuthorized()
 
         if any(wr.status == ResourceStatus.P for wr in workspace.resources):
             fake_path = f"Importing resources"
@@ -352,7 +361,7 @@ class WorkspaceService(BaseModelService):
         return workspace
 
     def user(self, workspace):
-        return self.user_service.get(workspace.user_id)
+        return self.get_user_cached(workspace.user_id)
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
@@ -416,8 +425,10 @@ class OsbrepositoryService(BaseModelService):
     def content_types_list(self, osb_repository):
         return osb_repository.content_types.split(",")
 
+
     def user(self, osbrepo):
-        return self.user_service.get(osbrepo.user_id)
+        return self.get_user_cached(osbrepo.user_id)
+
 
 
 class VolumestorageService(BaseModelService):

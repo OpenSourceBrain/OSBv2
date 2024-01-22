@@ -1,9 +1,11 @@
 import re
 import sys
+from typing import List
 import requests
 
 from cloudharness import log as logger
 from workspaces.models import FigshareRepositoryResource, RepositoryResourceNode, RepositoryInfo
+from workspaces.models.resource_origin import ResourceOrigin
 
 from .utils import add_to_tree
 
@@ -121,26 +123,27 @@ class FigShareAdapter:
             logger.debug("unable to get the tags from Figshare, %", str(e))
             return []
 
-    def create_copy_task(self, workspace_id, name, path):
-        # download the resource
+    def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
+        tasks = []
         import workspaces.service.workflow as workflow
-        name = name if name != "/" else self.osbrepository.name
-        # no file tree in FigShare
-        folder = self.osbrepository.name
+        for origin in origins:
+            path = origin.path
+            # no file tree in FigShare
+            folder = self.osbrepository.name
 
-        # download everything: the handler will fetch the complete file list
-        # and download them all
-        if not path or path == "/":
-            path = self.article_id
+            # download everything: the handler will fetch the complete file list
+            # and download them all
+            if not path or path == "/":
+                path = self.article_id
 
-        # username / password are optional and future usage,
-        # e.g. for accessing non public repos
-        return workflow.create_copy_task(
-            image_name="workspaces-figshare-copy",
-            workspace_id=workspace_id,
-            name=name,
-            folder=folder,
-            path=path,
-            username="",
-            password="",
-        )
+            # username / password are optional and future usage,
+            # e.g. for accessing non public repos
+            tasks.append(workflow.create_copy_task(
+                image_name="workspaces-figshare-copy",
+                workspace_id=workspace_id,
+                folder=folder,
+                url=path,
+                username="",
+                password="",
+            ))
+        return tasks

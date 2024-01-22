@@ -4,6 +4,8 @@ from workspaces.persistence.crud_persistence import OSBRepositoryRepository, db
 from .workspace_controller import _save_image
 from workspaces.config import Config
 
+from workspaces.controllers.workspace_controller import setthumbnail
+
 def get_contexts(uri=None, repository_type=None, **kwargs):
     # get the branches of the repository
     try:

@@ -524,6 +524,7 @@ class OSBRepositoryEntityDict(_OSBRepositoryEntityDictBase, total=False):
     summary: typing.Optional[str]
     auto_sync: bool
     default_context: typing.Optional[str]
+    thumbnail: typing.Optional[str]
     user_id: typing.Optional[str]
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
@@ -547,6 +548,7 @@ class TOSBRepositoryEntity(typing.Protocol):
         auto_sync: Auto sync of the resources
         uri: URI of the repository
         default_context: The default branch to show for this repository
+        thumbnail: The thumbnail of the OSBRepositoryEntity.
         user_id: OSBRepository keycloak user id, will be automatically be set
             to the logged in user
         timestamp_created: Date/time the Workspace is created
@@ -570,6 +572,7 @@ class TOSBRepositoryEntity(typing.Protocol):
     auto_sync: bool
     uri: str
     default_context: typing.Optional[str]
+    thumbnail: typing.Optional[str]
     user_id: typing.Optional[str]
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
@@ -586,6 +589,7 @@ class TOSBRepositoryEntity(typing.Protocol):
         summary: typing.Optional[str] = None,
         auto_sync: bool = True,
         default_context: typing.Optional[str] = None,
+        thumbnail: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
@@ -605,6 +609,7 @@ class TOSBRepositoryEntity(typing.Protocol):
             auto_sync: Auto sync of the resources
             uri: URI of the repository
             default_context: The default branch to show for this repository
+            thumbnail: The thumbnail of the OSBRepositoryEntity.
             user_id: OSBRepository keycloak user id, will be automatically be
                 set to the logged in user
             timestamp_created: Date/time the Workspace is created
@@ -626,6 +631,7 @@ class TOSBRepositoryEntity(typing.Protocol):
         summary: typing.Optional[str] = None,
         auto_sync: bool = True,
         default_context: typing.Optional[str] = None,
+        thumbnail: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
@@ -645,6 +651,7 @@ class TOSBRepositoryEntity(typing.Protocol):
             auto_sync: Auto sync of the resources
             uri: URI of the repository
             default_context: The default branch to show for this repository
+            thumbnail: The thumbnail of the OSBRepositoryEntity.
             user_id: OSBRepository keycloak user id, will be automatically be
                 set to the logged in user
             timestamp_created: Date/time the Workspace is created
@@ -801,9 +808,6 @@ class WorkspaceResourceEntityDict(_WorkspaceResourceEntityDictBase, total=False)
     timestamp_created: typing.Optional[datetime.datetime]
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
-    origin: typing.Optional[str]
-    workspace_id: typing.Optional[int]
-    folder: typing.Optional[str]
 
 
 class TWorkspaceResourceEntity(typing.Protocol):
@@ -821,10 +825,6 @@ class TWorkspaceResourceEntity(typing.Protocol):
             WorkspaceResource
         resource_type: Resource type:  * e - Experimental  * m - Model  * g -
             Generic  * u - Unknown (to be defined)
-        origin: Origin data JSON formatted of the WorkspaceResource
-        workspace_id: workspace_id
-        folder: WorkspaceResource path where the resource will stored in the
-            pvc.
 
     """
 
@@ -841,9 +841,6 @@ class TWorkspaceResourceEntity(typing.Protocol):
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
     resource_type: str
-    origin: typing.Optional[str]
-    workspace_id: typing.Optional[int]
-    folder: typing.Optional[str]
 
     def __init__(
         self,
@@ -854,9 +851,6 @@ class TWorkspaceResourceEntity(typing.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        origin: typing.Optional[str] = None,
-        workspace_id: typing.Optional[int] = None,
-        folder: typing.Optional[str] = None,
     ) -> None:
         """
         Construct.
@@ -873,10 +867,6 @@ class TWorkspaceResourceEntity(typing.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
-            origin: Origin data JSON formatted of the WorkspaceResource
-            workspace_id: workspace_id
-            folder: WorkspaceResource path where the resource will stored in
-                the pvc.
 
         """
         ...
@@ -891,9 +881,6 @@ class TWorkspaceResourceEntity(typing.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
-        origin: typing.Optional[str] = None,
-        workspace_id: typing.Optional[int] = None,
-        folder: typing.Optional[str] = None,
     ) -> "TWorkspaceResourceEntity":
         """
         Construct from a dictionary (eg. a POST payload).
@@ -910,10 +897,6 @@ class TWorkspaceResourceEntity(typing.Protocol):
                 WorkspaceResource
             resource_type: Resource type:  * e - Experimental  * m - Model  * g
                 - Generic  * u - Unknown (to be defined)
-            origin: Origin data JSON formatted of the WorkspaceResource
-            workspace_id: workspace_id
-            folder: WorkspaceResource path where the resource will stored in
-                the pvc.
 
         Returns:
             Model instance based on the dictionary.

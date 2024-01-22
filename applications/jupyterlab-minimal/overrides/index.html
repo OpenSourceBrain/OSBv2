@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
 
-<head><meta charset="utf-8"><title>JupyterLab</title><meta name="viewport" content="width=device-width,initial-scale=1">{# Copy so we do not modify the page_config with updates. #} {% set page_config_full = page_config.copy() %} {# Set a dummy variable - we just want the side effect of the update. #} {% set _ = page_config_full.update(baseUrl=base_url, wsUrl=ws_url) %}<script id="jupyter-config-data" type="application/json">{{ page_config_full | tojson }}</script>{% block favicon %}<link rel="icon" type="image/x-icon" href="{{ base_url | escape }}static/favicons/favicon.ico" class="idle favicon"><link rel="" type="image/x-icon" href="{{ base_url | escape }}static/favicons/favicon-busy-1.ico" class="busy favicon">{% endblock %}<script defer="defer" src="{{page_config.fullStaticUrl}}/main.006c51afc5ba8822ed23.js?v=006c51afc5ba8822ed23"></script></head>
+<head>
+  <meta charset="utf-8"><title>JupyterLab</title><meta name="viewport" content="width=device-width,initial-scale=1">{# Copy so we do not modify the page_config with updates. #} {% set page_config_full = page_config.copy() %} {# Set a dummy variable - we just want the side effect of the update. #} {% set _ = page_config_full.update(baseUrl=base_url, wsUrl=ws_url) %}<script id="jupyter-config-data" type="application/json">{{ page_config_full | tojson }}</script>{% block favicon %}<link rel="icon" type="image/x-icon" href="{{ base_url | escape }}static/favicons/favicon.ico" class="idle favicon"><link rel="" type="image/x-icon" href="{{ base_url | escape }}static/favicons/favicon-busy-1.ico" class="busy favicon">{% endblock %}<script defer="defer" src="{{page_config.fullStaticUrl}}/main.eb1a25439b8fda26a7d5.js?v=eb1a25439b8fda26a7d5"></script></head>
 
 <body>
  <script>/* Remove token from URL. */

@@ -56,7 +56,7 @@ def init_app(app):
                     "Could not start kafka consumers. Some application functionality won't be available.", exc_info=True
                 )
     mkdirs()
-    setup_static_router(app)
+    # setup_static_router(app)
     app.template_folder = Config.TEMPLATE_DIR
 
 

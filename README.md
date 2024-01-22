@@ -46,6 +46,13 @@ harness-deployment cloud-harness .
 
 Kubernetes 1.19+ is supported (v1 spec)
 
+#### Ingress
+```
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install ingress-nginx ingress-nginx/ingress-nginx
+```
+
 #### Cert-manager
 The cert-manager must be installed in order to use letsencrypt generated certificates
 
