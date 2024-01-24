@@ -31,7 +31,8 @@ exclude = { WorkspaceEntity.__name__: {"resources"} }
 
 
 def dao_entity2dict(obj):
-
+    if hasattr(obj, "to_dict"):
+        return obj.to_dict()
     disallowed_names = {name for name, value in getmembers(
         type(obj)) if isinstance(value, FunctionType) or name in exclude.get(type(obj).__name__, ())}
     
