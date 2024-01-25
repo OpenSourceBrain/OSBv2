@@ -81,10 +81,11 @@ class BaseModelService:
 
     calculated_fields = set()
 
-    def _calculated_fields_populate(self, obj):
-        if self.calculated_fields:
-            for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj))
+    @classmethod
+    def _calculated_fields_populate(cls, obj):
+        if cls.calculated_fields:
+            for fld in cls.calculated_fields:
+                setattr(obj, fld, getattr(cls, fld)(obj))
         return obj
 
     def search(self, page=1, per_page=20, *args, **kwargs) -> Pagination:
@@ -105,8 +106,7 @@ class BaseModelService:
         objects = self.repository.search(
             page=page, per_page=per_page, *args, **kwargs)
 
-        for obj in objects.items:
-            self._calculated_fields_populate(obj)
+        
         objects.items = [self.to_dto(obj) for obj in objects.items]
         return objects
 
@@ -117,7 +117,7 @@ class BaseModelService:
 
     @classmethod
     def to_dto(cls, dao) -> Model:
-        return cls.dict_to_dto(dao_entity2dict(dao))
+        return cls._calculated_fields_populate(cls.dict_to_dto(dao_entity2dict(dao)))
 
     @classmethod
     def dict_to_dto(cls, d) -> Model:
@@ -129,19 +129,19 @@ class BaseModelService:
         """Save an object to the repository."""
 
         dao = self.to_dao(body)
-        return self.to_dto(self._calculated_fields_populate(self.repository.post(dao)))
+        return self.to_dto(self.repository.post(dao))
 
     def get(self, id_):
         """Get an object from the repository."""
         res = self.repository.get(id_)
         if not self.is_authorized(res):
             raise NotAuthorized()
-        return self.to_dto(self._calculated_fields_populate(res))
+        return self.to_dto(res)
 
     def put(self, body, id_):
         """Update an object in the repository."""
         dao = self.to_dao(body)
-        return self._calculated_fields_populate(self.repository.put(dao, id_))
+        return self.to_dto(self.repository.put(dao, id_))
 
     def delete(self, id_):
         """Delete an object from the repository."""
@@ -154,9 +154,10 @@ class BaseModelService:
         raise NotImplementedError(
             f"Authorization not implemented for {self.__class__.__name__}")
     
+    @classmethod
     @cache
-    def get_user_cached(self, user_id):
-        return self.user_service.get(user_id)
+    def get_user_cached(cls, user_id):
+        return cls.user_service.get(user_id)
 
 
 class WorkspaceService(BaseModelService):
@@ -277,9 +278,6 @@ class WorkspaceService(BaseModelService):
                 page=page, per_page=per_page, *args, **kwargs)
         with db.session.no_autoflush:
             paged_results.items = [self.to_dto(w) for w in paged_results.items]
-
-            for obj in paged_results.items:
-                self._calculated_fields_populate(obj)
         return paged_results
 
     @classmethod
@@ -358,8 +356,9 @@ class WorkspaceService(BaseModelService):
 
         return workspace
 
-    def user(self, workspace):
-        return self.get_user_cached(workspace.user_id)
+    @classmethod
+    def user(cls, workspace):
+        return cls.get_user_cached(workspace.user_id)
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
@@ -420,12 +419,13 @@ class OsbrepositoryService(BaseModelService):
         # All osbrepositories are public
         return True
 
-    def content_types_list(self, osb_repository):
+    @classmethod
+    def content_types_list(cls, osb_repository):
         return osb_repository.content_types.split(",")
 
-
-    def user(self, osbrepo):
-        return self.get_user_cached(osbrepo.user_id)
+    @classmethod
+    def user(cls, osbrepo):
+        return cls.get_user_cached(osbrepo.user_id)
 
 
 

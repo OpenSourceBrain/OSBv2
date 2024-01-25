@@ -31,23 +31,26 @@ exclude = { WorkspaceEntity.__name__: {"resources"} }
 
 
 def dao_entity2dict(obj):
-    disallowed_names = {name for name, value in getmembers(
-        type(obj)) if isinstance(value, FunctionType) or name in exclude.get(type(obj).__name__, ())}
-    
-    result = {}
+    if hasattr(obj, "to_dict"):
+        result = obj.to_dict()
+    else:
+        disallowed_names = {name for name, value in getmembers(
+            type(obj)) if isinstance(value, FunctionType) or name in exclude.get(type(obj).__name__, ())}
+        
+        result = {}
 
-    for name in dir(obj):
+        for name in dir(obj):
 
-        if name not in disallowed_names and name[0] != "_" and  hasattr(obj, name):
-            val = getattr(obj, name)
-            if not ismethod(val):
-                clas = val.__class__.__name__
-                if hasattr(val.__class__, "to_dict"):
-                    val = val.__class__.to_dict(val)
-                if clas == "InstrumentedList":
-                    val = list(dao_entity2dict(r) for r in val)
-                if clas not in disallowed_class_types:
-                    result.update({name: val})
+            if name not in disallowed_names and name[0] != "_" and  hasattr(obj, name):
+                val = getattr(obj, name)
+                if not ismethod(val):
+                    clas = val.__class__.__name__
+                    if hasattr(val.__class__, "to_dict"):
+                        val = val.__class__.to_dict(val)
+                    if clas == "InstrumentedList":
+                        val = list(dao_entity2dict(r) for r in val)
+                    if clas not in disallowed_class_types:
+                        result.update({name: val})
     if type(obj).__name__ in name_mappings:
         for src, dest in name_mappings[type(obj).__name__].items():
             result[dest] = result[src]
