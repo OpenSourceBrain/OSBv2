@@ -285,7 +285,14 @@ class WorkspaceService(BaseModelService):
 
         workspace = cls.dict_to_dto(dao_entity2dict(workspace_entity))
         for resource in workspace_entity.resources:
+            if resource.folder: # Legacy folder/path handling
+                resource.path = resource.folder
+                del resource.folder
             resource.origin = json.loads(resource.origin)
+            if resource.origin.get("folder", None) is not None: # Legacy folder/path handling
+                resource.origin["path"] = resource.origin.get("folder")
+                del resource.origin["folder"]
+            
         workspace.resources = [WorkspaceresourceService.to_dto(r) for r in workspace_entity.resources] if workspace_entity.resources else []
         return workspace
 
