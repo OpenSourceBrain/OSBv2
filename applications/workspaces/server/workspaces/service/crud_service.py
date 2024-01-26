@@ -66,7 +66,7 @@ class UserService():
                 email=user.get("email", ""),
             )
         except Exception as e:
-            return User()
+            return User(id="0")
 
 
 class BaseModelService:
@@ -283,7 +283,7 @@ class WorkspaceService(BaseModelService):
     @classmethod
     def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
 
-        workspace = cls.dict_to_dto(dao_entity2dict(workspace_entity))
+        workspace = super().to_dto(workspace_entity)
         for resource in workspace_entity.resources:
             if resource.folder: # Legacy folder/path handling
                 resource.path = resource.folder
