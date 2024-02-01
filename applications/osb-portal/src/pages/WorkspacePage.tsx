@@ -80,7 +80,7 @@ export const WorkspacePage = (props: any) => {
   };
 
   const openWithApp = (selectedOption: OSBApplication) => {
-    navigate(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+    navigate(`/workspaces/open/${workspaceId}/${selectedOption.code}`);
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
