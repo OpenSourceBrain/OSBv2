@@ -18,7 +18,7 @@ import OSBLoader from "../common/OSBLoader";
 import { bgDarkest, textColor, lightWhite } from "../../theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import * as Icons from "../icons";
-import DeleteDialog from "../dialogs/DeleteDialog";
+import PrimaryDialog from "../dialogs/PrimaryDialog";
 
 
 interface WorkspaceActionsMenuProps {
@@ -53,6 +53,10 @@ export default (props: WorkspaceActionsMenuProps) => {
   const canEdit = canEditWorkspace(props?.user, props?.workspace);
   const navigate = useNavigate();
   const [showDeleteWorkspaceDialog, setShowDeleteWorkspaceDialog] = React.useState(false);
+  const [showFailCloneDialog, setShowFailCloneDialog] = React.useState({
+    open: false,
+    message: "",
+  });
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -269,11 +273,12 @@ export default (props: WorkspaceActionsMenuProps) => {
       <>
         {
           showDeleteWorkspaceDialog && (
-            <DeleteDialog
+            <PrimaryDialog
               open={showDeleteWorkspaceDialog}
               setOpen={setShowDeleteWorkspaceDialog}
-              handleDeleteCallback={handleDeleteWorkspace}
-              navigateToPath="/"
+              handleCallback={handleDeleteWorkspace}
+              actionButtonText={'DELETE'}
+              cancelButtonText={'CANCEL'}  
               title={'Delete Workspace "' + props.workspace.name + '"'}
               description={'You are about to delete Workspace "' + props.workspace.name + '". This action cannot be undone. Are you sure?'}
             />
