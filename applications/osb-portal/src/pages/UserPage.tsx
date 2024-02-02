@@ -309,7 +309,7 @@ export const UserPage = (props: any) => {
   }
 
   const openWorkspaceUrl = (workspaceId: number) => {
-    navigate(`/workspace/${workspaceId}`);
+    navigate(`/workspaces/${workspaceId}`);
   };
 
   const canEdit =

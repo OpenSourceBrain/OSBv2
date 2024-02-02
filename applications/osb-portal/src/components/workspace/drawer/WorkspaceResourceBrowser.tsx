@@ -133,7 +133,7 @@ const OSBResourceItem = (props: {
   (e: any | Event) => {
     e.preventDefault();
     navigate(
-      {pathname: `/workspace/open/${workspaceId}/${resource.type.application.code}`,
+      {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
       search: `?resource=${encodeURIComponent(resource.name)}`},
     )
   };
