@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
 import { WorkspaceEditor } from "../index";
@@ -19,6 +20,7 @@ import { bgDarkest, textColor, lightWhite } from "../../theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import * as Icons from "../icons";
 import PrimaryDialog from "../dialogs/PrimaryDialog";
+import { RootState } from "../../store/rootReducer";
 
 
 interface WorkspaceActionsMenuProps {
@@ -58,6 +60,7 @@ export default (props: WorkspaceActionsMenuProps) => {
     message: "",
   });
 
+  const user = useSelector((state: RootState) => state.user);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -75,6 +78,10 @@ export default (props: WorkspaceActionsMenuProps) => {
   const handleDeleteWorkspace = () => {
     props.deleteWorkspace(props.workspace.id);
     handleCloseMenu();
+
+    if (window.location.pathname !== "/") {
+      navigate('/')
+    }
   };
 
   const handlePublicWorkspace = () => {
@@ -114,16 +121,24 @@ export default (props: WorkspaceActionsMenuProps) => {
         setCloneComplete(true);
         setClonedWSId(res.id);
       },
-      () => {
-        setCloneInProgress(true);
+      (e) => {
+        setCloneInProgress(false);
+        if (e.status === 405) {
+          setShowFailCloneDialog({ open: true, message: "Workspaces quota exceeded. Try to delete some workspaces or see the documentation to know how to manage your quotas." });
+        } else {
+          setShowFailCloneDialog({ open: true, message: "Unexpected error cloning the workspace. Please try again later." });
+        }
       }
-    );
+    )
   };
 
   const handleOpenClonedWorkspace = () => {
     navigate(`/workspaces/${clonedWSId}`);
   };
 
+  const navigateToAccountsPage = () => {
+    navigate(`/user/${user.username}`);
+  }
 
   /*
    *
@@ -285,6 +300,19 @@ export default (props: WorkspaceActionsMenuProps) => {
           )
         }
       </>
+      {
+        showFailCloneDialog && (
+          <PrimaryDialog
+            open={showFailCloneDialog.open}
+            setOpen={() => setShowFailCloneDialog({ open: !showFailCloneDialog.open, message: "" })}
+            handleCallback={() => navigateToAccountsPage()}
+            actionButtonText={'Go to Account Page'}
+            cancelButtonText={'Close'}
+            title="Failed to clone workspace"
+            description={showFailCloneDialog.message}
+          />
+        )
+      }
     </>
   );
 };
