@@ -190,7 +190,7 @@ export const RepositoryPage = (props: any) => {
     )
       .then(() => {
         setShowWorkspaceEditor(false);
-        setWorkspaceLink(`/workspace/${ws.id}`);
+        setWorkspaceLink(`/workspaces/${ws.id}`);
         confirmAction("Success", "New workspace created!", true);
       })
       .catch((e) => {
@@ -219,7 +219,7 @@ export const RepositoryPage = (props: any) => {
       .then(() => {
         setSelectedWorkspace(null);
         confirmAction("Success", "Resources added to workspace!", true);
-        setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
+        setWorkspaceLink(`/workspaces/${selectedWorkspace.id}`);
         setLoading(false);
         setShowExisitngWorkspaceEditor(false);
       })

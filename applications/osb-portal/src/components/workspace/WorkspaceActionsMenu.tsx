@@ -92,7 +92,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenWorkspace = () => {
-    navigate(`/workspace/${props.workspace.id}`);
+    navigate(`/workspaces/${props.workspace.id}`);
   };
 
   const handleCloseEditWorkspace = () => {
@@ -117,7 +117,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleOpenClonedWorkspace = () => {
-    navigate(`/workspace/${clonedWSId}`);
+    navigate(`/workspaces/${clonedWSId}`);
   };
 
 
@@ -126,7 +126,7 @@ export default (props: WorkspaceActionsMenuProps) => {
    * @param applicatonType OSBApplication key
    */
   const handleOpenWorkspaceWithApp = (applicatonType: string) => {
-    navigate(`/workspace/open/${props.workspace.id}/${applicatonType}`);
+    navigate(`/workspaces/open/${props.workspace.id}/${applicatonType}`);
   };
 
   return (
