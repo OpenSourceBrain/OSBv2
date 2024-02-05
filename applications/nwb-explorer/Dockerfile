@@ -1,11 +1,11 @@
 FROM node:15 as clone
-ENV BRANCH_TAG="v0.7.0"
+ENV BRANCH_TAG="develop"
 ENV REPO=https://github.com/MetaCell/nwb-explorer.git
-RUN echo "cache 2023-12-23"
+RUN echo "cache 2024-02-05"
 RUN git clone $REPO -b $BRANCH_TAG
 RUN rm -Rf .git
 
-FROM node:15 as jsbuild
+FROM node:20 as jsbuild
 
 
 ENV FOLDER=nwb-explorer
@@ -15,7 +15,7 @@ ENV FOLDER=nwb-explorer
 WORKDIR $FOLDER/webapp
 
 COPY --from=clone nwb-explorer/webapp/package.json .
-COPY --from=clone nwb-explorer/webapp/package-lock.json .
+COPY --from=clone nwb-explorer/webapp/yarn.lock .
 RUN yarn install --network-timeout 1000000000
 COPY --from=clone nwb-explorer/webapp/ .
 COPY geppetto/GeppettoConfiguration.json GeppettoConfiguration.json
