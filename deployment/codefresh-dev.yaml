@@ -30,7 +30,7 @@ steps:
       type: git-clone
       repo: https://github.com/MetaCell/nwb-explorer.git
       revision: development
-      working_directory: /home/user/OSBv2/./applications/dependencies/nwb-explorer.git
+      working_directory: applications/nwb-explorer/dependencies/nwb-explorer.git
       git: github
   prepare_deployment:
     title: Prepare helm chart
