@@ -14,7 +14,7 @@ click==8.0.4
 clickclick==20.10.2
 connexion==2.6.0
 coverage==6.3.2
-cryptography==3.3.2
+cryptography==41.0.3
 distlib==0.3.4
 ecdsa==0.17.0
 filelock==3.6.0
