@@ -57,7 +57,7 @@ def guess_resource_type(resource_path):
     extension = resource_path.split(".")[-1]
     if extension == "nwb":
         return ResourceType.E
-    elif extension == "np":
+    elif extension == "npjson":
         return ResourceType.M
     elif extension == "ipynb":
         return ResourceType.G
