@@ -32,10 +32,11 @@ for root, dirs, files in os.walk(folder):
     if ".ipynb_checkpoints" in root:
         continue
     for file in files:
-        full_file_name = os.path.join(root, file)
+        
         filename, file_extension = os.path.splitext(full_file_name)
-        if file_extension.lower() in (".nwb", ".netpyne", ".ipynb"):
+        if file_extension.lower() in (".nwb", ".npjson", ".ipynb"):
             logger.info(f"Found resource: {full_file_name}")
+            full_file_name = os.path.join(root, file)
             resources.append(full_file_name)
 
 payload = {
