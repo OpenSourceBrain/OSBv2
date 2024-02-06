@@ -5,7 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NestedMenuItem from "../common/NestedMenuItems";
 import Button from "@mui/material/Button";
-import { IconButton } from "@mui/material";
+import { IconButton, Link } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
@@ -55,7 +55,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   const canEdit = canEditWorkspace(props?.user, props?.workspace);
   const navigate = useNavigate();
   const [showDeleteWorkspaceDialog, setShowDeleteWorkspaceDialog] = React.useState(false);
-  const [showFailCloneDialog, setShowFailCloneDialog] = React.useState({
+  const [showFailCloneDialog, setShowFailCloneDialog] = React.useState<{open: boolean, message: any}>({
     open: false,
     message: "",
   });
@@ -124,7 +124,11 @@ export default (props: WorkspaceActionsMenuProps) => {
       (e) => {
         setCloneInProgress(false);
         if (e.status === 405) {
-          setShowFailCloneDialog({ open: true, message: "Workspaces quota exceeded. Try to delete some workspaces or see the documentation to know how to manage your quotas." });
+          setShowFailCloneDialog({ open: true, message: <>
+            Workspaces quota exceeded. Try to delete some workspace before retry. 
+            To see and manage your quotas, go to your 
+            <Link href={`/user/${user.username}`} onClick={() => navigate(`/user/${user.username}`)}>account page.</Link>
+            </> });
         } else {
           setShowFailCloneDialog({ open: true, message: "Unexpected error cloning the workspace. Please try again later." });
         }
@@ -305,7 +309,7 @@ export default (props: WorkspaceActionsMenuProps) => {
           <PrimaryDialog
             open={showFailCloneDialog.open}
             setOpen={() => setShowFailCloneDialog({ open: !showFailCloneDialog.open, message: "" })}
-            handleCallback={() => navigateToAccountsPage()}
+            handleCallback={navigateToAccountsPage}
             actionButtonText={'Go to Account Page'}
             cancelButtonText={'Close'}
             title="Failed to clone workspace"
