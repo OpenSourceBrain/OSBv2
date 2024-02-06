@@ -291,15 +291,7 @@ class WorkspaceService(BaseModelService):
     def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
 
         workspace = super().to_dto(workspace_entity)
-        for resource in workspace_entity.resources:
-            if resource.folder:  # Legacy folder/path handling
-                resource.path = resource.folder
-                del resource.folder
-            resource.origin = json.loads(resource.origin)
-            # Legacy folder/path handling
-            if resource.origin.get("folder", None) is not None:
-                resource.origin["path"] = resource.origin.get("folder")
-                del resource.origin["folder"]
+          
 
         workspace.resources = [WorkspaceresourceService.to_dto(
             r) for r in workspace_entity.resources] if workspace_entity.resources else []
@@ -459,7 +451,7 @@ class WorkspaceresourceService(BaseModelService):
         if "origin" in ws_dict:
             wro_dao_dict = dict(ws_dict.get("origin"))
             ws_dict.update({"origin": json.dumps(wro_dao_dict)})
-        if 'path' in ws_dict:
+        if 'folder' in ws_dict: # path is folder in the db for legacy reasons
             ws_dict['folder'] = ws_dict['path']
             del ws_dict['path']
         workspace_resource: TWorkspaceResourceEntity = super().to_dao(ws_dict)
@@ -472,14 +464,27 @@ class WorkspaceresourceService(BaseModelService):
         return workspace_resource
 
     @classmethod
+    def to_dto(cls, resource) -> Model:
+        resource.origin = json.loads(resource.origin)
+        if resource.folder:  # Legacy folder/path handling
+            
+            # Legacy folder/path handling
+            if resource.origin.get("folder", None) is not None:
+                resource.origin["path"] = resource.origin.get("folder")
+                del resource.origin["folder"]
+        dto = cls._calculated_fields_populate(cls.dict_to_dto(dao_entity2dict(resource)))
+        dto.path = resource.folder
+        return dto
+
+    @classmethod
     def dict_to_dto(cls, d) -> WorkspaceResource:
-        if 'origin' in d and isinstance(d['origin'], str):
-            d['origin'] = json.loads(d['origin'])
 
         workspace_resource: WorkspaceResource = super().dict_to_dto(d)
 
+
         # Legacy folder/path handling
         if workspace_resource.path is None:
+            
             logger.debug(
                 f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
             workspace_resource.path = workspace_resource.name
