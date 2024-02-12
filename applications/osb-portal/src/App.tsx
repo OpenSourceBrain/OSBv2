@@ -32,6 +32,7 @@ import {
 import Box from "@mui/material/Box";
 import { UserInfo } from "./types/user";
 import SampleIframePage from "./pages/SampleIframePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -75,7 +76,7 @@ export const App = (props: AppProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <OSBErrorBoundary>
+        <OSBErrorBoundary error={props.error} >
           <CssBaseline />
           <AboutDialog />
           {!props.error && (
@@ -95,7 +96,15 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
-                    path="/workspace/:workspaceId"
+                    path="/workspaces"
+                    element={
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces/:workspaceId"
                     element={
                       <SidebarPageLayout>
                         <WorkspacePage />
@@ -103,11 +112,11 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
-                    path="/workspace/open/:workspaceId/:app"
+                    path="/workspaces/open/:workspaceId/:app"
                     element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
                   />
                   <Route
-                    path="/workspace/open/:workspaceId"
+                    path="/workspaces/open/:workspaceId"
                     element={
                       <ProtectedRoute>
                         <WorkspaceOpenPage />
@@ -171,6 +180,7 @@ export const App = (props: AppProps) => {
                       />
                     }
                   />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Box>
             </Router>

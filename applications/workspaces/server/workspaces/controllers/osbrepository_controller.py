@@ -1,6 +1,6 @@
 from cloudharness import log
 import workspaces.service.osbrepository as repository_service
-
+from workspaces.controllers.workspace_controller import setthumbnail
 
 def get_contexts(uri=None, repository_type=None, **kwargs):
     # get the branches of the repository

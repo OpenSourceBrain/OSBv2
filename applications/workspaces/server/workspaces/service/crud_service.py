@@ -1,6 +1,8 @@
+from functools import cache
 import json
 import os
 import shutil
+from typing import List
 
 from cloudharness.service.pvc import create_persistent_volume_claim, delete_persistent_volume_claim
 from cloudharness import log
@@ -33,6 +35,7 @@ from workspaces.service.user_quota_service import get_pvc_size, get_max_workspac
 from workspaces.utils import dao_entity2dict, guess_resource_type
 from ..database import db
 
+
 def rm_null_values(dikt):
     tmp = {}
     for k, v in dikt.items():  # remove null fields from dict
@@ -44,8 +47,10 @@ def rm_null_values(dikt):
 class NotAuthorized(Exception):
     pass
 
+
 class NotFoundException(Exception):
     pass
+
 
 class NotAllowed(Exception):
     pass
@@ -65,7 +70,7 @@ class UserService():
                 email=user.get("email", ""),
             )
         except Exception as e:
-            return User()
+            return User(id="0")
 
 
 class BaseModelService:
@@ -80,10 +85,11 @@ class BaseModelService:
 
     calculated_fields = set()
 
-    def _calculated_fields_populate(self, obj):
-        if self.calculated_fields:
-            for fld in self.calculated_fields:
-                setattr(obj, fld, getattr(self, fld)(obj))
+    @classmethod
+    def _calculated_fields_populate(cls, obj):
+        if cls.calculated_fields:
+            for fld in cls.calculated_fields:
+                setattr(obj, fld, getattr(cls, fld)(obj))
         return obj
 
     def search(self, page=1, per_page=20, *args, **kwargs) -> Pagination:
@@ -104,8 +110,6 @@ class BaseModelService:
         objects = self.repository.search(
             page=page, per_page=per_page, *args, **kwargs)
 
-        for obj in objects.items:
-            self._calculated_fields_populate(obj)
         objects.items = [self.to_dto(obj) for obj in objects.items]
         return objects
 
@@ -116,7 +120,7 @@ class BaseModelService:
 
     @classmethod
     def to_dto(cls, dao) -> Model:
-        return cls.dict_to_dto(dao_entity2dict(dao))
+        return cls._calculated_fields_populate(cls.dict_to_dto(dao_entity2dict(dao)))
 
     @classmethod
     def dict_to_dto(cls, d) -> Model:
@@ -128,19 +132,19 @@ class BaseModelService:
         """Save an object to the repository."""
 
         dao = self.to_dao(body)
-        return self.to_dto(self._calculated_fields_populate(self.repository.post(dao)))
+        return self.to_dto(self.repository.post(dao))
 
     def get(self, id_):
         """Get an object from the repository."""
         res = self.repository.get(id_)
         if not self.is_authorized(res):
             raise NotAuthorized()
-        return self.to_dto(self._calculated_fields_populate(res))
+        return self.to_dto(res)
 
     def put(self, body, id_):
         """Update an object in the repository."""
         dao = self.to_dao(body)
-        return self._calculated_fields_populate(self.repository.put(dao, id_))
+        return self.to_dto(self.repository.put(dao, id_))
 
     def delete(self, id_):
         """Delete an object from the repository."""
@@ -152,6 +156,11 @@ class BaseModelService:
     def is_authorized(self, object):
         raise NotImplementedError(
             f"Authorization not implemented for {self.__class__.__name__}")
+
+    @classmethod
+    @cache
+    def get_user_cached(cls, user_id):
+        return cls.user_service.get(user_id)
 
 
 class WorkspaceService(BaseModelService):
@@ -179,20 +188,27 @@ class WorkspaceService(BaseModelService):
                     "limit exceeded"
                 )
 
+    @staticmethod
+    def get_workspace_workflows(ws_id) -> List[argo.Workflow]:
+        try:
+            return [w for w in argo.get_workflows(status="Running", limit=9999).items
+                    if w.status == "Running" and w.raw.spec.templates[0].metadata.labels.get(
+                "workspace"
+            ).strip() == str(ws_id)]
+        except AttributeError:
+            return []
+
     @send_event(message_type="workspace", operation="create")
     def post(self, body):
         if 'user_id' not in body:
             body['user_id'] = keycloak_user_id()
         self.check_max_num_workspaces_per_user(body['user_id'])
 
-            
         workspace = super().post(body)
-
 
         create_volume(name=self.get_pvc_name(workspace.id),
                       size=self.get_workspace_volume_size(workspace))
-        
-        
+
         for workspace_resource in workspace.resources:
             WorkspaceresourceService.handle_resource_data(workspace_resource)
 
@@ -217,7 +233,7 @@ class WorkspaceService(BaseModelService):
             if workspace is None:
                 raise NotFoundException(
                     f"Cannot clone workspace with id {workspace_id}: not found.")
-            
+
             workspace.name = f"Clone of {workspace.name}"
             workspace.user_id = user_id
             workspace.publicable = False
@@ -225,13 +241,10 @@ class WorkspaceService(BaseModelService):
             workspace.timestamp_created = None
             workspace.resources = []
 
-
-            
-
             cloned = self.repository.post(workspace)
 
             create_volume(name=self.get_pvc_name(cloned.id),
-                        size=self.get_workspace_volume_size(workspace))
+                          size=self.get_workspace_volume_size(workspace))
             clone_workspaces_content(workspace_id, cloned.id)
         return cloned
 
@@ -272,33 +285,34 @@ class WorkspaceService(BaseModelService):
                 page=page, per_page=per_page, *args, **kwargs)
         with db.session.no_autoflush:
             paged_results.items = [self.to_dto(w) for w in paged_results.items]
-
-            for obj in paged_results.items:
-                self._calculated_fields_populate(obj)
         return paged_results
 
     @classmethod
     def to_dto(cls, workspace_entity: TWorkspaceEntity) -> Workspace:
 
-        workspace = cls.dict_to_dto(dao_entity2dict(workspace_entity))
-        for resource in workspace_entity.resources:
-            resource.origin = json.loads(resource.origin)
-        workspace.resources = [WorkspaceresourceService.to_dto(r) for r in workspace_entity.resources] if workspace_entity.resources else []
+        workspace = super().to_dto(workspace_entity)
+          
+
+        workspace.resources = [WorkspaceresourceService.to_dto(
+            r) for r in workspace_entity.resources] if workspace_entity.resources else []
         return workspace
 
     @classmethod
     def to_dao(cls, d: dict) -> TWorkspaceEntity:
-        
+
         resources = d.get("resources", [])
         d["resources"] = []
         workspace: TWorkspaceEntity = super().to_dao(d)
         workspace.tags = TagRepository().get_tags_daos(workspace.tags)
-        workspace.resources = [WorkspaceresourceService.to_dao(r) for r in resources]
+        workspace.resources = [
+            WorkspaceresourceService.to_dao(r) for r in resources]
         return workspace
 
     def get(self, id_):
 
         workspace: Workspace = super().get(id_)
+        if not self.is_authorized(workspace):
+            raise NotAuthorized()
 
         if any(wr.status == ResourceStatus.P for wr in workspace.resources):
             fake_path = f"Importing resources"
@@ -317,42 +331,38 @@ class WorkspaceService(BaseModelService):
             logger.debug(
                 "Post get, check workflows for workspace %s....", workspace.id)
             try:
-                workflows = argo.get_workflows(status="Running", limit=9999)
-                if workflows and workflows.items:
-                    for workflow in workflows.items:
-                        try:
-                            if workflow.status == "Running" and workflow.raw.spec.templates[0].metadata.labels.get(
-                                    "workspace"
-                            ).strip() == str(workspace.id):
-                                fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
-                                    "/", " of ")
-                                workspace.resources.append(
-                                    WorkspaceResource.from_dict(
-                                        {
-                                            "id": -1,
-                                            "name": "Refreshing resources",
-                                            "origin": {"path": fake_path},
-                                            "resource_type": ResourceType.U,
-                                            "workspace_id": workspace.id,
-                                        }
+                for workflow in self.get_workspace_workflows(workspace.id):
+                    try:
+                        fake_path = f"Importing resources, progress {workflow.raw.status.progress}".replace(
+                                        "/", " of ")
+                        workspace.resources.append(
+                            WorkspaceResource.from_dict(
+                                            {
+                                                "id": -1,
+                                                "name": "Refreshing resources",
+                                                "origin": {"path": fake_path},
+                                                "resource_type": ResourceType.U,
+                                                "workspace_id": workspace.id,
+                                            }
+                                        )
                                     )
-                                )
-                            break                                                                                                                                            
-                        except Exception as e:
+
+                    except Exception as e:
                             logger.exception("Error checking workflow for workspace %s: %s",
-                             workspace.id, workflow.name)
+                                             workspace.id, workflow.name)
                             from pprint import pprint
                             # pprint(workflow.raw)
                             # probably not a workspace import workflow job --> skip it
                             pass
             except Exception as e:
                 logger.exception("Error checking workflows for workspace %s: %s",
-                             workspace.id, e)
+                                 workspace.id, e)
 
         return workspace
 
-    def user(self, workspace):
-        return self.user_service.get(workspace.user_id)
+    @classmethod
+    def user(cls, workspace):
+        return cls.get_user_cached(workspace.user_id)
 
     def delete(self, id):
         resource_repository = WorkspaceResourceRepository()
@@ -413,11 +423,13 @@ class OsbrepositoryService(BaseModelService):
         # All osbrepositories are public
         return True
 
-    def content_types_list(self, osb_repository):
+    @classmethod
+    def content_types_list(cls, osb_repository):
         return osb_repository.content_types.split(",")
 
-    def user(self, osbrepo):
-        return self.user_service.get(osbrepo.user_id)
+    @classmethod
+    def user(cls, osbrepo):
+        return cls.get_user_cached(osbrepo.user_id)
 
 
 class VolumestorageService(BaseModelService):
@@ -439,7 +451,7 @@ class WorkspaceresourceService(BaseModelService):
         if "origin" in ws_dict:
             wro_dao_dict = dict(ws_dict.get("origin"))
             ws_dict.update({"origin": json.dumps(wro_dao_dict)})
-        if 'path' in ws_dict:
+        if 'folder' in ws_dict: # path is folder in the db for legacy reasons
             ws_dict['folder'] = ws_dict['path']
             del ws_dict['path']
         workspace_resource: TWorkspaceResourceEntity = super().to_dao(ws_dict)
@@ -452,14 +464,27 @@ class WorkspaceresourceService(BaseModelService):
         return workspace_resource
 
     @classmethod
+    def to_dto(cls, resource) -> Model:
+        resource.origin = json.loads(resource.origin)
+        if resource.folder:  # Legacy folder/path handling
+            
+            # Legacy folder/path handling
+            if resource.origin.get("folder", None) is not None:
+                resource.origin["path"] = resource.origin.get("folder")
+                del resource.origin["folder"]
+        dto = cls._calculated_fields_populate(cls.dict_to_dto(dao_entity2dict(resource)))
+        dto.path = resource.folder
+        return dto
+
+    @classmethod
     def dict_to_dto(cls, d) -> WorkspaceResource:
-        if 'origin' in d and isinstance(d['origin'], str):
-            d['origin'] = json.loads(d['origin'])
 
         workspace_resource: WorkspaceResource = super().dict_to_dto(d)
 
+
         # Legacy folder/path handling
         if workspace_resource.path is None:
+            
             logger.debug(
                 f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
             workspace_resource.path = workspace_resource.name
@@ -477,7 +502,7 @@ class WorkspaceresourceService(BaseModelService):
 
     @staticmethod
     def handle_resource_data(workspace_resource: WorkspaceResource) -> WorkspaceResource:
-         if workspace_resource.status == "p" and workspace_resource.origin:
+        if workspace_resource.status == "p" and workspace_resource.origin:
             from workspaces.helpers.etl_helpers import copy_workspace_resource
             copy_workspace_resource(workspace_resource)
 

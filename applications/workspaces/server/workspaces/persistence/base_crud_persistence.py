@@ -171,7 +171,7 @@ class BaseModelRepository:
             sqs = self._get_qs(filters, q, *args, **kwargs)
         else:
             sqs = self._get_qs(*args, **kwargs)
-        objects = sqs.paginate(page, per_page, True)
+        objects = sqs.paginate(page=page, per_page=per_page, count=True)
 
         return objects
     

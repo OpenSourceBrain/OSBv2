@@ -188,7 +188,7 @@ export default (props: WorkspaceEditProps) => {
       (e) => {
         setLoading(false);
         if (e.status === 405) {
-          setSubmitError("Workspaces quota exceeded. Try to delete some workspaces or see the documentation to know how to manage your quotas.");
+          setSubmitError("Workspaces quota exceeded. Try to delete some workspace before retry. To see and manage your quotas, go to your account page.");
         } else {
           setSubmitError("Unexpected error submitting the workspace. Please try again later.");
         }

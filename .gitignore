@@ -8,3 +8,7 @@ skaffold.yaml
 .pytest_cache
 /.overrides
 .hypothesis
+/libraries/client/__pycache__
+/libraries/client/github.auth
+skaffold-overrides.yaml
+/libraries/client/netpyne-web/
