@@ -465,7 +465,6 @@ class WorkspaceresourceService(BaseModelService):
 
     @classmethod
     def to_dto(cls, resource) -> Model:
-        # TODO: the JSON object must be str, not dict
         resource.origin = json.loads(resource.origin)
         if resource.folder:  # Legacy folder/path handling
             
@@ -516,14 +515,12 @@ class WorkspaceresourceService(BaseModelService):
         return True
 
     def get(self, id_):
-        # workspace_resource: WorkspaceResourceEntity = super().get(id_)
         workspace_resource = WorkspaceResourceRepository().get(id_)
         
         return workspace_resource
 
     def delete(self, id_):
         workspace_resource = self.get(id_)
-        # super().delete(id_)
         WorkspaceResourceRepository().delete(id_)
         from workspaces.helpers.etl_helpers import delete_workspace_resource
         delete_workspace_resource(workspace_resource)

@@ -24,6 +24,7 @@ class BaseModelRepository:
         if model:
             self.model = model
 
+
     def _get(self, id):
         """
         Query the model and get the record with the provided id
