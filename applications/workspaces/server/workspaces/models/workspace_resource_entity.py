@@ -52,9 +52,7 @@ class WorkspaceResourceEntity(Model):
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
             'resource_type': ResourceType,
-            # 'origin': str,
-            # 'origin': ResourceOrigin,
-            'origin': dict,
+            'origin': str,
             'workspace_id': int,
             'folder': str
         }

@@ -242,26 +242,10 @@ class BaseModelRepository:
 
     def delete(self, id):
         """Delete an object from the repository."""
-        # result = self.model.query.get(id)
         result = self.model.query.filter_by(id=id).first()
-        # the above says can't adapt type 'dict'
-        # result = self.model.query.filter_by(id=id).first()
     
         if not result:
             return f"{self.model.__name__} with id {id} not found.", 404
-
-        # Example          if "origin" in ws_dict:
-            # wro_dao_dict = dict(ws_dict.get("origin"))
-            # ws_dict.update({"origin": json.dumps(wro_dao_dict)})
-
-        # if result.origin is not None:
-        #     import json
-        #     result.origin = json.dumps(result.origin)
-
-        # if we have origin in result, then we need to convert it to json
-
-        # from psycopg2.extras import Json
-        # db.session.delete(Json(result))
 
         db.session.delete(result)
         db.session.commit()

@@ -280,15 +280,4 @@ class WorkspaceResourceRepository(BaseModelRepository):
     def delete(self, id):
         """Delete an object from the repository."""
         workspace_resource = self.get(id)
-        # super().delete(id)
-
-        if workspace_resource is None:
-            return f"WorkspaceResource with id {id} not found.", 404
-
-        import json
-        if workspace_resource.origin is not None:
-            wro_dao_dict = dict(workspace_resource.origin)
-            workspace_resource.origin = json.dumps(wro_dao_dict)
-        db.session.delete(workspace_resource)
-        db.session.commit()
-        return "Deleted", 200
+        super().delete(id)
