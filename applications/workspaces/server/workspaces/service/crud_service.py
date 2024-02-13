@@ -465,14 +465,15 @@ class WorkspaceresourceService(BaseModelService):
 
     @classmethod
     def to_dto(cls, resource) -> Model:
-        resource.origin = json.loads(resource.origin)
-        if resource.folder:  # Legacy folder/path handling
+        resource_dict = dao_entity2dict(resource)
+        resource_dict['origin'] = json.loads(resource.origin)
+        if resource_dict['folder']:  # Legacy folder/path handling
             
             # Legacy folder/path handling
-            if resource.origin.get("folder", None) is not None:
-                resource.origin["path"] = resource.origin.get("folder")
-                del resource.origin["folder"]
-        dto = cls._calculated_fields_populate(cls.dict_to_dto(dao_entity2dict(resource)))
+            if resource_dict['origin'].get("folder", None) is not None:
+                resource_dict['origin']["path"] = resource_dict['origin'].get("folder")
+                del resource_dict['origin']["folder"]
+        dto = cls._calculated_fields_populate(cls.dict_to_dto(resource_dict))
         dto.path = resource.folder
         return dto
 
@@ -515,13 +516,13 @@ class WorkspaceresourceService(BaseModelService):
         return True
 
     def get(self, id_):
-        workspace_resource = WorkspaceResourceRepository().get(id_)
+        workspace_resource = super().get(id_)
         
         return workspace_resource
 
     def delete(self, id_):
         workspace_resource = self.get(id_)
-        WorkspaceResourceRepository().delete(id_)
+        super().delete(id_)
         from workspaces.helpers.etl_helpers import delete_workspace_resource
         delete_workspace_resource(workspace_resource)
 
