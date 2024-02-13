@@ -516,7 +516,7 @@ class WorkspaceresourceService(BaseModelService):
         return True
 
     def get(self, id_):
-        workspace_resource = super().get(id_)
+        workspace_resource: WorkspaceResourceEntity = super().get(id_)
         
         return workspace_resource
 

@@ -249,8 +249,7 @@ class BaseModelRepository:
             return f"{self.model.__name__} with id {id} not found.", 404
 
         db.session.delete(result)
-        db.session.commit()
-        return f"{self.model.__name__} with id {id} has been deleted.", 200
+        return db.session.commit()
 
 
 
