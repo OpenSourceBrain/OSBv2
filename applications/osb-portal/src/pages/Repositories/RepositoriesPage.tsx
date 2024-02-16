@@ -157,6 +157,7 @@ export const RepositoriesPage = ({
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
     setTotal(0);
     setTabValue(newValue);
+    setPage(1)
   };
 
   const changeListView = (type: string) => {
