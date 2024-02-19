@@ -76,7 +76,7 @@ export const OSBDialog: React.FunctionComponent<UploadAreaProps> = ({
 	const dropThumbnail = (uploadedThumbnail: any) => {
 		// thumbnail = uploadedThumbnail;
 		setThumbnail(uploadedThumbnail);
-		previewFile(thumbnail);
+		previewFile(uploadedThumbnail);
 	};
 
 	const previewFile = (file: Blob) => {
