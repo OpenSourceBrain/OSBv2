@@ -643,7 +643,6 @@ export const EditRepoDialog = ({
           <ThumbnailUploadArea
             thumbnail={thumbnail}
             setThumbnail={setThumbnail}
-            // thumbnailPreview={thumbnailPreview}
             thumbnailError={thumbnailError}
             setThumbnailError={setThumbnailError}
             workspace={repository}
