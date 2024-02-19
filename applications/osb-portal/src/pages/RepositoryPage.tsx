@@ -47,6 +47,7 @@ import RepositoryService from "../service/RepositoryService";
 import { Workspace } from "../types/workspace";
 import WorkspaceService from "../service/WorkspaceService";
 import { canEditRepository } from "../service/UserService";
+import { Alert } from "@mui/material";
 
 const GoBackButton = styled(Button)(({ theme }) => ({
   padding: 0,
@@ -452,10 +453,18 @@ export const RepositoryPage = (props: any) => {
           }
         >
           {checked.length > 0 && (
-            <OSBChipList
-              chipItems={checked}
-              onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)}
-            />
+            <div>
+              <OSBChipList
+                chipItems={checked}
+                onDeleteChip={(chipPath: string) => handleChipDelete(chipPath)}
+              />
+              <Alert
+                severity="warning"
+                style={{ marginBottom: "1rem" }}
+              >
+                Please note that adding the same file will overwrite the previous version of the file in the workspace.
+              </Alert>
+            </div>
           )}
           <ExistingWorkspaceSelector
             setWorkspace={(ws: Workspace) => setWorkspace(ws)}
