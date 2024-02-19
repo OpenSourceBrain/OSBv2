@@ -465,14 +465,15 @@ class WorkspaceresourceService(BaseModelService):
 
     @classmethod
     def to_dto(cls, resource) -> Model:
-        resource.origin = json.loads(resource.origin)
-        if resource.folder:  # Legacy folder/path handling
+        resource_dict = dao_entity2dict(resource)
+        resource_dict['origin'] = json.loads(resource.origin)
+        if resource_dict['folder']:  # Legacy folder/path handling
             
             # Legacy folder/path handling
-            if resource.origin.get("folder", None) is not None:
-                resource.origin["path"] = resource.origin.get("folder")
-                del resource.origin["folder"]
-        dto = cls._calculated_fields_populate(cls.dict_to_dto(dao_entity2dict(resource)))
+            if resource_dict['origin'].get("folder", None) is not None:
+                resource_dict['origin']["path"] = resource_dict['origin'].get("folder")
+                del resource_dict['origin']["folder"]
+        dto = cls._calculated_fields_populate(cls.dict_to_dto(resource_dict))
         dto.path = resource.folder
         return dto
 
