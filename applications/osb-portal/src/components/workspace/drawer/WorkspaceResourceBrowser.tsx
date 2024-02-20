@@ -98,6 +98,7 @@ const OSBResourceItem = (props: {
   currentResourceId: number;
   Icon: JSX.Element;
   workspaceId: number;
+  currentResource: WorkspaceResource;
 }) => {
   const {
     resource,
@@ -105,6 +106,7 @@ const OSBResourceItem = (props: {
     refreshWorkspace,
     workspaceId,
     Icon,
+    currentResource
   } = props;
   const canOpenFile: boolean =
     resource.status === ResourceStatus.available;
@@ -132,10 +134,19 @@ const OSBResourceItem = (props: {
   const handleOpenResource =
   (e: any | Event) => {
     e.preventDefault();
-    navigate(
-      {pathname: `/workspace/open/${workspaceId}/${resource.type.application.code}`,
-      search: `?resource=${encodeURIComponent(resource.name)}`},
-    )
+    const isApplicationChanged = currentResource.type.application.code !== resource.type.application.code;
+    if(isApplicationChanged && window.confirm("Unsaved changes will be lost: are you sure you want to change application?")){
+      navigate(
+        {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+        search: `?resource=${encodeURIComponent(resource.name)}`},
+      )
+    }
+    if(!isApplicationChanged){
+      navigate(
+        {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+        search: `?resource=${encodeURIComponent(resource.name)}`},
+      )
+    }
   };
 
   return (
@@ -231,8 +242,9 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
     open?: boolean;
     resources: WorkspaceResource[];
     onToggle: () => void;
+    currentResource: WorkspaceResource;
   }) => {
-    const { label, Icon, open, resources, onToggle } = tprops;
+    const { label, Icon, open, resources, onToggle, currentResource } = tprops;
 
     return (
       <>
@@ -265,6 +277,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
                 currentResourceId={currentResourceId}
                 Icon={Icon}
                 workspaceId={workspace.id}
+                currentResource={currentResource}
               />
             ))}
         </Box>
@@ -283,6 +296,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               label={"Experiment Data"}
               Icon={<AreaChartIcon fontSize="small" />}
               onToggle={() => toggleResourceGroup('experimental')}
+              currentResource={currentResource}
             />
           )}
           {modelResources.length > 0 && (
@@ -292,6 +306,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               label={"Models"}
               Icon={<ViewInArIcon fontSize="small" />}
               onToggle={() => toggleResourceGroup('model')}
+              currentResource={currentResource}
             />
           )}
           {notebookResources.length > 0 && (
@@ -301,6 +316,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               label={"Notebooks"}
               Icon={<StickyNote2OutlinedIcon fontSize="small" />}
               onToggle={() => toggleResourceGroup('notebook')}
+              currentResource={currentResource}
             />
           )}
         </List>

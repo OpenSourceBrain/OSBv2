@@ -96,7 +96,15 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
-                    path="/workspace/:workspaceId"
+                    path="/workspaces"
+                    element={
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces/:workspaceId"
                     element={
                       <SidebarPageLayout>
                         <WorkspacePage />
@@ -104,11 +112,11 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
-                    path="/workspace/open/:workspaceId/:app"
+                    path="/workspaces/open/:workspaceId/:app"
                     element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
                   />
                   <Route
-                    path="/workspace/open/:workspaceId"
+                    path="/workspaces/open/:workspaceId"
                     element={
                       <ProtectedRoute>
                         <WorkspaceOpenPage />
