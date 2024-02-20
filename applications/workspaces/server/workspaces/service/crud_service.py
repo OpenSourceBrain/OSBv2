@@ -466,7 +466,8 @@ class WorkspaceresourceService(BaseModelService):
     @classmethod
     def to_dto(cls, resource) -> Model:
         resource_dict = dao_entity2dict(resource)
-        resource_dict['origin'] = json.loads(resource.origin)
+        if hasattr(resource, "origin") and resource.origin:
+            resource_dict['origin'] = json.loads(resource.origin)
         if resource_dict['folder']:  # Legacy folder/path handling
             
             # Legacy folder/path handling
