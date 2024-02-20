@@ -834,6 +834,9 @@ class TWorkspaceResourceEntity(typing.Protocol):
     timestamp_updated: typing.Optional[datetime.datetime]
     timestamp_last_opened: typing.Optional[datetime.datetime]
     resource_type: str
+    origin: typing.Optional[str]
+    workspace_id: typing.Optional[int]
+    folder: typing.Optional[str]
 
     def __init__(
         self,
@@ -844,6 +847,9 @@ class TWorkspaceResourceEntity(typing.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        origin: typing.Optional[str] = None,
+        workspace_id: typing.Optional[int] = None,
+        folder: typing.Optional[str] = None,
     ) -> None:
         """
         Construct.
@@ -874,6 +880,9 @@ class TWorkspaceResourceEntity(typing.Protocol):
         timestamp_created: typing.Optional[datetime.datetime] = None,
         timestamp_updated: typing.Optional[datetime.datetime] = None,
         timestamp_last_opened: typing.Optional[datetime.datetime] = None,
+        origin: typing.Optional[str] = None,
+        workspace_id: typing.Optional[int] = None,
+        folder: typing.Optional[str] = None,
     ) -> "TWorkspaceResourceEntity":
         """
         Construct from a dictionary (eg. a POST payload).
