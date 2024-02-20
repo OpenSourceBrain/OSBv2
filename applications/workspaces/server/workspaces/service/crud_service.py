@@ -468,7 +468,7 @@ class WorkspaceresourceService(BaseModelService):
         resource_dict = dao_entity2dict(resource)
         if hasattr(resource, "origin") and resource.origin:
             resource_dict['origin'] = json.loads(resource.origin)
-        if resource_dict['folder']:  # Legacy folder/path handling
+        if 'folder' in resource_dict and resource_dict['folder']:  # Legacy folder/path handling
             
             # Legacy folder/path handling
             if resource_dict['origin'].get("folder", None) is not None:
