@@ -462,7 +462,7 @@ export const RepositoryPage = (props: any) => {
                 severity="warning"
                 style={{ marginBottom: "1rem" }}
               >
-                Please note that adding the same file will overwrite the previous version of the file in the workspace.
+                Please note that adding a file when a file with the same name already exists will overwrite the previous version of the file in the workspace.
               </Alert>
             </div>
           )}
