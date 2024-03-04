@@ -1413,34 +1413,35 @@ components:
                     $ref: '#/components/schemas/WorkspaceResourceBase'
                 -
                     x-tablename: Workspaceresource
-            properties:
-                origin:
-                    description: Origin data JSON formatted of the WorkspaceResource
-                    type: string
-                workspace_id:
-                    description: workspace_id
-                    type: integer
-                    x-foreign-key: workspace.id
-                folder:
-                    description: WorkspaceResource path where the resource will stored in the pvc.
-                    type: string
-                    example: repo/sample.nwb
+                    properties:
+                        origin:
+                            description: Origin data JSON formatted of the WorkspaceResource
+                            type: string
+                        workspace_id:
+                            description: workspace_id
+                            type: integer
+                            x-foreign-key: workspace.id
+                        folder:
+                            description: WorkspaceResource path where the resource will stored in the pvc.
+                            type: string
+                            example: repo/sample.nwb
         WorkspaceResource:
             description: Workspace Resource item of a Workspace
             allOf:
                 -
                     $ref: '#/components/schemas/WorkspaceResourceBase'
-            properties:
-                workspace_id:
-                    description: workspace_id
-                    type: integer
-                origin:
-                    $ref: '#/components/schemas/ResourceOrigin'
-                    description: Origin Resource where the WorkspaceResource is build from
-                path:
-                    description: WorkspaceResource path where the resource will stored in the pvc.
-                    type: string
-                    example: repo/sample.nwb
+                -
+                    properties:
+                        workspace_id:
+                            description: workspace_id
+                            type: integer
+                        origin:
+                            $ref: '#/components/schemas/ResourceOrigin'
+                            description: Origin Resource where the WorkspaceResource is build from
+                        path:
+                            description: WorkspaceResource path where the resource will stored in the pvc.
+                            type: string
+                            example: repo/sample.nwb
         OSBRepositoryBase:
             description: OSB Repository Base model
             required:

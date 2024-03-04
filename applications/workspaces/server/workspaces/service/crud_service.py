@@ -466,15 +466,17 @@ class WorkspaceresourceService(BaseModelService):
     @classmethod
     def to_dto(cls, resource) -> Model:
         resource_dict = dao_entity2dict(resource)
-        resource_dict['origin'] = json.loads(resource.origin)
-        if resource_dict['folder']:  # Legacy folder/path handling
+        if hasattr(resource, "origin") and resource.origin:
+            resource_dict['origin'] = json.loads(resource.origin)
+        if 'folder' in resource_dict and resource_dict['folder']:  # Legacy folder/path handling
             
             # Legacy folder/path handling
             if resource_dict['origin'].get("folder", None) is not None:
                 resource_dict['origin']["path"] = resource_dict['origin'].get("folder")
                 del resource_dict['origin']["folder"]
         dto = cls._calculated_fields_populate(cls.dict_to_dto(resource_dict))
-        dto.path = resource.folder
+        if hasattr(resource, "folder"):
+            dto.path = resource.folder
         return dto
 
     @classmethod
@@ -490,7 +492,7 @@ class WorkspaceresourceService(BaseModelService):
                 f"Pre Commit for workspace resource id: {workspace_resource.id} setting folder from file name")
             workspace_resource.path = workspace_resource.name
 
-        if guess_resource_type(workspace_resource.path) is None:
+        if guess_resource_type(workspace_resource.path) is None and workspace_resource.origin is not None:
             workspace_resource.path = os.path.join(workspace_resource.path, os.path.basename(
                 workspace_resource.origin.path.split("?")[0]))
         return workspace_resource
