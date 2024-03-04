@@ -182,7 +182,8 @@ export const UserPage = (props: any) => {
   React.useEffect(() => {
     getUser(userName).then((u) => {
       setUser(u);
-
+    }).catch((e) => {
+      setError(e);
     });
   }, [userName, props.workspacesCounter]);
 
@@ -306,6 +307,10 @@ export const UserPage = (props: any) => {
     }
     return
   }
+
+  const openWorkspaceUrl = (workspaceId: number) => {
+    navigate(`/workspaces/${workspaceId}`);
+  };
 
   const canEdit =
     currentUser && (currentUser.id === user.id || currentUser.isAdmin);
@@ -723,7 +728,13 @@ export const UserPage = (props: any) => {
                         lg={4}
                         xl={3}
                       >
-                        <WorkspaceCard workspace={ws} user={currentUser} />
+                        <WorkspaceCard
+                          workspace={ws}
+                          user={currentUser}
+                          handleWorkspaceClick={(workspace: Workspace) =>
+                            openWorkspaceUrl(workspace.id)
+                          }
+                        />
                       </Grid>
                     );
                   })}
@@ -744,7 +755,13 @@ export const UserPage = (props: any) => {
                           lg={4}
                           xl={3}
                         >
-                          <WorkspaceCard workspace={ws} user={currentUser} />
+                          <WorkspaceCard
+                            workspace={ws}
+                            user={currentUser}
+                            handleWorkspaceClick={(workspace: Workspace) =>
+                              openWorkspaceUrl(workspace.id)
+                            }
+                          />
                         </Grid>
                       );
                     })}
@@ -777,7 +794,7 @@ export const UserPage = (props: any) => {
       {canEdit && profileEditDialogOpen && (
 
         <UserEditor
-          user={user}
+          user={{...currentUser, ...user}}
           saveUser={handleUpdateUser}
           close={() => setProfileEditDialogOpen(false)}
         />

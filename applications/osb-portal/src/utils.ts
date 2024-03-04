@@ -33,3 +33,25 @@ export function getNotebooksNamedServerLink() {
   }
   return `//${OSBAllApplications.jupyter.subdomain}.${getBaseDomain()}/hub/home`
 }
+
+export function getCleanPath(path: string) {
+  const pathParts = path.split("/")
+  if (pathParts[pathParts.length - 1] === "") {
+    pathParts.pop()
+  }
+  return pathParts
+}
+
+export async function readFile(file: Blob) {
+  return new Promise((resolve, reject) => {
+    const fileReader: FileReader = new FileReader();
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = reject;
+
+    fileReader.readAsArrayBuffer(file);
+  });
+}

@@ -7,6 +7,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+interface OSBErrorBoundaryProps {
+  error?: any;
+}
+
 interface OwnState {
   eventId: string;
   hasError: string;
@@ -23,9 +27,12 @@ const ERROR_MESSAGES: any = {
   // 404
   "NOT FOUND":
     "Oops. This resource could not be found. Please check the URL you are trying to access and try again.",
+  // User 404
+  "USER_NOT_FOUND":
+    "Oops. This user could not be found. Please check the URL you are trying to access and try again.",
 };
 
-class OSBErrorBoundary extends React.Component<{}, OwnState> {
+class OSBErrorBoundary extends React.Component<OSBErrorBoundaryProps, OwnState> {
   public state: OwnState = {
     eventId: null,
     hasError: null,
@@ -46,13 +53,22 @@ class OSBErrorBoundary extends React.Component<{}, OwnState> {
 
       let message =
         "Oops. Something went wrong. Please report this error to us.";
-      if (error.status && error.status < 500) {
+      if (window.location.pathname.startsWith("/user/")) {
+        message = ERROR_MESSAGES["USER_NOT_FOUND"];
+      } else if (error.status && error.status < 500) {
         message = ERROR_MESSAGES[error.statusText] || error.statusText;
       } else {
         Sentry.captureException(error);
       }
       this.setState({ ...this.state, message });
     });
+  }
+
+  static getDerivedStateFromProps(nextProps: any, prevState: any) {
+    if (nextProps.error) {
+      return { ...prevState, hasError: 'true', message: nextProps.error };
+    }
+    return { ...prevState };
   }
 
   render() {

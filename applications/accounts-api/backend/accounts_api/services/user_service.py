@@ -4,12 +4,10 @@ from cloudharness.applications import get_configuration
 from cloudharness.auth.quota import get_user_quotas
 from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
-from cloudharness.auth import AuthClient
+from cloudharness.auth import AuthClient, UserNotFound
 from cloudharness import log
 import typing
 # from cloudharness.models import User as CHUser # Cloudharness 2.0.0
-
-class UserNotFound(Exception): pass
 
 
 class UserNotAuthorized(Exception): pass
@@ -20,7 +18,8 @@ def get_user(username_or_id: str) -> User:
     try:
 
         kc_user = client.get_user(username_or_id)
-
+    except UserNotFound:
+        raise
     except KeycloakGetError as e:
         if e.response_code == 404:
             raise UserNotFound(username_or_id)

@@ -26,6 +26,12 @@ steps:
       revision: '${{CLOUDHARNESS_BRANCH}}'
       working_directory: .
       git: github
+    - title: Cloning nwb-explorer.git repository...
+      type: git-clone
+      repo: https://github.com/MetaCell/nwb-explorer.git
+      revision: development
+      working_directory: applications/nwb-explorer/dependencies/
+      git: github
   prepare_deployment:
     title: Prepare helm chart
     image: python:3.9.10
@@ -679,7 +685,6 @@ steps:
     - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/accounts
     - kubectl rollout status deployment/volumemanager
-    - kubectl rollout status deployment/proxy-public-gk
     - kubectl rollout status deployment/argo-server-gk
     - kubectl rollout status deployment/common
     - kubectl rollout status deployment/events-ui-gk
@@ -703,6 +708,16 @@ steps:
     commands:
     - echo $APP_NAME
     scale:
+      volumemanager_api_test:
+        title: volumemanager api test
+        volumes:
+        - '${{CF_REPO_NAME}}/cloud-harness/applications/volumemanager:/home/test'
+        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        environment:
+        - APP_URL=https://volumemanager.${{DOMAIN}}/api
+        commands:
+        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
+          https://volumemanager.${{DOMAIN}}/api -c all
       common_api_test:
         title: common api test
         volumes:
@@ -741,7 +756,7 @@ steps:
         volumes:
         - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
         environment:
-        - APP_URL=https://app.${{DOMAIN}}
+        - APP_URL=https://www.${{DOMAIN}}
     when:
       condition:
         all:

@@ -16,6 +16,8 @@ import { styled } from "@mui/styles";
 import { chipBg } from "../../theme";
 import IconButton from "@mui/material/IconButton";
 import RepositoryService from "../../service/RepositoryService";
+import PrimaryDialog from "../dialogs/PrimaryDialog";
+
 
 interface RepositoryActionsMenuProps {
   repository: OSBRepository;
@@ -37,6 +39,7 @@ const ThreeDotButton = styled(Button)(({ theme }) => ({
 export default (props: RepositoryActionsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
+  const [showDeleteRepositoryDialog, setShowDeleteRepositoryDialog] = React.useState(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
   const navigate = useNavigate();
@@ -70,6 +73,7 @@ export default (props: RepositoryActionsMenuProps) => {
     RepositoryService.deleteRepository(props.repository.id).then(() => {
       props.onAction(null);
       handleCloseMenu();
+      navigate('/repositories')
     });
   };
 
@@ -96,7 +100,10 @@ export default (props: RepositoryActionsMenuProps) => {
         {canEdit && (
         <MenuItem
               className="open-repository"
-              onClick={handleDeleteRepository}
+            onClick={() => {
+              setShowDeleteRepositoryDialog(true);
+              setAnchorEl(null);
+            }}
             >
               Delete
             </MenuItem>
@@ -113,6 +120,20 @@ export default (props: RepositoryActionsMenuProps) => {
           repository={props.repository}
         />
       )}
+
+      {
+        showDeleteRepositoryDialog && (
+          <PrimaryDialog
+            open={showDeleteRepositoryDialog}
+            setOpen={setShowDeleteRepositoryDialog}
+            handleCallback={handleDeleteRepository}
+            actionButtonText={'DELETE'}
+            cancelButtonText={'CANCEL'}
+            title={'Delete Repository "' + props.repository.name + '"'}
+            description={'You are about to delete Repository "' + props.repository.name + '". This action cannot be undone. Are you sure?'}
+          />
+        )
+      }
     </>
   );
 };

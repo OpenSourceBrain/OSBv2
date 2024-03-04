@@ -80,7 +80,7 @@ export const WorkspacePage = (props: any) => {
   };
 
   const openWithApp = (selectedOption: OSBApplication) => {
-    navigate(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+    navigate(`/workspaces/open/${workspaceId}/${selectedOption.code}`);
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
@@ -230,7 +230,7 @@ export const WorkspacePage = (props: any) => {
                   item
                   xs={12}
                   sm={3}
-                  lg={2}
+                  lg={2.5}
                   sx={{
                     borderRight: `1px solid ${bgLightest}`,
                   }}
@@ -248,10 +248,10 @@ export const WorkspacePage = (props: any) => {
                 </Grid>
                 <Grid
                   item
-                  justifyContent={workspace?.thumbnail ? "center" : "start"}
+                  justifyContent="start"
                   xs={12}
                   sm={6}
-                  lg={8}
+                  lg={6.5}
                   id="workspace-detail-content"
                   className="verticalFit"
                 >
@@ -274,7 +274,7 @@ export const WorkspacePage = (props: any) => {
                         },
                       }}
                     >
-                      <Box className="imageContainer" display="flex">
+                      <Box className="imageContainer" display="flex" justifyContent="center">
                         {workspace?.thumbnail && (
                           <img
                             width={"100%"}
@@ -286,6 +286,12 @@ export const WorkspacePage = (props: any) => {
                             }
                             title={workspace.name}
                             alt={workspace.name}
+                            style={{
+                              width: 'auto',
+                              height: 'auto',
+                              maxWidth: '100%',
+                              maxHeight: '300px'
+                            }}
                           />
                         )}
                       </Box>
@@ -298,7 +304,7 @@ export const WorkspacePage = (props: any) => {
                     </Stack>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={3} lg={2}>
+                <Grid item xs={12} sm={3} lg={2.5}>
                   <WorkspaceDetailsInfo workspace={workspace} />
                 </Grid>
               </Grid>

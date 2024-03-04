@@ -1,8 +1,9 @@
-FROM jupyter/base-notebook:hub-1.4.2
+FROM jupyter/base-notebook:hub-1.5.0
 
-COPY hub/jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 USER root
+RUN apt-get update && apt-get install git -y
 RUN mkdir /opt/workspace
 RUN chown -R jovyan:users /opt/workspace
+
 COPY --chown=jovyan:users overrides/* /opt/conda/share/jupyter/lab/static/
 USER jovyan

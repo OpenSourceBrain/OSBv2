@@ -109,6 +109,7 @@ export const RepositoryPage = (props: any) => {
   const [workspaceLink, setWorkspaceLink] = React.useState(null);
   const [error, setError] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [resetChecked, setResetChecked] = React.useState<boolean>(false);
 
   const canEdit = canEditRepository(props.user, props.repository);
   const [createdWorkspaceConfirmationContent, setCreatedWorkspaceConfirmationContent] = React.useState({
@@ -127,6 +128,7 @@ export const RepositoryPage = (props: any) => {
     if (showWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
+      setResetChecked(true);
     }
   };
 
@@ -135,6 +137,7 @@ export const RepositoryPage = (props: any) => {
     if (showExistingWorkspaceEditor) {
       setChecked([]);
       setRefresh(!refresh);
+      setResetChecked(true);
     }
   };
 
@@ -187,7 +190,7 @@ export const RepositoryPage = (props: any) => {
     )
       .then(() => {
         setShowWorkspaceEditor(false);
-        setWorkspaceLink(`/workspace/${ws.id}`);
+        setWorkspaceLink(`/workspaces/${ws.id}`);
         confirmAction("Success", "New workspace created!", true);
       })
       .catch((e) => {
@@ -216,7 +219,7 @@ export const RepositoryPage = (props: any) => {
       .then(() => {
         setSelectedWorkspace(null);
         confirmAction("Success", "Resources added to workspace!", true);
-        setWorkspaceLink(`/workspace/${selectedWorkspace.id}`);
+        setWorkspaceLink(`/workspaces/${selectedWorkspace.id}`);
         setLoading(false);
         setShowExisitngWorkspaceEditor(false);
       })
@@ -401,6 +404,8 @@ export const RepositoryPage = (props: any) => {
               r && setRepository({ ...repository, ...r })
             }
             user={user}
+            resetChecked={resetChecked}
+            setResetChecked={setResetChecked}
           />
         </>
       )}

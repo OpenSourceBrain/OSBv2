@@ -38,6 +38,7 @@ import {
   bgInputs,
 } from "../../../theme";
 import { ResourceType } from "../../../apiclient/workspaces";
+import { Typography } from "@mui/material";
 
 
 
@@ -45,6 +46,8 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
   padding: 0,
   "& .MuiSvgIcon-root": {
     color: paragraph,
+    width: '1rem', 
+    height: '1rem'
   },
   "&:hover": {
     background: "none",
@@ -57,9 +60,7 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
     color: lightWhite,
   },
   "& .MuiListItemButton-root": {
-    paddingLeft: "2.571rem",
-    paddingTop: 0,
-    paddingBottom: 0,
+    padding: '0.25rem 1rem 0.25rem 2.25rem',
     "&:hover": {
       background: workspaceItemBg,
     },
@@ -85,6 +86,9 @@ const ResourceItem = styled(ListItem)(({ theme }) => ({
   "& .active .MuiTypography-root": {
     color: orangeText,
   },
+  "& .MuiListItemText-root": {
+    margin: 0,
+  }
 }));
 
 const OSBResourceItem = (props: {
@@ -94,6 +98,7 @@ const OSBResourceItem = (props: {
   currentResourceId: number;
   Icon: JSX.Element;
   workspaceId: number;
+  currentResource: WorkspaceResource;
 }) => {
   const {
     resource,
@@ -101,6 +106,7 @@ const OSBResourceItem = (props: {
     refreshWorkspace,
     workspaceId,
     Icon,
+    currentResource
   } = props;
   const canOpenFile: boolean =
     resource.status === ResourceStatus.available;
@@ -126,11 +132,21 @@ const OSBResourceItem = (props: {
   };
 
   const handleOpenResource =
-  (e: any) => {
-    navigate(
-      {pathname: `/workspace/open/${workspaceId}/${resource.type.application.code}`,
-      search: `?resource=${encodeURIComponent(resource.name)}`},
-    )
+  (e: any | Event) => {
+    e.preventDefault();
+    const isApplicationChanged = currentResource.type.application.code !== resource.type.application.code;
+    if(isApplicationChanged && window.confirm("Unsaved changes will be lost: are you sure you want to change application?")){
+      navigate(
+        {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+        search: `?resource=${encodeURIComponent(resource.name)}`},
+      )
+    }
+    if(!isApplicationChanged){
+      navigate(
+        {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+        search: `?resource=${encodeURIComponent(resource.name)}`},
+      )
+    }
   };
 
   return (
@@ -145,7 +161,10 @@ const OSBResourceItem = (props: {
             visibility: "hidden",
           }}
         >
-          {!active && <DeleteOutlinedIcon fontSize="small" onClick={handleDeleteResource} />}
+          {!active && <Tooltip title="Delete resource" placement="right">
+            <DeleteOutlinedIcon fontSize="small" onClick={handleDeleteResource} />
+            </Tooltip>
+            }
         </SidebarIconButton>
       }
     >
@@ -184,6 +203,11 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const { workspace, refreshWorkspace, currentResource } = props;
 
   const currentResourceId = currentResource?.id ?? -1;
+  const [resourceOpenState, setResourceOpenState] = React.useState({
+    experimental: currentResource && currentResource.resourceType === ResourceType.E,
+    model: currentResource && currentResource.resourceType === ResourceType.M,
+    notebook: currentResource && currentResource.resourceType === ResourceType.G,
+  });
 
   if (!workspace.resources || workspace.resources.length === 0) {
     return null;
@@ -193,7 +217,12 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
     (resource) => resource.id !== undefined && resource.id !== -1
   );
 
-
+  const toggleResourceGroup = (resourceType: string) => {
+    setResourceOpenState((prev) => ({
+      ...prev,
+      [resourceType]: !prev[resourceType],
+    }));
+  };
 
   const experimentalResources = resources.filter(
     (resource) => resource.resourceType === ResourceType.E
@@ -210,15 +239,16 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   const ResourceTreeGroup = (tprops: {
     label: string;
     Icon: JSX.Element;
-    defaultOpen?: boolean;
+    open?: boolean;
     resources: WorkspaceResource[];
+    onToggle: () => void;
+    currentResource: WorkspaceResource;
   }) => {
-    const { label, Icon, defaultOpen, resources } = tprops;
-    const [open, setOpen] = React.useState(defaultOpen);
+    const { label, Icon, open, resources, onToggle, currentResource } = tprops;
 
     return (
       <>
-        <ListItemButton onClick={() => setOpen(!open)}>
+        <ListItemButton sx={{ pt: '4px', pb: '4px' }} onClick={onToggle}>
           <SidebarIconButton>
             {open ? (
               <ExpandLess fontSize="small" />
@@ -234,8 +264,9 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
               pl: "0.286rem",
             }}
           />
+          <Typography>{resources.length}</Typography>
         </ListItemButton>
-        <Box className="scrollbar">
+        <Box className="scrollbar" sx={{ paddingRight: '0 !important' }}>
           {open &&
             resources.map((resource) => (
               <OSBResourceItem
@@ -246,6 +277,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
                 currentResourceId={currentResourceId}
                 Icon={Icon}
                 workspaceId={workspace.id}
+                currentResource={currentResource}
               />
             ))}
         </Box>
@@ -256,29 +288,35 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   return (
     <Box className="verticalFill">
       <Box width="100%" className="verticalFill">
-        <List className="verticalFill">
+        <List className="verticalFill" sx={{ pt: 0, pb: 0 }}>
           {experimentalResources.length > 0 && (
             <ResourceTreeGroup
               resources={experimentalResources}
-              defaultOpen={currentResource && currentResource.resourceType === ResourceType.E}
+              open={resourceOpenState.experimental}
               label={"Experiment Data"}
               Icon={<AreaChartIcon fontSize="small" />}
+              onToggle={() => toggleResourceGroup('experimental')}
+              currentResource={currentResource}
             />
           )}
           {modelResources.length > 0 && (
             <ResourceTreeGroup
               resources={modelResources}
-              defaultOpen={currentResource && currentResource.resourceType === ResourceType.M}
+              open={resourceOpenState.model}
               label={"Models"}
               Icon={<ViewInArIcon fontSize="small" />}
+              onToggle={() => toggleResourceGroup('model')}
+              currentResource={currentResource}
             />
           )}
           {notebookResources.length > 0 && (
             <ResourceTreeGroup
               resources={notebookResources}
-              defaultOpen={currentResource && currentResource.resourceType === ResourceType.G}
+              open={resourceOpenState.notebook}
               label={"Notebooks"}
               Icon={<StickyNote2OutlinedIcon fontSize="small" />}
+              onToggle={() => toggleResourceGroup('notebook')}
+              currentResource={currentResource}
             />
           )}
         </List>

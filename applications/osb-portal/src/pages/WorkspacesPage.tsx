@@ -81,16 +81,13 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
       searchFilterValues.text === "");
 
   const openWorkspaceUrl = (workspaceId: number) => {
-    navigate(`/workspace/${workspaceId}`);
+    navigate(`/workspaces/${workspaceId}`);
   };
 
   const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
     setSearchFilterValues({
       ...searchFilterValues,
       text: newTextFilter,
-      tags: newTextFilter
-        ? [...searchFilterValues?.tags, newTextFilter]
-        : searchFilterValues?.tags,
     });
   }, 500);
 

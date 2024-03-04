@@ -1,0 +1,25 @@
+name: Docker Image Build Jupyterlab
+
+on:
+  push:
+    branches: [ master, dev*, feature/docker* ]
+  pull_request:
+    branches: [ master, dev*, feature/docker* ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build the Docker image
+      run: |
+        cd applications/jupyterlab
+        docker build -t myjlab -f Dockerfile --no-cache .
+
+    - name: Info on Docker image sizes
+      run: |
+        docker images

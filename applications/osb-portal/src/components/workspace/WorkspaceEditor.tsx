@@ -4,8 +4,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -13,21 +11,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import Dropzone from "react-dropzone";
 import Chip from "@mui/material/Chip";
 import Alert from '@mui/material/Alert';
 import Autocomplete from "@mui/material/Autocomplete";
 import MDEditor from "react-markdown-editor-lite";
 import MarkdownViewer from "../common/MarkdownViewer";
 import OSBDialog from "../common/OSBDialog";
-
-//icons
-import IconButton from "@mui/material/IconButton";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ThumbnailUploadArea from "../common/ThumbnailUploadArea";
 
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
-import { alpha } from "@mui/material/styles";
 
 //style
 import styled from "@mui/system/styled";
@@ -42,35 +35,9 @@ import { Tag } from "../../apiclient/workspaces";
 import WorkspaceService from "../../service/WorkspaceService";
 import StyledLabel from "../styled/FormLabel";
 
-
-export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
-  color: bgInputs,
-  border: `2px dashed ${bgInputs}`,
-  borderRadius: 5,
-  padding: 4,
-  "& .MuiTypography-subtitle2": {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-  },
-  "& .MuiButton-outlined": {
-    margin: "0 auto",
-    display: "flex",
-    justifyContent: "center",
-    color: bgInputs,
-    borderRadius: radius,
-    border: `2px solid ${bgInputs}`,
-  },
-}));
+import { readFile } from "../../utils";
 
 
-export const StyledImagePreviewSection = styled("section")(() => ({
-  display: "flex",
-  minHeight: "15em",
-  alignItems: "stretch",
-  backgroundPosition: "center",
-  backgroundSize: "cover",
-  flex: 1,
-}));
 
 const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
   "& .MuiChip-root": {
@@ -99,32 +66,9 @@ interface WorkspaceEditProps {
   user: UserInfo;
 }
 
-export const dropAreaStyle = (error: any) => ({
-  flex: 1,
-  display: "flex",
-  alignItems: "center",
 
-  borderRadius: radius,
-  padding: gutter,
-  borderColor: error ? "red" : alpha(bgInputs, 1),
-});
 
-async function readFile(file: Blob) {
-  return new Promise((resolve, reject) => {
-    const fileReader: FileReader = new FileReader();
-
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-
-    fileReader.onerror = reject;
-
-    fileReader.readAsArrayBuffer(file);
-  });
-}
-
-const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
-let thumbnail: Blob;
+// let thumbnail: Blob;
 
 export default (props: WorkspaceEditProps) => {
   const { workspace, user } = props;
@@ -132,16 +76,15 @@ export default (props: WorkspaceEditProps) => {
     ...props.workspace,
   });
 
+  // let's have a thumbnail state here, so we can pass it to the thumbnail upload area
+  const [thumbnail, setThumbnail] = React.useState<Blob | null>(null);
   const closeWorkSpaceEditor = () => {
     if (props.closeHandler) {
       props.closeHandler();
     }
   };
-
-  const [thumbnailPreview, setThumbnailPreview] = React.useState<any>(
-    workspace?.thumbnail ? "/proxy/workspaces/" + workspace.thumbnail : null
-  );
   const [thumbnailError, setThumbnailError] = React.useState<any>(null);
+
   const [showNoFilesSelectedDialog, setShowNoFilesSelectedDialog] =
     React.useState(false);
   const workspaceTags =
@@ -179,6 +122,7 @@ export default (props: WorkspaceEditProps) => {
             () => props.onLoadWorkspace(true, returnedWorkspace),
             (e) => console.error("Error uploading thumbnail", e)
           );
+          setThumbnail(null);
         } else {
           setLoading(true);
           props.onLoadWorkspace(true, returnedWorkspace);
@@ -187,7 +131,7 @@ export default (props: WorkspaceEditProps) => {
       (e) => {
         setLoading(false);
         if (e.status === 405) {
-          setSubmitError("Workspaces quota exceeded. Try to delete some workspaces or see the documentation to know how to manage your quotas.");
+          setSubmitError("Workspaces quota exceeded. Try to delete some workspace before retry. To see and manage your quotas, go to your account page.");
         } else {
           setSubmitError("Unexpected error submitting the workspace. Please try again later.");
         }
@@ -197,41 +141,12 @@ export default (props: WorkspaceEditProps) => {
     );
   };
 
-  const previewFile = (file: Blob) => {
-    if (!file) {
-      setThumbnailError(null);
-      setThumbnailPreview(null);
-      return;
-    }
 
-    if (!file.type.includes("image")) {
-      setThumbnailError("Not an image file");
-      return;
-    }
-    if (file.size > MAX_ALLOWED_THUMBNAIL_SIZE) {
-      setThumbnailError("File exceeds allowed size (1MB)");
-      return;
-    }
-
-    setThumbnailError(null);
-
-    const fileReader: FileReader = new FileReader();
-
-    fileReader.onload = () => {
-      setThumbnailPreview(fileReader.result);
-    };
-
-    fileReader.readAsDataURL(file);
-  };
 
   const setNameField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, name: e.target.value });
   const setDescriptionField = (e: any) =>
     setWorkspaceForm({ ...workspaceForm, description: e.text });
-  const setThumbnail = (uploadedThumbnail: any) => {
-    thumbnail = uploadedThumbnail;
-    previewFile(thumbnail);
-  };
   const setWorkspaceTags = (tagsArray: string[]) => {
     const arrayOfTags: Tag[] = [];
     tagsArray.forEach((tag) => {
@@ -360,87 +275,14 @@ export default (props: WorkspaceEditProps) => {
             <StyledLabel>
               Workspace thumbnail
             </StyledLabel>
-            <StyledDropZoneBox alignItems="stretch">
-              <Dropzone
-                onDrop={(acceptedFiles: any) => {
-                  setThumbnail(acceptedFiles[0]);
-                }}
-              >
-                {({
-                  getRootProps,
-                  getInputProps,
-                  acceptedFiles,
-                }: {
-                  getRootProps: (p: any) => any;
-                  getInputProps: () => any;
-                  acceptedFiles: any[];
-                }) => (
-                  <StyledImagePreviewSection
-                    style={{
-                      backgroundImage:
-                        !thumbnailError && `url(${thumbnailPreview})`,
-                    }}
-                  >
-                    <div
-                      {...getRootProps({
-                        style: dropAreaStyle(thumbnailError),
-                      })}
-                    >
-                      <input {...getInputProps()} />
-                      <Grid
-                        container={true}
-                        justifyContent="center"
-                        alignItems="center"
-                        direction="row"
-                      >
-                        {thumbnail && (
-                          <Grid item={true}>
-                            {!thumbnail ? (
-                              ""
-                            ) : (
-                              <IconButton
-                                onClick={(e: any) => {
-                                  e.preventDefault();
-                                  setThumbnail(null);
-                                }}
-                                size="large"
-                              >
-                                <DeleteForeverIcon />
-                              </IconButton>
-                            )}
-                          </Grid>
-                        )}
-                        <Grid item={true}>
-                          <Box component="div" m={1}>
-                            {!thumbnail ? (
-                              <>
-                                <span>Drop file here to upload...</span>
-                                <Button
-                                  variant="outlined"
-                                  sx={{ margin: "auto !important" }}
-                                >
-                                  Browse files
-                                </Button>
-                              </>
-                            ) : null}
-
-                            {thumbnailError && (
-                              <Typography
-                                color="error"
-                                variant="subtitle2"
-                                component="p"
-                              >
-                                {thumbnailError}
-                              </Typography>
-                            )}
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </div>
-                  </StyledImagePreviewSection>
-                )}
-              </Dropzone>
-            </StyledDropZoneBox>
+            <ThumbnailUploadArea
+              setThumbnail={setThumbnail}
+              thumbnail={thumbnail}
+              // thumbnailPreview={thumbnailPreview}
+              thumbnailError={thumbnailError}
+              setThumbnailError={setThumbnailError}
+              workspace={workspace}
+            />
           </Box>
         </Box>
       </OSBDialog>

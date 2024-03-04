@@ -59,7 +59,7 @@ const testApplication =
     }
 
     await page.waitForSelector(selectors.OPENED_WORKSPACE);
-    expect(page.url()).toContain("/workspace/");
+    expect(page.url()).toContain("/workspaces/");
 
     await page.waitForSelector(selectors.SELECT_APPLICATION);
     await page.click(selectors.SELECT_APPLICATION);
@@ -177,8 +177,8 @@ describe("OSB v2 Smoke Tests", () => {
       ],
       headless: !process.env.PUPPETEER_DISPLAY,
       defaultViewport: {
-        width: 1600,
-        height: 1000,
+        width: 1300,
+        height: 768,
       },
     });
 

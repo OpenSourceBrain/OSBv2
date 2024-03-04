@@ -1,7 +1,9 @@
 import json
+from typing import List
 
 from cloudharness import log as logger
 from workspaces.models.osb_repository import OSBRepository
+from workspaces.models.resource_origin import ResourceOrigin
 
 
 
@@ -55,8 +57,8 @@ def get_tags(osbrepository, context=None):
 #     repository_adapter.copy_resource(workspace_resource, origin)
 
 
-def create_copy_task(workspace_id, osbrepository_id, name, path):
+def create_copy_task(workspace_id, osbrepository_id, origins: List[ResourceOrigin]):
     from workspaces.persistence.crud_persistence import OSBRepositoryRepository
     osbrepository = OSBRepositoryRepository().get(id=osbrepository_id)
     repository_adapter = get_repository_adapter(osbrepository=osbrepository)
-    return repository_adapter.create_copy_task(workspace_id=workspace_id, name=name, path=path)
+    return repository_adapter.create_copy_task(workspace_id=workspace_id, origins=origins)

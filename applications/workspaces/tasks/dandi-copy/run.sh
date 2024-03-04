@@ -15,4 +15,4 @@ echo Dandi copy "${url}" to "${download_path}"
 dandi download --existing refresh ${url}
 
 # fix permissions
-chown -R 1000:1000 "${download_path}"
+chown -R 1000:100 "${download_path}"

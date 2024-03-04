@@ -18,7 +18,7 @@ type RepositoriesListAndPaginationDetails = InlineResponse2001;
 
 const workspacesApiUri = "/proxy/workspaces/api";
 
-const PER_PAGE_DEFAULT = 18;
+const PER_PAGE_DEFAULT = 24;
 
 class RepositoryService {
   workspacesApi: RestApi = null;
@@ -108,7 +108,7 @@ class RepositoryService {
     return this.workspacesApi.osbrepositoryGet({
       page,
       perPage: size,
-      q: `user_id=${userId}`,
+      userId: userId
     });
   }
 
@@ -149,6 +149,17 @@ class RepositoryService {
       oSBRepository: repository,
     };
     return this.workspacesApi.osbrepositoryIdPut(requestParameters);
+  }
+
+  async updateRepostioryThumbnail(
+    repositoryId: number,
+    thumbNailBlob: Blob
+  ): Promise<any> {
+    const repoRequest: workspaceApi.WorkspacesControllersOsbrepositoryControllerSetthumbnailRequest =
+      { id: repositoryId, thumbNail: thumbNailBlob };
+    await this.workspacesApi.workspacesControllersOsbrepositoryControllerSetthumbnail(
+      repoRequest
+    );
   }
 
   async getAllTags(
