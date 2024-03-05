@@ -794,7 +794,7 @@ export const UserPage = (props: any) => {
       {canEdit && profileEditDialogOpen && (
 
         <UserEditor
-          user={{...currentUser, ...user}}
+          user={{...user, ...currentUser }}
           saveUser={handleUpdateUser}
           close={() => setProfileEditDialogOpen(false)}
         />

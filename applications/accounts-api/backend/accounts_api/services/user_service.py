@@ -95,6 +95,7 @@ def update_user(userid, user: User):
         updated_user = {
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
+            'email': user.email or current_user['email'],
             'attributes': {
                 **(current_user.get('attributes') or {}),
                 **({('profile--' + k): user.profiles[k] for k in user.profiles} if user.profiles else {}),
