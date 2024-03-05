@@ -134,7 +134,7 @@ const OSBResourceItem = (props: {
   const handleOpenResource =
   (e: any | Event) => {
     e.preventDefault();
-    const isApplicationChanged = currentResource.type.application.code !== resource.type.application.code;
+    const isApplicationChanged = currentResource && currentResource.type.application.code !== resource.type.application.code;
     if(isApplicationChanged && window.confirm("Unsaved changes will be lost: are you sure you want to change application?")){
       navigate(
         {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
@@ -197,6 +197,7 @@ interface WorkspaceProps {
   refreshWorkspace: () => void;
   currentResource: WorkspaceResource;
   user: UserInfo;
+  staticPage: Boolean;
 }
 
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
@@ -277,7 +278,8 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
                 currentResourceId={currentResourceId}
                 Icon={Icon}
                 workspaceId={workspace.id}
-                currentResource={currentResource}
+                currentResource={props.staticPage ? null: currentResource}
+
               />
             ))}
         </Box>

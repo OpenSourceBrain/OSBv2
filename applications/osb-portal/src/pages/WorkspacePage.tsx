@@ -240,6 +240,7 @@ export const WorkspacePage = (props: any) => {
                     user={user}
                     open={true}
                     hideTabs={true}
+                    staticPage={true}
                     refreshWorkspace={props.refreshWorkspace}
                     currentResource={
                       workspace.lastOpen || workspace.resources[0]
