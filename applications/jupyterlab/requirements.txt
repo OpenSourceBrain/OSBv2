@@ -11,7 +11,7 @@ git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
 ####  Other simulators
 
 # Arbor
-arbor==0.6.0
+arbor==0.9.0
 
 # EDEN
 eden-simulator==0.2.1
@@ -42,10 +42,10 @@ seaborn
 
 # Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
 -f https://download.pytorch.org/whl/torch_stable.html
-torch==1.11.0+cpu
+torch==2.1.2+cpu
 
 # For MDF
-modeci_mdf==0.4.5 # big jump in size of image...
+modeci_mdf==0.4.8 # big jump in size of image...
 
 scikit-learn # Required for some Neuromatch Academy material
 fasttext # Required for some Neuromatch Academy material
