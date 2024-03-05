@@ -57,8 +57,18 @@ tvb-data
 ipympl
 
 
+####  SBML/COMBINE packages
+python-libsbml
+tellurium
+
+
 ####  General Python packages
 plotly
+
+
+#### Install OMV
+git+https://github.com/OpenSourceBrain/osb-model-validation.git@v0.2.15
+
 
 ####  Final updates
 numpy  # Removes some issues with LFPy...
