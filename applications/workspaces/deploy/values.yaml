@@ -25,7 +25,7 @@ harness:
     resources:
       requests:
         memory: 128Mi
-        cpu: 200m
+        cpu: 20m
       limits:
         memory: 512Mi
         cpu: 1500m
@@ -64,10 +64,10 @@ harness:
     resources:
       requests:
         memory: 128Mi
-        cpu: 200m
+        cpu: 20m
       limits:          
         memory: "256Mi"
-        cpu: "500m"
+        cpu: "2000m"
   test:
     unit:
       enabled: true
@@ -75,3 +75,8 @@ harness:
       
       - pytest /usr/src/app/
 workspace_size: 2Gi
+scheduling:
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: require
+  
