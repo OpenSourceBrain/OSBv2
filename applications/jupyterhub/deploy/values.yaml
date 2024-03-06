@@ -69,3 +69,8 @@ prePuller:
   continuous:
     enabled: false
   pullProfileListImages: false
+scheduling:
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: require
+  

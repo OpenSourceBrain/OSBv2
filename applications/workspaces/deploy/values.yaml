@@ -75,8 +75,3 @@ harness:
       
       - pytest /usr/src/app/
 workspace_size: 2Gi
-scheduling:
-  userPods:
-    nodeAffinity:
-      matchNodePurpose: require
-  
