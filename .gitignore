@@ -1,6 +1,6 @@
 cloud-harness
 .idea
-**/helm
+deployment/helm
 /build
 .vscode
 skaffold.yaml
