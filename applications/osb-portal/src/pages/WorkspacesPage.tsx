@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import debounce from "lodash/debounce";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 //components
 import Box from "@mui/material/Box";
@@ -46,12 +46,13 @@ interface WorkspacesPageProps {
 
 export const WorkspacesPage = (props: WorkspacesPageProps) => {
   const navigate = useNavigate();
+  const [searchParams, ] = useSearchParams();
 
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
-      text: undefined,
-      tags: [],
-      types: [],
+      text: searchParams.get("q"),
+      tags: searchParams.getAll("tags"),
+      types: searchParams.getAll("types"),
     });
 
   const [workspaces, setWorkspaces] = React.useState<Workspace[]>(null);

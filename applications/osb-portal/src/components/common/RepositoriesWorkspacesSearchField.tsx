@@ -40,6 +40,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 interface RepositoriesSearchProps {
   filterChanged: (newFilter: string) => void;
   borderRadius?: number;
+  value?: string;
 }
 
 export default (props: RepositoriesSearchProps) => {
@@ -48,6 +49,7 @@ export default (props: RepositoriesSearchProps) => {
       variant="standard"
       id="standard-start-adornment"
       fullWidth={true}
+      value={props?.value}
       sx={{
         borderRadius: props?.borderRadius
           ? `${props?.borderRadius}px`

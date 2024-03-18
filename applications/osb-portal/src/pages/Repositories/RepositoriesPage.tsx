@@ -27,7 +27,7 @@ import { OSBRepository, Tag } from "../../apiclient/workspaces";
 import searchFilter from "../../types/searchFilter";
 
 //hooks
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 //api
 import RepositoryService from "../../service/RepositoryService";
@@ -89,12 +89,13 @@ export const RepositoriesPage = ({
   user: UserInfo;
   counter: number;
 }) => {
+  const [searchParams, ] = useSearchParams();
   const navigate = useNavigate();
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
-      text: undefined,
-      tags: [],
-      types: [],
+      text: searchParams.get("q"),
+      tags: searchParams.getAll("tags"),
+      types: searchParams.getAll("types"),
     });
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
@@ -194,7 +195,7 @@ export const RepositoriesPage = ({
   return (
     <>
       <Box width={1} className="verticalFit">
-        <div id="repositories-list" className="verticalFit">
+        <Box id="repositories-list" className="verticalFit">
           <Box borderBottom={`1px solid ${lineColor}`} >
             <Box
               display="flex"
@@ -323,7 +324,7 @@ export const RepositoriesPage = ({
               refreshRepositories={handleRefreshRepositories}
             />
           )}
-        </div>
+        </Box>
         {repositories && totalPages > 1 && (
           <OSBPagination
             count={totalPages}
