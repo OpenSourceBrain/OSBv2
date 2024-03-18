@@ -46,7 +46,7 @@ singleuser:
   storage:
     type: dynamic
     capacity: 2Mi
-
+    startTimeout: 3000
     dynamic:
       pvcNameTemplate: osb-user-{userid}
       volumeNameTemplate: osb-user-{userid}
