@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:hub-1.5.0
+FROM quay.io/jupyterhub/k8s-hub:3.2.1
 USER root
 
 

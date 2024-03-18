@@ -1,0 +1,10 @@
+jupyter_geppetto>=1.1.0
+jupyter-client
+jupyter-server
+Pillow>=7.0.0
+pynwb>=2.3.0
+imageio>=2.5.0
+quantities>=0.12.3
+nwbwidgets>=0.10.0
+notebook<7
+pyecore==0.14.0

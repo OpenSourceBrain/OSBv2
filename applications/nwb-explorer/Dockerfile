@@ -14,7 +14,7 @@ RUN yarn build
 
 
 ###
-FROM jupyter/base-notebook:hub-1.5.0
+FROM quay.io/jupyterhub/k8s-hub:3.2.1
 ENV NB_UID=jovyan
 ENV FOLDER=nwb-explorer
 USER root
@@ -33,10 +33,11 @@ RUN chown $NB_UID .
 
 USER $NB_UID
 
-COPY dependencies/nwb-explorer/requirements.txt requirements.txt
-RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+COPY requirements.txt requirements.txt
+ENV PATH="/home/jovyan/.local/bin:${PATH}"
+RUN --mount=type=cache,target=/root/.cache pip install --upgrade pip &&\ 
     pip install -r requirements.txt
-RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+RUN --mount=type=cache,target=/root/.cache pip install --upgrade pip &&\ 
     pip install cython --no-cache-dir
 COPY dependencies/nwb-explorer/ .
 

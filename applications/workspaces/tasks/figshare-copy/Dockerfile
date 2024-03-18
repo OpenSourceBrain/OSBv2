@@ -3,7 +3,7 @@ FROM $CLOUDHARNESS_BASE
 
 # much faster than curl/wget
 # https://pkgs.alpinelinux.org/packages?name=aria2&branch=edge
-RUN apk add aria2 curl
+RUN apt-get update && apt get install -y aria2 curl 
 
 
 ADD . /
