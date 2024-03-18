@@ -1,4 +1,4 @@
-FROM gcr.io/metacellllc/netpyne-ui:npa103201
+FROM gcr.io/metacellllc/netpyne-ui:1.1.0
 
 COPY overrides/requirements.txt overrides/requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
