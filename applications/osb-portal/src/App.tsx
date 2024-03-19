@@ -44,9 +44,7 @@ const styles = {
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    height: {
-      md: "100vh",
-    },
+    height: "100vh",
     overflow: {
       xs: "auto",
       md: "hidden",
