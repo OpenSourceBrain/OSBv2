@@ -111,9 +111,10 @@ export const RepositoriesPage = ({
     navigate(`/repositories/${repositoryId}`);
   };
 
-  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+  const debouncedHandleSearchFilter = (newTextFilter: string) => {
     setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
-  }, 500);
+    debounce(() => updateReposList(newTextFilter), 500)();
+  };
 
   const setReposValues = (reposDetails) => {
     setRepositories(reposDetails.osbrepositories);
@@ -122,15 +123,15 @@ export const RepositoriesPage = ({
     setLoading(false);
   };
 
-  const updateReposList = () => {
+  const updateReposList = (updatedSearchFilterValues) => {
     const isSearchFieldsEmpty =
-    searchFilterValues.tags.length === 0 &&
-    searchFilterValues.types.length === 0 &&
-    (typeof searchFilterValues.text === "undefined" ||
-      searchFilterValues.text === "");
+      updatedSearchFilterValues.tags.length === 0 &&
+      updatedSearchFilterValues.types.length === 0 &&
+      (typeof updatedSearchFilterValues.text === "undefined" ||
+        updatedSearchFilterValues.text === "");
     setLoading(true);
     if (!isSearchFieldsEmpty) {
-      const myReposFilter = tabValue ? {...searchFilterValues, user_id: user.id} : searchFilterValues
+      const myReposFilter = tabValue ? { ...updatedSearchFilterValues, user_id: user.id } : updatedSearchFilterValues
 
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -152,7 +153,7 @@ export const RepositoriesPage = ({
   };
 
   const handleRefreshRepositories = () => {
-    updateReposList();
+    updateReposList(searchFilterValues);
   }
 
   const handleTabChange = (event: any, newValue: RepositoriesTab) => {
@@ -190,7 +191,7 @@ export const RepositoriesPage = ({
       );
     }
   };
-  React.useEffect(updateReposList, [page, searchFilterValues, tabValue, counter]);
+  React.useEffect(() => updateReposList(searchFilterValues), [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
