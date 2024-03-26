@@ -44,8 +44,9 @@ if [ ! -d "${download_path}/.git" ]; then
   # create new branch, commit there
   echo "Git: checking out new branch and committing"
   git checkout -b "$timestamp"
-  git commit -m "osbv2: checked out repository"
-
+  echo "checked out branch $timestamp"
+  git diff-index --quiet HEAD || git commit -ma "osbv2: checked out repository"
+ 
   # unset username: ensure that user has to set it manually if they
   # do anything with git in the repo
   echo "Git: unsetting user/email for repo"
