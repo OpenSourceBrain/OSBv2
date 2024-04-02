@@ -18,6 +18,8 @@ def get_repository_adapter(osbrepository: OSBRepository=None, repository_type=No
         return DandiAdapter(*args, osbrepository=osbrepository, uri=uri, **kwargs)
     elif repository_type == "figshare":
         return FigShareAdapter(*args, osbrepository=osbrepository, uri=uri, **kwargs)
+    elif repository_type == "biomodels":
+        return BioModelsAdapter(*args, osbrepository=osbrepository, uri=uri, **kwargs)
     return None
 
 
