@@ -122,6 +122,26 @@ export const App = (props: AppProps) => {
                     }
                   />
                   <Route
+                    path="/workspace/:workspaceId"
+                    element={
+                      <SidebarPageLayout>
+                        <WorkspacePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspace/open/:workspaceId/:app"
+                    element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
+                  />
+                  <Route
+                    path="/workspace/open/:workspaceId"
+                    element={
+                      <ProtectedRoute>
+                        <WorkspaceOpenPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/repositories"
                     element={
                       <SidebarPageLayout>
