@@ -44,8 +44,8 @@ if [ ! -d "${download_path}/.git" ]; then
   # create new branch, commit there
   echo "Git: checking out new branch and committing"
   git checkout -b "$timestamp"
-  git commit -m "osbv2: checked out repository"
-
+  echo "checked out branch $timestamp"
+ 
   # unset username: ensure that user has to set it manually if they
   # do anything with git in the repo
   echo "Git: unsetting user/email for repo"
@@ -64,7 +64,7 @@ else
 
   # save state, but do not error if there's nothing to save
   echo "Git: saving current state"
-  git commit -a -m "osbv2: saving state at $timestamp" || true
+  git diff-index --quiet HEAD || git commit -a -m "osbv2: saving state at $timestamp" || true
 
   # do not assume user has left the default remote name as "origin"
   echo "Git: adding and fetching from temporary remote"
@@ -84,7 +84,7 @@ else
   fi
   # save new state but do not error if nothing changed
   echo "Git: saving new state"
-  git commit -a -m "osbv2: updated state at $timestamp" || true
+  git diff-index --quiet HEAD || git commit -a -m "osbv2: updated state at $timestamp" || true
 
   echo "Git: removing temporary remote"
   # remove temporary remote

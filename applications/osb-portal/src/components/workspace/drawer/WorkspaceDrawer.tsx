@@ -158,6 +158,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         alignItems="stretch"
         flex="1"
         className="verticalFill"
+        height={1}
       >
         <Drawer
           variant="permanent"

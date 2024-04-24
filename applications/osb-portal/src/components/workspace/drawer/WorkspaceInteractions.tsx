@@ -113,6 +113,7 @@ interface WorkspaceProps {
   refreshWorkspacePage?: () => void;
   currentResource: WorkspaceResource;
   hideTabs: Boolean;
+  staticPage: Boolean;
 }
 
 const SidebarBox = styled(Box)(({ theme }) => ({
@@ -292,6 +293,7 @@ export default (props: WorkspaceProps | any) => {
               currentResource={props.currentResource}
               refreshWorkspace={handleWorkspaceRefresh}
               user={props.user}
+              staticPage={props.staticPage}
             />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>

@@ -289,7 +289,6 @@ export default (props: UserEditProps) => {
             <FormLabel>Email address</FormLabel>
             <TextField
               error={error.email}
-              disabled={props.user.email !== undefined}
               helperText={error.email}
               sx={styles.textFieldWithIcon}
               fullWidth={true}

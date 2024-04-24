@@ -46,7 +46,7 @@ singleuser:
   storage:
     type: dynamic
     capacity: 2Mi
-
+    startTimeout: 3000
     dynamic:
       pvcNameTemplate: osb-user-{userid}
       volumeNameTemplate: osb-user-{userid}
@@ -69,3 +69,8 @@ prePuller:
   continuous:
     enabled: false
   pullProfileListImages: false
+scheduling:
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: require
+  

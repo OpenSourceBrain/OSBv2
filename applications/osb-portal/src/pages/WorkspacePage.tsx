@@ -97,16 +97,13 @@ export const WorkspacePage = (props: any) => {
             <Grid
               container={true}
               alignItems="center"
+              justifyContent="space-between"
               className="verticalFill"
               spacing={1}
               sx={{ background: bgDarkest }}
             >
               <Grid
                 item={true}
-                xs={12}
-                sm={12}
-                md={7}
-                lg={7}
                 className="verticalFill"
               >
                 <NavbarButton
@@ -121,10 +118,6 @@ export const WorkspacePage = (props: any) => {
               <Grid
                 item={true}
                 gap={1}
-                xs={12}
-                sm={8}
-                md={5}
-                lg={5}
                 justifyContent="end"
                 padding={"0 16px"}
               >
@@ -240,6 +233,7 @@ export const WorkspacePage = (props: any) => {
                     user={user}
                     open={true}
                     hideTabs={true}
+                    staticPage={true}
                     refreshWorkspace={props.refreshWorkspace}
                     currentResource={
                       workspace.lastOpen || workspace.resources[0]
