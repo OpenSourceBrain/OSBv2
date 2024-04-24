@@ -56,11 +56,11 @@ singleuser:
     homeMountPath: /opt/user
     extraLabels: {}
   cpu:
-    limit: 1
-    guarantee: 0.2
+    limit: 0.1
+    guarantee: 0
   memory:
-    limit: 1G
-    guarantee: 0.5G
+    limit: 0.5G
+    guarantee: 0.1G
 prePuller:
 
   # hook relates to the hook-image-awaiter Job and hook-image-puller DaemonSet
