@@ -22,7 +22,7 @@ singleuser:
   storage:
     capacity: 2Gi
   cpu:
-    limit: 0.1
+    limit: 1
     guarantee: 0
   memory:
     limit: 0.5G
