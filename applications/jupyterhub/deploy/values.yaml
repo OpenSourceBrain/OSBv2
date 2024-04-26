@@ -56,8 +56,8 @@ singleuser:
     homeMountPath: /opt/user
     extraLabels: {}
   cpu:
-    limit: 0.1
-    guarantee: 0
+    limit: 1
+    guarantee: 0.02
   memory:
     limit: 0.5G
     guarantee: 0.1G
