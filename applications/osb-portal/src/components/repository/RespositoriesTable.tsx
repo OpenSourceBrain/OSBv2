@@ -147,16 +147,19 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                         </Box>
                       </TableCell>
                       {!compact && <TableCell style={{ minWidth: 150 }}>
-                        <Button
-                          sx={{
-                            "&:hover": { backgroundColor: "transparent" },
-                            textTransform: "capitalize",
-                            color: chipTextColor,
-                          }}
-                          onClick={() => navigate(`/user/${row?.user?.id}`)}
-                        >
-                          {row.user.username}
-                        </Button>
+                        {
+                          row?.user &&
+                          <Button
+                            sx={{
+                              "&:hover": { backgroundColor: "transparent" },
+                              textTransform: "capitalize",
+                              color: chipTextColor,
+                            }}
+                              onClick={() => navigate(`/user/${row?.user?.username}`)}
+                            >
+                              {row?.user?.username}
+                            </Button>
+                        }
                       </TableCell>}
                       <TableCell style={{ minWidth: 100 }}>
                         <Button
@@ -214,8 +217,8 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                               size="small"
                               clickable={true}
                               onDelete={
-                                handleTagUnclick && searchFilterValues?.tags?.includes(
-                                  tagObject.tag
+                                handleTagUnclick && searchFilterValues?.tags?.map((t) => t.toLowerCase()).includes(
+                                  tagObject.tag.toLowerCase()
                                 )
                                   ? () => handleTagUnclick(tagObject)
                                   : null

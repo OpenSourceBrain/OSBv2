@@ -284,32 +284,34 @@ export default (props: UserEditProps) => {
             }}
           />
         </Box>
-        <Box mb={1} mt={1}>
-          <FormLabel>Email address</FormLabel>
-          <TextField
-            error={error.email}
-            helperText={error.email}
-            sx={styles.textFieldWithIcon}
-            fullWidth={true}
-            onChange={setProfileEmailAddress}
-            variant="outlined"
-            defaultValue={userForm.email}
-            InputProps={{
-              startAdornment: (
-                <Box sx={styles.inputIconBox}>
-                  <EmailIcon fontSize="small" />
-                </Box>
-              ),
-            }}
-          />
-          <Typography
-            component="span"
-            variant="body1"
-            style={{ fontWeight: "normal" }}
-          >
-            Your email address is private. Other users can't see it.
-          </Typography>
-        </Box>
+        {
+          props.user.email && <Box mb={1} mt={1}>
+            <FormLabel>Email address</FormLabel>
+            <TextField
+              error={error.email}
+              helperText={error.email}
+              sx={styles.textFieldWithIcon}
+              fullWidth={true}
+              onChange={setProfileEmailAddress}
+              variant="outlined"
+              defaultValue={userForm.email}
+              InputProps={{
+                startAdornment: (
+                  <Box sx={styles.inputIconBox}>
+                    <EmailIcon fontSize="small" />
+                  </Box>
+                ),
+              }}
+            />
+            <Typography
+              component="span"
+              variant="body1"
+              style={{ fontWeight: "normal" }}
+            >
+              Your email address is private. Other users can't see it.
+            </Typography>
+          </Box>
+        }
         <Box mb={1} mt={1}>
           <FormLabel>Links</FormLabel>
           <Tooltip title="Website link">

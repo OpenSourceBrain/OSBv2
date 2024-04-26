@@ -32,6 +32,7 @@ import {
 import Box from "@mui/material/Box";
 import { UserInfo } from "./types/user";
 import SampleIframePage from "./pages/SampleIframePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -43,9 +44,7 @@ const styles = {
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    height: {
-      md: "100vh",
-    },
+    height: "100vh",
     overflow: {
       xs: "auto",
       md: "hidden",
@@ -75,7 +74,7 @@ export const App = (props: AppProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <OSBErrorBoundary>
+        <OSBErrorBoundary error={props.error} >
           <CssBaseline />
           <AboutDialog />
           {!props.error && (
@@ -92,6 +91,34 @@ export const App = (props: AppProps) => {
                       <SidebarPageLayout>
                         <HomePage />
                       </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces"
+                    element={
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces/:workspaceId"
+                    element={
+                      <SidebarPageLayout>
+                        <WorkspacePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces/open/:workspaceId/:app"
+                    element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
+                  />
+                  <Route
+                    path="/workspaces/open/:workspaceId"
+                    element={
+                      <ProtectedRoute>
+                        <WorkspaceOpenPage />
+                      </ProtectedRoute>
                     }
                   />
                   <Route
@@ -171,6 +198,7 @@ export const App = (props: AppProps) => {
                       />
                     }
                   />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Box>
             </Router>

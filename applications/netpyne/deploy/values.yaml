@@ -19,3 +19,10 @@ harness:
   dependencies:
     hard:
     - jupyterhub
+singleuser:
+  cpu:
+    limit: 1
+    guarantee: 0.02
+  memory:
+    limit: 1G
+    guarantee: 0.5G

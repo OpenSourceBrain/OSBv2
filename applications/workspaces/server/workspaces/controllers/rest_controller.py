@@ -442,6 +442,21 @@ def workspaceresource_post(workspace_resource):  # noqa: E501
     return 'do some magic!'
 
 
+def workspaces_controllers_osbrepository_controller_setthumbnail(id, thumb_nail=None):  # noqa: E501
+    """Sets the thumbnail of the workspace.
+
+     # noqa: E501
+
+    :param id: Repository ID 
+    :type id: int
+    :param thumb_nail: 
+    :type thumb_nail: str
+
+    :rtype: Union[None, Tuple[None, int], Tuple[None, int, Dict[str, str]]
+    """
+    return 'do some magic!'
+
+
 def workspaces_controllers_workspace_controller_addimage(id, image=None):  # noqa: E501
     """Adds and image to the workspace.
 

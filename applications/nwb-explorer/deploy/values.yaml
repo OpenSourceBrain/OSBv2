@@ -4,6 +4,10 @@ harness:
     auto: false
     port: 80
     name: proxy-public
+  dependencies:
+    git:
+      - url: https://github.com/MetaCell/nwb-explorer.git
+        branch_tag: development
   jupyterhub:
     args: ["--debug", "--NotebookApp.default_url=/geppetto", "--library=nwb_explorer", "--NotebookApp.notebook_dir=/opt/workspace"]
     applicationHook: "osb_jupyter.change_pod_manifest"

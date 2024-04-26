@@ -98,8 +98,10 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
         return q_base
 
     def filter_by_tags(self, tags, q_base):
-        q_base = q_base.join(self.model.tags).filter(
-            func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
+        q_base = q_base.join(self.model.tags)
+        q_base = q_base.intersect(
+            *[q_base.filter(func.lower(Tag.tag) == func.lower(i_tag)) for i_tag in tags.split("+")])
+
         return q_base
 
     def filter_by_search_tags(self, filter, q_base, q_base_by_name_description):
@@ -162,8 +164,10 @@ class OSBRepositoryRepository(BaseModelRepository, OwnerModel):
         return q_base
 
     def filter_by_tags(self, tags, q_base):
-        q_base = q_base.join(self.model.tags).filter(
-            func.lower(Tag.tag).in_(func.lower(t) for t in tags.split("+")))
+        q_base = q_base.join(self.model.tags)
+        q_base = q_base.intersect(
+            *[q_base.filter(func.lower(Tag.tag) == func.lower(i_tag)) for i_tag in tags.split("+")])
+
         return q_base
 
     def filter_by_search_tags(self, filter, q_base, q_base_by_q):
@@ -225,7 +229,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 # not found --> create a new wsr
                 filename = os.path.basename(resource)
                 wsr = WorkspaceResourceEntity(
-                    name=filename,
+                    name=filename if not "index" in filename else os.path.basename(os.path.dirname(resource)),
                     folder=resource,
                     origin='{"path": "' + resource + '"}',
                     status=ResourceStatus.P,  # default status
