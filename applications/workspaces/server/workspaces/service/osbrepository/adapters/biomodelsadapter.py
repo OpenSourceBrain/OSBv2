@@ -6,7 +6,7 @@ import requests
 from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, RepositoryInfo
 from workspaces.models.resource_origin import ResourceOrigin
-from workspaces.models.biomodels_repository_resource import BioModelsRepositoryResource
+from workspaces.models.biomodels_repository_resource import BiomodelsRepositoryResource
 
 from .utils import add_to_tree
 
@@ -66,7 +66,7 @@ class BioModelsAdapter:
         path = self.get_context_base_path(context)
 
         tree = RepositoryResourceNode(
-            resource=BioModelsRepositoryResource(
+            resource=BiomodelsRepositoryResource(
                 name="/",
                 path=path,
                 osbrepository_id=self.osbrepository.id,
