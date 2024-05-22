@@ -59,16 +59,16 @@ class BiomodelsAdapter:
         return RepositoryInfo(name=info["name"], contexts=self.get_contexts(), tags=info["format"]["name"], summary=info.get("description", ""))
 
     def get_contexts(self):
-        result = self.get_json(self.uri)
+        result = self.get_json(f"{self.api_url}/{self.model_id}")
         revisions = result["history"]["revisions"]
         return [str(v["version"]) for v in revisions]
 
     def get_resources(self, context):
-        logger.debug(f"Getting resources; {context}")
-        contents = self.get_json(f"{self.api_url}/model/files/{self.model_id}.{context}")
-        files = (contents["additional"] + contents["main"])
+        logger.debug(f"Getting resources: {context}")
+        path = f"{self.api_url}/model/files/{self.model_id}.{context}"
+        contents = self.get_json(path)
+        files = (contents.get("additional", []) + contents.get("main", []))
 
-        path = self.get_context_base_path(context)
 
         tree = RepositoryResourceNode(
             resource=BiomodelsRepositoryResource(
@@ -93,13 +93,20 @@ class BiomodelsAdapter:
         return tree
 
     def get_description(self, context):
-        result = self.get_json(self.uri.strip() + f".{context}")
-        return result["description"]
+        logger.debug(f"Getting description: {context}")
+        try:
+            result = self.get_json(f"{self.api_url}/{self.model_id}.{context}")
+            return result["description"]
+        except Exception as e:
+            logger.debug(
+                "unable to get the description from biomodels, %", str(e))
+            return ""
 
     def get_tags(self, context):
         # using the format name for the moment, since they don't do explict
         # tags/keywords
-        result = self.get_json(self.uri.strip() + f".{context}")
+        logger.debug(f"Getting tags: {context}")
+        result = self.get_json(f"{self.api_url}/{self.model_id}.{context}")
         return result["format"]["name"]
 
     def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
