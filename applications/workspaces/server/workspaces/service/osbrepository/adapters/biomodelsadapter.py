@@ -25,15 +25,15 @@ class BiomodelsAdapter:
     def __init__(self, osbrepository, uri=None):
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.uri
-        self.api_url = "https://www.ebi.ac.uk/biomodels/"
+        self.api_url = "https://www.ebi.ac.uk/biomodels"
 
         try:
             self.model_id = re.search(
-                f"{self.api_url}/(.*?)$",
+                f"{self.api_url}/(\\w+)",
                 self.uri.strip("/")).group(1)
 
         except AttributeError:
-            raise BiomodelsException(f"{uri} is not a valid Figshare URL")
+            raise BiomodelsException(f"{uri} is not a valid Biomodels URL")
 
     def get_json(self, uri):
         logger.debug(f"Getting: {uri}")
@@ -52,6 +52,11 @@ class BiomodelsAdapter:
 
     def get_base_uri(self):
         return self.uri
+
+    def get_info(self) -> RepositoryInfo:
+        info = self.get_json(
+            f"{self.api_url}/{self.model_id}")
+        return RepositoryInfo(name=info["name"], contexts=self.get_contexts(), tags=info["format"]["name"], summary=info.get("description", ""))
 
     def get_contexts(self):
         result = self.get_json(self.uri)
