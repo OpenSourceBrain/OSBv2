@@ -257,6 +257,13 @@ export const RepositoryPage = (props: any) => {
       case "figshare":
         window.open(`${repository.uri}`, "_blank");
         break;
+      // Biomodels: repo.version
+      case "biomodels":
+        window.open(
+          `${repository.uri + "." + repository.defaultContext}`,
+          "_blank"
+        );
+        break;
       default:
         window.open(`#`, "_blank");
     }

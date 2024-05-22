@@ -65,15 +65,14 @@ class BiomodelsAdapter:
 
     def get_resources(self, context):
         logger.debug(f"Getting resources: {context}")
-        path = f"{self.api_url}/model/files/{self.model_id}.{context}"
-        contents = self.get_json(path)
+        contents = self.get_json(f"{self.api_url}/model/files/{self.model_id}.{context}")
         files = (contents.get("additional", []) + contents.get("main", []))
 
 
         tree = RepositoryResourceNode(
             resource=BiomodelsRepositoryResource(
                 name="/",
-                path=path,
+                path="/",
                 osbrepository_id=self.osbrepository.id,
                 ref=context,
             ),
@@ -81,12 +80,12 @@ class BiomodelsAdapter:
         )
 
         for afile in files:
-            download_url = f"{self.api_url}/model/download/{afile['name']}"
+            download_url = f"{self.api_url}/model/download/{self.model_id}.{context}?filename={afile['name']}"
             add_to_tree(
                 tree=tree,
                 tree_path=[afile["name"]],
                 path=download_url,
-                size=afile["fileSize"],
+                size=int(afile["fileSize"]),
                 osbrepository_id=self.osbrepository.id,
             )
 

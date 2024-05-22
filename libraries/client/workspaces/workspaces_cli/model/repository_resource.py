@@ -339,5 +339,6 @@ class RepositoryResource(ModelComposed):
               DandiRepositoryResource,
               FigshareRepositoryResource,
               GITRepositoryResource,
+              BiomodelsRepositoryResource,
           ],
         }
