@@ -1,6 +1,10 @@
-FROM python:3.9
+ARG CLOUDHARNESS_BASE
+FROM $CLOUDHARNESS_BASE
 
-RUN pip install --no-cache-dir #TODO
+# much faster than curl/wget
+# https://pkgs.alpinelinux.org/packages?name=aria2&branch=edge
+RUN apk add aria2 unzip
+
 
 ADD . /
 

@@ -17,7 +17,7 @@ class BiomodelsRepositoryResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, path=None, osbrepository_id=None, size=None, timestamp_modified=None):  # noqa: E501
+    def __init__(self, name=None, path=None, osbrepository_id=None, size=None, timestamp_modified=None, ref=None, sha=None):  # noqa: E501
         """BiomodelsRepositoryResource - a model defined in OpenAPI
 
         :param name: The name of this BiomodelsRepositoryResource.  # noqa: E501
@@ -30,13 +30,19 @@ class BiomodelsRepositoryResource(Model):
         :type size: int
         :param timestamp_modified: The timestamp_modified of this BiomodelsRepositoryResource.  # noqa: E501
         :type timestamp_modified: datetime
+        :param ref: The ref of this BiomodelsRepositoryResource.  # noqa: E501
+        :type ref: str
+        :param sha: The sha of this BiomodelsRepositoryResource.  # noqa: E501
+        :type sha: str
         """
         self.openapi_types = {
             'name': str,
             'path': str,
             'osbrepository_id': int,
             'size': int,
-            'timestamp_modified': datetime
+            'timestamp_modified': datetime,
+            'ref': str,
+            'sha': str
         }
 
         self.attribute_map = {
@@ -44,7 +50,9 @@ class BiomodelsRepositoryResource(Model):
             'path': 'path',
             'osbrepository_id': 'osbrepository_id',
             'size': 'size',
-            'timestamp_modified': 'timestamp_modified'
+            'timestamp_modified': 'timestamp_modified',
+            'ref': 'ref',
+            'sha': 'sha'
         }
 
         self._name = name
@@ -52,6 +60,8 @@ class BiomodelsRepositoryResource(Model):
         self._osbrepository_id = osbrepository_id
         self._size = size
         self._timestamp_modified = timestamp_modified
+        self._ref = ref
+        self._sha = sha
 
     @classmethod
     def from_dict(cls, dikt) -> 'BiomodelsRepositoryResource':
@@ -178,3 +188,49 @@ class BiomodelsRepositoryResource(Model):
         """
 
         self._timestamp_modified = timestamp_modified
+
+    @property
+    def ref(self):
+        """Gets the ref of this BiomodelsRepositoryResource.
+
+        The GIT ref  # noqa: E501
+
+        :return: The ref of this BiomodelsRepositoryResource.
+        :rtype: str
+        """
+        return self._ref
+
+    @ref.setter
+    def ref(self, ref):
+        """Sets the ref of this BiomodelsRepositoryResource.
+
+        The GIT ref  # noqa: E501
+
+        :param ref: The ref of this BiomodelsRepositoryResource.
+        :type ref: str
+        """
+
+        self._ref = ref
+
+    @property
+    def sha(self):
+        """Gets the sha of this BiomodelsRepositoryResource.
+
+        The GIT sha of the resource  # noqa: E501
+
+        :return: The sha of this BiomodelsRepositoryResource.
+        :rtype: str
+        """
+        return self._sha
+
+    @sha.setter
+    def sha(self, sha):
+        """Sets the sha of this BiomodelsRepositoryResource.
+
+        The GIT sha of the resource  # noqa: E501
+
+        :param sha: The sha of this BiomodelsRepositoryResource.
+        :type sha: str
+        """
+
+        self._sha = sha
