@@ -15,11 +15,11 @@ class BiomodelsException(Exception):
     pass
 
 
-class BioModelsAdapter:
+class BiomodelsAdapter:
     """
-    Adapter for FigShare
+    Adapter for Biomodels
 
-    https://docs.figshare.com/
+    https://www.ebi.ac.uk/biomodels/
     """
 
     def __init__(self, osbrepository, uri=None):
