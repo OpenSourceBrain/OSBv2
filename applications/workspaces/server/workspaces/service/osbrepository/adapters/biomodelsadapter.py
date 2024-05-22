@@ -63,11 +63,15 @@ class BiomodelsAdapter:
         revisions = result["history"]["revisions"]
         return [str(v["version"]) for v in revisions]
 
-    def get_resources(self, context):
-        logger.debug(f"Getting resources: {context}")
+    def _get_filelist(self, context):
+        logger.debug(f"Getting filelist: {context}")
         contents = self.get_json(f"{self.api_url}/model/files/{self.model_id}.{context}")
         files = (contents.get("additional", []) + contents.get("main", []))
+        return files
 
+    def get_resources(self, context):
+        logger.debug(f"Getting resources: {context}")
+        files = self._get_filelist(context)
 
         tree = RepositoryResourceNode(
             resource=BiomodelsRepositoryResource(
@@ -108,28 +112,36 @@ class BiomodelsAdapter:
         result = self.get_json(f"{self.api_url}/{self.model_id}.{context}")
         return result["format"]["name"]
 
+    # biomodels files are usually small, so one task is enough
     def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
-        tasks = []
         import workspaces.service.workflow as workflow
-        for origin in origins:
-            path = origin.path
-            # no file tree in Biomodels from the looks of it
-            folder = self.osbrepository.name
 
-            # download everything: the handler will fetch the complete file list
-            # and download them all
-            if not path or path == "/":
-                path = self.model_id
+        # no file tree in Biomodels from the looks of it
+        folder = self.osbrepository.name
 
-            # username / password are optional and future usage,
-            # e.g. for accessing non public repos
-            tasks.append(workflow.create_copy_task(
-                image_name="workspaces-biomodels-copy",
-                workspace_id=workspace_id,
-                folder=folder,
-                url=path,
-                username="",
-                password="",
-            ))
-        return tasks
+        # if nothing is selected, origins has one entry with path "/"
+        # we get the file list and download individual files
+        # Biomodels does allow downloading the archive, but that is generated
+        # on the fly and can require us to wait for an unspecified amount of
+        # time
+        if len(origins) == 1 and origins[0].path == "/":
+            """
+            # to use the archive method, just set paths to ""
+            paths = ""
+            """
+            files = self._get_filelist(self.osbrepository.default_context)
+            download_url_prefix = f"{self.api_url}/model/download/{self.model_id}.{self.osbrepository.default_context}?filename="
+            paths = "\\".join(f"{download_url_prefix}{file['name']}" for file in files)
+        else:
+            paths = "\\".join(o.path for o in origins)
 
+        # username / password are not currently used
+        return workflow.create_copy_task(
+            image_name="workspaces-biomodels-copy",
+            workspace_id=workspace_id,
+            folder=folder,
+            url=f"{self.model_id}.{self.osbrepository.default_context}",
+            paths=paths,
+            username="",
+            password="",
+        )
