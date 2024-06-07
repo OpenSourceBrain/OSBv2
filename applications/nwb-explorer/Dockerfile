@@ -24,8 +24,7 @@ USER root
 WORKDIR $FOLDER
 
 RUN rm -rf /var/lib/apt/lists
-RUN apt-get update -qq &&\
-    apt-get install python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
+RUN apt-get update -qq && apt-get install python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
 
 
 RUN chown $NB_UID /opt
