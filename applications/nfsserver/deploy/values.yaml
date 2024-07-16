@@ -5,4 +5,4 @@ harness:
     image: gcr.io/metacellllc/osb/nfsserver:0.7.6
 # nfs server pvc disk size (/exports)
 server:
-  diskSize: 120Gi
+  diskSize: 240Gi
