@@ -125,8 +125,8 @@ export const RepositoriesPage = ({
 
   const updateReposList = (updatedSearchFilterValues) => {
     const isSearchFieldsEmpty =
-      updatedSearchFilterValues.tags.length === 0 &&
-      updatedSearchFilterValues.types.length === 0 &&
+      updatedSearchFilterValues?.tags?.length === 0 &&
+      updatedSearchFilterValues?.types?.length === 0 &&
       (typeof updatedSearchFilterValues.text === "undefined" ||
         updatedSearchFilterValues.text === "");
     setLoading(true);

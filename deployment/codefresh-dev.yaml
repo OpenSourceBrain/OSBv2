@@ -130,27 +130,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      nfsserver:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/nfsserver
-        title: Nfsserver
-        working_directory: ./.overrides/applications/nfsserver
-        tag: '${{NFSSERVER_TAG}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{NFSSERVER_TAG_EXISTS}}', '{{NFSSERVER_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{NFSSERVER_TAG_FORCE_BUILD}}', '{{NFSSERVER_TAG_FORCE_BUILD}}')
-                == false
       notifications:
         type: build
         stage: build
@@ -794,14 +773,6 @@ steps:
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nfsserver:
-        stage: publish
-        type: push
-        title: Nfsserver
-        candidate: '${{REGISTRY}}/osb/nfsserver:${{NFSSERVER_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
