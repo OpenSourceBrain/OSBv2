@@ -92,7 +92,7 @@ def get_github():
     from github import Auth
     
     # using an access token
-    auth_token = str(open('github.auth','r').readline())
+    auth_token = str(open('github.auth','r').readline()).strip()
     auth = Auth.Token(auth_token)
 
     # First create a Github instance:
