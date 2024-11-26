@@ -58,3 +58,4 @@ COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/build webapp/build
 
 USER $NB_UID
 CMD ./NWBE
+
