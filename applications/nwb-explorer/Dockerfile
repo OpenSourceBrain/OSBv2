@@ -25,7 +25,7 @@ WORKDIR $FOLDER
 
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
-    apt-get install python3-tk vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
+    apt-get install python3-tk python3-setuptools vim nano unzip git g++ libjpeg-dev zlib1g-dev -qq
 
 
 RUN chown $NB_UID /opt
@@ -35,17 +35,17 @@ USER $NB_UID
 
 COPY dependencies/nwb-explorer/requirements.txt requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
-    pip install -r requirements.txt
-RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
-    pip install cython --no-cache-dir
-COPY dependencies/nwb-explorer/ .
+    pip install cython  && pip install -r requirements.txt --prefer-binary
+
+COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/ .
 
 
 RUN mkdir -p /opt/workspace
 RUN ln -s /opt/workspace workspace
 RUN mkdir -p /opt/home
 RUN python utilities/install.py --npm-skip --no-test
-COPY dependencies/nwb-explorer/utilities/custom.css /home/jovyan/.jupyter/custom/custom.css
+
+COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/utilities/custom.css /home/jovyan/.jupyter/custom/custom.css
 
 # this removes the frame ancestor default cors settings
 RUN rm -f ~/.jupyter/*.json

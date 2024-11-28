@@ -2,7 +2,7 @@ ARG CLOUDHARNESS_BASE
 FROM $CLOUDHARNESS_BASE as base
 RUN echo $CLOUDHARNESS_BASE
 
-FROM jupyterhub/k8s-hub:1.1.3
+FROM jupyterhub/k8s-hub:3.2.1
 USER root
 
 RUN apt update && apt install nano

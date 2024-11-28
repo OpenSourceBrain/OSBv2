@@ -1,14 +1,14 @@
-FROM node:13.14 as base
+FROM node:20 as base
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
 COPY package-lock.json ${BUILDDIR}/package-lock.json
 WORKDIR ${BUILDDIR}
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY . $BUILDDIR
-RUN npm run build
+RUN npm run build 
 ###
-FROM nginx:1.17-alpine
+FROM nginx:stable
 ENV BUILDDIR=/builddir
 COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 
