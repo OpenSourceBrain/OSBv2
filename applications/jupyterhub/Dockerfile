@@ -2,7 +2,7 @@ ARG CLOUDHARNESS_BASE
 FROM $CLOUDHARNESS_BASE as base
 RUN echo $CLOUDHARNESS_BASE
 
-FROM jupyterhub/k8s-hub:3.2.1
+FROM quay.io/jupyterhub/k8s-hub:3.2.1
 USER root
 
 RUN apt update && apt install nano
@@ -38,5 +38,3 @@ COPY --chown=1000:1000 theming/arrow-dropdown.svg /usr/local/share/jupyterhub/st
 
 RUN chmod 777 /usr/src/app -R
 USER jovyan
-
-

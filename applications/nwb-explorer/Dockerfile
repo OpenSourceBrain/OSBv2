@@ -14,7 +14,7 @@ RUN yarn build
 
 
 ###
-FROM jupyter/base-notebook:hub-1.5.0
+FROM quay.io/jupyter/base-notebook:latest
 ENV NB_UID=jovyan
 ENV FOLDER=nwb-explorer
 USER root
@@ -39,11 +39,10 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
 
 COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/ .
 
-
+# sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
-RUN ln -s /opt/workspace workspace
 RUN mkdir -p /opt/home
-RUN python utilities/install.py --npm-skip --no-test
+# RUN python utilities/install.py --npm-skip --no-test
 
 COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/utilities/custom.css /home/jovyan/.jupyter/custom/custom.css
 
@@ -51,8 +50,8 @@ COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/utilities/custom.css /hom
 RUN rm -f ~/.jupyter/*.json
 
 USER root
-# sym link workspace pvc to $FOLDER
-RUN chown -R $NB_UID /opt/conda/etc/jupyter/nbconfig
+
+# RUN chown -R $NB_UID /opt/conda/etc/jupyter/nbconfig
 
 RUN chown $NB_UID .
 COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/build webapp/build

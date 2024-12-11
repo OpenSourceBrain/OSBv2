@@ -5,6 +5,8 @@ harness:
     port: 80
     name: proxy-public
   dependencies:
+    hard:
+      - jupyterhub
     git:
       - url: https://github.com/MetaCell/nwb-explorer.git
         branch_tag: development
