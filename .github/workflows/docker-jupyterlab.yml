@@ -2,9 +2,9 @@ name: Docker Image Build Jupyterlab
 
 on:
   push:
-    branches: [ master, dev*, feature/docker* ]
+    branches: [ master, dev*, feature/docker*, feature/repo* ]
   pull_request:
-    branches: [ master, dev*, feature/docker* ]
+    branches: [ master, dev*, feature/docker*, feature/repo* ]
 
 jobs:
 
