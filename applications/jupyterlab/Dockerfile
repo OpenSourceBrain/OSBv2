@@ -108,6 +108,7 @@ USER jovyan
 RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #  Compile NEURON mod files for PyNN
+RUN pip install backports.tarfile>=1.2 # temp fix for error: ImportError: cannot import name 'tarfile' from 'backports'
 RUN cd /opt/conda/lib/python3.9/site-packages/pyNN/neuron/nmodl && nrnivmodl
 # See https://github.com/OpenSourceBrain/osb-model-validation/issues/91 for status of this
 RUN pip install 'numpy<=1.23.0' # temp fix for https://levelup.gitconnected.com/fix-attributeerror-module-numpy-has-no-attribute-float-d7d68c5a4971
