@@ -2242,7 +2242,7 @@
         "PyNN support": "-1",
         "Spine classification": "None",
         "Status info": "In progress",
-        "Tags": "SBML",
+        "Tags": "SBML,OSBv1",
         "description": "github:README.md",
         "id": 295,
         "identifier": "neuromlsbmlshowcase",
