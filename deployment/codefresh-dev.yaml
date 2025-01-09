@@ -19,22 +19,24 @@ steps:
     type: parallel
     stage: prepare
     steps:
-    - title: Cloning cloud-harness repository...
-      type: git-clone
-      stage: prepare
-      repo: https://github.com/MetaCell/cloud-harness.git
-      revision: '${{CLOUDHARNESS_BRANCH}}'
-      working_directory: .
-      git: github
-    - title: Cloning nwb-explorer.git repository...
-      type: git-clone
-      repo: https://github.com/MetaCell/nwb-explorer.git
-      revision: development
-      working_directory: applications/nwb-explorer/dependencies/
-      git: github
+      clone_cloud_harness:
+        title: Cloning cloud-harness repository...
+        type: git-clone
+        stage: prepare
+        repo: https://github.com/MetaCell/cloud-harness.git
+        revision: '${{CLOUDHARNESS_BRANCH}}'
+        working_directory: .
+        git: github
+      clone_nwb-explorer_git_nwb-explorer:
+        title: Cloning nwb-explorer.git repository...
+        type: git-clone
+        repo: https://github.com/MetaCell/nwb-explorer.git
+        revision: development
+        working_directory: applications/nwb-explorer/dependencies/
+        git: github
   prepare_deployment:
     title: Prepare helm chart
-    image: python:3.9.10
+    image: python:3.12
     stage: prepare
     working_directory: .
     commands:
@@ -130,27 +132,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      nfsserver:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/nfsserver
-        title: Nfsserver
-        working_directory: ./.overrides/applications/nfsserver
-        tag: '${{NFSSERVER_TAG}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{NFSSERVER_TAG_EXISTS}}', '{{NFSSERVER_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{NFSSERVER_TAG_FORCE_BUILD}}', '{{NFSSERVER_TAG_FORCE_BUILD}}')
-                == false
       notifications:
         type: build
         stage: build
@@ -347,6 +328,28 @@ steps:
                 == true
               forceNoCache: includes('${{WORKFLOWS_TAG_FORCE_BUILD}}', '{{WORKFLOWS_TAG_FORCE_BUILD}}')
                 == false
+      workspaces-biomodels-copy:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: '${{CODEFRESH_REGISTRY}}'
+        buildkit: true
+        build_arguments:
+        - DOMAIN=${{DOMAIN}}
+        - NOCACHE=${{CF_BUILD_ID}}
+        - REGISTRY=${{REGISTRY}}/osb/
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
+        image_name: osb/workspaces-biomodels-copy
+        title: Workspaces biomodels copy
+        working_directory: ./applications/workspaces/tasks/biomodels-copy
+        tag: '${{WORKSPACES_BIOMODELS_COPY_TAG}}'
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_BIOMODELS_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_BIOMODELS_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_BIOMODELS_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_BIOMODELS_COPY_TAG_FORCE_BUILD}}') == false
       workspaces-figshare-copy:
         type: build
         stage: build
@@ -751,6 +754,12 @@ steps:
     commands:
     - yarn test
     scale:
+      jupyterhub_e2e_test:
+        title: jupyterhub e2e test
+        volumes:
+        - '${{CF_REPO_NAME}}/.overrides/applications/jupyterhub/test/e2e:/home/test/__tests__/jupyterhub'
+        environment:
+        - APP_URL=https://hub.${{DOMAIN}}
       osb-portal_e2e_test:
         title: osb-portal e2e test
         volumes:
@@ -794,14 +803,6 @@ steps:
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nfsserver:
-        stage: publish
-        type: push
-        title: Nfsserver
-        candidate: '${{REGISTRY}}/osb/nfsserver:${{NFSSERVER_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
@@ -874,6 +875,14 @@ steps:
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/osb/workflows:${{WORKFLOWS_TAG}}'
+        tags:
+        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        registry: '${{REGISTRY_PUBLISH_URL}}'
+      publish_workspaces-biomodels-copy:
+        stage: publish
+        type: push
+        title: Workspaces biomodels copy
+        candidate: '${{REGISTRY}}/osb/workspaces-biomodels-copy:${{WORKSPACES_BIOMODELS_COPY_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'
