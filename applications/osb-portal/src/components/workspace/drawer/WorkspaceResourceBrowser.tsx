@@ -46,7 +46,7 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
   padding: 0,
   "& .MuiSvgIcon-root": {
     color: paragraph,
-    width: '1rem', 
+    width: '1rem',
     height: '1rem'
   },
   "&:hover": {
@@ -132,22 +132,22 @@ const OSBResourceItem = (props: {
   };
 
   const handleOpenResource =
-  (e: any | Event) => {
-    e.preventDefault();
-    const isApplicationChanged = currentResource && currentResource.type.application.code !== resource.type.application.code;
-    if(isApplicationChanged && window.confirm("Unsaved changes will be lost: are you sure you want to change application?")){
-      navigate(
-        {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
-        search: `?resource=${encodeURIComponent(resource.name)}`},
-      )
-    }
-    if(!isApplicationChanged){
-      navigate(
-        {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
-        search: `?resource=${encodeURIComponent(resource.name)}`},
-      )
-    }
-  };
+    (e: any | Event) => {
+      e.preventDefault();
+      const isApplicationChanged = currentResource && currentResource.type.application.code !== resource.type.application.code;
+      if(isApplicationChanged && window.confirm("Unsaved changes will be lost: are you sure you want to change application?")){
+        navigate(
+          {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+            search: `?resource=${encodeURIComponent(resource.name)}`},
+        )
+      }
+      if(!isApplicationChanged){
+        navigate(
+          {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+            search: `?resource=${encodeURIComponent(resource.name)}`},
+        )
+      }
+    };
 
   return (
     <ResourceItem
@@ -163,8 +163,8 @@ const OSBResourceItem = (props: {
         >
           {!active && <Tooltip title="Delete resource" placement="right">
             <DeleteOutlinedIcon fontSize="small" onClick={handleDeleteResource} />
-            </Tooltip>
-            }
+          </Tooltip>
+          }
         </SidebarIconButton>
       }
     >
@@ -181,8 +181,8 @@ const OSBResourceItem = (props: {
           title={`${workspaceResourceService.getResourcePath(resource)}.
             ${
               active
-                ? "This is the resource currently opened on"
-                : "Click on this resource to open with"
+              ? "This is the resource currently opened on"
+              : "Click on this resource to open with"
             } ${resource.type.application.name}.`}
         >
           <ListItemText primary={resource.name} />
@@ -213,7 +213,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   if (!workspace.resources || workspace.resources.length === 0) {
     return null;
   }
-  
+
   const resources = workspace.resources.filter(
     (resource) => resource.id !== undefined && resource.id !== -1
   );
@@ -267,7 +267,7 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
           />
           <Typography>{resources.length}</Typography>
         </ListItemButton>
-        <Box className="scrollbar" sx={{ paddingRight: '0 !important' }}>
+        <Box sx={{ paddingRight: '0 !important' }}>
           {open &&
             resources.map((resource) => (
               <OSBResourceItem
@@ -288,67 +288,65 @@ const WorkspaceResourceBrowser = (props: WorkspaceProps) => {
   };
 
   return (
-    <Box className="verticalFill">
-      <Box width="100%" className="verticalFill">
-        <List className="verticalFill" sx={{ pt: 0, pb: 0 }}>
-          {experimentalResources.length > 0 && (
-            <ResourceTreeGroup
-              resources={experimentalResources}
-              open={resourceOpenState.experimental}
-              label={"Experiment Data"}
-              Icon={<AreaChartIcon fontSize="small" />}
-              onToggle={() => toggleResourceGroup('experimental')}
-              currentResource={currentResource}
-            />
-          )}
-          {modelResources.length > 0 && (
-            <ResourceTreeGroup
-              resources={modelResources}
-              open={resourceOpenState.model}
-              label={"Models"}
-              Icon={<ViewInArIcon fontSize="small" />}
-              onToggle={() => toggleResourceGroup('model')}
-              currentResource={currentResource}
-            />
-          )}
-          {notebookResources.length > 0 && (
-            <ResourceTreeGroup
-              resources={notebookResources}
-              open={resourceOpenState.notebook}
-              label={"Notebooks"}
-              Icon={<StickyNote2OutlinedIcon fontSize="small" />}
-              onToggle={() => toggleResourceGroup('notebook')}
-              currentResource={currentResource}
-            />
-          )}
-        </List>
-        {pendingResource && (
-          <ListItem
-            component="div"
-            className="workspace-tab-header"
-            disablePadding
-            sx={{
-              pointerEvents: "none",
-              "&:hover": {
-                background: "none",
-              },
-            }}
-          >
-            <ListItemButton>
-              <ListItemText
-                primary={pendingResource.name + "..."}
-                primaryTypographyProps={{
-                  variant: "body2",
-                  color: bgInputs,
-                }}
-              />
-              <SidebarIconButton>
-                <DownloadingIcon fontSize="small" sx={{ fill: bgInputs }} />
-              </SidebarIconButton>
-            </ListItemButton>
-          </ListItem>
+    <Box width="100%" className="scrollbar" sx={{ paddingRight: '0 !important' }}>
+      <List sx={{ pt: 0, pb: 0 }}>
+        {experimentalResources.length > 0 && (
+          <ResourceTreeGroup
+            resources={experimentalResources}
+            open={resourceOpenState.experimental}
+            label={"Experiment Data"}
+            Icon={<AreaChartIcon fontSize="small" />}
+            onToggle={() => toggleResourceGroup('experimental')}
+            currentResource={currentResource}
+          />
         )}
-      </Box>
+        {modelResources.length > 0 && (
+          <ResourceTreeGroup
+            resources={modelResources}
+            open={resourceOpenState.model}
+            label={"Models"}
+            Icon={<ViewInArIcon fontSize="small" />}
+            onToggle={() => toggleResourceGroup('model')}
+            currentResource={currentResource}
+          />
+        )}
+        {notebookResources.length > 0 && (
+          <ResourceTreeGroup
+            resources={notebookResources}
+            open={resourceOpenState.notebook}
+            label={"Notebooks"}
+            Icon={<StickyNote2OutlinedIcon fontSize="small" />}
+            onToggle={() => toggleResourceGroup('notebook')}
+            currentResource={currentResource}
+          />
+        )}
+      </List>
+      {pendingResource && (
+        <ListItem
+          component="div"
+          className="workspace-tab-header"
+          disablePadding
+          sx={{
+            pointerEvents: "none",
+            "&:hover": {
+              background: "none",
+            },
+          }}
+        >
+          <ListItemButton>
+            <ListItemText
+              primary={pendingResource.name + "..."}
+              primaryTypographyProps={{
+                variant: "body2",
+                color: bgInputs,
+              }}
+            />
+            <SidebarIconButton>
+              <DownloadingIcon fontSize="small" sx={{ fill: bgInputs }} />
+            </SidebarIconButton>
+          </ListItemButton>
+        </ListItem>
+      )}
     </Box>
   );
 };

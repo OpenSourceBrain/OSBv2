@@ -22,3 +22,10 @@ harness:
 
         c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors 'self' localhost:3000 *.osb.local osb.local localhost *.metacell.us *.opensourcebrain.org "}}
 
+singleuser:
+  cpu:
+    limit: 0.1
+    guarantee: 0.02
+  memory:
+    limit: 0.5G
+    guarantee: 0.1G

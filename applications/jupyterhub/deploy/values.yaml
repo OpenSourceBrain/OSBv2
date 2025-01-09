@@ -57,10 +57,10 @@ singleuser:
     extraLabels: {}
   cpu:
     limit: 1
-    guarantee: 0.2
+    guarantee: 0.02
   memory:
-    limit: 1G
-    guarantee: 0.5G
+    limit: 0.5G
+    guarantee: 0.1G
 prePuller:
 
   # hook relates to the hook-image-awaiter Job and hook-image-puller DaemonSet

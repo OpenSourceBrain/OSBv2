@@ -130,6 +130,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      className="verticalFit"
       {...other}
     >
       {value === index && (
@@ -201,7 +202,7 @@ export default (props: WorkspaceProps | any) => {
   return (
     <>
       {props.open ? (
-        <SidebarBox>
+        <SidebarBox className="verticalFill">
           {!hideTabs && (
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
