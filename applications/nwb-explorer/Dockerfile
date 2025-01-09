@@ -42,7 +42,8 @@ COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/ .
 # sym link workspace pvc to $FOLDER
 RUN mkdir -p /opt/workspace
 RUN mkdir -p /opt/home
-# RUN python utilities/install.py --npm-skip --no-test
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
+     python utilities/install.py --npm-skip
 
 COPY --chown=$NB_UID:$NB_UID dependencies/nwb-explorer/utilities/custom.css /home/jovyan/.jupyter/custom/custom.css
 

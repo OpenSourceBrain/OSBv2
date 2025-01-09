@@ -38,7 +38,7 @@ MarkupSafe==3.0.2
 mypy==1.13.0
 mypy-extensions==1.0.0
 oauthlib==3.2.2
-OpenAlchemy==2.0.1
+openalchemy==1.1.0
 openapi-schema-validator==0.2.3
 openapi-spec-validator==0.4.0
 oyaml==1.0
@@ -68,8 +68,7 @@ sentry-sdk==2.19.0
 setuptools==75.4.0
 six==1.16.0
 sniffio==1.3.1
-SQLAlchemy==2.0.36
-sqlalchemy-stubs==0.4
+SQLAlchemy==1.4.54
 swagger-ui-bundle==0.0.9
 toml==0.10.2
 types-toml==0.10.8.20240310
