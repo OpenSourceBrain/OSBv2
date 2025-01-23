@@ -1,6 +1,6 @@
-'''
+"""
 Script to get Biomodels project info
-'''
+"""
 
 import sys
 import json
@@ -9,7 +9,7 @@ import osb
 import operator
 import pprint
 
-verbose = True # 
+verbose = True  #
 verbose = False
 
 info_all = {}
@@ -18,27 +18,29 @@ from loadbiomodels import get_model_identifiers, get_model_info
 
 
 if __name__ == "__main__":
-    
-    min_index = 0 
+    min_index = 0
     max_index = 20
     index = 0
 
     from loadbiomodels import get_model_identifiers
-    
-    model_ids = get_model_identifiers()['models'] 
+
+    model_ids = get_model_identifiers()["models"]
 
     selection = model_ids[min_index:max_index]
 
     for model_id in selection:
-        print("\n--------   Model (%i/%i, order %i): %s:\n" % (index, len(selection), index+min_index, model_id))
+        print(
+            "\n--------   Model (%i/%i, order %i): %s:\n"
+            % (index, len(selection), index + min_index, model_id)
+        )
 
-        model_link = f'[{model_id}](https://www.ebi.ac.uk/biomodels/{model_id})'
+        model_link = f"[{model_id}](https://www.ebi.ac.uk/biomodels/{model_id})"
         info = get_model_info(model_id)
-        model_name = info['name']
+        model_name = info["name"]
         print(f"  {model_id}: \n    {pprint.pformat(info['name'])}--")
 
-        info_all[model_id]= info
-        '''
+        info_all[model_id] = info
+        """
         son.loads(get_page('https://modeldb.science/api/v1/models/%s'%model))
 
         print('    %s'%info[model]['name'])
@@ -91,21 +93,20 @@ if __name__ == "__main__":
         except:
             msg = '    Problem locating repo for: %i (%i/%i) %s'%(info[model]['id'],index, len(selection), info[model]['name'])
             print(msg)
-            errors.append(msg)'''
-    
-        index +=1
+            errors.append(msg)"""
+
+        index += 1
 
     if verbose:
         infop = pprint.pprint(info_all, compact=True)
 
-    print("\nThere were %i models checked\n"%(len(info)))
+    print("\nThere were %i models checked\n" % (len(info)))
 
-filename = 'cached_info/biomodels.json'  
+filename = "cached_info/biomodels.json"
 
-strj = json.dumps(info_all, indent='    ', sort_keys=True)
+strj = json.dumps(info_all, indent="    ", sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
 
 
-
-print('Data on Biomodels (%i models) written to %s'%(len(info),filename))
+print("Data on Biomodels (%i models) written to %s" % (len(info), filename))
