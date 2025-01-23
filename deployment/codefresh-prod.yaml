@@ -15,13 +15,21 @@ steps:
     type: parallel
     stage: prepare
     steps:
-    - title: Cloning cloud-harness repository...
-      type: git-clone
-      stage: prepare
-      repo: https://github.com/MetaCell/cloud-harness.git
-      revision: '${{CLOUDHARNESS_BRANCH}}'
-      working_directory: .
-      git: github
+      clone_cloud_harness:
+        title: Cloning cloud-harness repository...
+        type: git-clone
+        stage: prepare
+        repo: https://github.com/MetaCell/cloud-harness.git
+        revision: '${{CLOUDHARNESS_BRANCH}}'
+        working_directory: .
+        git: github
+      clone_nwb-explorer_git_nwb-explorer:
+        title: Cloning nwb-explorer.git repository...
+        type: git-clone
+        repo: https://github.com/MetaCell/nwb-explorer.git
+        revision: development
+        working_directory: applications/nwb-explorer/dependencies/
+        git: github
   prepare_deployment:
     title: Prepare helm chart
     image: python:3.9.10
