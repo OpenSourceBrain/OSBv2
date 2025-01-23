@@ -32,7 +32,9 @@ RUN chown $NB_UID /opt
 RUN chown $NB_UID .
 
 USER $NB_UID
-
+COPY requirements.txt requirements.txt
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+    pip install cython  && pip install -r requirements.txt --prefer-binary
 COPY dependencies/nwb-explorer/requirements.txt requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
     pip install cython  && pip install -r requirements.txt --prefer-binary

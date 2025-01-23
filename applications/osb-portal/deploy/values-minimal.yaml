@@ -7,4 +7,5 @@ harness:
       - jupyterhub
       - notifications
       - nwb-explorer
+      - netpyne
 

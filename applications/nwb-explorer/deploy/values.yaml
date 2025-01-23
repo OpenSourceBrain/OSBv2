@@ -11,7 +11,7 @@ harness:
       - url: https://github.com/MetaCell/nwb-explorer.git
         branch_tag: development
   jupyterhub:
-    args: ["--debug", "--NotebookApp.default_url=/geppetto", "--library=nwb_explorer", "--NotebookApp.notebook_dir=/opt/workspace"]
+    args: ["--debug", "--ServerApp.default_url=/geppetto", "--library=nwb_explorer", "--ServerApp.root_dir=/opt/workspace"]
     applicationHook: "osb_jupyter.change_pod_manifest"
     extraConfig:
       timing: |
