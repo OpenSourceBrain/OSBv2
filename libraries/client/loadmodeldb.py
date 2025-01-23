@@ -154,7 +154,9 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 )
             )
         else:
-            print("    Adding %s: %s" % (modeldb_github, modeldb_model['name']))
+            print("    **********************************************************************")
+            print("    ****  Adding %s: %s" % (modeldb_github, modeldb_model['name']))
+            print("    **********************************************************************")
 
             tags = get_tags_info(modeldb_info=modeldb_model)
 
