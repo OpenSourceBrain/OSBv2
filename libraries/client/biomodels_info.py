@@ -2,19 +2,14 @@
 Script to get Biomodels project info
 """
 
-import sys
 import json
-
-import osb
-import operator
 import pprint
+from loadbiomodels import get_model_identifiers, get_model_info
 
 verbose = True  #
 verbose = False
 
 info_all = {}
-
-from loadbiomodels import get_model_identifiers, get_model_info
 
 
 if __name__ == "__main__":

@@ -77,7 +77,7 @@ if __name__ == "__main__":
                 print("    Project has tags: %s" % (project.tags))
                 with_tags += 1
                 for tag in project.tags:
-                    if not tag in tags:
+                    if tag not in tags:
                         tags[tag] = 0
                     tags[tag] += 1
 

@@ -1,23 +1,20 @@
-from urllib.request import urlopen
-import codecs
 import workspaces_cli
 from pprint import pprint
 from workspaces_cli.api import rest_api, k8s_api
 import logging
 import json
 import sys
+from workspaces_cli.models import (
+    OSBRepository,
+    RepositoryContentType,
+)
 
 from utils import get_tags_info
 from utils import known_users, lookup_user
 
 known_ignores = ["dentate", "nc_superdeep", "tvb_neuroml"]
 
-from workspaces_cli.models import (
-    OSBRepository,
-    RepositoryType,
-    Tag,
-    RepositoryContentType,
-)
+
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
 
@@ -84,7 +81,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
     def add_osbv1_project(osbv1_proj, index):
         osbv1_proj_id = osbv1_proj["identifier"]
-        if not "GitHub repository" in osbv1_proj:
+        if "GitHub repository" not in osbv1_proj:
             but_ok = (
                 " (but it is in the list of known projects to ignore)"
                 if osbv1_proj_id in known_ignores
@@ -150,7 +147,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     "    %s already exists (owner: %s); updating..."
                     % (osbv1_proj_id, lookup_user(r.user_id, url_info))
                 )
-            except:
+            except Exception:
                 exit(-1)
             print(url_info)
             all_updated.append(url_info)
@@ -230,7 +227,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 print("----------")
                 print("Error: %s" % str(e))
                 print("----------")
-                if not "context_resources" in str(e):
+                if "context_resources" not in str(e):
                     print("Exiting due to unknown error...")
                     exit()
                 else:

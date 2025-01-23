@@ -50,9 +50,11 @@ def main():
             if "BIOMD" in model_id:
                 model_link = f"[{model_id}](https://www.ebi.ac.uk/biomodels/{model_id})"
                 info = get_model_info(model_id)
-                model_name = info["name"]
+                # model_name = info["name"]
                 print("\n===============================================")
-                print(f"  {model_id}: \n{pprint.pprint(info['name'])}--")
+                print(
+                    f"  {model_id} ({model_link}): \n{pprint.pformat(info['name'])}--"
+                )
                 count += 1
 
 

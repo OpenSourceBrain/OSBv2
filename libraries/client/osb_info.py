@@ -3,22 +3,12 @@
 # the current contents. Makes it easier to track (small) changes following API calls
 ######################################################################################
 
-from urllib.request import urlopen
-import codecs
 import workspaces_cli
 from pprint import pprint
 from workspaces_cli.api import rest_api, k8s_api
-import logging
-import datetime
 import json
 import sys
 
-from workspaces_cli.models import (
-    OSBRepository,
-    RepositoryType,
-    Tag,
-    RepositoryContentType,
-)
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
 
@@ -70,14 +60,14 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         try:
             print("Checking page %i" % page)
             found = api_instance.osbrepository_get(
-                q=f"uri__like=/", per_page=500, page=page
+                q="uri__like=/", per_page=500, page=page
             )
             for f in found.osbrepositories:
                 all_found.append(f)
             print("Found so far: %i" % len(all_found))
             page += 1
             # if page>3: break
-        except:
+        except Exception:
             print("All done")
             break
 

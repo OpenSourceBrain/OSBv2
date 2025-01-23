@@ -6,14 +6,13 @@ from workspaces_cli.api import rest_api, k8s_api
 import logging
 import json
 import sys
+import csv
 
 from utils import get_tags_info
 from utils import known_users, lookup_user
 
 from workspaces_cli.models import (
     OSBRepository,
-    RepositoryType,
-    Tag,
     RepositoryContentType,
 )
 # Defining the host is optional and defaults to http://localhost/api
@@ -76,7 +75,6 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 dandishowcase_csv_url = "https://raw.githubusercontent.com/OpenSourceBrain/DANDIArchiveShowcase/main/validation_folder/dandiset_summary.csv"
 response = urlopen(dandishowcase_csv_url)
 
-import csv
 
 dandishowcase_info_reader = csv.DictReader(codecs.iterdecode(response, "utf-8"))
 dandishowcase_info = list(dandishowcase_info_reader)
@@ -104,7 +102,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             dandi_api_info = api_instance.get_info(
                 uri=dandiset_url, repository_type="dandi"
             )
-        except:
+        except Exception:
             but_ok = (
                 " (known to be missing...)"
                 if dandiset_url in known_missing_dandisets
@@ -159,7 +157,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     "    %s already exists (owner: %s); updating..."
                     % (dandiset_url, lookup_user(r.user_id, url_info))
                 )
-            except:
+            except Exception:
                 exit(-1)
             print(url_info)
             all_updated.append(url_info)
@@ -236,7 +234,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 continue
             try:
                 added = add_dandiset(dandishowcase_entry, index)
-            except Exception as e:
+            except Exception:
                 logging.exception(
                     "Error adding/updating %s" % dandishowcase_entry["url"]
                 )

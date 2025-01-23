@@ -13,7 +13,7 @@ known_users = {
 
 
 def lookup_user(uid, url):
-    if not uid in known_users.values():
+    if uid not in known_users.values():
         raise Exception("Unknown user: %s;%s" % (uid, url))
     for user in known_users:
         if uid == known_users[user]:
@@ -51,10 +51,10 @@ def get_tags_info(
         for field in ["Original format", "Cell type", "Brain region", "Specie"]:
             if field in osbv1_info:
                 val = osbv1_info[field]
-                if not val in ["None", "Other", ""]:
+                if val not in ["None", "Other", ""]:
                     val = val.replace("PV+", "PV")
                     val = val.replace("C++", "Cplusplus")
-                    if not val in tags:
+                    if val not in tags:
                         tags.append(val)
 
     if dandi_api_info is not None:

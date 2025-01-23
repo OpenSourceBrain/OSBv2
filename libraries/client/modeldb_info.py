@@ -5,8 +5,6 @@ Script to get OSBv1 project info
 import sys
 import json
 
-import osb
-import operator
 import pprint
 
 from utils import get_github
@@ -87,7 +85,7 @@ if __name__ == "__main__":
 
                 info[model]["osbv2_gh_repo"] = repo_to_use.html_url
                 info[model]["osbv2_gh_branch"] = repo_to_use.default_branch
-            except:
+            except Exception:
                 print(
                     "    Missing fork: %s, forking now: %s"
                     % (possible_osbgh_repo, fork_if_missing)
@@ -110,7 +108,7 @@ if __name__ == "__main__":
                     to_be_forked.append(msg)
 
             if (not mdb_repo.forks == expected_forks) and (
-                not (info[model]["id"] in known_to_have_other_forks)
+                info[model]["id"] not in known_to_have_other_forks
             ):
                 msg = "    Unexpected forks for %i (%s != %s)..." % (
                     info[model]["id"],
@@ -120,7 +118,7 @@ if __name__ == "__main__":
                 print(msg)
                 many_forks.append(msg)
 
-        except:
+        except Exception:
             msg = "    Problem locating repo for: %i (%i/%i) %s" % (
                 info[model]["id"],
                 index,

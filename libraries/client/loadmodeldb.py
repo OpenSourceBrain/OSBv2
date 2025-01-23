@@ -1,5 +1,3 @@
-from urllib.request import urlopen
-import codecs
 import workspaces_cli
 from pprint import pprint
 from workspaces_cli.api import rest_api, k8s_api
@@ -12,8 +10,6 @@ from utils import known_users, lookup_user
 
 from workspaces_cli.models import (
     OSBRepository,
-    RepositoryType,
-    Tag,
     RepositoryContentType,
 )
 # Defining the host is optional and defaults to http://localhost/api
@@ -82,7 +78,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
     def add_modeldb_model(modeldb_model, index):
         modeldb_model_id = modeldb_model["id"]
-        if not "osbv2_gh_repo" in modeldb_model or not modeldb_model["osbv2_gh_repo"]:
+        if "osbv2_gh_repo" not in modeldb_model or not modeldb_model["osbv2_gh_repo"]:
             all_errors.append(
                 "  %i, %s (%s) doesn't have a Github repo..."
                 % (index, modeldb_model["name"], modeldb_model_id)
@@ -149,7 +145,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     "    %s already exists (owner: %s); updating..."
                     % (modeldb_model_id, lookup_user(existing_repo.user_id, url_info))
                 )
-            except:
+            except Exception:
                 exit(-1)
             print(url_info)
             all_updated.append(url_info)
@@ -239,7 +235,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 print("----------")
                 print("Error: %s" % str(e))
                 print("----------")
-                if not "context_resources" in str(e):
+                if "context_resources" not in str(e):
                     print("Exiting due to unknown error...")
                     exit()
                 else:
