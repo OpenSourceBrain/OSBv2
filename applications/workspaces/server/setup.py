@@ -24,7 +24,7 @@ REQUIRES = [
     "flask_cors",
     "sentry-sdk",
     "responses==0.22.0",
-    "jinja2<3.1.0"
+    "jinja2<3.2.0"
 ]
 
 setup(

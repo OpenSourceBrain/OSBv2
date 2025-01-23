@@ -9,12 +9,14 @@ from workspaces.models.base_model_ import Model
 from workspaces.models.resource_origin import ResourceOrigin
 from workspaces.models.resource_status import ResourceStatus
 from workspaces.models.resource_type import ResourceType
+from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces import util
 
 from workspaces.models.resource_origin import ResourceOrigin  # noqa: E501
 from workspaces.models.resource_status import ResourceStatus  # noqa: E501
 from workspaces.models.resource_type import ResourceType  # noqa: E501
+from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf  # noqa: E501
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase  # noqa: E501
 
 class WorkspaceResource(Model):
@@ -23,15 +25,9 @@ class WorkspaceResource(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, workspace_id=None, origin=None, path=None, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None):  # noqa: E501
+    def __init__(self, id=None, name=None, status=None, timestamp_created=None, timestamp_updated=None, timestamp_last_opened=None, resource_type=None, workspace_id=None, origin=None, path=None):  # noqa: E501
         """WorkspaceResource - a model defined in OpenAPI
 
-        :param workspace_id: The workspace_id of this WorkspaceResource.  # noqa: E501
-        :type workspace_id: int
-        :param origin: The origin of this WorkspaceResource.  # noqa: E501
-        :type origin: ResourceOrigin
-        :param path: The path of this WorkspaceResource.  # noqa: E501
-        :type path: str
         :param id: The id of this WorkspaceResource.  # noqa: E501
         :type id: int
         :param name: The name of this WorkspaceResource.  # noqa: E501
@@ -46,36 +42,39 @@ class WorkspaceResource(Model):
         :type timestamp_last_opened: datetime
         :param resource_type: The resource_type of this WorkspaceResource.  # noqa: E501
         :type resource_type: ResourceType
+        :param workspace_id: The workspace_id of this WorkspaceResource.  # noqa: E501
+        :type workspace_id: int
+        :param origin: The origin of this WorkspaceResource.  # noqa: E501
+        :type origin: ResourceOrigin
+        :param path: The path of this WorkspaceResource.  # noqa: E501
+        :type path: str
         """
         self.openapi_types = {
-            'workspace_id': int,
-            'origin': ResourceOrigin,
-            'path': str,
             'id': int,
             'name': str,
             'status': ResourceStatus,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
             'timestamp_last_opened': datetime,
-            'resource_type': ResourceType
+            'resource_type': ResourceType,
+            'workspace_id': int,
+            'origin': ResourceOrigin,
+            'path': str
         }
 
         self.attribute_map = {
-            'workspace_id': 'workspace_id',
-            'origin': 'origin',
-            'path': 'path',
             'id': 'id',
             'name': 'name',
             'status': 'status',
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
             'timestamp_last_opened': 'timestamp_last_opened',
-            'resource_type': 'resource_type'
+            'resource_type': 'resource_type',
+            'workspace_id': 'workspace_id',
+            'origin': 'origin',
+            'path': 'path'
         }
 
-        self._workspace_id = workspace_id
-        self._origin = origin
-        self._path = path
         self._id = id
         self._name = name
         self._status = status
@@ -83,6 +82,9 @@ class WorkspaceResource(Model):
         self._timestamp_updated = timestamp_updated
         self._timestamp_last_opened = timestamp_last_opened
         self._resource_type = resource_type
+        self._workspace_id = workspace_id
+        self._origin = origin
+        self._path = path
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceResource':
@@ -94,73 +96,6 @@ class WorkspaceResource(Model):
         :rtype: WorkspaceResource
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def workspace_id(self):
-        """Gets the workspace_id of this WorkspaceResource.
-
-        workspace_id  # noqa: E501
-
-        :return: The workspace_id of this WorkspaceResource.
-        :rtype: int
-        """
-        return self._workspace_id
-
-    @workspace_id.setter
-    def workspace_id(self, workspace_id):
-        """Sets the workspace_id of this WorkspaceResource.
-
-        workspace_id  # noqa: E501
-
-        :param workspace_id: The workspace_id of this WorkspaceResource.
-        :type workspace_id: int
-        """
-
-        self._workspace_id = workspace_id
-
-    @property
-    def origin(self):
-        """Gets the origin of this WorkspaceResource.
-
-
-        :return: The origin of this WorkspaceResource.
-        :rtype: ResourceOrigin
-        """
-        return self._origin
-
-    @origin.setter
-    def origin(self, origin):
-        """Sets the origin of this WorkspaceResource.
-
-
-        :param origin: The origin of this WorkspaceResource.
-        :type origin: ResourceOrigin
-        """
-
-        self._origin = origin
-
-    @property
-    def path(self):
-        """Gets the path of this WorkspaceResource.
-
-        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
-
-        :return: The path of this WorkspaceResource.
-        :rtype: str
-        """
-        return self._path
-
-    @path.setter
-    def path(self, path):
-        """Sets the path of this WorkspaceResource.
-
-        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
-
-        :param path: The path of this WorkspaceResource.
-        :type path: str
-        """
-
-        self._path = path
 
     @property
     def id(self):
@@ -320,3 +255,70 @@ class WorkspaceResource(Model):
             raise ValueError("Invalid value for `resource_type`, must not be `None`")  # noqa: E501
 
         self._resource_type = resource_type
+
+    @property
+    def workspace_id(self):
+        """Gets the workspace_id of this WorkspaceResource.
+
+        workspace_id  # noqa: E501
+
+        :return: The workspace_id of this WorkspaceResource.
+        :rtype: int
+        """
+        return self._workspace_id
+
+    @workspace_id.setter
+    def workspace_id(self, workspace_id):
+        """Sets the workspace_id of this WorkspaceResource.
+
+        workspace_id  # noqa: E501
+
+        :param workspace_id: The workspace_id of this WorkspaceResource.
+        :type workspace_id: int
+        """
+
+        self._workspace_id = workspace_id
+
+    @property
+    def origin(self):
+        """Gets the origin of this WorkspaceResource.
+
+
+        :return: The origin of this WorkspaceResource.
+        :rtype: ResourceOrigin
+        """
+        return self._origin
+
+    @origin.setter
+    def origin(self, origin):
+        """Sets the origin of this WorkspaceResource.
+
+
+        :param origin: The origin of this WorkspaceResource.
+        :type origin: ResourceOrigin
+        """
+
+        self._origin = origin
+
+    @property
+    def path(self):
+        """Gets the path of this WorkspaceResource.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :return: The path of this WorkspaceResource.
+        :rtype: str
+        """
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        """Sets the path of this WorkspaceResource.
+
+        WorkspaceResource path where the resource will stored in the pvc.  # noqa: E501
+
+        :param path: The path of this WorkspaceResource.
+        :type path: str
+        """
+
+        self._path = path
