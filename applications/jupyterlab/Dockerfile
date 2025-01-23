@@ -105,6 +105,7 @@ ENV PATH=$PATH:$NEST_HOME/bin
 
 USER jovyan
 #### Install Python packages
+RUN pip install backports.tarfile>=1.2 # temp fix for error: ImportError: cannot import name 'tarfile' from 'backports'
 RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #  Compile NEURON mod files for PyNN
