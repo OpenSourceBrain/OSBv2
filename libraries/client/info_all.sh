@@ -3,6 +3,12 @@ set -ex
 
 ## A script to refresh all the cached info json files
 
+quick=0
+
+if [[ ($# -eq 1) && ($1 == '-q') ]]; then
+    quick=1
+fi
+
 ruff format *.py
 ruff check  *.py
 
@@ -15,7 +21,10 @@ python osb_gh_info.py
 
 python loadddandi.py -dry
 
-python biomodels_info.py 
+if [ "$quick" == 0 ]; then
 
-python modeldb_info.py
+    python biomodels_info.py 
 
+    python modeldb_info.py
+
+fi
