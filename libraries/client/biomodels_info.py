@@ -1,23 +1,38 @@
 """
-Script to get Biomodels project info
+Script to get BioModels project info
 """
 
+import requests
 import json
 import pprint
-from loadbiomodels import get_model_identifiers, get_model_info
 
 verbose = True  #
 verbose = False
 
 info_all = {}
 
+API_URL: str = "https://www.ebi.ac.uk/biomodels"
+out_format = "json"
+
+
+def get_model_identifiers():
+    response = requests.get(API_URL + "/model/identifiers?format=" + out_format)
+    response.raise_for_status()
+    output = response.json()
+    return output
+
+
+def get_model_info(model_id):
+    response = requests.get(API_URL + "/" + model_id + "?format=" + out_format)
+    response.raise_for_status()
+    output = response.json()
+    return output
+
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 10000
+    max_index = 10
     index = 1
-
-    from loadbiomodels import get_model_identifiers
 
     model_ids = get_model_identifiers()["models"]
 

@@ -21,9 +21,24 @@ def lookup_user(uid, url):
 
 
 def get_tags_info(
-    dandi_api_info=None, dandishowcase_info=None, osbv1_info=None, modeldb_info=None
+    dandi_api_info=None,
+    dandishowcase_info=None,
+    osbv1_info=None,
+    modeldb_info=None,
+    biomodels_info=None,
 ):
     tags = []
+
+    if biomodels_info is not None:
+        tags.append("BioModels")
+        tags.append("BioModels:%s" % biomodels_info["publicationId"])
+        tags.append(biomodels_info["format"]["identifier"])
+        for mla in biomodels_info["modelLevelAnnotations"]:
+            if mla["qualifier"] == "bqbiol:hasTaxon":
+                tags.append(mla["name"])
+            if mla["qualifier"] == "bqbiol:isVersionOf":
+                n = mla["name"]
+                tags.append(n[0].upper() + n[1:])
 
     if modeldb_info is not None:
         tags.append("ModelDB")

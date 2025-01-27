@@ -158,7 +158,7 @@ info[0]["errors"] = []
 print("\nStill to be forked (%i total):" % len(to_be_forked))
 for m in to_be_forked:
     print(m)
-    info[0]["to_be_forked"].append(m.trim())
+    info[0]["to_be_forked"].append(m.strip())
 
 print("\nMany forks (%i total):" % len(many_forks))
 for m in many_forks:
@@ -167,7 +167,7 @@ for m in many_forks:
 print("\nErrors (%i total):" % len(errors))
 for m in errors:
     print(m)
-    info[0]["errors"].append(m.trim())
+    info[0]["errors"].append(m.strip())
 
 strj = json.dumps(info, indent="    ", sort_keys=True)
 with open(filename, "w") as fp:
