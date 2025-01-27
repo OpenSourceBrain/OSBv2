@@ -15,5 +15,7 @@ python osb_gh_info.py
 
 python loadddandi.py -dry
 
+python biomodels_info.py 
+
 python modeldb_info.py
 
