@@ -14,8 +14,8 @@ info_all = {}
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 78000
-    index = 0
+    max_index = 10000
+    index = 1
 
     from loadbiomodels import get_model_identifiers
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     if verbose:
         infop = pprint.pprint(info_all, compact=True)
 
-    print("\nThere were %i models checked\n" % (len(info)))
+    print("\nThere were %i models checked\n" % (len(info_all)))
 
 filename = "cached_info/biomodels.json"
 
@@ -58,4 +58,4 @@ with open(filename, "w") as fp:
     fp.write(strj)
 
 
-print("Data on Biomodels (%i models) written to %s" % (len(info), filename))
+print("Data on Biomodels (%i models) written to %s" % (len(info_all), filename))

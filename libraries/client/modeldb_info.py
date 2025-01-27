@@ -29,7 +29,7 @@ forked_now = []
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 2000
+    max_index = 10000
     index = 0
 
     from osb.utils import get_page
@@ -138,10 +138,6 @@ if __name__ == "__main__":
 
 filename = "cached_info/modeldb.json"
 
-strj = json.dumps(info, indent="    ", sort_keys=True)
-with open(filename, "w") as fp:
-    fp.write(strj)
-
 print(
     "\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     + "\n\nDone!"
@@ -155,9 +151,14 @@ print("\nJust forked (%i total):" % len(forked_now))
 for m in forked_now:
     print(m)
 
+info[0] = {}
+info[0]["to_be_forked"] = []
+info[0]["errors"] = []
+
 print("\nStill to be forked (%i total):" % len(to_be_forked))
 for m in to_be_forked:
     print(m)
+    info[0]["to_be_forked"].append(m.trim())
 
 print("\nMany forks (%i total):" % len(many_forks))
 for m in many_forks:
@@ -166,5 +167,10 @@ for m in many_forks:
 print("\nErrors (%i total):" % len(errors))
 for m in errors:
     print(m)
+    info[0]["errors"].append(m.trim())
+
+strj = json.dumps(info, indent="    ", sort_keys=True)
+with open(filename, "w") as fp:
+    fp.write(strj)
 
 print("Data on ModelDB (%i models) written to %s" % (len(info), filename))
