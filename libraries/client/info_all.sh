@@ -14,7 +14,7 @@ ruff check  *.py
 
 python osbv1_info.py
 
-python osb_info.py
+python osb_info.py -v2dev
 python osb_info.py -v2
 
 python osb_gh_info.py 

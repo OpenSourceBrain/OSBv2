@@ -1,17 +1,16 @@
 """
-Script to get OSBv1 project info
+Script to get info on all models on ModelDB via their API, and potentially
+add forks of the ModelDB GitHub repos on github.com/OpenSourceBrain
 """
 
 import sys
 import json
-
 import pprint
 
 from utils import get_github
 
 verbose = True  #
 verbose = False
-
 
 info = {}
 with_gitrepo = 0
@@ -41,6 +40,7 @@ if __name__ == "__main__":
     pprint.pprint(models, compact=True)
 
     selection = models[min_index:max_index]
+
     for model in selection:
         print(
             "\n--------   Model (%i/%i, order %i): %s:\n"
@@ -87,7 +87,7 @@ if __name__ == "__main__":
                 info[model]["osbv2_gh_branch"] = repo_to_use.default_branch
             except Exception:
                 print(
-                    "    Missing fork: %s, forking now: %s"
+                    "    **** Missing fork: %s, forking now: %s"
                     % (possible_osbgh_repo, fork_if_missing)
                 )
                 if fork_if_missing:
@@ -118,14 +118,15 @@ if __name__ == "__main__":
                 print(msg)
                 many_forks.append(msg)
 
-        except Exception:
-            msg = "    Problem locating repo for: %i (%i/%i) %s" % (
+        except Exception as e:
+            msg = "    Problem with model: %i (%i/%i) %s" % (
                 info[model]["id"],
                 index,
                 len(selection),
                 info[model]["name"],
             )
             print(msg)
+            print(e)
             errors.append(msg)
 
         index += 1
