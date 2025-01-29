@@ -31,7 +31,7 @@ def get_model_info(model_id):
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 10
+    max_index = 10000
     index = 1
 
     model_ids = get_model_identifiers()["models"]
@@ -48,10 +48,13 @@ if __name__ == "__main__":
         model_link = f"[{model_id}]({model_url})"
         try:
             info = get_model_info(model_id)
-            model_name = info["name"]
-            print(f"  {model_id}: \n    {pprint.pformat(info['name'])}--")
+            if info["curationStatus"] != "CURATED":
+                print("  ****  Not adding, as curationStatus = %s" % info["curationStatus"])
+            else:
+                model_name = info["name"]
+                print(f"  {model_id}: \n    {pprint.pformat(info['name'])}--")
 
-            info_all[model_id] = info
+                info_all[model_id] = info
         except Exception as e:
             msg = f"Error retrieving model at {model_url}: {e}"
 
