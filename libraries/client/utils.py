@@ -33,7 +33,7 @@ def get_tags_info(
         tags.append("BioModels")
         tags.append("BioModels:%s" % biomodels_info["publicationId"])
         tags.append(biomodels_info["format"]["identifier"])
-        if 'modelLevelAnnotations' in biomodels_info:
+        if "modelLevelAnnotations" in biomodels_info:
             for mla in biomodels_info["modelLevelAnnotations"]:
                 if mla["qualifier"] == "bqbiol:hasTaxon":
                     if "name" in mla:

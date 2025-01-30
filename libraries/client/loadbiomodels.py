@@ -31,12 +31,12 @@ if "-dry" in sys.argv:
     dry_run = True
 else:
     dry_run = False  # dry_run = True
-    
+
 BIOMODELS_URL: str = "https://www.ebi.ac.uk/biomodels"
 
 index = 0
-min_index = 140
-max_index = 160
+min_index = 0
+max_index = 10000
 
 verbose = True  #
 verbose = False
@@ -78,9 +78,10 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
 
     def add_biomodels_model(biomodels_model, index):
-        if not "publicationId" in biomodels_model:
+        if "publicationId" not in biomodels_model:
             print("Not adding, probably uncurated entry...")
             return False
+
         if biomodels_model["curationStatus"] != "CURATED":
             print(
                 "  Not adding, as curationStatus = %s"
@@ -94,7 +95,6 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             "\n================ %i: %s, %s ================\n"
             % (index, biomodels_model_id, name)
         )
-
 
         biomodels_uri = f"{BIOMODELS_URL}/{biomodels_model_id}"
         search = f"uri__like={biomodels_uri}"
@@ -199,7 +199,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
             tags = get_tags_info(biomodels_info=biomodels_model)
 
-            all_added.append("  %s, index %i" % (name, index))
+            all_added.append("  %i) %s: %s" % (index, biomodels_model_id, name))
             desc = biomodels_model["description"]
             print("    Description: %s..." % desc[:150])
             latest_version = biomodels_model["history"]["revisions"][-1]
