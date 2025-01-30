@@ -49,7 +49,10 @@ if __name__ == "__main__":
         try:
             info = get_model_info(model_id)
             if info["curationStatus"] != "CURATED":
-                print("  ****  Not adding, as curationStatus = %s" % info["curationStatus"])
+                print(
+                    "  ****  Not adding, as curationStatus = %s"
+                    % info["curationStatus"]
+                )
             else:
                 model_name = info["name"]
                 print(f"  {model_id}: \n    {pprint.pformat(info['name'])}--")

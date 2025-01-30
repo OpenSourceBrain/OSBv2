@@ -1,5 +1,5 @@
 import workspaces_cli
-from pprint import pprint
+from pprint import pprint, pformat
 from workspaces_cli.api import rest_api, k8s_api
 import logging
 import json
@@ -31,12 +31,12 @@ if "-dry" in sys.argv:
     dry_run = True
 else:
     dry_run = False  # dry_run = True
-
+    
 BIOMODELS_URL: str = "https://www.ebi.ac.uk/biomodels"
 
 index = 0
-min_index = 0
-max_index = 10
+min_index = 140
+max_index = 160
 
 verbose = True  #
 verbose = False
@@ -78,6 +78,15 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
 
     def add_biomodels_model(biomodels_model, index):
+        if not "publicationId" in biomodels_model:
+            print("Not adding, probably uncurated entry...")
+            return False
+        if biomodels_model["curationStatus"] != "CURATED":
+            print(
+                "  Not adding, as curationStatus = %s"
+                % biomodels_model["curationStatus"]
+            )
+            return False
         biomodels_model_id = biomodels_model["publicationId"]
         name = biomodels_model["name"]
 
@@ -86,12 +95,6 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             % (index, biomodels_model_id, name)
         )
 
-        if biomodels_model["curationStatus"] != "CURATED":
-            print(
-                "  Not adding, as curationStatus = %s"
-                % biomodels_model["curationStatus"]
-            )
-            return False
 
         biomodels_uri = f"{BIOMODELS_URL}/{biomodels_model_id}"
         search = f"uri__like={biomodels_uri}"
@@ -231,7 +234,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 added = add_biomodels_model(biomodels_model, index)
             except Exception as e:
                 print("----------")
-                logging.exception("Error adding %s" % biomodels_model)
+                logging.exception("Error adding %s" % pformat(biomodels_model))
                 print("----------")
                 print("Error: %s" % str(e))
                 print("----------")

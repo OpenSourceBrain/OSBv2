@@ -33,12 +33,15 @@ def get_tags_info(
         tags.append("BioModels")
         tags.append("BioModels:%s" % biomodels_info["publicationId"])
         tags.append(biomodels_info["format"]["identifier"])
-        for mla in biomodels_info["modelLevelAnnotations"]:
-            if mla["qualifier"] == "bqbiol:hasTaxon":
-                tags.append(mla["name"])
-            if mla["qualifier"] == "bqbiol:isVersionOf":
-                n = mla["name"]
-                tags.append(n[0].upper() + n[1:])
+        if 'modelLevelAnnotations' in biomodels_info:
+            for mla in biomodels_info["modelLevelAnnotations"]:
+                if mla["qualifier"] == "bqbiol:hasTaxon":
+                    if "name" in mla:
+                        tags.append(mla["name"])
+                if mla["qualifier"] == "bqbiol:isVersionOf":
+                    if "name" in mla:
+                        n = mla["name"]
+                        tags.append(n[0].upper() + n[1:])
 
     if modeldb_info is not None:
         tags.append("ModelDB")
