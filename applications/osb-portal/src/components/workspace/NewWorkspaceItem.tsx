@@ -172,7 +172,7 @@ export const NewWorkspaceItem = (props: ItemProps) => {
 
     // if non-default workspace
     if (defaultWorkspace) {
-      setWorkspaceLink(`/workspace/${ws.id}`);
+      setWorkspaceLink(`/workspaces/${ws.id}`);
       setCreatedWorkspaceConfirmationContent((prevContent) => ({
         ...prevContent,
         title: "Success!",

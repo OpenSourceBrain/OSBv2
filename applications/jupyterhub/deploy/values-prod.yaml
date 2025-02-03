@@ -23,9 +23,9 @@ singleuser:
     capacity: 2Gi
   cpu:
     limit: 1
-    guarantee: 0.2
+    guarantee: 0.02
   memory:
-    limit: 1.5G
-    guarantee: 0.5G
+    limit: 0.5G
+    guarantee: 0.1G
 legacyusermax: 445
 legacyworkspacemax: 465

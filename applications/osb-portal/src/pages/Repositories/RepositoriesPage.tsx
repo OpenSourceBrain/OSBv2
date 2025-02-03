@@ -27,7 +27,7 @@ import { OSBRepository, Tag } from "../../apiclient/workspaces";
 import searchFilter from "../../types/searchFilter";
 
 //hooks
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 //api
 import RepositoryService from "../../service/RepositoryService";
@@ -62,6 +62,32 @@ const customButtonStyle = {
   },
 };
 
+const CustomButton = ({
+  listType,
+  Icon,
+  changeListView,
+  listView
+}: {
+  listType: string;
+  Icon: ReactElement;
+  changeListView: (type: string) => void;
+  listView: string;
+}) => {
+  if (listType === listView) {
+    return (
+      <StyledActiveIconButton onClick={() => changeListView(listType)}>
+        {Icon}
+      </StyledActiveIconButton>
+    );
+  } else {
+    return (
+      <StyledIconButton onClick={() => changeListView(listType)}>
+        {Icon}
+      </StyledIconButton>
+    );
+  }
+};
+
 export const StyledIconButton = styled(IconButton)(() => customButtonStyle);
 
 export const StyledActiveIconButton = styled(IconButton)(() => ({
@@ -89,12 +115,13 @@ export const RepositoriesPage = ({
   user: UserInfo;
   counter: number;
 }) => {
+  const [searchParams, ] = useSearchParams();
   const navigate = useNavigate();
   const [searchFilterValues, setSearchFilterValues] =
     React.useState<searchFilter>({
-      text: undefined,
-      tags: [],
-      types: [],
+      text: searchParams.get("q"),
+      tags: searchParams.getAll("tags"),
+      types: searchParams.getAll("types"),
     });
   const [repositories, setRepositories] = React.useState<OSBRepository[]>([]);
   const [page, setPage] = React.useState(1);
@@ -104,32 +131,31 @@ export const RepositoriesPage = ({
   const [tabValue, setTabValue] = React.useState(RepositoriesTab.all);
   const [listView, setListView] = React.useState<string>("list");
 
-  
-
-  const openRepoUrl = (repositoryId: number) => {
+  const openRepoUrl = React.useCallback((repositoryId: number) => {
     navigate(`/repositories/${repositoryId}`);
-  };
+  }, []);
 
-  const debouncedHandleSearchFilter = debounce((newTextFilter: string) => {
+  const handleSearchFilter = React.useCallback((newTextFilter: string) => {
     setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
-  }, 500);
+  }, []);
 
-  const setReposValues = (reposDetails) => {
+  const setReposValues = React.useCallback((reposDetails) => {
     setRepositories(reposDetails.osbrepositories);
     setTotal(reposDetails.pagination.total);
     setTotalPages(reposDetails.pagination.numberOfPages);
     setLoading(false);
-  };
+  }, []);
 
-  const updateReposList = () => {
+  const updateReposList = React.useCallback(
+    async (updatedSearchFilterValues) => {
     const isSearchFieldsEmpty =
-    searchFilterValues.tags.length === 0 &&
-    searchFilterValues.types.length === 0 &&
-    (typeof searchFilterValues.text === "undefined" ||
-      searchFilterValues.text === "");
+      updatedSearchFilterValues?.tags?.length === 0 &&
+      updatedSearchFilterValues?.types?.length === 0 &&
+      (typeof updatedSearchFilterValues.text === "undefined" ||
+        updatedSearchFilterValues.text === "");
     setLoading(true);
     if (!isSearchFieldsEmpty) {
-      const myReposFilter = tabValue ? {...searchFilterValues, user_id: user.id} : searchFilterValues
+      const myReposFilter = tabValue ? { ...updatedSearchFilterValues, user_id: user.id } : updatedSearchFilterValues
 
       RepositoryService.getRepositoriesByFilter(
         page,
@@ -148,52 +174,35 @@ export const RepositoriesPage = ({
         setReposValues(reposDetails);
       });
     }
-  };
+  }, [page, tabValue, user?.id]);
 
-  const handleRefreshRepositories = () => {
-    updateReposList();
-  }
+  const handleRefreshRepositories = React.useCallback(() => {
+    updateReposList(searchFilterValues);
+  }, [searchFilterValues]);
 
-  const handleTabChange = (event: any, newValue: RepositoriesTab) => {
+  const handleTabChange = React.useCallback((event: any, newValue: RepositoriesTab) => {
     setTotal(0);
     setTabValue(newValue);
-  };
+    setPage(1)
+  }, []);
 
-  const changeListView = (type: string) => {
+  const changeListView = React.useCallback((type: string) => {
     setListView(type);
-  };
+  }, []);
 
-  const handleChangePage = (event: unknown, current: number) => {
+  const handleChangePage = React.useCallback((event: unknown, current: number) => {
     setPage(current);
-  };
+  }, []);
 
-  const CustomButton = ({
-    listType,
-    Icon,
-  }: {
-    listType: string;
-    Icon: ReactElement;
-  }) => {
-    if (listType === listView) {
-      return (
-        <StyledActiveIconButton onClick={() => changeListView(listType)}>
-          {Icon}
-        </StyledActiveIconButton>
-      );
-    } else {
-      return (
-        <StyledIconButton onClick={() => changeListView(listType)}>
-          {Icon}
-        </StyledIconButton>
-      );
-    }
-  };
-  React.useEffect(updateReposList, [page, searchFilterValues, tabValue, counter]);
+  
+  React.useEffect(() => {
+    updateReposList(searchFilterValues)
+  }, [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
       <Box width={1} className="verticalFit">
-        <div id="repositories-list" className="verticalFit">
+        <Box id="repositories-list" className="verticalFit">
           <Box borderBottom={`1px solid ${lineColor}`} >
             <Box
               display="flex"
@@ -258,13 +267,11 @@ export const RepositoriesPage = ({
                     variant="contained"
                     aria-label="Disabled elevation buttons"
                   >
-                    <CustomButton Icon={<WindowIcon />} listType="grid" />
-                    <CustomButton Icon={<ListIcon />} listType="list" />
+                    <CustomButton Icon={<WindowIcon />} listType="grid" listView={listView} changeListView={changeListView} />
+                    <CustomButton Icon={<ListIcon />} listType="list" listView={listView} changeListView={changeListView} />
                   </ButtonGroup>
                   <SearchFilterReposWorkspaces
-                    filterChanged={(newTextFilter) =>
-                      debouncedHandleSearchFilter(newTextFilter)
-                    }
+                    filterChanged={handleSearchFilter}
                     searchFilterValues={searchFilterValues}
                     setSearchFilterValues={setSearchFilterValues}
                     hasTypes={true}
@@ -322,7 +329,7 @@ export const RepositoriesPage = ({
               refreshRepositories={handleRefreshRepositories}
             />
           )}
-        </div>
+        </Box>
         {repositories && totalPages > 1 && (
           <OSBPagination
             count={totalPages}

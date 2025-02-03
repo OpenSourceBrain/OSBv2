@@ -12,9 +12,9 @@ from workspaces.persistence.models import TWorkspaceEntity, WorkspaceEntity, Wor
 from workspaces.helpers.etl_helpers import copy_origins
 from workspaces.service.crud_service import NotAuthorized, NotAllowed, WorkspaceService
 
-def _save_image(id_=None, image=None, filename_base=None):
+def _save_image(id_=None, image=None, filename_base=None, dirname=None):
     ext = mimetypes.guess_extension(image.mimetype)
-    folder = os.path.join(Config.WORKSPACES_DIR, f"{id_}")
+    folder = os.path.join(dirname, f"{id_}")
     Path(os.path.join(Config.STATIC_DIR, folder)).mkdir(parents=True, exist_ok=True)
 
     if filename_base is None:
@@ -38,7 +38,7 @@ def setthumbnail(id_=None, thumb_nail=None, body=None, **kwargs):
 
     # filename = f"{folder}/thumbnail{ext}"
     # thumbNail.save(os.path.join(Config.STATIC_DIR,filename))
-    saved_filename = _save_image(id_=id_, image=thumb_nail, filename_base="thumbnail")
+    saved_filename = _save_image(id_=id_, image=thumb_nail, filename_base="thumbnail", dirname=Config.WORKSPACES_DIR)
     workspace.thumbnail = saved_filename
     db.session.add(workspace)
     db.session.commit()
@@ -58,7 +58,7 @@ def addimage(id_=None, image=None, body=None, **kwargs):
 
     # image.save(os.path.join(Config.STATIC_DIR, image.filename))
 
-    saved_filename = _save_image(id=id_, image=image)
+    saved_filename = _save_image(id=id_, image=image, dirname=Config.WORKSPACES_DIR)
     workspace.gallery.append(WorkspaceImage(image=saved_filename))
     db.session.add(workspace)
     db.session.commit()

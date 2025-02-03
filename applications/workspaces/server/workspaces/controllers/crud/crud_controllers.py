@@ -13,6 +13,8 @@ from workspaces.service.crud_service import (
 
 
 from workspaces.controllers.crud.base_model_controller import BaseModelView
+from cloudharness.workflows.argo import delete_workflow
+
 
 
 class WorkspaceView(BaseModelView):
@@ -23,6 +25,17 @@ class WorkspaceView(BaseModelView):
             return super().post(body)
         except NotAllowed:
             return "Not allowed", 405
+
+    
+        
+    def delete(self, id_):
+        """Delete an object from the repository."""
+        for wf in WorkspaceService.get_workspace_workflows(id_):
+            delete_workflow(wf.name)
+
+        return super().delete(id_)
+
+
 
 
 class OsbrepositoryView(BaseModelView):

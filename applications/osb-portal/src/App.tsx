@@ -44,9 +44,7 @@ const styles = {
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    height: {
-      md: "100vh",
-    },
+    height: "100vh",
     overflow: {
       xs: "auto",
       md: "hidden",
@@ -93,6 +91,34 @@ export const App = (props: AppProps) => {
                       <SidebarPageLayout>
                         <HomePage />
                       </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces"
+                    element={
+                      <SidebarPageLayout>
+                        <HomePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces/:workspaceId"
+                    element={
+                      <SidebarPageLayout>
+                        <WorkspacePage />
+                      </SidebarPageLayout>
+                    }
+                  />
+                  <Route
+                    path="/workspaces/open/:workspaceId/:app"
+                    element={<ProtectedRoute><WorkspaceOpenPage /></ProtectedRoute>}
+                  />
+                  <Route
+                    path="/workspaces/open/:workspaceId"
+                    element={
+                      <ProtectedRoute>
+                        <WorkspaceOpenPage />
+                      </ProtectedRoute>
                     }
                   />
                   <Route

@@ -151,6 +151,17 @@ class RepositoryService {
     return this.workspacesApi.osbrepositoryIdPut(requestParameters);
   }
 
+  async updateRepostioryThumbnail(
+    repositoryId: number,
+    thumbNailBlob: Blob
+  ): Promise<any> {
+    const repoRequest: workspaceApi.WorkspacesControllersOsbrepositoryControllerSetthumbnailRequest =
+      { id: repositoryId, thumbNail: thumbNailBlob };
+    await this.workspacesApi.workspacesControllersOsbrepositoryControllerSetthumbnail(
+      repoRequest
+    );
+  }
+
   async getAllTags(
     page?: number,
     perPage?: number,

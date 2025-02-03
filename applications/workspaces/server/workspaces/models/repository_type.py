@@ -21,6 +21,7 @@ class RepositoryType(Model):
     DANDI = "dandi"
     FIGSHARE = "figshare"
     GITHUB = "github"
+    BIOMODELS = "biomodels"
     def __init__(self):  # noqa: E501
         """RepositoryType - a model defined in OpenAPI
 

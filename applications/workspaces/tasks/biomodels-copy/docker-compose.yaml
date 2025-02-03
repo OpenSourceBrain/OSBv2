@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  copy:
+    image: osb/workspaces-biomodels-copy:latest
+    environment:
+      - url=https://www.ebi.ac.uk/biomodels/MODEL2311220001s

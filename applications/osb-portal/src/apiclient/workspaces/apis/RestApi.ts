@@ -185,6 +185,11 @@ export interface WorkspaceresourcePostRequest {
     workspaceResource: WorkspaceResource;
 }
 
+export interface WorkspacesControllersOsbrepositoryControllerSetthumbnailRequest {
+    id: number;
+    thumbNail?: Blob;
+}
+
 export interface WorkspacesControllersWorkspaceControllerAddimageRequest {
     id: number;
     image?: Blob;
@@ -1321,6 +1326,64 @@ export class RestApi extends runtime.BaseAPI {
     async workspaceresourcePost(requestParameters: WorkspaceresourcePostRequest): Promise<WorkspaceResource> {
         const response = await this.workspaceresourcePostRaw(requestParameters);
         return await response.value();
+    }
+
+    /**
+     * Sets the thumbnail of the workspace.
+     */
+    async workspacesControllersOsbrepositoryControllerSetthumbnailRaw(requestParameters: WorkspacesControllersOsbrepositoryControllerSetthumbnailRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersOsbrepositoryControllerSetthumbnail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters.thumbNail !== undefined) {
+            formParams.append('thumbNail', requestParameters.thumbNail as any);
+        }
+
+        const response = await this.request({
+            path: `/osbrepository/{id}/thumbnail/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: formParams,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Sets the thumbnail of the workspace.
+     */
+    async workspacesControllersOsbrepositoryControllerSetthumbnail(requestParameters: WorkspacesControllersOsbrepositoryControllerSetthumbnailRequest): Promise<void> {
+        await this.workspacesControllersOsbrepositoryControllerSetthumbnailRaw(requestParameters);
     }
 
     /**

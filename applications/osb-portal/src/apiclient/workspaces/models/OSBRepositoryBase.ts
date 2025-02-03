@@ -79,6 +79,12 @@ export interface OSBRepositoryBase {
      */
     defaultContext?: string;
     /**
+     * 
+     * @type {string}
+     * @memberof OSBRepositoryBase
+     */
+    thumbnail?: string;
+    /**
      * OSBRepository keycloak user id, will be automatically be set to the logged in user
      * @type {string}
      * @memberof OSBRepositoryBase
@@ -122,6 +128,7 @@ export function OSBRepositoryBaseFromJSONTyped(json: any, ignoreDiscriminator: b
         'autoSync': !exists(json, 'auto_sync') ? undefined : json['auto_sync'],
         'uri': json['uri'],
         'defaultContext': !exists(json, 'default_context') ? undefined : json['default_context'],
+        'thumbnail': !exists(json, 'thumbnail') ? undefined : json['thumbnail'],
         'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
         'timestampCreated': !exists(json, 'timestamp_created') ? undefined : (new Date(json['timestamp_created'])),
         'timestampUpdated': !exists(json, 'timestamp_updated') ? undefined : (new Date(json['timestamp_updated'])),
@@ -146,6 +153,7 @@ export function OSBRepositoryBaseToJSON(value?: OSBRepositoryBase | null): any {
         'auto_sync': value.autoSync,
         'uri': value.uri,
         'default_context': value.defaultContext,
+        'thumbnail': value.thumbnail,
         'user_id': value.userId,
         'timestamp_created': value.timestampCreated === undefined ? undefined : (value.timestampCreated.toISOString()),
         'timestamp_updated': value.timestampUpdated === undefined ? undefined : (value.timestampUpdated.toISOString()),

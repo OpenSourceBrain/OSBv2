@@ -34,6 +34,7 @@ import searchFilter from "../../types/searchFilter";
 
 //services
 import RepositoryService from "../../service/RepositoryService";
+import { Badge } from "@mui/material";
 
 interface SearchReposWorkspacesProps {
   searchFilterValues: searchFilter;
@@ -180,18 +181,23 @@ export const SearchFilterReposWorkspaces = (
         }
       );
     }, 500),
-    []
-  );
+    [] );
 
+  const  handleTagsChange = React.useCallback((event, value) => props?.setSearchFilterValues({
+      ...props?.searchFilterValues,
+      tags: value,
+    })
+  , [props?.searchFilterValues]);
+  
   return (
     <>
-      <RepositoriesWorkspacesSearchField filterChanged={props?.filterChanged} />
+      <RepositoriesWorkspacesSearchField value={props.searchFilterValues.text} filterChanged={props?.filterChanged} />
       <StyledFilterButton
         aria-describedby={id}
         aria-haspopup="true"
         variant="contained"
         onClick={handlePopoverClick}
-        startIcon={<FilterListIcon />}
+        startIcon={<Badge variant="dot" color="primary" badgeContent={props?.searchFilterValues.tags?.length || props?.searchFilterValues.types?.length}><FilterListIcon /></Badge>}
       >
         <Typography component="label">Filter</Typography>
       </StyledFilterButton>
@@ -222,12 +228,7 @@ export const SearchFilterReposWorkspaces = (
           onInputChange={(event, value) => {
             handleTagInput(value);
           }}
-          onChange={(event, value) =>
-            props?.setSearchFilterValues({
-              ...props?.searchFilterValues,
-              tags: value,
-            })
-          }
+          onChange={handleTagsChange}
           onClose={(event, reason) => handleTagInput("")}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
@@ -244,6 +245,7 @@ export const SearchFilterReposWorkspaces = (
             <>
               <SearchIcon />
               <TextField
+                
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -307,6 +309,8 @@ export const SearchFilterReposWorkspaces = (
       </StyledPopover>
     </>
   );
+
+  
 };
 
 export default SearchFilterReposWorkspaces;

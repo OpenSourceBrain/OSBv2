@@ -8,6 +8,8 @@ from cloudharness import applications
 from cloudharness.auth.exceptions import UserNotFound
 from urllib.parse import parse_qs, urlparse
 
+from harness_jupyter.jupyterhub import set_key_value
+
 allowed_chars = set(
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
@@ -31,6 +33,7 @@ def affinity_spec(key, value):
 
 class CookieNotFound(Exception):
     pass
+
 
 
 def change_pod_manifest(self: KubeSpawner):
@@ -135,8 +138,30 @@ def change_pod_manifest(self: KubeSpawner):
         self.storage_pvc_ensure = False
         self.volumes = []
         self.volume_mounts = []
-        print("Starting anonymoous session with no volumes")
 
+        print("Setting user quota cpu/mem usage")
+        from cloudharness.applications import get_current_configuration, get_configuration
+        try:
+            subdomain = self.handler.request.host.split(
+                str(self.config['domain']))[0][0:-1]
+            appname = next(app["name"] for app in self.config['apps'].values(
+            ) if app["harness"]["subdomain"] == subdomain)
+            app_conf = get_configuration(appname).to_dict()
+            cpu_conf = app_conf.get("singleuser", {}).get("cpu", {})
+            mem_conf = app_conf.get("singleuser", {}).get("memory", {})
+        except StopIteration:
+            cpu_conf = {}
+            mem_conf = {}
+
+        jh_conf = get_configuration('jupyterhub')
+        cpu_conf = {**jh_conf.singleuser["cpu"].to_dict(), **cpu_conf}
+        mem_conf = {**jh_conf.singleuser["memory"].to_dict(), **mem_conf}
+        set_key_value(self, key="cpu_guarantee", value=cpu_conf["guarantee"])
+        set_key_value(self, key="cpu_limit", value=cpu_conf["limit"])
+        set_key_value(self, key="mem_guarantee",
+                      value=mem_conf["guarantee"])
+        set_key_value(self, key="mem_limit", value=mem_conf["limit"])
+        print("Starting anonymous session with no volumes")
     except Exception as e:
         log.error('Change pod manifest failed due to an error.', exc_info=True)
 
@@ -157,8 +182,6 @@ def change_pod_manifest(self: KubeSpawner):
         'mountPath': '/opt/conda/etc/jupyter/nbconfig/jupyter_notebook_config.py',
         'readOnly': True
     })
-
-
 
 
 def get_app_user(user: User):

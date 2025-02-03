@@ -1,0 +1,5 @@
+harness:
+  deployment:
+    image: gcr.io/metacellllc/osb/nwb-explorer:0.7.6.2  
+  dependencies: {}
+    

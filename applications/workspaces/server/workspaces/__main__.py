@@ -32,8 +32,7 @@ def setup_static_router(app):
     # remove the static route (if exists)
     app.url_map._rules_by_endpoint["static"] = []
     # add / as static route
-    app.add_url_rule(f"/<path:filename>", endpoint="static", view_func=app.send_static_file)
-
+    app.add_url_rule(f"/<path:filename>", view_func=app.send_static_file)
 
 def init_app(app):
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -56,7 +55,7 @@ def init_app(app):
                     "Could not start kafka consumers. Some application functionality won't be available.", exc_info=True
                 )
     mkdirs()
-    # setup_static_router(app)
+    setup_static_router(app) 
     app.template_folder = Config.TEMPLATE_DIR
 
 
@@ -67,7 +66,6 @@ app = init_flask(
     resolver=connexion.resolver.MethodViewResolver("workspaces.controllers.crud"),
     config=Config,
 )
-
 
 
 

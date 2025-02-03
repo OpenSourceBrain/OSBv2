@@ -22,10 +22,10 @@ import styled from "@mui/system/styled";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
-import { CodeBranchIcon, RepositoriesCardIcon } from "../../components/icons";
+import { CodeBranchIcon, RepositoriesCardIcon, GithubCardIcon, FigshareCardIcon, DandiArchiveCardIcon } from "../../components/icons";
 
 //types
-import { OSBRepository } from "../../apiclient/workspaces";
+import { OSBRepository, RepositoryType } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 
 //utils
@@ -60,8 +60,6 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
     props;
 
   const openRepoUrl = (uri: string) => window.open(uri, "_blank");
-  const navigate = useNavigate();
-
   return (
     <>
       {loading ? (
@@ -88,13 +86,12 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
               return (
                 <Grid item key={index} xs={12} sm={6} md={4} lg={3} xl={2}>
                   <Card className={`workspace-card`} elevation={0}>
-                    <CardHeader></CardHeader>
-                    <CardContent>
                       <RepositoryActionsMenu
                         repository={repository}
                         user={props.user}
                         onAction={refreshRepositories}
                       />
+                    <CardContent>
 
                       <Box
                         className="imageContainer"
@@ -102,9 +99,25 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                         alignItems="center"
                         display="flex"
                         mb={2}
+                        overflow="hidden"
+                        flex="1"
+                        sx={{
+                          backgroundImage: repository.thumbnail && `url(/proxy/workspaces/${repository.thumbnail}?v=${repository.timestampUpdated.getMilliseconds()})`,
+                          backgroundSize: "cover",
+                        }}
                         onClick={() => handleRepositoryClick(repository)}
                       >
-                        <RepositoriesCardIcon />
+                        {
+                          !repository.thumbnail && (
+                            repository.repositoryType === RepositoryType.Github ? (
+                              <GithubCardIcon />
+                            ) : repository.repositoryType === RepositoryType.Figshare ? (
+                              <FigshareCardIcon />
+                            ) : repository.repositoryType === RepositoryType.Dandi ? (
+                              <DandiArchiveCardIcon />
+                            ) : (<RepositoriesCardIcon />)
+                          )
+                        }
                       </Box>
 
                       <Box sx={{ px: 1, py: 0 }}>

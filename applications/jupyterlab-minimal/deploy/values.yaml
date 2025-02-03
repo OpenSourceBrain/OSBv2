@@ -22,3 +22,9 @@ harness:
 
         c.JupyterHub.tornado_settings = { "headers": { "Content-Security-Policy": "frame-ancestors *"}}
 
+singleuser:
+  storage:
+    capacity: 2Mi
+  cpu:
+    limit: 3
+    guarantee: 0.13

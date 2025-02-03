@@ -5,7 +5,7 @@
             <span>${msg("doLogIn")} </span>
             <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
                 <div id="kc-registration" class="kc-register">
-                    <span>${msg("noAccount")} <a tabindex="6" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
+                    <span><a tabindex="6" href="${url.registrationUrl}">${msg("noAccount")} ${msg("doRegister")}</a></span>
                 </div>
             </#if>
        </div>

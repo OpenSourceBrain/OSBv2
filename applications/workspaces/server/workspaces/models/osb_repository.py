@@ -6,17 +6,21 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.osb_repository_base_tags_inner import OSBRepositoryBaseTagsInner
+from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf
+from workspaces.models.osb_repository_base import OSBRepositoryBase
 from workspaces.models.repository_content_type import RepositoryContentType
 from workspaces.models.repository_resource_node import RepositoryResourceNode
 from workspaces.models.repository_type import RepositoryType
+from workspaces.models.tag import Tag
 from workspaces.models.user import User
 from workspaces import util
 
-from workspaces.models.osb_repository_base_tags_inner import OSBRepositoryBaseTagsInner  # noqa: E501
+from workspaces.models.osb_repository_all_of import OSBRepositoryAllOf  # noqa: E501
+from workspaces.models.osb_repository_base import OSBRepositoryBase  # noqa: E501
 from workspaces.models.repository_content_type import RepositoryContentType  # noqa: E501
 from workspaces.models.repository_resource_node import RepositoryResourceNode  # noqa: E501
 from workspaces.models.repository_type import RepositoryType  # noqa: E501
+from workspaces.models.tag import Tag  # noqa: E501
 from workspaces.models.user import User  # noqa: E501
 
 class OSBRepository(Model):
@@ -25,7 +29,7 @@ class OSBRepository(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, summary=None, repository_type=None, content_types=None, auto_sync=True, uri=None, default_context=None, user_id=None, timestamp_created=None, timestamp_updated=None, tags=None, context_resources=None, contexts=None, user=None, content_types_list=None, description=None, timestamp_modified=None):  # noqa: E501
+    def __init__(self, id=None, name=None, summary=None, repository_type=None, content_types=None, auto_sync=True, uri=None, default_context=None, thumbnail=None, user_id=None, timestamp_created=None, timestamp_updated=None, tags=None, context_resources=None, contexts=None, user=None, content_types_list=None, description=None, timestamp_modified=None):  # noqa: E501
         """OSBRepository - a model defined in OpenAPI
 
         :param id: The id of this OSBRepository.  # noqa: E501
@@ -44,6 +48,8 @@ class OSBRepository(Model):
         :type uri: str
         :param default_context: The default_context of this OSBRepository.  # noqa: E501
         :type default_context: str
+        :param thumbnail: The thumbnail of this OSBRepository.  # noqa: E501
+        :type thumbnail: str
         :param user_id: The user_id of this OSBRepository.  # noqa: E501
         :type user_id: str
         :param timestamp_created: The timestamp_created of this OSBRepository.  # noqa: E501
@@ -51,7 +57,7 @@ class OSBRepository(Model):
         :param timestamp_updated: The timestamp_updated of this OSBRepository.  # noqa: E501
         :type timestamp_updated: datetime
         :param tags: The tags of this OSBRepository.  # noqa: E501
-        :type tags: List[OSBRepositoryBaseTagsInner]
+        :type tags: List[Tag]
         :param context_resources: The context_resources of this OSBRepository.  # noqa: E501
         :type context_resources: RepositoryResourceNode
         :param contexts: The contexts of this OSBRepository.  # noqa: E501
@@ -74,10 +80,11 @@ class OSBRepository(Model):
             'auto_sync': bool,
             'uri': str,
             'default_context': str,
+            'thumbnail': str,
             'user_id': str,
             'timestamp_created': datetime,
             'timestamp_updated': datetime,
-            'tags': List[OSBRepositoryBaseTagsInner],
+            'tags': List[Tag],
             'context_resources': RepositoryResourceNode,
             'contexts': List[str],
             'user': User,
@@ -95,6 +102,7 @@ class OSBRepository(Model):
             'auto_sync': 'auto_sync',
             'uri': 'uri',
             'default_context': 'default_context',
+            'thumbnail': 'thumbnail',
             'user_id': 'user_id',
             'timestamp_created': 'timestamp_created',
             'timestamp_updated': 'timestamp_updated',
@@ -115,6 +123,7 @@ class OSBRepository(Model):
         self._auto_sync = auto_sync
         self._uri = uri
         self._default_context = default_context
+        self._thumbnail = thumbnail
         self._user_id = user_id
         self._timestamp_created = timestamp_created
         self._timestamp_updated = timestamp_updated
@@ -326,6 +335,27 @@ class OSBRepository(Model):
         self._default_context = default_context
 
     @property
+    def thumbnail(self):
+        """Gets the thumbnail of this OSBRepository.
+
+
+        :return: The thumbnail of this OSBRepository.
+        :rtype: str
+        """
+        return self._thumbnail
+
+    @thumbnail.setter
+    def thumbnail(self, thumbnail):
+        """Sets the thumbnail of this OSBRepository.
+
+
+        :param thumbnail: The thumbnail of this OSBRepository.
+        :type thumbnail: str
+        """
+
+        self._thumbnail = thumbnail
+
+    @property
     def user_id(self):
         """Gets the user_id of this OSBRepository.
 
@@ -400,7 +430,7 @@ class OSBRepository(Model):
 
 
         :return: The tags of this OSBRepository.
-        :rtype: List[OSBRepositoryBaseTagsInner]
+        :rtype: List[Tag]
         """
         return self._tags
 
@@ -410,7 +440,7 @@ class OSBRepository(Model):
 
 
         :param tags: The tags of this OSBRepository.
-        :type tags: List[OSBRepositoryBaseTagsInner]
+        :type tags: List[Tag]
         """
 
         self._tags = tags

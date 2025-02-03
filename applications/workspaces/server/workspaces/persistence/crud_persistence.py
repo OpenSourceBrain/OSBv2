@@ -229,7 +229,7 @@ class WorkspaceResourceRepository(BaseModelRepository):
                 # not found --> create a new wsr
                 filename = os.path.basename(resource)
                 wsr = WorkspaceResourceEntity(
-                    name=filename,
+                    name=filename if not "index" in filename else os.path.basename(os.path.dirname(resource)),
                     folder=resource,
                     origin='{"path": "' + resource + '"}',
                     status=ResourceStatus.P,  # default status

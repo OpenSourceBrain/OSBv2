@@ -22,6 +22,7 @@ class Config(object):
     STATIC_DIR = os.path.join(BASE_DIR, "static")
     TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
     WORKSPACES_DIR = "workspaces"
+    REPOSITORY_DIR = "repositories"
     OPENAPI_DIR = os.path.join(BASE_DIR, "openapi")
     OPENAPI_FILE = "openapi.yaml"
     LOG_LEVEL = logging.DEBUG

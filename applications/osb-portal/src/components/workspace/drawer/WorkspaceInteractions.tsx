@@ -113,6 +113,7 @@ interface WorkspaceProps {
   refreshWorkspacePage?: () => void;
   currentResource: WorkspaceResource;
   hideTabs: Boolean;
+  staticPage: Boolean;
 }
 
 const SidebarBox = styled(Box)(({ theme }) => ({
@@ -129,6 +130,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      className="verticalFit"
       {...other}
     >
       {value === index && (
@@ -200,7 +202,7 @@ export default (props: WorkspaceProps | any) => {
   return (
     <>
       {props.open ? (
-        <SidebarBox>
+        <SidebarBox className="verticalFill">
           {!hideTabs && (
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
@@ -292,6 +294,7 @@ export default (props: WorkspaceProps | any) => {
               currentResource={props.currentResource}
               refreshWorkspace={handleWorkspaceRefresh}
               user={props.user}
+              staticPage={props.staticPage}
             />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>

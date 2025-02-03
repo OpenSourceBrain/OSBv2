@@ -186,7 +186,7 @@ export const WorkspaceFromRepository = ({
         ws.id,
         checked.map((c) => c.resource)
       ).then(() => {
-        setWorkspaceLink(`/workspace/${ws.id}`);
+        setWorkspaceLink(`/workspaces/${ws.id}`);
         setCreatedWorkspaceConfirmationContent((prevContent) => ({
           ...prevContent,
           title: "Success!",

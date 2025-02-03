@@ -1,3 +1,4 @@
+export * from './BiomodelsRepositoryResource';
 export * from './DandiRepositoryResource';
 export * from './DownloadResource';
 export * from './FigshareRepositoryResource';

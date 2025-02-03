@@ -19,7 +19,7 @@ export default (props: any) => {
   }, [workspaceId]);
 
   return (
-    <Box className="verticalFill">
+    <Box className="verticalFill" height={1}>
       <Divider variant="fullWidth" />
       <WorkspaceDrawer app={app} />
     </Box>

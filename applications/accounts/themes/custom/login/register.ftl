@@ -5,7 +5,7 @@
         <span>${msg("registerTitle")}</span>
         <div id="kc-form-options">
             <div class="${properties.kcFormOptionsWrapperClass!}">
-                <span>Already have an account? <a href="${url.loginUrl}">${kcSanitize(msg("Log In"))?no_esc}</a></span>
+                <span><a href="${url.loginUrl}">Already have an account? ${kcSanitize(msg("Log In"))?no_esc}</a></span>
             </div>
         </div>
         </div>

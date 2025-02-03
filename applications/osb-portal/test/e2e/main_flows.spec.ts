@@ -59,7 +59,7 @@ const testApplication =
     }
 
     await page.waitForSelector(selectors.OPENED_WORKSPACE);
-    expect(page.url()).toContain("/workspace/");
+    expect(page.url()).toContain("/workspaces/");
 
     await page.waitForSelector(selectors.SELECT_APPLICATION);
     await page.click(selectors.SELECT_APPLICATION);

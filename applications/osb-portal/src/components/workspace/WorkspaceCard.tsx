@@ -78,7 +78,7 @@ export const WorkspaceCard = (props: Props) => {
           <Box sx={{ px: 1, cursor: "pointer" }}>
             <Tooltip title={workspace?.name}>
               <Link
-                onClick={() => navigate(`/workspace/${workspace.id}`)}
+                onClick={() => navigate(`/workspaces/${workspace.id}`)}
                 className={`workspace-page-link`}
                 underline="none"
               >

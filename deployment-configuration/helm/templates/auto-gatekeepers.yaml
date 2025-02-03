@@ -1,0 +1,174 @@
+{{/* Secured Services/Deployments */}}
+{{- define "deploy_utils.securedservice" }}
+{{- $tls := not (not .root.Values.tls) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .app.harness.service.name }}-gk"
+  labels:
+    app: "{{ .app.harness.service.name }}-gk"
+data:
+  proxy.yml: |-
+    verbose: {{ .root.Values.debug }}
+    discovery-url: {{ ternary "https" "http" $tls}}://{{ .root.Values.apps.accounts.harness.subdomain }}.{{ .root.Values.domain }}/auth/realms/{{ .root.Values.namespace }}
+    client-id: {{ .root.Values.apps.accounts.webclient.id | quote }}
+    client-secret: {{ .root.Values.apps.accounts.webclient.secret }}
+    secure-cookie: {{ $tls }}
+    forbidden-page: /templates/access-denied.html.tmpl
+    enable-default-deny:  {{ eq (.app.harness.secured | toString) "true" }}
+    listen: 0.0.0.0:8080
+    enable-refresh-tokens: true
+    server-write-timeout: {{ .app.harness.proxy.timeout.send | default .root.Values.proxy.timeout.send | default 180 }}s
+    upstream-timeout: {{ .app.harness.proxy.timeout.read | default .root.Values.proxy.timeout.read | default 180 }}s
+    upstream-response-header-timeout:   {{ .app.harness.proxy.timeout.read | default .root.Values.proxy.timeout.read | default 180 }}s
+    upstream-expect-continue-timeout:  {{ .app.harness.proxy.timeout.read | default .root.Values.proxy.timeout.read | default 180 }}s
+    server-read-timeout:  {{ .app.harness.proxy.timeout.read | default .root.Values.proxy.timeout.read | default 180 }}s
+    upstream-keepalive-timeout:  {{ .app.harness.proxy.timeout.keepalive | default .root.Values.proxy.timeout.keepalive | default 180 }}s
+    http-only-cookie: false
+    tls-cert:
+    tls-private-key:
+    redirection-url: {{ ternary "https" "http" $tls }}://{{ .app.harness.subdomain }}.{{ .root.Values.domain }}
+    encryption-key: AgXa7xRcoClDEU0ZDSH4X0XhL5Qy2Z2j
+    upstream-url: http://{{ .app.harness.service.name }}.{{ .app.namespace | default .root.Release.Namespace }}:{{ .app.harness.service.port | default 80}}
+    {{ if .app.harness.secured }}
+      {{ with .app.harness.uri_role_mapping }}
+    resources:
+    {{. | toYaml | nindent 4 }}
+      {{- end }}
+    {{- end }}
+    {{ if or .root.Values.local (not $tls) }}
+    skip-openid-provider-tls-verify: true
+    skip-upstream-tls-verify: true
+    {{- end }}
+  cacert.crt: {{ .files.Get "resources/certs/cacert.crt" | quote }}
+  access-denied.html.tmpl: |-
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>403 - Access Forbidden</title>
+      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+      <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <style>
+        .oops {
+          font-size: 9em;
+          letter-spacing: 2px;
+        }
+        .message {
+          font-size: 3em;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container text-center">
+        <div class="row vcenter" style="margin-top: 20%;">
+          <div class="col-md-12">
+            <div class="error-template">
+              <h1 class="oops">Oops!</h1>
+              <h2 class="message">403 Permission Denied</h2>
+              <div class="error-details">
+                Sorry, you do not have access to this page, please contact your administrator.
+                If you have been assigned new authorizations, try to refresh the page or to <a href="/oauth/logout?redirect=/">login again</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .app.harness.service.name }}-gk"
+  labels:
+    app: "{{ .app.harness.service.name }}-gk"
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: "{{ .app.harness.service.name }}-gk"
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .app.harness.service.name }}-gk"
+  labels:
+    app: "{{ .app.harness.service.name }}-gk"
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .app.harness.service.name }}-gk"
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ .app.harness.uri_role_mapping | toString | sha256sum }}
+      labels:
+        app: "{{ .app.harness.service.name }}-gk"
+    spec:
+{{ include "deploy_utils.etcHosts" .root | indent 6 }}
+      containers:
+      - name: {{ .app.harness.service.name | quote }}
+        image: "quay.io/gogatekeeper/gatekeeper:1.3.8"
+        imagePullPolicy: IfNotPresent
+        {{ if .root.Values.local }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 0
+        {{- end }}
+        env:
+        - name: PROXY_CONFIG_FILE
+          value: /opt/proxy.yml
+        volumeMounts:
+        - name: "{{ .app.harness.service.name }}-gk-proxy-config"
+          mountPath: /opt/proxy.yml
+          subPath: proxy.yml
+        - name: "{{ .app.harness.service.name }}-gk-proxy-config"
+          mountPath: /etc/pki/ca-trust/source/anchors/cacert.crt
+          subPath: cacert.crt
+        - name: "{{ .app.harness.service.name }}-gk-proxy-config"
+          mountPath: /templates/access-denied.html.tmpl
+          subPath: access-denied.html.tmpl
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "5m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+      volumes:
+      - name: "{{ .app.harness.service.name }}-gk-proxy-config"
+        configMap:
+          name: "{{ .app.harness.service.name }}-gk"
+---
+{{- end }}
+{{- if .Values.secured_gatekeepers }}
+{{ $files := .Files }}
+{{- range $app := .Values.apps }}
+  {{- if and (hasKey $app "port") ($app.harness.secured)   }}
+---
+    {{ include "deploy_utils.securedservice" (dict "root" $ "app" $app "files" $files) }}
+    {{- end }}
+  {{- range $subapp := $app }}
+  {{- if contains "map" (typeOf $subapp)  }}
+    {{- if and (hasKey $subapp "harness.port") (hasKey $subapp "harness.secured") }}
+      {{- if $subapp.harness.secured }}
+---
+      {{ include "deploy_utils.securedservice" (dict "root" $ "app" $subapp "files" $files) }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+ {{- end }}
+{{- end }}

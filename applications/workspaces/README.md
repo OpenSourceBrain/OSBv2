@@ -43,6 +43,8 @@ Configuration of the server can be changed in the config.py file
 
 
 ### Regenerate backend from openapi
+
+Check the workspaces/api/README.md for more information about the openapi generation.
 ```
 openapi-generator-cli generate -i api/openapi.yaml -g python-flask -o server -c api/config.json
 ```

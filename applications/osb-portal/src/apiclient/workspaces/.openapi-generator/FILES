@@ -2,6 +2,7 @@ apis/K8sApi.ts
 apis/RestApi.ts
 apis/index.ts
 index.ts
+models/BiomodelsRepositoryResource.ts
 models/DandiRepositoryResource.ts
 models/DownloadResource.ts
 models/FigshareRepositoryResource.ts

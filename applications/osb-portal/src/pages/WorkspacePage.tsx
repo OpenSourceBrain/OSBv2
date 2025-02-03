@@ -80,7 +80,7 @@ export const WorkspacePage = (props: any) => {
   };
 
   const openWithApp = (selectedOption: OSBApplication) => {
-    navigate(`/workspace/open/${workspaceId}/${selectedOption.code}`);
+    navigate(`/workspaces/open/${workspaceId}/${selectedOption.code}`);
   };
 
   const canEdit = canEditWorkspace(props.user, workspace);
@@ -97,16 +97,13 @@ export const WorkspacePage = (props: any) => {
             <Grid
               container={true}
               alignItems="center"
+              justifyContent="space-between"
               className="verticalFill"
               spacing={1}
               sx={{ background: bgDarkest }}
             >
               <Grid
                 item={true}
-                xs={12}
-                sm={12}
-                md={7}
-                lg={7}
                 className="verticalFill"
               >
                 <NavbarButton
@@ -121,10 +118,6 @@ export const WorkspacePage = (props: any) => {
               <Grid
                 item={true}
                 gap={1}
-                xs={12}
-                sm={8}
-                md={5}
-                lg={5}
                 justifyContent="end"
                 padding={"0 16px"}
               >
@@ -240,6 +233,7 @@ export const WorkspacePage = (props: any) => {
                     user={user}
                     open={true}
                     hideTabs={true}
+                    staticPage={true}
                     refreshWorkspace={props.refreshWorkspace}
                     currentResource={
                       workspace.lastOpen || workspace.resources[0]
@@ -248,7 +242,7 @@ export const WorkspacePage = (props: any) => {
                 </Grid>
                 <Grid
                   item
-                  justifyContent={workspace?.thumbnail ? "center" : "start"}
+                  justifyContent="start"
                   xs={12}
                   sm={6}
                   lg={6.5}
@@ -274,7 +268,7 @@ export const WorkspacePage = (props: any) => {
                         },
                       }}
                     >
-                      <Box className="imageContainer" display="flex">
+                      <Box className="imageContainer" display="flex" justifyContent="center">
                         {workspace?.thumbnail && (
                           <img
                             width={"100%"}
@@ -286,6 +280,12 @@ export const WorkspacePage = (props: any) => {
                             }
                             title={workspace.name}
                             alt={workspace.name}
+                            style={{
+                              width: 'auto',
+                              height: 'auto',
+                              maxWidth: '100%',
+                              maxHeight: '300px'
+                            }}
                           />
                         )}
                       </Box>

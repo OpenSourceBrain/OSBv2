@@ -283,7 +283,7 @@ export const UserPage = (props: any) => {
     setProfileEditDialogOpen(false);
     updateUser(u)
       .then((updatedUser) => {
-        setUser(updatedUser);
+        setUser({ ...updatedUser, ...u });
         setLoading(false);
       })
       .catch((err) => {
@@ -309,7 +309,7 @@ export const UserPage = (props: any) => {
   }
 
   const openWorkspaceUrl = (workspaceId: number) => {
-    navigate(`/workspace/${workspaceId}`);
+    navigate(`/workspaces/${workspaceId}`);
   };
 
   const canEdit =
@@ -794,7 +794,7 @@ export const UserPage = (props: any) => {
       {canEdit && profileEditDialogOpen && (
 
         <UserEditor
-          user={{...currentUser, ...user}}
+          user={{ ...user, email: user.email || currentUser.email }}
           saveUser={handleUpdateUser}
           close={() => setProfileEditDialogOpen(false)}
         />

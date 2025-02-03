@@ -10,6 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 //style
 import { bgRegular, chipTextColor } from "../../theme";
 import styled from "@mui/system/styled";
+import { debounce } from "lodash";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   backgroundColor: bgRegular,
@@ -40,9 +41,16 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 interface RepositoriesSearchProps {
   filterChanged: (newFilter: string) => void;
   borderRadius?: number;
+  value?: string;
 }
 
 export default (props: RepositoriesSearchProps) => {
+
+  const handleChange = React.useCallback(debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+    // Timout improves responsiveness while typing
+    props.filterChanged(event.target.value);
+  }, 1000), []);
+
   return (
     <StyledTextField
       variant="standard"
@@ -54,9 +62,7 @@ export default (props: RepositoriesSearchProps) => {
           : "8px 0px 0px 8px",
       }}
       placeholder="Search"
-      onChange={(e) => {
-        props.filterChanged(e.target.value.toLowerCase());
-      }}
+      onChange={handleChange}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

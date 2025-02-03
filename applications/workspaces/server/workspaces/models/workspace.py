@@ -6,19 +6,23 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
+from workspaces.models.tag import Tag
 from workspaces.models.user import User
 from workspaces.models.volume_storage import VolumeStorage
-from workspaces.models.workspace_base_gallery_inner import WorkspaceBaseGalleryInner
-from workspaces.models.workspace_base_tags_inner import WorkspaceBaseTagsInner
+from workspaces.models.workspace_all_of import WorkspaceAllOf
+from workspaces.models.workspace_base import WorkspaceBase
 from workspaces.models.workspace_collaborator import WorkspaceCollaborator
+from workspaces.models.workspace_image import WorkspaceImage
 from workspaces.models.workspace_resource import WorkspaceResource
 from workspaces import util
 
+from workspaces.models.tag import Tag  # noqa: E501
 from workspaces.models.user import User  # noqa: E501
 from workspaces.models.volume_storage import VolumeStorage  # noqa: E501
-from workspaces.models.workspace_base_gallery_inner import WorkspaceBaseGalleryInner  # noqa: E501
-from workspaces.models.workspace_base_tags_inner import WorkspaceBaseTagsInner  # noqa: E501
+from workspaces.models.workspace_all_of import WorkspaceAllOf  # noqa: E501
+from workspaces.models.workspace_base import WorkspaceBase  # noqa: E501
 from workspaces.models.workspace_collaborator import WorkspaceCollaborator  # noqa: E501
+from workspaces.models.workspace_image import WorkspaceImage  # noqa: E501
 from workspaces.models.workspace_resource import WorkspaceResource  # noqa: E501
 
 class Workspace(Model):
@@ -45,7 +49,7 @@ class Workspace(Model):
         :param thumbnail: The thumbnail of this Workspace.  # noqa: E501
         :type thumbnail: str
         :param gallery: The gallery of this Workspace.  # noqa: E501
-        :type gallery: List[WorkspaceBaseGalleryInner]
+        :type gallery: List[WorkspaceImage]
         :param user_id: The user_id of this Workspace.  # noqa: E501
         :type user_id: str
         :param publicable: The publicable of this Workspace.  # noqa: E501
@@ -59,7 +63,7 @@ class Workspace(Model):
         :param storage: The storage of this Workspace.  # noqa: E501
         :type storage: VolumeStorage
         :param tags: The tags of this Workspace.  # noqa: E501
-        :type tags: List[WorkspaceBaseTagsInner]
+        :type tags: List[Tag]
         :param resources: The resources of this Workspace.  # noqa: E501
         :type resources: List[WorkspaceResource]
         :param user: The user of this Workspace.  # noqa: E501
@@ -73,14 +77,14 @@ class Workspace(Model):
             'timestamp_updated': datetime,
             'last_opened_resource_id': int,
             'thumbnail': str,
-            'gallery': List[WorkspaceBaseGalleryInner],
+            'gallery': List[WorkspaceImage],
             'user_id': str,
             'publicable': bool,
             'featured': bool,
             'license': str,
             'collaborators': List[WorkspaceCollaborator],
             'storage': VolumeStorage,
-            'tags': List[WorkspaceBaseTagsInner],
+            'tags': List[Tag],
             'resources': List[WorkspaceResource],
             'user': User
         }
@@ -302,7 +306,7 @@ class Workspace(Model):
         Gallery with images of the workspace  # noqa: E501
 
         :return: The gallery of this Workspace.
-        :rtype: List[WorkspaceBaseGalleryInner]
+        :rtype: List[WorkspaceImage]
         """
         return self._gallery
 
@@ -313,7 +317,7 @@ class Workspace(Model):
         Gallery with images of the workspace  # noqa: E501
 
         :param gallery: The gallery of this Workspace.
-        :type gallery: List[WorkspaceBaseGalleryInner]
+        :type gallery: List[WorkspaceImage]
         """
 
         self._gallery = gallery
@@ -460,7 +464,7 @@ class Workspace(Model):
 
 
         :return: The tags of this Workspace.
-        :rtype: List[WorkspaceBaseTagsInner]
+        :rtype: List[Tag]
         """
         return self._tags
 
@@ -470,7 +474,7 @@ class Workspace(Model):
 
 
         :param tags: The tags of this Workspace.
-        :type tags: List[WorkspaceBaseTagsInner]
+        :type tags: List[Tag]
         """
 
         self._tags = tags

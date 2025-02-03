@@ -1,0 +1,6 @@
+harness:
+  database:
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 10m

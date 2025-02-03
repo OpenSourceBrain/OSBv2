@@ -8,6 +8,7 @@
       {% block message %}
       <p>We are loading the workspace…</p>
       {% endblock %}
+      <p id="warning-message"></p>
       <p id="progress-message"></p>
       <div class="progress">
         <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
@@ -56,9 +57,13 @@
       var html_message;
       if (evt.html_message !== undefined) {
         progressMessage.html(evt.html_message);
+        
         html_message = evt.html_message;
       } else if (evt.message !== undefined) {
         progressMessage.text(evt.message);
+        if(evt.message.includes("anonymous-")) {
+          $("#warning-message").html(`You are running as an anonymous user. The current session will have limited resources and might be deleted at any time. Please <a target="_blank" href="//${window.location.host.split(".").splice(1).join(".")}">log in as an OSBv2 user</a> to get more resources and persisted workspaces.`);
+        }
         html_message = progressMessage.html();
       }
       if (html_message) {

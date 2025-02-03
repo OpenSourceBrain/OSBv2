@@ -23,7 +23,8 @@
 export enum RepositoryType {
     Dandi = 'dandi',
     Figshare = 'figshare',
-    Github = 'github'
+    Github = 'github',
+    Biomodels = 'biomodels'
 }
 
 export function RepositoryTypeFromJSON(json: any): RepositoryType {

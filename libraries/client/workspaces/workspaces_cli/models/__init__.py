@@ -13,6 +13,7 @@ from workspaces_cli.model.dandi_repository_resource import DandiRepositoryResour
 from workspaces_cli.model.download_resource import DownloadResource
 from workspaces_cli.model.figshare_repository_resource import FigshareRepositoryResource
 from workspaces_cli.model.git_repository_resource import GITRepositoryResource
+from workspaces_cli.model.biomodels_repository_resource import BiomodelsRepositoryResource
 from workspaces_cli.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
 from workspaces_cli.model.inline_object import InlineObject
 from workspaces_cli.model.inline_response200 import InlineResponse200

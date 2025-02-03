@@ -1,5 +1,7 @@
 # Generate the frontend and backend openapi clients
 
+You can use the script `generate_openapi_stubs.sh` to generate the openapi stubs for the frontend and backend. Ensure you are in the right directory and run the script.
+
 ## Set openapi version
 
 ```

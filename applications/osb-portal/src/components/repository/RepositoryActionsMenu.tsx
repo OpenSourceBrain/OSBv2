@@ -16,7 +16,7 @@ import { styled } from "@mui/styles";
 import { chipBg } from "../../theme";
 import IconButton from "@mui/material/IconButton";
 import RepositoryService from "../../service/RepositoryService";
-import DeleteDialog from "../dialogs/DeleteDialog";
+import PrimaryDialog from "../dialogs/PrimaryDialog";
 
 
 interface RepositoryActionsMenuProps {
@@ -73,6 +73,7 @@ export default (props: RepositoryActionsMenuProps) => {
     RepositoryService.deleteRepository(props.repository.id).then(() => {
       props.onAction(null);
       handleCloseMenu();
+      navigate('/repositories')
     });
   };
 
@@ -122,11 +123,12 @@ export default (props: RepositoryActionsMenuProps) => {
 
       {
         showDeleteRepositoryDialog && (
-          <DeleteDialog
+          <PrimaryDialog
             open={showDeleteRepositoryDialog}
             setOpen={setShowDeleteRepositoryDialog}
-            handleDeleteCallback={handleDeleteRepository}
-            navigateToPath={'/repositories'}
+            handleCallback={handleDeleteRepository}
+            actionButtonText={'DELETE'}
+            cancelButtonText={'CANCEL'}
             title={'Delete Repository "' + props.repository.name + '"'}
             description={'You are about to delete Repository "' + props.repository.name + '". This action cannot be undone. Are you sure?'}
           />
