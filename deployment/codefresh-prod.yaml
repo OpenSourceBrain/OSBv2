@@ -27,12 +27,12 @@ steps:
         title: Cloning nwb-explorer.git repository...
         type: git-clone
         repo: https://github.com/MetaCell/nwb-explorer.git
-        revision: development
+        revision: master
         working_directory: applications/nwb-explorer/dependencies/
         git: github
   prepare_deployment:
     title: Prepare helm chart
-    image: python:3.9.10
+    image: python:3.12
     stage: prepare
     working_directory: .
     commands:
