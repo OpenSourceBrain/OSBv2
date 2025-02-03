@@ -38,7 +38,11 @@ def get_tags_info(
                 if mla["qualifier"] == "bqbiol:hasTaxon":
                     if "name" in mla:
                         tags.append(mla["name"])
-                if mla["qualifier"] == "bqbiol:isVersionOf":
+                elif mla["qualifier"] == "bqbiol:isVersionOf":
+                    if "name" in mla:
+                        n = mla["name"]
+                        tags.append(n[0].upper() + n[1:])
+                elif "resource" in mla and mla["resource"] == "Human Disease Ontology":
                     if "name" in mla:
                         n = mla["name"]
                         tags.append(n[0].upper() + n[1:])
@@ -95,12 +99,12 @@ def get_tags_info(
             tags.append("%s" % dandishowcase_info["species"])
 
     tags_list = []
-    tags = sorted(tags)
+    tags = sorted(list(dict.fromkeys(tags))) # sort and remove duplicates
     for tag in tags:
         tags_list.append({"tag": tag})
 
     print("    ------------ Tags: ---------")
-    print("       %s" % tags)
+    print("    %s" % tags)
     # print("       %s"%tags_list)
 
     return tags_list
