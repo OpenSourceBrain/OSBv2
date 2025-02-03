@@ -993,6 +993,7 @@ components:
                 - dandi
                 - figshare
                 - github
+                - biomodels
             type: string
         RepositoryContentType:
             description: |
@@ -1412,7 +1413,6 @@ components:
                 -
                     $ref: '#/components/schemas/WorkspaceResourceBase'
                 -
-                    x-tablename: Workspaceresource
                     properties:
                         origin:
                             description: Origin data JSON formatted of the WorkspaceResource
@@ -1425,6 +1425,7 @@ components:
                             description: WorkspaceResource path where the resource will stored in the pvc.
                             type: string
                             example: repo/sample.nwb
+                    x-tablename: Workspaceresource
         WorkspaceResource:
             description: Workspace Resource item of a Workspace
             allOf:
@@ -1505,6 +1506,11 @@ components:
                                 $ref: '#/components/schemas/Tag'
                             -
                                 x-secondary: osbrepository_tag
+        BiomodelsRepositoryResource:
+            description: figshare repository resource
+            allOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResourceBase'
     securitySchemes:
         bearerAuth:
             scheme: bearer

@@ -181,9 +181,14 @@ export const SearchFilterReposWorkspaces = (
         }
       );
     }, 500),
-    []
-  );
+    [] );
 
+  const  handleTagsChange = React.useCallback((event, value) => props?.setSearchFilterValues({
+      ...props?.searchFilterValues,
+      tags: value,
+    })
+  , [props?.searchFilterValues]);
+  
   return (
     <>
       <RepositoriesWorkspacesSearchField value={props.searchFilterValues.text} filterChanged={props?.filterChanged} />
@@ -223,12 +228,7 @@ export const SearchFilterReposWorkspaces = (
           onInputChange={(event, value) => {
             handleTagInput(value);
           }}
-          onChange={(event, value) =>
-            props?.setSearchFilterValues({
-              ...props?.searchFilterValues,
-              tags: value,
-            })
-          }
+          onChange={handleTagsChange}
           onClose={(event, reason) => handleTagInput("")}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
@@ -309,6 +309,8 @@ export const SearchFilterReposWorkspaces = (
       </StyledPopover>
     </>
   );
+
+  
 };
 
 export default SearchFilterReposWorkspaces;

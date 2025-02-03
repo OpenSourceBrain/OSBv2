@@ -1,0 +1,3 @@
+harness:
+  deployment:
+    image: gcr.io/metacellllc/osb/netpyne:0.7.6.2  

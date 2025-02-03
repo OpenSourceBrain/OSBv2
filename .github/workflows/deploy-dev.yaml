@@ -1,0 +1,46 @@
+name: Build and Deploy OSBv2 to Dev
+on:
+  push:
+    branches: [ develop, release/* ]
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/checkout@v2
+      name: Post main clone
+      with:
+        name: MetaCell/cloud-harness 
+        ref: ${{ vars.CLOUDHARNESS_BRANCH || 'master'  }}
+    
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.9' 
+    - name: Prepare helm chart 
+      run: |
+        bash cloud-harness/install.sh
+        harness-deployment cloud-harness . -d ${{vars.DOMAIN}} -r ${{vars.REGISTRY}} -rs ${{secrets.REGISTRY_SECRET}}
+        -n ${{vars.NAMESPACE}} --write-env -e dev -i osb-portal
+    - uses: actions/upload-artifact@v4
+      with:
+          name: env_vars_to_export
+          path: deployment/.env
+  build-base-images:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Build the Docker image
+      run: |
+        cd applications/nwb-explorer
+        docker build -t mynwbexplorer -f Dockerfile --no-cache .
+    - name: Deploy to Dev
+      uses: MetaCell/deploy-osbv2@v1
+      with:
+        environment: dev
+        service: nwbexplorer
+        port: 80
+        dependencies: jupyterhub
+        git:
+    

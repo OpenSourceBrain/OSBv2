@@ -4,7 +4,7 @@ import sys
 from setuptools import setup, find_packages
 
 NAME = "workspaces"
-VERSION = "0.7.0"
+VERSION = "0.8.0"
 
 # To install the library, run the following
 #
@@ -24,7 +24,7 @@ REQUIRES = [
     "flask_cors",
     "sentry-sdk",
     "responses==0.22.0",
-    "jinja2<3.1.0"
+    "jinja2<3.2.0"
 ]
 
 setup(
