@@ -62,6 +62,32 @@ const customButtonStyle = {
   },
 };
 
+const CustomButton = ({
+  listType,
+  Icon,
+  changeListView,
+  listView
+}: {
+  listType: string;
+  Icon: ReactElement;
+  changeListView: (type: string) => void;
+  listView: string;
+}) => {
+  if (listType === listView) {
+    return (
+      <StyledActiveIconButton onClick={() => changeListView(listType)}>
+        {Icon}
+      </StyledActiveIconButton>
+    );
+  } else {
+    return (
+      <StyledIconButton onClick={() => changeListView(listType)}>
+        {Icon}
+      </StyledIconButton>
+    );
+  }
+};
+
 export const StyledIconButton = styled(IconButton)(() => customButtonStyle);
 
 export const StyledActiveIconButton = styled(IconButton)(() => ({
@@ -105,25 +131,23 @@ export const RepositoriesPage = ({
   const [tabValue, setTabValue] = React.useState(RepositoriesTab.all);
   const [listView, setListView] = React.useState<string>("list");
 
-  
-
-  const openRepoUrl = (repositoryId: number) => {
+  const openRepoUrl = React.useCallback((repositoryId: number) => {
     navigate(`/repositories/${repositoryId}`);
-  };
+  }, []);
 
-  const debouncedHandleSearchFilter = (newTextFilter: string) => {
+  const handleSearchFilter = React.useCallback((newTextFilter: string) => {
     setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
-    debounce(() => updateReposList(newTextFilter), 500)();
-  };
+  }, []);
 
-  const setReposValues = (reposDetails) => {
+  const setReposValues = React.useCallback((reposDetails) => {
     setRepositories(reposDetails.osbrepositories);
     setTotal(reposDetails.pagination.total);
     setTotalPages(reposDetails.pagination.numberOfPages);
     setLoading(false);
-  };
+  }, []);
 
-  const updateReposList = (updatedSearchFilterValues) => {
+  const updateReposList = React.useCallback(
+    async (updatedSearchFilterValues) => {
     const isSearchFieldsEmpty =
       updatedSearchFilterValues?.tags?.length === 0 &&
       updatedSearchFilterValues?.types?.length === 0 &&
@@ -150,48 +174,30 @@ export const RepositoriesPage = ({
         setReposValues(reposDetails);
       });
     }
-  };
+  }, [page, tabValue, user?.id]);
 
-  const handleRefreshRepositories = () => {
+  const handleRefreshRepositories = React.useCallback(() => {
     updateReposList(searchFilterValues);
-  }
+  }, [searchFilterValues]);
 
-  const handleTabChange = (event: any, newValue: RepositoriesTab) => {
+  const handleTabChange = React.useCallback((event: any, newValue: RepositoriesTab) => {
     setTotal(0);
     setTabValue(newValue);
     setPage(1)
-  };
+  }, []);
 
-  const changeListView = (type: string) => {
+  const changeListView = React.useCallback((type: string) => {
     setListView(type);
-  };
+  }, []);
 
-  const handleChangePage = (event: unknown, current: number) => {
+  const handleChangePage = React.useCallback((event: unknown, current: number) => {
     setPage(current);
-  };
+  }, []);
 
-  const CustomButton = ({
-    listType,
-    Icon,
-  }: {
-    listType: string;
-    Icon: ReactElement;
-  }) => {
-    if (listType === listView) {
-      return (
-        <StyledActiveIconButton onClick={() => changeListView(listType)}>
-          {Icon}
-        </StyledActiveIconButton>
-      );
-    } else {
-      return (
-        <StyledIconButton onClick={() => changeListView(listType)}>
-          {Icon}
-        </StyledIconButton>
-      );
-    }
-  };
-  React.useEffect(() => updateReposList(searchFilterValues), [page, searchFilterValues, tabValue, counter]);
+  
+  React.useEffect(() => {
+    updateReposList(searchFilterValues)
+  }, [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
@@ -261,13 +267,11 @@ export const RepositoriesPage = ({
                     variant="contained"
                     aria-label="Disabled elevation buttons"
                   >
-                    <CustomButton Icon={<WindowIcon />} listType="grid" />
-                    <CustomButton Icon={<ListIcon />} listType="list" />
+                    <CustomButton Icon={<WindowIcon />} listType="grid" listView={listView} changeListView={changeListView} />
+                    <CustomButton Icon={<ListIcon />} listType="list" listView={listView} changeListView={changeListView} />
                   </ButtonGroup>
                   <SearchFilterReposWorkspaces
-                    filterChanged={(newTextFilter) =>
-                      debouncedHandleSearchFilter(newTextFilter)
-                    }
+                    filterChanged={handleSearchFilter}
                     searchFilterValues={searchFilterValues}
                     setSearchFilterValues={setSearchFilterValues}
                     hasTypes={true}
