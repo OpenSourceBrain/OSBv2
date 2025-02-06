@@ -6,7 +6,6 @@ harness:
     name: proxy-public
   deployment:
     auto: false
-    image: netpyne:latest  
   jupyterhub:
     args: ["--NotebookApp.default_url=/geppetto", "--library=netpyne_ui", "--NotebookApp.notebook_dir=/opt/workspace", "--NotebookApp.disable_check_xsrf=True"]
     applicationHook: "osb_jupyter.change_pod_manifest"

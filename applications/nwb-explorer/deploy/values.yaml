@@ -12,7 +12,7 @@ harness:
       - jupyterhub
     git:
       - url: https://github.com/MetaCell/nwb-explorer.git
-        branch_tag: development
+        branch_tag: master
   jupyterhub:
     args: ["--debug", "--ServerApp.default_url=/geppetto", "--library=nwb_explorer", "--ServerApp.notebook_dir=/opt/workspace", "--NotebookApp.notebook_dir=/opt/workspace", '--NotebookApp.tornado_settings={"headers":{"Content-Security-Policy": "frame-ancestors *;"}}']
     applicationHook: "osb_jupyter.change_pod_manifest"
