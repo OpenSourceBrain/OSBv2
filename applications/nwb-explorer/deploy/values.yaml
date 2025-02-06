@@ -4,6 +4,9 @@ harness:
     auto: false
     port: 80
     name: proxy-public
+  deployment:
+    auto: false
+    port: 8081
   dependencies:
     hard:
       - jupyterhub
@@ -11,7 +14,7 @@ harness:
       - url: https://github.com/MetaCell/nwb-explorer.git
         branch_tag: development
   jupyterhub:
-    args: ["--debug", "--ServerApp.default_url=/geppetto", "--library=nwb_explorer", "--ServerApp.root_dir=/opt/workspace"]
+    args: ["--debug", "--ServerApp.default_url=/geppetto", "--library=nwb_explorer", "--ServerApp.notebook_dir=/opt/workspace", "--NotebookApp.notebook_dir=/opt/workspace", '--NotebookApp.tornado_settings={"headers":{"Content-Security-Policy": "frame-ancestors *;"}}']
     applicationHook: "osb_jupyter.change_pod_manifest"
     extraConfig:
       timing: |

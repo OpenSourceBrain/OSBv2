@@ -60,4 +60,7 @@ RUN chown $NB_UID .
 COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/build webapp/build
 
 USER $NB_UID
+
+RUN rm -Rf $(pwd)/workspace && ln -s /opt/workspace $(pwd)/
+
 CMD ./NWBE
