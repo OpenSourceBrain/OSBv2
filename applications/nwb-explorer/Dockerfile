@@ -32,7 +32,9 @@ RUN chown $NB_UID /opt
 RUN chown $NB_UID .
 
 USER $NB_UID
-
+COPY requirements.txt requirements.txt
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+    pip install cython  && pip install -r requirements.txt --prefer-binary
 COPY dependencies/nwb-explorer/requirements.txt requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
     pip install cython  && pip install -r requirements.txt --prefer-binary
@@ -58,4 +60,7 @@ RUN chown $NB_UID .
 COPY --from=jsbuild --chown=$NB_UID:$NB_UID $FOLDER/webapp/build webapp/build
 
 USER $NB_UID
+
+RUN rm -Rf $(pwd)/workspace && ln -s /opt/workspace $(pwd)/
+
 CMD ./NWBE

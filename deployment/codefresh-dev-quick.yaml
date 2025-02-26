@@ -27,13 +27,6 @@ steps:
         revision: '${{CLOUDHARNESS_BRANCH}}'
         working_directory: .
         git: github
-      clone_nwb-explorer.git_nwb-explorer:
-        title: Cloning nwb-explorer.git repository...
-        type: git-clone
-        repo: https://github.com/MetaCell/nwb-explorer.git
-        revision: development
-        working_directory: applications/nwb-explorer/dependencies/
-        git: github
   prepare_deployment:
     title: Prepare helm chart
     image: python:3.12
@@ -42,7 +35,7 @@ steps:
     commands:
     - bash cloud-harness/install.sh
     - harness-deployment cloud-harness . -d ${{DOMAIN}} -r ${{REGISTRY}} -rs ${{REGISTRY_SECRET}}
-      -n ${{NAMESPACE}} --write-env -e dev -i osb-portal
+      -n ${{NAMESPACE}} --write-env -e dev-quick -i osb-portal
     - cat deployment/.env >> ${{CF_VOLUME_PATH}}/env_vars_to_export
     - cat ${{CF_VOLUME_PATH}}/env_vars_to_export
   prepare_deployment_view:
@@ -132,27 +125,6 @@ steps:
     type: parallel
     stage: build
     steps:
-      nfsserver:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/nfsserver
-        title: Nfsserver
-        working_directory: ./.overrides/applications/nfsserver
-        tag: '${{NFSSERVER_TAG}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{NFSSERVER_TAG_EXISTS}}', '{{NFSSERVER_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{NFSSERVER_TAG_FORCE_BUILD}}', '{{NFSSERVER_TAG_FORCE_BUILD}}')
-                == false
       notifications:
         type: build
         stage: build
@@ -480,27 +452,6 @@ steps:
                 == true
               forceNoCache: includes('${{WORKSPACES_TAG_FORCE_BUILD}}', '{{WORKSPACES_TAG_FORCE_BUILD}}')
                 == false
-      netpyne:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/netpyne
-        title: Netpyne
-        working_directory: ./applications/netpyne
-        tag: '${{NETPYNE_TAG}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{NETPYNE_TAG_EXISTS}}', '{{NETPYNE_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{NETPYNE_TAG_FORCE_BUILD}}', '{{NETPYNE_TAG_FORCE_BUILD}}')
-                == false
       accounts-api:
         type: build
         stage: build
@@ -565,48 +516,6 @@ steps:
                 == true
               forceNoCache: includes('${{BACKOFFICE_TAG_FORCE_BUILD}}', '{{BACKOFFICE_TAG_FORCE_BUILD}}')
                 == false
-      nwb-explorer:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/nwb-explorer
-        title: Nwb explorer
-        working_directory: ./applications/nwb-explorer
-        tag: '${{NWB_EXPLORER_TAG}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{NWB_EXPLORER_TAG_EXISTS}}', '{{NWB_EXPLORER_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{NWB_EXPLORER_TAG_FORCE_BUILD}}', '{{NWB_EXPLORER_TAG_FORCE_BUILD}}')
-                == false
-      jupyterlab:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - DOMAIN=${{DOMAIN}}
-        - NOCACHE=${{CF_BUILD_ID}}
-        - REGISTRY=${{REGISTRY}}/osb/
-        image_name: osb/jupyterlab
-        title: Jupyterlab
-        working_directory: ./applications/jupyterlab
-        tag: '${{JUPYTERLAB_TAG}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{JUPYTERLAB_TAG_EXISTS}}', '{{JUPYTERLAB_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{JUPYTERLAB_TAG_FORCE_BUILD}}', '{{JUPYTERLAB_TAG_FORCE_BUILD}}')
-                == false
   tests_unit:
     stage: unittest
     type: parallel
@@ -614,7 +523,7 @@ steps:
       workspaces_ut:
         title: Unit tests for workspaces
         commands:
-        - pip install -r test-requirements.txt && pytest /usr/src/app/
+        - pytest /usr/src/app/
         image: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
   deployment:
     stage: deploy
@@ -824,14 +733,6 @@ steps:
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nfsserver:
-        stage: publish
-        type: push
-        title: Nfsserver
-        candidate: '${{REGISTRY}}/osb/nfsserver:${{NFSSERVER_TAG}}'
         tags:
         - '${{DEPLOYMENT_PUBLISH_TAG}}'
         registry: '${{REGISTRY_PUBLISH_URL}}'

@@ -1,6 +1,8 @@
 FROM python:3.9
 
-RUN pip install --no-cache-dir dandi pydantic[email]
+COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
+    pip install cython  && pip install -r requirements.txt --prefer-binary
 
 ADD . /
 
