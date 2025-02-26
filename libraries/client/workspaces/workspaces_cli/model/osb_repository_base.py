@@ -312,7 +312,7 @@ class OSBRepositoryBase(ModelNormal):
                 continue
             try:
                 setattr(self, var_name, var_value)
-            except:
+            except Exception:
 
                 pass
             if var_name in self.read_only_vars:

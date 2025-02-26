@@ -2,15 +2,15 @@ name: Docker Image Build NWB Explorer
 
 on:
   push:
-    branches: [ master, dev*, feature/docker*, jupyterhub-update ]
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
   pull_request:
-    branches: [ master, dev*, feature/docker*, jupyterhub-update ]
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
 
 jobs:
 
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
