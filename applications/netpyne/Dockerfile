@@ -35,7 +35,7 @@ RUN apt-get install openjdk-11-jre-headless -y
 
 
 WORKDIR $FOLDER
-COPY overrides/requirements-ok.txt ./requirements.txt
+COPY overrides/requirements.txt ./requirements.txt
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\
     pip install -r requirements.txt
 
