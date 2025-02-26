@@ -99,7 +99,7 @@ def get_tags_info(
             tags.append("%s" % dandishowcase_info["species"])
 
     tags_list = []
-    tags = sorted(list(dict.fromkeys(tags))) # sort and remove duplicates
+    tags = sorted(list(dict.fromkeys(tags)))  # sort and remove duplicates
     for tag in tags:
         tags_list.append({"tag": tag})
 
