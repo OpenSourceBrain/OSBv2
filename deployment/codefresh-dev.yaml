@@ -38,7 +38,7 @@ steps:
         title: Cloning nwb-explorer.git repository...
         type: git-clone
         repo: https://github.com/MetaCell/nwb-explorer.git
-        revision: master
+        revision: development
         working_directory: applications/nwb-explorer/dependencies/
         git: github
   prepare_deployment:
