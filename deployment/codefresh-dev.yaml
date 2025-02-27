@@ -600,7 +600,7 @@ steps:
       workspaces_ut:
         title: Unit tests for workspaces
         commands:
-        - pip install -r test-requirements.txt
+        - pip install -r /usr/src/app/test-requirements.txt
         - pytest /usr/src/app/
         image: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
   deployment:
