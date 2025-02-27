@@ -14,6 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Clone Netpyne UI dependencies
+      run: |
+        mkdir -p applications/netpyne/dependencies
+        git clone --branch 1.1.0 https://github.com/MetaCell/NetPyNE-UI.git applications/netpyne/dependencies/netpyne
 
     - name: Build the Docker image
       run: |
