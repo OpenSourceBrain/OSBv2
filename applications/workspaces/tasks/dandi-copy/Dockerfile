@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.12
 
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 

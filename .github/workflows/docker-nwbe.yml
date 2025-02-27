@@ -17,7 +17,7 @@ jobs:
     - name: Clone NWB Explorer dependencies
       run: |
         mkdir -p applications/nwb-explorer/dependencies
-        git clone https://github.com/MetaCell/nwb-explorer.git applications/nwb-explorer/dependencies/nwb-explorer
+        git clone --branch development https://github.com/MetaCell/nwb-explorer.git applications/nwb-explorer/dependencies/nwb-explorer
 
     - name: Build the Docker image
       run: |
