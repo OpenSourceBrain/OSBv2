@@ -45,7 +45,7 @@ seaborn
 torch==2.3.0+cpu
 
 # For MDF
-#########modeci_mdf==0.4.8 # big jump in size of image...
+modeci_mdf
 
 scikit-learn # Required for some Neuromatch Academy material
 #########fasttext # Required for some Neuromatch Academy material

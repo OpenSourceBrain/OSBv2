@@ -45,7 +45,6 @@ RUN chmod +x /opt/conda/bin/lems
 
 RUN cat ~/.bashrc
 
-
 ################################################################################
 
 USER root
@@ -68,7 +67,7 @@ COPY conf/ .jupyter/lab/user-settings/@jupyterlab
 USER root
 RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings /home/jovyan/.cache
 
-###############RUN wget --no-verbose -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
+RUN wget --no-verbose -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
 
 #########################################################################
 # Run install again but first invalidate the cache
@@ -101,12 +100,24 @@ ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
 ENV PATH=$PATH:$NEST_HOME/bin
 
 USER jovyan
+
 #### Install Python packages
 RUN pip install backports.tarfile>=1.2 # temp fix for error: ImportError: cannot import name 'tarfile' from 'backports'
 RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #  Compile NEURON mod files for PyNN
 RUN cd /opt/conda/lib/python3.12/site-packages/pyNN/neuron/nmodl && nrnivmodl
+
+# Install NeuroML Schemas etc.
+RUN git clone https://github.com/NeuroML/NeuroML2
+
+# Install XPP
+RUN git clone https://github.com/NeuroML/xppaut
+USER root
+RUN apt install -y libx11-dev && cd xppaut && make -j4
+USER jovyan
+ENV XPP_HOME=/home/jovyan/xppaut
+ENV PATH=$PATH:$XPP_HOME
 
 #########################################################################
 # fix for https://github.com/jupyter/notebook/issues/7048
