@@ -8,10 +8,6 @@ RUN apt-get update &&  apt-get install graphviz openjdk-11-jre-headless git vim 
 
 ################################################################################
 
-####  NeuroML etc.
-ENV NEURON_HOME=/opt/conda
-ENV NETPYNE_CORE_REPO=https://github.com/Neurosim-lab/netpyne
-ENV NETPYNE_CORE_BRANCH_TAG=osbv2
 
 #### Install needed linux packages
 
@@ -39,16 +35,15 @@ USER root
 RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
 
 ### Set up jnml, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.9/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
+RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
 RUN chmod +x /opt/conda/bin/jnml
 ENV JNML_HOME=/opt/conda/bin
 
 ### Set up lems, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.9/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
+RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
 RUN chmod +x /opt/conda/bin/lems
 
 RUN cat ~/.bashrc
-
 
 ################################################################################
 
@@ -70,7 +65,8 @@ RUN ln -s /opt/workspace .jupyter/lab/workspaces
 COPY conf/ .jupyter/lab/user-settings/@jupyterlab
 
 USER root
-RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings
+RUN chown -R jovyan /home/jovyan/.jupyter/lab/user-settings /home/jovyan/.cache
+
 RUN wget --no-verbose -P `pip show LFPykit | grep "Location:" | awk '{print $2"/lfpykit"}'` https://www.parralab.org/nyhead/sa_nyhead.mat
 
 #########################################################################
@@ -97,21 +93,31 @@ RUN cd /tmp && \
     cd nest && \
     mkdir $NEST_HOME && \
     apt-get install libgsl-dev -y && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.9 . && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.12 . && \
     make -j7 && \
     make install
-ENV PYTHONPATH=$NEST_HOME/lib/python3.9/site-packages
+ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
 ENV PATH=$PATH:$NEST_HOME/bin
 
 USER jovyan
+
 #### Install Python packages
 RUN pip install backports.tarfile>=1.2 # temp fix for error: ImportError: cannot import name 'tarfile' from 'backports'
 RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #  Compile NEURON mod files for PyNN
 RUN cd /opt/conda/lib/python3.12/site-packages/pyNN/neuron/nmodl && nrnivmodl
-# See https://github.com/OpenSourceBrain/osb-model-validation/issues/91 for status of this
-######RUN pip install 'numpy<=1.23.0' # temp fix for https://levelup.gitconnected.com/fix-attributeerror-module-numpy-has-no-attribute-float-d7d68c5a4971
+
+# Install NeuroML Schemas etc.
+RUN git clone https://github.com/NeuroML/NeuroML2
+
+# Install XPP
+RUN git clone https://github.com/NeuroML/xppaut
+USER root
+RUN apt install -y libx11-dev && cd xppaut && make -j4
+USER jovyan
+ENV XPP_HOME=/home/jovyan/xppaut
+ENV PATH=$PATH:$XPP_HOME
 
 #########################################################################
 # fix for https://github.com/jupyter/notebook/issues/7048
