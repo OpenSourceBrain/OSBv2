@@ -35,12 +35,12 @@ USER root
 RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
 
 ### Set up jnml, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
+RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.11/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
 RUN chmod +x /opt/conda/bin/jnml
 ENV JNML_HOME=/opt/conda/bin
 
 ### Set up lems, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
+RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.11/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
 RUN chmod +x /opt/conda/bin/lems
 
 RUN cat ~/.bashrc
@@ -93,10 +93,10 @@ RUN cd /tmp && \
     cd nest && \
     mkdir $NEST_HOME && \
     apt-get install libgsl-dev -y && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.12 . && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.11 . && \
     make -j7 && \
     make install
-ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
+ENV PYTHONPATH=$NEST_HOME/lib/python3.11/site-packages
 ENV PATH=$PATH:$NEST_HOME/bin
 
 USER jovyan
@@ -106,7 +106,7 @@ RUN pip install backports.tarfile>=1.2 # temp fix for error: ImportError: cannot
 RUN pip install -r requirements.txt --upgrade --no-cache-dir
 
 #  Compile NEURON mod files for PyNN
-RUN cd /opt/conda/lib/python3.12/site-packages/pyNN/neuron/nmodl && nrnivmodl
+RUN cd /opt/conda/lib/python3.11/site-packages/pyNN/neuron/nmodl && nrnivmodl
 
 # Install NeuroML Schemas etc.
 RUN git clone https://github.com/NeuroML/NeuroML2
