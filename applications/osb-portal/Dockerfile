@@ -2,11 +2,11 @@ FROM node:20 as base
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
-COPY package-lock.json ${BUILDDIR}/package-lock.json
+COPY yarn.lock ${BUILDDIR}/yarn.lock
 WORKDIR ${BUILDDIR}
-RUN npm ci --legacy-peer-deps
+RUN yarn install --frozen-lockfile --timeout 60000
 COPY . $BUILDDIR
-RUN npm run build 
+RUN yarn build 
 ###
 FROM nginx:stable
 ENV BUILDDIR=/builddir
