@@ -14,7 +14,7 @@ RUN yarn build
 
 
 ###
-FROM quay.io/jupyter/base-notebook:latest
+FROM quay.io/jupyter/base-notebook:hub-4.0.2
 ENV NB_UID=jovyan
 ENV FOLDER=nwb-explorer
 USER root
