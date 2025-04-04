@@ -121,7 +121,7 @@ ENV PATH=$PATH:$XPP_HOME
 
 #########################################################################
 # fix for https://github.com/jupyter/notebook/issues/7048
-RUN pip install traitlets==5.9.0
+# RUN pip install traitlets==5.9.0
 
 COPY --chown=jovyan:users overrides/* /opt/conda/share/jupyter/lab/static/
 WORKDIR /opt/workspace

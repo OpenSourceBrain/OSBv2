@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: "jupyterhub-notebook-config"
   labels:
-    app: jupytehub
+    app: jupyterhub
 data:
   {{- (.Files.Glob "resources/jupyterhub/applications/*").AsConfig | nindent 2 }}
 ---
