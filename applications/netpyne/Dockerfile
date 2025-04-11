@@ -14,12 +14,12 @@ COPY $APP_DIR/webapp .
 RUN yarn build-dev
 
 ### Download on a separate stage to run in parallel with buildkit
-FROM quay.io/jupyter/base-notebook:latest as downloads
+FROM quay.io/jupyter/base-notebook:hub-4.0.2 as downloads
 USER root
 RUN wget --no-check-certificate -O /nyhead.mat https://www.parralab.org/nyhead/sa_nyhead.mat
 
 ###
-FROM quay.io/jupyter/base-notebook:latest
+FROM quay.io/jupyter/base-notebook:hub-4.0.2
 ARG APP_DIR=dependencies/NetPyNE-UI
 ENV NB_UID=jovyan
 ENV FOLDER=netpyne
