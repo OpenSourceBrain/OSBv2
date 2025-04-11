@@ -7,6 +7,8 @@ harness:
   deployment:
     auto: true
     port: 8080
+    requests:
+      memory: 120Mi
   livenessProbe:
     path: /api/live
   readinessProbe:

@@ -1,2 +1,11 @@
 /deploy
-.git
+**/.git
+**/node_modules
+**/build
+**/k8s
+**/workspace
+*.egg-info
+*.ipynb
+**/*.log
+**/.jupyter-config
+**/.vs-code

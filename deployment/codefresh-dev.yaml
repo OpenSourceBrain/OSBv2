@@ -27,11 +27,18 @@ steps:
         revision: '${{CLOUDHARNESS_BRANCH}}'
         working_directory: .
         git: github
+      clone_NetPyNE-UI_git_netpyne:
+        title: Cloning NetPyNE-UI.git repository...
+        type: git-clone
+        repo: https://github.com/MetaCell/NetPyNE-UI.git
+        revision: 1.1.0
+        working_directory: applications/netpyne/dependencies/
+        git: github
       clone_nwb-explorer_git_nwb-explorer:
         title: Cloning nwb-explorer.git repository...
         type: git-clone
         repo: https://github.com/MetaCell/nwb-explorer.git
-        revision: master
+        revision: development
         working_directory: applications/nwb-explorer/dependencies/
         git: github
   prepare_deployment:
@@ -593,6 +600,7 @@ steps:
       workspaces_ut:
         title: Unit tests for workspaces
         commands:
+        - pip install -r /usr/src/app/test-requirements.txt
         - pytest /usr/src/app/
         image: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
   deployment:
@@ -752,6 +760,7 @@ steps:
     image: '${{REGISTRY}}/osb/test-e2e:${{TEST_E2E_TAG}}'
     fail_fast: false
     commands:
+    - npx puppeteer browsers install chrome
     - yarn test
     scale:
       jupyterhub_e2e_test:

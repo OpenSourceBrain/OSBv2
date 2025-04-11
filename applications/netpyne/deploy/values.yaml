@@ -7,7 +7,7 @@ harness:
   deployment:
     auto: false
   jupyterhub:
-    args: ["--NotebookApp.default_url=/geppetto", "--library=netpyne_ui", "--NotebookApp.notebook_dir=/opt/workspace", "--NotebookApp.disable_check_xsrf=True"]
+    args: ["--ServerApp.default_url=/geppetto", "--library=netpyne_ui", "--NotebookApp.notebook_dir=/opt/workspace", "--NotebookApp.disable_check_xsrf=True", '--NotebookApp.tornado_settings={"headers":{"Content-Security-Policy": "frame-ancestors *;"}}']
     applicationHook: "osb_jupyter.change_pod_manifest"
     extraConfig:
       timing: |
@@ -18,6 +18,9 @@ harness:
   dependencies:
     hard:
     - jupyterhub
+    git:
+      - url: https://github.com/MetaCell/NetPyNE-UI.git
+        branch_tag: 1.1.0
 singleuser:
   cpu:
     limit: 1

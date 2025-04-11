@@ -12,7 +12,7 @@ environment first.
 
 With conda:
 ```bash
-conda create --name osb python=3.9
+conda create --name osb python=3.12
 conda activate osb
 ```
 

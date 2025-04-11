@@ -2,18 +2,22 @@ name: Docker Image Build NWB Explorer
 
 on:
   push:
-    branches: [ master, dev*, feature/docker*, feature/repo* ]
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
   pull_request:
-    branches: [ master, dev*, feature/docker*, feature/repo* ]
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
 
 jobs:
 
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
+    - name: Clone NWB Explorer dependencies
+      run: |
+        mkdir -p applications/nwb-explorer/dependencies
+        git clone --branch development https://github.com/MetaCell/nwb-explorer.git applications/nwb-explorer/dependencies/nwb-explorer
 
     - name: Build the Docker image
       run: |

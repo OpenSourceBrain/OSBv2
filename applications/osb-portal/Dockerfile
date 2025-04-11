@@ -1,14 +1,14 @@
-FROM node:13.14 as base
+FROM node:20 as base
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
-COPY package-lock.json ${BUILDDIR}/package-lock.json
+COPY yarn.lock ${BUILDDIR}/yarn.lock
 WORKDIR ${BUILDDIR}
-RUN npm ci
+RUN yarn install --frozen-lockfile --timeout 60000
 COPY . $BUILDDIR
-RUN npm run build
+RUN yarn build 
 ###
-FROM nginx:1.17-alpine
+FROM nginx:stable
 ENV BUILDDIR=/builddir
 COPY --from=base $BUILDDIR/public /usr/share/nginx/html
 

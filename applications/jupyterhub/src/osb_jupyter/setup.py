@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 
 REQUIREMENTS = [
-    'jupyterhub-kubespawner',
+    'jupyterhub-kubespawner==4.3.0',
+    'kubernetes_asyncio',
     'cloudharness'
 ]
 

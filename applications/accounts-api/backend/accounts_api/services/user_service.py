@@ -9,7 +9,7 @@ from cloudharness import log
 import typing
 # from cloudharness.models import User as CHUser # Cloudharness 2.0.0
 
-
+print("User Service")
 class UserNotAuthorized(Exception): pass
 
 
@@ -110,3 +110,7 @@ def update_user(userid, user: User):
         if e.response_code == 404:
             raise UserNotFound(userid)
         raise Exception("Unhandled Keycloak exception") from e
+
+
+if __name__ == '__main__':
+    users = get_users("")

@@ -21,12 +21,14 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
     """
 
     def initialize(self, force_new_server, process_user):
+        print("CH auth handler initialized")
         super().initialize()
         self.force_new_server = force_new_server
         self.process_user = process_user
 
     @gen.coroutine
     def get(self):
+        print("CH auth handler begin")
         if 'open=' in self.request.uri:
             url = self.request.uri.split('open=').pop()
             self.request.cookies.set("loadurl", bytes(

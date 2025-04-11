@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:hub-1.5.0
+FROM quay.io/jupyter/base-notebook:hub-4.0.2
 
 USER root
 RUN apt-get update && apt-get install git -y

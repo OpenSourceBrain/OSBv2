@@ -72,6 +72,6 @@ harness:
     unit:
       enabled: true
       commands:
-      
+      - pip install -r test-requirements.txt
       - pytest /usr/src/app/
 workspace_size: 2Gi

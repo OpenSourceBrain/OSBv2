@@ -3,7 +3,7 @@ pyelectro
 git+https://github.com/NeuralEnsemble/neurotune.git
 
 ####  NEURON & NetPyNE
-neuron==8.1
+neuron==8.2.6
 
 # Install specific version of NetPyNE
 git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
@@ -11,7 +11,7 @@ git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
 ####  Other simulators
 
 # Arbor
-arbor==0.9.0
+### arbor==0.9.0  # problems on py 3.12??
 
 # EDEN
 eden-simulator==0.2.1
@@ -42,13 +42,13 @@ seaborn
 
 # Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
 -f https://download.pytorch.org/whl/torch_stable.html
-torch==2.1.2+cpu
+torch==2.3.0+cpu
 
 # For MDF
-modeci_mdf==0.4.8 # big jump in size of image...
+modeci_mdf
 
 scikit-learn # Required for some Neuromatch Academy material
-fasttext # Required for some Neuromatch Academy material
+#########fasttext # Required for some Neuromatch Academy material
 
 
 ####  TVB etc.
@@ -67,7 +67,7 @@ plotly
 
 
 #### Install OMV
-git+https://github.com/OpenSourceBrain/osb-model-validation.git@v0.2.15
+OSBModelValidation==0.3.5
 
 
 ####  Final updates
