@@ -23,7 +23,7 @@ These scripts can be used to get a cached list of the current repositories on OS
     python loadosbv1.py -v2dev -dry # this do a dry run and print info on which projects/repos it still needs to add
     ```
 
-    Get an access token by logging in to v2dev, opening the Web Developer console, loading a page, getting the network access token (e.g. abcxxx123) and using this to add the repo via the api
+    Get an access token by logging in to v2dev, opening the Web Developer console, loading a page, copying the network access token (e.g. abcxxx123) and using this to add the repo via the api:
 
     ```
     python loadosbv1.py abcxxx123 -v2dev # add new repos
