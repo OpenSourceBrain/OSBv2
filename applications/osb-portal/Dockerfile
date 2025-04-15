@@ -1,10 +1,10 @@
-FROM node:20 as base
+FROM node:20-slim as base
 ENV BUILDDIR=/builddir
 
 COPY package.json ${BUILDDIR}/package.json
 COPY yarn.lock ${BUILDDIR}/yarn.lock
 WORKDIR ${BUILDDIR}
-RUN yarn install --frozen-lockfile --timeout 60000
+RUN yarn install --frozen-lockfile --timeout 6000000
 COPY . $BUILDDIR
 RUN yarn build 
 ###
