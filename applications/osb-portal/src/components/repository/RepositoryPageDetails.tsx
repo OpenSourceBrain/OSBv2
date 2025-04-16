@@ -438,6 +438,7 @@ const RepositoryPageDetails = ({
                     >
                       <TableRow>
                         <TableCell padding="checkbox" sx={{ width: "1.8em" }}>
+                          <Tooltip title="Select all files">
                           <Checkbox
                             color="primary"
                             checked={
@@ -446,9 +447,10 @@ const RepositoryPageDetails = ({
                             }
                             onChange={(e) => onSelectAllFiles(e.target.checked)}
                             inputProps={{
-                              "aria-label": "select all desserts",
+                              "aria-label": "select all files",
                             }}
                           />
+                          </Tooltip>
                         </TableCell>
                         <TableCell component="th">
                           <Typography component="p">Name</Typography>

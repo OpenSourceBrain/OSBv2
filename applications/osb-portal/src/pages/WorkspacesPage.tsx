@@ -91,6 +91,8 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
       ...searchFilterValues,
       text: newTextFilter,
     });
+    setPage(1);
+
 
     debounce(() => {
       getWorkspacesList({ searchFilterValues: { ...searchFilterValues, text: newTextFilter } });

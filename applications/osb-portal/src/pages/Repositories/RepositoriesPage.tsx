@@ -137,6 +137,7 @@ export const RepositoriesPage = ({
 
   const handleSearchFilter = React.useCallback((newTextFilter: string) => {
     setSearchFilterValues({ ...searchFilterValues, text: newTextFilter });
+    setPage(1);
   }, []);
 
   const setReposValues = React.useCallback((reposDetails) => {
@@ -281,7 +282,7 @@ export const RepositoriesPage = ({
               </Grid>
             </Box>
           </Box>
-
+          {!repositories?.length && !loading && <Typography sx={{p: 3}}>No repositories found</Typography>}
           {listView === "list" ? (
             <RepositoriesTable
               handleRepositoryClick={(repository: OSBRepository) =>
@@ -330,6 +331,7 @@ export const RepositoriesPage = ({
             />
           )}
         </Box>
+        
         {repositories && totalPages > 1 && (
           <OSBPagination
             count={totalPages}
