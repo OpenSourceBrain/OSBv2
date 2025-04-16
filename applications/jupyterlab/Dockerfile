@@ -124,4 +124,5 @@ ENV PATH=$PATH:$XPP_HOME
 RUN pip install traitlets==5.9.0
 
 COPY --chown=jovyan:users overrides/* /opt/conda/share/jupyter/lab/static/
+RUN cp /opt/conda/share/jupyter/lab/static/main*.js /opt/conda/share/jupyter/lab/static/main.js
 WORKDIR /opt/workspace
