@@ -12,7 +12,7 @@ harness:
     hard:
       - jupyterhub
   jupyterhub:
-    args: ["--debug", "--NotebookApp.default_url=/lab", "--NotebookApp.notebook_dir=/opt/workspace"]
+    args: ["--debug", "--ServerApp.default_url=/lab", "--NotebookApp.notebook_dir=/opt/workspace", '--NotebookApp.tornado_settings={"headers":{"Content-Security-Policy": "frame-ancestors *;"}}']
     applicationHook: "osb_jupyter.change_pod_manifest"
     extraConfig:
       timing: |
