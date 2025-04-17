@@ -17,7 +17,7 @@ import {
 
 //components
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Link from "@mui/material/Link";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
@@ -233,7 +233,7 @@ const RepositoryPageDetails = ({
         }}
       >
         <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="verticalFill">
-          <Grid item xs={12} md={6} direction="column" className="verticalFit">
+          <Grid size={{ xs: 12, md: 6 }} direction="column" className="verticalFit">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -350,7 +350,7 @@ const RepositoryPageDetails = ({
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={6} direction="column" className="verticalFit">
+          <Grid size={{ xs: 12, md: 6 }} direction="column" className="verticalFit">
             <Box
               display="flex"
               justifyContent="space-between"

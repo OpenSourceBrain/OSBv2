@@ -1,6 +1,7 @@
 import * as React from "react";
 import Dropzone from "react-dropzone";
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 //icons
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -139,7 +140,7 @@ export const OSBDialog: React.FunctionComponent<UploadAreaProps> = ({
 								direction="row"
 							>
 								{thumbnail && (
-									<Grid item={true}>
+									<Grid>
 										{!thumbnail ? (
 											""
 										) : (
@@ -155,7 +156,7 @@ export const OSBDialog: React.FunctionComponent<UploadAreaProps> = ({
 										)}
 									</Grid>
 								)}
-								<Grid item={true}>
+								<Grid>
 									<Box component="div" m={1}>
 										{!thumbnail ? (
 											<>

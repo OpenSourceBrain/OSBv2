@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 
@@ -174,9 +174,7 @@ export const UserGroupsPage = (props: any) => {
         <Grid container={true} spacing={0} className="verticalFill">
           <Grid
             id="profile-info"
-            item={true}
-            sm={4}
-            lg={3}
+            size={{ sm: 4, lg: 3 }}
             sx={styles.profileInformation}
           >
             <Stack pt={5} px={4} spacing={4}>
@@ -318,9 +316,7 @@ export const UserGroupsPage = (props: any) => {
           </Grid>
 
           <Grid
-            item={true}
-            sm={8}
-            lg={9}
+            size={{ sm: 8, lg: 9 }}
             className={`verticalFit`}
             sx={styles.groupMembers}
           >

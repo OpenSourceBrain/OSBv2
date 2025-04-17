@@ -2,7 +2,7 @@ import * as React from "react";
 
 //components
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 
 import WorkspaceItem, { WorkspaceTemplateType } from "./NewWorkspaceItem";
 
@@ -38,7 +38,7 @@ export const WorkspaceToolBox = (props: any) => {
         </Box>
 
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="computational-modeling">
-          <Grid item xs={12} lg={6}>
+          <Grid size={{ xs: 12, lg: 6 }}>
 
               <WorkspaceItem
                 icon={<WorkspaceIcon />}
@@ -50,7 +50,7 @@ export const WorkspaceToolBox = (props: any) => {
               />
   
           </Grid>
-          <Grid item xs={12} lg={6} id="data-analysis">
+          <Grid size={{ xs: 12, lg: 6 }} id="data-analysis">
     
               <WorkspaceItem
                 icon={<DataAnalystIcon />}
@@ -62,7 +62,7 @@ export const WorkspaceToolBox = (props: any) => {
               />
     
           </Grid>
-          <Grid item xs={12} lg={6} id="interactive-development">
+          <Grid size={{ xs: 12, lg: 6 }} id="interactive-development">
 
               <WorkspaceItem
                 icon={<ComputationalModeling />}
@@ -74,7 +74,7 @@ export const WorkspaceToolBox = (props: any) => {
               />
 
           </Grid>
-          <Grid item xs={12} lg={6} id="workspace-from-repository">
+          <Grid size={{ xs: 12, lg: 6 }} id="workspace-from-repository">
 
               <WorkspaceItem
                 className="from-repository-create-workspace-item"

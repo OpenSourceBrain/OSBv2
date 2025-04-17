@@ -1,7 +1,8 @@
 import * as React from "react";
 
 //components
-import { Chip, Grid, Box, Typography } from "@mui/material";
+import { Chip, Box, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 //icons
 import CircularProgress from "@mui/material/CircularProgress";
@@ -44,7 +45,7 @@ export const WorkspacesCards = (props: any) => {
           >
             {workspaces?.map((workspace: Workspace, index: number) => {
               return (
-                <Grid item key={index} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
                   <WorkspaceCard workspace={workspace} handleWorkspaceClick={handleWorkspaceClick} />
                 </Grid>
               );

@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 
 //components
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -218,11 +218,7 @@ export const RepositoriesPage = ({
                 spacing={1}
               >
                 <Grid
-                  item={true}
-                  xs={12}
-                  sm={12}
-                  md={7}
-                  lg={7}
+                  size={{ xs: 12, sm: 12, md: 7, lg: 7 }}
                   className="verticalFill"
                 >
                   <Tabs value={tabValue} onChange={handleTabChange}>
@@ -256,7 +252,7 @@ export const RepositoriesPage = ({
                     )}
                   </Tabs>
                 </Grid>
-                <StyledGrid item={true} xs={12} sm={8} md={5} lg={5}>
+                <StyledGrid size={{ xs: 12, sm: 8, md: 5, lg: 5 }}>
                   <ButtonGroup
                     sx={{
                       backgroundColor: bgRegular,

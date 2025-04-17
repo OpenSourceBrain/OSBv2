@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -16,7 +16,7 @@ export const NewWorkspaceAskUser = (props: any) => {
   return (
     <Box>
       <Grid container={true} justifyContent="center">
-        <Grid item={true} xs={12} mb={3}>
+        <Grid size={{ xs: 12 }} sx={{ mb: 3 }}>
           <DialogContentText>
             To use {props.type} you need an Open Source Brain v2.0 account. If
             you already have one, please sign in, if not create one for free.
@@ -24,7 +24,7 @@ export const NewWorkspaceAskUser = (props: any) => {
             simulations and analyses.
           </DialogContentText>
         </Grid>
-        <Grid item={true} xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Box mr={2}>
             <Button onClick={handleUserLogin} autoFocus={true}>
               Sign In

@@ -1,27 +1,28 @@
 // Derived from https://raw.githubusercontent.com/MetaCell/geppetto-meta/master/geppetto.js/geppetto-ui/src/loader/Loader.js
 
 import React, { Component, Fragment } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { useTheme } from '@mui/material/styles';
+// import makeStyles from '@mui/styles/makeStyles';
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import { primaryColor } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: primaryColor,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-  },
-  root: {
-    position: "absolute",
-    flex: "0 0 100%",
-    alignSelf: "stretch",
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   backdrop: {
+//     zIndex: theme.zIndex.drawer + 1,
+//     color: primaryColor,
+//     backgroundColor: "rgba(0, 0, 0, 0.8)",
+//   },
+//   root: {
+//     position: "absolute",
+//     flex: "0 0 100%",
+//     alignSelf: "stretch",
+//   },
+// }));
 
 interface OSBLoaderProps {
   active: boolean;
@@ -35,7 +36,8 @@ interface OSBLoaderProps {
 }
 
 export default (props: OSBLoaderProps) => {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const theme = useTheme();
 
   const {
     active,
@@ -89,11 +91,11 @@ export default (props: OSBLoaderProps) => {
     children
   ) : (
     <Grid container={true} spacing={1}>
-      <Grid container={true} item={true} spacing={3} xs={12} justifyContent="center">
-        <Grid item={true}>{progress}</Grid>
+      <Grid container={true} spacing={3} size={{ xs: 12 }} justifyContent="center">
+        <Grid>{progress}</Grid>
       </Grid>
-      <Grid container={true} item={true} spacing={3} xs={12} justifyContent="center">
-        <Grid item={true}>{typedMessage}</Grid>
+      <Grid container={true} spacing={3} size={{ xs: 12 }} justifyContent="center">
+        <Grid>{typedMessage}</Grid>
       </Grid>
     </Grid>
   );
@@ -101,7 +103,11 @@ export default (props: OSBLoaderProps) => {
   const backdrop = fullscreen ? (
     <Fragment>
       <Backdrop
-        className={classes.backdrop}
+        sx={{
+          zIndex: theme.zIndex.drawer + 1,
+          color: primaryColor,
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+        }}
         open={active}
         onClick={handleClose}
       >
@@ -113,8 +119,14 @@ export default (props: OSBLoaderProps) => {
       <Backdrop
         open={active}
         onClick={handleClose}
-        className={classes.backdrop}
-        classes={{ root: classes.root }} // class name, e.g. `classes-nesting-root-x`
+        sx={{
+          zIndex: theme.zIndex.drawer + 1,
+          color: primaryColor,
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          position: "absolute",
+          flex: "0 0 100%",
+          alignSelf: "stretch",
+        }}
       >
         {content}
       </Backdrop>

@@ -4,7 +4,7 @@ import debounce from "lodash/debounce";
 import makeStyles from "@mui/styles/makeStyles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
@@ -168,13 +168,8 @@ export const ExistingWorkspaceEditor = (
               workspaces.map((workspace, index) => {
                 return (
                   <Grid
-                    item={true}
                     key={workspace.id}
-                    xs={6}
-                    sm={6}
-                    md={4}
-                    lg={3}
-                    xl={2}
+                    size={{ xs: 6, sm: 6, md: 4, lg: 3, xl: 2 }}
                   >
                     <Button
                       className={`${activeCardClassNames[index]}-button ${classes.workspaceButton}`}
@@ -226,13 +221,12 @@ export const ExistingWorkspaceEditorActions = (
   return (
     <Box p={1}>
       <Grid container={true}>
-        <Grid item={true}>
+        <Grid>
           <Button color="primary" onClick={props.closeAction}>
             Cancel
           </Button>
         </Grid>
         <Grid
-          item={true}
           style={{
             marginLeft: "1rem",
           }}

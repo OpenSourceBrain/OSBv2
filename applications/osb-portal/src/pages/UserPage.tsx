@@ -7,7 +7,7 @@ import Tab from "@mui/material/Tab";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -320,9 +320,7 @@ export const UserPage = (props: any) => {
         <Grid container={true} spacing={0} className="verticalFill">
           <Grid
             id="profile-info"
-            item={true}
-            sm={4}
-            lg={3}
+            size={{ sm: 4, lg: 3 }}
             sx={styles.profileInformation}
             className="scrollbar"
           >
@@ -652,9 +650,7 @@ export const UserPage = (props: any) => {
           </Grid>
 
           <Grid
-            item={true}
-            sm={8}
-            lg={9}
+            size={{ sm: 8, lg: 9 }}
             className={`verticalFit`}
             sx={styles.repositoriesAndWorkspaces}
           >
@@ -720,13 +716,8 @@ export const UserPage = (props: any) => {
                   {publicWorkspaces.map((ws) => {
                     return (
                       <Grid
-                        item={true}
                         key={ws.id}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={4}
-                        xl={3}
+                        size={{ xs: 12, sm: 6, md: 4, lg: 4, xl: 3 }}
                       >
                         <WorkspaceCard
                           workspace={ws}
@@ -747,13 +738,8 @@ export const UserPage = (props: any) => {
                     {privateWorkspaces.map((ws) => {
                       return (
                         <Grid
-                          item={true}
                           key={ws.id}
-                          xs={12}
-                          sm={6}
-                          md={4}
-                          lg={4}
-                          xl={3}
+                          size={{ xs: 12, sm: 6, md: 4, lg: 4, xl: 3 }}
                         >
                           <WorkspaceCard
                             workspace={ws}

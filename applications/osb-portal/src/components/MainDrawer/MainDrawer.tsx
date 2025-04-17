@@ -185,7 +185,7 @@ export const MainDrawer = (props: {
   isRepositoriesPage: boolean;
 }) => {
   const theme = useTheme();
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isMdUp = false;
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
   const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
@@ -227,7 +227,7 @@ export const MainDrawer = (props: {
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   const handleAboutDialogOpen = () => {
-    props.openDialog();
+    // props.openDialog();
   };
 
   const closeAskLogin = () => setAskLoginOpen(false);
@@ -439,7 +439,7 @@ export const MainDrawer = (props: {
         <EditRepoDialog
           dialogOpen={openRepoDialog}
           handleClose={() => handleCloseDialog("repository")}
-          user={props.user}
+          // user={props.user}
           title="Add repository"
         />
       )}

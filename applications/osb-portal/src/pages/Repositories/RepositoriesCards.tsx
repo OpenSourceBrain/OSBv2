@@ -32,7 +32,7 @@ import { UserInfo } from "../../types/user";
 import { formatDate } from "../../utils";
 import RepositoryActionsMenu from "../../components/repository/RepositoryActionsMenu";
 import CardTitle from "../../components/styled/CardTitle";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import CardFooter from "../../components/styled/CardFooter";
 import { useNavigate } from "react-router-dom";
 import { refreshRepositories } from "../../store/actions/repositories";
@@ -84,7 +84,7 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
           >
             {repositories?.map((repository: OSBRepository, index: number) => {
               return (
-                <Grid item key={index} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
                   <Card className={`workspace-card`} elevation={0}>
                       <RepositoryActionsMenu
                         repository={repository}

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 //components
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import { PageSider } from "../components";
 
 export const SidebarPageLayout = (props: { children: any }) => {
@@ -16,12 +16,8 @@ export const SidebarPageLayout = (props: { children: any }) => {
     <Box className="verticalFit">
       <Grid container className="verticalFill">
         <Grid
-          item
-          xs={12}
-          sm={12}
-          md={3}
-          lg={2}
-          direction="column"
+          size={{ xs: 12, sm: 12, md: 3, lg: 2 }}
+          sx={{ flexDirection: "column" }}
           className="verticalFill"
         >
           <Box width={1} className="verticalFit">
@@ -29,11 +25,7 @@ export const SidebarPageLayout = (props: { children: any }) => {
           </Box>
         </Grid>
         <Grid
-          item={true}
-          xs={12}
-          sm={12}
-          md={9}
-          lg={10}
+          size={{ xs: 12, sm: 12, md: 9, lg: 10 }}
           alignItems="stretch"
           className="verticalFill"
         >

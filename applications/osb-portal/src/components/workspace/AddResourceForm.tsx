@@ -2,7 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -448,7 +448,7 @@ export default (props: WorkspaceEditProps) => {
             alignItems="stretch"
             direction="column"
           >
-            <Grid item={true}>
+            <Grid>
               <TextField
                 id="resource-url-input"
                 key="input-resource-url"
@@ -464,7 +464,7 @@ export default (props: WorkspaceEditProps) => {
                 variant="standard"
               />
             </Grid>
-            <Grid item={true} style={{ flex: 1 }} sx={styles.addByUploadForm}>
+            <Grid style={{ flex: 1 }} sx={styles.addByUploadForm}>
               <TextField
                 key={"namefor-" + url}
                 error={Boolean(nameError)}
@@ -552,7 +552,7 @@ export default (props: WorkspaceEditProps) => {
             ) : null}
           </Box>
           <Grid container={true} spacing={1} className="copy-info">
-            <Grid item={true} xs={8}>
+            <Grid size={{ xs: 8 }}>
               {waiting ? (
                 <CircularProgress size={25} />
               ) : fromOSBRepositoryConfirmation ? (
@@ -567,7 +567,7 @@ export default (props: WorkspaceEditProps) => {
                 </Typography>
               )}
             </Grid>
-            <Grid item={true}>
+            <Grid>
               <Button
                 variant="contained"
                 onClick={handleCopy}

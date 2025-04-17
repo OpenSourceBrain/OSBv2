@@ -17,7 +17,7 @@ import {
 //components
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
@@ -103,7 +103,6 @@ export const WorkspacePage = (props: any) => {
               sx={{ background: bgDarkest }}
             >
               <Grid
-                item={true}
                 className="verticalFill"
               >
                 <NavbarButton
@@ -116,7 +115,6 @@ export const WorkspacePage = (props: any) => {
                 </NavbarButton>
               </Grid>
               <Grid
-                item={true}
                 gap={1}
                 justifyContent="end"
                 padding={"0 16px"}
@@ -220,10 +218,7 @@ export const WorkspacePage = (props: any) => {
                 <Grid
                   id="workspace-detail-sidebar"
                   className="verticalFill"
-                  item
-                  xs={12}
-                  sm={3}
-                  lg={2.5}
+                  size={{ xs: 12, sm: 3, lg: 2.5 }}
                   sx={{
                     borderRight: `1px solid ${bgLightest}`,
                   }}
@@ -241,11 +236,8 @@ export const WorkspacePage = (props: any) => {
                   />
                 </Grid>
                 <Grid
-                  item
                   justifyContent="start"
-                  xs={12}
-                  sm={6}
-                  lg={6.5}
+                  size={{ xs: 12, sm: 6, lg: 6.5 }}
                   id="workspace-detail-content"
                   className="verticalFit"
                 >
@@ -298,7 +290,7 @@ export const WorkspacePage = (props: any) => {
                     </Stack>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={3} lg={2.5}>
+                <Grid size={{ xs: 12, sm: 3, lg: 2.5 }}>
                   <WorkspaceDetailsInfo workspace={workspace} />
                 </Grid>
               </Grid>

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import makeStyles from "@mui/styles/makeStyles";
-import { Typography, Box, Button, Grid, CircularProgress } from "@mui/material";
+import { Typography, Box, Button, CircularProgress } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 import { RepositoriesList as Repositories } from "../repository/RespositoriesTable";
 import { WorkspaceEditor } from "../index";
@@ -230,12 +231,12 @@ export const WorkspaceFromRepository = ({
           />
         </Box>
         <Grid container={true} className={classes.info}>
-          <Grid item={true}>
+          <Grid>
             <Typography component="h6" className={classes.helperDialogText}>
               Please select the files to add to your new workspace
             </Typography>
           </Grid>
-          <Grid item={true}>
+          <Grid>
             <Button
               variant="contained"
               onClick={() => {
@@ -311,13 +312,13 @@ export const WorkspaceFromRepository = ({
             className="verticalFill"
             spacing={1}
           >
-            <Grid item={true} xs={12} className="verticalFill">
+            <Grid size={{ xs: 12 }} className="verticalFill">
               <RepositoriesWorkspacesSearchField
                 borderRadius={5}
                 filterChanged={setFilter}
               />
             </Grid>
-            <Grid item={true} xs={12} className="verticalFill">
+            <Grid size={{ xs: 12 }} className="verticalFill">
               <Box
                 sx={{
                   width: "100%",
@@ -346,7 +347,7 @@ export const WorkspaceFromRepository = ({
               </Box>
             </Grid>
             {totalPages > 1 ? (
-              <Grid item={true} xs={12} className="verticalFill">
+              <Grid size={{ xs: 12 }} className="verticalFill">
                 <OSBPagination
                   page={page}
                   count={totalPages}
@@ -436,14 +437,14 @@ export const WorkspaceFromRepository = ({
     case Stage.ERROR_NO_FILES:
       return returnDialoged(
         <Grid container={true} className={classes.info}>
-          <Grid item={true}>
+          <Grid>
             <Typography component="h6" className={classes.helperDialogText}>
               No files from this repository have been selected, and so all the
               files in the repository will be added in the workspace. Press OK
               to proceed, or press Cancel and go back and select some.
             </Typography>
           </Grid>
-          <Grid item={true}>
+          <Grid>
             <Button
               color="primary"
               onClick={() => setStage(Stage.SELECT_FILES)}

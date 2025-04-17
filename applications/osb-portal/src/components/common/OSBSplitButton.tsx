@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -65,7 +65,7 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
 
   return (
     <Grid direction="column" alignItems="center">
-      <Grid item={true} xs={12}>
+      <Grid size={{ xs: 12 }}>
         <StyledButtonGroup
           variant="contained"
           color="primary"
