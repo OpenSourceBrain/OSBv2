@@ -1,7 +1,7 @@
 import * as React from "react";
 
 //theme
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 
 import { paragraph } from "../../theme";
 

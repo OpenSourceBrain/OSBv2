@@ -194,8 +194,8 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
             }}
           >
             <Grid
-              container={true}
-              sx={{ alignItems: "center" }}
+              container
+              sx={{ alignItems: "center", width: 1 }}
               className="verticalFill"
               spacing={1}
             >
@@ -261,7 +261,7 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
                   />
                 </Tabs>
               </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 5 }}>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 5 }} sx={{ display: "flex" }}>
                 <ButtonGroup
                   sx={{
                     backgroundColor: bgRegular,

@@ -3,8 +3,7 @@ import Menu, {MenuProps} from '@mui/material/Menu'
 import MenuItem, {MenuItemProps} from '@mui/material/MenuItem'
 import ArrowRight from '@mui/icons-material/ArrowRight'
 import clsx from 'clsx'
-import makeStyles from '@mui/styles/makeStyles'
-import {Theme} from '@mui/material'
+import { useTheme } from '@mui/material/styles';
 
 export interface NestedMenuItemProps extends Omit<MenuItemProps, 'button'> {
   /**
@@ -42,11 +41,6 @@ export interface NestedMenuItemProps extends Omit<MenuItemProps, 'button'> {
 }
 
 const TRANSPARENT = 'rgba(0,0,0,0)'
-const useMenuItemStyles = makeStyles((theme: Theme) => ({
-  root: (props: any) => ({
-    backgroundColor: props.open ? theme.palette.action.hover : TRANSPARENT
-  })
-}))
 
 /**
  * Use as a drop-in replacement for `<MenuItem>` when you need to add cascading
@@ -70,6 +64,7 @@ const NestedMenuItem = React.forwardRef<
   } = props
 
   const {ref: containerRefProp, ...ContainerProps} = ContainerPropsProp
+  const theme = useTheme()
 
   const menuItemRef = useRef<HTMLLIElement>(null)
   useImperativeHandle(ref, () => menuItemRef.current as HTMLLIElement)
@@ -145,7 +140,6 @@ const NestedMenuItem = React.forwardRef<
   }
 
   const open = isSubMenuOpen && parentMenuOpen
-  const menuItemClasses = useMenuItemStyles({open})
 
   // Root element must have a `tabIndex` attribute for keyboard navigation
   let tabIndex
@@ -165,7 +159,7 @@ const NestedMenuItem = React.forwardRef<
     >
       <MenuItem
         {...MenuItemProps}
-        className={clsx(menuItemClasses.root, className)}
+        className={clsx(`backgroundColor: ${open ? theme.palette.action.hover : TRANSPARENT}`, className)}
         ref={menuItemRef}
       >
         {label}

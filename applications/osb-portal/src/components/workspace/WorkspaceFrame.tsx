@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { AnyAction, Dispatch } from "redux";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Workspace,
   WorkspaceResource,
@@ -16,12 +15,6 @@ import { getBaseDomain, getApplicationDomain } from "../../utils";
 
 declare var window: any;
 
-const useStyles = makeStyles((theme) => ({
-  iframe: {
-    flex: 1,
-    border: "none",
-  },
-}));
 
 const WORKSPACE_BASE_DIRECTORY = "/opt/workspace/";
 export const WorkspaceFrame = (props: {
@@ -30,7 +23,6 @@ export const WorkspaceFrame = (props: {
   dispatch: Dispatch;
   currentResource: WorkspaceResource;
 }) => {
-  const classes = useStyles();
   const [frameUrl, setFrameUrl] = React.useState(null);
   const { app } = useParams<{ app: string }>();
 
@@ -122,7 +114,10 @@ export const WorkspaceFrame = (props: {
       id="workspace-frame"
       key={frameUrl}
       src={frameUrl}
-      className={classes.iframe}
+      style={{
+        flex: 1,
+        border: "none",
+      }}
     />
   );
 };

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import {
   chipTextColor,
 } from "../../theme";
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 
 
 export const CardFooter = styled(Typography)(() => ({

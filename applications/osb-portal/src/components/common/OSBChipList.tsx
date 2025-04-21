@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import makeStyles from "@mui/styles/makeStyles";
+import { useTheme } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -13,32 +13,35 @@ interface OSBChipListProps {
   onDeleteChip: (pathOfChipToBeDeleted: string) => void;
 }
 
-const useStyles = makeStyles((theme) => ({
-  chipBox: {
-    paddingTop: theme.spacing(2),
-    "& h6": {
-      fontWeight: "bold",
+const createStyles = (theme: any) => {
+  return {
+    chipBox: {
+      paddingTop: theme.spacing(2),
+      "& h6": {
+        fontWeight: "bold",
+        color: bgInputs,
+        fontSize: "0.8rem",
+        marginBottom: "5px",
+        marginLeft: theme.spacing(1),
+      },
+    },
+    OSBChipList: {
+      display: "flex",
+      flexWrap: "wrap",
+      "& .MuiChip-root": {
+        backgroundColor: bgLight,
+        marginBottom: theme.spacing(1),
+      },
+    },
+    OSBChipFileExtension: {
       color: bgInputs,
-      fontSize: "0.8rem",
-      marginBottom: "5px",
-      marginLeft: theme.spacing(1),
     },
-  },
-  OSBChipList: {
-    display: "flex",
-    flexWrap: "wrap",
-    "& .MuiChip-root": {
-      backgroundColor: bgLight,
-      marginBottom: theme.spacing(1),
-    },
-  },
-  OSBChipFileExtension: {
-    color: bgInputs,
-  },
-}));
+  }
+};
 
 export default (props: OSBChipListProps) => {
-  const classes = useStyles();
+  const theme = useTheme()
+  const classes = createStyles(theme)
 
   const createChipLabel = (chipItem: RepositoryResourceNode) => {
     const splitfilename = chipItem.resource.name.split(".");
@@ -50,7 +53,7 @@ export default (props: OSBChipListProps) => {
       return (
         <>
           <Typography component="span">{filename}</Typography>
-          <Typography component="span" className={classes.OSBChipFileExtension}>
+          <Typography component="span" sx={classes.OSBChipFileExtension}>
             .{extension}
           </Typography>
         </>
@@ -65,10 +68,10 @@ export default (props: OSBChipListProps) => {
   };
 
   return (
-    <Box className={classes.chipBox}>
+    <Box sx={classes.chipBox}>
       <Typography component="h6">Files selected</Typography>
 
-      <Box className={classes.OSBChipList}>
+      <Box sx={classes.OSBChipList}>
         {props.chipItems.map((chipItem) => {
           return (
             <Chip

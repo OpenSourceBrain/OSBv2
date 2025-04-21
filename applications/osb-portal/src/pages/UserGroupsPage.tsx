@@ -199,7 +199,7 @@ export const UserGroupsPage = (props: any) => {
                 className="username"
                 component="p"
                 variant="subtitle2"
-                lineHeight={1.5}
+                sx={{ lineHeight: 1.5 }}
               >
                 {groupDetails?.description}
               </Typography>

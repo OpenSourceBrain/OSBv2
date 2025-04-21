@@ -9,7 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 //style
 import { bgRegular, chipTextColor } from "../../theme";
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 import { debounce } from "lodash";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({

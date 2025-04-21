@@ -1,6 +1,6 @@
 import React from "react";
 import Pagination from "@mui/material/Pagination";
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 import { bgLightest as lineColor, primaryColor } from "../../theme";
 
 interface OSBPaginationProps {

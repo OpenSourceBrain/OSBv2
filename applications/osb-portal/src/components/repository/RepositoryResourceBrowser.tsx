@@ -13,7 +13,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import FolderIcon from "@mui/icons-material/Folder";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import IconButton from "@mui/material/IconButton";
-import makeStyles from '@mui/styles/makeStyles';
+import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -38,8 +38,8 @@ import {
 } from "../../theme";
 import { Tooltip } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  textField: {
+const styles = {
+  textField: (theme) => ({
     borderRadius: 4,
     marginTop: theme.spacing(2),
     backgroundColor: bgLightestShade,
@@ -62,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(0),
       fontSize: ".88rem",
     },
-  },
-  list: {
+  }),
+  list: (theme) => ({
     "& .MuiCheckbox-colorSecondary": {
       color: checkBoxColor,
       "&.Mui-checked": {
@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: bgLightest,
       },
     },
-  },
+  }),
   breadcrumbs: {
     lineHeight: 1,
     "& .MuiAvatar-root": {
@@ -153,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-}));
+};
 
 export default ({
   repository,
@@ -174,7 +174,8 @@ export default ({
   >([repository.contextResources]);
   const [filter, setFilter] = React.useState<string>();
   const handleToggle = (value: any) => () => "";
-  const classes = useStyles();
+  const theme = useTheme();
+
   React.useEffect(() => {
     setChecked({});
   }, [refresh]);
@@ -186,7 +187,7 @@ export default ({
     ), [currentPath, filter]);
 
   let resourcesListObject: {
-    [id: string]: RepositoryResourceNode;
+    [id: string]: any;
   } = React.useMemo(() => resourcesList?.reduce(
       (resourcesListObject, item) => {
         resourcesListObject[item.resource.path] = item.children;
@@ -230,7 +231,7 @@ export default ({
       <Breadcrumbs
         separator={<Avatar src="/images/separator.svg" />}
         aria-label="breadcrumb"
-        className={classes.breadcrumbs}
+        sx={styles.breadcrumbs}
       >
         {currentPath.map((element, i) => (
           <Link
@@ -248,51 +249,55 @@ export default ({
       id="standard-start-adornment"
       fullWidth={true}
       placeholder="Search"
-      className={classes.textField}
+      sx={styles.textField(theme)}
       onChange={(e) => setFilter(e.target.value.toLowerCase())}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          )
+        }
       }} />
 
     <Box mt={1} className="scrollbar">
       <TableContainer component="div">
-        <Table className={classes.list} aria-label="repository resources">
+        <Table sx={styles.list(theme)} aria-label="repository resources">
         <TableHead
-                                  sx={{
-                                    "& .MuiTableCell-root": {
-                                      padding: "8px 8px 8px 0",
+          sx={{
+            "& .MuiTableCell-root": {
+              padding: "8px 8px 8px 0",
             
-                                      "& .MuiButtonBase-root": {
-                                        padding: 0,
-                                      },
-                                    },
-                                  }}
-                                >
-                                  <TableRow>
-                                    <TableCell padding="checkbox" sx={{ width: "1.8em" }}>
-                                      <Tooltip title="Select all files">
-                                      <Checkbox
-                                        color="primary"
-                                        checked={
-                                          Object.keys(checked)?.length ===
-                                          currentPath.slice(-1)[0].children?.length
-                                        }
-                                        onChange={(e) => onSelectAllFiles(e.target.checked)}
-                                        inputProps={{
-                                          "aria-label": "select all files",
-                                        }}
-                                      />
-                                      </Tooltip>
-                                    </TableCell>
-                                    <TableCell component="th">
-                                      <Typography component="p">Name</Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
+              "& .MuiButtonBase-root": {
+                padding: 0,
+              },
+            },
+          }}
+        >
+          <TableRow>
+            <TableCell padding="checkbox" sx={{ width: "1.8em" }}>
+              <Tooltip title="Select all files">
+                <Checkbox
+                  color="primary"
+                  checked={
+                    Object.keys(checked)?.length ===
+                    currentPath.slice(-1)[0].children?.length
+                  }
+                  onChange={(e) => onSelectAllFiles(e.target.checked)}
+                  slotProps={{
+                    input: {
+                      "aria-label": "select all files",
+                    },
+                  }}
+                />
+              </Tooltip>
+            </TableCell>
+            <TableCell component="th">
+              <Typography component="p">Name</Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
           <TableBody>
             
             {currentPath
@@ -320,7 +325,11 @@ export default ({
                         checked={Boolean(checked[value.resource.path])}
                         tabIndex={-1}
                         disableRipple={true}
-                        inputProps={{ "aria-labelledby": labelId }}
+                        slotProps={{
+                          input: {
+                            "aria-labelledby": labelId
+                          },
+                        }}
                         onChange={(e) => onCheck(e.target.checked, value)}
                       />
                     </TableCell>

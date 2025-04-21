@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 //theme
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 

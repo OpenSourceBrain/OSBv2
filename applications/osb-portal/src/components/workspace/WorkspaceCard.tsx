@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -131,8 +131,8 @@ export const WorkspaceCard = (props: Props) => {
                   fontSize: ".857rem",
                   color: chipTextColor,
                   lineHeight: 1.143,
+                  mb: "4px"
                 }}
-                mb={"4px"}
               >
                 {workspace.user.firstName + " " + workspace.user.lastName}
               </Typography>

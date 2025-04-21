@@ -26,7 +26,7 @@ import {
   bgRegular,
   bgInputs,
 } from "../../theme";
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 
 //types
 import { RepositoryContentType } from "../../apiclient/workspaces";
@@ -259,18 +259,20 @@ export const SearchFilterReposWorkspaces = (
               />
             </>
           )}
-          ListboxProps={{
-            onScroll: (event: React.SyntheticEvent) => {
-              const listboxNode = event.currentTarget;
-              if (
-                listboxNode.scrollTop + listboxNode.clientHeight ===
-                listboxNode.scrollHeight
-              ) {
-                if (tagPage < totalTagPages) {
-                  handleTagInput(tagSearchValue, tagPage + 1);
+          slotProps={{
+            listbox: {
+              onScroll: (event: React.SyntheticEvent) => {
+                const listboxNode = event.currentTarget;
+                if (
+                  listboxNode.scrollTop + listboxNode.clientHeight ===
+                  listboxNode.scrollHeight
+                ) {
+                  if (tagPage < totalTagPages) {
+                    handleTagInput(tagSearchValue, tagPage + 1);
+                  }
                 }
-              }
-            },
+              },
+            } as any,
           }}
         />
         {props?.hasTypes && (

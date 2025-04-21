@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import makeStyles from "@mui/styles/makeStyles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NestedMenuItem from "../common/NestedMenuItems";
@@ -34,17 +33,8 @@ interface WorkspaceActionsMenuProps {
   [other: string]: any;
 }
 
-const useStyles = makeStyles((theme) => ({
-  snackbar: {
-    "& .MuiSnackbarContent-root": {
-      backgroundColor: bgDarkest,
-      color: textColor,
-    },
-  },
-}));
 
 export default (props: WorkspaceActionsMenuProps) => {
-  const classes = useStyles();
   const {ButtonComponent} = props;
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
@@ -263,12 +253,17 @@ export default (props: WorkspaceActionsMenuProps) => {
         messages={["Cloning workspace. Please wait."]}
       />
        <Snackbar
-        classes={{ root: classes.snackbar }}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}
         message="Workspace cloned"
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         autoHideDuration={5000}
+        sx={{
+          "& .MuiSnackbarContent-root": {
+            backgroundColor: bgDarkest,
+            color: textColor,
+          },
+        }}
         action={
           <React.Fragment>
             <Button

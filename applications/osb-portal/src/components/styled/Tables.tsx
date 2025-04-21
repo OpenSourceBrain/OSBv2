@@ -12,8 +12,7 @@ import {
   chipTextColor,
   chipBg,
 } from "../../theme";
-import styled from "@mui/system/styled";
-
+import { styled } from '@mui/material/styles';
 
 
 export const StyledTableContainer = styled(TableContainer)(() => ({

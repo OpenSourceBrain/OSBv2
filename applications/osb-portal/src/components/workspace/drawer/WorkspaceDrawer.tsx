@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import clsx from "clsx";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -23,11 +21,7 @@ import { UserInfo } from "../../../types/user";
 
 import { WorkspaceFrame } from "../../../components";
 
-const useStyles = makeStyles((theme) => ({
-  drawerContent: {
-    width: 400,
-  },
-  menuButton: {},
+const styles = {
   hide: {
     display: "none",
   },
@@ -36,14 +30,14 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     display: "flex",
   },
-  drawerOpen: {
+  drawerOpen: (theme) => ({
     top: "initial",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  drawerClose: {
+  }),
+  drawerClose: (theme) => ({
     top: "initial",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
@@ -56,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     "& .verticalFit": {
       display: "block",
     },
-  },
+  }),
   drawerPaper: {
     position: "static",
     flex: 1,
@@ -65,14 +59,14 @@ const useStyles = makeStyles((theme) => ({
 
     justifyContent: "space-between",
   },
-  drawerHeader: {
+  drawerHeader: (theme) => ({
     display: "flex",
     alignItems: "center",
 
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
-  },
+  }),
   closedTextBottom: {
     writingMode: "vertical-lr",
     textOrientation: "mixed",
@@ -82,10 +76,10 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     height: "70vh",
   },
-  loading: {
+  loading: (theme) => ({
     color: theme.palette.grey[600],
-  },
-}));
+  }),
+};
 
 interface WorkspaceDrawerProps {
   workspace: Workspace;
@@ -101,8 +95,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
   if (!workspace) {
     return <></>;
   }
-  const classes = useStyles();
-
+  const theme = useTheme();
   const { app } = useParams<{ app: string }>();
   const searchParams = useSearchParams()[0];
 
@@ -165,18 +158,20 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           anchor="left"
           elevation={0}
           open={open}
-          className={clsx(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx(classes.drawerPaper, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
+          sx={{
+            ...styles.drawer,
+            ...(open ? styles.drawerOpen(theme) : styles.drawerClose(theme)),
+          }}
+          slotProps={{
+            paper: {
+              sx: {
+                ...styles.drawerPaper,
+                ...(open ? styles.drawerOpen(theme) : styles.drawerClose(theme))
+              }
+            }
           }}
         >
-          <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+          <div className="verticalFit" style={{ ...(open && { width: 400 }) }}>
             <WorkspaceInteractions
               workspace={workspace}
               open={open}
@@ -185,7 +180,7 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           </div>
           <div>
             <Divider />
-            <div className={classes.drawerHeader}>
+            <div style={styles.drawerHeader(theme)}>
               <IconButton onClick={handleToggleDrawer} size="large">
                 {open ? (
                   <ArrowLeft style={{ fontSize: "1rem" }} />

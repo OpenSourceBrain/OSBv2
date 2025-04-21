@@ -2,7 +2,6 @@
 
 import React, { Component, Fragment } from "react";
 import { useTheme } from '@mui/material/styles';
-// import makeStyles from '@mui/styles/makeStyles';
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -11,18 +10,6 @@ import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import { primaryColor } from "../../theme";
 
-// const useStyles = makeStyles((theme) => ({
-//   backdrop: {
-//     zIndex: theme.zIndex.drawer + 1,
-//     color: primaryColor,
-//     backgroundColor: "rgba(0, 0, 0, 0.8)",
-//   },
-//   root: {
-//     position: "absolute",
-//     flex: "0 0 100%",
-//     alignSelf: "stretch",
-//   },
-// }));
 
 interface OSBLoaderProps {
   active: boolean;

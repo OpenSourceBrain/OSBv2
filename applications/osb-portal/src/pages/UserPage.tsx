@@ -350,7 +350,7 @@ export const UserPage = (props: any) => {
                 </Button>
               )}
 
-              <Typography display="flex" flexDirection="row" color={paragraph}>
+              <Typography color={paragraph} sx={{ display: "flex", flexDirection: "row" }}>
                 {publicWorkspaces ? (
                   <>
                     <FolderOpenIcon fontSize="small" />

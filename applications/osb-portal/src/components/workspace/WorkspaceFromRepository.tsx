@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import makeStyles from "@mui/styles/makeStyles";
+import { useTheme } from '@mui/material/styles';
 import { Typography, Box, Button, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
@@ -34,12 +34,12 @@ export enum WorkspaceTemplateType {
   playground = "playground",
 }
 
-const useStyles = makeStyles((theme) => ({
-  helperDialogText: {
+const styles = {
+  helperDialogText: (theme) => ({
     padding: `0px ${theme.spacing(1)} ${theme.spacing(1)}`,
     fontSize: "0.9rem",
-  },
-  info: {
+  }),
+  info: (theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTypography-root": {
       paddingLeft: 0,
     },
-  },
-  repositoriesList: {
+  }),
+  repositoriesList: (theme) => ({
     "& .scrollbar": {
       borderBottomRightRadius: radius,
       borderBottomLeftRadius: radius,
@@ -75,8 +75,8 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
-  },
-  resourceBrowser: {
+  }),
+  resourceBrowser: (theme) => ({
     overflow: "hidden",
     borderRadius: radius,
     margin: theme.spacing(2),
@@ -121,8 +121,8 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: "2%",
       padding: "0.6rem",
     },
-  },
-}));
+  }),
+};
 
 export const WorkspaceFromRepository = ({
   close,
@@ -134,9 +134,8 @@ export const WorkspaceFromRepository = ({
     closeMainDialog?: (isClosed: boolean) => void;
 }) => {
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
-
+  const theme = useTheme();
   const user = useSelector((state: RootState) => state.user);
-  const classes = useStyles();
   const [selectedRepository, setSelectedRepository] =
     React.useState<OSBRepository>(null);
 
@@ -223,16 +222,16 @@ export const WorkspaceFromRepository = ({
     };
     return repository ? (
       <>
-        <Box className={classes.resourceBrowser}>
+        <Box sx={styles.resourceBrowser(theme)}>
           <RepositoryResourceBrowser
             repository={repository}
             checkedChanged={setCheckedArray}
             backAction={handleBackAction}
           />
         </Box>
-        <Grid container={true} className={classes.info}>
+        <Grid container={true} sx={styles.info(theme)}>
           <Grid>
-            <Typography component="h6" className={classes.helperDialogText}>
+            <Typography component="h6" sx={styles.helperDialogText(theme)}>
               Please select the files to add to your new workspace
             </Typography>
           </Grid>
@@ -436,9 +435,9 @@ export const WorkspaceFromRepository = ({
       );
     case Stage.ERROR_NO_FILES:
       return returnDialoged(
-        <Grid container={true} className={classes.info}>
+        <Grid container={true} sx={styles.info(theme)}>
           <Grid>
-            <Typography component="h6" className={classes.helperDialogText}>
+            <Typography component="h6" sx={styles.helperDialogText(theme)}>
               No files from this repository have been selected, and so all the
               files in the repository will be added in the workspace. Press OK
               to proceed, or press Cancel and go back and select some.

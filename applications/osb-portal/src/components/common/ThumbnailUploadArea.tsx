@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid2";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 //style
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 import { radius, gutter, bgInputs } from "../../theme";
 
 // import style manually

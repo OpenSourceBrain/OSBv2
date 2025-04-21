@@ -1,11 +1,10 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
 import { MainMenuItem } from "./MainMenuItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const useStyles = makeStyles(() => ({
+const styles = {
   button: {
     textTransform: "inherit",
     minWidth: "auto",
@@ -23,10 +22,9 @@ const useStyles = makeStyles(() => ({
     padding: "5px",
     fontSize: "0.75rem",
   },
-}));
+};
 
 export const MainMenu = (props: any) => {
-  const classes = useStyles();
   const navigate = useNavigate();
 
   const handleDialogOpen = () => {
@@ -44,7 +42,7 @@ export const MainMenu = (props: any) => {
       <Box display="flex" flexWrap="wrap" p={0}>
         <MainMenuItem
           title="OSB"
-          className={classes.button + " " + classes.firstButton}
+          sx={{...styles.button, ...styles.firstButton}}
           items={[
             {
               label: "Documentation",
@@ -65,7 +63,7 @@ export const MainMenu = (props: any) => {
         />
         <MainMenuItem
           title="View"
-          className={classes.button}
+          sx={styles.button}
           items={[
             {
               label: "Repositories",
@@ -87,7 +85,7 @@ export const MainMenu = (props: any) => {
               WORKSPACES <ExpandMoreIcon fontSize="small" />
             </>
           }
-          className={classes.flipButton}
+          sx={styles.flipButton}
           items={[
             {
               label: "Repositories",
@@ -103,7 +101,7 @@ export const MainMenu = (props: any) => {
               REPOSITORIES <ExpandMoreIcon fontSize="small" />
             </>
           }
-          className={classes.flipButton}
+          sx={styles.flipButton}
           items={[{ label: "Workspaces", callback: () => navigate("/") }]}
           popperPlacement="bottom-end"
         />

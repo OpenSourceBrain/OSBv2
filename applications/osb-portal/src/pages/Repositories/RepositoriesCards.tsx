@@ -16,7 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // style
 import { paragraph, chipTextColor, chipBg, textColor } from "../../theme";
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 
 // icons
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -174,8 +174,8 @@ export const RepositoriesListCards = (props: RepositoriesProps) => {
                             fontSize: ".857rem",
                             color: chipTextColor,
                             lineHeight: 1.143,
+                            mb: "4px"
                           }}
-                          mb={"4px"}
                         >
                           {formatDate(repository.timestampUpdated)}
                         </Typography>

@@ -23,7 +23,7 @@ import ThumbnailUploadArea from "../common/ThumbnailUploadArea";
 import "react-markdown-editor-lite/lib/index.css";
 
 //style
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 import { bgLight, radius, gutter, bgInputs, bgDarkest } from "../../theme";
 
 //types

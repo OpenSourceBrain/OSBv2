@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate, useParams } from "react-router";
 
 //theme
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import {
   paragraph,
   secondaryColor as white,
@@ -100,7 +100,7 @@ export const WorkspacePage = (props: any) => {
               justifyContent="space-between"
               className="verticalFill"
               spacing={1}
-              sx={{ background: bgDarkest }}
+              sx={{ background: bgDarkest, width: 1 }}
             >
               <Grid
                 className="verticalFill"
@@ -116,8 +116,7 @@ export const WorkspacePage = (props: any) => {
               </Grid>
               <Grid
                 gap={1}
-                justifyContent="end"
-                padding={"0 16px"}
+                sx={{ display: "flex", justifyContent: "end", padding: "0 16px" }}
               >
                 {canEdit && (
                   <NavbarButton

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
 
 import ArrowUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -11,24 +10,24 @@ import ArrowDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { FileLinkIcon, LoadingIcon, FolderIcon } from "../../icons";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   drawerContent: {
     maxWidth: 400,
   },
-  appBar: {
+  appBar: (theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-  },
+  }),
   expandHeader: {
     display: "flex",
     flexDirection: "row-reverse",
   },
-  menuButton: {
+  menuButton: (theme) => ({
     marginRight: theme.spacing(2),
-  },
+  }),
   hide: {
     display: "none",
   },
@@ -37,21 +36,20 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     display: "flex",
   },
-  loading: {
+  loading: (theme) => ({
     color: theme.palette.grey[600],
-  },
+  }),
   FlexDisplay: {
     display: "flex",
   },
   FlexGrowOne: {
     flex: 1,
   },
-}));
+};
 
 const LinkItem = (props: any) => {
-  const classes = useStyles();
   return (
-    <div className={classes.FlexDisplay}>
+    <div style={styles.FlexDisplay}>
       <FileLinkIcon />
       <div>{props.name}</div>
     </div>
@@ -59,9 +57,8 @@ const LinkItem = (props: any) => {
 };
 
 const FolderItem = (props: any) => {
-  const classes = useStyles();
   return (
-    <div className={classes.FlexDisplay}>
+    <div style={styles.FlexDisplay}>
       <FolderIcon />
       <div>{props.name}</div>
     </div>
@@ -69,10 +66,9 @@ const FolderItem = (props: any) => {
 };
 
 const LoadingItem = (props: any) => {
-  const classes = useStyles();
   return (
-    <div className={classes.FlexDisplay}>
-      <div className={classes.FlexGrowOne}>Loading {props.name}</div>
+    <div style={styles.FlexDisplay}>
+      <div style={styles.FlexGrowOne}>Loading {props.name}</div>
       <LoadingIcon />
     </div>
   );

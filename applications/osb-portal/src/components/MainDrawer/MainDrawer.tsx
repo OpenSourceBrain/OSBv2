@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 //theme
-import { makeStyles, useTheme } from "@mui/styles";
+import { useTheme } from '@mui/material/styles';
 import clsx from "clsx";
 
 import {
@@ -185,7 +185,8 @@ export const MainDrawer = (props: {
   isRepositoriesPage: boolean;
 }) => {
   const theme = useTheme();
-  const isMdUp = false;
+  // const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isMdUp = true;
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
   const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
@@ -280,7 +281,7 @@ export const MainDrawer = (props: {
             <List
               subheader={
                 <ListSubheader>
-                  <Typography mb={1} mt={2}>
+                  <Typography sx={{ mb: 1, mt: 2}}>
                     Dashboard
                   </Typography>
                 </ListSubheader>
@@ -323,7 +324,7 @@ export const MainDrawer = (props: {
             <List
               subheader={
                 <ListSubheader>
-                  <Typography mb={1} mt={4}>
+                  <Typography sx={{ mb: 1, mt: 4 }}>
                     Info & Support
                   </Typography>
                 </ListSubheader>

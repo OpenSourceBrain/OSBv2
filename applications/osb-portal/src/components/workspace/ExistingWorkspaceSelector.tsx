@@ -1,7 +1,6 @@
 import * as React from "react";
 import debounce from "lodash/debounce";
 
-import makeStyles from "@mui/styles/makeStyles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
@@ -16,7 +15,7 @@ import searchFilter from "../../types/searchFilter";
 import SearchFilterReposWorkspaces from "../common/SearchFilterReposWorkspaces";
 import { Page } from "../../types/model";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   workspacesBox: {
     height: "400px",
     overflow: "auto",
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "0.5rem",
     marginTop: "0.5rem",
   },
-}));
+};
 
 interface ExistingWorkspaceEditorProps {
   setWorkspace: (ws: Workspace) => void;
@@ -82,7 +81,6 @@ interface ExistingWorkspaceEditorProps {
 export const ExistingWorkspaceEditor = (
   props: ExistingWorkspaceEditorProps
 ) => {
-  const classes = useStyles();
 
   const [activeCardClassNames, setActiveCardClassNames] = React.useState<
     string[]
@@ -161,7 +159,7 @@ export const ExistingWorkspaceEditor = (
           hasTypes={false}
         />
       </Box>
-      <Box className={`${classes.workspacesBox} scrollbar`}>
+      <Box className="scrollbar" sx={styles.workspacesBox}>
         {workspaces ? (
           <Grid container={true} spacing={1}>
             {workspaces &&
@@ -172,12 +170,14 @@ export const ExistingWorkspaceEditor = (
                     size={{ xs: 6, sm: 6, md: 4, lg: 3, xl: 2 }}
                   >
                     <Button
-                      className={`${activeCardClassNames[index]}-button ${classes.workspaceButton}`}
+                      className={`${activeCardClassNames[index]}-button`}
                       onClick={() => handleWorkspaceSelection(index)}
                       disableRipple={true}
+                      sx={styles.workspaceButton}
                     >
                       <CheckCircleIcon
-                        className={`${activeCardClassNames[index]} ${classes.checkMarkIcon}`}
+                        className={`${activeCardClassNames[index]}`}
+                        sx={styles.checkMarkIcon}
                         color="primary"
                       />
                       <WorkspaceCard workspace={workspace} hideMenu={true} />

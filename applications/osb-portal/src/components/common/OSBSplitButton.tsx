@@ -10,7 +10,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { OSBApplication, OSBApplications } from "../../types/workspace";
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 
 interface OSBSplitButtonProps {
   defaultSelected: OSBApplication;

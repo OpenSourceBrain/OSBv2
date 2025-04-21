@@ -1,5 +1,4 @@
 import * as React from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -275,12 +274,14 @@ export default (props: UserEditProps) => {
             onChange={setProfileUserName}
             variant="outlined"
             defaultValue={userForm.username}
-            InputProps={{
-              startAdornment: (
-                <Box sx={styles.inputIconBox}>
-                  <AlternateEmail fontSize="small" />
-                </Box>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <Box sx={styles.inputIconBox}>
+                    <AlternateEmail fontSize="small" />
+                  </Box>
+                )
+              }
             }}
           />
         </Box>
@@ -295,12 +296,14 @@ export default (props: UserEditProps) => {
               onChange={setProfileEmailAddress}
               variant="outlined"
               defaultValue={userForm.email}
-              InputProps={{
-                startAdornment: (
-                  <Box sx={styles.inputIconBox}>
-                    <EmailIcon fontSize="small" />
-                  </Box>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <Box sx={styles.inputIconBox}>
+                      <EmailIcon fontSize="small" />
+                    </Box>
+                  ),
+                }
               }}
             />
             <Typography
@@ -325,12 +328,14 @@ export default (props: UserEditProps) => {
               variant="outlined"
               defaultValue={userForm.website}
               placeholder="https://.."
-              InputProps={{
-                startAdornment: (
-                  <Box sx={styles.inputIconBox}>
-                    <LanguageIcon fontSize="small" />
-                  </Box>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <Box sx={styles.inputIconBox}>
+                      <LanguageIcon fontSize="small" />
+                    </Box>
+                  )
+                }
               }}
             />
           </Tooltip>
@@ -367,10 +372,12 @@ export default (props: UserEditProps) => {
                   onChange={(event) => {
                     handleProfileLinkChange(profileType, event.target.value);
                   }}
-                  InputProps={{
-                    startAdornment: (
-                      <Box sx={styles.inputIconBox}> {profileTypeIcon} </Box>
-                    ),
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <Box sx={styles.inputIconBox}> {profileTypeIcon} </Box>
+                      )
+                    }
                   }}
                 />
               </Tooltip>
@@ -424,12 +431,14 @@ export default (props: UserEditProps) => {
               })
             }
             placeholder="Link"
-            InputProps={{
-              startAdornment: (
-                <Box sx={styles.inputIconBox}>
-                  <LinkIcon fontSize="small" />
-                </Box>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <Box sx={styles.inputIconBox}>
+                    <LinkIcon fontSize="small" />
+                  </Box>
+                ),
+              }
             }}
           />
         </Box>

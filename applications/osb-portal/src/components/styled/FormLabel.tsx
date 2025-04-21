@@ -4,7 +4,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 
 //style
-import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 
 export const StyledLabel = styled((props) => (
   <Typography {...props} component="label" />

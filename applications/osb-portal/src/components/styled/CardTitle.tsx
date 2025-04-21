@@ -5,7 +5,7 @@ import {
 
     lightWhite,
   } from "../../theme";
-  import styled from "@mui/system/styled";
+import { styled } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
 
 

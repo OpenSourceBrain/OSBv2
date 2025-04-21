@@ -1,7 +1,7 @@
 import * as React from "react";
 
 //theme
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import {
   paragraph,
   chipBg,
@@ -233,7 +233,7 @@ const RepositoryPageDetails = ({
         }}
       >
         <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="verticalFill">
-          <Grid size={{ xs: 12, md: 6 }} direction="column" className="verticalFit">
+          <Grid size={{ xs: 12, md: 6 }} sx={{ flexDirection: "column" }} className="verticalFit">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -350,7 +350,7 @@ const RepositoryPageDetails = ({
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 12, md: 6 }} direction="column" className="verticalFit">
+          <Grid size={{ xs: 12, md: 6 }} sx={{ flexDirection: "column" }} className="verticalFit">
             <Box
               display="flex"
               justifyContent="space-between"

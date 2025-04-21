@@ -45,7 +45,7 @@ import {
   Tag,
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
-import { styled } from "@mui/system";
+import { styled } from '@mui/material/styles';
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";

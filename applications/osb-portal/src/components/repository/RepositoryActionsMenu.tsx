@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import { chipBg } from "../../theme";
 import IconButton from "@mui/material/IconButton";
 import RepositoryService from "../../service/RepositoryService";

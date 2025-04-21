@@ -27,7 +27,7 @@ export const WorkspaceToolBox = (props: any) => {
     <>
       <Box>
         <Box pb={4} textAlign="center">
-          <Typography pb={2} variant="h1" component="h2">
+          <Typography variant="h1" component="h2" sx={{ pb: 2 }}>
             {" "}
             {props.title}
           </Typography>
