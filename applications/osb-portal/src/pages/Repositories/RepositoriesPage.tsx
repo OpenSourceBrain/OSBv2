@@ -216,6 +216,7 @@ export const RepositoriesPage = ({
                 alignItems="center"
                 className="verticalFill"
                 spacing={1}
+                sx={{ width: 1 }}
               >
                 <Grid
                   size={{ xs: 12, sm: 12, md: 7, lg: 7 }}
@@ -252,7 +253,7 @@ export const RepositoriesPage = ({
                     )}
                   </Tabs>
                 </Grid>
-                <StyledGrid size={{ xs: 12, sm: 8, md: 5, lg: 5 }}>
+                <StyledGrid size={{ xs: 12, sm: 8, md: 5, lg: 5 }} sx={{ display: "flex" }}>
                   <ButtonGroup
                     sx={{
                       backgroundColor: bgRegular,
