@@ -23,46 +23,46 @@ import {
 /**
  * figshare repository resource
  * @export
- * @interface BiomodelsRepositoryResource
+ * @interface EbrainsRepositoryResource
  */
-export interface BiomodelsRepositoryResource {
+export interface EbrainsRepositoryResource {
     /**
      * file name
      * @type {string}
-     * @memberof BiomodelsRepositoryResource
+     * @memberof EbrainsRepositoryResource
      */
     name?: string;
     /**
      * Download URL of the Resource
      * @type {string}
-     * @memberof BiomodelsRepositoryResource
+     * @memberof EbrainsRepositoryResource
      */
     path?: string;
     /**
      * OSB Repository id
      * @type {number}
-     * @memberof BiomodelsRepositoryResource
+     * @memberof EbrainsRepositoryResource
      */
     osbrepositoryId?: number;
     /**
      * File size in bytes of the RepositoryResource
      * @type {number}
-     * @memberof BiomodelsRepositoryResource
+     * @memberof EbrainsRepositoryResource
      */
     size?: number;
     /**
      * Date/time the ReposityResource is last modified
      * @type {Date}
-     * @memberof BiomodelsRepositoryResource
+     * @memberof EbrainsRepositoryResource
      */
     timestampModified?: Date;
 }
 
-export function BiomodelsRepositoryResourceFromJSON(json: any): BiomodelsRepositoryResource {
-    return BiomodelsRepositoryResourceFromJSONTyped(json, false);
+export function EbrainsRepositoryResourceFromJSON(json: any): EbrainsRepositoryResource {
+    return EbrainsRepositoryResourceFromJSONTyped(json, false);
 }
 
-export function BiomodelsRepositoryResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): BiomodelsRepositoryResource {
+export function EbrainsRepositoryResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): EbrainsRepositoryResource {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -76,7 +76,7 @@ export function BiomodelsRepositoryResourceFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function BiomodelsRepositoryResourceToJSON(value?: BiomodelsRepositoryResource | null): any {
+export function EbrainsRepositoryResourceToJSON(value?: EbrainsRepositoryResource | null): any {
     if (value === undefined) {
         return undefined;
     }
