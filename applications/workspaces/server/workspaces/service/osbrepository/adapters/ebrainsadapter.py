@@ -3,69 +3,69 @@ import sys
 from typing import List
 import requests
 
+
+from fairgraph import KGClient, KGProxy
+from fairgraph.errors import ResolutionFailure
+from fairgraph.openminds.core import FileRepository, Model, ModelVersion
 from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, RepositoryInfo
 from workspaces.models.resource_origin import ResourceOrigin
-from workspaces.models.biomodels_repository_resource import BiomodelsRepositoryResource
+from workspaces.models.biomodels_repository_resource import EbrainsRepositoryResource
 
 from .utils import add_to_tree
 
 
-class BiomodelsException(Exception):
+class EbrainsException(Exception):
     pass
 
 
-class BiomodelsAdapter:
+class EbrainsAdapter:
     """
-    Adapter for Biomodels
+    Adapter for Ebrains
 
-    https://www.ebi.ac.uk/biomodels/
+    https://search.kg.ebrains.eu/
     """
 
     def __init__(self, osbrepository, uri=None):
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.uri
-        self.api_url = "https://www.ebi.ac.uk/biomodels"
+        self.api_url = "https://search.kg.ebrains.eu/"
+        # TODO: get permanent application auth token from EBRAINS
+        self.kg_client = KGClient(client_id="SOME ID", client_secret="SOME SECRET", host="core.kg.ebrains.eu")
 
         try:
             self.model_id = re.search(
-                f"{self.api_url}/(\\w+)",
+                f"{self.api_url}/instances/(\\w+)",
                 self.uri.strip("/")).group(1)
 
         except AttributeError:
-            raise BiomodelsException(f"{uri} is not a valid Biomodels URL")
+            raise EbrainsException(f"{uri} is not a valid Ebrains URL")
 
-    def get_json(self, uri):
-        logger.debug(f"Getting: {uri}")
-        try:
-            r = requests.get(
-                uri,
-                params={"format": "json"}
-            )
-            if r.status_code == 200:
-                return r.json()
-            else:
-                raise BiomodelsException(
-                    f"Unexpected requests status code: {r.status_code}")
-        except Exception as e:
-            raise BiomodelsException("Unexpected error:", sys.exc_info()[0])
+    def get_json(self, uri=None):
+        logger.debug(f"Getting: {self.model_id}")
+
+        model = Model.from_id(id=self.model_id, client=self.client)
+        return model
+
 
     def get_base_uri(self):
         return self.uri
 
     def get_info(self) -> RepositoryInfo:
-        info = self.get_json(
-            f"{self.api_url}/{self.model_id}")
+        info = self.get_json()
         return RepositoryInfo(name=info["name"], contexts=self.get_contexts(), tags=info["format"]["name"], summary=info.get("description", ""))
 
     def get_contexts(self):
-        result = self.get_json(f"{self.api_url}/{self.model_id}")
-        revisions = result["history"]["revisions"]
-        return [str(v["version"]) for v in revisions]
+        result = self.get_json()
+        if isinstance(result.versions, list):
+            revisions = result.versions
+        else:
+            revisions = [result.versions]
+        return revisions
 
     def _get_filelist(self, context):
         logger.debug(f"Getting filelist: {context}")
-        contents = self.get_json(f"{self.api_url}/model/files/{self.model_id}.{context}")
+        contents = self.get_json()
         files = (contents.get("additional", []) + contents.get("main", []))
         return files
 
@@ -74,7 +74,7 @@ class BiomodelsAdapter:
         files = self._get_filelist(context)
 
         tree = RepositoryResourceNode(
-            resource=BiomodelsRepositoryResource(
+            resource=EbrainsRepositoryResource(
                 name="/",
                 path="/",
                 osbrepository_id=self.osbrepository.id,
@@ -98,7 +98,7 @@ class BiomodelsAdapter:
     def get_description(self, context):
         logger.debug(f"Getting description: {context}")
         try:
-            result = self.get_json(f"{self.api_url}/{self.model_id}.{context}")
+            result = self.get_json()
             return result["description"]
         except Exception as e:
             logger.debug(
@@ -109,19 +109,19 @@ class BiomodelsAdapter:
         # using the format name for the moment, since they don't do explict
         # tags/keywords
         logger.debug(f"Getting tags: {context}")
-        result = self.get_json(f"{self.api_url}/{self.model_id}.{context}")
+        result = self.get_json()
         return result["format"]["name"]
 
     # biomodels files are usually small, so one task is enough
     def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
         import workspaces.service.workflow as workflow
 
-        # no file tree in Biomodels from the looks of it
+        # no file tree in Ebrains from the looks of it
         folder = self.osbrepository.name
 
         # if nothing is selected, origins has one entry with path "/"
         # we get the file list and download individual files
-        # Biomodels does allow downloading the archive, but that is generated
+        # Ebrains does allow downloading the archive, but that is generated
         # on the fly and can require us to wait for an unspecified amount of
         # time
         if len(origins) == 1 and origins[0].path == "/":
