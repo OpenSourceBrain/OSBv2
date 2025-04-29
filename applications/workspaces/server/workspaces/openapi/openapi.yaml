@@ -994,6 +994,7 @@ components:
                 - figshare
                 - github
                 - biomodels
+                - ebrains
             type: string
         RepositoryContentType:
             description: |
@@ -1293,6 +1294,16 @@ components:
                         sha:
                             description: The GIT sha of the resource
                             type: string
+        BiomodelsRepositoryResource:
+            description: biomodels repository resource
+            allOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResourceBase'
+        EbrainsRepositoryResource:
+            description: ebrains repository resource
+            allOf:
+                -
+                    $ref: '#/components/schemas/RepositoryResourceBase'
         DownloadResource:
             description: Download Resource (files/folders)
             allOf:
@@ -1506,11 +1517,6 @@ components:
                                 $ref: '#/components/schemas/Tag'
                             -
                                 x-secondary: osbrepository_tag
-        BiomodelsRepositoryResource:
-            description: figshare repository resource
-            allOf:
-                -
-                    $ref: '#/components/schemas/RepositoryResourceBase'
     securitySchemes:
         bearerAuth:
             scheme: bearer
