@@ -7,7 +7,7 @@ from workspaces.models.resource_origin import ResourceOrigin
 
 
 
-from workspaces.service.osbrepository.adapters import DandiAdapter, FigShareAdapter, GitHubAdapter, BiomodelsAdapter
+from workspaces.service.osbrepository.adapters import DandiAdapter, FigShareAdapter, GitHubAdapter, BiomodelsAdapter, EbrainsAdapter
 
 
 def get_repository_adapter(osbrepository: OSBRepository=None, repository_type=None, uri=None, *args, **kwargs):
@@ -22,6 +22,8 @@ def get_repository_adapter(osbrepository: OSBRepository=None, repository_type=No
         return FigShareAdapter(*args, osbrepository=osbrepository, uri=uri, **kwargs)
     elif repository_type == "biomodels":
         return BiomodelsAdapter(*args, osbrepository=osbrepository, uri=uri, **kwargs)
+    elif repository_type == "ebrains":
+        return EbrainsAdapter(*args, osbrepository=osbrepository, uri=uri, **kwargs)
     return None
 
 
