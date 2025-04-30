@@ -373,25 +373,42 @@ class EbrainsAdapter:
         # no file tree in Ebrains from the looks of it
         folder = self.osbrepository.name
 
+        download_url = self._get_file_storage_url(self.osbrepository.default_context)
+        if "github" in download_url:
+            gh_adapter = GitHubAdapter(self.osbrepository, download_url)
+            return gh_adapter.create_copy_task(workspace_id, origins)
+
+        elif "modeldb" in download_url.lower():
+            model_id = ""
+            # urls with model id after the last slash
+            # https://modeldb.science/249408?tab=7
+            if "modeldb.science" in download_url or "modeldb.yale.edu" in download_url:
+                model_id = download_url.split("/")[-1].split('?')[0]
+            # legacy urls with model id as a parameter
+            # https://senselab.med.yale.edu/ModelDB/showmodel.cshtml?model=249408#tabs-1
+            else:
+                model_id = download_url.split("?model=")[-1].split('#')[0]
+
+            modeldb_url = f"https://github.com/ModelDBRepository/{model_id}"
+            gh_adapter = GitHubAdapter(self.osbrepository, modeldb_url)
+            return gh_adapter.create_copy_task(workspace_id, origins)
+
         # if nothing is selected, origins has one entry with path "/"
         # we get the file list and download individual files
-        # Ebrains does allow downloading the archive, but that is generated
-        # on the fly and can require us to wait for an unspecified amount of
-        # time
         if len(origins) == 1 and origins[0].path == "/":
-            """
-            # to use the archive method, just set paths to ""
-            paths = ""
-            """
-            files = self._get_filelist(self.osbrepository.default_context)
-            download_url_prefix = f"{self.api_url}/model/download/{self.model_id}.{self.osbrepository.default_context}?filename="
-            paths = "\\".join(f"{download_url_prefix}{file['name']}" for file in files)
+            files: dict[str, str] = {}
+            if "cscs.ch" in download_url:
+                files = self._get_cscs_file_list(download_url)
+            elif "data-proxy.ebrains.eu" in download_url:
+                files = self._get_ebrains_data_proxy_file_list(download_url)
+
+            paths = "\\".join(list(files.values()))
         else:
             paths = "\\".join(o.path for o in origins)
 
         # username / password are not currently used
         return workflow.create_copy_task(
-            image_name="workspaces-biomodels-copy",
+            image_name="workspaces-ebrains-copy",
             workspace_id=workspace_id,
             folder=folder,
             url=f"{self.model_id}.{self.osbrepository.default_context}",
