@@ -18,7 +18,7 @@
  *   * figshare - FigShare repository
  *   * github - Github repository
  *   * biomodels - Biomodels repository
- *   * ebrains - Ebrains repository
+ *   * ebrains - EBRAINS repository
  * @export
  * @enum {string}
  */
@@ -27,7 +27,7 @@ export enum RepositoryType {
     Figshare = 'figshare',
     Github = 'github',
     Biomodels = 'biomodels',
-    Ebrains = 'ebrains'
+    EBRAINS = 'ebrains'
 }
 
 export function RepositoryTypeFromJSON(json: any): RepositoryType {

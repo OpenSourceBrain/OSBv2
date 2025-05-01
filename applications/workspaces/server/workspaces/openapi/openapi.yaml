@@ -1299,8 +1299,8 @@ components:
             allOf:
                 -
                     $ref: '#/components/schemas/RepositoryResourceBase'
-        EbrainsRepositoryResource:
-            description: ebrains repository resource
+        EBRAINSRepositoryResource:
+            description: EBRAINS repository resource
             allOf:
                 -
                     $ref: '#/components/schemas/RepositoryResourceBase'

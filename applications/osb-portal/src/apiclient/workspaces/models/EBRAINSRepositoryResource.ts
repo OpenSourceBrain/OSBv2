@@ -23,46 +23,46 @@ import {
 /**
  * figshare repository resource
  * @export
- * @interface EbrainsRepositoryResource
+ * @interface EBRAINSRepositoryResource
  */
-export interface EbrainsRepositoryResource {
+export interface EBRAINSRepositoryResource {
     /**
      * file name
      * @type {string}
-     * @memberof EbrainsRepositoryResource
+     * @memberof EBRAINSRepositoryResource
      */
     name?: string;
     /**
      * Download URL of the Resource
      * @type {string}
-     * @memberof EbrainsRepositoryResource
+     * @memberof EBRAINSRepositoryResource
      */
     path?: string;
     /**
      * OSB Repository id
      * @type {number}
-     * @memberof EbrainsRepositoryResource
+     * @memberof EBRAINSRepositoryResource
      */
     osbrepositoryId?: number;
     /**
      * File size in bytes of the RepositoryResource
      * @type {number}
-     * @memberof EbrainsRepositoryResource
+     * @memberof EBRAINSRepositoryResource
      */
     size?: number;
     /**
      * Date/time the ReposityResource is last modified
      * @type {Date}
-     * @memberof EbrainsRepositoryResource
+     * @memberof EBRAINSRepositoryResource
      */
     timestampModified?: Date;
 }
 
-export function EbrainsRepositoryResourceFromJSON(json: any): EbrainsRepositoryResource {
-    return EbrainsRepositoryResourceFromJSONTyped(json, false);
+export function EBRAINSRepositoryResourceFromJSON(json: any): EBRAINSRepositoryResource {
+    return EBRAINSRepositoryResourceFromJSONTyped(json, false);
 }
 
-export function EbrainsRepositoryResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): EbrainsRepositoryResource {
+export function EBRAINSRepositoryResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): EBRAINSRepositoryResource {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -76,7 +76,7 @@ export function EbrainsRepositoryResourceFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function EbrainsRepositoryResourceToJSON(value?: EbrainsRepositoryResource | null): any {
+export function EBRAINSRepositoryResourceToJSON(value?: EBRAINSRepositoryResource | null): any {
     if (value === undefined) {
         return undefined;
     }
