@@ -5,25 +5,25 @@ import requests
 from functools import cache, cached_property
 
 
-from fairgraph import KGClient, KGProxy
+from fairgraph import KGClient, KGProxy, KGQuery
 from fairgraph.errors import ResolutionFailure
 from fairgraph.openminds.core import FileRepository, Model, ModelVersion
 from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, RepositoryInfo
 from workspaces.models.resource_origin import ResourceOrigin
-from workspaces.models.ebrains_repository_resource import EbrainsRepositoryResource
+from workspaces.models.ebrains_repository_resource import EBRAINSRepositoryResource
 
 from .utils import add_to_tree
 from .githubadapter import GitHubAdapter
 
 
-class EbrainsException(Exception):
+class EBRAINSException(Exception):
     pass
 
 
-class EbrainsAdapter:
+class EBRAINSAdapter:
     """
-    Adapter for Ebrains
+    Adapter for EBRAINS
 
     https://search.kg.ebrains.eu/
     """
@@ -31,25 +31,31 @@ class EbrainsAdapter:
     def __init__(self, osbrepository, uri=None):
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.uri
-        self.api_url = "https://search.kg.ebrains.eu/"
+        self.api_url = "https://search.kg.ebrains.eu"
         # TODO: get permanent application auth token from EBRAINS
-        # self.kg_client = KGClient(token="", host="core.kg.ebrains.eu")
+        # self.kg_client = KGClient(token=token, host="core.kg.ebrains.eu")
         self.kg_client = KGClient(client_id="SOME ID", client_secret="SOME SECRET", host="core.kg.ebrains.eu")
 
         try:
             self.model_id = re.search(
-                f"{self.api_url}/instances/(\\w+)",
+                f"{self.api_url}/instances/([\\w-]+)",
                 self.uri.strip("/")).group(1)
 
         except AttributeError:
-            raise EbrainsException(f"{uri} is not a valid Ebrains URL")
+            raise EBRAINSException(f"{uri} is not a valid EBRAINS URL")
 
     @cache
     def get_model(self, uri: Optional[str] = None) -> Model:
         """Get model object using FairGraph"""
         logger.debug(f"Getting: {self.model_id}")
-        model = Model.from_id(id=self.model_id, client=self.kg_client)
-
+        # if it's a Model
+        try:
+            model: Model = Model.from_id(id=self.model_id, client=self.kg_client)
+        # if it's a ModelVersion
+        except TypeError:
+            model_version: ModelVersion = ModelVersion.from_id(id=self.model_id, client=self.kg_client)
+            model_query: KGQuery = model_version.is_version_of
+            model = model_query.resolve(self.kg_client)
         return model
 
     def get_base_uri(self):
@@ -59,15 +65,15 @@ class EbrainsAdapter:
     def get_info(self) -> RepositoryInfo:
         """Get repository metadata from model object"""
         model = self.get_model()
-        return RepositoryInfo(name=model.name, contexts=self.get_contexts(), tags=self._get_keywords(model), summary=model.description)
+        return RepositoryInfo(name=model.name, contexts=self.get_contexts(), tags=self.get_tags("foobar"), summary="A test model")
 
-    def _get_keywords(self, model: Model) -> list[str]:
+    def _get_keywords(self) -> list[str]:
         """Get keywords from model
 
-        :param model: model object
         :returns: list of keywords
 
         """
+        model = self.get_model()
         keywords: list[str] = []
         if model.study_targets:
             if isinstance(model.study_targets, KGProxy):
@@ -331,7 +337,7 @@ class EbrainsAdapter:
             files = ["TODO: handle other special cases"]
 
         tree = RepositoryResourceNode(
-            resource=EbrainsRepositoryResource(
+            resource=EBRAINSRepositoryResource(
                 name="/",
                 path="/",
                 osbrepository_id=self.osbrepository.id,
@@ -361,16 +367,14 @@ class EbrainsAdapter:
             return ""
 
     def get_tags(self, context):
-        # using the format name for the moment, since they don't do explict
-        # tags/keywords
+        # all versions have same tags for EBRAINS, so we pass any rubbish to the argument
         logger.debug(f"Getting tags: {context}")
-        model = self.get_model()
-        return self._get_keywords(model)
+        return self._get_keywords()
 
     def create_copy_task(self, workspace_id, origins: List[ResourceOrigin]):
         import workspaces.service.workflow as workflow
 
-        # no file tree in Ebrains from the looks of it
+        # no file tree in EBRAINS from the looks of it
         folder = self.osbrepository.name
 
         download_url = self._get_file_storage_url(self.osbrepository.default_context)
