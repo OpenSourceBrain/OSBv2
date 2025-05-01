@@ -46,3 +46,4 @@ from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
 from workspaces.models.repository_info import RepositoryInfo
 from workspaces.models.biomodels_repository_resource import BiomodelsRepositoryResource
+from workspaces.models.ebrains_repository_resource import EbrainsRepositoryResource

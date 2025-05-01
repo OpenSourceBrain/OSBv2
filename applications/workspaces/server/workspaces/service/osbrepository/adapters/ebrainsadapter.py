@@ -11,7 +11,7 @@ from fairgraph.openminds.core import FileRepository, Model, ModelVersion
 from cloudharness import log as logger
 from workspaces.models import RepositoryResourceNode, RepositoryInfo
 from workspaces.models.resource_origin import ResourceOrigin
-from workspaces.models.biomodels_repository_resource import EbrainsRepositoryResource
+from workspaces.models.ebrains_repository_resource import EbrainsRepositoryResource
 
 from .utils import add_to_tree
 from .githubadapter import GitHubAdapter
