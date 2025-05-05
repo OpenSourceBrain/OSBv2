@@ -12,7 +12,7 @@
         }
         #splash {
             background-color: #323232;
-            background-image: url("osb-splash.gif") ;
+            background-image: url("src/assets/osb-splash.gif");
             background-position-x: 50%;
             background-position-y: 50%;
             height: 100vh;
@@ -27,6 +27,7 @@
 </body>
 
 <script>
-    window.APP_DOMAIN = "<%= APP_DOMAIN %>"
+    window.APP_DOMAIN = "<%- APP_DOMAIN %>"
 </script>
+<script type="module" src="/src/index.tsx"></script>
 </html>

@@ -4,14 +4,14 @@ import lessToJs from "less-vars-to-js";
 import "./css/mui.less";
 import "./css/main.less";
 
-// Read the less file in as string: using the raw-loader to override the default loader
-const lessFile = require("!!raw-loader!./css/variables.less").default;
+import lessFile from "./css/variables.less?raw";
+
 export const vars = lessToJs(lessFile, {
   resolveVariables: true,
   stripPrefix: true,
 });
 
-vars.gutter = vars.gutter.replace("px", "") * 1;
+vars.gutter = parseInt(vars.gutter.replace("px", ""));
 
 export const {
   primaryColor,
