@@ -345,7 +345,10 @@ class EBRAINSAdapter:
 
             modeldb_url = f"https://github.com/ModelDBRepository/{model_id}"
             gh_adapter = GitHubAdapter(self.osbrepository, modeldb_url)
-            return gh_adapter.get_resources(context)
+            # versions on EBRAINS do not match the versions on ModelDB/GitHub
+            # so we use the first context
+            contexts = gh_adapter.get_contexts()
+            return gh_adapter.get_resources(contexts[0])
 
         elif "cscs.ch" in download_url:
             logger.debug("CSCS resource")
