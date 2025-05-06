@@ -274,34 +274,36 @@ class EBRAINSAdapter:
             "ipynb",
         ]
         # if prefixed by data.kg, get rid of it so that we have only the cscs URL
-        url.replace("https://data.kg.ebrains.eu/zip?container=", "")
+        new_url = url.replace("https://data.kg.ebrains.eu/zip?container=", "")
 
-        logger.debug(f"Getting file list for {url}")
-        if ".zip?" in url:
-            logger.debug(f"Cscs url format with zip: {url}")
-            url_portions: list[str] = url.split(".zip")[0].split("/")
-            file_list_url = "/".join(url_portions[:6])
-            file_list_string = "/".join(url_portions[6:])
-        # assume it's with prefix
-        elif "?prefix=" in url:
-            logger.debug(f"Cscs url format with prefix: {url}")
-            file_list_url = url.split("?prefix=")[0]
-            file_list_string = url.split("?prefix=")[1]
-        else:
-            logger.debug(f"Other cscs url format: {url}")
-
-            # test if it's one of the file types
-            url_portions: list[str] = url.split("/")
-            file_string = "/".join(url_portions[6:])
-            for suf in special_suffixes:
-                if url.endswith(suf):
-                    file_list = {file_string: url}
-                    return file_list
-
-        # default case
-        url_portions: list[str] = url.split("/")
+        logger.debug(f"Getting file list for {new_url}")
+        # default
+        url_portions: list[str] = new_url.split("/")
         file_list_url = "/".join(url_portions[:6])
         file_list_string = "/".join(url_portions[6:])
+
+        # special cases
+        if ".zip?" in new_url:
+            logger.debug(f"Cscs url format with zip: {new_url}")
+            url_portions: list[str] = new_url.split(".zip")[0].split("/")
+            file_list_url = "/".join(url_portions[:6])
+            file_list_string = "/".join(url_portions[6:])
+        elif "?prefix=" in new_url:
+            logger.debug(f"Cscs url format with prefix: {new_url}")
+            file_list_url = new_url.split("?prefix=")[0]
+            file_list_string = new_url.split("?prefix=")[1]
+        else:
+            # handle single files:
+            # it is possible that they provide zip URLs but all the files are also
+            # individually available. there's no way for us to know that the whole file list
+            # is also available, though, so we simply provide the zip URL too.
+            logger.debug(f"Other cscs url format: {new_url}")
+            for suf in special_suffixes:
+                if new_url.endswith(suf):
+                    file_list = {file_list_string: new_url}
+                    return file_list
+
+        # handle file lists
         r = requests.get(file_list_url)
         if r.status_code == 200:
             for line in r.text.split():
@@ -359,7 +361,7 @@ class EBRAINSAdapter:
         else:
             files = ["TODO: handle other special cases"]
 
-        logger.info(f"Files are: {files}")
+        logger.debug(f"Files are: {files}")
 
         tree = RepositoryResourceNode(
             resource=EBRAINSRepositoryResource(
