@@ -9,6 +9,7 @@ from fairgraph import KGClient, KGProxy, KGQuery
 from fairgraph.errors import ResolutionFailure
 from fairgraph.openminds.core import FileRepository, Model, ModelVersion
 from cloudharness import log as logger
+from cloudharness.utils.secrets import get_secret
 from workspaces.models import RepositoryResourceNode, RepositoryInfo
 from workspaces.models.resource_origin import ResourceOrigin
 from workspaces.models.ebrains_repository_resource import EBRAINSRepositoryResource
@@ -32,9 +33,24 @@ class EBRAINSAdapter:
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.uri
         self.api_url = "https://search.kg.ebrains.eu"
+
         # TODO: get permanent application auth token from EBRAINS
-        # self.kg_client = KGClient(token=token, host="core.kg.ebrains.eu")
-        self.kg_client = KGClient(client_id="SOME ID", client_secret="SOME SECRET", host="core.kg.ebrains.eu")
+        try:
+            kg_client = get_secret("ebrains-user")
+        except:
+            kg_client = None
+        try:
+            kg_secret = get_secret("ebrains-secret")
+        except:
+            kg_secret = None
+        if kg_user and kg_secret:
+            self.kg_client = KGClient(client_id=kg_client, client_secret=kg_secret, host="core.kg.ebrains.eu")
+        else:
+            token = ""
+            self.kg_client = KGClient(token=token, host="core.kg.ebrains.eu")
+
+        if not self.kg_client:
+            raise EBRAINSException("Could not initialise EBRAINS KG client")
 
         try:
             self.model_id = re.search(
@@ -60,6 +76,10 @@ class EBRAINSAdapter:
             model_version: ModelVersion = ModelVersion.from_id(id=self.model_id, client=self.kg_client)
             model_query: KGQuery = model_version.is_version_of
             model = model_query.resolve(self.kg_client)
+
+        if not model:
+            raise EBRAINSException("Could not fetch EBRAINS model")
+
         return model
 
     def get_base_uri(self):
