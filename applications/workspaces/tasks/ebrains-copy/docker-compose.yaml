@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  copy:
+    image: osb/workspaces-ebrains-copy:latest
+    environment:
+      - url=https://www.ebi.ac.uk/ebrains/MODEL2311220001s
