@@ -273,6 +273,8 @@ class EBRAINSAdapter:
             "zip",
             "ipynb",
         ]
+        # if prefixed by data.kg, get rid of it so that we have only the cscs URL
+        url.replace("https://data.kg.ebrains.eu/zip?container=", "")
 
         logger.debug(f"Getting file list for {url}")
         if ".zip?" in url:
@@ -296,6 +298,10 @@ class EBRAINSAdapter:
                     file_list = {file_string: url}
                     return file_list
 
+        # default case
+        url_portions: list[str] = url.split("/")
+        file_list_url = "/".join(url_portions[:6])
+        file_list_string = "/".join(url_portions[6:])
         r = requests.get(file_list_url)
         if r.status_code == 200:
             for line in r.text.split():
