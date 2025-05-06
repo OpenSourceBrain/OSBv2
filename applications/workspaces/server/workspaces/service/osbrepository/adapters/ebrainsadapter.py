@@ -319,7 +319,10 @@ class EBRAINSAdapter:
         download_url = self._get_file_storage_url(context)
         if "github" in download_url.lower():
             logger.debug("GITHUB resource")
-            gh_adapter = GitHubAdapter(self.osbrepository, download_url)
+            # these may have things like "tree" in them, we only want github.com/user/repository
+            github_url_parts = download_url.split("/")
+            github_url = "/".join(github_url_parts[:5])
+            gh_adapter = GitHubAdapter(self.osbrepository, github_url)
             return gh_adapter.get_resources(context)
 
         elif "modeldb" in download_url.lower():
@@ -392,7 +395,10 @@ class EBRAINSAdapter:
 
         download_url = self._get_file_storage_url(self.osbrepository.default_context)
         if "github" in download_url:
-            gh_adapter = GitHubAdapter(self.osbrepository, download_url)
+            # these may have things like "tree" in them, we only want github.com/user/repository
+            github_url_parts = download_url.split("/")
+            github_url = "/".join(github_url_parts[:5])
+            gh_adapter = GitHubAdapter(self.osbrepository, uri=github_url)
             return gh_adapter.create_copy_task(workspace_id, origins)
 
         elif "modeldb" in download_url.lower():
