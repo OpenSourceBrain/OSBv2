@@ -46,7 +46,11 @@ class EBRAINSAdapter:
 
     @cache
     def get_model(self, uri: Optional[str] = None) -> Model:
-        """Get model object using FairGraph"""
+        """Get model object using FairGraph
+
+        This returns the main model, not the ModelVersion. If a ModelVersion URL is
+        passed, it finds the URL of the Model and returns that.
+        """
         logger.debug(f"Getting: {self.model_id}")
         # if it's a Model
         try:
@@ -65,7 +69,7 @@ class EBRAINSAdapter:
     def get_info(self) -> RepositoryInfo:
         """Get repository metadata from model object"""
         model = self.get_model()
-        return RepositoryInfo(name=model.name, contexts=self.get_contexts(), tags=self.get_tags("foobar"), summary="A test model")
+        return RepositoryInfo(name=model.name, contexts=self.get_contexts(), tags=self.get_tags("foobar"), summary=self.get_description())
 
     def _get_keywords(self) -> list[str]:
         """Get keywords from model
@@ -166,7 +170,7 @@ class EBRAINSAdapter:
         return None
 
 
-    def _get_ebrains_data_proxy_file_list(self, url: str) -> list[str]:
+    def _get_ebrains_data_proxy_file_list(self, url: str) -> dict[str, str]:
         """Get the list of files from an ebrains data proxy URL.
 
         The complete url will be of this form:
@@ -272,22 +276,25 @@ class EBRAINSAdapter:
 
         logger.debug(f"Getting file list for {url}")
         if ".zip?" in url:
+            logger.debug(f"Cscs url format with zip: {url}")
             url_portions: list[str] = url.split(".zip")[0].split("/")
             file_list_url = "/".join(url_portions[:6])
             file_list_string = "/".join(url_portions[6:])
         # assume it's with prefix
         elif "?prefix=" in url:
+            logger.debug(f"Cscs url format with prefix: {url}")
             file_list_url = url.split("?prefix=")[0]
             file_list_string = url.split("?prefix=")[1]
         else:
-            logger.warning(f"Other cscs url format: {url}")
+            logger.debug(f"Other cscs url format: {url}")
+
             # test if it's one of the file types
+            url_portions: list[str] = url.split("/")
+            file_string = "/".join(url_portions[6:])
             for suf in special_suffixes:
                 if url.endswith(suf):
-                    file_list = {url: url}
-                    break
-
-            return file_list
+                    file_list = {file_string: url}
+                    return file_list
 
         r = requests.get(file_list_url)
         if r.status_code == 200:
@@ -310,11 +317,13 @@ class EBRAINSAdapter:
         logger.debug(f"Getting resources: {context}")
 
         download_url = self._get_file_storage_url(context)
-        if "github" in download_url:
+        if "github" in download_url.lower():
+            logger.debug("GITHUB resource")
             gh_adapter = GitHubAdapter(self.osbrepository, download_url)
             return gh_adapter.get_resources(context)
 
         elif "modeldb" in download_url.lower():
+            logger.debug("Modeldb resource")
             model_id = ""
             # urls with model id after the last slash
             # https://modeldb.science/249408?tab=7
@@ -330,11 +339,15 @@ class EBRAINSAdapter:
             return gh_adapter.get_resources(context)
 
         elif "cscs.ch" in download_url:
+            logger.debug("CSCS resource")
             files = self._get_cscs_file_list(download_url)
         elif "data-proxy.ebrains.eu" in download_url:
+            logger.debug("Data-proxy resource")
             files = self._get_ebrains_data_proxy_file_list(download_url)
         else:
             files = ["TODO: handle other special cases"]
+
+        logger.info(f"Files are: {files}")
 
         tree = RepositoryResourceNode(
             resource=EBRAINSRepositoryResource(
@@ -349,14 +362,14 @@ class EBRAINSAdapter:
         for afile, url in files.items():
             add_to_tree(
                 tree=tree,
-                tree_path=afile,
+                tree_path=afile.split("/"),
                 path=url,
                 osbrepository_id=self.osbrepository.id,
             )
 
         return tree
 
-    def get_description(self, context):
+    def get_description(self, context: str = "foobar"):
         logger.debug(f"Getting description: {context}")
         try:
             result = self.get_model()
