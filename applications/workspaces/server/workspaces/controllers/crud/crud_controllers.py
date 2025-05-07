@@ -13,7 +13,7 @@ from workspaces.service.crud_service import (
 
 
 from workspaces.controllers.crud.base_model_controller import BaseModelView
-from cloudharness.workflows.argo import delete_workflow
+from cloudharness.workflows.argo_service import delete_workflow
 
 
 

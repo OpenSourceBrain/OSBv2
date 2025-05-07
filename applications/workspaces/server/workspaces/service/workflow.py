@@ -8,7 +8,7 @@ from workspaces.service.crud_service import WorkspaceService
 
 try:
     from cloudharness.workflows import operations, tasks
-    from cloudharness.workflows.argo import get_workflows
+    from cloudharness.workflows.argo_service import get_workflows
 except Exception as e:
     logger.error(
         "Cannot start workflows module. Probably this is related some problem with the kubectl configuration", e

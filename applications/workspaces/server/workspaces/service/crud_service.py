@@ -12,7 +12,7 @@ from workspaces.models.base_model_ import Model
 
 from cloudharness import log as logger
 from cloudharness.events.decorators import send_event
-import cloudharness.workflows.argo as argo
+import cloudharness.workflows.argo_service as argo
 from workspaces.config import Config
 
 
