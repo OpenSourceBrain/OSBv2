@@ -1,23 +1,38 @@
 """
-Script to get Biomodels project info
+Script to get BioModels project info
 """
 
+import requests
 import json
 import pprint
-from loadbiomodels import get_model_identifiers, get_model_info
 
 verbose = True  #
 verbose = False
 
 info_all = {}
 
+API_URL: str = "https://www.ebi.ac.uk/biomodels"
+out_format = "json"
+
+
+def get_model_identifiers():
+    response = requests.get(API_URL + "/model/identifiers?format=" + out_format)
+    response.raise_for_status()
+    output = response.json()
+    return output
+
+
+def get_model_info(model_id):
+    response = requests.get(API_URL + "/" + model_id + "?format=" + out_format)
+    response.raise_for_status()
+    output = response.json()
+    return output
+
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 20
-    index = 0
-
-    from loadbiomodels import get_model_identifiers
+    max_index = 10000
+    index = 1
 
     model_ids = get_model_identifiers()["models"]
 
@@ -29,73 +44,33 @@ if __name__ == "__main__":
             % (index, len(selection), index + min_index, model_id)
         )
 
-        model_link = f"[{model_id}](https://www.ebi.ac.uk/biomodels/{model_id})"
-        info = get_model_info(model_id)
-        model_name = info["name"]
-        print(f"  {model_id}: \n    {pprint.pformat(info['name'])}--")
-
-        info_all[model_id] = info
-        """
-        son.loads(get_page('https://modeldb.science/api/v1/models/%s'%model))
-
-        print('    %s'%info[model]['name'])
-        if 'gitrepo' in info[model] and info[model]['gitrepo']:
-            with_gitrepo+=1
-            print('    gitrepo: %s'%info[model]['gitrepo'])
-        else:
-            print('    gitrepo: %s'%False)
-
-        expected_forks = 0
-        possible_mdb_repo = 'ModelDBRepository/%s'%(info[model]['id'])
+        model_url = f"https://www.ebi.ac.uk/biomodels/{model_id}"
+        model_link = f"[{model_id}]({model_url})"
         try:
-            mdb_repo = gh.get_repo(possible_mdb_repo)
+            info = get_model_info(model_id)
+            if info["curationStatus"] != "CURATED":
+                print(
+                    "  ****  Not adding, as curationStatus = %s"
+                    % info["curationStatus"]
+                )
+            else:
+                model_name = info["name"]
+                print(f"  {model_id}: \n    {pprint.pformat(info['name'])}--")
 
-            repo_to_use = mdb_repo
-            print('    Exists at: %s (def branch: %s; forks: %i)'%(mdb_repo.html_url, mdb_repo.default_branch, mdb_repo.forks))
+                info_all[model_id] = info
+        except Exception as e:
+            msg = f"Error retrieving model at {model_url}: {e}"
 
-            possible_osbgh_repo = 'OpenSourceBrain/%s'%(info[model]['id'])
-            try:
-                osb_repo = gh.get_repo(possible_osbgh_repo)
-                msg = '    Exists at: %s (def branch: %s; forks: %i), order %i'%(osb_repo.html_url, osb_repo.default_branch, osb_repo.forks, index+min_index)
-                on_osbv2.append(msg)
-                print(msg)
-                repo_to_use = osb_repo
-                expected_forks+=1
+            print("  ******* %s" % msg)
 
-                info[model]['osbv2_gh_repo'] = repo_to_use.html_url
-                info[model]['osbv2_gh_branch'] = repo_to_use.default_branch
-            except:
-                print('    Missing fork: %s, forking now: %s'%(possible_osbgh_repo, fork_if_missing))
-                if fork_if_missing:
-                    print('    Forking to: %s...'%possible_osbgh_repo)
-                    org = gh.get_organization('OpenSourceBrain')
-                    org.create_fork(mdb_repo,default_branch_only=False)
-                    msg = '    Forked to: %s...'%possible_osbgh_repo
-                    print(msg)
-                    forked_now.append(msg)
-
-                else:
-                    msg = '    Yet to be forked: %i, order %i; %s'%(info[model]['id'], index+min_index,info[model]['name'])
-                    print(msg)
-                    to_be_forked.append(msg)
-
-
-            if (not mdb_repo.forks==expected_forks) and (not (info[model]['id'] in known_to_have_other_forks)):
-                msg = '    Unexpected forks for %i (%s != %s)...'%(info[model]['id'], mdb_repo.forks,expected_forks)
-                print(msg)
-                many_forks.append(msg)
-
-        except:
-            msg = '    Problem locating repo for: %i (%i/%i) %s'%(info[model]['id'],index, len(selection), info[model]['name'])
-            print(msg)
-            errors.append(msg)"""
+            info_all[model_id] = {"error": msg}
 
         index += 1
 
     if verbose:
         infop = pprint.pprint(info_all, compact=True)
 
-    print("\nThere were %i models checked\n" % (len(info)))
+    print("\nThere were %i models checked\n" % (len(info_all)))
 
 filename = "cached_info/biomodels.json"
 
@@ -104,4 +79,4 @@ with open(filename, "w") as fp:
     fp.write(strj)
 
 
-print("Data on Biomodels (%i models) written to %s" % (len(info), filename))
+print("Data on Biomodels (%i models) written to %s" % (len(info_all), filename))

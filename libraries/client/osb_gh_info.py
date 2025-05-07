@@ -14,9 +14,11 @@ verbose = False
 
 gh = get_github()
 
+count = 0
 for repo in gh.get_user().get_repos():
     if "OpenSourceBrain" in repo.url:
-        print("=============== %s ============" % repo.url)
+        count += 1
+        print("=============== %i: %s ============" % (count, repo.url))
 
         if verbose:
             pprint.pprint(repo.__dict__, compact=True)

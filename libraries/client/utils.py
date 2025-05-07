@@ -21,9 +21,31 @@ def lookup_user(uid, url):
 
 
 def get_tags_info(
-    dandi_api_info=None, dandishowcase_info=None, osbv1_info=None, modeldb_info=None
+    dandi_api_info=None,
+    dandishowcase_info=None,
+    osbv1_info=None,
+    modeldb_info=None,
+    biomodels_info=None,
 ):
     tags = []
+
+    if biomodels_info is not None:
+        tags.append("BioModels")
+        tags.append("BioModels:%s" % biomodels_info["publicationId"])
+        tags.append(biomodels_info["format"]["identifier"])
+        if "modelLevelAnnotations" in biomodels_info:
+            for mla in biomodels_info["modelLevelAnnotations"]:
+                if mla["qualifier"] == "bqbiol:hasTaxon":
+                    if "name" in mla:
+                        tags.append(mla["name"])
+                elif mla["qualifier"] == "bqbiol:isVersionOf":
+                    if "name" in mla:
+                        n = mla["name"]
+                        tags.append(n[0].upper() + n[1:])
+                elif "resource" in mla and mla["resource"] == "Human Disease Ontology":
+                    if "name" in mla:
+                        n = mla["name"]
+                        tags.append(n[0].upper() + n[1:])
 
     if modeldb_info is not None:
         tags.append("ModelDB")
@@ -77,12 +99,12 @@ def get_tags_info(
             tags.append("%s" % dandishowcase_info["species"])
 
     tags_list = []
-    tags = sorted(tags)
+    tags = sorted(list(dict.fromkeys(tags)))  # sort and remove duplicates
     for tag in tags:
         tags_list.append({"tag": tag})
 
     print("    ------------ Tags: ---------")
-    print("       %s" % tags)
+    print("    %s" % tags)
     # print("       %s"%tags_list)
 
     return tags_list

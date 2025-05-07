@@ -36,7 +36,7 @@ else:
 
 index = 0
 min_index = 0
-max_index = 2000
+max_index = 10000
 
 verbose = True  #
 verbose = False
@@ -64,6 +64,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
 filename = "cached_info/modeldb.json"
 modeldb_info = json.load(open(filename))
+modeldb_info.pop("0", None)
 
 print("Loaded info on %s modeldb models" % len(modeldb_info))
 
@@ -80,7 +81,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         modeldb_model_id = modeldb_model["id"]
         if "osbv2_gh_repo" not in modeldb_model or not modeldb_model["osbv2_gh_repo"]:
             all_errors.append(
-                "  %i, %s (%s) doesn't have a Github repo..."
+                "  %i, %s (%s) doesn't have a GitHub repo... Use modeldb_info.py to fork it to OSB"
                 % (index, modeldb_model["name"], modeldb_model_id)
             )
             return
@@ -194,7 +195,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
             tags = get_tags_info(modeldb_info=modeldb_model)
 
-            all_added.append("%s, index %i" % (modeldb_github, index))
+            all_added.append("  %s, index %i" % (modeldb_github, index))
 
             if not dry_run:
                 desc = (
