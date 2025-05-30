@@ -52,8 +52,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
 
     def search_qs(self, filter=None, q=None, tags=None, user_id=None, show_all=False, *args, **kwargs):
         q_base = self.model.query
-        q_base = self.filter_by_user_and_fieldkey(
-            filter, user_id, show_all, q_base)
+        q_base = self.filter_by_user(filter, user_id, show_all, q_base)
 
         if filter is None:
             if tags:
@@ -76,7 +75,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
             and_(*[self._create_filter(*f) for f in filter if (f[0].key == "publicable" or f[0].key == "featured")]))
         return q_base
 
-    def filter_by_user_and_fieldkey(self, filter, user_id, show_all, q_base):
+    def filter_by_user(self, filter, user_id, show_all, q_base):
         if filter and any(field for field, condition, value in filter if field.key == "publicable" and value):
             pass
         elif user_id is not None:
@@ -86,7 +85,7 @@ class WorkspaceRepository(BaseModelRepository, OwnerModel):
                 q_base = q_base.union(self.model.query.filter(
                     WorkspaceEntity.collaborators.any(user_id=user_id)))
             else:
-                q_base = q_base
+                pass
         else:
             # No logged in user, show only public (in case was not specified)
             q_base = q_base.filter(WorkspaceEntity.publicable == True)

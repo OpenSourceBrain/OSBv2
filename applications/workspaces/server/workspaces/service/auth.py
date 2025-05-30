@@ -3,6 +3,7 @@ from multiprocessing import Process
 
 from cloudharness import log
 from cloudharness.auth import AuthClient
+from cloudharness.middleware import get_authentication_token
 
 # Reuse AuthClient to benefit from valid token
 # AuthClient will try to refresh automatically once token expired
@@ -24,9 +25,11 @@ def get_auth_client():
 
 
 def keycloak_user_id():
-
+    authentication_token = get_authentication_token()
+    if not authentication_token:
+        return None
     try:
-        return get_auth_client().get_current_user().get("id", None)
+        return AuthClient.decode_token(authentication_token).get("sub", None)
     except Exception as e:
-        log.error("Auth client error: cannot retrieve the current user", exc_info=True)
+        log.error(f"Failed to decode authentication token: {e}")
         return None
