@@ -29,16 +29,16 @@ else
         echo Biomodels copy "${path}" to "${download_path}"
         echo "${path}" >> filelist
     done
-    echo Biomodels downloading files
     # Move to temporary directory to rename only the downloaded files.
     # Otherwise we risk renaming all files, even ones where the user has used
     # '+' in the file name explicitly
     tempdir=$(mktemp -d)
+    echo Biomodels downloading files in "${tempdir}"
     pushd "${tempdir}"
         aria2c --retry-wait=2 --max-tries=5 --input-file=filelist --max-concurrent-downloads=5 --max-connection-per-server=5 --allow-overwrite "true" --auto-file-renaming "false"
         rename -a '+' ' ' *.*
     popd
-    mv "${tempdir}/*" .
+    mv -v "${tempdir}/"* .
     # directory should be empty, so rmdir will work
     rmdir "${tempdir}"
     rm filelist -f
