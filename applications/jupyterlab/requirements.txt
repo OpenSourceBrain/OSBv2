@@ -1,3 +1,6 @@
+# temporary fix until new NEST releases are made with the fix: https://github.com/nest/nest-simulator/issues/3495
+cython<3.1.0
+
 pyneuroml
 pyelectro
 git+https://github.com/NeuralEnsemble/neurotune.git

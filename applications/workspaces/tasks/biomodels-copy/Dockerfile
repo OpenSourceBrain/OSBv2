@@ -3,7 +3,7 @@ FROM $CLOUDHARNESS_BASE
 
 # much faster than curl/wget
 # https://pkgs.alpinelinux.org/packages?name=aria2&branch=edge
-RUN apk add aria2 unzip
+RUN apk add aria2 unzip util-linux-misc
 
 
 ADD . /
