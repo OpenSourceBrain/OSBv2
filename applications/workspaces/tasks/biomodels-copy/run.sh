@@ -22,26 +22,31 @@ if [ -z "$paths" ]; then
     aria2c --retry-wait=2 --max-tries=5 --timeout=300 --max-concurrent-downloads=5 --max-connection-per-server=5 --allow-overwrite="true" --auto-file-renaming="false" --out="$timestamp.omex" "https://www.ebi.ac.uk/biomodels/model/download/${url}"
     unzip -o "$timestamp.omex" && rm -vf "$timestamp.omex"
 else
-    touch filelist
-    # Split paths by ## and checkout each path
-    IFS='\'
-    for path in $paths; do
-        echo Biomodels copy "${path}" to "${download_path}"
-        echo "${path}" >> filelist
-    done
     # Move to temporary directory to rename only the downloaded files.
     # Otherwise we risk renaming all files, even ones where the user has used
     # '+' in the file name explicitly
     tempdir=$(mktemp -d)
     echo Biomodels downloading files in "${tempdir}"
     pushd "${tempdir}"
-        aria2c --retry-wait=2 --max-tries=5 --input-file=filelist --max-concurrent-downloads=5 --max-connection-per-server=5 --allow-overwrite "true" --auto-file-renaming "false"
+        filelist=$(mktemp)
+        echo "Storing file list in ${filelist}"
+
+        # Split paths by ## and checkout each path
+        IFS='\'
+        for path in $paths; do
+            echo Biomodels copy "${path}" to "${download_path}"
+            echo "${path}" >> "${filelist}"
+        done
+
+        aria2c --retry-wait=2 --max-tries=5 --input-file="${filelist}" --max-concurrent-downloads=5 --max-connection-per-server=5 --allow-overwrite "true" --auto-file-renaming "false"
+        rm "${filelist}" -f
+
         rename -a '+' ' ' *.*
+
     popd
     mv -v "${tempdir}/"* .
     # directory should be empty, so rmdir will work
     rmdir "${tempdir}"
-    rm filelist -f
 fi
 
 # fix permissions
