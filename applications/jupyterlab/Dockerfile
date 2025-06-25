@@ -77,21 +77,21 @@ ARG NOCACHE
 USER root
 
 #  NEST 
-ENV NEST_VER=3.8
-ENV NEST_HOME=/opt/conda/nest
-RUN cd /tmp && \
-    wget -nv https://github.com/nest/nest-simulator/archive/v$NEST_VER.tar.gz && \
-    tar xvzf v$NEST_VER.tar.gz && \
-    mv nest-simulator-$NEST_VER nest && \
-    cd nest && \
-    mkdir $NEST_HOME && \
-    apt-get install libgsl-dev -y && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.12 . && \
-    make -j7 && \
-    make install
-ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
-ENV PATH=$PATH:$NEST_HOME/bin
-
+# ENV NEST_VER=3.8
+# ENV NEST_HOME=/opt/conda/nest
+# RUN cd /tmp && \
+#     wget -nv https://github.com/nest/nest-simulator/archive/v$NEST_VER.tar.gz && \
+#     tar xvzf v$NEST_VER.tar.gz && \
+#     mv nest-simulator-$NEST_VER nest && \
+#     cd nest && \
+#     mkdir $NEST_HOME && \
+#     apt-get install libgsl-dev -y && \
+#     cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.12 . && \
+#     make -j7 && \
+#     make install
+# ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
+# ENV PATH=$PATH:$NEST_HOME/bin
+RUN conda install conda-forge::nest-simulator
 USER jovyan
 
 #### Install Python packages
