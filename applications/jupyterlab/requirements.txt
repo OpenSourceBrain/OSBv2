@@ -1,3 +1,4 @@
+setuptools>=80.9.0
 # temporary fix until new NEST releases are made with the fix: https://github.com/nest/nest-simulator/issues/3495
 cython<3.1.0
 
