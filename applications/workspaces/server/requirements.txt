@@ -15,6 +15,7 @@ cryptography==43.0.3
 debugpy==1.8.9
 deprecation==2.1.0
 durationpy==0.9
+fairgraph==0.12.2
 Flask==2.2.5
 Flask-Cors==5.0.0
 Flask-SQLAlchemy==3.0.2
