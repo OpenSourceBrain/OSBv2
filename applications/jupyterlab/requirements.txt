@@ -1,13 +1,9 @@
-setuptools>=80.9.0
-# temporary fix until new NEST releases are made with the fix: https://github.com/nest/nest-simulator/issues/3495
-cython<3.1.0
-
 pyneuroml
 pyelectro
 git+https://github.com/NeuralEnsemble/neurotune.git
 
 ####  NEURON & NetPyNE
-neuron==8.2.6
+neuron==8.2.7
 
 # Install specific version of NetPyNE
 git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
@@ -44,9 +40,6 @@ seaborn
 
 ####  Machine learning libs
 
-# Note: this just installs pytorch for cpu, the default install adds a v large cuda lib
--f https://download.pytorch.org/whl/torch_stable.html
-torch==2.3.0+cpu
 
 # For MDF
 modeci_mdf
@@ -71,8 +64,8 @@ plotly
 
 
 #### Install OMV
-OSBModelValidation==0.3.5
+OSBModelValidation==0.3.8
 
 
 ####  Final updates
-numpy  # Removes some issues with LFPy...
+numpy>=2.0.0  # Removes some issues with LFPy...
