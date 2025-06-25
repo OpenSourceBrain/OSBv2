@@ -10,7 +10,7 @@ import { OSBRepository } from "../apiclient/workspaces";
 import { Configuration, User } from "../apiclient/accounts";
 import * as accountsApi from "../apiclient/accounts/apis";
 
-const keycloak = Keycloak("/keycloak.json");
+const keycloak = new Keycloak("/keycloak.json");
 
 const accountsApiUri = "/proxy/accounts-api/api";
 

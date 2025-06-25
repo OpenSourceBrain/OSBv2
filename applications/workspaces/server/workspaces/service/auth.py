@@ -26,6 +26,7 @@ def get_auth_client():
 
 def keycloak_user_id():
     authentication_token = get_authentication_token()
+    print(f"Authentication token: {authentication_token}")
     if not authentication_token:
         return None
     try:
