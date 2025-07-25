@@ -180502,6 +180502,90 @@
                 "username": "osbadmin"
             },
             "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3399": {
+            "auto_sync": true,
+            "content_types": "experimental,modeling",
+            "content_types_list": [
+                "experimental",
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3399,
+            "name": "take 2",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-14 21:00:44.462177+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/cmranieri/MarmosetModel",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
+        },
+        "3400": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3400,
+            "name": "delete",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                }
+            ],
+            "timestamp_created": "2025-06-14 21:02:18.540937+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/cmranieri/MarmosetModel",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
+        },
+        "3401": {
+            "auto_sync": true,
+            "content_types": "modeling,experimental",
+            "content_types_list": [
+                "modeling",
+                "experimental"
+            ],
+            "default_context": "master",
+            "id": 3401,
+            "name": "take 3",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                }
+            ],
+            "timestamp_created": "2025-06-15 00:05:56.663982+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/jhielson/Initial_Neurorobotics_Model_of_PD",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
         }
     }
 }

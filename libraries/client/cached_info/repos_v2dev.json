@@ -178631,6 +178631,137 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3392": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "feat-add-local-script",
+            "id": 3392,
+            "name": "OSBv2-test-local-script",
+            "repository_type": "github",
+            "summary": "The osbv2 repository but from a different branch",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "osbv2"
+                }
+            ],
+            "thumbnail": "repositories/3392/thumbnail.bin",
+            "timestamp_created": "2025-06-10 11:23:04.653517+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/OSBv2",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3393": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 3393,
+            "name": "test-dandi-001361",
+            "repository_type": "dandi",
+            "summary": "sdfasdfsadf **asdfsdf**",
+            "tags": [
+                {
+                    "id": 7,
+                    "tag": "human"
+                }
+            ],
+            "timestamp_created": "2025-06-10 11:29:05.095570+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/001361",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3394": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "0.211014.0808",
+            "id": 3394,
+            "name": "duplicate-dandi-repositoryy",
+            "repository_type": "dandi",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-10 11:30:08.895201+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000008/0.211014.0809",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3395": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.211014.0808",
+            "id": 3395,
+            "name": "duplicate-again!",
+            "repository_type": "dandi",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-10 11:31:21.216663+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000008/0.211014.0809",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3396": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "1",
+            "id": 3396,
+            "name": "biomodels-test",
+            "repository_type": "biomodels",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-10 12:17:33.476868+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/MODEL8459127548",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
         }
     }
 }

@@ -2,7 +2,7 @@
 
 These scripts can be used to get a cached list of the current repositories on OSBv2 and v2dev, and also keep them up to date with the contents of DANDI, ModelDB, BioModels etc.
 
-0) A GitHub access token must be created so scripts using the python github package can be run.
+0) A GitHub access token must be created so scripts using the python `github` package can be run.
 
     Save in `github.auth` locally.
  
@@ -10,7 +10,7 @@ These scripts can be used to get a cached list of the current repositories on OS
 
     ```
     ./info_all.sh -q # Runs a quick check of contents of OSBv1, OSBv2, OSBv2dev, OSB repos on Github & DANDI Archive.
-    ./info_all.sh    # Same as above, but with BioModles & ModelDB
+    ./info_all.sh    # Same as above, but with BioModels & ModelDB
     ```
 
     Contents will be saved in JSON files in `cached_info/`
