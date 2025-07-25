@@ -176700,6 +176700,10 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4748,
+                    "tag": "Lymphoid leukemia"
                 }
             ],
             "timestamp_created": "2025-02-03 16:55:50.628012+00:00",
@@ -176741,6 +176745,10 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4748,
+                    "tag": "Lymphoid leukemia"
                 }
             ],
             "timestamp_created": "2025-02-03 16:55:51.126266+00:00",
@@ -176913,6 +176921,10 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4749,
+                    "tag": "Complement deficiency"
                 }
             ],
             "timestamp_created": "2025-02-03 16:55:53.134096+00:00",
@@ -177245,6 +177257,14 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4750,
+                    "tag": "Leukemia"
+                },
+                {
+                    "id": 4751,
+                    "tag": "Lymphoma"
                 }
             ],
             "timestamp_created": "2025-02-03 16:55:57.376216+00:00",
@@ -177286,6 +177306,14 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4750,
+                    "tag": "Leukemia"
+                },
+                {
+                    "id": 4751,
+                    "tag": "Lymphoma"
                 }
             ],
             "timestamp_created": "2025-02-03 16:55:57.874060+00:00",
@@ -177671,6 +177699,10 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4752,
+                    "tag": "Urinary bladder cancer"
                 }
             ],
             "timestamp_created": "2025-02-03 16:56:02.772099+00:00",
@@ -177974,6 +178006,10 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4753,
+                    "tag": "Non-Hodgkin lymphoma"
                 }
             ],
             "timestamp_created": "2025-02-03 16:56:06.226888+00:00",
@@ -178527,6 +178563,10 @@
                 {
                     "id": 92,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4754,
+                    "tag": "Signal transduction by p53 class mediator"
                 }
             ],
             "timestamp_created": "2025-02-03 16:56:12.780610+00:00",
@@ -179558,6 +179598,994 @@
                 "username": "osbadmin"
             },
             "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3375": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "6",
+            "id": 3375,
+            "name": "Mager2005 - Quasi-equilibrium pharmacokinetic model for drugs exhibiting target-mediated drug disposition",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <pre>This model was developed with the aim of constructing an equilibrium model of the pharmacokinetic behaviour of a drug exhibiting target-mediated drug disposition (TMDD). TMDD involves the inclusion of drug-target interactions within a pharmacokinetic description, something which is usually considered negligible and subsequently excluded. Two approaches were used, one of which involved a quasi-equilibrium method to describe the kinetics of TMDD.</pre>      </body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4746,
+                    "tag": "BioModels:BIOMD0000000765"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 4747,
+                    "tag": "Unknown"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:37:01.150254+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000765",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3376": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "1",
+            "id": 3376,
+            "name": "Naizabekov2020 - Methylosinus trichosporium OB3b - iMsOB3b",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports compiled for the metabolic model, iMsOB3b. The model can be found in the Supplementary Section of the Naizabekov et al, 2020 paper cited here.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4755,
+                    "tag": "BioModels:BIOMD0000001081"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:03.381032+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001081",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3377": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3377,
+            "name": "Charusanti2011 - Y. pestis (iPC815)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>FROG and miniFROG Reports for the organism <i>Yersinia pestis</i>. <br />These models originate from BiGG Models Database: A Database of Genome-Scale Metabolic Models (http://bigg.ucsd.edu/). Copyright \u00a9 2019 The Regents of the University of California     <br />      <br />          To cite BiGG Models Database, please use:      <a href=\"http://dx.doi.org/10.1093/nar/gkv1049\" target=\"_blank\">King ZA, Lu JS, Dr\u00e4ger A, Miller PC, Federowicz S, Lerman JA, Ebrahim A, Palsson BO, and Lewis NE. BiGG Models: A platform for integrating, standardizing, and sharing genome-scale models (2016) Nucleic Acids Research 44(D1):D515-D522. doi:10.1093/nar/gkv1049</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4757,
+                    "tag": "BioModels:BIOMD0000001082"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:04.258720+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001082",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3378": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3378,
+            "name": "Broddrick2016 - Synechococcus elongatus PCC 7942 (iJB785)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>FROG and miniFROG Reports for the organism <i> Synechococcus elongatus PCC 7942</i>. <br />These models originate from BiGG Models Database: A Database of Genome-Scale Metabolic Models (http://bigg.ucsd.edu/). Copyright \u00a9 2019 The Regents of the University of California     <br />      <br />          To cite BiGG Models Database, please use:      <a href=\"http://dx.doi.org/10.1093/nar/gkv1049\" target=\"_blank\">King ZA, Lu JS, Dr\u00e4ger A, Miller PC, Federowicz S, Lerman JA, Ebrahim A, Palsson BO, and Lewis NE. BiGG Models: A platform for integrating, standardizing, and sharing genome-scale models (2016) Nucleic Acids Research 44(D1):D515-D522. doi:10.1093/nar/gkv1049</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4758,
+                    "tag": "BioModels:BIOMD0000001083"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:05.542086+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001083",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3379": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "5",
+            "id": 3379,
+            "name": "Mol2021 - P. thermoglucosidasius NCIMB 11955 (p_thermo)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports are provided for p_thermo genome-scale metabolic model. p_thermo is the model for Parageobacillus thermoglucosidasius NCIMB 11955. An analysis of the metabolism and internal fluxes of P. thermoglucosidasius is done in this study and the model can be found in the Supplementary data of Mol et al, 2021.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4759,
+                    "tag": "BioModels:BIOMD0000001084"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:06.511688+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001084",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3380": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3380,
+            "name": "Norsigian2018 - A. baumannii (iCN718)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>FROG and miniFROG Reports for the organism <i>A. baumannii</i>. <br />The model (iCN718) originates from BiGG Models Database: A Database of Genome-Scale Metabolic Models (http://bigg.ucsd.edu/). Copyright \u00a9 2019 The Regents of the University of California     <br />      <br />          To cite BiGG Models Database, please use:      <a href=\"http://dx.doi.org/10.1093/nar/gkv1049\" target=\"_blank\">King ZA, Lu JS, Dr\u00e4ger A, Miller PC, Federowicz S, Lerman JA, Ebrahim A, Palsson BO, and Lewis NE. BiGG Models: A platform for integrating, standardizing, and sharing genome-scale models (2016) Nucleic Acids Research 44(D1):D515-D522. doi:10.1093/nar/gkv1049</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4760,
+                    "tag": "BioModels:BIOMD0000001085"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:07.794712+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001085",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3381": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3381,
+            "name": "Jensen2020 - Streptococcus oralis (iCJ415)",
+            "repository_type": "biomodels",
+            "summary": "We have presented FROG and miniFROG reports for the first genome-scale model, iCJ415, for Streptococcus oralis SK141. The model can be found in the Supplementary Material of the publication by Jensen et al, 2020 cited here.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4761,
+                    "tag": "BioModels:BIOMD0000001086"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:09.656248+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001086",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3382": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "6",
+            "id": 3382,
+            "name": "Kumelj2019 - Streptomyces coelicolor (iKS1317)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports compiled for iKS1317, a reconstructed genome-scale metabolic model (GEM) for Streptomyces coelicolor. The model reconstruction is available in the Supporting Information of Kumelj et al, 2019 cited here.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4762,
+                    "tag": "BioModels:BIOMD0000001087"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:10.865809+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001087",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3383": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3383,
+            "name": "Nouri2020 - Zymomonas mobilis  (iHN446)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports are compiled for the reconstructed genome-scale metabolic model (iHN446) for Z. mobilis. The model can be found in the article Nouri et al, 2020 cited here.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4763,
+                    "tag": "BioModels:BIOMD0000001088"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:12.861936+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001088",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3384": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3384,
+            "name": "\u00d6zcan2019 - Leuconostoc mesenteroides subsp. cremoris (iLM.c559)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports have been compiled for iLM.c559, which is a GSM of the bacterium Leuconostoc mesenteroides subsp. cremoris. The model can be found in the \u00d6zcan et al, 2019 paper cited here.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4764,
+                    "tag": "BioModels:BIOMD0000001089"
+                },
+                {
+                    "id": 4756,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:13.686552+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001089",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3385": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3385,
+            "name": "Dias2019 - GSM model of S. pneumoniae R6",
+            "repository_type": "biomodels",
+            "summary": "Phenotypically Reconciled Genome-scale Metabolic Model for the Metabolism of Streptococcus pneumoniae Strain R6.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4765,
+                    "tag": "BioModels:BIOMD0000001090"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 4766,
+                    "tag": "Streptococcus pneumoniae (strain ATCC BAA-255 / R6)"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:14.650489+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001090",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3386": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3386,
+            "name": "Kulyashov2020 - Genome-Scale Metabolic Model for Geobacillus icigianus",
+            "repository_type": "biomodels",
+            "summary": "Here we present a genome-scale metabolic model iMK1321 for Geobacillus icigianus constructed using an auto-generating pipeline with consequent thorough manual curation. The model contains 1321 genes and includes 1676 reactions and 1589 metabolites, representing the most-complete and publicly available model of the genus Geobacillus.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4767,
+                    "tag": "BioModels:BIOMD0000001091"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:15.755687+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001091",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3387": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3387,
+            "name": "Gautam2020-Metabolic network of Thermotoga sp. Strain RQ7",
+            "repository_type": "biomodels",
+            "summary": "As in DOI: 10.1007/s12010-020-03470-z",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4768,
+                    "tag": "BioModels:BIOMD0000001092"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:16.499162+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001092",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3388": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "5",
+            "id": 3388,
+            "name": "Nogales2020 - Genome-scale metabolic network of Pseudomonas putida (iJN1462)",
+            "repository_type": "biomodels",
+            "summary": "iJN1462 (i) incorporates several hundred additional genes and associated reactions resulting in new predictive capabilities, including new nutrients supporting growth; (ii) was validated by in vivo growth screens that included previously untested carbon (48) and nitrogen (41) sources; (iii) yielded gene essentiality predictions showing large accuracy when compared with a knock-out library and Bar-seq data; and (iv) allowed mapping of its network to 82 P. putida sequenced strains revealing functional core that reflect the large metabolic versatility of this species, including aromatic compounds derived from lignin.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4769,
+                    "tag": "BioModels:BIOMD0000001093"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:17.347339+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001093",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3389": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3389,
+            "name": "Liao2011 - Genome-scale metabolic reconstruction of Klebsiella pneumoniae (iYL1228)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level3/version1/core\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Liao2011 - Genome-scale metabolicreconstruction of Klebsiella pneumoniae (iYL1228)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/21296962\" title=\"Access to this publication\">An experimentally validated    genome-scale metabolic reconstruction of Klebsiella pneumoniae    MGH 78578, iYL1228.</a>  </div>  <div class=\"bibo:authorList\">Liao YC, Huang TW, Chen FC,  Charusanti P, Hong JS, Chang HY, Tsai SF, Palsson BO, Hsiung  CA.</div>  <div class=\"bibo:Journal\">J. Bacteriol. 2011 Apr; 193(7):  1710-1717</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Klebsiella pneumoniae is a Gram-negative bacterium of the    family Enterobacteriaceae that possesses diverse metabolic    capabilities: many strains are leading causes of    hospital-acquired infections that are often refractory to    multiple antibiotics, yet other strains are metabolically    engineered and used for production of commercially valuable    chemicals. To study its metabolism, we constructed a    genome-scale metabolic model (iYL1228) for strain MGH 78578,    experimentally determined its biomass composition,    experimentally determined its ability to grow on a broad range    of carbon, nitrogen, phosphorus and sulfur sources, and    assessed the ability of the model to accurately simulate growth    versus no growth on these substrates. The model contains 1,228    genes encoding 1,188 enzymes that catalyze 1,970 reactions and    accurately simulates growth on 84% of the substrates tested.    Furthermore, quantitative comparison of growth rates between    the model and experimental data for nine of the substrates also    showed good agreement. The genome-scale metabolic    reconstruction for K. pneumoniae presented here thus provides    an experimentally validated in silico platform for further    studies of this important industrial and biomedical    organism.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1507180054\">MODEL1507180054</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4770,
+                    "tag": "BioModels:BIOMD0000001094"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:18.278271+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001094",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3390": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3390,
+            "name": "Jamshidi2007 - Genome-scale metabolic network of Mycobacterium tuberculosis (iNJ661)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level3/version1/core\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Jamshidi2007 - Genome-scale metabolic networkof Mycobacterium tuberculosis (iNJ661)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/17555602\" title=\"Access to this publication\">Investigating the metabolic    capabilities of Mycobacterium tuberculosis H37Rv using the in    silico strain iNJ661 and proposing alternative drug    targets.</a>  </div>  <div class=\"bibo:authorList\">Jamshidi N, Palsson B\u00d8.</div>  <div class=\"bibo:Journal\">BMC Syst Biol 2007; 1: 26</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>BACKGROUND: Mycobacterium tuberculosis continues to be a    major pathogen in the third world, killing almost 2 million    people a year by the most recent estimates. Even in    industrialized countries, the emergence of multi-drug resistant    (MDR) strains of tuberculosis hails the need to develop    additional medications for treatment. Many of the drugs used    for treatment of tuberculosis target metabolic enzymes.    Genome-scale models can be used for analysis, discovery, and as    hypothesis generating tools, which will hopefully assist the    rational drug development process. These models need to be able    to assimilate data from large datasets and analyze them.    RESULTS: We completed a bottom up reconstruction of the    metabolic network of Mycobacterium tuberculosis H37Rv. This    functional in silico bacterium, iNJ661, contains 661 genes and    939 reactions and can produce many of the complex compounds    characteristic to tuberculosis, such as mycolic acids and    mycocerosates. We grew this bacterium in silico on various    media, analyzed the model in the context of multiple    high-throughput data sets, and finally we analyzed the network    in an 'unbiased' manner by calculating the Hard Coupled    Reaction (HCR) sets, groups of reactions that are forced to    operate in unison due to mass conservation and connectivity    constraints. CONCLUSION: Although we observed growth rates    comparable to experimental observations (doubling times ranging    from about 12 to 24 hours) in different media, comparisons of    gene essentiality with experimental data were less encouraging    (generally about 55%). The reasons for the often conflicting    results were multi-fold, including gene expression variability    under different conditions and lack of complete biological    knowledge. Some of the inconsistencies between in vitro and in    silico or in vivo and in silico results highlight specific loci    that are worth further experimental investigations. Finally, by    considering the HCR sets in the context of known drug targets    for tuberculosis treatment we proposed new alternative, but    equivalent drug targets.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1507180001\">MODEL1507180001</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4771,
+                    "tag": "BioModels:BIOMD0000001095"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:19.162541+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001095",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3391": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3391,
+            "name": "Irani2015 - Genome-scale metabolic model of P.pastoris N-glycosylation",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Irani2015 - Genome-scale metabolic model ofP.pastoris N-glycosylation</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/26480251\" title=\"Access to this publication\">Genome-scale metabolic model    of Pichia pastoris with native and humanized glycosylation of    recombinant proteins.</a>  </div>  <div class=\"bibo:authorList\">Irani ZA, Kerkhoven E, Shojaosadati  SA, Nielsen J.</div>  <div class=\"bibo:Journal\">Biotechnol. Bioeng. 2015 Oct;</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Pichia pastoris is used for commercial production of human    therapeutic proteins, and genome-scale models of P. pastoris    metabolism have been generated in the past to study the    metabolism and associated protein production by this yeast. A    major challenge with clinical usage of recombinant proteins    produced by P. pastoris is the difference in N-glycosylation of    proteins produced by humans and this yeast. However, through    metabolic engineering a P. pastoris strain capable of producing    humanized N-glycosylated proteins was constructed. The current    genome-scale models of P. pastoris do not address native nor    humanized N-glycosylation, and we therefore developed    ihGlycopastoris, an extension to the iLC915 model with both    native and humanized N-glycosylation for recombinant protein    production, but also an estimation of N-glycosylation of P.    pastoris native proteins. This new model gives a better    predictions of protein yield, demonstrates the effect of the    different types of N-glycosylation of protein yield, and can be    used to predict potential targets for strain improvement. The    model represents a step towards a more complete description of    protein production in P. pastoris, which is required for using    these models to understand and optimize protein production    processes. This article is protected by copyright. All rights    reserved.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1510220000\">MODEL1510220000</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4772,
+                    "tag": "BioModels:BIOMD0000001096"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:20.331675+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001096",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3392": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3392,
+            "name": "Benedict2011 - Genome-scale metoblic network of Methanosarcina acetivorans (iMB745)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level3/version1/core\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Benedict2011 - Genome-scale metoblic networkof Methanosarcina acetivorans (iMB745)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/22139506\" title=\"Access to this publication\">Genome-scale metabolic    reconstruction and hypothesis testing in the methanogenic    archaeon Methanosarcina acetivorans C2A.</a>  </div>  <div class=\"bibo:authorList\">Benedict MN, Gonnerman MC, Metcalf  WW, Price ND.</div>  <div class=\"bibo:Journal\">J. Bacteriol. 2012 Feb; 194(4):  855-865</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Methanosarcina acetivorans strain C2A is a marine    methanogenic archaeon notable for its substrate utilization,    genetic tractability, and novel energy conservation mechanisms.    To help probe the phenotypic implications of this organism's    unique metabolism, we have constructed and manually curated a    genome-scale metabolic model of M. acetivorans, iMB745, which    accounts for 745 of the 4,540 predicted protein-coding genes    (16%) in the M. acetivorans genome. The reconstruction effort    has identified key knowledge gaps and differences in peripheral    and central metabolism between methanogenic species. Using flux    balance analysis, the model quantitatively predicts wild-type    phenotypes and is 96% accurate in knockout lethality    predictions compared to currently available experimental data.    The model was used to probe the mechanisms and energetics of    by-product formation and growth on carbon monoxide, as well as    the nature of the reaction catalyzed by the soluble    heterodisulfide reductase HdrABC in M. acetivorans. The    genome-scale model provides quantitative and qualitative    hypotheses that can be used to help iteratively guide    additional experiments to further the state of knowledge about    methanogenesis.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1507180040\">MODEL1507180040</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4773,
+                    "tag": "BioModels:BIOMD0000001097"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:21.694708+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001097",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3393": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "6",
+            "id": 3393,
+            "name": "Feist2006_methanogenesis_OptiMethanol",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>This model originates from BioModels Database: A Database of Annotated Published Models (http://www.ebi.ac.uk/biomodels/). It is copyright (c) 2005-2011 The BioModels.net Team.      <br />          To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to      <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Creative Commons CC0\">CC0 Public Domain Dedication</a>          for more information.      </p>      <p>In summary, you are entitled to use this encoded model in absolutely any manner you deem suitable, verbatim, or with modification, alone or embedded it in a larger context, redistribute it, commercially or not, in a restricted way or not..      <br />      <br />          To cite BioModels Database, please use:      <a href=\"http://www.ncbi.nlm.nih.gov/pubmed/20587024\" target=\"_blank\">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Nov\u00e8re N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4774,
+                    "tag": "BioModels:BIOMD0000001098"
+                },
+                {
+                    "id": 4775,
+                    "tag": "Methanogenesis"
+                },
+                {
+                    "id": 4776,
+                    "tag": "Methanosarcina barkeri"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:22.467689+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001098",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3394": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3394,
+            "name": "Richards2016 - Genome-scale metabolic reconstruction of Methanococcus maripaludis (iMR539)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Richards2016 - Genome-scale metabolicreconstruction of Methanococcus maripaludis (iMR539)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/27736793\" title=\"Access to this publication\">Exploring Hydrogenotrophic    Methanogenesis: a Genome Scale Metabolic Reconstruction of    Methanococcus maripaludis.</a>  </div>  <div class=\"bibo:authorList\">Richards MA, Lie TJ, Zhang J,  Ragsdale SW, Leigh JA, Price ND.</div>  <div class=\"bibo:Journal\">J. Bacteriol. 2016 Dec; 198(24):  3379-3390</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Hydrogenotrophic methanogenesis occurs in multiple    environments, ranging from the intestinal tracts of animals to    anaerobic sediments and hot springs. Energy conservation in    hydrogenotrophic methanogens was long a mystery; only within    the last decade was it reported that net energy conservation    for growth depends on electron bifurcation. In this work, we    focus on Methanococcus maripaludis, a well-studied    hydrogenotrophic marine methanogen. To better understand    hydrogenotrophic methanogenesis and compare it with    methylotrophic methanogenesis that utilizes oxidative    phosphorylation rather than electron bifurcation, we have built    iMR539, a genome scale metabolic reconstruction that accounts    for 539 of the 1,722 protein-coding genes of M. maripaludis    strain S2. Our reconstructed metabolic network uses recent    literature to not only represent the central electron    bifurcation reaction but also incorporate vital biosynthesis    and assimilation pathways, including unique cofactor and    coenzyme syntheses. We show that our model accurately predicts    experimental growth and gene knockout data, with 93% accuracy    and a Matthews correlation coefficient of 0.78. Furthermore, we    use our metabolic network reconstruction to probe the    implications of electron bifurcation by showing its    essentiality, as well as investigating the infeasibility of    aceticlastic methanogenesis in the network. Additionally, we    demonstrate a method of applying thermodynamic constraints to a    metabolic model to quickly estimate overall free-energy changes    between what comes in and out of the cell. Finally, we describe    a novel reconstruction-specific computational toolbox we    created to improve usability. Together, our results provide a    computational network for exploring hydrogenotrophic    methanogenesis and confirm the importance of electron    bifurcation in this process.Understanding and applying    hydrogenotrophic methanogenesis is a promising avenue for    developing new bioenergy technologies around methane gas.    Although a significant portion of biological methane is    generated through this environmentally ubiquitous pathway,    existing methanogen models portray the more traditional energy    conservation mechanisms that are found in other methanogens. We    have constructed a genome scale metabolic network of    Methanococcus maripaludis that explicitly accounts for all    major reactions involved in hydrogenotrophic methanogenesis.    Our reconstruction demonstrates the importance of electron    bifurcation in central metabolism, providing both a window into    hydrogenotrophic methanogenesis and a hypothesis-generating    platform to fuel metabolic engineering efforts.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1607200000\">MODEL1607200000</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4777,
+                    "tag": "BioModels:BIOMD0000001099"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:23.311851+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001099",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3395": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3395,
+            "name": "Mohr2022 - Rabbit Purkinje Cardiac Electrophysiology",
+            "repository_type": "biomodels",
+            "summary": "we performed a comparative benchmark and investigated a variety of mathematical cardiac AP models, including a newly developed minimalistic model specifically tailored to the AP of rabbit Purkinje cells, for their ability to substitute experiments. The simulated changes in AP duration (dAPD90) at increasing drug concentrations were compared to experimental results from 588 internal Purkinje fiber studies covering 555 different drugs with diverse modes of action. Using our minimalistic model, 80% of the Purkinje experiments could be quantitatively reproduced.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4778,
+                    "tag": "BioModels:BIOMD0000001100"
+                },
+                {
+                    "id": 4730,
+                    "tag": "UNKNOWN"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:24.227668+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001100",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3396": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3396,
+            "name": "Zhou2024 - Post Infarction Myocyte Electromechanics",
+            "repository_type": "biomodels",
+            "summary": "A human ventricular electromechanical modelling and simulation framework is constructed and validated with rich experimental and clinical datasets. Abnormalities caused by scar and border zone ionic remodeling are introduced in varying degrees as reported in experimental data obtained in acute and chronic infarction. Simulations enabled reproducing and explaining clinical phenotypes post-MI, from ionic remodelling to ECGs and pressure-volume loops.",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4779,
+                    "tag": "BioModels:BIOMD0000001101"
+                },
+                {
+                    "id": 39,
+                    "tag": "matlab"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:25.135704+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001101",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3397": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "5",
+            "id": 3397,
+            "name": "Burbano2023 - HGFsignaling_in_FattyLiverDisease",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">     <p>Chronic liver diseases are worldwide on the rise. Due to the rapidly increasing incidence, in particular in Western countries, non-alcoholic fatty liver disease (NAFLD) is gaining importance. As the disease progresses it can develop into hepatocellular carcinoma. Lipid accumulation in hepatocytes has been identified as the characteristic structural change in NAFLD development, but the molecular mechanisms responsible for disease development remained unresolved. Here, we uncover a strong downregulation of the PI3K-AKT pathway and an upregulation of the MAPK pathway in primary hepatocytes from a preclinical model fed with a Western diet (WD). Dynamic pathway modeling of hepatocyte growth factor (HGF) signal transduction combined with global proteomics identifies that an elevated basal MET phosphorylation rate is the main driver of altered signaling leading to increased proliferation of WD-hepatocytes. Model-adaptation to patient-derived hepatocytes reveals a patient-specific variability in basal MET phosphorylation, which correlates with the outcome of patients after liver surgery. Thus, dysregulated basal MET phosphorylation could be an indicator for the health status of the liver and thereby inform on the risk of a patient to suffer from liver failure after surgery.</p>  </body>    </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4780,
+                    "tag": "BioModels:BIOMD0000001102"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:26.024186+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001102",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3398": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3398,
+            "name": "Palaniappan2021 - Cell free modelling of second generation Toehold switches",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">       <body xmlns=\"http://www.w3.org/1999/xhtml\">         <pre>Cervical cancer is a global public health subject as it affects women in the reproductive ages, and accounts for the second largest burden among cancer patients worldwide with an unforgiving 50% mortality rate. Poor awareness and access to effective diagnosis have led to this enormous disease burden, calling for point-of-care, minimally invasive diagnosis methods. Here, an end-to-end quantitative approach for a new kind of diagnosis has been developed, comprising identification of optimal biomarkers, design of the sensor, and simulation of the diagnostic circuit. Using miRNA expression data in the public domain, we identified circulating miRNA biomarkers specific to cervical cancer using multi-tier screening. Synthetic riboregulators called toehold switches specific for the biomarker panel were then designed. To predict the dynamic range of toehold switches for use in genetic circuits as biosensors, we developed a generic grammar of these switches, and built a multivariate linear regression model using thermodynamic features derived from RNA secondary structure and interaction. The model yielded predictions of toehold efficacy with an adjusted R2 = 0.59. Reaction kinetics modelling was performed to predict the sensitivity of the second-generation toehold switches to the miRNA biomarkers. Simulations showed a linear response between 10nM and 100nM before saturation. Our study demonstrates an end-to-end workflow for the efficient design of genetic circuits geared towards the effective detection of unique genomic signatures that would be increasingly important in today\u2019s world. The approach has the potential to direct experimental efforts and minimise costs. All resources are provided open-source (https://github.com/igem2019) under GNU GPLv3 licence.</pre>       </body>     </notes>",
+            "tags": [
+                {
+                    "id": 3056,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4781,
+                    "tag": "BioModels:BIOMD0000001103"
+                },
+                {
+                    "id": 92,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:41:26.926215+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001103",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3399": {
+            "auto_sync": true,
+            "content_types": "experimental,modeling",
+            "content_types_list": [
+                "experimental",
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3399,
+            "name": "take 2",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-14 21:00:44.462177+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/cmranieri/MarmosetModel",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
+        },
+        "3400": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3400,
+            "name": "delete",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                }
+            ],
+            "timestamp_created": "2025-06-14 21:02:18.540937+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/cmranieri/MarmosetModel",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
+        },
+        "3401": {
+            "auto_sync": true,
+            "content_types": "modeling,experimental",
+            "content_types_list": [
+                "modeling",
+                "experimental"
+            ],
+            "default_context": "master",
+            "id": 3401,
+            "name": "take 3",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                }
+            ],
+            "timestamp_created": "2025-06-15 00:05:56.663982+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/jhielson/Initial_Neurorobotics_Model_of_PD",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
         }
     }
 }

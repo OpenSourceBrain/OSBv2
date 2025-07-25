@@ -132750,55 +132750,6 @@
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
-        "2360": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "3",
-            "id": 2360,
-            "name": "Fuss2006_MitoticActivation",
-            "repository_type": "biomodels",
-            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\"><p>The model was curated with XPP. The figure 3 was successfully reproduced.</p></body>    </notes>",
-            "tags": [
-                {
-                    "id": 2936,
-                    "tag": "BioModels"
-                },
-                {
-                    "id": 3106,
-                    "tag": "BioModels:BIOMD0000000069"
-                },
-                {
-                    "id": 3107,
-                    "tag": "Cell Cycle, Mitotic"
-                },
-                {
-                    "id": 3002,
-                    "tag": "Homo sapiens"
-                },
-                {
-                    "id": 2978,
-                    "tag": "Mitotic cell cycle"
-                },
-                {
-                    "id": 704,
-                    "tag": "SBML"
-                }
-            ],
-            "timestamp_created": "2025-01-29 11:34:32.341189+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000069",
-            "user": {
-                "email": "info@opensourcebrain.org",
-                "first_name": "OSB",
-                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
-                "last_name": "Admin",
-                "username": "osbadmin"
-            },
-            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
-        },
         "2361": {
             "auto_sync": true,
             "content_types": "modeling",
@@ -133187,51 +133138,6 @@
             "timestamp_created": "2025-01-29 11:34:36.421772+00:00",
             "timestamp_updated": "---",
             "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000078",
-            "user": {
-                "email": "info@opensourcebrain.org",
-                "first_name": "OSB",
-                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
-                "last_name": "Admin",
-                "username": "osbadmin"
-            },
-            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
-        },
-        "2370": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "3",
-            "id": 2370,
-            "name": "Goldbeter2006_weightCycling",
-            "repository_type": "biomodels",
-            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>This model is according to the paper of      <i>A model for the dynamics of human weight cycling</i>          by A. Goldbeter 2006.The figure3 (A) and (B) have been reproduced by Copasi 4.0.19(development) and SBMLodeSolver.The writer of the paper did not specify any units for the metabolites, so the creator of the model did not define the units as well.Both Q and R are normalized to vary between 0 and 1.      </p>            <br />            <p>To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to      <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Creative Commons CC0\">CC0 Public Domain Dedication</a>          for more information.      </p>            <p>In summary, you are entitled to use this encoded model in absolutely any manner you deem suitable, verbatim, or with modification, alone or embedded it in a larger context, redistribute it, commercially or not, in a restricted way or not.</p>            <br />            <p>To cite BioModels Database, please use:      <a href=\"http://www.ncbi.nlm.nih.gov/pubmed/20587024\" target=\"_blank\">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Nov\u00e8re N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>                </p>            </body>          </notes>",
-            "tags": [
-                {
-                    "id": 2936,
-                    "tag": "BioModels"
-                },
-                {
-                    "id": 3123,
-                    "tag": "BioModels:BIOMD0000000079"
-                },
-                {
-                    "id": 3002,
-                    "tag": "Homo sapiens"
-                },
-                {
-                    "id": 3124,
-                    "tag": "Regulation of multicellular organism growth"
-                },
-                {
-                    "id": 704,
-                    "tag": "SBML"
-                }
-            ],
-            "timestamp_created": "2025-01-29 11:34:36.867328+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000079",
             "user": {
                 "email": "info@opensourcebrain.org",
                 "first_name": "OSB",
@@ -140385,6 +140291,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4623,
+                    "tag": "Lung cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 13:34:17.062565+00:00",
@@ -140565,6 +140475,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4624,
+                    "tag": "Interleukin 21"
                 }
             ],
             "timestamp_created": "2025-01-30 13:34:18.869870+00:00",
@@ -148203,55 +148117,6 @@
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
-        "2689": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "3",
-            "id": 2689,
-            "name": "Jenkinson2011_EGF_MAPK",
-            "repository_type": "biomodels",
-            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>This is a model described in the article:<br />        <strong>Thermodynamically Consistent Model Calibration in Chemical Kinetics.</strong>        <br />Garrett Jenkinson and John Goutsias, BMC Systems Biology 2011 May 6;5(1):64.; PMID:<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/21548948\">21548948</a>.</p>        <p>ABSTRACT:<br /> BACKGROUND:<br /> The dynamics of biochemical reaction systems are constrained by the fundamental laws of thermodynamics, which impose well-defined relationships among the reaction rate constants characterizing these systems. Constructing biochemical reaction systems from experimental observations often leads to parameter values that do not satisfy the necessary thermodynamic constraints. This can result in models that are not physically realizable and may lead to inaccurate, or even erroneous, descriptions of cellular function.<br /> RESULTS:<br /> We introduce a thermodynamically consistent model calibration (TCMC) method that can be effectively used to provide thermodynamically feasible values for the parameters of an open biochemical reaction system. The proposed method formulates the model calibration problem as a constrained optimization problem that takes thermodynamic constraints (and, if desired, additional non-thermodynamic constraints) into account. By calculating thermodynamically feasible values for the kinetic parameters of a well-known model of the EGF/ERK signaling cascade, we demonstrate the qualitative and quantitative significance of imposing thermodynamic constraints on these parameters and the effectiveness of our method for accomplishing this important task. MATLAB software, using the Systems Biology Toolbox 2.1, can be accessed from www.cis.jhu.edu/~goutsias/CSS lab/software.html. An SBML file containing the thermodynamically feasible EGF/ERK signaling cascade model can be found in the BioModels database.<br /> CONCLUSIONS:<br /> TCMC is a simple and flexible method for obtaining physically plausible values for the kinetic parameters of open biochemical reaction systems. It can be effectively used to recalculate a thermodynamically consistent set of parameter values for existing thermodynamically infeasible biochemical reaction models of cellular function as well as to estimate thermodynamically feasible values for the parameters of new models. Furthermore, TCMC can provide dimensionality reduction, better estimation performance, and lower computational complexity, and can help to alleviate the problem of data overfitting.</p>        <p>This model is a thermodynamically feasible version of a previous modelin the BioModels database,<a href=\"http://www.ebi.ac.uk/biomodels-main/BIOMD0000000019\">BIOMD0000000019</a>, described in Computational modeling of the dynamics of the MAP kinase cascade activated by surface and internalized EGF receptors. Schoeberl et al (2002), PMID:<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/11923843\">11923843</a>.<br /> The only difference between the present model and the model listed under BIOMD0000000019 are the values of the parameters.</p>        <p>This model originates from BioModels Database: A Database of Annotated Published Models (http://www.ebi.ac.uk/biomodels/). It is copyright (c) 2005-2012 The BioModels.net Team.<br />For more information see the <a href=\"http://www.ebi.ac.uk/biomodels/legal.html\" target=\"_blank\">terms of use</a>.<br />To cite BioModels Database, please use: <a href=\"http://www.ncbi.nlm.nih.gov/pubmed/20587024\" target=\"_blank\">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Nov\u00e8re N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>      </p>    </body>  </notes>",
-            "tags": [
-                {
-                    "id": 2936,
-                    "tag": "BioModels"
-                },
-                {
-                    "id": 3683,
-                    "tag": "BioModels:BIOMD0000000399"
-                },
-                {
-                    "id": 3014,
-                    "tag": "Epidermal growth factor receptor signaling pathway"
-                },
-                {
-                    "id": 3002,
-                    "tag": "Homo sapiens"
-                },
-                {
-                    "id": 704,
-                    "tag": "SBML"
-                },
-                {
-                    "id": 3015,
-                    "tag": "Signaling by EGFR"
-                }
-            ],
-            "timestamp_created": "2025-01-30 13:35:36.916432+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000399",
-            "user": {
-                "email": "info@opensourcebrain.org",
-                "first_name": "OSB",
-                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
-                "last_name": "Admin",
-                "username": "osbadmin"
-            },
-            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
-        },
         "2690": {
             "auto_sync": true,
             "content_types": "modeling",
@@ -152939,100 +152804,6 @@
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         },
-        "2789": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "3",
-            "id": 2789,
-            "name": "Vizan2013 - TGF pathway long term signaling",
-            "repository_type": "biomodels",
-            "summary": "Pedro Viz\u00e1n, Daniel S. J. Miller, Ilaria Gori, Debipriya Das, Bernhard Schmierer & Caroline S. Hill. Controlling long-term signaling: receptor dynamics determine attenuation and refractory behavior of the TGF-\u03b2 pathway. Science Signaling 6, 305 (2013).<p></p><p></p>Understanding the complex dynamics of growth factor signaling requires both mechanistic and kinetic information. Although signaling dynamics have been studied for pathways downstream of receptor tyrosine kinases and G protein (heterotrimeric guanine nucleotide-binding protein)-coupled receptors, they have not been investigated for the transforming growth factor-\u03b2 (TGF-\u03b2) superfamily pathways. Using an integrative experimental and mathematical modeling approach, we dissected the dynamic behavior of the TGF-\u03b2 to Smad pathway, which is mediated by type I and type II receptor serine/threonine kinases, in response to acute, chronic, and repeated ligand stimulations. TGF-\u03b2 exposure produced a transient response that attenuated over time, resulting in desensitized cells that were refractory to further acute stimulation. This loss of signaling competence depended on ligand binding, but not on receptor activity, and was restored only after the ligand had been depleted. Furthermore, TGF-\u03b2 binding triggered the rapid depletion of signaling-competent receptors from the cell surface, with the type I and type II receptors exhibiting different degradation and trafficking kinetics. A computational model of TGF-\u03b2 signal transduction from the membrane to the nucleus that incorporates our experimental findings predicts that autocrine signaling, such as that associated with tumorigenesis, severely compromises the TGF-\u03b2 response, which we confirmed experimentally. Thus, we have shown that the long-term signaling behavior of the TGF-\u03b2 pathway is determined by receptor dynamics, does not require TGF-\u03b2-induced gene expression, and influences context-dependent responses in vivo.",
-            "tags": [
-                {
-                    "id": 2936,
-                    "tag": "BioModels"
-                },
-                {
-                    "id": 3848,
-                    "tag": "BioModels:BIOMD0000000499"
-                },
-                {
-                    "id": 3002,
-                    "tag": "Homo sapiens"
-                },
-                {
-                    "id": 704,
-                    "tag": "SBML"
-                },
-                {
-                    "id": 3849,
-                    "tag": "SMAD protein signal transduction"
-                },
-                {
-                    "id": 3158,
-                    "tag": "Transforming growth factor beta receptor signaling pathway"
-                }
-            ],
-            "timestamp_created": "2025-01-30 13:36:28.419197+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000499",
-            "user": {
-                "email": "info@opensourcebrain.org",
-                "first_name": "OSB",
-                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
-                "last_name": "Admin",
-                "username": "osbadmin"
-            },
-            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
-        },
-        "2790": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "4",
-            "id": 2790,
-            "name": "Begitt2014 - STAT1 cooperative DNA binding - single GAS polymer model",
-            "repository_type": "biomodels",
-            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Begitt2014 - STAT1 cooperative DNA binding - single GAS polymer model</div>            <div class=\"dc:description\">      <p>The importance of STAT1-cooperative DNA binding in type 1 and type 2 interferon signalling has been studies using experimental and modelling approaches. The authors have developed two ODE models to describe STAT1 binding to short promoter regions of DNA, namely \"single GAS polymer model\" and \"double GAS polymer model\" considering binding to single or double GAS sites, respectively. The length of DNA in the single GAS model was three sites and four sites in double GAS model. This model correspond to the \"single GAS polymer model\".</p>                </div>            <div class=\"dc:bibliographicCitation\">      <p>This model is described in the article:</p>                <div class=\"bibo:title\">        <a href=\"http://identifiers.org/pubmed/24413774\" title=\"Access to this publication\">STAT1-cooperative DNA binding distinguishes type 1 from type 2 interferon signaling.</a>                    </div>                <div class=\"bibo:authorList\">Begitt A, Droescher M, Meyer T, Schmid CD, Baker M, Antunes F, Owen MR, Naumann R, Decker T, Vinkemeier U</div>                <div class=\"bibo:Journal\">Nat Immunol. 2014 Feb;15(2):168-76.</div>                <p>Abstract:</p>                <div class=\"bibo:abstract\">        <p>STAT1 is an indispensable component of a heterotrimer (ISGF3) and a STAT1 homodimer (GAF) that function as transcription regulators in type 1 and type 2 interferon signaling, respectively. To investigate the importance of STAT1-cooperative DNA binding, we generated gene-targeted mice expressing cooperativity-deficient STAT1 with alanine substituted for Phe77. Neither ISGF3 nor GAF bound DNA cooperatively in the STAT1F77A mouse strain, but type 1 and type 2 interferon responses were affected differently. Type 2 interferon-mediated transcription and antibacterial immunity essentially disappeared owing to defective promoter recruitment of GAF. In contrast, STAT1 recruitment to ISGF3 binding sites and type 1 interferon-dependent responses, including antiviral protection, remained intact. We conclude that STAT1 cooperativity is essential for its biological activity and underlies the cellular responses to type 2, but not type 1 interferon.</p>                    </div>                </div>            <div class=\"dc:publisher\">      <p>This model is hosted on        <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>            and identifiedby:        <a href=\"http://identifiers.org/biomodels.db/BIOMD0000000500\">BIOMD0000000500</a>            .        </p>                <p>To cite BioModels Database, please use:        <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database: An enhanced, curated and annotated resourcefor published quantitative kinetic models</a>            .        </p>                </div>            <div class=\"dc:license\">      <p>To the extent possible under law, all copyright and related orneighbouring rights to this encoded model have been dedicated to the publicdomain worldwide. Please refer to        <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0 Public DomainDedication</a>            for more information.        </p>                </div>            </body>          </notes>",
-            "tags": [
-                {
-                    "id": 2936,
-                    "tag": "BioModels"
-                },
-                {
-                    "id": 3850,
-                    "tag": "BioModels:BIOMD0000000500"
-                },
-                {
-                    "id": 3851,
-                    "tag": "Interferon-gamma-mediated signaling pathway"
-                },
-                {
-                    "id": 3090,
-                    "tag": "Mus musculus"
-                },
-                {
-                    "id": 704,
-                    "tag": "SBML"
-                }
-            ],
-            "timestamp_created": "2025-01-30 13:36:28.922379+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000500",
-            "user": {
-                "email": "info@opensourcebrain.org",
-                "first_name": "OSB",
-                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
-                "last_name": "Admin",
-                "username": "osbadmin"
-            },
-            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
-        },
         "2791": {
             "auto_sync": true,
             "content_types": "modeling",
@@ -153191,6 +152962,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4625,
+                    "tag": "Cartilage disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:31.203465+00:00",
@@ -153539,6 +153314,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4595,
+                    "tag": "Osteoarthritis"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:35.338189+00:00",
@@ -154210,6 +153989,10 @@
                 {
                     "id": 3886,
                     "tag": "Salmonella enterica subsp. enterica serovar Typhimurium str. DT104"
+                },
+                {
+                    "id": 4626,
+                    "tag": "Primary bacterial infectious disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:43.369447+00:00",
@@ -154259,6 +154042,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4627,
+                    "tag": "Swine influenza"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:43.930363+00:00",
@@ -154308,6 +154095,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4617,
+                    "tag": "Influenza"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:44.399878+00:00",
@@ -154402,6 +154193,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:45.356746+00:00",
@@ -154451,6 +154246,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:45.845946+00:00",
@@ -154500,6 +154299,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:46.436607+00:00",
@@ -154545,6 +154348,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4628,
+                    "tag": "Crohn's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:46.954369+00:00",
@@ -154590,6 +154397,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4628,
+                    "tag": "Crohn's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:47.454753+00:00",
@@ -154635,6 +154446,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4628,
+                    "tag": "Crohn's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:47.952252+00:00",
@@ -154680,6 +154495,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4628,
+                    "tag": "Crohn's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:48.430368+00:00",
@@ -154741,6 +154560,34 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4629,
+                    "tag": "Cerebral degeneration"
+                },
+                {
+                    "id": 4630,
+                    "tag": "Huntington's disease"
+                },
+                {
+                    "id": 4631,
+                    "tag": "Ocular albinism"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
+                },
+                {
+                    "id": 4632,
+                    "tag": "Retinal degeneration"
+                },
+                {
+                    "id": 4633,
+                    "tag": "Retinal detachment"
+                },
+                {
+                    "id": 4634,
+                    "tag": "Retinal disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:48.923370+00:00",
@@ -154929,6 +154776,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
+                },
+                {
+                    "id": 4635,
+                    "tag": "Tauopathy"
                 }
             ],
             "timestamp_created": "2025-01-30 13:36:50.913823+00:00",
@@ -155117,6 +154972,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4617,
+                    "tag": "Influenza"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:37.924495+00:00",
@@ -155211,6 +155070,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:39.011606+00:00",
@@ -155260,6 +155123,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4636,
+                    "tag": "Rheumatoid arthritis"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:39.518192+00:00",
@@ -155309,6 +155176,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4636,
+                    "tag": "Rheumatoid arthritis"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:40.032672+00:00",
@@ -155354,6 +155225,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:40.752530+00:00",
@@ -155399,6 +155274,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:41.230072+00:00",
@@ -155444,6 +155323,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:41.742796+00:00",
@@ -155538,6 +155421,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:42.793488+00:00",
@@ -155587,6 +155478,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:43.312743+00:00",
@@ -155681,6 +155576,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:44.347386+00:00",
@@ -155738,6 +155637,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:44.866863+00:00",
@@ -155787,6 +155690,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4595,
+                    "tag": "Osteoarthritis"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:45.372248+00:00",
@@ -155832,6 +155739,18 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
+                },
+                {
+                    "id": 4637,
+                    "tag": "Prion disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:45.885819+00:00",
@@ -156057,6 +155976,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:48.390086+00:00",
@@ -156102,6 +156025,18 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
+                },
+                {
+                    "id": 4630,
+                    "tag": "Huntington's disease"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:48.928547+00:00",
@@ -156147,6 +156082,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4607,
+                    "tag": "Liver disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:49.460365+00:00",
@@ -156372,6 +156311,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4360,
+                    "tag": "Human immunodeficiency virus infectious disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:52.063978+00:00",
@@ -156478,6 +156421,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:53.167538+00:00",
@@ -156862,6 +156809,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4638,
+                    "tag": "Clostridium difficile colitis"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:57.248869+00:00",
@@ -156907,6 +156858,10 @@
                 {
                     "id": 3988,
                     "tag": "Sphingolipid metabolic process"
+                },
+                {
+                    "id": 4618,
+                    "tag": "Leishmaniasis"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:57.750157+00:00",
@@ -156956,6 +156911,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4639,
+                    "tag": "Pancreatic cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 13:53:58.254806+00:00",
@@ -157365,6 +157324,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 13:54:03.962206+00:00",
@@ -157410,6 +157373,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 13:54:04.462553+00:00",
@@ -158051,6 +158018,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4640,
+                    "tag": "Tuberculosis"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:30.660180+00:00",
@@ -158186,6 +158157,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4641,
+                    "tag": "Blood coagulation disease"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:32.570258+00:00",
@@ -158284,6 +158259,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4642,
+                    "tag": "Hyperparathyroidism"
+                },
+                {
+                    "id": 4643,
+                    "tag": "Hypoparathyroidism"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:33.851933+00:00",
@@ -158374,6 +158357,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4590,
+                    "tag": "Parkinson's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:34.878249+00:00",
@@ -158464,6 +158451,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:35.917802+00:00",
@@ -158509,6 +158500,14 @@
                 {
                     "id": 4045,
                     "tag": "Transport"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
+                },
+                {
+                    "id": 4644,
+                    "tag": "Non-spatial continuous framework"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:36.409488+00:00",
@@ -158603,6 +158602,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4052,
+                    "tag": "Type 2 diabetes mellitus"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:37.513164+00:00",
@@ -158746,6 +158749,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:39.098146+00:00",
@@ -158840,6 +158847,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4645,
+                    "tag": "Duodenal ulcer"
+                },
+                {
+                    "id": 4646,
+                    "tag": "Peptic ulcer disease"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:40.415005+00:00",
@@ -158930,6 +158945,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:41.560652+00:00",
@@ -159229,6 +159248,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4588,
+                    "tag": "Alzheimer's disease"
                 }
             ],
             "timestamp_created": "2025-01-30 14:02:45.409590+00:00",
@@ -160807,6 +160830,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4647,
+                    "tag": "Pharmacodynamic model"
                 }
             ],
             "timestamp_created": "2025-01-30 14:03:05.433351+00:00",
@@ -166276,6 +166303,14 @@
                 {
                     "id": 4284,
                     "tag": "Vesicular stomatitis virus"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
+                },
+                {
+                    "id": 4650,
+                    "tag": "Skin cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:04:15.831405+00:00",
@@ -166387,6 +166422,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:04:17.424899+00:00",
@@ -166428,6 +166467,10 @@
                 {
                     "id": 4289,
                     "tag": "breast cancer"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:04:17.916060+00:00",
@@ -166658,6 +166701,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4651,
+                    "tag": "Melanoma"
                 }
             ],
             "timestamp_created": "2025-01-30 14:04:20.935689+00:00",
@@ -166699,6 +166746,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4651,
+                    "tag": "Melanoma"
                 }
             ],
             "timestamp_created": "2025-01-30 14:04:21.428732+00:00",
@@ -168469,6 +168520,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4652,
+                    "tag": "Radiation Therapy"
                 }
             ],
             "timestamp_created": "2025-01-30 14:04:46.031050+00:00",
@@ -170372,6 +170427,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4653,
+                    "tag": "Electromagnetic Radiation"
                 }
             ],
             "timestamp_created": "2025-01-30 14:05:10.961868+00:00",
@@ -170413,6 +170472,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4654,
+                    "tag": "Tumor Model"
                 }
             ],
             "timestamp_created": "2025-01-30 14:05:11.499628+00:00",
@@ -170700,6 +170763,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4655,
+                    "tag": "mammalian"
                 }
             ],
             "timestamp_created": "2025-01-30 14:05:15.328204+00:00",
@@ -171106,6 +171173,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4656,
+                    "tag": "Inflammatory Response Pathway"
                 }
             ],
             "timestamp_created": "2025-01-30 14:05:20.493762+00:00",
@@ -171147,6 +171218,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
+                },
+                {
+                    "id": 4639,
+                    "tag": "Pancreatic cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:05:21.029684+00:00",
@@ -171758,6 +171837,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4657,
+                    "tag": "Amphibians"
                 }
             ],
             "timestamp_created": "2025-01-30 14:05:29.308403+00:00",
@@ -174304,7 +174387,7 @@
             "id": 3288,
             "name": "Bae2017 - Mathematical analysis of circadian disruption and metabolic re-entrainment of hepatic gluconeogenesis",
             "repository_type": "biomodels",
-            "summary": "The circadian rhythms influence the metabolic activity from molecular level to tissue, organ, and host level. Disruption of the circadian rhythms manifests to the host's health as metabolic syndromes, including obesity, diabetes, and elevated plasma glucose, eventually leading to cardiovascular diseases. Therefore, it is imperative to understand the mechanism behind the relationship between circadian rhythms and metabolism. To start answering this question, we propose a semimechanistic mathematical model to study the effect of circadian disruption on hepatic gluconeogenesis in humans. Our model takes the light-dark cycle and feeding-fasting cycle as two environmental inputs that entrain the metabolic activity in the liver. The model was validated by comparison with data from mice and rat experimental studies. Formal sensitivity and uncertainty analyses were conducted to elaborate on the driving forces for hepatic gluconeogenesis. Furthermore, simulating the impact of Clock gene knockout suggests that modification to the local pathways tied most closely to the feeding-fasting rhythms may be the most efficient way to restore the disrupted glucose metabolism in liver.",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">     <p>The circadian rhythms influence the metabolic activity from molecular level to tissue, organ, and host level. Disruption of the circadian rhythms manifests to the host's health as metabolic syndromes, including obesity, diabetes, and elevated plasma glucose, eventually leading to cardiovascular diseases. Therefore, it is imperative to understand the mechanism behind the relationship between circadian rhythms and metabolism. To start answering this question, we propose a semimechanistic mathematical model to study the effect of circadian disruption on hepatic gluconeogenesis in humans. Our model takes the light-dark cycle and feeding-fasting cycle as two environmental inputs that entrain the metabolic activity in the liver. The model was validated by comparison with data from mice and rat experimental studies. Formal sensitivity and uncertainty analyses were conducted to elaborate on the driving forces for hepatic gluconeogenesis. Furthermore, simulating the impact of Clock gene knockout suggests that modification to the local pathways tied most closely to the feeding-fasting rhythms may be the most efficient way to restore the disrupted glucose metabolism in liver.</p>  </body>    </notes>",
             "tags": [
                 {
                     "id": 2936,
@@ -174567,6 +174650,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4658,
+                    "tag": "Lymphoid leukemia"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:04.567055+00:00",
@@ -174608,6 +174695,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4658,
+                    "tag": "Lymphoid leukemia"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:05.044203+00:00",
@@ -174649,6 +174740,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:05.532006+00:00",
@@ -174690,6 +174785,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4659,
+                    "tag": "Glioblastoma multiforme"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:06.069158+00:00",
@@ -174772,6 +174871,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4660,
+                    "tag": "Complement deficiency"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:07.207527+00:00",
@@ -175059,6 +175162,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:10.710787+00:00",
@@ -175100,6 +175207,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4661,
+                    "tag": "Leukemia"
+                },
+                {
+                    "id": 4662,
+                    "tag": "Lymphoma"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:11.199058+00:00",
@@ -175141,6 +175256,14 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4661,
+                    "tag": "Leukemia"
+                },
+                {
+                    "id": 4662,
+                    "tag": "Lymphoma"
                 }
             ],
             "timestamp_created": "2025-01-30 14:06:11.749060+00:00",
@@ -175387,6 +175510,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:01.381670+00:00",
@@ -175428,6 +175555,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:01.914509+00:00",
@@ -175469,6 +175600,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4586,
+                    "tag": "Breast cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:02.552363+00:00",
@@ -175514,6 +175649,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4663,
+                    "tag": "Urinary bladder cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:03.157372+00:00",
@@ -175555,6 +175694,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:03.737333+00:00",
@@ -175637,6 +175780,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:04.776080+00:00",
@@ -175682,6 +175829,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:05.263457+00:00",
@@ -175805,6 +175956,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4664,
+                    "tag": "Non-Hodgkin lymphoma"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:06.771527+00:00",
@@ -175846,6 +176001,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:07.304064+00:00",
@@ -175887,6 +176046,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4603,
+                    "tag": "Cancer"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:07.821706+00:00",
@@ -175977,6 +176140,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4617,
+                    "tag": "Influenza"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:08.869666+00:00",
@@ -176346,6 +176513,10 @@
                 {
                     "id": 704,
                     "tag": "SBML"
+                },
+                {
+                    "id": 4665,
+                    "tag": "Signal transduction by p53 class mediator"
                 }
             ],
             "timestamp_created": "2025-01-30 14:45:13.811021+00:00",
@@ -177319,6 +177490,1278 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3363": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3363,
+            "name": "Fuss2006_MitoticActivation",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\"><p>The model was curated with XPP. The figure 3 was successfully reproduced.</p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 3106,
+                    "tag": "BioModels:BIOMD0000000069"
+                },
+                {
+                    "id": 3107,
+                    "tag": "Cell Cycle, Mitotic"
+                },
+                {
+                    "id": 3002,
+                    "tag": "Homo sapiens"
+                },
+                {
+                    "id": 2978,
+                    "tag": "Mitotic cell cycle"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 13:55:21.069407+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000069",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3364": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3364,
+            "name": "Goldbeter2006_weightCycling",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>This model is according to the paper of      <i>A model for the dynamics of human weight cycling</i>          by A. Goldbeter 2006.The figure3 (A) and (B) have been reproduced by Copasi 4.0.19(development) and SBMLodeSolver.The writer of the paper did not specify any units for the metabolites, so the creator of the model did not define the units as well.Both Q and R are normalized to vary between 0 and 1.      </p>            <br />            <p>To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to      <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Creative Commons CC0\">CC0 Public Domain Dedication</a>          for more information.      </p>            <p>In summary, you are entitled to use this encoded model in absolutely any manner you deem suitable, verbatim, or with modification, alone or embedded it in a larger context, redistribute it, commercially or not, in a restricted way or not.</p>            <br />            <p>To cite BioModels Database, please use:      <a href=\"http://www.ncbi.nlm.nih.gov/pubmed/20587024\" target=\"_blank\">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Nov\u00e8re N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>                </p>            </body>          </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 3123,
+                    "tag": "BioModels:BIOMD0000000079"
+                },
+                {
+                    "id": 3002,
+                    "tag": "Homo sapiens"
+                },
+                {
+                    "id": 3124,
+                    "tag": "Regulation of multicellular organism growth"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 13:55:25.007882+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000079",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3365": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3365,
+            "name": "Jenkinson2011_EGF_MAPK",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>This is a model described in the article:<br />        <strong>Thermodynamically Consistent Model Calibration in Chemical Kinetics.</strong>        <br />Garrett Jenkinson and John Goutsias, BMC Systems Biology 2011 May 6;5(1):64.; PMID:<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/21548948\">21548948</a>.</p>        <p>ABSTRACT:<br /> BACKGROUND:<br /> The dynamics of biochemical reaction systems are constrained by the fundamental laws of thermodynamics, which impose well-defined relationships among the reaction rate constants characterizing these systems. Constructing biochemical reaction systems from experimental observations often leads to parameter values that do not satisfy the necessary thermodynamic constraints. This can result in models that are not physically realizable and may lead to inaccurate, or even erroneous, descriptions of cellular function.<br /> RESULTS:<br /> We introduce a thermodynamically consistent model calibration (TCMC) method that can be effectively used to provide thermodynamically feasible values for the parameters of an open biochemical reaction system. The proposed method formulates the model calibration problem as a constrained optimization problem that takes thermodynamic constraints (and, if desired, additional non-thermodynamic constraints) into account. By calculating thermodynamically feasible values for the kinetic parameters of a well-known model of the EGF/ERK signaling cascade, we demonstrate the qualitative and quantitative significance of imposing thermodynamic constraints on these parameters and the effectiveness of our method for accomplishing this important task. MATLAB software, using the Systems Biology Toolbox 2.1, can be accessed from www.cis.jhu.edu/~goutsias/CSS lab/software.html. An SBML file containing the thermodynamically feasible EGF/ERK signaling cascade model can be found in the BioModels database.<br /> CONCLUSIONS:<br /> TCMC is a simple and flexible method for obtaining physically plausible values for the kinetic parameters of open biochemical reaction systems. It can be effectively used to recalculate a thermodynamically consistent set of parameter values for existing thermodynamically infeasible biochemical reaction models of cellular function as well as to estimate thermodynamically feasible values for the parameters of new models. Furthermore, TCMC can provide dimensionality reduction, better estimation performance, and lower computational complexity, and can help to alleviate the problem of data overfitting.</p>        <p>This model is a thermodynamically feasible version of a previous modelin the BioModels database,<a href=\"http://www.ebi.ac.uk/biomodels-main/BIOMD0000000019\">BIOMD0000000019</a>, described in Computational modeling of the dynamics of the MAP kinase cascade activated by surface and internalized EGF receptors. Schoeberl et al (2002), PMID:<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/11923843\">11923843</a>.<br /> The only difference between the present model and the model listed under BIOMD0000000019 are the values of the parameters.</p>        <p>This model originates from BioModels Database: A Database of Annotated Published Models (http://www.ebi.ac.uk/biomodels/). It is copyright (c) 2005-2012 The BioModels.net Team.<br />For more information see the <a href=\"http://www.ebi.ac.uk/biomodels/legal.html\" target=\"_blank\">terms of use</a>.<br />To cite BioModels Database, please use: <a href=\"http://www.ncbi.nlm.nih.gov/pubmed/20587024\" target=\"_blank\">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Nov\u00e8re N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>      </p>    </body>  </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 3683,
+                    "tag": "BioModels:BIOMD0000000399"
+                },
+                {
+                    "id": 3014,
+                    "tag": "Epidermal growth factor receptor signaling pathway"
+                },
+                {
+                    "id": 3002,
+                    "tag": "Homo sapiens"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 3015,
+                    "tag": "Signaling by EGFR"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:17:33.632208+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000399",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3366": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3366,
+            "name": "Vizan2013 - TGF pathway long term signaling",
+            "repository_type": "biomodels",
+            "summary": "Pedro Viz\u00e1n, Daniel S. J. Miller, Ilaria Gori, Debipriya Das, Bernhard Schmierer & Caroline S. Hill. Controlling long-term signaling: receptor dynamics determine attenuation and refractory behavior of the TGF-\u03b2 pathway. Science Signaling 6, 305 (2013).<p></p><p></p>Understanding the complex dynamics of growth factor signaling requires both mechanistic and kinetic information. Although signaling dynamics have been studied for pathways downstream of receptor tyrosine kinases and G protein (heterotrimeric guanine nucleotide-binding protein)-coupled receptors, they have not been investigated for the transforming growth factor-\u03b2 (TGF-\u03b2) superfamily pathways. Using an integrative experimental and mathematical modeling approach, we dissected the dynamic behavior of the TGF-\u03b2 to Smad pathway, which is mediated by type I and type II receptor serine/threonine kinases, in response to acute, chronic, and repeated ligand stimulations. TGF-\u03b2 exposure produced a transient response that attenuated over time, resulting in desensitized cells that were refractory to further acute stimulation. This loss of signaling competence depended on ligand binding, but not on receptor activity, and was restored only after the ligand had been depleted. Furthermore, TGF-\u03b2 binding triggered the rapid depletion of signaling-competent receptors from the cell surface, with the type I and type II receptors exhibiting different degradation and trafficking kinetics. A computational model of TGF-\u03b2 signal transduction from the membrane to the nucleus that incorporates our experimental findings predicts that autocrine signaling, such as that associated with tumorigenesis, severely compromises the TGF-\u03b2 response, which we confirmed experimentally. Thus, we have shown that the long-term signaling behavior of the TGF-\u03b2 pathway is determined by receptor dynamics, does not require TGF-\u03b2-induced gene expression, and influences context-dependent responses in vivo.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 3848,
+                    "tag": "BioModels:BIOMD0000000499"
+                },
+                {
+                    "id": 3002,
+                    "tag": "Homo sapiens"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 3849,
+                    "tag": "SMAD protein signal transduction"
+                },
+                {
+                    "id": 3158,
+                    "tag": "Transforming growth factor beta receptor signaling pathway"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:18:08.906419+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000499",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3367": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3367,
+            "name": "Begitt2014 - STAT1 cooperative DNA binding - single GAS polymer model",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Begitt2014 - STAT1 cooperative DNA binding - single GAS polymer model</div>            <div class=\"dc:description\">      <p>The importance of STAT1-cooperative DNA binding in type 1 and type 2 interferon signalling has been studies using experimental and modelling approaches. The authors have developed two ODE models to describe STAT1 binding to short promoter regions of DNA, namely \"single GAS polymer model\" and \"double GAS polymer model\" considering binding to single or double GAS sites, respectively. The length of DNA in the single GAS model was three sites and four sites in double GAS model. This model correspond to the \"single GAS polymer model\".</p>                </div>            <div class=\"dc:bibliographicCitation\">      <p>This model is described in the article:</p>                <div class=\"bibo:title\">        <a href=\"http://identifiers.org/pubmed/24413774\" title=\"Access to this publication\">STAT1-cooperative DNA binding distinguishes type 1 from type 2 interferon signaling.</a>                    </div>                <div class=\"bibo:authorList\">Begitt A, Droescher M, Meyer T, Schmid CD, Baker M, Antunes F, Owen MR, Naumann R, Decker T, Vinkemeier U</div>                <div class=\"bibo:Journal\">Nat Immunol. 2014 Feb;15(2):168-76.</div>                <p>Abstract:</p>                <div class=\"bibo:abstract\">        <p>STAT1 is an indispensable component of a heterotrimer (ISGF3) and a STAT1 homodimer (GAF) that function as transcription regulators in type 1 and type 2 interferon signaling, respectively. To investigate the importance of STAT1-cooperative DNA binding, we generated gene-targeted mice expressing cooperativity-deficient STAT1 with alanine substituted for Phe77. Neither ISGF3 nor GAF bound DNA cooperatively in the STAT1F77A mouse strain, but type 1 and type 2 interferon responses were affected differently. Type 2 interferon-mediated transcription and antibacterial immunity essentially disappeared owing to defective promoter recruitment of GAF. In contrast, STAT1 recruitment to ISGF3 binding sites and type 1 interferon-dependent responses, including antiviral protection, remained intact. We conclude that STAT1 cooperativity is essential for its biological activity and underlies the cellular responses to type 2, but not type 1 interferon.</p>                    </div>                </div>            <div class=\"dc:publisher\">      <p>This model is hosted on        <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>            and identifiedby:        <a href=\"http://identifiers.org/biomodels.db/BIOMD0000000500\">BIOMD0000000500</a>            .        </p>                <p>To cite BioModels Database, please use:        <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database: An enhanced, curated and annotated resourcefor published quantitative kinetic models</a>            .        </p>                </div>            <div class=\"dc:license\">      <p>To the extent possible under law, all copyright and related orneighbouring rights to this encoded model have been dedicated to the publicdomain worldwide. Please refer to        <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0 Public DomainDedication</a>            for more information.        </p>                </div>            </body>          </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 3850,
+                    "tag": "BioModels:BIOMD0000000500"
+                },
+                {
+                    "id": 3851,
+                    "tag": "Interferon-gamma-mediated signaling pathway"
+                },
+                {
+                    "id": 3090,
+                    "tag": "Mus musculus"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:18:09.588707+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000500",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3368": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "6",
+            "id": 3368,
+            "name": "Mager2005 - Quasi-equilibrium pharmacokinetic model for drugs exhibiting target-mediated drug disposition",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <pre>This model was developed with the aim of constructing an equilibrium model of the pharmacokinetic behaviour of a drug exhibiting target-mediated drug disposition (TMDD). TMDD involves the inclusion of drug-target interactions within a pharmacokinetic description, something which is usually considered negligible and subsequently excluded. Two approaches were used, one of which involved a quasi-equilibrium method to describe the kinetics of TMDD.</pre>      </body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4648,
+                    "tag": "BioModels:BIOMD0000000765"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 4649,
+                    "tag": "Unknown"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:20:45.714544+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000765",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3369": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "1",
+            "id": 3369,
+            "name": "Naizabekov2020 - Methylosinus trichosporium OB3b - iMsOB3b",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports compiled for the metabolic model, iMsOB3b. The model can be found in the Supplementary Section of the Naizabekov et al, 2020 paper cited here.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4666,
+                    "tag": "BioModels:BIOMD0000001081"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:07.052799+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001081",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3370": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3370,
+            "name": "Charusanti2011 - Y. pestis (iPC815)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>FROG and miniFROG Reports for the organism <i>Yersinia pestis</i>. <br />These models originate from BiGG Models Database: A Database of Genome-Scale Metabolic Models (http://bigg.ucsd.edu/). Copyright \u00a9 2019 The Regents of the University of California     <br />      <br />          To cite BiGG Models Database, please use:      <a href=\"http://dx.doi.org/10.1093/nar/gkv1049\" target=\"_blank\">King ZA, Lu JS, Dr\u00e4ger A, Miller PC, Federowicz S, Lerman JA, Ebrahim A, Palsson BO, and Lewis NE. BiGG Models: A platform for integrating, standardizing, and sharing genome-scale models (2016) Nucleic Acids Research 44(D1):D515-D522. doi:10.1093/nar/gkv1049</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4668,
+                    "tag": "BioModels:BIOMD0000001082"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:07.542623+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001082",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3371": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3371,
+            "name": "Broddrick2016 - Synechococcus elongatus PCC 7942 (iJB785)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>FROG and miniFROG Reports for the organism <i> Synechococcus elongatus PCC 7942</i>. <br />These models originate from BiGG Models Database: A Database of Genome-Scale Metabolic Models (http://bigg.ucsd.edu/). Copyright \u00a9 2019 The Regents of the University of California     <br />      <br />          To cite BiGG Models Database, please use:      <a href=\"http://dx.doi.org/10.1093/nar/gkv1049\" target=\"_blank\">King ZA, Lu JS, Dr\u00e4ger A, Miller PC, Federowicz S, Lerman JA, Ebrahim A, Palsson BO, and Lewis NE. BiGG Models: A platform for integrating, standardizing, and sharing genome-scale models (2016) Nucleic Acids Research 44(D1):D515-D522. doi:10.1093/nar/gkv1049</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4669,
+                    "tag": "BioModels:BIOMD0000001083"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:08.062464+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001083",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3372": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "5",
+            "id": 3372,
+            "name": "Mol2021 - P. thermoglucosidasius NCIMB 11955 (p_thermo)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports are provided for p_thermo genome-scale metabolic model. p_thermo is the model for Parageobacillus thermoglucosidasius NCIMB 11955. An analysis of the metabolism and internal fluxes of P. thermoglucosidasius is done in this study and the model can be found in the Supplementary data of Mol et al, 2021.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4670,
+                    "tag": "BioModels:BIOMD0000001084"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:08.588348+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001084",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3373": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3373,
+            "name": "Norsigian2018 - A. baumannii (iCN718)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>FROG and miniFROG Reports for the organism <i>A. baumannii</i>. <br />The model (iCN718) originates from BiGG Models Database: A Database of Genome-Scale Metabolic Models (http://bigg.ucsd.edu/). Copyright \u00a9 2019 The Regents of the University of California     <br />      <br />          To cite BiGG Models Database, please use:      <a href=\"http://dx.doi.org/10.1093/nar/gkv1049\" target=\"_blank\">King ZA, Lu JS, Dr\u00e4ger A, Miller PC, Federowicz S, Lerman JA, Ebrahim A, Palsson BO, and Lewis NE. BiGG Models: A platform for integrating, standardizing, and sharing genome-scale models (2016) Nucleic Acids Research 44(D1):D515-D522. doi:10.1093/nar/gkv1049</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4671,
+                    "tag": "BioModels:BIOMD0000001085"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:09.206108+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001085",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3374": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3374,
+            "name": "Jensen2020 - Streptococcus oralis (iCJ415)",
+            "repository_type": "biomodels",
+            "summary": "We have presented FROG and miniFROG reports for the first genome-scale model, iCJ415, for Streptococcus oralis SK141. The model can be found in the Supplementary Material of the publication by Jensen et al, 2020 cited here.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4672,
+                    "tag": "BioModels:BIOMD0000001086"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:09.670080+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001086",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3375": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "6",
+            "id": 3375,
+            "name": "Kumelj2019 - Streptomyces coelicolor (iKS1317)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports compiled for iKS1317, a reconstructed genome-scale metabolic model (GEM) for Streptomyces coelicolor. The model reconstruction is available in the Supporting Information of Kumelj et al, 2019 cited here.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4673,
+                    "tag": "BioModels:BIOMD0000001087"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:10.137170+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001087",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3376": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3376,
+            "name": "Nouri2020 - Zymomonas mobilis  (iHN446)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports are compiled for the reconstructed genome-scale metabolic model (iHN446) for Z. mobilis. The model can be found in the article Nouri et al, 2020 cited here.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4674,
+                    "tag": "BioModels:BIOMD0000001088"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:10.659180+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001088",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3377": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 3377,
+            "name": "\u00d6zcan2019 - Leuconostoc mesenteroides subsp. cremoris (iLM.c559)",
+            "repository_type": "biomodels",
+            "summary": "FROG and miniFROG reports have been compiled for iLM.c559, which is a GSM of the bacterium Leuconostoc mesenteroides subsp. cremoris. The model can be found in the \u00d6zcan et al, 2019 paper cited here.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4675,
+                    "tag": "BioModels:BIOMD0000001089"
+                },
+                {
+                    "id": 4667,
+                    "tag": "OMEX"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:11.253071+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001089",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3378": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3378,
+            "name": "Dias2019 - GSM model of S. pneumoniae R6",
+            "repository_type": "biomodels",
+            "summary": "Phenotypically Reconciled Genome-scale Metabolic Model for the Metabolism of Streptococcus pneumoniae Strain R6.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4676,
+                    "tag": "BioModels:BIOMD0000001090"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 4677,
+                    "tag": "Streptococcus pneumoniae (strain ATCC BAA-255 / R6)"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:11.741324+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001090",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3379": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3379,
+            "name": "Kulyashov2020 - Genome-Scale Metabolic Model for Geobacillus icigianus",
+            "repository_type": "biomodels",
+            "summary": "Here we present a genome-scale metabolic model iMK1321 for Geobacillus icigianus constructed using an auto-generating pipeline with consequent thorough manual curation. The model contains 1321 genes and includes 1676 reactions and 1589 metabolites, representing the most-complete and publicly available model of the genus Geobacillus.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4678,
+                    "tag": "BioModels:BIOMD0000001091"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:12.237328+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001091",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3380": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3380,
+            "name": "Gautam2020-Metabolic network of Thermotoga sp. Strain RQ7",
+            "repository_type": "biomodels",
+            "summary": "As in DOI: 10.1007/s12010-020-03470-z",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4679,
+                    "tag": "BioModels:BIOMD0000001092"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:12.688885+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001092",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3381": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "5",
+            "id": 3381,
+            "name": "Nogales2020 - Genome-scale metabolic network of Pseudomonas putida (iJN1462)",
+            "repository_type": "biomodels",
+            "summary": "iJN1462 (i) incorporates several hundred additional genes and associated reactions resulting in new predictive capabilities, including new nutrients supporting growth; (ii) was validated by in vivo growth screens that included previously untested carbon (48) and nitrogen (41) sources; (iii) yielded gene essentiality predictions showing large accuracy when compared with a knock-out library and Bar-seq data; and (iv) allowed mapping of its network to 82 P. putida sequenced strains revealing functional core that reflect the large metabolic versatility of this species, including aromatic compounds derived from lignin.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4680,
+                    "tag": "BioModels:BIOMD0000001093"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:13.169816+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001093",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3382": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3382,
+            "name": "Liao2011 - Genome-scale metabolic reconstruction of Klebsiella pneumoniae (iYL1228)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level3/version1/core\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Liao2011 - Genome-scale metabolicreconstruction of Klebsiella pneumoniae (iYL1228)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/21296962\" title=\"Access to this publication\">An experimentally validated    genome-scale metabolic reconstruction of Klebsiella pneumoniae    MGH 78578, iYL1228.</a>  </div>  <div class=\"bibo:authorList\">Liao YC, Huang TW, Chen FC,  Charusanti P, Hong JS, Chang HY, Tsai SF, Palsson BO, Hsiung  CA.</div>  <div class=\"bibo:Journal\">J. Bacteriol. 2011 Apr; 193(7):  1710-1717</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Klebsiella pneumoniae is a Gram-negative bacterium of the    family Enterobacteriaceae that possesses diverse metabolic    capabilities: many strains are leading causes of    hospital-acquired infections that are often refractory to    multiple antibiotics, yet other strains are metabolically    engineered and used for production of commercially valuable    chemicals. To study its metabolism, we constructed a    genome-scale metabolic model (iYL1228) for strain MGH 78578,    experimentally determined its biomass composition,    experimentally determined its ability to grow on a broad range    of carbon, nitrogen, phosphorus and sulfur sources, and    assessed the ability of the model to accurately simulate growth    versus no growth on these substrates. The model contains 1,228    genes encoding 1,188 enzymes that catalyze 1,970 reactions and    accurately simulates growth on 84% of the substrates tested.    Furthermore, quantitative comparison of growth rates between    the model and experimental data for nine of the substrates also    showed good agreement. The genome-scale metabolic    reconstruction for K. pneumoniae presented here thus provides    an experimentally validated in silico platform for further    studies of this important industrial and biomedical    organism.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1507180054\">MODEL1507180054</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4681,
+                    "tag": "BioModels:BIOMD0000001094"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:13.617840+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001094",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3383": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3383,
+            "name": "Jamshidi2007 - Genome-scale metabolic network of Mycobacterium tuberculosis (iNJ661)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level3/version1/core\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Jamshidi2007 - Genome-scale metabolic networkof Mycobacterium tuberculosis (iNJ661)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/17555602\" title=\"Access to this publication\">Investigating the metabolic    capabilities of Mycobacterium tuberculosis H37Rv using the in    silico strain iNJ661 and proposing alternative drug    targets.</a>  </div>  <div class=\"bibo:authorList\">Jamshidi N, Palsson B\u00d8.</div>  <div class=\"bibo:Journal\">BMC Syst Biol 2007; 1: 26</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>BACKGROUND: Mycobacterium tuberculosis continues to be a    major pathogen in the third world, killing almost 2 million    people a year by the most recent estimates. Even in    industrialized countries, the emergence of multi-drug resistant    (MDR) strains of tuberculosis hails the need to develop    additional medications for treatment. Many of the drugs used    for treatment of tuberculosis target metabolic enzymes.    Genome-scale models can be used for analysis, discovery, and as    hypothesis generating tools, which will hopefully assist the    rational drug development process. These models need to be able    to assimilate data from large datasets and analyze them.    RESULTS: We completed a bottom up reconstruction of the    metabolic network of Mycobacterium tuberculosis H37Rv. This    functional in silico bacterium, iNJ661, contains 661 genes and    939 reactions and can produce many of the complex compounds    characteristic to tuberculosis, such as mycolic acids and    mycocerosates. We grew this bacterium in silico on various    media, analyzed the model in the context of multiple    high-throughput data sets, and finally we analyzed the network    in an 'unbiased' manner by calculating the Hard Coupled    Reaction (HCR) sets, groups of reactions that are forced to    operate in unison due to mass conservation and connectivity    constraints. CONCLUSION: Although we observed growth rates    comparable to experimental observations (doubling times ranging    from about 12 to 24 hours) in different media, comparisons of    gene essentiality with experimental data were less encouraging    (generally about 55%). The reasons for the often conflicting    results were multi-fold, including gene expression variability    under different conditions and lack of complete biological    knowledge. Some of the inconsistencies between in vitro and in    silico or in vivo and in silico results highlight specific loci    that are worth further experimental investigations. Finally, by    considering the HCR sets in the context of known drug targets    for tuberculosis treatment we proposed new alternative, but    equivalent drug targets.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1507180001\">MODEL1507180001</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4682,
+                    "tag": "BioModels:BIOMD0000001095"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:14.087579+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001095",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3384": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3384,
+            "name": "Irani2015 - Genome-scale metabolic model of P.pastoris N-glycosylation",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Irani2015 - Genome-scale metabolic model ofP.pastoris N-glycosylation</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/26480251\" title=\"Access to this publication\">Genome-scale metabolic model    of Pichia pastoris with native and humanized glycosylation of    recombinant proteins.</a>  </div>  <div class=\"bibo:authorList\">Irani ZA, Kerkhoven E, Shojaosadati  SA, Nielsen J.</div>  <div class=\"bibo:Journal\">Biotechnol. Bioeng. 2015 Oct;</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Pichia pastoris is used for commercial production of human    therapeutic proteins, and genome-scale models of P. pastoris    metabolism have been generated in the past to study the    metabolism and associated protein production by this yeast. A    major challenge with clinical usage of recombinant proteins    produced by P. pastoris is the difference in N-glycosylation of    proteins produced by humans and this yeast. However, through    metabolic engineering a P. pastoris strain capable of producing    humanized N-glycosylated proteins was constructed. The current    genome-scale models of P. pastoris do not address native nor    humanized N-glycosylation, and we therefore developed    ihGlycopastoris, an extension to the iLC915 model with both    native and humanized N-glycosylation for recombinant protein    production, but also an estimation of N-glycosylation of P.    pastoris native proteins. This new model gives a better    predictions of protein yield, demonstrates the effect of the    different types of N-glycosylation of protein yield, and can be    used to predict potential targets for strain improvement. The    model represents a step towards a more complete description of    protein production in P. pastoris, which is required for using    these models to understand and optimize protein production    processes. This article is protected by copyright. All rights    reserved.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1510220000\">MODEL1510220000</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4683,
+                    "tag": "BioModels:BIOMD0000001096"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:14.637683+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001096",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3385": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3385,
+            "name": "Benedict2011 - Genome-scale metoblic network of Methanosarcina acetivorans (iMB745)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level3/version1/core\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Benedict2011 - Genome-scale metoblic networkof Methanosarcina acetivorans (iMB745)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/22139506\" title=\"Access to this publication\">Genome-scale metabolic    reconstruction and hypothesis testing in the methanogenic    archaeon Methanosarcina acetivorans C2A.</a>  </div>  <div class=\"bibo:authorList\">Benedict MN, Gonnerman MC, Metcalf  WW, Price ND.</div>  <div class=\"bibo:Journal\">J. Bacteriol. 2012 Feb; 194(4):  855-865</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Methanosarcina acetivorans strain C2A is a marine    methanogenic archaeon notable for its substrate utilization,    genetic tractability, and novel energy conservation mechanisms.    To help probe the phenotypic implications of this organism's    unique metabolism, we have constructed and manually curated a    genome-scale metabolic model of M. acetivorans, iMB745, which    accounts for 745 of the 4,540 predicted protein-coding genes    (16%) in the M. acetivorans genome. The reconstruction effort    has identified key knowledge gaps and differences in peripheral    and central metabolism between methanogenic species. Using flux    balance analysis, the model quantitatively predicts wild-type    phenotypes and is 96% accurate in knockout lethality    predictions compared to currently available experimental data.    The model was used to probe the mechanisms and energetics of    by-product formation and growth on carbon monoxide, as well as    the nature of the reaction catalyzed by the soluble    heterodisulfide reductase HdrABC in M. acetivorans. The    genome-scale model provides quantitative and qualitative    hypotheses that can be used to help iteratively guide    additional experiments to further the state of knowledge about    methanogenesis.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1507180040\">MODEL1507180040</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4684,
+                    "tag": "BioModels:BIOMD0000001097"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:15.093688+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001097",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3386": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "6",
+            "id": 3386,
+            "name": "Feist2006_methanogenesis_OptiMethanol",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <p>This model originates from BioModels Database: A Database of Annotated Published Models (http://www.ebi.ac.uk/biomodels/). It is copyright (c) 2005-2011 The BioModels.net Team.      <br />          To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to      <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Creative Commons CC0\">CC0 Public Domain Dedication</a>          for more information.      </p>      <p>In summary, you are entitled to use this encoded model in absolutely any manner you deem suitable, verbatim, or with modification, alone or embedded it in a larger context, redistribute it, commercially or not, in a restricted way or not..      <br />      <br />          To cite BioModels Database, please use:      <a href=\"http://www.ncbi.nlm.nih.gov/pubmed/20587024\" target=\"_blank\">Li C, Donizelli M, Rodriguez N, Dharuri H, Endler L, Chelliah V, Li L, He E, Henry A, Stefan MI, Snoep JL, Hucka M, Le Nov\u00e8re N, Laibe C (2010) BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models. BMC Syst Biol., 4:92.</a>  </p></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4685,
+                    "tag": "BioModels:BIOMD0000001098"
+                },
+                {
+                    "id": 4686,
+                    "tag": "Methanogenesis"
+                },
+                {
+                    "id": 4687,
+                    "tag": "Methanosarcina barkeri"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:15.565854+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001098",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3387": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3387,
+            "name": "Richards2016 - Genome-scale metabolic reconstruction of Methanococcus maripaludis (iMR539)",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Richards2016 - Genome-scale metabolicreconstruction of Methanococcus maripaludis (iMR539)</div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/27736793\" title=\"Access to this publication\">Exploring Hydrogenotrophic    Methanogenesis: a Genome Scale Metabolic Reconstruction of    Methanococcus maripaludis.</a>  </div>  <div class=\"bibo:authorList\">Richards MA, Lie TJ, Zhang J,  Ragsdale SW, Leigh JA, Price ND.</div>  <div class=\"bibo:Journal\">J. Bacteriol. 2016 Dec; 198(24):  3379-3390</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Hydrogenotrophic methanogenesis occurs in multiple    environments, ranging from the intestinal tracts of animals to    anaerobic sediments and hot springs. Energy conservation in    hydrogenotrophic methanogens was long a mystery; only within    the last decade was it reported that net energy conservation    for growth depends on electron bifurcation. In this work, we    focus on Methanococcus maripaludis, a well-studied    hydrogenotrophic marine methanogen. To better understand    hydrogenotrophic methanogenesis and compare it with    methylotrophic methanogenesis that utilizes oxidative    phosphorylation rather than electron bifurcation, we have built    iMR539, a genome scale metabolic reconstruction that accounts    for 539 of the 1,722 protein-coding genes of M. maripaludis    strain S2. Our reconstructed metabolic network uses recent    literature to not only represent the central electron    bifurcation reaction but also incorporate vital biosynthesis    and assimilation pathways, including unique cofactor and    coenzyme syntheses. We show that our model accurately predicts    experimental growth and gene knockout data, with 93% accuracy    and a Matthews correlation coefficient of 0.78. Furthermore, we    use our metabolic network reconstruction to probe the    implications of electron bifurcation by showing its    essentiality, as well as investigating the infeasibility of    aceticlastic methanogenesis in the network. Additionally, we    demonstrate a method of applying thermodynamic constraints to a    metabolic model to quickly estimate overall free-energy changes    between what comes in and out of the cell. Finally, we describe    a novel reconstruction-specific computational toolbox we    created to improve usability. Together, our results provide a    computational network for exploring hydrogenotrophic    methanogenesis and confirm the importance of electron    bifurcation in this process.Understanding and applying    hydrogenotrophic methanogenesis is a promising avenue for    developing new bioenergy technologies around methane gas.    Although a significant portion of biological methane is    generated through this environmentally ubiquitous pathway,    existing methanogen models portray the more traditional energy    conservation mechanisms that are found in other methanogens. We    have constructed a genome scale metabolic network of    Methanococcus maripaludis that explicitly accounts for all    major reactions involved in hydrogenotrophic methanogenesis.    Our reconstruction demonstrates the importance of electron    bifurcation in central metabolism, providing both a window into    hydrogenotrophic methanogenesis and a hypothesis-generating    platform to fuel metabolic engineering efforts.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/MODEL1607200000\">MODEL1607200000</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4688,
+                    "tag": "BioModels:BIOMD0000001099"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:16.058317+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001099",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3388": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "2",
+            "id": 3388,
+            "name": "Mohr2022 - Rabbit Purkinje Cardiac Electrophysiology",
+            "repository_type": "biomodels",
+            "summary": "we performed a comparative benchmark and investigated a variety of mathematical cardiac AP models, including a newly developed minimalistic model specifically tailored to the AP of rabbit Purkinje cells, for their ability to substitute experiments. The simulated changes in AP duration (dAPD90) at increasing drug concentrations were compared to experimental results from 588 internal Purkinje fiber studies covering 555 different drugs with diverse modes of action. Using our minimalistic model, 80% of the Purkinje experiments could be quantitatively reproduced.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4689,
+                    "tag": "BioModels:BIOMD0000001100"
+                },
+                {
+                    "id": 4575,
+                    "tag": "UNKNOWN"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:16.601930+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001100",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3389": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3389,
+            "name": "Zhou2024 - Post Infarction Myocyte Electromechanics",
+            "repository_type": "biomodels",
+            "summary": "A human ventricular electromechanical modelling and simulation framework is constructed and validated with rich experimental and clinical datasets. Abnormalities caused by scar and border zone ionic remodeling are introduced in varying degrees as reported in experimental data obtained in acute and chronic infarction. Simulations enabled reproducing and explaining clinical phenotypes post-MI, from ionic remodelling to ECGs and pressure-volume loops.",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4690,
+                    "tag": "BioModels:BIOMD0000001101"
+                },
+                {
+                    "id": 4691,
+                    "tag": "matlab"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:17.059965+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001101",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3390": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "5",
+            "id": 3390,
+            "name": "Burbano2023 - HGFsignaling_in_FattyLiverDisease",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">     <p>Chronic liver diseases are worldwide on the rise. Due to the rapidly increasing incidence, in particular in Western countries, non-alcoholic fatty liver disease (NAFLD) is gaining importance. As the disease progresses it can develop into hepatocellular carcinoma. Lipid accumulation in hepatocytes has been identified as the characteristic structural change in NAFLD development, but the molecular mechanisms responsible for disease development remained unresolved. Here, we uncover a strong downregulation of the PI3K-AKT pathway and an upregulation of the MAPK pathway in primary hepatocytes from a preclinical model fed with a Western diet (WD). Dynamic pathway modeling of hepatocyte growth factor (HGF) signal transduction combined with global proteomics identifies that an elevated basal MET phosphorylation rate is the main driver of altered signaling leading to increased proliferation of WD-hepatocytes. Model-adaptation to patient-derived hepatocytes reveals a patient-specific variability in basal MET phosphorylation, which correlates with the outcome of patients after liver surgery. Thus, dysregulated basal MET phosphorylation could be an indicator for the health status of the liver and thereby inform on the risk of a patient to suffer from liver failure after surgery.</p>  </body>    </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4692,
+                    "tag": "BioModels:BIOMD0000001102"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:17.513696+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001102",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3391": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 3391,
+            "name": "Palaniappan2021 - Cell free modelling of second generation Toehold switches",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">       <body xmlns=\"http://www.w3.org/1999/xhtml\">         <pre>Cervical cancer is a global public health subject as it affects women in the reproductive ages, and accounts for the second largest burden among cancer patients worldwide with an unforgiving 50% mortality rate. Poor awareness and access to effective diagnosis have led to this enormous disease burden, calling for point-of-care, minimally invasive diagnosis methods. Here, an end-to-end quantitative approach for a new kind of diagnosis has been developed, comprising identification of optimal biomarkers, design of the sensor, and simulation of the diagnostic circuit. Using miRNA expression data in the public domain, we identified circulating miRNA biomarkers specific to cervical cancer using multi-tier screening. Synthetic riboregulators called toehold switches specific for the biomarker panel were then designed. To predict the dynamic range of toehold switches for use in genetic circuits as biosensors, we developed a generic grammar of these switches, and built a multivariate linear regression model using thermodynamic features derived from RNA secondary structure and interaction. The model yielded predictions of toehold efficacy with an adjusted R2 = 0.59. Reaction kinetics modelling was performed to predict the sensitivity of the second-generation toehold switches to the miRNA biomarkers. Simulations showed a linear response between 10nM and 100nM before saturation. Our study demonstrates an end-to-end workflow for the efficient design of genetic circuits geared towards the effective detection of unique genomic signatures that would be increasingly important in today\u2019s world. The approach has the potential to direct experimental efforts and minimise costs. All resources are provided open-source (https://github.com/igem2019) under GNU GPLv3 licence.</pre>       </body>     </notes>",
+            "tags": [
+                {
+                    "id": 2936,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 4693,
+                    "tag": "BioModels:BIOMD0000001103"
+                },
+                {
+                    "id": 704,
+                    "tag": "SBML"
+                }
+            ],
+            "timestamp_created": "2025-05-07 14:31:17.962443+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000001103",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3392": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "feat-add-local-script",
+            "id": 3392,
+            "name": "OSBv2-test-local-script",
+            "repository_type": "github",
+            "summary": "The osbv2 repository but from a different branch",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "osbv2"
+                }
+            ],
+            "thumbnail": "repositories/3392/thumbnail.bin",
+            "timestamp_created": "2025-06-10 11:23:04.653517+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/OSBv2",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3393": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 3393,
+            "name": "test-dandi-001361",
+            "repository_type": "dandi",
+            "summary": "sdfasdfsadf **asdfsdf**",
+            "tags": [
+                {
+                    "id": 7,
+                    "tag": "human"
+                }
+            ],
+            "timestamp_created": "2025-06-10 11:29:05.095570+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/001361",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3394": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "0.211014.0808",
+            "id": 3394,
+            "name": "duplicate-dandi-repositoryy",
+            "repository_type": "dandi",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-10 11:30:08.895201+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000008/0.211014.0809",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3395": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.211014.0808",
+            "id": 3395,
+            "name": "duplicate-again!",
+            "repository_type": "dandi",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-10 11:31:21.216663+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000008/0.211014.0809",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3396": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "1",
+            "id": 3396,
+            "name": "biomodels-test",
+            "repository_type": "biomodels",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-06-10 12:17:33.476868+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/MODEL8459127548",
+            "user": {
+                "email": "c@ab.com",
+                "first_name": "a",
+                "id": "6f47a287-9640-4c0f-89b9-50e637729deb",
+                "last_name": "a",
+                "username": "ca"
+            },
+            "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
         }
     }
 }
