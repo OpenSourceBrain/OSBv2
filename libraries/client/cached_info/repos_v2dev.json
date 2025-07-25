@@ -178762,6 +178762,39 @@
                 "username": "ca"
             },
             "user_id": "6f47a287-9640-4c0f-89b9-50e637729deb"
+        },
+        "3397": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "main",
+            "id": 3397,
+            "name": "Data Skills for Neuroscientists",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 653,
+                    "tag": "Tutorial"
+                },
+                {
+                    "id": 9,
+                    "tag": "Test"
+                }
+            ],
+            "timestamp_created": "2025-07-25 13:26:28.306412+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenNeuroAI/DataSkillsforNeuroscientists",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
+                "last_name": "Gleeson Admin",
+                "username": "pgleeson"
+            },
+            "user_id": "7089f659-90ad-4ed9-9715-2327f7e2e72f"
         }
     }
 }

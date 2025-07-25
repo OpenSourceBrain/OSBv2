@@ -40,3 +40,12 @@ These scripts can be used to get a cached list of the current repositories on OS
     ```
 
     Then do the same using `-v2` instead of for `-v2dev` for the live version of OSBv2. 
+
+3) Check/update the cached info for OSB projects on GitHub
+
+    This will generate a cached list of all repositories under https://github.com/opensourcebrain into `cached_info/osb_gh.json`. Note: most (~2K) of these are forks of ModelDB GitHub repos, many of the rest are repos which were used on OSBv1.
+
+    ```
+    python osb_gh_info.py 
+    ```
+

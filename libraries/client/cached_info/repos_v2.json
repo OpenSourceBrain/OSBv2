@@ -180586,6 +180586,89 @@
                 "username": "re5275"
             },
             "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
+        },
+        "3402": {
+            "auto_sync": true,
+            "content_types": "modeling,experimental",
+            "content_types_list": [
+                "modeling",
+                "experimental"
+            ],
+            "default_context": "main",
+            "id": 3402,
+            "name": "og model / please",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 3,
+                    "tag": "netpyne"
+                }
+            ],
+            "timestamp_created": "2025-07-03 15:38:57.028014+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/cmranieri/MarmosetModel",
+            "user": {
+                "email": "thatusernameistakenari09@gmail.com",
+                "first_name": "Arabella",
+                "id": "e8499e41-e31b-4d37-a99f-88e783f1fee6",
+                "last_name": "T",
+                "username": "re5275"
+            },
+            "user_id": "e8499e41-e31b-4d37-a99f-88e783f1fee6"
+        },
+        "3403": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3403,
+            "name": "neuromorphic_model",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-07-07 14:24:19.401734+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/kishonsd/neuromorphic_agent",
+            "user": {
+                "email": "kishondaniels@gmail.com",
+                "first_name": "KISHON",
+                "id": "e3490250-bfe0-4d41-8b09-48ec7060af11",
+                "last_name": "DANIELS",
+                "username": "kishon"
+            },
+            "user_id": "e3490250-bfe0-4d41-8b09-48ec7060af11"
+        },
+        "3404": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "main",
+            "id": 3404,
+            "name": "Data Skills for Neuroscientists",
+            "repository_type": "github",
+            "summary": "This material accompanies the powerpoint presentation for the UCL workshop on Data Skills for Neuroscientists.",
+            "tags": [
+                {
+                    "id": 5,
+                    "tag": "Tutorial"
+                }
+            ],
+            "timestamp_created": "2025-07-09 11:16:21.468049+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenNeuroAI/DataSkillsforNeuroscientists",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         }
     }
 }
