@@ -12,7 +12,7 @@
 CLOUD_HARNESS_URL="https://github.com/MetaCell/cloud-harness.git"
 CLOUD_HARNESS_DIR_LOCATION="../"
 CLOUD_HARNESS_DIR="${CLOUD_HARNESS_DIR_LOCATION}/cloud-harness"
-CLOUD_HARNESS_DEFAULT="development"
+CLOUD_HARNESS_DEFAULT="develop"
 CLOUD_HARNESS_BRANCH=""
 SKAFFOLD="skaffold"
 
