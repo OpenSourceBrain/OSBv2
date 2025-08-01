@@ -264,6 +264,10 @@ export const RepositoryPage = (props: any) => {
           "_blank"
         );
         break;
+      // For figshare, there does not seem to be a version specific URL
+      case "ebrains":
+        window.open(`${repository.uri}`, "_blank");
+        break;
       default:
         window.open(`#`, "_blank");
     }
