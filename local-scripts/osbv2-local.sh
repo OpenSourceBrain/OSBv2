@@ -43,7 +43,11 @@ deploy () {
     pushd $OSB_DIR
         echo "-> deploying"
         echo "-> checking (and starting) docker daemon"
-        systemctl is-active docker --quiet || sudo systemctl start docker.service
+        if [[ "$(uname -s)" == "Linux" ]]; then
+            systemctl is-active docker --quiet || sudo systemctl start docker.service
+        else
+            echo "🍏  Assuming Docker is already running on OS: $(uname -s)"
+        fi
         echo "-> starting minkube"
         minikube start --memory="10000mb" --cpus=8 --disk-size="60000mb" --kubernetes-version=v1.32 --driver=docker || notify_fail "Failed: minikube start"
         echo "-> enabling ingress addon"
@@ -112,29 +116,29 @@ function deactivate_venv() {
 function print_versions() {
     echo "** docker **"
     docker version
-    echo "\n** minikube **"
+    echo -e "\n** minikube **"
     minikube version
-    echo "\n** cloud harness **"
+    echo -e "\n** cloud harness **"
     pushd "${CLOUD_HARNESS_DIR}" && git log --oneline | head -1 && popd
-    echo "\n** helm **"
+    echo -e "\n** helm **"
     helm version
-    echo "\n** skaffold **"
+    echo -e "\n** skaffold **"
     $SKAFFOLD version
-    echo "\n** python **"
+    echo -e "\n** python **"
     python --version
-    echo "\n** git **"
+    echo -e "\n** git **"
     git --version
 }
 
 clean () {
     pushd $OSB_DIR
         echo "-> Cleaning up all images."
-        docker image prune --all
+        #docker image prune --all
         docker builder prune --all
         $SKAFFOLD delete
         minikube stop
         minikube delete
-        docker image prune --all
+        #docker image prune --all
         docker builder prune --all
     popd
 }

@@ -15,6 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install CloudHarness
+      run: |
+        ./local-scripts/osbv2-local.sh -u
+
     - name: Run version info 
       run: |
         ./local-scripts/osbv2-local.sh -v

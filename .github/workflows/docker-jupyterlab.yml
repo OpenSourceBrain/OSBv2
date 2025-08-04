@@ -23,3 +23,7 @@ jobs:
     - name: Info on Docker image sizes
       run: |
         docker images
+
+    - name: Run the Docker container and list python installs
+      run: |
+        docker run -it --rm --entrypoint /bin/bash myjlab  -c "pip3 list"
