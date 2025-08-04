@@ -22,6 +22,10 @@ jobs:
     - name: Run version info 
       run: |
         ./local-scripts/osbv2-local.sh -v
+
+    - name: Test local deploy
+      run: |
+        ./local-scripts/osbv2-local.sh -d
     
     - name: Info on Docker image sizes
       run: |

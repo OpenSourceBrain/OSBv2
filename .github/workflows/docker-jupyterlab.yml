@@ -26,4 +26,4 @@ jobs:
 
     - name: Run the Docker container and list python installs
       run: |
-        docker run -it --rm --entrypoint /bin/bash myjlab  -c "pip3 list"
+        docker run -t --rm --entrypoint /bin/bash myjlab  -c "pip3 list"
