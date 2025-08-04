@@ -1,0 +1,26 @@
+name: Test local install using minikube
+
+on:
+  push:
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
+  pull_request:
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Run version info 
+      run: |
+        ./local-scripts/osbv2-local.sh -v
+    
+    - name: Info on Docker image sizes
+      run: |
+        docker images
+
+        
