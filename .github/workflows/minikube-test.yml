@@ -10,11 +10,21 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.12" ]
+        runs-on: [ ubuntu-latest ]
 
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        
     - name: Install CloudHarness
       run: |
         ./local-scripts/osbv2-local.sh -u
