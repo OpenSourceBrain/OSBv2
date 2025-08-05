@@ -31,7 +31,7 @@ VENV_DIR="${OSB_DIR}/.venv"
 # Resources
 CPUS=8
 MEMORY="10000mb"
-if [[ "$CI" != "true" ]]; then
+if [[ "$CI" == "true" ]]; then
     # if not running in GHA, use 4 CPUs
     CPUS=4
 fi
@@ -57,7 +57,7 @@ deploy () {
             echo "🍏  Assuming Docker is already running on OS: $(uname -s)"
         fi
         echo "-> starting minkube"
-        minikube start --memory="10000mb" --cpus=$CPUS --disk-size="60000mb" --kubernetes-version=v1.32 --driver=docker || notify_fail "Failed: minikube start"
+        minikube start --memory="10000mb" --cpus="$CPUS" --disk-size="60000mb" --kubernetes-version=v1.32 --driver=docker || notify_fail "Failed: minikube start"
         echo "-> enabling ingress addon"
         minikube addons enable ingress || notify_fail "Failed: ingress add on"
         echo "-> setting up osblocal namespace"
