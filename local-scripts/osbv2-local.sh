@@ -28,6 +28,14 @@ PY_VERSION="python3.12"
 OSB_DIR="./"
 VENV_DIR="${OSB_DIR}/.venv"
 
+# Resources
+CPUS=8
+MEMORY="10000mb"
+if [[ "$CI" != "true" ]]; then
+    # if not running in GHA, use 4 CPUs
+    CPUS=4
+fi
+
 deploy () {
     if ! command -v helm >/dev/null || ! command -v $SKAFFOLD >/dev/null || !  command -v harness-deployment  >/dev/null ; then
         echo "helm, skaffold, and cloud-harness are required but were not found."
