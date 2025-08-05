@@ -15,6 +15,7 @@ CLOUD_HARNESS_DIR="${CLOUD_HARNESS_DIR_LOCATION}/cloud-harness"
 CLOUD_HARNESS_DEFAULT="develop"
 CLOUD_HARNESS_BRANCH=""
 SKAFFOLD="skaffold"
+SKAFFOLD_MAX_VERSION="2.14.2"
 
 # Application to deploy
 DEPLOYMENT_APP=""
@@ -36,6 +37,10 @@ if [[ "$CI" == "true" ]]; then
     CPUS=4
 fi
 
+# https://stackoverflow.com/a/37939589/375067
+get_version () { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
+
 deploy () {
     if ! command -v helm >/dev/null || ! command -v $SKAFFOLD >/dev/null || !  command -v harness-deployment  >/dev/null ; then
         echo "helm, skaffold, and cloud-harness are required but were not found."
@@ -45,6 +50,17 @@ deploy () {
         echo "- https://skaffold.dev/docs/install/"
         echo
         echo "To install cloud-harness, please see the -u/-U options"
+        exit 1
+    fi
+
+    skaffold_version="$($SKAFFOLD version)"
+
+    if [ $(get_version ${skaffold_version:1}) -gt $(get_version $SKAFFOLD_MAX_VERSION) ]
+    then
+        echo "-> Found Skaffold version: ${skaffold_version:1}"
+        echo "-> Skaffold version <= ${SKAFFOLD_MAX_VERSION} is currently required"
+        echo "-> Please install it from: https://github.com/GoogleContainerTools/skaffold/releases/tag/v${SKAFFOLD_MAX_VERSION}"
+        echo "-> See: https://github.com/GoogleContainerTools/skaffold/issues/9788"
         exit 1
     fi
 

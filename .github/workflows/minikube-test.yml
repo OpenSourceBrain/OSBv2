@@ -31,7 +31,10 @@ jobs:
         
     - name: Install Skaffold
       run: |
-        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
+        # read skaffold max version from the local script
+        SKAFFOLD_MAX_VERSION=$(grep "^SKAFFOLD_MAX_VERSION=" local-scripts/osbv2-local.sh | cut -d= -f2 | tr -d '"' )
+        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v$SKAFFOLD_MAX_VERSION/skaffold-linux-amd64 && \
+        chmod +x skaffold && \
         sudo install skaffold /usr/local/bin/
 
     - name: Run version info 
