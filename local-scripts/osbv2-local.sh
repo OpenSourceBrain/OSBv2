@@ -59,7 +59,7 @@ deploy () {
     then
         echo "-> Found Skaffold version: ${skaffold_version:1}"
         echo "-> Skaffold version <= ${SKAFFOLD_MAX_VERSION} is currently required"
-        echo "-> Please install it from: https://github.com/GoogleContainerTools/skaffold/releases/tag/${SKAFFOLD_MAX_VERSION}"
+        echo "-> Please install it from: https://github.com/GoogleContainerTools/skaffold/releases/tag/v${SKAFFOLD_MAX_VERSION}"
         echo "-> See: https://github.com/GoogleContainerTools/skaffold/issues/9788"
         exit 1
     fi
