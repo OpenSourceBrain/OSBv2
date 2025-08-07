@@ -1,9 +1,9 @@
 pyneuroml
 pyelectro
-git+https://github.com/NeuralEnsemble/neurotune.git
+neurotune
 
 ####  NEURON & NetPyNE
-neuron==8.2.7
+neuron
 
 # Install specific version of NetPyNE
 git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
@@ -21,7 +21,7 @@ brian2
 brian2tools
 
 # PyNN
-pynn==0.10.1
+pynn==0.11.0
 
 # elephant
 elephant
