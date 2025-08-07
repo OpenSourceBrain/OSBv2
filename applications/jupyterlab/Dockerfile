@@ -11,7 +11,7 @@ RUN apt-get update &&  apt-get install -y graphviz openjdk-11-jre-headless git v
     octave octave-statistics
 ################################################################################
 
-RUN mkdir /home/jovyan/.cache/conda && ls -alt /home/jovyan/.cache && chown -R jovyan /home/jovyan/.cache  # give user permission to update existing packages
+RUN mkdir -p /home/jovyan/.cache/conda && ls -alt /home/jovyan/.cache && chown -R jovyan /home/jovyan/.cache  # give user permission to update existing packages
 
 
 #### Install Python packages
