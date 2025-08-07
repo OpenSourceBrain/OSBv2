@@ -37,6 +37,9 @@ if [[ "$CI" == "true" ]]; then
     CPUS=4
 fi
 
+
+ETC_HOSTS="127.0.0.1    osb.local accounts.osb.local api.accounds.osb.local argo.osb.local admin.osb.local common.osb.local events.osb.local hub.osb.local notebooks.osb.local nfsserver.osb.local notifications.osb.local www.osb.local volumemanager.osb.local workflows.osb.local workspaces.osb.local"
+
 # https://stackoverflow.com/a/37939589/375067
 get_version () { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
 
@@ -181,6 +184,11 @@ usage () {
     echo "-U branch: update and install specified cloud_harness branch ($CLOUD_HARNESS_DEFAULT)"
     echo "-c: clean up minikube and docker: sometimes needed with an outdated cache"
     echo "-h: print this and exit"
+    echo
+    echo "-> Please note that you will need to update your /etc/hosts file on Linux like machines to access the deployment in your browser"
+    echo "-> Please add these lines to the end of your /etc/hosts file:"
+    echo
+    echo "${ETC_HOSTS}"
 }
 
 if [ $# -lt 1 ]
