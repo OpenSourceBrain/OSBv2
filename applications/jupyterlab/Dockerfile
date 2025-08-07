@@ -11,6 +11,7 @@ RUN apt-get update &&  apt-get install -y graphviz openjdk-11-jre-headless git v
     octave octave-statistics
 ################################################################################
 
+RUN mkdir /home/jovyan/.cache/conda && ls -alt /home/jovyan/.cache && chown -R jovyan /home/jovyan/.cache  # give user permission to update existing packages
 
 
 #### Install Python packages
@@ -32,10 +33,6 @@ USER root
 ### Some aliases
 RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
 
-### Set up jnml, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
-RUN chmod +x /opt/conda/bin/jnml
-ENV JNML_HOME=/opt/conda/bin
 
 ### Set up lems, reusing pynml jar
 RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
