@@ -1,9 +1,10 @@
 #!/bin/bash
+set -e
 
-#docker run -p 8887:8888  --name mynwb mynwbosb
-#docker run -it --rm -p 8887:8888 mynwbosb start.sh
-
-#docker run --network host --name mynwb -it /bin/bash -d mynwbosb
+# A script to run the NWBE container locally (build it first with ./build_local.sh)
 
 docker run --network host  -it --rm  --name mynwb -d mynwbosb
+
+echo -e "NWBE should shortly be available at: \n\n    http://127.0.0.1:8888/geppetto\n"
+echo -e "To stop it, use: ./stop_local.sh\n\nTo see the versions of Python packages in the container, use: ./pip_info.sh\n"
 
