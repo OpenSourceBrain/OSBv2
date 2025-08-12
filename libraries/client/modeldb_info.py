@@ -20,16 +20,19 @@ fork_if_missing = "-fork" in sys.argv
 gh = get_github()
 
 known_to_have_other_forks = [2730, 3343, 3658]
+known_no_mdb_github_repo = [2018003, 2018022]
+empty_on_mdb_github = [2014825]
 
 many_forks = []
 to_be_forked = []
+ignored = []
 errors = []
 on_osbv2 = []
 forked_now = []
 
 if __name__ == "__main__":
-    min_index = 0
-    max_index = 10000
+    min_index = 10
+    max_index = 18
     index = 0
 
     from osb.utils import get_page
@@ -86,26 +89,34 @@ if __name__ == "__main__":
                 info[model]["osbv2_gh_repo"] = repo_to_use.html_url
                 info[model]["osbv2_gh_branch"] = repo_to_use.default_branch
             except Exception:
-                print(
-                    "    **** Missing fork: %s, forking now: %s"
-                    % (possible_osbgh_repo, fork_if_missing)
-                )
-                if fork_if_missing:
-                    print("    Forking to: %s..." % possible_osbgh_repo)
-                    org = gh.get_organization("OpenSourceBrain")
-                    org.create_fork(mdb_repo, default_branch_only=False)
-                    msg = "    Forked to: %s..." % possible_osbgh_repo
-                    print(msg)
-                    forked_now.append(msg)
+
+                if info[model]["id"] in empty_on_mdb_github:
+                    info_ = f'    Ignoring {possible_mdb_repo} as it is known to be empty'
+                    print(info_)
+                    ignored.append(info_)
+
 
                 else:
-                    msg = "    Yet to be forked: %i, order %i; %s" % (
-                        info[model]["id"],
-                        index + min_index,
-                        info[model]["name"],
+                    print(
+                        "    **** Missing fork: %s, forking now: %s"
+                        % (possible_osbgh_repo, fork_if_missing)
                     )
-                    print(msg)
-                    to_be_forked.append(msg)
+                    if fork_if_missing:
+                        print("    Forking to: %s..." % possible_osbgh_repo)
+                        org = gh.get_organization("OpenSourceBrain")
+                        org.create_fork(mdb_repo, default_branch_only=False)
+                        msg = "    Forked to: %s..." % possible_osbgh_repo
+                        print(msg)
+                        forked_now.append(msg)
+
+                    else:
+                        msg = "    Yet to be forked: %i, order %i; %s" % (
+                            info[model]["id"],
+                            index + min_index,
+                            info[model]["name"],
+                        )
+                        print(msg)
+                        to_be_forked.append(msg)
 
             if (not mdb_repo.forks == expected_forks) and (
                 info[model]["id"] not in known_to_have_other_forks
@@ -119,15 +130,21 @@ if __name__ == "__main__":
                 many_forks.append(msg)
 
         except Exception as e:
-            msg = "    Problem with model: %i (%i/%i) %s" % (
-                info[model]["id"],
-                index,
-                len(selection),
-                info[model]["name"],
-            )
-            print(msg)
-            print(e)
-            errors.append(msg)
+            if info[model]["id"] in known_no_mdb_github_repo:
+                    info_ = f'    Ignoring {possible_mdb_repo} as it is known to have no ModelDB GitHub repo'
+                    print(info_)
+                    ignored.append(info_)
+            else:
+                msg = "    Problem with model: %i (%i/%i) %s (%s)" % (
+                    info[model]["id"],
+                    index,
+                    len(selection),
+                    info[model]["name"],
+                    possible_mdb_repo,
+                )
+                print(msg)
+                print(e)
+                errors.append(msg)
 
         index += 1
 
@@ -154,6 +171,7 @@ for m in forked_now:
 info[0] = {}
 info[0]["to_be_forked"] = []
 info[0]["errors"] = []
+info[0]["ignored"] = []
 
 print("\nStill to be forked (%i total):" % len(to_be_forked))
 for m in to_be_forked:
@@ -168,6 +186,11 @@ print("\nErrors (%i total):" % len(errors))
 for m in errors:
     print(m)
     info[0]["errors"].append(m.strip())
+
+print("\nIgnored (%i total):" % len(ignored))
+for m in ignored:
+    print(m)
+    info[0]["ignored"].append(m.strip())
 
 strj = json.dumps(info, indent="    ", sort_keys=True)
 with open(filename, "w") as fp:

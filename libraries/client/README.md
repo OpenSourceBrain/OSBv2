@@ -55,3 +55,25 @@ This will generate a cached list of all repositories under https://github.com/op
 python osb_gh_info.py 
 ```
 
+### 3) Checking/updating ModelDB content
+
+This will get a structured json file (`cached_info/modeldb.json`) of the contents of the ModelDB archive (note full check can take up to 1hr):
+```
+python modeldb_info.py
+```
+If it is reporting that there are ModelDB entries yet to be forked, run:
+```
+python modeldb_info.py -fork
+```
+This will create a fork of the ModelDB repository (e.g. https://github.com/ModelDBRepository/2018247) on OSB GitHub organisation (e.g. https://github.com/OpenSourceBrain/2018247)
+
+Now run 
+```
+python osb_gh_info.py 
+```
+again to see this (the new repository will be added to the cache). Now we need to create an OSBv2 repository pointing to this repo on https://github.com/OpenSourceBrain:
+```
+python loadmodeldb.py -dry -v2dev       # dry run to test/list repos to add
+python loadmodeldb.py abcxxx123 -v2dev  # add new repos using the token as above...
+python osb_info.py -v2dev               # regenerate the cache of all osbv2 dev repos
+```

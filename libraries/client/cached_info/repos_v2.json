@@ -180669,6 +180669,47 @@
                 "username": "padraig"
             },
             "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "3405": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3405,
+            "name": "Virtual Human Retina: Simulating Neural Signalling, Degeneration, and Responses to Electrical Stimulation (Ly et al 2025)",
+            "repository_type": "github",
+            "summary": "Abstract\r\nIntroduction: Current brain-based visual prostheses pose significant challenges impeding adoption such as the necessarily complex surgeries and occurrence of more substantial side effects due to the sensitivity of the brain. This has led to much effort toward vision restoration being focused on the more approachable part of the brain - the retina. Here we introduce a novel, parameterized simulation platform that enables study of human retinal degeneration and optimization of stimulation strategies. The platform bears immense potential for patient-specific tailoring and serves to enhance artificial vision solutions for individuals with visual impairments.\r\n\r\nMaterial and method: Our virtual retina is developed using the software package, NEURON. This virtual retina platform supports large-scale simulations of over 10,000 neurons whilst upholding strong biological plausibility with multiple important visual pathways and detailed network properties. The comprehensive three-dimensional model includes photoreceptors, horizontal cells, bipolar cells, amacrine cells, and midget and parasol retinal ganglion cells, with comprehensive network connectivity across various eccentricities (1 mm to 5 mm from the fovea) in the human retina. The model is constructed using electrophysiology, immunohistology, and optical coherence tomography imaging data from healthy and degenerate human retinas. We validated our model by replicating numerous experimental observations from human and primate retina, with a particular focus on retinal degeneration.\r\n\r\nResult: We simulated interactions between diseased retinas and state-of-the-art retinal implants, shedding light on the limitations of commercial retinal prostheses. Our results suggested that appropriate stimulation settings with intraretinal prototype devices could leverage network-mediated activation to achieve activation mosaics more alike that of the retina's response to natural light, promoting the prospect of more naturalistic vision. Our study additionally highlights the importance of controlling inhibitory circuits in the retinal network to induce functionally relevant retinal activity.\r\n\r\nConclusion: This study demonstrates the potential of this software package and highlights its utility as a valuable tool for engineers, scientists, and clinicians in the design and optimisation of retinal stimulation devices for both research and educational applications.\r\n\r\nKeywords: Virtual retina; bionic vision; data-driven model; discrete neuronal network model; electrical stimulation; human retina; mechanistic model; retinal degeneration.",
+            "tags": [
+                {
+                    "id": 767,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 773,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4783,
+                    "tag": "ModelDB:2018247"
+                },
+                {
+                    "id": 656,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:14:31.638067+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018247",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
         }
     }
 }
