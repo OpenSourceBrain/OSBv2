@@ -14,6 +14,10 @@ ruff check  *.py
 
 # Update the cached info for OSBv1
 python osbv1_info.py
+if [ "$quick" == 0 ]; then
+    echo "Testing OSBv1 loading on v2dev..."
+    python loadosbv1.py -v2dev -dry
+fi
 
 # Update the cached info for OSB projects on GitHub
 python osb_gh_info.py 
@@ -27,6 +31,7 @@ python osb_info.py -v2
 if [ "$quick" == 0 ]; then
 
     python loadddandi.py -dry
+    
     python biomodels_info.py 
 
     python modeldb_info.py
