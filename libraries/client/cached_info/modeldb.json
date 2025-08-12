@@ -1,4 +1,26 @@
 {
+    "0": {
+        "errors": [
+            "Problem with model: 2016219 (1857/1891) An integrated deep learning-based model of spatial cells that combines self-motion with sensory information (Aziz et al., 2022)",
+            "Problem with model: 2016662 (1874/1891) Impact of extracellular current flow on action potential propagation in myelinated axons",
+            "Problem with model: 2017005 (1875/1891) Reverse Engineering MN Pool (Chardon et al, 2023)",
+            "Problem with model: 2018003 (1879/1891) Axonal ectopic burst induced by repetitive stimuli of hippocampal mossy fiber",
+            "Problem with model: 2018022 (1881/1891) Isolated pacemaker neuron from rodent respiratory CPG under voltage-clamp"
+        ],
+        "to_be_forked": [
+            "Yet to be forked: 2014825, order 1826; TD2Q reinforcement learning (Blackwell and Doya, 2023)",
+            "Yet to be forked: 2018247, order 1880; Virtual Human Retina: Simulating Neural Signalling, Degeneration, and Responses to Electrical Stimulation (Ly et al 2025)",
+            "Yet to be forked: 2018262, order 1882; KV1 Channels Enable Myelinated Axons to Transmit Spikes  Reliably without Spiking Ectopically (Abdollahi et al., 2025)",
+            "Yet to be forked: 2018260, order 1883; L2/3 Dendritic Morphology (Landau et al., 2022)",
+            "Yet to be forked: 2018006, order 1884; Synchronization in a realistic model of CA1 hippocampal neurons (Fiasconaro and Migliore, 2024)",
+            "Yet to be forked: 2017402, order 1885; Substantia Nigra Par Compacta (Ortner et al., 2017)",
+            "Yet to be forked: 267752, order 1886; Intrinsic motivation in cognitive architecture (Nagashima et al., 2024)",
+            "Yet to be forked: 2018263, order 1887; Network models of single compartment neurons for investigating downmodulation of voltage-gated potassium channels (Ho et al., 2025)",
+            "Yet to be forked: 2019342, order 1888; Differential roles of NaV1.2 and NaV1.6 in neocortical pyramidal cell excitability (Garcia et al. 2025)",
+            "Yet to be forked: 2019444, order 1889; SCN1A variants of uncertain significance (Knox et al, 2025)",
+            "Yet to be forked: 2018259, order 1890; Octopus neuron (Kreeger et al., 2025)"
+        ]
+    },
     "279": {
         "class_id": 19,
         "created": "2001-01-01T00:00:00",
@@ -20382,6 +20404,8 @@
             "attr_id": 24,
             "value": "We computed the steady-state activity of a large-scale model of the granular layer of the rat cerebellum. Within a few tens of milliseconds after the start of random mossy fiber input, the populations of Golgi and granule cells became entrained in a single synchronous oscillation, the basic frequency of which ranged from 10 to 40 Hz depending on the average rate of firing in the mossy fiber population. ... The synchronous, rhythmic firing pattern was robust over a broad range of biologically realistic parameter values and to parameter randomization. Three conditions, however, made the oscillations more transient and could desynchronize the entire network in the end: a very low mossy fiber activity, a very dominant excitation of Golgi cells through mossy fiber synapses (rather than through parallel fiber synapses), and a tonic activation of granule cell GABAA receptors (with an almost complete absence of synaptically induced inhibitory postsynaptic currents). The model predicts that, under conditions of strong mossy fiber input to the cerebellum, Golgi cells do not only control the strength of parallel fiber activity but also the timing of the individual spikes. Provided that their parallel fiber synapses constitute an important source of excitation, Golgi cells fire rhythmically and synchronized with granule cells over large distances along the parallel fiber axis. See paper for more and details."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/50219",
         "receptors": {
             "attr_id": 26,
             "value": [
@@ -112721,6 +112745,8 @@
             "attr_id": 24,
             "value": "Network model of the VS tangential cell system, with 10 cells per hemisphere. Each cell is a two compartment model with one compartment for dendrites and one for the axon. The cells are coupled through axonal gap junctions. The code allows to simulate responses of the VS network to a variety of visual stimuli to investigate coding as a function of gap junction strength."
         },
+        "osbv2_gh_branch": "master",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/155727",
         "other_implementer": {
             "attr_id": 308,
             "value": "Trousdale, James [jamest212 at gmail.com]"
@@ -210689,6 +210715,8 @@
             "attr_id": 24,
             "value": "Model code for: 'Impact on backpropagation of the spatial heterogeneity of sodium channel kinetics in the axon initial segment', provisionally accepted at PLOS Computational Biology. "
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/267088",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "BBarlow@uOttawa.ca"
@@ -213989,6 +214017,8 @@
             "attr_id": 24,
             "value": "Our work aims to understand the cellular and synaptic mechanisms underlying eupnea and sigh rhythms in the brain. Part of our work benefited from a mathematical model that made predictions about key components of both rhythm generators. We show a network a neurons can generate two oscillations simultaneously via different mechanisms."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/267252",
         "other_implementer": {
             "attr_id": 308,
             "value": "Daniel S. Borrus\r\nGregory D. Conradi-Smith\r\nChristopher A. Del Negro\r\nCameron Grover"
@@ -214441,6 +214471,8 @@
             "attr_id": 24,
             "value": ""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/267267",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "mpetroccione@albany.edu"
@@ -219803,7 +219835,7 @@
                 }
             ]
         },
-        "name": "Decorrelation in the developing visual thalamus (Tikidji-Hamburyan et al, accepted)",
+        "name": "Decorrelation in the developing visual thalamus (Tikidji-Hamburyan et al, 2023)",
         "notes": {
             "attr_id": 24,
             "value": "The developing visual thalamus and cortex extract positional information encoded in\r\nthe correlated activity of retinal ganglion cells by synaptic plasticity, allowing for the refinement of\r\nconnectivity. Here, we use a biophysical model of the visual thalamus during the initial visual circuit\r\nrefinement period to explore the role of synaptic and circuit properties in the regulation of such\r\nneural correlations. We find that the NMDA receptor dominance, combined with weak recurrent\r\nexcitation and inhibition characteristic of this age, prevents the emergence of spike-\u00adcorrelations\r\nbetween thalamocortical neurons on the millisecond timescale. Such precise correlations, which\r\nwould emerge due to the broad, unrefined connections from the retina to the thalamus, reduce the\r\nspatial information contained by thalamic spikes, and therefore we term them \"parasitic\" correlations.\r\nOur results suggest that developing synapses and circuits evolved mechanisms to compensate for\r\nsuch detrimental parasitic correlations arising from the unrefined and immature circuit."
@@ -219852,8 +219884,8 @@
                 }
             ]
         },
-        "ver_date": "2023-05-10T13:11:56.053",
-        "ver_number": 13
+        "ver_date": "2025-03-04T01:57:36.269676",
+        "ver_number": 14
     },
     "267591": {
         "class_id": 19,
@@ -223776,6 +223808,8 @@
             "attr_id": 24,
             "value": ""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/267741",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "tuomo.maki-marttunen@tuni.fi"
@@ -223956,6 +223990,62 @@
             ]
         },
         "ver_date": "2023-06-27T01:12:04.62",
+        "ver_number": 4
+    },
+    "267752": {
+        "_citation_text": null,
+        "_implementers_text": null,
+        "class_id": 19,
+        "created": "2023-06-05T00:47:28.427",
+        "gitrepo": false,
+        "has_modelview": {
+            "attr_id": 502,
+            "value": false
+        },
+        "hide_autolaunch_button": {
+            "attr_id": 582,
+            "value": false
+        },
+        "id": 267752,
+        "model_paper": {
+            "attr_id": 155,
+            "value": [
+                {
+                    "object_id": 2019037,
+                    "object_name": "Nagashima K, Morita J, Takeuchi Y (2024)"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 114646,
+                    "object_name": "Python"
+                },
+                {
+                    "object_id": 267753,
+                    "object_name": "Lisp"
+                }
+            ]
+        },
+        "name": "Intrinsic motivation in cognitive architecture (Nagashima et al., 2024)",
+        "notes": {
+            "attr_id": 24,
+            "value": "These models are designed for a maze continuation task that specifically emphasizes curiosity. The act-r directory represents a model implemented using ACT-R, a cognitive architecture. On the other hand, the icm directory represents a model implemented using the Intrinsic Curiosity Module (ICM) for deep reinforcement learning. Despite the difference in implementation, both models are intended to perform the same task."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "nagashima.kazuma.16@shizuoka.ac.jp"
+        },
+        "public_submitter_name": {
+            "attr_id": 621,
+            "value": "Source Code And Data Archive"
+        },
+        "value": {
+            "object_id": 2019037
+        },
+        "ver_date": "2025-03-04T02:38:59.086464",
         "ver_number": 4
     },
     "267754": {
@@ -224774,6 +224864,8 @@
             "attr_id": 24,
             "value": "This study aims to quantify the effects of specific myelin dystrophies, such as demyelination and remyelination, which have been observed in the aging rhesus dlPFC, on the propagation of action potentials (APs) in layer 3 pyramidal neurons. Furthermore, this study sheds light on how such age-related myelin changes affect a core cognitive function: spatial working memory."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2014821",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "nil@bu.edu"
@@ -224944,8 +225036,8 @@
             "attr_id": 155,
             "value": [
                 {
-                    "object_id": 267785,
-                    "object_name": "Blackwell K, Doya K (2023)"
+                    "object_id": 2019180,
+                    "object_name": "Blackwell KT, Doya K (2023)"
                 }
             ]
         },
@@ -224962,7 +225054,7 @@
                 }
             ]
         },
-        "name": "TD2Q reinforcement learning (Blackwell and Doya, in press)",
+        "name": "TD2Q reinforcement learning (Blackwell and Doya, 2023)",
         "neurons": {
             "attr_id": 25,
             "value": []
@@ -225001,8 +225093,8 @@
                 }
             ]
         },
-        "ver_date": "2023-07-25T14:42:15.499288+00:00",
-        "ver_number": 1
+        "ver_date": "2025-03-04T15:21:35.145622",
+        "ver_number": 2
     },
     "2014830": {
         "_citation_text": "S\u00e6tra MJ, Ellingsrud AJ, Rognes ME (2023) Neural activity induces strongly coupled electro-chemo-mechanical interactions and fluid flow in astrocyte networks and extracellular space\u2014A computational study. PLoS Comput Biol 19(7): e1010996. https://doi.org/10.1371/journal.pcbi.1010996",
@@ -225249,6 +225341,8 @@
             "attr_id": 24,
             "value": "\"We developed a detailed model of macaque auditory thalamocortical circuits, including primary auditory cortex (A1), medial geniculate body (MGB), and thalamic reticular nucleus, utilizing the NEURON simulator and NetPyNE tool. The A1 model simulates a cortical column with over 12,000 neurons and 25 million synapses, incorporating data on cell-type-specific neuron densities, morphology, and connectivity across six cortical layers. It is reciprocally connected to the MGB thalamus, which includes interneurons and core and matrix-layer-specific projections to A1. The model simulates multiscale measures, including physiological firing rates, local field potentials (LFPs), current source densities (CSDs), and electroencephalography (EEG) signals. Laminar CSD patterns, during spontaneous activity and in response to broadband noise stimulus trains, mirror experimental findings. Physiological oscillations emerge spontaneously across frequency bands comparable to those recorded in vivo. We elucidate population-specific contributions to observed oscillation events and relate them to firing and presynaptic input patterns. The model offers a quantitative theoretical framework to integrate and interpret experimental data and predict its underlying cellular and circuit mechanisms.\""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2014832",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "salvadordura@gmail.com"
@@ -225813,6 +225907,8 @@
             "attr_id": 24,
             "value": "The back propagation of an action potential (AP) from the axon/soma to the dendrites plays a central role in dendritic integration. This process involves the intricate orchestration of various ion channels, yet a comprehensive understanding of the contribution of each channel type remains elusive. In this study, we leverage ultrafast membrane potential recordings (Vm) and Ca2+ imaging techniques to shed light on the involvement of N-type voltage-gated Ca2+ channels (VGCCs) in layer-5 neocortical pyramidal neurons' apical dendrites.\r\nOur findings reveal a selective interaction between N-type VGCCs and large-conductance Ca2+-activated K+ channels (BK CAKCs). Remarkably, we observe that BK CAKCs are activated within a mere 500 \u00b5s after the AP peak, preceding the peak of the Ca2+ current triggered by the AP. Consequently, when N-type VGCCs are inhibited, the early broadening of the AP shape amplifies the activity of other VGCCs, leading to an augmented total Ca2+ influx. Our NEURON model, constructed to replicate and support these experimental results, underscores the critical coupling between N-type and BK channels.\r\nThis study not only redefines the conventional role of N-type VGCCs as primarily involved in presynaptic neurotransmitter release but also establishes their distinct and essential function as activators of BK CAKCs in neuronal dendrites. Furthermore, our results provide original functional validation of a physical interaction between Ca2+ and K+ channels, elucidated through ultrafast kinetic reconstruction. This insight enhances our understanding of the intricate mechanisms governing neuronal signaling and may have far-reaching implications in the field.\r\n"
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2015410",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "elisabetta.giacalone@ibf.cnr.it"
@@ -225914,6 +226010,8 @@
             "attr_id": 24,
             "value": "A modified motor network model (from Moraud et al. 2016 and Formento et al. 2018) with added cutaneous input and dPV neuron model."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2015411",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "laura.medlock@mail.utoronto.ca"
@@ -226164,7 +226262,12 @@
             "value": []
         },
         "model_paper": {
-            "value": []
+            "value": [
+                {
+                    "object_id": 2018411,
+                    "object_name": "Clements KN et al. (2023)"
+                }
+            ]
         },
         "model_type": {
             "attr_id": 112,
@@ -226184,7 +226287,7 @@
                 }
             ]
         },
-        "name": "Zebrafish Mauthner escape circuit with dopamine, gaba, and glycine (Clements et al., accepted)",
+        "name": "Zebrafish Mauthner escape circuit with dopamine, gaba, and glycine (Clements et al., 2023)",
         "neurons": {
             "attr_id": 25,
             "value": [
@@ -226234,8 +226337,8 @@
             "attr_id": 471,
             "value": []
         },
-        "ver_date": "2023-10-24T16:43:08.470034+00:00",
-        "ver_number": 1
+        "ver_date": "2025-03-04T01:05:52.130969",
+        "ver_number": 2
     },
     "2015420": {
         "_citation_text": "F\u00fczesi, T., Rasiah, N.P., Rosenegger, D.G. et al. Hypothalamic CRH neurons represent physiological memory of positive and negative experience. Nat Commun 14, 8522 (2023). https://doi.org/10.1038/s41467-023-44163-5",
@@ -226684,6 +226787,8 @@
             "attr_id": 24,
             "value": ""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2015423",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "carmen.lupascu@ibf.cnr.it"
@@ -226794,6 +226899,8 @@
             "attr_id": 24,
             "value": "Simulation of ectopic burst firings from distal axons induced by local inhibition of axonal K channels on the hippocampal mossy fibers."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2015571",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "kamiya@med.hokudai.ac.jp"
@@ -226853,6 +226960,8 @@
             "attr_id": 24,
             "value": "Sensory signals are processed by the cerebellum to coordinate movements. Unipolar brush cells (UBCs) are excitatory interneurons that project to granule cells and transform their input into prolonged increases or decreases in firing, depending on their ON or OFF UBC subtype. Further extension and diversification of the input signal could be produced by UBCs that project to one another, but whether this circuitry exists was unclear. In this work we showed that UBCs innervate one another using transgenic mice and immunohistochemistry. This NEURON model explores how these feed-forward networks of UBCs could extend the length of bursts or pauses and introduce delays\u2014transformations that may be necessary for cerebellar functions from modulation of eye movements to adaptive learning across time scales."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2015953",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "timothy.balmer@asu.edu"
@@ -226989,6 +227098,8 @@
             "attr_id": 24,
             "value": "This is an updated version of a closed-loop respiratory control model incorporating a central pattern generator (CPG), the Butera-Rinzel-Smith (BRS) model, together with lung mechanics, oxygen handling, and chemosensory components (see accession number 229640). We explored model parameters consistent with the silent hypoxemia phenomenon observed in some COVID-19 patients."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2015954",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "diekman@njit.edu"
@@ -227106,6 +227217,8 @@
             "attr_id": 24,
             "value": ""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016137",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "tar.luca@koki.hu"
@@ -227199,7 +227312,12 @@
             ]
         },
         "model_paper": {
-            "value": []
+            "value": [
+                {
+                    "object_id": 2018867,
+                    "object_name": "Cirtala G, De Schutter E (2024)"
+                }
+            ]
         },
         "model_type": {
             "attr_id": 112,
@@ -227223,7 +227341,7 @@
                 }
             ]
         },
-        "name": "Heterogeneous Purkinje Cell model (Cirtala et al., accepted)",
+        "name": "Heterogeneous Purkinje Cell model (Cirtala and De Schutter, 2024)",
         "neurons": {
             "attr_id": 25,
             "value": [
@@ -227241,6 +227359,8 @@
             "attr_id": 24,
             "value": "We propose the first computational model of cerebellar Purkinje cell with dendritic heterogeneity. Each branch in our model is an individual unit and is characterized by its own set ion channel conductance density. We model clustered parallel fiber input and we measure the peak amplitude of a response. We observe how changes in P-type calcium conductance density changes the peak amplitude response from linear to bimodal step-plateau and vice-versa for each branch of the dendritic tree. We show how the dendritic calcium spikes propagate and how Kv4 channels block spreading depolarization to nearby branches. "
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016138",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "gabriela-cirtala@oist.jp"
@@ -227258,8 +227378,8 @@
                 }
             ]
         },
-        "ver_date": "2024-07-09T17:43:18.882727",
-        "ver_number": 2
+        "ver_date": "2025-03-04T02:02:29.675124",
+        "ver_number": 3
     },
     "2016216": {
         "_citation_text": "",
@@ -227308,7 +227428,12 @@
             "value": []
         },
         "model_paper": {
-            "value": []
+            "value": [
+                {
+                    "object_id": 2018433,
+                    "object_name": "John SR, Phillips RS, Rubin JE (2024)"
+                }
+            ]
         },
         "model_type": {
             "attr_id": 112,
@@ -227332,7 +227457,7 @@
                 }
             ]
         },
-        "name": "A novel mechanism for ramping bursts based on slow negative feedback in model respiratory neurons (John et al., accepted)",
+        "name": "A novel mechanism for ramping bursts based on slow negative feedback in model respiratory neurons (John et al., 2024)",
         "neurons": {
             "attr_id": 25,
             "value": [
@@ -227354,6 +227479,8 @@
             "attr_id": 24,
             "value": "Recordings from pre-Botzinger complex neurons responsible for the inspiratory phase of the respiratory rhythm reveal a ramping burst pattern, starting around the time that the transition from expiration to inspiration begins, in which the spike rate gradually rises until a transition into a high-frequency burst occurs. The spike rate increase along the burst is accompanied by a gradual depolarization of the plateau potential that underlies the spikes. These effects may be functionally important for inducing the onset of inspiration and hence maintaining effective respiration; however, most mathematical models for inspiratory bursting do not capture this activity pattern. Here, we study how the modulation of spike height and afterhyperpolarization via the slow inactivation of an inward current can support various activity patterns including ramping bursts. We use dynamical systems methods designed for multiple timescale systems, such as bifurcation analysis based on timescale decomposition  and averaging over fast oscillations, to generate an understanding of and predictions about the specific dynamic effects that lead to ramping bursts.  We also analyze how transitions between ramping and other activity patterns may occur with parameter changes, which could be associated with experimental manipulations, environmental conditions and/or development."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016216",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "srj35@pitt.edu"
@@ -227371,8 +227498,8 @@
                 }
             ]
         },
-        "ver_date": "2024-06-09T16:57:10.818448",
-        "ver_number": 4
+        "ver_date": "2025-03-04T01:19:36.588380",
+        "ver_number": 5
     },
     "2016218": {
         "_citation_text": "",
@@ -227447,6 +227574,8 @@
             "attr_id": 24,
             "value": "\"... unlike the dichotomous frequency preference characteristic of RA1 and RA2/Pacinian afferents in other species, rodent RAs fell along a continuum. Fitting generalized linear models (GLMs) to experimental data reproduced the reliability and precision of rodent RAs. The resulting model parameters highlight key mechanistic differences across the RA spectrum; specifically, the integration window of different RAs transitions from wide to narrow as tuning preferences across the population move from low to high frequencies...\""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016218",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "laura.medlock@mail.utoronto.ca"
@@ -227655,6 +227784,8 @@
             "attr_id": 24,
             "value": "While many theoretical models of neural dynamics during sleep exist, few include the effects of neuromodulators on sleep oscillations and describe transitions between different states of vigilance. Here, we ported an established thalamocortical network model (https://doi.org/10.7554/eLife.18607) from C++ to NEURON. This model, which includes a biophysically realistic description of intrinsic and synaptic channels, allows for testing the effects of different neuromodulators, intrinsic cell properties, and synaptic connectivity on neural dynamics during sleep. "
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016601",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "finkt@gonzaga.edu"
@@ -227761,6 +227892,8 @@
             "attr_id": 24,
             "value": ""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016658",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "ccanav@lsuhsc.edu"
@@ -227849,6 +227982,8 @@
             "attr_id": 24,
             "value": "The model illustrates how the plastic integration of spatially stable grid-cell inputs could contribute to hippocampal place fields' generation and dynamic character. Theoretically, the grid-to-place transformation is possible if a place cell can respond selectively to a combination of suitably aligned grids. A synaptic plasticity rule whereby postsynaptic activation gates synaptic change while presynaptic activation determines its direction can accomplish this task during rat foraging behavior. The synaptic competition can outlast the formation of place fields, contributing to their spatial reorganization over time when the model is run in larger environments and the topographical/modular organization of grid inputs is considered. Co-simulated cells that differ only by their randomly assigned grid inputs display different degrees and kinds of spatial reorganization - ranging from place-field remapping to more subtle in-field changes or lapses in firing. The model predicts a greater number of place fields and propensity for remapping in place cells recorded from more septal regions of the hippocampus and/or in larger environments, motivating future experimental standardization across studies and animal models."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016659",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "fsavelli.research@gmail.com"
@@ -228025,6 +228160,8 @@
             "attr_id": 24,
             "value": "Abstract: Nociceptive sensory neurons convey pain signals to the CNS using action potentials. Loss-of-function mutations in the voltage-gated sodium channel NaV1.7 cause insensitivity to pain (presumably by reducing nociceptor excitability) but efforts to treat pain by inhibiting NaV1.7 pharmacologically have largely failed. This may reflect the variable contribution of NaV1.7 to nociceptor excitability. Contrary to claims that NaV1.7 is necessary for nociceptors to initiate action potentials, we show that nociceptors can achieve equivalent excitability using different combinations of NaV1.3, NaV1.7, and NaV1.8. Selectively blocking one of those NaV subtypes reduces nociceptor excitability only if the other two subtypes are weakly expressed. For example, excitability relies on NaV1.8 in acutely dissociated nociceptors but responsibility shifts to NaV1.7 and NaV1.3 by the fourth day in culture. A similar shift in NaV dependence occurs in vivo after inflammation, impacting ability of the NaV1.7-selective inhibitor PF-05089771 to reduce pain in behavioral tests. Flexible use of different NaV subtypes \u2013 an example of degeneracy \u2013 compromises the reliable modulation of nociceptor excitability by subtype-selective inhibitors. Identifying the dominant NaV subtype to predict drug efficacy is not trivial. Degeneracy at the cellular level must be considered when choosing drug targets at the molecular level."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016663",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "strawcup@gmail.com"
@@ -228121,6 +228258,8 @@
             "attr_id": 24,
             "value": "An electrochromic dye was used to make fast, high signal/noise ratio, linear scale optical measurements of membrane potential from spines and basal dendrites of mouse somatosensory cortex layer 5 pyramidal cells. These experiments revealed close electrical coupling, with little signal loss, for membrane potential spreading from the spine head to the adjacent dendritic shaft. Modeling was used to explore the relationship between cellular properties (anatomy and biophysics) and the degree of electrical coupling between spines and dendrites. For usage instructions, see readme.pdf"
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016666",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "ted.carnevale@yale.edu"
@@ -228233,7 +228372,12 @@
             ]
         },
         "model_paper": {
-            "value": []
+            "value": [
+                {
+                    "object_id": 2018741,
+                    "object_name": "Sanda P et al. (2024)"
+                }
+            ]
         },
         "model_type": {
             "attr_id": 112,
@@ -228253,7 +228397,7 @@
                 }
             ]
         },
-        "name": "Cholinergic modulation of resting state networks (Sanda et al., accepted)",
+        "name": "Cholinergic modulation of resting state networks (Sanda et al., 2024)",
         "neurons": {
             "attr_id": 25,
             "value": [
@@ -228271,6 +228415,8 @@
             "attr_id": 24,
             "value": "Brain activity during the resting state is widely used to examine brain organization, cognition and alterations in disease states. While it is known that neuromodulation and the state of alertness impact resting-state activity, neural mechanisms behind such modulation of resting-state activity are unknown. In this work, we used a computational model to demonstrate that change in excitability and recurrent connections, due to cholinergic modulation, impacts resting-state activity. The results of such modulation in the model match closely with experimental work on direct cholinergic modulation of Default Mode Network (DMN) in rodents. We further extended our study to the human connectome derived from diffusion-weighted MRI. In human resting-state simulations, an increase in cholinergic input resulted in a brain-wide reduction of functional connectivity. Furthermore, selective cholinergic modulation of DMN closely captured experimentally observed transitions\r\nbetween the baseline resting state and states with suppressed DMN fluctuations associated with attention to external tasks. Our study thus provides insight into potential neural mechanisms for the effects of cholinergic neuromodulation on resting-state activity and its dynamics.\r\n"
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016670",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "sanda@cs.cas.cz"
@@ -228296,8 +228442,8 @@
             "attr_id": 471,
             "value": []
         },
-        "ver_date": "2024-05-21T20:48:40.713936",
-        "ver_number": 4
+        "ver_date": "2025-03-04T01:29:52.087021",
+        "ver_number": 5
     },
     "2016995": {
         "_citation_text": "https://pubmed.ncbi.nlm.nih.gov/38761846/",
@@ -228398,6 +228544,8 @@
             "attr_id": 24,
             "value": "Capsazepine (CPZ) was recognized as a synthetic inhibitor of capsaicin activation of TRPV1 channel. TRPV1 has been demonstrated to be widely distributed in endocrine or neuroendocrine cells, and different types of central neurons. However, whether and how this compound might produce any perturbations on varying types of ionic currents, other than block of capsaicin-induced TRPV1 or activation of epithelial Na+ current, remain largely unclear. In this study, we aimed to clarify the effect of CPZ on hyperpolarization-activated cationic current (Ih, or HCN-encoded current) and voltage-gated Na+ current (INa) in pituitary GH3 cells. By use of whole-cell patch-clamp recordings, the CPZ application caused a concentration-dependent inhibition of Ih amplitude or slowing in activation time course of the current with the measured IC50 or KD value of 3.1 or 3.16 \u03bcM, respectively. The steady-state activation curve of Ih during the exposure to 3 \u03bcM CPZ was shifted toward more hyperpolarized potential by approximately 20 mV; however, no change in the gating charge of the current was noticed. In this work, a modified Markovian model designed for Ih was implemented to evaluate the plausible modifications of CPZ on the hysteresis of the current; and the model was well suited to predict CPZ-mediated decrease in hysteretic strength of Ih. The INa identified in GH3 cells was also suppressed by CPZ, despite the activation or inactivation time course of the current was changed. Moreover, under cell-attached current measurements, cell exposure to CPZ resulted in a reduction of spontaneous firing. Collectively, finding the current observations suggest that CPZ-perturbed inhibition of Ih or INa appears to be direct and independent of its action on vanilloid receptor(s); hence, such actions would be a yet unidentified but important ionic mechanism underlying perturbed intrinsic membrane excitability in the in-vivo endocrine or neuroendocrine cells, or neurons."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016995",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "071320@tool.caaumed.org.tw"
@@ -228533,6 +228681,8 @@
             "attr_id": 24,
             "value": "What are the implications for the existence of subthreshold ion channels, their localization profiles, and plasticity on local field potentials (LFPs)? Here, we assessed the role of hyperpolarization-activated cyclic-nucleotide-gated (HCN) channels in altering hippocampal theta-frequency LFPs and the associated spike phase. We presented spatiotemporally randomized, balanced theta-modulated excitatory and inhibitory inputs to somatically aligned, morphologically realistic pyramidal neuron models spread across a cylindrical neuropil. We computed LFPs from seven electrode sites and found that the insertion of an experimentally constrained HCN-conductance gradient into these neurons introduced a location-dependent lead in the LFP phase without significantly altering its amplitude. Further, neurons fired action potentials at a specific theta phase of the LFP, and the insertion of HCN channels introduced large lags in this spike phase and a striking enhancement in neuronal spike-phase coherence. Importantly, graded changes in either HCN conductance or its half-maximal activation voltage resulted in graded changes in LFP and spike phases. Our conclusions on the impact of HCN channels on LFPs and spike phase were invariant to changes in neuropil size, to morphological heterogeneity, to excitatory or inhibitory synaptic scaling, and to shifts in the onset phase of inhibitory inputs. Finally, we selectively abolished the inductive lead in the impedance phase introduced by HCN channels without altering neuronal excitability and found that this inductive phase lead contributed significantly to changes in LFP and spike phase. Our results uncover specific roles for HCN channels and their plasticity in phase-coding schemas and in the formation and dynamic reconfiguration of neuronal cell assemblies. "
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016996",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "manishas@alum.iisc.ac.in"
@@ -228693,6 +228843,8 @@
             "attr_id": 24,
             "value": "This model simulates the afferent neural encoding in response to mechanical colorectal stretching. A custom-built mechano-sensitive ion channel, gated by membrane tension induced by circumferential colorectal stretch, is incorporated. A lumped parametric model has been developed to calculate membrane tension from the overall colorectal stretch."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2017006",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "fengb@uconn.edu"
@@ -228834,6 +228986,8 @@
             "attr_id": 24,
             "value": "Plateau potentials in models of striatal projection neurons were studied. Plateau potentials are supralinear dendritic voltage elevations which have: i) high somatic voltage amplitude and ii) are threshold, or all-or-none, events (like somatic action potentials). While the high somatic amplitude can sometimes be captured in models of striatal projection neurons, their all-or-none property is not usually not. In this study, we found that including glutamate spillover consistently and robustly provides all-or-none plateaus in addition to a high somatic amplitude. This result arises due to the prolonged duration of extrasynaptic glutamate. When glutamate spillover is not included, the all-or-none behavior is very sensitive to parameters in the model for the Mg2+ block of the NMDA receptors, which is the mechanism for generating plateaus. These results suggest a potentially significant role of glutamate spillover in plateau potential generation. See the related article for more details."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2017143",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "trpevski@kth.se"
@@ -228862,6 +229016,159 @@
         },
         "ver_date": "2024-07-11T02:55:00.077311",
         "ver_number": 4
+    },
+    "2017402": {
+        "_citation_text": "Ortner NJ, Bock G, Dougalis A, Kharitonova M, Duda J, Hess S, Tuluc P, Pomberger T, Stefanova N, Pitterl F, Ciossek T, Oberacher H, Draheim HJ, Kloppenburg P, Liss B, Striessnig J. Lower Affinity of Isradipine for L-Type Ca2+ Channels during Substantia Nigra Dopamine Neuron-Like Activity: Implications for Neuroprotection in Parkinson's Disease. J Neurosci. 2017 Jul 12;37(28):6761-6777. doi: 10.1523/JNEUROSCI.2946-16.2017. Epub 2017 Jun 7. PMID: 28592699; PMCID: PMC6596555.",
+        "_implementers_text": "Antonios Dougalis",
+        "class_id": 19,
+        "created": "2024-07-02T12:35:36.627675+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 146507,
+                    "object_name": "Ca pump"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 255,
+                    "object_name": "I CAN"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 139267,
+                    "object_name": "I Cl, leak"
+                },
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                },
+                {
+                    "object_id": 251,
+                    "object_name": "I h"
+                },
+                {
+                    "object_id": 243506,
+                    "object_name": "IK Skca"
+                },
+                {
+                    "object_id": 143445,
+                    "object_name": "I_KD"
+                }
+            ]
+        },
+        "expmotivation": "",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2017402,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 226011,
+                    "object_name": "Dougalis, Antonios [antoniosdougalis at hotmail.com]"
+                }
+            ]
+        },
+        "license": "GPL",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3649,
+                    "object_name": "Action Potentials"
+                },
+                {
+                    "object_id": 3630,
+                    "object_name": "Bursting"
+                },
+                {
+                    "object_id": 98012,
+                    "object_name": "Calcium dynamics"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2018989,
+                    "object_name": "Ortner NJ et al. (2017)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "Substantia Nigra Par Compacta (Ortner et al., 2017)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 267559,
+                    "object_name": "Dopaminergic substantia nigra neuron"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": [
+                {
+                    "object_id": 233,
+                    "object_name": "Glutamate"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "The model contains three different isoforms of the calcium L- type channels (Cav1.2 \u03b11-subunit, long and short Cav1.3 \u03b11-subunit splice variants) according to the data and the descriptions of Ortner et al., 2017 J Neurosci. \r\nSince calcium overload confers the susceptibility of SNc neurons to neurodegeneration. our work described the  impact of the those different L- type calcium isoforms in calcium accumulation, action potential firing and burst firing (NMDA-induced) of the SNc neurons. "
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "antoniosdougalis@gmail.com"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": [
+                {
+                    "object_id": 206,
+                    "object_name": "NMDA"
+                }
+            ]
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 115952,
+                    "object_name": "Basal ganglia"
+                }
+            ]
+        },
+        "ver_date": "2025-03-04T02:21:34.105603",
+        "ver_number": 2
     },
     "2017403": {
         "_citation_text": "Nicoletti, M., Chiodo, L., Loppini, A., Liu, Q., Folli, V., Ruocco, G., & Filippi, S. (2024). Biophysical modeling of the whole-cell dynamics of C. elegans motor and interneurons families. PLoS One, 19(3), e0298105.\r\nDOI: 10.1371/journal.pone.0298105\r\nPMID: 38551921",
@@ -228965,6 +229272,8 @@
             "attr_id": 24,
             "value": "Biophysically accurate models of six classes of C. elegans neurons: AIY, RIM, and AVA interneurons, and the VA, VB, and VD motor neurons. The implemented codes reproduce current-clamp and voltage-clamp experiments reported in literature and simulate knockout neurons, with the aim to identify the biophysical mechanisms at the basis of inter and motor neuron functioning. These models represent a step forward toward the modeling of C. elegans neuronal networks and virtual experiments on the nematode nervous system."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2017403",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "a.loppini@unicampus.it"
@@ -229111,6 +229420,8 @@
             "attr_id": 24,
             "value": "We developed a computational model of the parkinsonian motor network to investigate multivariable closed-loop control strategies of deep brain stimulation (DBS) for Parkinson\u2019s disease (PD). The motor network model includes a model of the cortical basal ganglia coupled to a model of the motoneuron pool. The cortical basal ganglia model incorporates (i) the extracellular DBS electric field, (ii) antidromic and orthodromic activation of STN afferent fibers, (iii) the LFP detected at non-stimulating contacts on the DBS electrode, while (iv) the motoneuron pool model includes a model of electromyography and (v) force generated due to the activation of motoneurons in the pool. The model simulates periods of elevated beta- and tremor-band activity to facilitate investigation of tremor- and beta-based closed-loop DBS control strategies, modulating DBS amplitude, pulse duration or frequency, using clinically accessible measures of tremor- (based on the measured force signal) and beta-band activity (based on the local field potential)."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2017405",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "john.fleming@ndcn.ox.ac.uk"
@@ -229253,6 +229564,152 @@
         "ver_date": "2024-10-02T12:58:18.637602+00:00",
         "ver_number": 1
     },
+    "2018006": {
+        "_citation_text": "",
+        "_implementers_text": "Alessandro Fiasconaro; Michele Migliore",
+        "class_id": 19,
+        "created": "2024-10-16T18:13:20.245590+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 146507,
+                    "object_name": "Ca pump"
+                },
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 255,
+                    "object_name": "I CAN"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 243,
+                    "object_name": "I L high threshold"
+                },
+                {
+                    "object_id": 250,
+                    "object_name": "I M"
+                },
+                {
+                    "object_id": 242,
+                    "object_name": "I Na,t"
+                },
+                {
+                    "object_id": 245,
+                    "object_name": "I T low threshold"
+                },
+                {
+                    "object_id": 251,
+                    "object_name": "I h"
+                },
+                {
+                    "object_id": 143445,
+                    "object_name": "I_KD"
+                }
+            ]
+        },
+        "expmotivation": "",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2018006,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 2018010,
+                    "object_name": "Fiasconaro, Alessandro"
+                },
+                {
+                    "object_id": 33737,
+                    "object_name": "Migliore, Michele [Michele.Migliore at Yale.edu]"
+                }
+            ]
+        },
+        "license": "other",
+        "model_concept": {
+            "attr_id": 113,
+            "value": []
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2018743,
+                    "object_name": "Fiasconaro A, Migliore M (2024)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "Synchronization in a realistic model of CA1 hippocampal neurons (Fiasconaro and Migliore, 2024)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 258,
+                    "object_name": "Hippocampus CA1 pyramidal GLU cell"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "We study the synchronisation of neurons in a realistic model under the Hodgkin-Huxley dynamics. To focus on the role of the different locations of the excitatory synapses, we use two identical neurons where the set of input signals is grouped at two different distances from the soma. Synchronisation is studied using phase spiking correlation as a function of various parameters such as the distance from the soma of one of the synaptic groups, the inhibition weight and the associated activation delay.\r\n\r\nWe found that the neurons' spiking activity depends nonmonotonically on the relative dendritic location of the synapses and their inhibitory weight, whereas the synchronisation measure always decreases with inhibition, and strongly depends on its activation time delay."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "afiascon@unizar.es"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 115946,
+                    "object_name": "Hippocampus"
+                }
+            ]
+        },
+        "ver_date": "2025-03-04T01:39:48.903995",
+        "ver_number": 3
+    },
     "2018009": {
         "_citation_text": "Effects of synapse location, delay and background stochastic activity on synchronising hippocampal CA1 neurons. Chaos, Solitons and fractals X, 2024",
         "_implementers_text": "Alessandro Fiasconaro; Michele Migliore",
@@ -229387,6 +229844,8 @@
             "attr_id": 24,
             "value": "We study the synchronisation of neurons in a realistic model under the Hodgkin-Huxley dynamics. To focus on the role of the different locations of the excitatory synapses, we use two identical neurons where the set of input signals is grouped at two different distances from the soma. Synchronisation is studied using phase spiking correlation as a function of various parameters such as the distance from the soma of one of the synaptic groups, the inhibition weight and the associated activation delay.\r\nWe found that the neurons' spiking activity depends nonmonotonically on the relative dendritic location of the synapses and their inhibitory weight, whereas the synchronisation measure always decreases with inhibition, and strongly depends on its activation time delay."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018009",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "afiascon@unizar.es"
@@ -229475,6 +229934,8 @@
             "attr_id": 24,
             "value": "This code reproduces the computational model of cortical circuits presented in Beerendonk, Mejias et al., PNAS 2024. The model describes a simplified population-level cortical circuit with pyramidal neurons and multiple interneuron types (PV, SST, VIP) which performs a simple perceptual decision making task. Notably, the model incorporates the effect of arousal signals on the circuit to reproduce the inverted-U relationship between task performance and arousal level found experimentally (and the corresponding U-shape between reaction times and arousal levels)."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018021",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "j.f.mejias@uva.nl"
@@ -229494,5 +229955,907 @@
         },
         "ver_date": "2024-12-05T01:32:16.253511",
         "ver_number": 2
+    },
+    "2018022": {
+        "_citation_text": "Parker, J., & Ramirez, J. M. (2025). Differentiating the contributions of Na+/K+ pump current and persistent Na+ current in simulated voltage-clamp experiments. Journal of neurophysiology, Accepted. 10.1152/jn.00060.2024",
+        "_implementers_text": "",
+        "class_id": 19,
+        "created": "2024-12-01T21:04:32.297493+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 249,
+                    "object_name": "I K,leak"
+                },
+                {
+                    "object_id": 139268,
+                    "object_name": "I Na, leak"
+                },
+                {
+                    "object_id": 222730,
+                    "object_name": "I Na, slow inactivation"
+                },
+                {
+                    "object_id": 143445,
+                    "object_name": "I_KD"
+                },
+                {
+                    "object_id": 120693,
+                    "object_name": "Na/K pump"
+                }
+            ]
+        },
+        "expmotivation": "Paper Abstract:\r\n\r\nThe persistent Na+ current (INaP) is thought to play important roles in many brain regions including the generation of inspiration in the ventral respiratory column (VRC) of mammals. The characterization of the slow inactivation of INaP requires long-lasting voltage steps (>1 s), which will increase intracellular Na+ and activate the Na+/K+-ATPase pump current (IPump). Thus, IPump may contribute to the previously measured slow inactivation of INaP and the generation of the inspiratory bursting rhythm.\r\n\r\nTo test this hypothesis, we computationally modeled a respiratory pacemaker neuron that included a non-inactivating INaP and IPump in addition to other basic spike-generating currents. This model produces an inspiration-like bursting rhythm, in which the dynamics of [Na+]i account for burst initiation and termination. We simulated a voltage-clamp experiment measuring the INaP inactivation kinetics using our model of non-inactivating INaP and IPump. Consistent with prior measurements in the VRC, we found a sigmoidal inactivation curve and a current that only partially inactivated reaching a minimum inactivation of 0.37. The biexponential time course of inactivation had decay rate constants of 0.45 s and 2.33 s with contributions of 49% and 51% respectively. The time constant of inactivation was 2.16 s. This decay was caused by the slow growth of IPump and the slow hyperpolarization of the Na+ reversal potential in response to the growing [Na+]i. \r\n\r\nWe conclude that important biophysical properties previously attributed to the INaP may be caused by IPump. This has important implications for understanding respiratory rhythmogenesis and other neuronal functions.\r\n",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2018022,
+        "license": "other",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 185343,
+                    "object_name": "Persistent activity"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": []
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 3529,
+                    "object_name": "C or C++ program"
+                },
+                {
+                    "object_id": 36835,
+                    "object_name": "MATLAB"
+                }
+            ]
+        },
+        "name": "Isolated pacemaker neuron from rodent respiratory CPG under voltage-clamp",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 125611,
+                    "object_name": "Respiratory column neuron"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "This is the model used throughout the paper, \r\n\r\nParker, J., & Ramirez, J. M. (2024). Differentiating the contributions of Na+/K+ pump current and persistent Na+ current in simulated voltage-clamp experiments. Journal of neurophysiology, In Review.\r\n\r\nIncluded in this code is a few different versions of the model. Firstly, there is the full canonical model of a single neuron producing inspiration-like bursting or the associated bursting seen when rhythmic cells are recorded in vitro, which is much slower than actual inspiration. Second, there is a reduced version of the model where the intracellular Na+ concentration is held constant as a parameter and modified. Third, there is a model where the cell is voltage-clamped and voltage protocols are applied to measure the inactivation kinetics of persistent sodium. This part gets confusing, because the model does not actually contain an hNaP variable. You really need to read the paper to understand what is going on here. But in short, we are looking at whether the presence of Na+/K+ pump current can make the cell INaP appear to slowly inactivate. There are then 2 more versions of the voltage-clamped model, Model A and Model B, which are slight variations of the original.\r\n"
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "jessiraeparker2@gmail.com"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 183076,
+                    "object_name": "Brainstem"
+                }
+            ]
+        },
+        "ver_date": "2024-12-01T21:04:32.297493+00:00",
+        "ver_number": 1
+    },
+    "2018247": {
+        "_citation_text": "Ly K, Italiano ML, Shivdasani MN, Tsai D, Zhang JY, Jiang C, Lovell NH, Dokos S, Guo T. Virtual Human Retina: Simulating Neural Signalling, Degeneration, and Responses to Electrical Stimulation. Brain Stimul. 2025 Jan 17:S1935-861X(25)00015-4. doi: 10.1016/j.brs.2025.01.013. Epub ahead of print. PMID: 39827982.",
+        "_implementers_text": "Keith Ly",
+        "class_id": 19,
+        "created": "2025-01-26T19:15:25.204197+00:00",
+        "expmotivation": "The results suggest that compared to direct RGC activation, network-mediated stimulation produces neural activation mosaics more akin to that of a naturalistic spotlight pulse. It was found that the rectification of the OFF pathway was preserved in subretinal, intraretinal INL, and intraretinal IPL stimulation, resulting in activation of ON RGCs alongside inhibition of OFF RGCs. These results suggests that emerging strategies for prosthetic vision should a) incorporate inhibitory circuitry mechanisms into consideration when devising electrical stimulation strategies; b) better preserve naturalistic firing mosaics by avoiding indiscriminate RGC activation, ideally sending less conflicting information to the visual cortex; and c) further consider the impacts of functional remodelling and degeneration in the retina on the efficacy of artificial stimulation.",
+        "id": 2018247,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 2018265,
+                    "object_name": "Ly, Keith"
+                }
+            ]
+        },
+        "license": "MIT",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3641,
+                    "object_name": "Detailed Neuronal Models"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2018264,
+                    "object_name": "Ly K et al. (2025)"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "Virtual Human Retina: Simulating Neural Signalling, Degeneration, and Responses to Electrical Stimulation (Ly et al 2025)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 270,
+                    "object_name": "Retina ganglion GLU cell"
+                },
+                {
+                    "object_id": 223953,
+                    "object_name": "Retina amacrine cell"
+                },
+                {
+                    "object_id": 7020,
+                    "object_name": "Retina bipolar GLU cell"
+                },
+                {
+                    "object_id": 225100,
+                    "object_name": "Retina horizontal cell"
+                },
+                {
+                    "object_id": 1966,
+                    "object_name": "Retina photoreceptor cone GLU cell"
+                },
+                {
+                    "object_id": 153361,
+                    "object_name": "Retina photoreceptor rod GLU cell"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": [
+                {
+                    "object_id": 232,
+                    "object_name": "Gaba"
+                },
+                {
+                    "object_id": 214,
+                    "object_name": "Glycine"
+                },
+                {
+                    "object_id": 233,
+                    "object_name": "Glutamate"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Abstract\r\nIntroduction: Current brain-based visual prostheses pose significant challenges impeding adoption such as the necessarily complex surgeries and occurrence of more substantial side effects due to the sensitivity of the brain. This has led to much effort toward vision restoration being focused on the more approachable part of the brain - the retina. Here we introduce a novel, parameterized simulation platform that enables study of human retinal degeneration and optimization of stimulation strategies. The platform bears immense potential for patient-specific tailoring and serves to enhance artificial vision solutions for individuals with visual impairments.\r\n\r\nMaterial and method: Our virtual retina is developed using the software package, NEURON. This virtual retina platform supports large-scale simulations of over 10,000 neurons whilst upholding strong biological plausibility with multiple important visual pathways and detailed network properties. The comprehensive three-dimensional model includes photoreceptors, horizontal cells, bipolar cells, amacrine cells, and midget and parasol retinal ganglion cells, with comprehensive network connectivity across various eccentricities (1 mm to 5 mm from the fovea) in the human retina. The model is constructed using electrophysiology, immunohistology, and optical coherence tomography imaging data from healthy and degenerate human retinas. We validated our model by replicating numerous experimental observations from human and primate retina, with a particular focus on retinal degeneration.\r\n\r\nResult: We simulated interactions between diseased retinas and state-of-the-art retinal implants, shedding light on the limitations of commercial retinal prostheses. Our results suggested that appropriate stimulation settings with intraretinal prototype devices could leverage network-mediated activation to achieve activation mosaics more alike that of the retina's response to natural light, promoting the prospect of more naturalistic vision. Our study additionally highlights the importance of controlling inhibitory circuits in the retinal network to induce functionally relevant retinal activity.\r\n\r\nConclusion: This study demonstrates the potential of this software package and highlights its utility as a valuable tool for engineers, scientists, and clinicians in the design and optimisation of retinal stimulation devices for both research and educational applications.\r\n\r\nKeywords: Virtual retina; bionic vision; data-driven model; discrete neuronal network model; electrical stimulation; human retina; mechanistic model; retinal degeneration."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "keithly@stanford.edu"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": [
+                {
+                    "object_id": 213,
+                    "object_name": "Gaba"
+                },
+                {
+                    "object_id": 207,
+                    "object_name": "mGluR"
+                },
+                {
+                    "object_id": 1361,
+                    "object_name": "Glycine"
+                },
+                {
+                    "object_id": 206,
+                    "object_name": "NMDA"
+                },
+                {
+                    "object_id": 210,
+                    "object_name": "Kainate"
+                }
+            ]
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 118529,
+                    "object_name": "Retina"
+                }
+            ]
+        },
+        "ver_date": "2025-02-07T21:57:29.887504",
+        "ver_number": 2
+    },
+    "2018259": {
+        "_citation_text": "PMC10925315",
+        "_implementers_text": "Suraj Honnuraiah",
+        "class_id": 19,
+        "created": "2025-02-04T18:35:08.347735+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": []
+        },
+        "expmotivation": "Biophysical model of Octopus neuron in auditory brain stem",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2018259,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 260965,
+                    "object_name": "Honnuraiah, Suraj [hs at ini.phys.ethz.ch]"
+                }
+            ]
+        },
+        "license": "MIT",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3632,
+                    "object_name": "Coincidence Detection"
+                },
+                {
+                    "object_id": 3635,
+                    "object_name": "Synchronization"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": []
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "Octopus neuron (Kreeger et al., 2025)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 277,
+                    "object_name": "Cochlear nucleus octopus GLU cell"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Animals navigate the auditory world by recognizing complex sounds, from the rustle of a predator to the call of a potential mate. This ability depends in part on the octopus cells of the auditory brainstem, which respond to multiple frequencies that change over time, as occurs in natural stimuli. Unlike the average neuron, which integrates inputs over time on the order of tens of milliseconds, octopus cells must detect momentary coincidence of excitatory inputs from the cochlea during an ongoing sound on both the millisecond and submillisecond time scale. Here, we show that octopus cells receive inhibitory inputs on their dendrites that enhance opportunities for coincidence detection in the cell body, thereby allowing for responses both to rapid onsets at the beginning of a sound and to frequency modulations during the sound. This mechanism is crucial for the fundamental process of integrating the synchronized frequencies of natural auditory signals over time."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "suraj_honnuraiah@hms.harvard.edu"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 143145,
+                    "object_name": "Auditory brainstem"
+                },
+                {
+                    "object_id": 183076,
+                    "object_name": "Brainstem"
+                }
+            ]
+        },
+        "ver_date": "2025-04-11T21:43:39.219941",
+        "ver_number": 2
+    },
+    "2018260": {
+        "_citation_text": "Andrew T Landau, Pojeong Park, J David Wong-Campos, He Tian, Adam E Cohen, Bernardo L Sabatini (2022) Dendritic branch structure compartmentalizes voltage-dependent calcium influx in cortical layer 2/3 pyramidal cells eLife 11:e76993",
+        "_implementers_text": "",
+        "class_id": 19,
+        "created": "2025-02-04T21:08:46.762689+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 247,
+                    "object_name": "I A"
+                },
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                }
+            ]
+        },
+        "expmotivation": "Understand how cable properties affect AP amplitude and calcium conductances. ",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2018260,
+        "license": "GPL",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3649,
+                    "object_name": "Action Potentials"
+                },
+                {
+                    "object_id": 3639,
+                    "object_name": "Active Dendrites"
+                },
+                {
+                    "object_id": 3640,
+                    "object_name": "Influence of Dendritic Geometry"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2018305,
+                    "object_name": "Landau AT et al. (2022)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 8114,
+                    "object_name": "Dendrite"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                }
+            ]
+        },
+        "name": "L2/3 Dendritic Morphology (Landau et al., 2022)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 266,
+                    "object_name": "Neocortex L2/3 pyramidal GLU cell"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "This code has some accurate morphological models of L2/3 neurons recorded in slices from mouse cortex. The paper it's related to aimed to understand how dendritic morphology (branching structure) affected action potential backpropagation and calcium signaling in dendrites, and that's what this code allows you to study. \r\n\r\nhttps://github.com/landoskape/landau-2022"
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "andrewtylerlandau@gmail.com"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 228598,
+                    "object_name": "Mouse"
+                },
+                {
+                    "object_id": 115945,
+                    "object_name": "Neocortex"
+                }
+            ]
+        },
+        "ver_date": "2025-02-04T21:08:46.762689+00:00",
+        "ver_number": 1
+    },
+    "2018262": {
+        "_citation_text": "Abdollahi, N., Xie, Y. F., Ratt\u00e9, S., & Prescott, S. A. (2025). KV1 channels enable myelinated axons to transmit spikes reliably without spiking ectopically. Journal of Neuroscience.",
+        "_implementers_text": "Nooshin Abdollahi",
+        "class_id": 19,
+        "created": "2025-02-06T00:03:23.088333+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 151550,
+                    "object_name": "Channelrhodopsin (ChR)"
+                },
+                {
+                    "object_id": 248,
+                    "object_name": "I K"
+                },
+                {
+                    "object_id": 249,
+                    "object_name": "I K,leak"
+                },
+                {
+                    "object_id": 222730,
+                    "object_name": "I Na, slow inactivation"
+                },
+                {
+                    "object_id": 116966,
+                    "object_name": "I_K,Na"
+                }
+            ]
+        },
+        "expmotivation": "",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2018262,
+        "implemented_by": {
+            "attr_id": 299,
+            "value": [
+                {
+                    "object_id": 2015408,
+                    "object_name": "Abdollahi, Nooshin [nooshin.abdollahi at mail.utoronto.ca]"
+                }
+            ]
+        },
+        "license": "other",
+        "model_concept": {
+            "attr_id": 113,
+            "value": []
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2018270,
+                    "object_name": "Abdollahi N, Xie YF, Ratt\u00e9 S, Prescott SA (2025)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3538,
+                    "object_name": "Axon"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": []
+        },
+        "name": "KV1 Channels Enable Myelinated Axons to Transmit Spikes  Reliably without Spiking Ectopically (Abdollahi et al., 2025)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 52425,
+                    "object_name": "Myelinated neuron"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Action potentials (spikes) are regenerated at each node of Ranvier during saltatory transmission along a myelinated axon. The high density of voltage-gated sodium channels required by nodes to reliably transmit spikes increases the risk of ectopic spike generation in the axon. Here we show that ectopic spiking is avoided because KV1 channels prevent nodes from responding to slow depolarization; instead, axons respond selectively to rapid depolarization because KV1 channels implement a high-pass filter. To characterize this filter, we compared spike initiation properties in the soma and axon of CA1 pyramidal neurons from mice of both sexes, using spatially restricted photoactivation of channelrhodopsin-2 (ChR2) to evoke spikes in either region while simultaneously recording at the soma. Somatic photostimulation evoked repetitive spiking whereas axonal photostimulation evoked transient spiking. Blocking KV1channels converted the axon photostimulation response to repetitive spiking and encouraged spontaneous ectopic spike initiation in the axon. According to computational modeling, the high-pass filter implemented by KV1 channels matches the axial current waveform associated with saltatory conduction, enabling axons to faithfully transmit digital signals by maximizing their signal-to-noise ratio for this task. Specifically, a node generates a single spike only when rapidly depolarized, which is precisely what occurs during saltatory conduction when a pulse of axial current(triggered by a spike occurring at the upstream node) reaches the next node. The soma and axon use distinct spike initiation mechanisms (filters) appropriate for the task required of each region, namely, analog-to-digital transduction in the soma versus digital signal transmission in the axon."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "nooshin.abdollahi@mail.utoronto.ca"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 115946,
+                    "object_name": "Hippocampus"
+                }
+            ]
+        },
+        "ver_date": "2025-03-03T21:01:40.561100",
+        "ver_number": 2
+    },
+    "2018263": {
+        "_citation_text": "ECY Ho, AJH Newton, E Urdapilleta, S Dura-Bernal and W Truccolo \"Downmodulation of Potassium Conductances Induces Epileptic Seizures in Cortical Network Models Via Multiple Synergistic Factors\" J. Neurosci. 45(13):e1909232025, 2025.",
+        "_implementers_text": "",
+        "class_id": 19,
+        "created": "2025-02-07T13:45:38.231651+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 2396,
+                    "object_name": "I Calcium"
+                },
+                {
+                    "object_id": 139267,
+                    "object_name": "I Cl, leak"
+                },
+                {
+                    "object_id": 253,
+                    "object_name": "I K,Ca"
+                },
+                {
+                    "object_id": 249,
+                    "object_name": "I K,leak"
+                },
+                {
+                    "object_id": 139268,
+                    "object_name": "I Na, leak"
+                },
+                {
+                    "object_id": 241,
+                    "object_name": "I Na,p"
+                },
+                {
+                    "object_id": 2405,
+                    "object_name": "I Potassium"
+                },
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                },
+                {
+                    "object_id": 127083,
+                    "object_name": "I_AHP"
+                },
+                {
+                    "object_id": 120693,
+                    "object_name": "Na/K pump"
+                }
+            ]
+        },
+        "expmotivation": "",
+        "gene": {
+            "attr_id": 476,
+            "value": []
+        },
+        "id": 2018263,
+        "license": "MIT",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 3649,
+                    "object_name": "Action Potentials"
+                },
+                {
+                    "object_id": 52405,
+                    "object_name": "Epilepsy"
+                },
+                {
+                    "object_id": 238958,
+                    "object_name": "Stochastic simulation"
+                },
+                {
+                    "object_id": 183719,
+                    "object_name": "Synaptic noise"
+                },
+                {
+                    "object_id": 3635,
+                    "object_name": "Synchronization"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2019439,
+                    "object_name": "Ho \u4f55\u93ae\u5b87 ECY, Newton AJH, Urdapilleta E, Dura-Bernal S, Truccolo W (2025)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3536,
+                    "object_name": "Realistic Network"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                },
+                {
+                    "object_id": 195884,
+                    "object_name": "NetPyNE"
+                }
+            ]
+        },
+        "name": "Network models of single compartment neurons for investigating downmodulation of voltage-gated potassium channels (Ho et al., 2025)",
+        "neurons": {
+            "attr_id": 25,
+            "value": [
+                {
+                    "object_id": 114737,
+                    "object_name": "Hodgkin-Huxley neuron"
+                }
+            ]
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": [
+                {
+                    "object_id": 232,
+                    "object_name": "Gaba"
+                },
+                {
+                    "object_id": 233,
+                    "object_name": "Glutamate"
+                }
+            ]
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Voltage-gated potassium conductances gK play a critical role not only in normal neural function, but also in many neurological disorders and related therapeutic interventions. In particular, in an important animal model of epileptic seizures, 4-aminopyridine (4-AP) administration is thought to induce seizures by reducing gK in cortex and other brain areas. Interestingly, 4-AP has also been useful in the treatment of neurological disorders such as multiple sclerosis (MS) and spinal cord injury, where it is thought to improve action potential propagation in axonal fibers. Here, we examined gK downmodulation in biophysical models of cortical networks that included different neuron types organized in layers, potassium diffusion in interstitial and larger extracellular spaces, and glial buffering. Our findings are fourfold. First, gK downmodulation in pyramidal and fast-spiking inhibitory interneurons led to\r\ndifferential effects, making the latter much more likely to enter depolarization block. Second, both neuron types showed an increase in the duration and amplitude of action potentials, with more pronounced effects in pyramidal neurons. Third, a sufficiently strong gK reduction dramatically increased network synchrony, resulting in seizure-like dynamics. Fourth, we hypothesized that broader action potentials were likely to not only improve their propagation, as in 4-AP therapeutic uses, but also to increase synaptic coupling. Notably, graded-synapses incorporating this effect further amplified network synchronization and seizure-like dynamics. Overall, our findings elucidate different effects that gK downmodulation may have in cortical networks, explaining its potential role in both pathological neural dynamics and therapeutic applications."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "ecy.ho@utoronto.ca"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": [
+                {
+                    "object_id": 205,
+                    "object_name": "AMPA"
+                },
+                {
+                    "object_id": 202,
+                    "object_name": "GabaA"
+                }
+            ]
+        },
+        "region": {
+            "attr_id": 471,
+            "value": []
+        },
+        "ver_date": "2025-02-07T13:45:38.231651+00:00",
+        "ver_number": 1
+    },
+    "2019342": {
+        "_citation_text": "Joshua D Garcia, Chenyu Wang, Emmie Banks, Timothy Fenton, Jean-Marc De Keyser, Tatiana V Abramova, Alfred L George, Roy Ben-Shalom, David H Hackos, Kevin J Bender. 2025 Differential roles of NaV1.2 and NaV1.6 in neocortical pyramidal cell excitabilityeLife14:RP105696",
+        "_implementers_text": "",
+        "class_id": 19,
+        "created": "2025-03-05T17:58:12.996479+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": []
+        },
+        "expmotivation": "",
+        "gene": {
+            "attr_id": 476,
+            "value": [
+                {
+                    "object_id": 92083,
+                    "object_name": "Nav1.2 SCN2A"
+                },
+                {
+                    "object_id": 92087,
+                    "object_name": "Nav1.6 SCN8A"
+                }
+            ]
+        },
+        "id": 2019342,
+        "license": "MIT",
+        "model_concept": {
+            "attr_id": 113,
+            "value": []
+        },
+        "model_paper": {
+            "value": []
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": [
+                {
+                    "object_id": 3537,
+                    "object_name": "Neuron or other electrically excitable cell"
+                }
+            ]
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 1882,
+                    "object_name": "NEURON"
+                },
+                {
+                    "object_id": 114646,
+                    "object_name": "Python"
+                }
+            ]
+        },
+        "name": "Differential roles of NaV1.2 and NaV1.6 in neocortical pyramidal cell excitability (Garcia et al. 2025)",
+        "neurons": {
+            "attr_id": 25,
+            "value": []
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "Based on the Layer 5 thick-tufted pyramidal cell from the Blue Brain Project, we modeled the selective block of Nav1.2 and Nav1.6 to determine their precise roles in pyramidal cell excitability."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "tafenton@ucdavis.edu"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": [
+                {
+                    "object_id": 147188,
+                    "object_name": "Prefrontal cortex (PFC)"
+                }
+            ]
+        },
+        "ver_date": "2025-03-05T17:58:12.996479+00:00",
+        "ver_number": 1
+    },
+    "2019444": {
+        "_citation_text": "Knox AT, Thompson CH, Scott D, Abramova TV, Stieve B, Freeman A, George AL Jr. Genotype-function-phenotype correlations for SCN1A variants identified by clinical genetic testing. Ann Clin Transl Neurol. 2025 Mar;12(3):499-511. doi: 10.1002/acn3.52297. Epub 2025 Jan 21. PMID: 39838578; PMCID: PMC11920720.",
+        "_implementers_text": "",
+        "class_id": 19,
+        "created": "2025-04-07T21:13:26.782726+00:00",
+        "currents": {
+            "attr_id": 27,
+            "value": [
+                {
+                    "object_id": 2395,
+                    "object_name": "I Sodium"
+                }
+            ]
+        },
+        "expmotivation": "",
+        "gene": {
+            "attr_id": 476,
+            "value": [
+                {
+                    "object_id": 92082,
+                    "object_name": "Nav1.1 SCN1A"
+                }
+            ]
+        },
+        "id": 2019444,
+        "license": "GPL",
+        "model_concept": {
+            "attr_id": 113,
+            "value": [
+                {
+                    "object_id": 52405,
+                    "object_name": "Epilepsy"
+                }
+            ]
+        },
+        "model_paper": {
+            "value": [
+                {
+                    "object_id": 2019585,
+                    "object_name": "Knox AT et al. (2025)"
+                }
+            ]
+        },
+        "model_type": {
+            "attr_id": 112,
+            "value": []
+        },
+        "modeling_application": {
+            "attr_id": 114,
+            "value": [
+                {
+                    "object_id": 195884,
+                    "object_name": "NetPyNE"
+                }
+            ]
+        },
+        "name": "SCN1A variants of uncertain significance (Knox et al, 2025)",
+        "neurons": {
+            "attr_id": 25,
+            "value": []
+        },
+        "neurotransmitters": {
+            "attr_id": 28,
+            "value": []
+        },
+        "notes": {
+            "attr_id": 24,
+            "value": "A PV+ interneuron model in the netpyne environment with code to test SCN1A variant effects on rheobase and depolarization block threshold."
+        },
+        "public_submitter_email": {
+            "attr_id": 309,
+            "value": "knox@neurology.wisc.edu"
+        },
+        "receptors": {
+            "attr_id": 26,
+            "value": []
+        },
+        "region": {
+            "attr_id": 471,
+            "value": []
+        },
+        "ver_date": "2025-04-11T21:27:23.394081",
+        "ver_number": 3
     }
 }
