@@ -65,15 +65,20 @@ If it is reporting that there are ModelDB entries yet to be forked, run:
 ```
 python modeldb_info.py -fork
 ```
-This will create a fork of the ModelDB repository (e.g. https://github.com/ModelDBRepository/2018247) on OSB GitHub organisation (e.g. https://github.com/OpenSourceBrain/2018247)
+This will create a fork of the ModelDB repository (e.g. https://github.com/ModelDBRepository/2018247) on the OSB GitHub organisation (e.g. https://github.com/OpenSourceBrain/2018247)
 
-Now run 
+Now run: 
 ```
 python osb_gh_info.py 
 ```
-again to see this (the new repository will be added to the cache). Now we need to create an OSBv2 repository pointing to this repo on https://github.com/OpenSourceBrain:
+again to see this (the new repository will be added to the cache). 
+
+Now we need to create an OSBv2 repository pointing to this repo on https://github.com/OpenSourceBrain:
 ```
 python loadmodeldb.py -dry -v2dev       # dry run to test/list repos to add
-python loadmodeldb.py abcxxx123 -v2dev  # add new repos using the token as above...
+python loadmodeldb.py abcxxx123 -v2dev  # add new repos to v2dev using the token as above...
 python osb_info.py -v2dev               # regenerate the cache of all osbv2 dev repos
 ```
+When this works, do the same with `-v2` for the live OSBv2. 
+
+

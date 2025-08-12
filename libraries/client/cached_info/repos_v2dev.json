@@ -128629,7 +128629,7 @@
             ],
             "default_context": "main",
             "id": 2275,
-            "name": "Heterogeneous Purkinje Cell model (Cirtala et al., accepted)",
+            "name": "Heterogeneous Purkinje Cell model (Cirtala and De Schutter, 2024)",
             "repository_type": "github",
             "summary": "We propose the first computational model of cerebellar Purkinje cell with dendritic heterogeneity. Each branch in our model is an individual unit and is characterized by its own set ion channel conductance density. We model clustered parallel fiber input and we measure the peak amplitude of a response. We observe how changes in P-type calcium conductance density changes the peak amplitude response from linear to bimodal step-plateau and vice-versa for each branch of the dendritic tree. We show how the dendritic calcium spikes propagate and how Kv4 channels block spreading depolarization to nearby branches. ",
             "tags": [
@@ -128698,7 +128698,7 @@
             ],
             "default_context": "main",
             "id": 2276,
-            "name": "A novel mechanism for ramping bursts based on slow negative feedback in model respiratory neurons (John et al., accepted)",
+            "name": "A novel mechanism for ramping bursts based on slow negative feedback in model respiratory neurons (John et al., 2024)",
             "repository_type": "github",
             "summary": "Recordings from pre-Botzinger complex neurons responsible for the inspiratory phase of the respiratory rhythm reveal a ramping burst pattern, starting around the time that the transition from expiration to inspiration begins, in which the spike rate gradually rises until a transition into a high-frequency burst occurs. The spike rate increase along the burst is accompanied by a gradual depolarization of the plateau potential that underlies the spikes. These effects may be functionally important for inducing the onset of inspiration and hence maintaining effective respiration; however, most mathematical models for inspiratory bursting do not capture this activity pattern. Here, we study how the modulation of spike height and afterhyperpolarization via the slow inactivation of an inward current can support various activity patterns including ramping bursts. We use dynamical systems methods designed for multiple timescale systems, such as bifurcation analysis based on timescale decomposition  and averaging over fast oscillations, to generate an understanding of and predictions about the specific dynamic effects that lead to ramping bursts.  We also analyze how transitions between ramping and other activity patterns may occur with parameter changes, which could be associated with experimental manipulations, environmental conditions and/or development.",
             "tags": [
@@ -129041,7 +129041,7 @@
             ],
             "default_context": "main",
             "id": 2283,
-            "name": "Cholinergic modulation of resting state networks (Sanda et al., accepted)",
+            "name": "Cholinergic modulation of resting state networks (Sanda et al., 2024)",
             "repository_type": "github",
             "summary": "Brain activity during the resting state is widely used to examine brain organization, cognition and alterations in disease states. While it is known that neuromodulation and the state of alertness impact resting-state activity, neural mechanisms behind such modulation of resting-state activity are unknown. In this work, we used a computational model to demonstrate that change in excitability and recurrent connections, due to cholinergic modulation, impacts resting-state activity. The results of such modulation in the model match closely with experimental work on direct cholinergic modulation of Default Mode Network (DMN) in rodents. We further extended our study to the human connectome derived from diffusion-weighted MRI. In human resting-state simulations, an increase in cholinergic input resulted in a brain-wide reduction of functional connectivity. Furthermore, selective cholinergic modulation of DMN closely captured experimentally observed transitions\r\nbetween the baseline resting state and states with suppressed DMN fluctuations associated with attention to external tasks. Our study thus provides insight into potential neural mechanisms for the effects of cholinergic neuromodulation on resting-state activity and its dynamics.\r\n",
             "tags": [
@@ -178828,6 +178828,1129 @@
             "timestamp_created": "2025-08-12 17:11:44.829170+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/OpenSourceBrain/2018247",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3399": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3399,
+            "name": "Intrinsic motivation in cognitive architecture (Nagashima et al., 2024)",
+            "repository_type": "github",
+            "summary": "These models are designed for a maze continuation task that specifically emphasizes curiosity. The act-r directory represents a model implemented using ACT-R, a cognitive architecture. On the other hand, the icm directory represents a model implemented using the Intrinsic Curiosity Module (ICM) for deep reinforcement learning. Despite the difference in implementation, both models are intended to perform the same task.",
+            "tags": [
+                {
+                    "id": 4696,
+                    "tag": "Lisp"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4697,
+                    "tag": "ModelDB:267752"
+                },
+                {
+                    "id": 620,
+                    "tag": "Python"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:15.390947+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/267752",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3400": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3400,
+            "name": "Dendritic action potentials and computation in human layer 2/3 cortical neurons with modulated input (Ko\u0159enek et al., 2025)",
+            "repository_type": "github",
+            "summary": "This model replicates Settings 1/2 in Figure 1/2/3 in the paper Ko\u0159enek J., Sanda P., and Hlinka J., 2025: Higher order definition of causality by optimally conditioned transfer entropy. Physical Review E, E 111, L042302. It is slight modification of Gidon et al., 2020 model (254217).",
+            "tags": [
+                {
+                    "id": 565,
+                    "tag": "Dendritic Action Potentials"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 1532,
+                    "tag": "I Na, leak"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4698,
+                    "tag": "ModelDB:2016664"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:21.577626+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2016664",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3401": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3401,
+            "name": "STSimM: a new tool for evaluating neuron model performance and detecting spike trains similarity (Marasco et al., 2024)",
+            "repository_type": "github",
+            "summary": "\"Four time-scale adaptive performance and similarity measures are proposed and implemented in the STSimM (Spike Trains Similarity Measures) Python tool. These measures are designed to accurately capture both the precise timing of individual spikes and shared periods of inactivity among spike trains.\"",
+            "tags": [
+                {
+                    "id": 1697,
+                    "tag": "Cython"
+                },
+                {
+                    "id": 756,
+                    "tag": "Methods"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4699,
+                    "tag": "ModelDB:2016671"
+                },
+                {
+                    "id": 620,
+                    "tag": "Python"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:22.913831+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2016671",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3402": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3402,
+            "name": "Cerebellar Golgi cell model with STDP (Pali et al., 2025)",
+            "repository_type": "github",
+            "summary": "Cerebellar Golgi cell model (Masoli et al., 2020) with STDP based on Shouval at el., 2002",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4700,
+                    "tag": "ModelDB:2017007"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:24.892668+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2017007",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3403": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3403,
+            "name": "Substantia Nigra Par Compacta (Ortner et al., 2017)",
+            "repository_type": "github",
+            "summary": "The model contains three different isoforms of the calcium L- type channels (Cav1.2 \u03b11-subunit, long and short Cav1.3 \u03b11-subunit splice variants) according to the data and the descriptions of Ortner et al., 2017 J Neurosci. \r\nSince calcium overload confers the susceptibility of SNc neurons to neurodegeneration. our work described the  impact of the those different L- type calcium isoforms in calcium accumulation, action potential firing and burst firing (NMDA-induced) of the SNc neurons. ",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 566,
+                    "tag": "Bursting"
+                },
+                {
+                    "id": 1684,
+                    "tag": "Ca pump"
+                },
+                {
+                    "id": 572,
+                    "tag": "Calcium dynamics"
+                },
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 731,
+                    "tag": "I CAN"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 1531,
+                    "tag": "I Cl, leak"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 594,
+                    "tag": "I h"
+                },
+                {
+                    "id": 2319,
+                    "tag": "IK Skca"
+                },
+                {
+                    "id": 747,
+                    "tag": "I_KD"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4701,
+                    "tag": "ModelDB:2017402"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:26.094352+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2017402",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3404": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3404,
+            "name": "Dorsal root ganglion (DRG) sensory pseudounipolar neuron and axon model (Farooqui et al., 2024)",
+            "repository_type": "github",
+            "summary": "These files include a class definition for a sensory DRG pseudounipolar neuron model and a sensory DRG axon model, each of which can be instantiated for any value of fiber diameter in the continuous range [6, 20] um. The models are written in Python with pyNEURON.\r\n\r\nThese models were used to investigate the effects of pseudounipolar neuron morphology and spatial distribution of neurons in the DRG on the selective activation of DRG A-alpha and A-beta sensory neurons in response to stimulation via two different types of electrodes (epineural and penetrating). ",
+            "tags": [
+                {
+                    "id": 727,
+                    "tag": "Action Potential Initiation"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 1532,
+                    "tag": "I Na, leak"
+                },
+                {
+                    "id": 739,
+                    "tag": "I Na,p"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4702,
+                    "tag": "ModelDB:2018004"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 620,
+                    "tag": "Python"
+                },
+                {
+                    "id": 2248,
+                    "tag": "Stimulus selectivity"
+                },
+                {
+                    "id": 764,
+                    "tag": "Touch"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:27.434923+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018004",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3405": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3405,
+            "name": "Synchronization in a realistic model of CA1 hippocampal neurons (Fiasconaro and Migliore, 2024)",
+            "repository_type": "github",
+            "summary": "We study the synchronisation of neurons in a realistic model under the Hodgkin-Huxley dynamics. To focus on the role of the different locations of the excitatory synapses, we use two identical neurons where the set of input signals is grouped at two different distances from the soma. Synchronisation is studied using phase spiking correlation as a function of various parameters such as the distance from the soma of one of the synaptic groups, the inhibition weight and the associated activation delay.\r\n\r\nWe found that the neurons' spiking activity depends nonmonotonically on the relative dendritic location of the synapses and their inhibitory weight, whereas the synchronisation measure always decreases with inhibition, and strongly depends on its activation time delay.",
+            "tags": [
+                {
+                    "id": 1684,
+                    "tag": "Ca pump"
+                },
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 731,
+                    "tag": "I CAN"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 589,
+                    "tag": "I L high threshold"
+                },
+                {
+                    "id": 580,
+                    "tag": "I M"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 575,
+                    "tag": "I T low threshold"
+                },
+                {
+                    "id": 594,
+                    "tag": "I h"
+                },
+                {
+                    "id": 747,
+                    "tag": "I_KD"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4703,
+                    "tag": "ModelDB:2018006"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:28.021764+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018006",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3406": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3406,
+            "name": "Dynamic Regulation of Vesicle Pools in a Detailed Spatial Model of the Complete Synaptic Vesicle Cycle (Gallimore et al, 2025)",
+            "repository_type": "github",
+            "summary": "Synaptic transmission is driven by a complex cycle of vesicle docking, release, and recycling, maintained by distinct vesicle pools. However, the partitioning of vesicle pools and reserve pool recruitment remain poorly understood. We use a novel vesicle modeling technology to model the synaptic vesicle cycle in unprecedented molecular and spatial detail at a hippocampal synapse. Our model demonstrates robust recycling of synaptic vesicles that maintains consistent synaptic release, even during sustained high frequency firing. We also reveal how the cytosolic proteins synapsin-1 and tomosyn-1 cooperate to regulate recruitment of reserve pool vesicles during sustained firing to maintain transmission, as well as the potential of selective vesicle active zone tethering to ensure rapid vesicle replenishment while minimizing reserve pool recruitment. We also monitored vesicle usage in isolated hippocampal neurons using pH-sensitive pHluorin, demonstrating that reserve vesicle recruitment depends on frequency, even at non-physiologically high firing frequencies, as predicted by the model.",
+            "tags": [
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4704,
+                    "tag": "ModelDB:2018007"
+                },
+                {
+                    "id": 1919,
+                    "tag": "Reaction-diffusion"
+                },
+                {
+                    "id": 1574,
+                    "tag": "STEPS"
+                },
+                {
+                    "id": 1576,
+                    "tag": "Stochastic simulation"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:28.610978+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018007",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3407": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3407,
+            "name": "Depolarization baseline offset in CA1 pyramidal neurons (Kumar et al., 2025)",
+            "repository_type": "github",
+            "summary": "These sets of models were used to investigate the mechanisms behind the large depolarization baseline offset (DBLO) seen in CA1 pyramidal neurons.\r\nSomatic step-current injection is commonly used to characterize electrophysiological properties of neurons. Many neuronal types show a large depolarization baseline offset (DBLO), which is defined as the positive difference between the minimum membrane potential during action potential trains and resting. We used stochastic parameter search in conductance-based models to show that four key factors together account for high DBLO: Liquid Junction Potential correction, high backpropagating passive charges during the repolarization phase of an action potential, fast potassium delayed rectifier kinetics, and appropriate transient sodium current kinetics.  Several plausible mechanisms for DBLO, such as Ohmic depolarization due to current input or low-pass filtering by the membrane, fail to explain the effect, and many published sophisticated conductance-based models do not correctly manifest high DBLO. Finally, models with experimentally consistent levels of DBLO constrain the parameter space of ion channel levels and kinetics. We also highlight the role these models may play in correctly identifying neuronal factors behind several cellular mechanisms such as bistable firing, spikelets, and calcium influx.\r\n",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 728,
+                    "tag": "Axonal Action Potentials"
+                },
+                {
+                    "id": 572,
+                    "tag": "Calcium dynamics"
+                },
+                {
+                    "id": 1983,
+                    "tag": "Conductances estimation"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 739,
+                    "tag": "I Na,p"
+                },
+                {
+                    "id": 574,
+                    "tag": "I Na,t"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 594,
+                    "tag": "I h"
+                },
+                {
+                    "id": 2895,
+                    "tag": "Impedance"
+                },
+                {
+                    "id": 567,
+                    "tag": "Ion Channel Kinetics"
+                },
+                {
+                    "id": 1838,
+                    "tag": "MOOSE/PyMOOSE"
+                },
+                {
+                    "id": 756,
+                    "tag": "Methods"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4705,
+                    "tag": "ModelDB:2018017"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 568,
+                    "tag": "Parameter Fitting"
+                },
+                {
+                    "id": 569,
+                    "tag": "Simplified Models"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:29.522755+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018017",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3408": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3408,
+            "name": "Cerebellar basket cell model (Masoli et al., 2025)",
+            "repository_type": "github",
+            "summary": "\"The analysis of BC inhibition of PCs was extended over a broad parameter space using accurate multi-compartmental computational models. During pf bursts, the BC reduced the PC response at low-frequency, while SCs did it at high-frequency. BC filtering was explained by the engagement of HCN1 channels, which activated slowly during low-frequency BC-PC GABAergic transmission. The increase of input conductance caused by HCN1 channels in the PC soma, by shunting excitatory currents elicited by pfs and travelling toward the axon initial segment (AIS), reduced the PC output frequency.\"",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4706,
+                    "tag": "ModelDB:2018018"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 596,
+                    "tag": "Synaptic Integration"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:30.160639+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018018",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3409": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3409,
+            "name": "Cerebellar stellate cell model (Rizza et al., 2021)",
+            "repository_type": "github",
+            "summary": "\"Simulations showed that, following parallel fiber stimulation, Purkinje cells almost linearly increased their response with input frequency, but such an increase was inhibited by stellate cells, which leveled the Purkinje cell gain curve to its 4 Hz value. When reciprocal inhibitory connections between stellate cells were activated, the control of stellate cells over Purkinje cell discharge was maintained only at very high frequencies.\"",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 1532,
+                    "tag": "I Na, leak"
+                },
+                {
+                    "id": 594,
+                    "tag": "I h"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4707,
+                    "tag": "ModelDB:2018019"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 596,
+                    "tag": "Synaptic Integration"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:30.655983+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018019",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3410": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3410,
+            "name": "Octopus neuron (Kreeger et al., 2025)",
+            "repository_type": "github",
+            "summary": "Animals navigate the auditory world by recognizing complex sounds, from the rustle of a predator to the call of a potential mate. This ability depends in part on the octopus cells of the auditory brainstem, which respond to multiple frequencies that change over time, as occurs in natural stimuli. Unlike the average neuron, which integrates inputs over time on the order of tens of milliseconds, octopus cells must detect momentary coincidence of excitatory inputs from the cochlea during an ongoing sound on both the millisecond and submillisecond time scale. Here, we show that octopus cells receive inhibitory inputs on their dendrites that enhance opportunities for coincidence detection in the cell body, thereby allowing for responses both to rapid onsets at the beginning of a sound and to frequency modulations during the sound. This mechanism is crucial for the fundamental process of integrating the synchronized frequencies of natural auditory signals over time.",
+            "tags": [
+                {
+                    "id": 595,
+                    "tag": "Coincidence Detection"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4708,
+                    "tag": "ModelDB:2018259"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 586,
+                    "tag": "Synchronization"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:31.839552+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018259",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3411": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3411,
+            "name": "L2/3 Dendritic Morphology (Landau et al., 2022)",
+            "repository_type": "github",
+            "summary": "This code has some accurate morphological models of L2/3 neurons recorded in slices from mouse cortex. The paper it's related to aimed to understand how dendritic morphology (branching structure) affected action potential backpropagation and calcium signaling in dendrites, and that's what this code allows you to study. \r\n\r\nhttps://github.com/landoskape/landau-2022",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 579,
+                    "tag": "Active Dendrites"
+                },
+                {
+                    "id": 590,
+                    "tag": "I A"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 570,
+                    "tag": "Influence of Dendritic Geometry"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4709,
+                    "tag": "ModelDB:2018260"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:32.359575+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018260",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3412": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3412,
+            "name": "KV1 Channels Enable Myelinated Axons to Transmit Spikes  Reliably without Spiking Ectopically (Abdollahi et al., 2025)",
+            "repository_type": "github",
+            "summary": "Action potentials (spikes) are regenerated at each node of Ranvier during saltatory transmission along a myelinated axon. The high density of voltage-gated sodium channels required by nodes to reliably transmit spikes increases the risk of ectopic spike generation in the axon. Here we show that ectopic spiking is avoided because KV1 channels prevent nodes from responding to slow depolarization; instead, axons respond selectively to rapid depolarization because KV1 channels implement a high-pass filter. To characterize this filter, we compared spike initiation properties in the soma and axon of CA1 pyramidal neurons from mice of both sexes, using spatially restricted photoactivation of channelrhodopsin-2 (ChR2) to evoke spikes in either region while simultaneously recording at the soma. Somatic photostimulation evoked repetitive spiking whereas axonal photostimulation evoked transient spiking. Blocking KV1channels converted the axon photostimulation response to repetitive spiking and encouraged spontaneous ectopic spike initiation in the axon. According to computational modeling, the high-pass filter implemented by KV1 channels matches the axial current waveform associated with saltatory conduction, enabling axons to faithfully transmit digital signals by maximizing their signal-to-noise ratio for this task. Specifically, a node generates a single spike only when rapidly depolarized, which is precisely what occurs during saltatory conduction when a pulse of axial current(triggered by a spike occurring at the upstream node) reaches the next node. The soma and axon use distinct spike initiation mechanisms (filters) appropriate for the task required of each region, namely, analog-to-digital transduction in the soma versus digital signal transmission in the axon.",
+            "tags": [
+                {
+                    "id": 1794,
+                    "tag": "Channelrhodopsin (ChR)"
+                },
+                {
+                    "id": 576,
+                    "tag": "I K"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 2162,
+                    "tag": "I Na, slow inactivation"
+                },
+                {
+                    "id": 861,
+                    "tag": "I_K,Na"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4710,
+                    "tag": "ModelDB:2018262"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:32.947880+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018262",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3413": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3413,
+            "name": "Network models of single compartment neurons for investigating downmodulation of voltage-gated potassium channels (Ho et al., 2025)",
+            "repository_type": "github",
+            "summary": "Voltage-gated potassium conductances gK play a critical role not only in normal neural function, but also in many neurological disorders and related therapeutic interventions. In particular, in an important animal model of epileptic seizures, 4-aminopyridine (4-AP) administration is thought to induce seizures by reducing gK in cortex and other brain areas. Interestingly, 4-AP has also been useful in the treatment of neurological disorders such as multiple sclerosis (MS) and spinal cord injury, where it is thought to improve action potential propagation in axonal fibers. Here, we examined gK downmodulation in biophysical models of cortical networks that included different neuron types organized in layers, potassium diffusion in interstitial and larger extracellular spaces, and glial buffering. Our findings are fourfold. First, gK downmodulation in pyramidal and fast-spiking inhibitory interneurons led to\r\ndifferential effects, making the latter much more likely to enter depolarization block. Second, both neuron types showed an increase in the duration and amplitude of action potentials, with more pronounced effects in pyramidal neurons. Third, a sufficiently strong gK reduction dramatically increased network synchrony, resulting in seizure-like dynamics. Fourth, we hypothesized that broader action potentials were likely to not only improve their propagation, as in 4-AP therapeutic uses, but also to increase synaptic coupling. Notably, graded-synapses incorporating this effect further amplified network synchronization and seizure-like dynamics. Overall, our findings elucidate different effects that gK downmodulation may have in cortical networks, explaining its potential role in both pathological neural dynamics and therapeutic applications.",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 469,
+                    "tag": "Epilepsy"
+                },
+                {
+                    "id": 583,
+                    "tag": "I Calcium"
+                },
+                {
+                    "id": 1531,
+                    "tag": "I Cl, leak"
+                },
+                {
+                    "id": 581,
+                    "tag": "I K,Ca"
+                },
+                {
+                    "id": 591,
+                    "tag": "I K,leak"
+                },
+                {
+                    "id": 1532,
+                    "tag": "I Na, leak"
+                },
+                {
+                    "id": 739,
+                    "tag": "I Na,p"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 1433,
+                    "tag": "I_AHP"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4711,
+                    "tag": "ModelDB:2018263"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 740,
+                    "tag": "Na/K pump"
+                },
+                {
+                    "id": 659,
+                    "tag": "NetPyNE"
+                },
+                {
+                    "id": 1576,
+                    "tag": "Stochastic simulation"
+                },
+                {
+                    "id": 744,
+                    "tag": "Synaptic noise"
+                },
+                {
+                    "id": 586,
+                    "tag": "Synchronization"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:33.804879+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018263",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3414": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3414,
+            "name": "Counterfactual eraser (Gidon et al., 2025)",
+            "repository_type": "github",
+            "summary": "The study simulated neural activity in a toy model of an artificial brain during a visual stimulus and then replayed the recorded signals to degrade the computation by eliminating counterfactual activity. This paradoxical finding\u2014where the replay did not affect ongoing neural dynamics yet disrupted the computational structure\u2014challenges the view that consciousness emerges from computation in either artificial or biological systems.",
+            "tags": [
+                {
+                    "id": 736,
+                    "tag": "Action Potentials"
+                },
+                {
+                    "id": 578,
+                    "tag": "Activity Patterns"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4712,
+                    "tag": "ModelDB:2018266"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 724,
+                    "tag": "Short-term Synaptic Plasticity"
+                },
+                {
+                    "id": 569,
+                    "tag": "Simplified Models"
+                },
+                {
+                    "id": 725,
+                    "tag": "Synaptic Plasticity"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:34.364768+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2018266",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3415": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3415,
+            "name": "Differential roles of NaV1.2 and NaV1.6 in neocortical pyramidal cell excitability (Garcia et al. 2025)",
+            "repository_type": "github",
+            "summary": "Based on the Layer 5 thick-tufted pyramidal cell from the Blue Brain Project, we modeled the selective block of Nav1.2 and Nav1.6 to determine their precise roles in pyramidal cell excitability.",
+            "tags": [
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4713,
+                    "tag": "ModelDB:2019342"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 620,
+                    "tag": "Python"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:34.923735+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2019342",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3416": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3416,
+            "name": "SCN1A variants of uncertain significance (Knox et al, 2025)",
+            "repository_type": "github",
+            "summary": "A PV+ interneuron model in the netpyne environment with code to test SCN1A variant effects on rheobase and depolarization block threshold.",
+            "tags": [
+                {
+                    "id": 469,
+                    "tag": "Epilepsy"
+                },
+                {
+                    "id": 582,
+                    "tag": "I Sodium"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4714,
+                    "tag": "ModelDB:2019444"
+                },
+                {
+                    "id": 659,
+                    "tag": "NetPyNE"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:35.438971+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2019444",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3417": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3417,
+            "name": "3D reconstructed astrocyte with K+ dynamics",
+            "repository_type": "github",
+            "summary": "A NEURON implementation of the K\u207a accumulation and clearance curves from Figure\u202f5 of Savtchenko et\u202fal. (2018, Nature Communications), using four CA1 astrocytes to reproduce that panel. By focusing on the regions modeled in Fig\u202f5, this setup isolates transporter\u2011 and Kir4.1 channel\u2011mediated currents as well as spatial buffering to match the published profiles.",
+            "tags": [
+                {
+                    "id": 571,
+                    "tag": "Detailed Neuronal Models"
+                },
+                {
+                    "id": 584,
+                    "tag": "I Potassium"
+                },
+                {
+                    "id": 2396,
+                    "tag": "Kir, inactivating"
+                },
+                {
+                    "id": 564,
+                    "tag": "ModelDB"
+                },
+                {
+                    "id": 4715,
+                    "tag": "ModelDB:2019791"
+                },
+                {
+                    "id": 577,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 1808,
+                    "tag": "Potassium buffering"
+                }
+            ],
+            "timestamp_created": "2025-08-12 17:35:36.610590+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/OpenSourceBrain/2019791",
             "user": {
                 "email": "info@opensourcebrain.org",
                 "first_name": "OSB",

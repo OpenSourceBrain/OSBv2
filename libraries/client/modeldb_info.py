@@ -20,7 +20,7 @@ fork_if_missing = "-fork" in sys.argv
 gh = get_github()
 
 known_to_have_other_forks = [2730, 3343, 3658]
-known_no_mdb_github_repo = [2018003, 2018022]
+known_no_mdb_github_repo = [2018003, 2018022, 2016219, 2016662, 2017005, 2018268]
 empty_on_mdb_github = [2014825]
 
 many_forks = []
@@ -31,8 +31,8 @@ on_osbv2 = []
 forked_now = []
 
 if __name__ == "__main__":
-    min_index = 10
-    max_index = 18
+    min_index = 0
+    max_index = 10000 
     index = 0
 
     from osb.utils import get_page
