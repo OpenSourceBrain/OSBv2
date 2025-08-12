@@ -1,17 +1,16 @@
 """
-Script to get OSBv1 project info
+Script to get info on all models on ModelDB via their API, and potentially
+add forks of the ModelDB GitHub repos on github.com/OpenSourceBrain
 """
 
 import sys
 import json
-
 import pprint
 
 from utils import get_github
 
 verbose = True  #
 verbose = False
-
 
 info = {}
 with_gitrepo = 0
@@ -30,7 +29,7 @@ forked_now = []
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 2000
+    max_index = 10000
     index = 0
 
     from osb.utils import get_page
@@ -41,6 +40,7 @@ if __name__ == "__main__":
     pprint.pprint(models, compact=True)
 
     selection = models[min_index:max_index]
+
     for model in selection:
         print(
             "\n--------   Model (%i/%i, order %i): %s:\n"
@@ -87,7 +87,7 @@ if __name__ == "__main__":
                 info[model]["osbv2_gh_branch"] = repo_to_use.default_branch
             except Exception:
                 print(
-                    "    Missing fork: %s, forking now: %s"
+                    "    **** Missing fork: %s, forking now: %s"
                     % (possible_osbgh_repo, fork_if_missing)
                 )
                 if fork_if_missing:
@@ -118,14 +118,15 @@ if __name__ == "__main__":
                 print(msg)
                 many_forks.append(msg)
 
-        except Exception:
-            msg = "    Problem locating repo for: %i (%i/%i) %s" % (
+        except Exception as e:
+            msg = "    Problem with model: %i (%i/%i) %s" % (
                 info[model]["id"],
                 index,
                 len(selection),
                 info[model]["name"],
             )
             print(msg)
+            print(e)
             errors.append(msg)
 
         index += 1
@@ -136,10 +137,6 @@ if __name__ == "__main__":
     print("\nThere were %i models checked\n" % (len(info)))
 
 filename = "cached_info/modeldb.json"
-
-strj = json.dumps(info, indent="    ", sort_keys=True)
-with open(filename, "w") as fp:
-    fp.write(strj)
 
 print(
     "\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -154,9 +151,14 @@ print("\nJust forked (%i total):" % len(forked_now))
 for m in forked_now:
     print(m)
 
+info[0] = {}
+info[0]["to_be_forked"] = []
+info[0]["errors"] = []
+
 print("\nStill to be forked (%i total):" % len(to_be_forked))
 for m in to_be_forked:
     print(m)
+    info[0]["to_be_forked"].append(m.strip())
 
 print("\nMany forks (%i total):" % len(many_forks))
 for m in many_forks:
@@ -165,5 +167,10 @@ for m in many_forks:
 print("\nErrors (%i total):" % len(errors))
 for m in errors:
     print(m)
+    info[0]["errors"].append(m.strip())
+
+strj = json.dumps(info, indent="    ", sort_keys=True)
+with open(filename, "w") as fp:
+    fp.write(strj)
 
 print("Data on ModelDB (%i models) written to %s" % (len(info), filename))
