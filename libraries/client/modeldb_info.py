@@ -32,7 +32,7 @@ forked_now = []
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 10000 
+    max_index = 10000
     index = 0
 
     from osb.utils import get_page
@@ -89,12 +89,12 @@ if __name__ == "__main__":
                 info[model]["osbv2_gh_repo"] = repo_to_use.html_url
                 info[model]["osbv2_gh_branch"] = repo_to_use.default_branch
             except Exception:
-
                 if info[model]["id"] in empty_on_mdb_github:
-                    info_ = f'    Ignoring {possible_mdb_repo} as it is known to be empty'
+                    info_ = (
+                        f"    Ignoring {possible_mdb_repo} as it is known to be empty"
+                    )
                     print(info_)
                     ignored.append(info_)
-
 
                 else:
                     print(
@@ -131,9 +131,9 @@ if __name__ == "__main__":
 
         except Exception as e:
             if info[model]["id"] in known_no_mdb_github_repo:
-                    info_ = f'    Ignoring {possible_mdb_repo} as it is known to have no ModelDB GitHub repo'
-                    print(info_)
-                    ignored.append(info_)
+                info_ = f"    Ignoring {possible_mdb_repo} as it is known to have no ModelDB GitHub repo"
+                print(info_)
+                ignored.append(info_)
             else:
                 msg = "    Problem with model: %i (%i/%i) %s (%s)" % (
                     info[model]["id"],
@@ -153,47 +153,47 @@ if __name__ == "__main__":
 
     print("\nThere were %i models checked\n" % (len(info)))
 
-filename = "cached_info/modeldb.json"
+    filename = "cached_info/modeldb.json"
 
-print(
-    "\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    + "\n\nDone!"
-)
+    print(
+        "\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        + "\n\nDone!"
+    )
 
-print("\nAll on osb (%i total):" % len(on_osbv2))
-for m in on_osbv2:
-    print(m)
+    print("\nAll on osb (%i total):" % len(on_osbv2))
+    for m in on_osbv2:
+        print(m)
 
-print("\nJust forked (%i total):" % len(forked_now))
-for m in forked_now:
-    print(m)
+    print("\nJust forked (%i total):" % len(forked_now))
+    for m in forked_now:
+        print(m)
 
-info[0] = {}
-info[0]["to_be_forked"] = []
-info[0]["errors"] = []
-info[0]["ignored"] = []
+    info[0] = {}
+    info[0]["to_be_forked"] = []
+    info[0]["errors"] = []
+    info[0]["ignored"] = []
 
-print("\nStill to be forked (%i total):" % len(to_be_forked))
-for m in to_be_forked:
-    print(m)
-    info[0]["to_be_forked"].append(m.strip())
+    print("\nStill to be forked (%i total):" % len(to_be_forked))
+    for m in to_be_forked:
+        print(m)
+        info[0]["to_be_forked"].append(m.strip())
 
-print("\nMany forks (%i total):" % len(many_forks))
-for m in many_forks:
-    print(m)
+    print("\nMany forks (%i total):" % len(many_forks))
+    for m in many_forks:
+        print(m)
 
-print("\nErrors (%i total):" % len(errors))
-for m in errors:
-    print(m)
-    info[0]["errors"].append(m.strip())
+    print("\nErrors (%i total):" % len(errors))
+    for m in errors:
+        print(m)
+        info[0]["errors"].append(m.strip())
 
-print("\nIgnored (%i total):" % len(ignored))
-for m in ignored:
-    print(m)
-    info[0]["ignored"].append(m.strip())
+    print("\nIgnored (%i total):" % len(ignored))
+    for m in ignored:
+        print(m)
+        info[0]["ignored"].append(m.strip())
 
-strj = json.dumps(info, indent="    ", sort_keys=True)
-with open(filename, "w") as fp:
-    fp.write(strj)
+    strj = json.dumps(info, indent="    ", sort_keys=True)
+    with open(filename, "w") as fp:
+        fp.write(strj)
 
-print("Data on ModelDB (%i models) written to %s" % (len(info), filename))
+    print("Data on ModelDB (%i models) written to %s" % (len(info), filename))

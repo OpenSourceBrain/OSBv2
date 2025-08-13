@@ -7,6 +7,7 @@ import sys
 
 from utils import get_tags_info
 from utils import known_users, lookup_user
+from modeldb_info import known_no_mdb_github_repo, empty_on_mdb_github
 
 from workspaces_cli.models import (
     OSBRepository,
@@ -72,6 +73,8 @@ all_updated = []
 all_added = []
 multi_matches = []
 all_errors = []
+known_issues = []
+
 
 
 with workspaces_cli.ApiClient(configuration) as api_client:
@@ -80,10 +83,21 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     def add_modeldb_model(modeldb_model, index):
         modeldb_model_id = modeldb_model["id"]
         if "osbv2_gh_repo" not in modeldb_model or not modeldb_model["osbv2_gh_repo"]:
-            all_errors.append(
-                "  %i, %s (%s) doesn't have a GitHub repo... Use modeldb_info.py to fork it to OSB"
-                % (index, modeldb_model["name"], modeldb_model_id)
-            )
+            if modeldb_model_id in known_no_mdb_github_repo:
+                known_issues.append(
+                    "  %i, %s (%s) doesn't have a ModelDB GitHub repo... Skipping"
+                    % (index, modeldb_model["name"], modeldb_model_id)
+                )
+            elif modeldb_model_id in empty_on_mdb_github:
+                known_issues.append(
+                    "  %i, %s (%s) is an empty ModelDB GitHub repo... Skipping"
+                    % (index, modeldb_model["name"], modeldb_model_id)
+                )
+            else:
+                all_errors.append(
+                    "  %i, %s (%s) doesn't have a GitHub repo... Use modeldb_info.py to fork it to OSB"
+                    % (index, modeldb_model["name"], modeldb_model_id)
+                )
             return
 
         modeldb_github = modeldb_model["osbv2_gh_repo"]
@@ -265,3 +279,7 @@ for m in multi_matches:
 print("\nErrors found (%i total):" % len(all_errors))
 for de in all_errors:
     print(de)
+
+print("\nKnown issues (%i total):" % len(known_issues))
+for ki in known_issues:
+    print(ki)
