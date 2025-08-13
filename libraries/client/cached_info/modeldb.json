@@ -1,36 +1,16 @@
 {
     "0": {
-        "errors": [
-            "Problem with model: 2016219 (1857/1902) An integrated deep learning-based model of spatial cells that combines self-motion with sensory information (Aziz et al., 2022)",
-            "Problem with model: 2016662 (1874/1902) Impact of extracellular current flow on action potential propagation in myelinated axons",
-            "Problem with model: 2017005 (1875/1902) Reverse Engineering MN Pool (Chardon et al, 2023)",
-            "Problem with model: 2018003 (1879/1902) Axonal ectopic burst induced by repetitive stimuli of hippocampal mossy fiber",
-            "Problem with model: 2018022 (1881/1902) Isolated pacemaker neuron from rodent respiratory CPG under voltage-clamp",
-            "Problem with model: 2018268 (1901/1902) A biochemically detailed model of GABAB-receptor activation for pre- and postsynaptic domains. (M\u00e4ki-Marttunen et al., 2025)"
+        "errors": [],
+        "ignored": [
+            "Ignoring ModelDBRepository/2014825 as it is known to be empty",
+            "Ignoring ModelDBRepository/2016219 as it is known to have no ModelDB GitHub repo",
+            "Ignoring ModelDBRepository/2016662 as it is known to have no ModelDB GitHub repo",
+            "Ignoring ModelDBRepository/2017005 as it is known to have no ModelDB GitHub repo",
+            "Ignoring ModelDBRepository/2018003 as it is known to have no ModelDB GitHub repo",
+            "Ignoring ModelDBRepository/2018022 as it is known to have no ModelDB GitHub repo",
+            "Ignoring ModelDBRepository/2018268 as it is known to have no ModelDB GitHub repo"
         ],
-        "to_be_forked": [
-            "Yet to be forked: 2014825, order 1826; TD2Q reinforcement learning (Blackwell and Doya, 2023)",
-            "Yet to be forked: 2018247, order 1880; Virtual Human Retina: Simulating Neural Signalling, Degeneration, and Responses to Electrical Stimulation (Ly et al 2025)",
-            "Yet to be forked: 2018262, order 1882; KV1 Channels Enable Myelinated Axons to Transmit Spikes  Reliably without Spiking Ectopically (Abdollahi et al., 2025)",
-            "Yet to be forked: 2018260, order 1883; L2/3 Dendritic Morphology (Landau et al., 2022)",
-            "Yet to be forked: 2018006, order 1884; Synchronization in a realistic model of CA1 hippocampal neurons (Fiasconaro and Migliore, 2024)",
-            "Yet to be forked: 2017402, order 1885; Substantia Nigra Par Compacta (Ortner et al., 2017)",
-            "Yet to be forked: 267752, order 1886; Intrinsic motivation in cognitive architecture (Nagashima et al., 2024)",
-            "Yet to be forked: 2018263, order 1887; Network models of single compartment neurons for investigating downmodulation of voltage-gated potassium channels (Ho et al., 2025)",
-            "Yet to be forked: 2019342, order 1888; Differential roles of NaV1.2 and NaV1.6 in neocortical pyramidal cell excitability (Garcia et al. 2025)",
-            "Yet to be forked: 2019444, order 1889; SCN1A variants of uncertain significance (Knox et al, 2025)",
-            "Yet to be forked: 2018259, order 1890; Octopus neuron (Kreeger et al., 2025)",
-            "Yet to be forked: 2016671, order 1891; STSimM: a new tool for evaluating neuron model performance and detecting spike trains similarity (Marasco et al., 2024)",
-            "Yet to be forked: 2018004, order 1892; Dorsal root ganglion (DRG) sensory pseudounipolar neuron and axon model (Farooqui et al., 2024)",
-            "Yet to be forked: 2018007, order 1893; Dynamic Regulation of Vesicle Pools in a Detailed Spatial Model of the Complete Synaptic Vesicle Cycle (Gallimore et al, 2025)",
-            "Yet to be forked: 2016664, order 1894; Dendritic action potentials and computation in human layer 2/3 cortical neurons with modulated input (Ko\u0159enek et al., 2025)",
-            "Yet to be forked: 2017007, order 1895; Cerebellar Golgi cell model with STDP (Pali et al., 2025)",
-            "Yet to be forked: 2018266, order 1896; Counterfactual eraser (Gidon et al., 2025)",
-            "Yet to be forked: 2018017, order 1897; Depolarization baseline offset in CA1 pyramidal neurons (Kumar et al., 2025)",
-            "Yet to be forked: 2019791, order 1898; 3D reconstructed astrocyte with K+ dynamics",
-            "Yet to be forked: 2018018, order 1899; Cerebellar basket cell model (Masoli et al., 2025)",
-            "Yet to be forked: 2018019, order 1900; Cerebellar stellate cell model (Rizza et al., 2021)"
-        ]
+        "to_be_forked": []
     },
     "279": {
         "class_id": 19,
@@ -224045,6 +224025,8 @@
             "attr_id": 24,
             "value": "These models are designed for a maze continuation task that specifically emphasizes curiosity. The act-r directory represents a model implemented using ACT-R, a cognitive architecture. On the other hand, the icm directory represents a model implemented using the Intrinsic Curiosity Module (ICM) for deep reinforcement learning. Despite the difference in implementation, both models are intended to perform the same task."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/267752",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "nagashima.kazuma.16@shizuoka.ac.jp"
@@ -228286,6 +228268,8 @@
             "attr_id": 24,
             "value": "This model replicates Settings 1/2 in Figure 1/2/3 in the paper Ko\u0159enek J., Sanda P., and Hlinka J., 2025: Higher order definition of causality by optimally conditioned transfer entropy. Physical Review E, E 111, L042302. It is slight modification of Gidon et al., 2020 model (254217)."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016664",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "sanda@cs.cas.cz"
@@ -228654,6 +228638,8 @@
             "attr_id": 24,
             "value": "\"Four time-scale adaptive performance and similarity measures are proposed and implemented in the STSimM (Spike Trains Similarity Measures) Python tool. These measures are designed to accurately capture both the precise timing of individual spikes and shared periods of inactivity among spike trains.\""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2016671",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "carmen.lupascu@ibf.cnr.it"
@@ -229167,6 +229153,8 @@
             "attr_id": 24,
             "value": "Cerebellar Golgi cell model (Masoli et al., 2020) with STDP based on Shouval at el., 2002"
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2017007",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "stefano.masoli@unipv.it"
@@ -229462,6 +229450,8 @@
             "attr_id": 24,
             "value": "The model contains three different isoforms of the calcium L- type channels (Cav1.2 \u03b11-subunit, long and short Cav1.3 \u03b11-subunit splice variants) according to the data and the descriptions of Ortner et al., 2017 J Neurosci. \r\nSince calcium overload confers the susceptibility of SNc neurons to neurodegeneration. our work described the  impact of the those different L- type calcium isoforms in calcium accumulation, action potential firing and burst firing (NMDA-induced) of the SNc neurons. "
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2017402",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "antoniosdougalis@gmail.com"
@@ -229991,6 +229981,8 @@
             "attr_id": 24,
             "value": "These files include a class definition for a sensory DRG pseudounipolar neuron model and a sensory DRG axon model, each of which can be instantiated for any value of fiber diameter in the continuous range [6, 20] um. The models are written in Python with pyNEURON.\r\n\r\nThese models were used to investigate the effects of pseudounipolar neuron morphology and spatial distribution of neurons in the DRG on the selective activation of DRG A-alpha and A-beta sensory neurons in response to stimulation via two different types of electrodes (epineural and penetrating). "
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018004",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "juhi.farooqui@gmail.com"
@@ -230132,6 +230124,8 @@
             "attr_id": 24,
             "value": "We study the synchronisation of neurons in a realistic model under the Hodgkin-Huxley dynamics. To focus on the role of the different locations of the excitatory synapses, we use two identical neurons where the set of input signals is grouped at two different distances from the soma. Synchronisation is studied using phase spiking correlation as a function of various parameters such as the distance from the soma of one of the synaptic groups, the inhibition weight and the associated activation delay.\r\n\r\nWe found that the neurons' spiking activity depends nonmonotonically on the relative dendritic location of the synapses and their inhibitory weight, whereas the synchronisation measure always decreases with inhibition, and strongly depends on its activation time delay."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018006",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "afiascon@unizar.es"
@@ -230237,6 +230231,8 @@
             "attr_id": 24,
             "value": "Synaptic transmission is driven by a complex cycle of vesicle docking, release, and recycling, maintained by distinct vesicle pools. However, the partitioning of vesicle pools and reserve pool recruitment remain poorly understood. We use a novel vesicle modeling technology to model the synaptic vesicle cycle in unprecedented molecular and spatial detail at a hippocampal synapse. Our model demonstrates robust recycling of synaptic vesicles that maintains consistent synaptic release, even during sustained high frequency firing. We also reveal how the cytosolic proteins synapsin-1 and tomosyn-1 cooperate to regulate recruitment of reserve pool vesicles during sustained firing to maintain transmission, as well as the potential of selective vesicle active zone tethering to ensure rapid vesicle replenishment while minimizing reserve pool recruitment. We also monitored vesicle usage in isolated hippocampal neurons using pH-sensitive pHluorin, demonstrating that reserve vesicle recruitment depends on frequency, even at non-physiologically high firing frequencies, as predicted by the model."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018007",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "ihepburn@oist.jp"
@@ -230560,6 +230556,8 @@
             "attr_id": 24,
             "value": "These sets of models were used to investigate the mechanisms behind the large depolarization baseline offset (DBLO) seen in CA1 pyramidal neurons.\r\nSomatic step-current injection is commonly used to characterize electrophysiological properties of neurons. Many neuronal types show a large depolarization baseline offset (DBLO), which is defined as the positive difference between the minimum membrane potential during action potential trains and resting. We used stochastic parameter search in conductance-based models to show that four key factors together account for high DBLO: Liquid Junction Potential correction, high backpropagating passive charges during the repolarization phase of an action potential, fast potassium delayed rectifier kinetics, and appropriate transient sodium current kinetics.  Several plausible mechanisms for DBLO, such as Ohmic depolarization due to current input or low-pass filtering by the membrane, fail to explain the effect, and many published sophisticated conductance-based models do not correctly manifest high DBLO. Finally, models with experimentally consistent levels of DBLO constrain the parameter space of ion channel levels and kinetics. We also highlight the role these models may play in correctly identifying neuronal factors behind several cellular mechanisms such as bistable firing, spikelets, and calcium influx.\r\n"
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018017",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "analkumar2@gmail.com"
@@ -230679,6 +230677,8 @@
             "attr_id": 24,
             "value": "\"The analysis of BC inhibition of PCs was extended over a broad parameter space using accurate multi-compartmental computational models. During pf bursts, the BC reduced the PC response at low-frequency, while SCs did it at high-frequency. BC filtering was explained by the engagement of HCN1 channels, which activated slowly during low-frequency BC-PC GABAergic transmission. The increase of input conductance caused by HCN1 channels in the PC soma, by shunting excitatory currents elicited by pfs and travelling toward the axon initial segment (AIS), reduced the PC output frequency.\""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018018",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "stefano.masoli@unipv.it"
@@ -230812,6 +230812,8 @@
             "attr_id": 24,
             "value": "\"Simulations showed that, following parallel fiber stimulation, Purkinje cells almost linearly increased their response with input frequency, but such an increase was inhibited by stellate cells, which leveled the Purkinje cell gain curve to its 4 Hz value. When reciprocal inhibitory connections between stellate cells were activated, the control of stellate cells over Purkinje cell discharge was maintained only at very high frequencies.\""
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018019",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "martinafrancesca.rizza@unipv.it"
@@ -231130,6 +231132,8 @@
             "attr_id": 24,
             "value": "Abstract\r\nIntroduction: Current brain-based visual prostheses pose significant challenges impeding adoption such as the necessarily complex surgeries and occurrence of more substantial side effects due to the sensitivity of the brain. This has led to much effort toward vision restoration being focused on the more approachable part of the brain - the retina. Here we introduce a novel, parameterized simulation platform that enables study of human retinal degeneration and optimization of stimulation strategies. The platform bears immense potential for patient-specific tailoring and serves to enhance artificial vision solutions for individuals with visual impairments.\r\n\r\nMaterial and method: Our virtual retina is developed using the software package, NEURON. This virtual retina platform supports large-scale simulations of over 10,000 neurons whilst upholding strong biological plausibility with multiple important visual pathways and detailed network properties. The comprehensive three-dimensional model includes photoreceptors, horizontal cells, bipolar cells, amacrine cells, and midget and parasol retinal ganglion cells, with comprehensive network connectivity across various eccentricities (1 mm to 5 mm from the fovea) in the human retina. The model is constructed using electrophysiology, immunohistology, and optical coherence tomography imaging data from healthy and degenerate human retinas. We validated our model by replicating numerous experimental observations from human and primate retina, with a particular focus on retinal degeneration.\r\n\r\nResult: We simulated interactions between diseased retinas and state-of-the-art retinal implants, shedding light on the limitations of commercial retinal prostheses. Our results suggested that appropriate stimulation settings with intraretinal prototype devices could leverage network-mediated activation to achieve activation mosaics more alike that of the retina's response to natural light, promoting the prospect of more naturalistic vision. Our study additionally highlights the importance of controlling inhibitory circuits in the retinal network to induce functionally relevant retinal activity.\r\n\r\nConclusion: This study demonstrates the potential of this software package and highlights its utility as a valuable tool for engineers, scientists, and clinicians in the design and optimisation of retinal stimulation devices for both research and educational applications.\r\n\r\nKeywords: Virtual retina; bionic vision; data-driven model; discrete neuronal network model; electrical stimulation; human retina; mechanistic model; retinal degeneration."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018247",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "keithly@stanford.edu"
@@ -231248,6 +231252,8 @@
             "attr_id": 24,
             "value": "Animals navigate the auditory world by recognizing complex sounds, from the rustle of a predator to the call of a potential mate. This ability depends in part on the octopus cells of the auditory brainstem, which respond to multiple frequencies that change over time, as occurs in natural stimuli. Unlike the average neuron, which integrates inputs over time on the order of tens of milliseconds, octopus cells must detect momentary coincidence of excitatory inputs from the cochlea during an ongoing sound on both the millisecond and submillisecond time scale. Here, we show that octopus cells receive inhibitory inputs on their dendrites that enhance opportunities for coincidence detection in the cell body, thereby allowing for responses both to rapid onsets at the beginning of a sound and to frequency modulations during the sound. This mechanism is crucial for the fundamental process of integrating the synchronized frequencies of natural auditory signals over time."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018259",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "suraj_honnuraiah@hms.harvard.edu"
@@ -231362,6 +231368,8 @@
             "attr_id": 24,
             "value": "This code has some accurate morphological models of L2/3 neurons recorded in slices from mouse cortex. The paper it's related to aimed to understand how dendritic morphology (branching structure) affected action potential backpropagation and calcium signaling in dendrites, and that's what this code allows you to study. \r\n\r\nhttps://github.com/landoskape/landau-2022"
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018260",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "andrewtylerlandau@gmail.com"
@@ -231475,6 +231483,8 @@
             "attr_id": 24,
             "value": "Action potentials (spikes) are regenerated at each node of Ranvier during saltatory transmission along a myelinated axon. The high density of voltage-gated sodium channels required by nodes to reliably transmit spikes increases the risk of ectopic spike generation in the axon. Here we show that ectopic spiking is avoided because KV1 channels prevent nodes from responding to slow depolarization; instead, axons respond selectively to rapid depolarization because KV1 channels implement a high-pass filter. To characterize this filter, we compared spike initiation properties in the soma and axon of CA1 pyramidal neurons from mice of both sexes, using spatially restricted photoactivation of channelrhodopsin-2 (ChR2) to evoke spikes in either region while simultaneously recording at the soma. Somatic photostimulation evoked repetitive spiking whereas axonal photostimulation evoked transient spiking. Blocking KV1channels converted the axon photostimulation response to repetitive spiking and encouraged spontaneous ectopic spike initiation in the axon. According to computational modeling, the high-pass filter implemented by KV1 channels matches the axial current waveform associated with saltatory conduction, enabling axons to faithfully transmit digital signals by maximizing their signal-to-noise ratio for this task. Specifically, a node generates a single spike only when rapidly depolarized, which is precisely what occurs during saltatory conduction when a pulse of axial current(triggered by a spike occurring at the upstream node) reaches the next node. The soma and axon use distinct spike initiation mechanisms (filters) appropriate for the task required of each region, namely, analog-to-digital transduction in the soma versus digital signal transmission in the axon."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018262",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "nooshin.abdollahi@mail.utoronto.ca"
@@ -231634,6 +231644,8 @@
             "attr_id": 24,
             "value": "Voltage-gated potassium conductances gK play a critical role not only in normal neural function, but also in many neurological disorders and related therapeutic interventions. In particular, in an important animal model of epileptic seizures, 4-aminopyridine (4-AP) administration is thought to induce seizures by reducing gK in cortex and other brain areas. Interestingly, 4-AP has also been useful in the treatment of neurological disorders such as multiple sclerosis (MS) and spinal cord injury, where it is thought to improve action potential propagation in axonal fibers. Here, we examined gK downmodulation in biophysical models of cortical networks that included different neuron types organized in layers, potassium diffusion in interstitial and larger extracellular spaces, and glial buffering. Our findings are fourfold. First, gK downmodulation in pyramidal and fast-spiking inhibitory interneurons led to\r\ndifferential effects, making the latter much more likely to enter depolarization block. Second, both neuron types showed an increase in the duration and amplitude of action potentials, with more pronounced effects in pyramidal neurons. Third, a sufficiently strong gK reduction dramatically increased network synchrony, resulting in seizure-like dynamics. Fourth, we hypothesized that broader action potentials were likely to not only improve their propagation, as in 4-AP therapeutic uses, but also to increase synaptic coupling. Notably, graded-synapses incorporating this effect further amplified network synchronization and seizure-like dynamics. Overall, our findings elucidate different effects that gK downmodulation may have in cortical networks, explaining its potential role in both pathological neural dynamics and therapeutic applications."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018263",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "ecy.ho@utoronto.ca"
@@ -231751,6 +231763,8 @@
             "attr_id": 24,
             "value": "The study simulated neural activity in a toy model of an artificial brain during a visual stimulus and then replayed the recorded signals to degrade the computation by eliminating counterfactual activity. This paradoxical finding\u2014where the replay did not affect ongoing neural dynamics yet disrupted the computational structure\u2014challenges the view that consciousness emerges from computation in either artificial or biological systems."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2018266",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "albert.gidon@gmail.com"
@@ -231959,6 +231973,8 @@
             "attr_id": 24,
             "value": "Based on the Layer 5 thick-tufted pyramidal cell from the Blue Brain Project, we modeled the selective block of Nav1.2 and Nav1.6 to determine their precise roles in pyramidal cell excitability."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2019342",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "tafenton@ucdavis.edu"
@@ -232048,6 +232064,8 @@
             "attr_id": 24,
             "value": "A PV+ interneuron model in the netpyne environment with code to test SCN1A variant effects on rheobase and depolarization block threshold."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2019444",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "knox@neurology.wisc.edu"
@@ -232155,6 +232173,8 @@
             "attr_id": 24,
             "value": "A NEURON implementation of the K\u207a accumulation and clearance curves from Figure\u202f5 of Savtchenko et\u202fal. (2018, Nature Communications), using four CA1 astrocytes to reproduce that panel. By focusing on the regions modeled in Fig\u202f5, this setup isolates transporter\u2011 and Kir4.1 channel\u2011mediated currents as well as spatial buffering to match the published profiles."
         },
+        "osbv2_gh_branch": "main",
+        "osbv2_gh_repo": "https://github.com/OpenSourceBrain/2019791",
         "public_submitter_email": {
             "attr_id": 309,
             "value": "Leonid.savtchenko@ucl.ac.uk"
