@@ -32,7 +32,7 @@ forked_now = []
 
 if __name__ == "__main__":
     min_index = 0
-    max_index = 10000 
+    max_index = 10000
     index = 0
 
     from osb.utils import get_page
@@ -89,12 +89,12 @@ if __name__ == "__main__":
                 info[model]["osbv2_gh_repo"] = repo_to_use.html_url
                 info[model]["osbv2_gh_branch"] = repo_to_use.default_branch
             except Exception:
-
                 if info[model]["id"] in empty_on_mdb_github:
-                    info_ = f'    Ignoring {possible_mdb_repo} as it is known to be empty'
+                    info_ = (
+                        f"    Ignoring {possible_mdb_repo} as it is known to be empty"
+                    )
                     print(info_)
                     ignored.append(info_)
-
 
                 else:
                     print(
@@ -131,9 +131,9 @@ if __name__ == "__main__":
 
         except Exception as e:
             if info[model]["id"] in known_no_mdb_github_repo:
-                    info_ = f'    Ignoring {possible_mdb_repo} as it is known to have no ModelDB GitHub repo'
-                    print(info_)
-                    ignored.append(info_)
+                info_ = f"    Ignoring {possible_mdb_repo} as it is known to have no ModelDB GitHub repo"
+                print(info_)
+                ignored.append(info_)
             else:
                 msg = "    Problem with model: %i (%i/%i) %s (%s)" % (
                     info[model]["id"],

@@ -3,4 +3,4 @@ set -e
 
 # A script to print info versions of packages in the NWBE container
 
-docker run -t --rm --entrypoint /bin/bash mynwbosb  -c "pip3 list && python -V"
+docker run -t --rm --entrypoint /bin/bash mynwbosb  -c "pip freeze && python -V"
