@@ -76,7 +76,6 @@ all_errors = []
 known_issues = []
 
 
-
 with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
 

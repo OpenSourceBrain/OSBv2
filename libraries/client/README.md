@@ -81,4 +81,24 @@ python osb_info.py -v2dev               # regenerate the cache of all osbv2 dev 
 ```
 When this works, do the same with `-v2` for the live OSBv2. 
 
+### 4) Checking/updating BioModels content
+
+This will get a structured json file (`cached_info/biomodels.json`) of the contents of the BioModels archive (note full check can take up to 30 mins):
+```
+python biomodels_info.py
+```
+
+
+Now we need to test if there is an OSBv2 repository pointing to each of these BioModels models:
+```
+python loadbiomodels.py -dry -v2dev       # dry run to test/list repos to add
+```
+
+If they need to be added, run:
+```
+python loadbiomodels.py abcxxx123 -v2dev  # add new repos to v2dev using the token as above...
+python osb_info.py -v2dev                 # regenerate the cache of all osbv2 dev repos
+```
+When this works, do the same with `-v2` for the live OSBv2. 
+
 
