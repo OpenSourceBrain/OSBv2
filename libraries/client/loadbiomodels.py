@@ -36,7 +36,7 @@ BIOMODELS_URL: str = "https://www.ebi.ac.uk/biomodels"
 
 index = 0
 min_index = 0
-max_index = 10000
+max_index = 40000
 
 verbose = True  #
 verbose = False
@@ -72,22 +72,37 @@ all_updated = []
 all_added = []
 multi_matches = []
 all_errors = []
+ignored = []
 
 
 with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
 
     def add_biomodels_model(biomodels_model, index):
-        if "publicationId" not in biomodels_model:
-            print("Not adding, probably uncurated entry...")
-            return False
 
+        if "error" in biomodels_model:
+            print(
+                "  Not adding: %s"
+                % biomodels_model["error"]
+            )
+            ignored.append(f'{biomodels_model["error"]}')
+            return False
+        if "publicationId" not in biomodels_model:
+            print(
+                "  Not adding, as no publicationId found in biomodels_model: %s"
+                % biomodels_model
+            )
+            ignored.append(f'{biomodels_model["name"]} (no pub. ID)')
+            return False
         if biomodels_model["curationStatus"] != "CURATED":
             print(
                 "  Not adding, as curationStatus = %s"
                 % biomodels_model["curationStatus"]
             )
+            ignored.append(f'{biomodels_model["name"]} ({biomodels_model["curationStatus"]})')
             return False
+
+
         biomodels_model_id = biomodels_model["publicationId"]
         name = biomodels_model["name"]
 
@@ -266,3 +281,6 @@ for m in multi_matches:
 print("\nErrors found (%i total):" % len(all_errors))
 for de in all_errors:
     print(de)
+
+print("\nIgnored (%i total):" % len(ignored))
+print('\n'+ ', '.join(ignored))
