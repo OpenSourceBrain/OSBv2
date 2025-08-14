@@ -1,4 +1,31 @@
 {
+    "content_summary": {
+        "content_types": {
+            "experimental": 236,
+            "experimental,modeling": 4,
+            "modeling": 3114,
+            "modeling,experimental": 0
+        },
+        "repository_type": {
+            "biomodels": 1095,
+            "dandi": 219,
+            "figshare": 0,
+            "github": 2040
+        },
+        "user_repos": {
+            "a": 19,
+            "aigakira": 2,
+            "ana\u00edsc\u00e3o": 1,
+            "ankursinha": 1,
+            "ca": 3,
+            "gopal": 4,
+            "nik": 1,
+            "osbadmin": 3317,
+            "padraig6": 1,
+            "pgleeson": 3,
+            "simao-osb": 2
+        }
+    },
     "repositories": {
         "1": {
             "auto_sync": true,

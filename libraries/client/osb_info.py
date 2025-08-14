@@ -47,7 +47,8 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
 index = 0
 min_index = 0
-max_index = 5000
+max_index = 50000
+
 
 with workspaces_cli.ApiClient(configuration) as api_client:
     api_instance = rest_api.RestApi(api_client)
@@ -73,6 +74,16 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
     saved_dict = {}
     saved_dict["repositories"] = {}
+    saved_dict["content_summary"] = {
+        "content_types": {
+            "modeling": 0,
+            "experimental": 0,
+            "modeling,experimental": 0,
+            "experimental,modeling": 0,
+        },
+        "repository_type": {"github": 0, "biomodels": 0, "figshare": 0, "dandi": 0},
+        "user_repos": {},
+    }
     ff = {"osbrepositories": [a.to_dict() for a in all_found]}
     found_dict = ff
 
@@ -95,6 +106,18 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                 repo.timestamp_created
             )
             saved_dict["repositories"][repo.id] = found_dict["osbrepositories"][index]
+
+            saved_dict["content_summary"]["content_types"][
+                found_dict["osbrepositories"][index]["content_types"]
+            ] += 1
+
+            saved_dict["content_summary"]["repository_type"][
+                found_dict["osbrepositories"][index]["repository_type"]
+            ] += 1
+            username = found_dict["osbrepositories"][index]["user"]["username"]
+            if username not in saved_dict["content_summary"]["user_repos"]:
+                saved_dict["content_summary"]["user_repos"][username] = 0
+            saved_dict["content_summary"]["user_repos"][username] += 1
 
         index += 1
 

@@ -1,4 +1,49 @@
 {
+    "content_summary": {
+        "content_types": {
+            "experimental": 225,
+            "experimental,modeling": 6,
+            "modeling": 3182,
+            "modeling,experimental": 4
+        },
+        "repository_type": {
+            "biomodels": 1094,
+            "dandi": 217,
+            "ebrains": 0,
+            "figshare": 1,
+            "github": 2105,
+            "modeldb": 0
+        },
+        "user_repos": {
+            "0000-0002-4040-3141": 2,
+            "acehunterr": 1,
+            "ankursinha": 2,
+            "cengique": 1,
+            "cngzlsh0211@gmail.com": 1,
+            "darshanmandge": 1,
+            "erik-ski": 1,
+            "filippo": 1,
+            "ilina-m": 1,
+            "jchen6727": 2,
+            "kishon": 1,
+            "kusanele": 1,
+            "latavia.thompson@yale.edu": 1,
+            "matteo@metacell.us": 1,
+            "osbadmin": 3329,
+            "padraig": 46,
+            "pat7": 1,
+            "pgl.eeson@gmail.com": 1,
+            "re5275": 4,
+            "saeedtaghavi": 1,
+            "salvadordura@gmail.com": 5,
+            "sietse09": 2,
+            "urdapile@gmail.com": 1,
+            "vbragin": 7,
+            "warddpeeters": 1,
+            "yangzhenzhen": 1,
+            "yolandayola0328@yahoo.com": 1
+        }
+    },
     "repositories": {
         "1": {
             "auto_sync": true,
@@ -181833,6 +181878,30 @@
                 "username": "osbadmin"
             },
             "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3426": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 3426,
+            "name": "PGdandi001273",
+            "repository_type": "dandi",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2025-08-14 08:18:17.834983+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/001273",
+            "user": {
+                "email": "p.gleeson@gmail.com",
+                "first_name": "Padraig",
+                "id": "0103eaaf-6a34-4509-a025-14367a52aa2b",
+                "last_name": "Gleeson",
+                "username": "padraig"
+            },
+            "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
         }
     }
 }
