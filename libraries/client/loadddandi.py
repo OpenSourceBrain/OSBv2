@@ -265,11 +265,24 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             try:
                 print(f"\n   Trying {min_index}->{index}->{max_index}")
                 added = add_dandiset(dandishowcase_entry, index)
-            except Exception:
-                logging.exception(
-                    "Error adding/updating %s" % dandishowcase_entry["url"]
-                )
-                # exit()
+            except Exception as e:
+                if "context_resources" in str(e):
+                    print("    Error: %s" % str(e))
+                    print("    ** This is a known error, continuing...")
+                elif "Signature has expired" in str(e):
+                    print("    Error: %s" % str(e))
+                    print(
+                        "    ** Token expired - go to your browser and refresh the token..."
+                    )
+                    exit()
+                else:
+                    print("----------")
+                    logging.exception("Error adding %s" % dandishowcase_entry)
+                    print("----------")
+                    print("Error: %s" % str(e))
+                    print("----------")
+                    print("Exiting due to unknown error...")
+                    exit()
 
         index += 1
 

@@ -1,18 +1,16 @@
 {
     "content_summary": {
         "content_types": {
-            "experimental": 225,
+            "experimental": 226,
             "experimental,modeling": 6,
             "modeling": 3182,
             "modeling,experimental": 4
         },
         "repository_type": {
             "biomodels": 1094,
-            "dandi": 217,
-            "ebrains": 0,
+            "dandi": 218,
             "figshare": 1,
-            "github": 2105,
-            "modeldb": 0
+            "github": 2105
         },
         "user_repos": {
             "0000-0002-4040-3141": 2,
@@ -29,7 +27,7 @@
             "kusanele": 1,
             "latavia.thompson@yale.edu": 1,
             "matteo@metacell.us": 1,
-            "osbadmin": 3329,
+            "osbadmin": 3330,
             "padraig": 46,
             "pat7": 1,
             "pgl.eeson@gmail.com": 1,
@@ -1604,10 +1602,6 @@
             "summary": "Confocal images of constained CDI and commercially available antibodies to the same target in mouse and human brain tissues",
             "tags": [
                 {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
-                {
                     "id": 11,
                     "tag": "DANDI"
                 },
@@ -3032,10 +3026,6 @@
                 {
                     "id": 11,
                     "tag": "DANDI"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:39.061106+00:00",
@@ -3056,7 +3046,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.240329.1926",
             "id": 78,
             "name": "Distributed coding of choice, action and engagement across the mouse brain",
             "repository_type": "dandi",
@@ -3656,10 +3646,6 @@
                 {
                     "id": 11,
                     "tag": "DANDI"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:42:58.022918+00:00",
@@ -3680,11 +3666,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.230426.0054",
+            "default_context": "0.240209.1623",
             "id": 90,
             "name": "Allen Institute Openscope - Responses to inconsistent stimuli in somata and distal apical dendrites in primary visual cortex",
             "repository_type": "dandi",
-            "summary": "This dataset was collected for the Credit Assignment project, as part of the Allen Institute for Brain Science's OpenScope project. The most up-to-date links to the publications associated with this dataset (a dataset descriptor paper and an analysis paper) can be found by going to the metadata Github repository, linked below.\n\nBriefly, mice were habituated to head-fixation on a running disc over a period of 11 days. Over the last 6 days, mice were presented with repeating stimulus sequences, with consistent features. These sessions are not included in the dataset, as imaging was not performed. Following habituation, sequences with inconsistent features were introduced over three sessions, while two-photon calcium imaging was performed in pyramidal neurons of primary visual cortex (VisP). Specifically, recordings for each mouse were made in one of four planes: L2/3 somata, L5 somata, L2/3 distal apical dendrites or L5 distal apical dendrites. As mice gained experience with the inconsistent sequences, responses to these events were found to evolve in opposite ways in the dendritic and somatic compartments.\n\nThe dataset includes 50 sessions total, recorded in 13 subjects, with at least 3 sessions per subject. Each session file includes: **(1)** ROI dF/F traces, **(2)** ROI masks, **(3)** ROI tracking information (where applicable), **(4)** running velocity traces, **(5)** pupil diameter traces, **(6)** pupil centroid position traces in x and y, **(7)** stimulus parameters. Note that gaze was not computed for this dataset. What is provided is the position of the pupil centroid in the pupil recording videos. In addition, a second, slightly larger version of each file was created, also including: **(8)** stimulus frame images (identifiable by `+image` in the file name). Lastly, a third, much larger version of each file was created, also including: **(9)** the motion corrected imaging stack (identifiable by `_obj-raw` in the file name).\n\nCertain sessions in this dataset were excluded from our analyses for quality control reasons. They are provided here, as the reasons we excluded them from our analyses may not pose a problem for all use cases. The metadata Github repository, linked below, provides detailed information about each session. ",
+            "summary": "This dataset was collected for the Credit Assignment project, as part of the Allen Institute for Brain Science's OpenScope project. The most up-to-date links to the publications associated with this dataset (a dataset descriptor paper and an analysis paper) can be found by going to the metadata Github repository, linked below.\n\nBriefly, mice were habituated to head-fixation on a running disc over a period of 11 days. Over the last 6 days, mice were presented with repeating stimulus sequences, with consistent features. These sessions are not included in the dataset, as imaging was not performed. Following habituation, sequences with inconsistent features were introduced over three sessions, while two-photon calcium imaging was performed in pyramidal neurons of primary visual cortex (VisP). Specifically, recordings for each mouse were made in one of four planes: L2/3 somata, L5 somata, L2/3 distal apical dendrites or L5 distal apical dendrites. As mice gained experience with the inconsistent sequences, responses to these events were found to evolve in opposite ways in the dendritic and somatic compartments.\n\nThe dataset includes 50 sessions total, recorded in 13 subjects, with at least 3 sessions per subject. Each session file includes: **(1)** ROI dF/F traces, **(2)** ROI masks, **(3)** ROI tracking information (where applicable), **(4)** running velocity traces, **(5)** pupil diameter traces, **(6)** pupil centroid position traces in x and y, **(7)** stimulus parameters. Note that gaze was not computed for this dataset. What is provided is the position of the pupil centroid in the pupil recording videos. In addition, a second, slightly larger version of each file was created, also including: **(8)** stimulus frame images (identifiable by `+image` in the file name). Lastly, a third, much larger version of each file was created, also including: **(9)** the motion corrected imaging stack (identifiable by `_obj-raw` in the file name).\n\nCertain sessions in this dataset were excluded from our analyses for quality control reasons. They are provided here, as the reasons we excluded them from our analyses may not pose a problem for all use cases. The metadata Github repository, linked below, provides detailed information about each session. \n\nRelease notes for each version of the dataset are provided in the CHANGES file.",
             "tags": [
                 {
                     "id": 153,
@@ -3830,7 +3816,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1515",
+            "default_context": "0.250624.0419",
             "id": 92,
             "name": "Network Homeostasis and State Dynamics of Neocortical Sleep",
             "repository_type": "dandi",
@@ -3952,7 +3938,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1516",
+            "default_context": "0.250624.0426",
             "id": 94,
             "name": "Diversity in neural firing dynamics supports both rigid and learned hippocampal sequences",
             "repository_type": "dandi",
@@ -4051,10 +4037,6 @@
                 {
                     "id": 345,
                     "tag": "DANDI:000048"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:06.929567+00:00",
@@ -4216,10 +4198,6 @@
             "repository_type": "dandi",
             "summary": "A test upload of Pons8 YO and Lectin, downsampled 16x using the BIDS schema",
             "tags": [
-                {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
                 {
                     "id": 11,
                     "tag": "DANDI"
@@ -4385,10 +4363,6 @@
             "summary": "7T MR structural images. B0 and B1+ code corrected parameter maps. ",
             "tags": [
                 {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
-                {
                     "id": 11,
                     "tag": "DANDI"
                 },
@@ -4415,7 +4389,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.230907.2101",
+            "default_context": "0.250624.0444",
             "id": 106,
             "name": "Cooling of Medial Septum Reveals Theta Phase Lag Coordination of Hippocampal Cell Assemblies",
             "repository_type": "dandi",
@@ -4517,7 +4491,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1517",
+            "default_context": "0.250624.0426",
             "id": 108,
             "name": "Reactivations of emotional memory in the hippocampus\u2013amygdala system during sleep",
             "repository_type": "dandi",
@@ -4571,10 +4545,6 @@
                 {
                     "id": 359,
                     "tag": "DANDI:000064"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:22.539305+00:00",
@@ -4667,10 +4637,6 @@
             "summary": "The reference space or brain template was constructed as a population average of 1,675 young adult C57BL/6J mice brains imaged using serial two photon tomography (STPT) for the Allen Mouse Brain Connectivity Atlas. The average template was created from tissue autofluorescence detected in the red channel. To maximize input data and create a symmetrical atlas, each dataset was reflected across the midline, for a total of 3,350 (2 x 1,675) hemisphere datasets. Creation of the template followed a two-step iterative process: (1) We deformably registered each specimen to the current iteration of the template and computed an intensity average. (2) We then computed the average deformation field, inverted it, and applied it to the intensity average created in (1). This resulted in a volume with an average unbiased shape and intensity to be used as the template in the next iteration until convergence.\n\nThe axes the average template volume is a +X=Posterior, +Y=Inferior(Ventral) and +Z=Right frame with the origin at the corner of the volume.",
             "tags": [
                 {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
-                {
                     "id": 11,
                     "tag": "DANDI"
                 },
@@ -4697,7 +4663,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1457",
+            "default_context": "0.250624.0419",
             "id": 112,
             "name": "Behavior-dependent short-term assembly dynamics in the medial prefrontal cortex",
             "repository_type": "dandi",
@@ -4751,10 +4717,6 @@
                 {
                     "id": 364,
                     "tag": "DANDI:000068"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:27.241424+00:00",
@@ -4823,10 +4785,6 @@
             "summary": "Pons section from acccession MGH 19-1_021520 stained with YOYO1",
             "tags": [
                 {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
-                {
                     "id": 11,
                     "tag": "DANDI"
                 },
@@ -4874,10 +4832,6 @@
                 {
                     "id": 369,
                     "tag": "MIES"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:31.115877+00:00",
@@ -5013,10 +4967,6 @@
                 {
                     "id": 377,
                     "tag": "DANDI:000117"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:34.766790+00:00",
@@ -5066,10 +5016,6 @@
                 {
                     "id": 378,
                     "tag": "DANDI:000122"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:43:35.906428+00:00",
@@ -5229,7 +5175,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.241017.1444",
             "id": 124,
             "name": "MC_RTT: macaque motor cortex spiking activity during self-paced reaching",
             "repository_type": "dandi",
@@ -5278,7 +5224,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.220113.0407",
+            "default_context": "0.241017.1448",
             "id": 125,
             "name": "DMFC_RSG: macaque dorsomedial frontal cortex spiking activity during time interval reproduction task",
             "repository_type": "dandi",
@@ -5540,10 +5486,6 @@
                 {
                     "id": 389,
                     "tag": "DANDI:000144"
-                },
-                {
-                    "id": 10,
-                    "tag": "NWB"
                 }
             ],
             "timestamp_created": "2023-02-17 08:53:06.692699+00:00",
@@ -5752,7 +5694,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.220116.2037",
+            "default_context": "0.250624.0434",
             "id": 135,
             "name": "Layer-Specific Physiological Features and Interlaminar Interactions in the Primary Visual Cortex of the Mouse",
             "repository_type": "dandi",
@@ -6236,7 +6178,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.220127.1738",
+            "default_context": "0.250624.0438",
             "id": 143,
             "name": "Transformation of a Spatial Map across the Hippocampal-Lateral Septal Circuit",
             "repository_type": "dandi",
@@ -6330,7 +6272,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.220131.1608",
+            "default_context": "0.250624.0439",
             "id": 145,
             "name": "Routing of Hippocampal Ripples to Subcortical Structures via the Lateral Septum",
             "repository_type": "dandi",
@@ -6783,11 +6725,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.240510.2038",
             "id": 154,
-            "name": "Rule-based modulation of  a sensorimotor transformation across cortical areas",
+            "name": "Rule-based modulation of a sensorimotor transformation across cortical areas",
             "repository_type": "dandi",
-            "summary": "Flexibly responding to sensory stimuli depending on rules is critical for adapting in a constantly changing environment. However, it remains unclear how the brain encodes rule information and uses this information to guide behavioral responses to sensory stimuli. Here, we made single-unit recordings while head-fixed mice performed a cross-modal sensory selection task in which they switched between two rules in different blocks of trials: licking in response to tactile stimuli while rejecting visual stimuli, or licking to visual stimuli while rejecting tactile stimuli. Along the cortical processing stream, touch-evoked responses in primary (S1) and secondary (S2) somatosensory cortical areas, and in the medial (MM) and anterolateral (ALM) motor cortical areas were modulated by rules at a single-neuron level. In addition, the activity of individual cortical neurons prior to stimulus delivery also changed in a rule-dependent manner. We proposed that rule-dependent pre-stimulus activity may contribute to setting the cortical areas in different initial conditions, which prepares them to process sensory information according to the appropriate rule. This hypothesis was supported by our findings that (1) the task rules could be decoded from the pre-stimulus population states of the sensory and motor cortical areas, (2) cortical areas with a larger difference in pre-stimulus state between rules used better separated subspaces to process subsequent tactile signals, and (3) optogenetic disruption of pre-stimulus states within the motor cortical areas impaired rule-dependent tactile detection. Taken together, our findings suggest that rule-guided sensorimotor flexibility may occur via appropriate configuration of pre-stimulus states within motor cortical networks, enabling distinct actions in response to the same sensory input.",
+            "summary": "Flexible responses to sensory stimuli based on changing rules are critical for adapting to a dynamic environment. However, it remains unclear how the brain encodes and uses rule information to guide behavior. Here, we made single-unit recordings while head-fixed mice performed a cross-modal sensory selection task where they switched between two rules: licking in response to tactile stimuli while rejecting visual stimuli, or vice versa. Along a cortical sensorimotor processing stream including the primary (S1) and secondary (S2) somatosensory areas, and the medial (MM) and anterolateral (ALM) motor areas, single-neuron activity distinguished between the two rules both prior to and in response to the tactile stimulus. We hypothesized that neural populations in these areas would show rule-dependent preparatory states, which would shape the subsequent sensory processing and behavior. This hypothesis was supported for the motor cortical areas (MM and ALM) by findings that (1) the current task rule could be decoded from pre-stimulus population activity; (2) neural subspaces containing the population activity differed between the two rules; and (3) optogenetic disruption of pre-stimulus states impaired task performance. Our findings indicate that flexible action selection in response to sensory input can occur via configuration of preparatory states in the motor cortex.",
             "tags": [
                 {
                     "id": 11,
@@ -6824,7 +6766,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.230223.0815",
+            "default_context": "0.250624.0414",
             "id": 155,
             "name": "A metabolic function of the hippocampal sharp wave-ripple",
             "repository_type": "dandi",
@@ -7997,7 +7939,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.230629.1955",
+            "default_context": "0.250624.0409",
             "id": 187,
             "name": "Physiological Properties and Behavioral Correlates of Hippocampal Granule Cells and Mossy Cells",
             "repository_type": "dandi",
@@ -8490,7 +8432,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.210812.1518",
+            "default_context": "0.250624.0430",
             "id": 196,
             "name": "Internally organized mechanisms of the head direction sense",
             "repository_type": "dandi",
@@ -181902,6 +181844,47 @@
                 "username": "padraig"
             },
             "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
+        },
+        "3427": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 3427,
+            "name": "test_release_openscope",
+            "repository_type": "dandi",
+            "summary": "Just a test to see if uploading our newly generated NWBs is successful ",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4804,
+                    "tag": "DANDI:000150"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                }
+            ],
+            "timestamp_created": "2025-08-14 10:43:20.798506+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000150/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
         }
     }
 }

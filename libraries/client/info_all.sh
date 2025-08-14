@@ -27,13 +27,18 @@ python osb_info.py -v2dev
 python osb_info.py -v2
 
 
-
 if [ "$quick" == 0 ]; then
 
-    python loadddandi.py -dry
-    
-    python biomodels_info.py 
+    # Update the cached info for DANDI archives
+    python dandi_info.py
+    python loadddandi.py -dry -v2dev # do a test run of loading/updating the info on osb
 
+    # Update the cached info for BioModels
+    python biomodels_info.py
+    python loadbiomodels.py -dry -v2dev # do a test run of loading/updating the info on osb
+
+    # Update the cached info for ModelDB
     python modeldb_info.py
+    python loadmodeldb.py -dry -v2dev # do a test run of loading/updating the info on osb
 
 fi
