@@ -50,7 +50,7 @@ known_missing_dandisets = [
 
 index = 0
 min_index = 0
-max_index = 100
+max_index = 2000
 
 verbose = False
 
@@ -273,6 +273,12 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     print("    Error: %s" % str(e))
                     print(
                         "    ** Token expired - go to your browser and refresh the token..."
+                    )
+                    exit()
+                elif "InvalidToken: Not enough segments" in str(e):
+                    print("    Error: %s" % str(e))
+                    print(
+                        "    ** No token expired - go to your browser and get a token to make changes on the live server..."
                     )
                     exit()
                 else:
