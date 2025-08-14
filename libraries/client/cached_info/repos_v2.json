@@ -1,14 +1,14 @@
 {
     "content_summary": {
         "content_types": {
-            "experimental": 304,
+            "experimental": 312,
             "experimental,modeling": 6,
             "modeling": 3182,
             "modeling,experimental": 4
         },
         "repository_type": {
             "biomodels": 1094,
-            "dandi": 296,
+            "dandi": 304,
             "figshare": 1,
             "github": 2105
         },
@@ -27,7 +27,7 @@
             "kusanele": 1,
             "latavia.thompson@yale.edu": 1,
             "matteo@metacell.us": 1,
-            "osbadmin": 3408,
+            "osbadmin": 3416,
             "padraig": 46,
             "pat7": 1,
             "pgl.eeson@gmail.com": 1,
@@ -2257,7 +2257,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.221219.1506",
+            "default_context": "0.240822.1759",
             "id": 61,
             "name": "Glia Accumulate Evidence that Actions Are Futile and Suppress Unsuccessful Behavior",
             "repository_type": "dandi",
@@ -6867,10 +6867,6 @@
             "summary": "This dataset contains MRI images associated with an ex vivo specimen of a human brainstem.",
             "tags": [
                 {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
-                {
                     "id": 11,
                     "tag": "DANDI"
                 },
@@ -7370,7 +7366,7 @@
             ],
             "default_context": "draft",
             "id": 169,
-            "name": "IBL - Brain Wide Map",
+            "name": "IBL - Brain Wide Map [deprecated]",
             "repository_type": "dandi",
             "summary": "The International Brain lab (IBL) aims to understand the neural basis of decision-making in the mouse by gathering a whole-brain activity map composed of electrophysiological recordings pooled from multiple laboratories. We have systematically recorded from nearly all major brain areas with Neuropixels probes, using a grid system for unbiased sampling and replicating each recording site in at least two laboratories. These data have been used to construct a brain-wide map of activity at single-spike cellular resolution during a decision-making task. In addition to the map, this data set contains other information gathered during the task: sensory stimuli presented to the mouse; mouse decisions and response times; and mouse pose information from video recordings and DeepLabCut analysis.",
             "tags": [
@@ -9147,7 +9143,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.241220.1312",
             "id": 211,
             "name": "Temporal disparity of action potentials triggered in axon initial segments and distal axons in the neocortex",
             "repository_type": "dandi",
@@ -9707,7 +9703,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.230316.2133",
+            "default_context": "0.250724.2224",
             "id": 223,
             "name": "Novel-familiar-novel WTrack (CA1-PFC)",
             "repository_type": "dandi",
@@ -9985,11 +9981,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.250711.1947",
             "id": 229,
             "name": "Electrophysiological Recordings in Anesthetized Rats in the Primary Somatosensory Cortex with Phased Ultrasound Array Stimulation",
             "repository_type": "dandi",
-            "summary": "In these recordings, we test different intensities and PRFs (pulse repetition frequencies) of ultrasound stimulation using a phased ultrasound array to stimulate the somatosensory cortex of rats anesthetized with 2% isoflurane through inhalation. Recordings are taken using 32 channel Neuronexus electrodes. Ultrasound stimulation is delivered every 2.5 seconds, and each recording has either 200 or 500 trials. ",
+            "summary": "In these recordings, we test different intensities and PRFs (pulse repetition frequencies) of ultrasound stimulation using a phased ultrasound array to stimulate the somatosensory cortex of rats anesthetized with 2% isoflurane through inhalation. Recordings are taken using 32 channel Neuronexus electrodes. Ultrasound stimulation is delivered every 2.5 seconds, and each recording has either 200 or 500 trials. Detailed description about this dataset can be found in the following publication. Please cite the paper if you would use a portion of the dataset.  Gao, H., Ramachandran, S., Yu, K., & He, B. (2025). Transcranial Focused Ultrasound Modulates Feedforward and Feedback Cortico-Thalamo-Cortical Pathways by Selectively Activating Excitatory Neurons. The Journal of Neuroscience, 45(23), e2218242025. https://doi.org/10.1523/JNEUROSCI.2218-24.2025",
             "tags": [
                 {
                     "id": 11,
@@ -10116,11 +10112,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.231213.2047",
+            "default_context": "0.240123.1806",
             "id": 232,
             "name": "Dataset of human-single neuron activity during a Sternberg working memory task.",
             "repository_type": "dandi",
-            "summary": "We present a dataset of 1809 single neurons  recorded from the human medial temporal lobe (amygdala and hippocampus) and medial frontal lobe (anterior cingulate cortex, pre-supplementary motor area, ventral medial prefrontal cortex) across 41 sessions from 21 patients that underwent intracranial monitoring for epileptic activity. Subjects first performed a screening task (907 neurons), based on which we identified images for which highly selective cells were present in the medial temporal lobe. Subjects then performed a working memory task (902 neurons), in which they were sequentially presented with 1-3 images, and following a maintenance period, were asked if a probe was identical to one of the currently maintained images. This Neural data without borders (NWB) formatted dataset includes spike times, extracellular spike waveforms, stimuli presented, behavior, electrode locations, and subject demographics. As validation, we replicate previous findings on the existence of concept cells and their persistent activity during working memory maintenance.  This dataset provides a substantial amount of rare human single neuron recordings together with behavior, thereby enabling investigation of the neural mechanisms of working memory at the single-neuron level.\n\nSample code to access and analyze this dataset has been provided: \nhttps://github.com/rutishauserlab/workingmem-release-NWB\n",
+            "summary": "We present a dataset of 1809 single neurons recorded from the human medial temporal lobe (amygdala and hippocampus) and medial frontal lobe (anterior cingulate cortex, pre-supplementary motor area, ventral medial prefrontal cortex) across 41 sessions from 21 patients that underwent intracranial monitoring for epileptic activity. Subjects first performed a screening task (907 neurons), based on which we identified images for which highly selective cells were present in the medial temporal lobe. Subjects then performed a working memory task (902 neurons), in which they were sequentially presented with 1-3 images, and following a maintenance period, were asked if a probe was identical to one of the currently maintained images. This Neural data without borders (NWB) formatted dataset includes spike times, extracellular spike waveforms, stimuli presented, behavior, electrode locations, and subject demographics. As validation, we replicate previous findings on the existence of concept cells and their persistent activity during working memory maintenance. This dataset provides a substantial amount of rare human single neuron recordings together with behavior, thereby enabling investigation of the neural mechanisms of working memory at the single-neuron level.\n\nThis code accompanies the following data descriptor: \n* Kyzar M, Kami\u0144ski J, Brzezicka A, Reed CM, Chung JM, Mamelak AN, Rutishauser U. Dataset of human-single neuron activity during a Sternberg working memory task. Sci Data. 2024 Jan 18;11(1):89. doi: 10.1038/s41597-024-02943-8. PMID: 38238342; PMCID: PMC10796636.\n  [Link to Paper](https://pubmed.ncbi.nlm.nih.gov/38238342/)\n* Sample code to access and analyze this dataset has been provided: https://github.com/rutishauserlab/workingmem-release-NWB\n",
             "tags": [
                 {
                     "id": 11,
@@ -10226,7 +10222,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.241009.1502",
             "id": 234,
             "name": "NeuroPAL volumetric images",
             "repository_type": "dandi",
@@ -10883,7 +10879,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.241009.1457",
             "id": 247,
             "name": "NeuroPAL Microfluidic Chip Images and GCaMP activity",
             "repository_type": "dandi",
@@ -11305,7 +11301,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.240502.0456",
             "id": 257,
             "name": "Spontaneous behaviour is structured by reinforcement without explicit reward",
             "repository_type": "dandi",
@@ -11358,7 +11354,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.241009.1504",
             "id": 258,
             "name": "C. elegans whole-brain neuroPAL and immobilized calcium imaging",
             "repository_type": "dandi",
@@ -11587,16 +11583,12 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.250616.1143",
             "id": 263,
             "name": "Intracranial recordings using BCI2000 and the CorTec BrainInterchange",
             "repository_type": "dandi",
             "summary": "An Ecosystem of Technology and Protocols for Adaptive Neuromodulation Research in Humans\n\nThis study aims to develop an ecosystem for the purpose of neurmodulation using the Cortec BCI device and BCI2000 software.\n\nContact: For questions regarding this dataset, please contact mivalt.filip@mayo.edu or Miller.Kai@mayo.edu",
             "tags": [
-                {
-                    "id": 72,
-                    "tag": "BIDS"
-                },
                 {
                     "id": 11,
                     "tag": "DANDI"
@@ -11665,7 +11657,7 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.231010.1809",
+            "default_context": "0.250610.0938",
             "id": 265,
             "name": "Dataset of human medial temporal lobe neurons, scalp and intracranial EEG during a verbal working memory task",
             "repository_type": "dandi",
@@ -12064,11 +12056,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "draft",
+            "default_context": "0.240227.2023",
             "id": 272,
-            "name": "Multimodal brain responses during movie watching: single-neuron, intracranial EEG, and fMRI in human patients",
+            "name": "Data for: Multimodal single-neuron, intracranial EEG, and fMRI brain responses during movie watching in human patients",
             "repository_type": "dandi",
-            "summary": "We present a multimodal dataset of intracranial recordings, fMRI, and eye tracking in 20 human participants. Intracranial recordings consist of single neurons, local field potential, and intracranial EEG activity recorded concurrently from depth electrodes targeting the amygdala, hippocampus, and medial frontal cortex while participants underwent intracranial monitoring for localization of epileptic seizures. Participants watched an 8-min long movie (\"Bang You're Dead\") and performed a recognition memory test for movie content. 3T fMRI activity was recorded prior to surgery in 11 of the same participants while performing the same task. This NWB- and BIDS-formatted dataset includes the spike times of all neurons, field potential activity, behavior, eye tracking, electrode locations, demographics, and functional and structural MRI scans. For technical validation, we provide signal quality metrics, assess eye tracking quality, behavior, the tuning of cells and high-frequency broadband power field potentials to familiarity and event boundaries, and show brain-wide inter-subject correlations. This dataset will facilitate the investigation of brain activity during movie watching, recognition memory, and the neural basis of the fMRI-BOLD signal.\n\nGit Link: https://github.com/rutishauserlab/bmovie-release-NWB-BIDS",
+            "summary": "We present a multimodal dataset of intracranial recordings, fMRI, and eye tracking in 20 participants during movie watching. Recordings consist of single neurons, local field potential, and intracranial EEG activity acquired from depth electrodes targeting the amygdala, hippocampus, and medial frontal cortex implanted for monitoring of epileptic seizures. Participants watched an 8-min long excerpt from the video \"Bang! You're Dead\" and performed a recognition memory test for movie content. 3\u2009T fMRI activity was recorded prior to surgery in 11 of these participants while performing the same task. This NWB- and BIDS-formatted dataset includes spike times, field potential activity, behavior, eye tracking, electrode locations, demographics, and functional and structural MRI scans. For technical validation, we provide signal quality metrics, assess eye tracking quality, behavior, the tuning of cells and high-frequency broadband power field potentials to familiarity and event boundaries, and show brain-wide inter-subject correlations for fMRI. This dataset will facilitate the investigation of brain activity during movie watching, recognition memory, and the neural basis of the fMRI-BOLD signal.\n\nThis dataset accompanies the following data descriptor: Keles, U., Dubois, J., Le, K.J.M., Tyszka, J.M., Kahn, D.A., Reed, C.M., Chung, J.M., Mamelak, A.N., Adolphs, R. and Rutishauser, U. Multimodal single-neuron, intracranial EEG, and fMRI brain responses during movie watching in human patients. Sci Data 11, 214 (2024). [Link to paper](https://doi.org/10.1038/s41597-024-03029-1)\n\nSample code to access and analyze this dataset has been provided: https://github.com/rutishauserlab/bmovie-release-NWB-BIDS",
             "tags": [
                 {
                     "id": 11,
@@ -12085,6 +12077,22 @@
                 {
                     "id": 10,
                     "tag": "NWB"
+                },
+                {
+                    "id": 4985,
+                    "tag": "iEEG"
+                },
+                {
+                    "id": 4986,
+                    "tag": "movie watching"
+                },
+                {
+                    "id": 4987,
+                    "tag": "recognition memory"
+                },
+                {
+                    "id": 4988,
+                    "tag": "single-neuron"
                 }
             ],
             "timestamp_created": "2024-01-03 17:31:14.046671+00:00",
@@ -12223,11 +12231,11 @@
             "content_types_list": [
                 "experimental"
             ],
-            "default_context": "0.230922.1642",
+            "default_context": "0.240501.1912",
             "id": 275,
-            "name": "Extracellular recording along macaque ventral stream during natural image free viewing",
+            "name": "Extracellular recording along macaque ventral visual pathway during natural image free viewing",
             "repository_type": "dandi",
-            "summary": "Recordings spanning six areas in the macaque ventral stream (V1, V2 ,V4, PIT, CIT, AIT; primarily in CIT and AIT) including 679 experimental sessions, 883 hours, 13 monkeys, 4.6 million fixations, and thousands of natural images. For more information, see the preprint at https://doi.org/10.1101/2023.02.08.527666",
+            "summary": "Recordings spanning six areas in the macaque ventral visual pathway (V1, V2 ,V4, PIT, CIT, AIT; primarily in CIT and AIT) including 679 experimental sessions, 883 hours, 13 monkeys, 4.6 million fixations, and thousands of natural images. For more information, see the journal article: https://www.nature.com/articles/s41593-024-01631-5.\n\nFor example code using these files, see the GitHub repository linked below under Related resources, containing code to reprocude the paper analyses. Please note that the NWB files hosted here are organized somewhat differently from the code examples, so please adapt the code accordingly.\n\nTo interactively explore the NWB files, a useful tool is HDFView (https://www.hdfgroup.org/downloads/hdfview/).",
             "tags": [
                 {
                     "id": 11,
@@ -185631,6 +185639,494 @@
             "timestamp_created": "2025-08-14 11:06:37.104256+00:00",
             "timestamp_updated": "---",
             "uri": "https://dandiarchive.org/dandiset/001044/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3506": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.240502.2344",
+            "id": 3506,
+            "name": "Allen Institute Openscope - Illusion project",
+            "repository_type": "dandi",
+            "summary": "Much of sensory neuroscience has focused on how the brain faithfully represents sensory information. However, sensory information is often incomplete and ambiguous. Hence, the brain must rely on an internal model of the sensory world to infer a coherent percept. Illusions reveal rational mistakes in perceptual inference, yielding unique insights into the brain\u2019s internal model. Here, we utilized illusory contours (ICs) to study the microcircuit mechanisms underlying the perceptual inference of an edge. Evidence for IC perception has been shown in multiple species, including mice. Neural correlates of IC perception have also been identified, i.e., neurons that respond to ICs with the same receptive field and feature selectivity (e.g., orientation tuning) as for real edges, despite the lack of feedforward sensory drive. Our goal was to investigate how neocortical microcircuits give rise to illusory responses in IC encoders. In addition, we aimed to investigate whether the microcircuit implementation of IC encoding is common across the visual cortex hierarchy.\n",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4966,
+                    "tag": "DANDI:000248"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 4829,
+                    "tag": "excitatory"
+                },
+                {
+                    "id": 148,
+                    "tag": "extracellular electrophysiology"
+                },
+                {
+                    "id": 4967,
+                    "tag": "illusory contours"
+                },
+                {
+                    "id": 4830,
+                    "tag": "inhibitory"
+                },
+                {
+                    "id": 97,
+                    "tag": "mouse"
+                },
+                {
+                    "id": 136,
+                    "tag": "neocortex"
+                },
+                {
+                    "id": 175,
+                    "tag": "neuropixel"
+                },
+                {
+                    "id": 4968,
+                    "tag": "perceptual inference"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:10:51.150688+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000248/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3507": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.240923.1441",
+            "id": 3507,
+            "name": "Allen Institute Openscope - Global/Local Oddball project",
+            "repository_type": "dandi",
+            "summary": "This dataset was collected for the Global Local Oddball project, as part of the Allen Institute's OpenScope project. \nThe brain rapidly adapts to unchanging environments and is most excited by surprising events. A leading model to explain this phenomenon is predictive coding. Predictive coding proposes that the brain compares incoming sensory information against a prediction signal. This prediction is based on an internal model that is generated in higher-order cortex. This model reflects the brain\u2019s assumptions about the statistics of the environment. If an incoming sensory signal matches the prediction, the two signals cancel. Expected sensory data thus are \u201cexplained away\u201d and leave the brain unexcited. In other words, predictive coding is subtractive. Whenever the sensory signal does not match the prediction, subtraction results in a larger value, called the prediction error. This error signal initiates excitation in the lower-order cortex that propagates feedforward up the cortical hierarchy (i.e., V1, RL, LM, AL, PM, and AM). Prediction errors then instigate updates to the internal model to improve future predictions. Associated prediction update signals flow back down the hierarchy. Consistent with this model, optogenetic silencing of top-down inputs from frontal to visual cortex largely eliminates prediction error signals. However, the precise circuit mechanisms that generate these signals are largely unknown. Specifically, by recording from multiple neuropixels across the visual cortical hierarchy, we aimed to uncover what information is carried by layer 2 and 3 spikes that feed forward vs. by layer 5 and 6 spikes that feed back, using recently established analytic tools.\n",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4969,
+                    "tag": "DANDI:000253"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 4830,
+                    "tag": "inhibitory"
+                },
+                {
+                    "id": 97,
+                    "tag": "mouse"
+                },
+                {
+                    "id": 136,
+                    "tag": "neocortex"
+                },
+                {
+                    "id": 131,
+                    "tag": "neuropixels"
+                },
+                {
+                    "id": 294,
+                    "tag": "optogenetics"
+                },
+                {
+                    "id": 516,
+                    "tag": "predictive coding"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:10:58.015133+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000253/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3508": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.240801.1040",
+            "id": 3508,
+            "name": "Two-photon calcium imaging of EPG cells in Drosophila Melanogaster presented with cues of varying reliability",
+            "repository_type": "dandi",
+            "summary": "This dandiset contains the data associated with \"Uncertainty and learning in a biological ring attractor\" (Basnak et al., in preparation). It is comprised of two-photon calcium imaging, stimulus variables, and behavioral measurements of fruit flies presented with cues of varying reliability.",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4970,
+                    "tag": "DANDI:000289"
+                },
+                {
+                    "id": 403,
+                    "tag": "Drosophila melanogaster - Fruit fly"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 4971,
+                    "tag": "central complex"
+                },
+                {
+                    "id": 4972,
+                    "tag": "drosophila"
+                },
+                {
+                    "id": 153,
+                    "tag": "learning"
+                },
+                {
+                    "id": 584,
+                    "tag": "navigation"
+                },
+                {
+                    "id": 4973,
+                    "tag": "ring attractor"
+                },
+                {
+                    "id": 4974,
+                    "tag": "uncertainty"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:11:00.807788+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000289/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3509": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 3509,
+            "name": "In vitro electrochemical impedance spectroscopy data - microelectrode arrays",
+            "repository_type": "dandi",
+            "summary": "Electrochemical impedance spectroscopy (EIS) data from multichannel microelectrode arrays coated with activated iridium oxide (AIROF), sputtered iridium oxide (SIROF), or ruthenium oxide (RuOx). Supported by NIH 1U01NS126052-01.",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4975,
+                    "tag": "DANDI:000408"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 315,
+                    "tag": "Rattus norvegicus - Norway rat"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:11:35.081516+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000408/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3510": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.241014.2127",
+            "id": 3510,
+            "name": "Thermal Plaid Experiments",
+            "repository_type": "dandi",
+            "summary": "Larval zebrafish navigating a virtual thermal plaid created by an infrared stimulus laser",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4976,
+                    "tag": "DANDI:000485"
+                },
+                {
+                    "id": 287,
+                    "tag": "Danio rerio - Zebra fish"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:12:02.427746+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000485/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3511": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.250311.2145",
+            "id": 3511,
+            "name": "Allen Institute Openscope - Barcoding",
+            "repository_type": "dandi",
+            "summary": "Some visual neurons have been shown to respond to white noise flicker visual stimuli with high temporal precision, particularly retinal ganglion cells and LGN relay cells. Responses to white noise stimulation are useful for a variety of analyses, including information theoretic measures and generative models of precise spike timing. However the literature was lacking data on responses to white noise in cortical visual areas, or in the visual stream flowing through the superior colliculus.\n\nThis experiment used the OpenScope Neuropixels passive viewing protocol, and displayed visual stimuli modulated in time by a short, repeated white noise sequence. The visual stimulus was either a spatially uniform field whose luminance was modulated in time (Full Field Flicker), or a standing sinusoidal grating whose contrast was modulated in time (Static Gratings). Perhaps surprisingly, most cortical visual neurons responded well to full-field flicker white noise.  To obtain large populations of neurons in subcortical areas, roughly half of the mice were recorded in a novel electrode configuration. \n\nWhen white noise visual stimuli are presented repeatedly and the neural responses displayed as spike rasters, the rasters look remarkably like UPC codes or bar codes. The same bar-code-like patterns have been found in neurons recorded in different individual animals, and even neurons in different species. We speculated that these barcodes could be used as identifiers of discrete cell types. The Temporal Barcode Dataset provides \"barcodes\" for visually responsive neurons throughout the mouse brain, enabling a test of this hypothesis.",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4977,
+                    "tag": "DANDI:000563"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 4978,
+                    "tag": "barcoding"
+                },
+                {
+                    "id": 4829,
+                    "tag": "excitatory"
+                },
+                {
+                    "id": 148,
+                    "tag": "extracellular electrophysiology"
+                },
+                {
+                    "id": 4830,
+                    "tag": "inhibitory"
+                },
+                {
+                    "id": 97,
+                    "tag": "mouse"
+                },
+                {
+                    "id": 136,
+                    "tag": "neocortex"
+                },
+                {
+                    "id": 175,
+                    "tag": "neuropixel"
+                },
+                {
+                    "id": 4979,
+                    "tag": "precision"
+                },
+                {
+                    "id": 4980,
+                    "tag": "temporal"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:12:30.251528+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000563/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3512": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "0.250312.0130",
+            "id": 3512,
+            "name": "Allen Institute Openscope - Sequence Learning Project",
+            "repository_type": "dandi",
+            "summary": "Adaptive and coordinated behavior requires that an animal be able to make predictions about the near and even far future. This intuition that some neural computations should be \u2018predictive\u2019 in their character has a long history, starting with ideas about how the receptive field structure of retinal ganglion cells relate to the statistics of natural visual scenes. Ideas about predictive computation have been most influential in thinking about the function of the neocortex. Here, the relatively stereotyped local circuitry of the neocortex has long led to speculation that each local circuit might be carrying out a somewhat similar, fundamental computation on its specific inputs. In addition, the organization of sensory-motor pathways into hierarchies (e.g., V1, V2, V4, IT in the ventral visual stream) with stereotyped feedforward and feedback connections has motivated ideas about hierarchical predictive codes, where higher levels of the hierarchy send predictions down to the lower level that then compares its inputs against the predictions and only send the surprises up the hierarchy (such as in the work of Mumford, Rao & Ballard, and Friston). Despite the wide influence of ideas about predictive coding, there is relatively little experimental evidence that such computations occur in multiple cortical areas, perhaps serving as a \u2018canonical computation\u2019 of the neocortical microcircuit. Our experimental design is based on a Sequence Learning Experiment, in which head-fixed mice passively view sequences of three different natural movie clips (labeled \u2018A\u2019, \u2018B\u2019, \u2018C\u2019), each having a duration of 2 seconds. We begin with one recording session (day #0), where the movie clips are presented in random order along with a 2 second grey screen (labeled \u2018X\u2019). Each stimulus occurs a total of 525 times, allowing a thorough characterization of neural responses before any sequence learning has occurred. Next, there are 3 recording sessions where the three movie clips are presented in a repeating temporal sequence, ABCABC\u2026, for 500 times, in order to train the mouse\u2019s brain. This training allows the mouse to potentially use the identity of the current movie clip predict the next movie clip. In addition, each sequence training session includes a period of random-order presentation, in order to assess changes in neural tuning during sequence learning. Finally, our last session (day #4) had stimuli presented in random order, allowing us to test more thoroughly how responses changed due to sequence learning.\n\nOur design uses 2-photon microscopy with eight simultaneously recorded fields-of-view. The fields-of-view will include both layer 2/3 and layer 4 as well as from multiple cortical areas: V1 (VISp), LM (VISl), AM (VISam), and PM (VISpm). The experiment used the Cux2-CreERTS2:Camk2a-tTa; Ai93(TITL-GCaMP6f) mouse line, which has expression in excitatory neurons of both layer 4 and 2/3.",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4981,
+                    "tag": "DANDI:000617"
+                },
+                {
+                    "id": 157,
+                    "tag": "L2/3"
+                },
+                {
+                    "id": 4982,
+                    "tag": "L4"
+                },
+                {
+                    "id": 299,
+                    "tag": "Mus musculus - House mouse"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                },
+                {
+                    "id": 4831,
+                    "tag": "movies"
+                },
+                {
+                    "id": 136,
+                    "tag": "neocortex"
+                },
+                {
+                    "id": 161,
+                    "tag": "prediction"
+                },
+                {
+                    "id": 516,
+                    "tag": "predictive coding"
+                },
+                {
+                    "id": 4983,
+                    "tag": "predictive processing"
+                },
+                {
+                    "id": 154,
+                    "tag": "pyramidal neurons"
+                },
+                {
+                    "id": 4984,
+                    "tag": "sequence learning"
+                },
+                {
+                    "id": 156,
+                    "tag": "somata"
+                },
+                {
+                    "id": 159,
+                    "tag": "two-photon calcium imaging"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:12:50.020084+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000617/draft",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3513": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "draft",
+            "id": 3513,
+            "name": "Neural Organoid Ephys Trace",
+            "repository_type": "dandi",
+            "summary": "Captured originally with a MaxWell BioSystems CMOS-based High-Density Microelectrode Array.",
+            "tags": [
+                {
+                    "id": 11,
+                    "tag": "DANDI"
+                },
+                {
+                    "id": 4989,
+                    "tag": "DANDI:000626"
+                },
+                {
+                    "id": 334,
+                    "tag": "Macaca mulatta - Rhesus monkey"
+                },
+                {
+                    "id": 10,
+                    "tag": "NWB"
+                }
+            ],
+            "timestamp_created": "2025-08-14 11:12:57.105758+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://dandiarchive.org/dandiset/000626/draft",
             "user": {
                 "email": "p.glee.s.on@gmail.com",
                 "first_name": "OSB",
