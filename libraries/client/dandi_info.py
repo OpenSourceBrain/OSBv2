@@ -11,7 +11,7 @@ for d in ds:
 all_info = []
 
 min_index = 0
-max_index = 50000
+max_index = 20000
 
 
 index = min_index
@@ -58,21 +58,10 @@ for dandiset_id in dandiset_ids[min_index:max_index]:
     else:
         print("  No files in this Dandiset")
 
-filename = "cached_info/dandishowcase_info2.json"
+filename = "cached_info/dandiarchive.json"
 
 strj = json.dumps(all_info, indent="    ", sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
 
 print("Data on DANDI (%i models) written to %s" % (len(all_info), filename))
-
-"""
-    # List assets
-    assets = list(dandiset.get_assets())
-
-    # Get a specific asset
-    asset = dandiset.get_asset_by_path("path/to/file.nwb")
-
-    # Download an asset
-    asset.download("local_file.nwb")
-    """

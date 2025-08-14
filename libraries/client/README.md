@@ -88,7 +88,6 @@ This will get a structured json file (`cached_info/biomodels.json`) of the conte
 python biomodels_info.py
 ```
 
-
 Now we need to test if there is an OSBv2 repository pointing to each of these BioModels models:
 ```
 python loadbiomodels.py -dry -v2dev       # dry run to test/list repos to add
@@ -102,3 +101,21 @@ python osb_info.py -v2dev                 # regenerate the cache of all osbv2 de
 When this works, do the same with `-v2` for the live OSBv2. 
 
 
+### 4) Checking/updating DANDI Archive content
+
+This will get a structured json file (`cached_info/dandiarchive.json`) of the contents of the DANDI Archive (note full check can take up to 10 mins):
+```
+python dandi_info.py
+```
+
+Now we need to test if there is an OSBv2 repository pointing to each of these DANDI datasets:
+```
+python loaddandi.py -dry -v2dev       # dry run to test/list repos to add
+```
+
+If they need to be added, run:
+```
+python loaddandi.py abcxxx123 -v2dev  # add new repos to v2dev using the token as above...
+python osb_info.py -v2dev                 # regenerate the cache of all osbv2 dev repos
+```
+When this works, do the same with `-v2` for the live OSBv2. 

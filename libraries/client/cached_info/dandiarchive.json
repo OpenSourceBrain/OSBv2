@@ -62927,9 +62927,9 @@
                     "schemaKey": "MeasurementTechniqueType"
                 }
             ],
-            "numberOfBytes": 700043465811,
-            "numberOfFiles": 84,
-            "numberOfSubjects": 22,
+            "numberOfBytes": 729666161987,
+            "numberOfFiles": 95,
+            "numberOfSubjects": 23,
             "schemaKey": "AssetsSummary",
             "species": [
                 {
@@ -63069,7 +63069,7 @@
             "https://api.dandiarchive.org/api/dandisets/001250/versions/draft/assets/"
         ],
         "name": "Spike sorting biases and information loss in a detailed cortical model",
-        "num_files": 84,
+        "num_files": 95,
         "protocol": [
             "https://www.biorxiv.org/content/10.1101/2024.12.04.626805v2"
         ],
@@ -70099,9 +70099,9 @@
                     "schemaKey": "MeasurementTechniqueType"
                 }
             ],
-            "numberOfBytes": 7678341988,
-            "numberOfFiles": 3,
-            "numberOfSubjects": 1,
+            "numberOfBytes": 8884496240,
+            "numberOfFiles": 5,
+            "numberOfSubjects": 3,
             "schemaKey": "AssetsSummary",
             "species": [
                 {
@@ -70142,7 +70142,7 @@
             "https://api.dandiarchive.org/api/dandisets/001424/versions/draft/assets/"
         ],
         "name": "Predictive Processing Community - SLAP2",
-        "num_files": 3,
+        "num_files": 5,
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
         "schemaVersion": "0.6.9",
@@ -73496,28 +73496,28 @@
             ],
             "dataStandard": [
                 {
-                    "identifier": "RRID:SCR_015242",
-                    "name": "Neurodata Without Borders (NWB)",
+                    "identifier": "RRID:SCR_016124",
+                    "name": "Brain Imaging Data Structure (BIDS)",
                     "schemaKey": "StandardsType"
                 },
                 {
-                    "identifier": "RRID:SCR_016124",
-                    "name": "Brain Imaging Data Structure (BIDS)",
+                    "identifier": "RRID:SCR_015242",
+                    "name": "Neurodata Without Borders (NWB)",
                     "schemaKey": "StandardsType"
                 }
             ],
             "measurementTechnique": [
                 {
-                    "name": "surgical technique",
+                    "name": "multi electrode extracellular electrophysiology recording technique",
                     "schemaKey": "MeasurementTechniqueType"
                 },
                 {
-                    "name": "multi electrode extracellular electrophysiology recording technique",
+                    "name": "surgical technique",
                     "schemaKey": "MeasurementTechniqueType"
                 }
             ],
-            "numberOfBytes": 3668403,
-            "numberOfFiles": 17,
+            "numberOfBytes": 2197899,
+            "numberOfFiles": 14,
             "numberOfSubjects": 1,
             "schemaKey": "AssetsSummary",
             "species": [
@@ -73528,8 +73528,8 @@
                 }
             ],
             "variableMeasured": [
-                "ElectricalSeries",
-                "ElectrodeGroup"
+                "ElectrodeGroup",
+                "ElectricalSeries"
             ]
         },
         "citation": "Baker, Cody (2025) Neuropixels recordings from hippocampus of head-fixed mice during odor presentation (Raw - BIDS) (Version draft) [Data set]. DANDI Archive. https://dandiarchive.org/dandiset/001470/draft",
@@ -73546,7 +73546,7 @@
                 "schemaKey": "Person"
             }
         ],
-        "data_type": "Neurodata Without Borders (NWB)",
+        "data_type": "Brain Imaging Data Structure (BIDS)",
         "dateCreated": "2025-06-04T15:48:10.038425+00:00",
         "description": "BEP32-compliant version of 001335 (https://dandiarchive.org/dandiset/001335/draft)",
         "ethicsApproval": [],
@@ -73559,7 +73559,7 @@
             "https://api.dandiarchive.org/api/dandisets/001470/versions/draft/assets/"
         ],
         "name": "Neuropixels recordings from hippocampus of head-fixed mice during odor presentation (Raw - BIDS)",
-        "num_files": 17,
+        "num_files": 14,
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",

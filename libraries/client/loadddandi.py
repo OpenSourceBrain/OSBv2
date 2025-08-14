@@ -1,12 +1,9 @@
-from urllib.request import urlopen
-import codecs
 import workspaces_cli
 from pprint import pprint
 from workspaces_cli.api import rest_api, k8s_api
 import logging
 import json
 import sys
-import csv
 
 from utils import get_tags_info
 from utils import known_users, lookup_user, is_known_user
@@ -38,7 +35,7 @@ if "-dry" in sys.argv:
 else:
     dry_run = False  # dry_run = True
 
-new_json_filename = "cached_info/dandishowcase_info2.json"
+new_json_filename = "cached_info/dandiarchive.json"
 use_new_json = True
 
 
@@ -50,7 +47,7 @@ known_missing_dandisets = [
 
 index = 0
 min_index = 0
-max_index = 2000
+max_index = 20000
 
 verbose = False
 
@@ -75,6 +72,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     except workspaces_cli.ApiException as e:
         print("Exception when calling K8sApi->live: %s\n" % e)
 
+"""
 dandishowcase_csv_url = "https://raw.githubusercontent.com/OpenSourceBrain/DANDIArchiveShowcase/main/validation_folder/dandiset_summary.csv"
 response = urlopen(dandishowcase_csv_url)
 
@@ -87,6 +85,7 @@ filename = "cached_info/dandishowcase_info.json"
 strj = json.dumps(dandishowcase_info, indent="    ", sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
+    """
 
 if use_new_json:
     print("New JSON file being used...")
