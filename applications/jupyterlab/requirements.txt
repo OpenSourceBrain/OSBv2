@@ -43,7 +43,7 @@ seaborn
 
 
 # For MDF
-modeci_mdf
+#modeci_mdf
 
 scikit-learn # Required for some Neuromatch Academy material
 #########fasttext # Required for some Neuromatch Academy material
