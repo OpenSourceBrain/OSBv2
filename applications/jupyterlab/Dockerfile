@@ -90,10 +90,10 @@ USER root
 #     cd nest && \
 #     mkdir $NEST_HOME && \
 #     apt-get install libgsl-dev -y && \
-#     cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.12 . && \
+#     cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python$PYVER . && \
 #     make -j7 && \
 #     make install
-# ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
+# ENV PYTHONPATH=$NEST_HOME/lib/python$PYVER/site-packages
 # ENV PATH=$PATH:$NEST_HOME/bin
 RUN conda install conda-forge::nest-simulator
 USER jovyan
@@ -106,7 +106,7 @@ RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &
     pip install -r requirements.txt --upgrade --no-cache-dir
 
 #  Compile NEURON mod files for PyNN
-RUN cd /opt/conda/lib/python3.12/site-packages/pyNN/neuron/nmodl && nrnivmodl
+RUN cd `pip show pynn | grep Location | sed 's/Location: //'`/pyNN/neuron/nmodl && nrnivmodl
 
 # Install NeuroML Schemas etc.
 RUN git clone https://github.com/NeuroML/NeuroML2
