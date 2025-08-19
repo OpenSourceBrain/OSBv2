@@ -1,7 +1,7 @@
 {
     "content_summary": {
         "content_types": {
-            "experimental": 470,
+            "experimental": 471,
             "experimental,modeling": 4,
             "modeling": 3114,
             "modeling,experimental": 0
@@ -9,14 +9,14 @@
         "repository_type": {
             "biomodels": 1095,
             "dandi": 453,
-            "figshare": 0,
+            "figshare": 1,
             "github": 2040
         },
         "user_repos": {
             "a": 19,
             "aigakira": 2,
             "ana\u00edsc\u00e3o": 1,
-            "ankursinha": 1,
+            "ankursinha": 2,
             "ca": 3,
             "gopal": 4,
             "nik": 1,
@@ -191205,6 +191205,55 @@
                 "username": "osbadmin"
             },
             "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
+        },
+        "3663": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "1",
+            "id": 3663,
+            "name": "Data from Dynamics of Inhibitory Golgi Interneurons in the Cerebellar Cortex: Gurnani and Silver 2021",
+            "repository_type": "figshare",
+            "summary": "Population imaging of cerebellar Golgi cells in Crus I/II and lobule IV/V (vermis) of awake, head-fixed mice.",
+            "tags": [
+                {
+                    "id": 5240,
+                    "tag": "cerebellum"
+                },
+                {
+                    "id": 5241,
+                    "tag": "golgi-cells"
+                },
+                {
+                    "id": 5242,
+                    "tag": "gap-junctions"
+                },
+                {
+                    "id": 5243,
+                    "tag": "cerebellar-cortex"
+                },
+                {
+                    "id": 5244,
+                    "tag": "calcium-imaging"
+                },
+                {
+                    "id": 55,
+                    "tag": "mice"
+                }
+            ],
+            "timestamp_created": "2025-08-18 15:43:14.933684+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://rdr.ucl.ac.uk/articles/dataset/All_Preprocessed_Datasets_for_Gurnani_and_Silver_2021/14364845",
+            "user": {
+                "email": "ankur.sinha@ucl.ac.uk",
+                "first_name": "Ankur",
+                "id": "f09f4521-4323-415d-b388-8160ae858d57",
+                "last_name": "Sinha",
+                "username": "ankursinha"
+            },
+            "user_id": "f09f4521-4323-415d-b388-8160ae858d57"
         }
     }
 }

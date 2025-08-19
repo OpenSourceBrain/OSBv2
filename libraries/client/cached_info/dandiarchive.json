@@ -34511,7 +34511,7 @@
                 "Units"
             ]
         },
-        "citation": "Boran, Ece; Fedele, Tommaso; Hilfiker, Peter; Stieglitz, Lennart; Grunwald, Thomas; Hohenheim, Jan; Sarnthein, Johannes (2025) Dataset of human medial temporal lobe neurons, scalp and intracranial EEG during a verbal working memory task (Version draft) [Data set]. DANDI Archive. https://dandiarchive.org/dandiset/000574/draft",
+        "citation": "Boran, Ece; Fedele, Tommaso; Hilfiker, Peter; Stieglitz, Lennart; Grunwald, Thomas; Hohenheim, Jan; Costa, Filippo; Sarnthein, Johannes (2025) Dataset of human medial temporal lobe neurons, scalp and intracranial EEG during a verbal working memory task (Version draft) [Data set]. DANDI Archive. https://dandiarchive.org/dandiset/000574/draft",
         "contributor": [
             {
                 "affiliation": [
@@ -34609,11 +34609,25 @@
                 "includeInCitation": true,
                 "name": "Hohenheim, Jan",
                 "roleName": [
-                    "dcite:ContactPerson",
                     "dcite:DataCurator"
                 ],
                 "schemaKey": "Person",
                 "url": "https://www.hohenheim.ch"
+            },
+            {
+                "affiliation": [
+                    {
+                        "name": "Universit\u00e4tsspital Z\u00fcrich",
+                        "schemaKey": "Affiliation"
+                    }
+                ],
+                "identifier": "0009-0005-5001-5950",
+                "includeInCitation": true,
+                "name": "Costa, Filippo",
+                "roleName": [
+                    "dcite:Researcher"
+                ],
+                "schemaKey": "Person"
             },
             {
                 "affiliation": [
@@ -34668,7 +34682,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-07-04T13:52:07.557094+00:00",
-        "datePublished": "2025-06-10T09:38:50.516294+00:00",
+        "datePublished": "2025-08-15T11:08:09.790405+00:00",
         "description": "We present an electrophysiological dataset recorded from nine subjects during a verbal working memory task. Subjects were epilepsy patients undergoing intracranial monitoring for localization of epileptic seizures. Subjects performed a modified Sternberg task in which the encoding of memory items, maintenance, and recall were temporally separated. The dataset includes simultaneously recorded scalp EEG with the 10-20 system, intracranial EEG (iEEG) recorded with depth electrodes, waveforms and spike times of 1526 units recorded in the medial temporal lobe, and the MNI coordinates and anatomical labels of all intracranial electrodes. Subject characteristics and information on sessions (set size, match/mismatch, correct/incorrect, response, response time for each trial) are also provided. This dataset enables the investigation of working memory by providing simultaneous scalp EEG and iEEG recordings, which can be used for connectivity analysis, alongside hard to obtain unit recordings from humans.",
         "ethicsApproval": [],
         "id": "DANDI:000574/draft",
@@ -34698,16 +34712,15 @@
         ],
         "name": "Dataset of human medial temporal lobe neurons, scalp and intracranial EEG during a verbal working memory task",
         "num_files": 37,
-        "protocol": [],
         "publishedBy": {
-            "endDate": "2025-06-10T09:38:50.516294+00:00",
-            "id": "urn:uuid:4ea29348-fdfa-4d09-bc70-26b7ff811c8c",
+            "endDate": "2025-08-15T11:08:09.790405+00:00",
+            "id": "urn:uuid:e448b28d-2b9c-43aa-8607-0ed5b42f3a60",
             "name": "DANDI publish",
             "schemaKey": "PublishActivity",
-            "startDate": "2025-06-10T09:38:50.516294+00:00",
+            "startDate": "2025-08-15T11:08:09.790405+00:00",
             "wasAssociatedWith": [
                 {
-                    "id": "urn:uuid:a9b9e768-e116-48c9-8033-b4c253b643dc",
+                    "id": "urn:uuid:55cab6a8-162d-446d-a226-2f6e75d1a758",
                     "identifier": "RRID:SCR_017571",
                     "name": "DANDI API",
                     "schemaKey": "Software",
@@ -34769,7 +34782,6 @@
         "schemaKey": "Dandiset",
         "schemaVersion": "0.6.4",
         "species": "Homo sapiens - Human",
-        "studyTarget": [],
         "url": "https://dandiarchive.org/dandiset/000574/draft",
         "version": "draft",
         "wasGeneratedBy": []
@@ -42011,6 +42023,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T15:36:26.604892+00:00",
+        "datePublished": "2025-08-14T19:11:22.335749+00:00",
         "description": "Fish swimming behavior in light at constant 16C",
         "ethicsApproval": [],
         "id": "DANDI:000697/draft",
@@ -42025,6 +42038,22 @@
         "name": "Constant temperature behavior 16C",
         "num_files": 15,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:11:22.335749+00:00",
+            "id": "urn:uuid:5339c497-724b-4fb9-8726-6f2a95334ec1",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:11:22.335749+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:4416bee2-3f67-4c28-9623-2fab409987d4",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42120,6 +42149,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T15:40:52.415596+00:00",
+        "datePublished": "2025-08-14T19:12:11.944416+00:00",
         "description": "Fish swimming behavior in light at constant 18C",
         "ethicsApproval": [],
         "id": "DANDI:000698/draft",
@@ -42134,6 +42164,22 @@
         "name": "Constant temperature behavior 18C",
         "num_files": 16,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:12:11.944416+00:00",
+            "id": "urn:uuid:0516d73c-ecc2-4274-91e5-edd2b13058ff",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:12:11.944416+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:cee4974d-35d3-4508-afd3-e0504081e341",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42229,6 +42275,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T15:44:55.479117+00:00",
+        "datePublished": "2025-08-14T19:12:50.163453+00:00",
         "description": "Fish swimming behavior in light at constant 20C",
         "ethicsApproval": [],
         "id": "DANDI:000699/draft",
@@ -42243,6 +42290,22 @@
         "name": "Constant temperature behavior 20C",
         "num_files": 17,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:12:50.163453+00:00",
+            "id": "urn:uuid:f4e4f85d-b3aa-4600-bba7-2edce9859a2b",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:12:50.163453+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:f62f2d42-0e16-40a7-899e-bcbdbc32f94c",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42338,6 +42401,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T15:48:45.219077+00:00",
+        "datePublished": "2025-08-14T19:13:22.793087+00:00",
         "description": "Fish swimming behavior in light at constant 22C",
         "ethicsApproval": [],
         "id": "DANDI:000700/draft",
@@ -42352,6 +42416,22 @@
         "name": "Constant temperature behavior 22C",
         "num_files": 15,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:13:22.793087+00:00",
+            "id": "urn:uuid:ef1c9f32-ef02-4551-9d56-025544da465a",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:13:22.793087+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:cf6b94e8-09ef-4f03-82c5-b1cf497e3d6d",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42447,6 +42527,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T15:54:14.937949+00:00",
+        "datePublished": "2025-08-14T19:13:58.649762+00:00",
         "description": "Fish swimming behavior in light at constant 24C",
         "ethicsApproval": [],
         "id": "DANDI:000701/draft",
@@ -42461,6 +42542,22 @@
         "name": "Constant temperature behavior 24C",
         "num_files": 15,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:13:58.649762+00:00",
+            "id": "urn:uuid:f6cdd327-acb7-4c01-b04f-b135594d892a",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:13:58.649762+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:b5c1aa54-7eaa-4664-bddc-a1c178488162",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42556,6 +42653,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T15:57:54.754553+00:00",
+        "datePublished": "2025-08-14T19:14:27.248556+00:00",
         "description": "Fish swimming behavior in light at constant 26C",
         "ethicsApproval": [],
         "id": "DANDI:000702/draft",
@@ -42570,6 +42668,22 @@
         "name": "Constant temperature behavior 26C",
         "num_files": 16,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:14:27.248556+00:00",
+            "id": "urn:uuid:cb86e560-4d82-45ae-baf8-50dbace18fe1",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:14:27.248556+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:9f099583-6a5a-47b4-adcb-88bcc2fc6626",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42665,6 +42779,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T16:00:57.024420+00:00",
+        "datePublished": "2025-08-14T19:14:59.417080+00:00",
         "description": "Fish swimming behavior in light at constant 28C",
         "ethicsApproval": [],
         "id": "DANDI:000703/draft",
@@ -42679,6 +42794,22 @@
         "name": "Constant temperature behavior 28C",
         "num_files": 22,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:14:59.417080+00:00",
+            "id": "urn:uuid:dc25b6a0-8293-403e-925e-c15ead5d64f3",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:14:59.417080+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:37e2c770-5a03-4f8d-98ef-70f4bee0697b",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42774,6 +42905,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T16:04:20.799416+00:00",
+        "datePublished": "2025-08-14T19:15:30.085962+00:00",
         "description": "Fish swimming behavior in light at constant 30C",
         "ethicsApproval": [],
         "id": "DANDI:000704/draft",
@@ -42788,6 +42920,22 @@
         "name": "Constant temperature behavior 30C",
         "num_files": 20,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:15:30.085962+00:00",
+            "id": "urn:uuid:dd67a391-b68c-4960-8960-c184cb98eb70",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:15:30.085962+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:8e4e8381-26bf-46ca-a9be-c1920bf31835",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42883,6 +43031,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T16:07:34.067120+00:00",
+        "datePublished": "2025-08-14T19:15:55.427806+00:00",
         "description": "Fish swimming behavior in light at constant 32C",
         "ethicsApproval": [],
         "id": "DANDI:000705/draft",
@@ -42897,6 +43046,22 @@
         "name": "Constant temperature behavior 32C",
         "num_files": 20,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:15:55.427806+00:00",
+            "id": "urn:uuid:979b369d-56b4-47e3-b79f-921f3d588a3b",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:15:55.427806+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:a81d4eb5-7bd2-48b5-bf15-de9a2fac3030",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -42990,6 +43155,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T16:10:05.894812+00:00",
+        "datePublished": "2025-08-14T19:16:25.271537+00:00",
         "description": "Fish swimming behavior in light at constant 34C",
         "ethicsApproval": [],
         "id": "DANDI:000706/draft",
@@ -43004,6 +43170,22 @@
         "name": "Constant temperature behavior 34C",
         "num_files": 16,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:16:25.271537+00:00",
+            "id": "urn:uuid:0eb6fe4e-d9dd-4ec0-8bcf-9bcfe4b731b3",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:16:25.271537+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:1e0879b1-7882-4e5f-be7f-74effec3824e",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -43047,9 +43229,9 @@
                     "schemaKey": "MeasurementTechniqueType"
                 }
             ],
-            "numberOfBytes": 152572632,
-            "numberOfFiles": 16,
-            "numberOfSubjects": 16,
+            "numberOfBytes": 355176590,
+            "numberOfFiles": 36,
+            "numberOfSubjects": 36,
             "schemaKey": "AssetsSummary",
             "species": [
                 {
@@ -43099,6 +43281,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T16:13:14.852155+00:00",
+        "datePublished": "2025-08-14T19:08:18.531895+00:00",
         "description": "Fish swimming behavior in thermal gradient from 18C to 26C in the light",
         "ethicsApproval": [],
         "id": "DANDI:000707/draft",
@@ -43111,8 +43294,24 @@
             "https://api.dandiarchive.org/api/dandisets/000707/versions/draft/assets/"
         ],
         "name": "Gradient behavior 18C to 26C",
-        "num_files": 16,
+        "num_files": 36,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:08:18.531895+00:00",
+            "id": "urn:uuid:97d22617-e86f-499c-9c74-b237b2b7c283",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:08:18.531895+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:f4435ef0-331a-4c8d-bf96-100fac5ab9ee",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -43208,6 +43407,7 @@
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2023-11-11T16:15:55.223339+00:00",
+        "datePublished": "2025-08-14T19:09:38.360021+00:00",
         "description": "Fish swimming behavior in thermal gradient from 24C to 32C in the light",
         "ethicsApproval": [],
         "id": "DANDI:000708/draft",
@@ -43222,6 +43422,22 @@
         "name": "Gradient behavior 24C to 32C",
         "num_files": 17,
         "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:09:38.360021+00:00",
+            "id": "urn:uuid:a0316025-2e2b-4204-8be6-d255a1ae9325",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:09:38.360021+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:effb106c-e59b-473b-b2d0-c2593ff35ffb",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
         "schemaKey": "Dandiset",
@@ -44522,8 +44738,8 @@
             "approach": [],
             "dataStandard": [],
             "measurementTechnique": [],
-            "numberOfBytes": 35052819796,
-            "numberOfFiles": 4,
+            "numberOfBytes": 34994918048,
+            "numberOfFiles": 2,
             "numberOfSubjects": 2,
             "schemaKey": "AssetsSummary",
             "species": [],
@@ -44545,7 +44761,7 @@
             "https://api.dandiarchive.org/api/dandisets/000719/versions/draft/assets/"
         ],
         "name": "NWB Cloud Benchmarks - Zarr",
-        "num_files": 4,
+        "num_files": 2,
         "protocol": [],
         "relatedResource": [],
         "repository": "https://dandiarchive.org",
@@ -65922,6 +66138,262 @@
     },
     {
         "@context": "https://raw.githubusercontent.com/dandi/schema/master/releases/0.6.9/context.json",
+        "about": [],
+        "access": [
+            {
+                "schemaKey": "AccessRequirements",
+                "status": "dandi:OpenAccess"
+            }
+        ],
+        "assetsSummary": {
+            "approach": [
+                {
+                    "name": "microscopy approach; cell population imaging",
+                    "schemaKey": "ApproachType"
+                }
+            ],
+            "dataStandard": [
+                {
+                    "identifier": "RRID:SCR_015242",
+                    "name": "Neurodata Without Borders (NWB)",
+                    "schemaKey": "StandardsType"
+                }
+            ],
+            "measurementTechnique": [
+                {
+                    "name": "surgical technique",
+                    "schemaKey": "MeasurementTechniqueType"
+                },
+                {
+                    "name": "two-photon microscopy technique",
+                    "schemaKey": "MeasurementTechniqueType"
+                },
+                {
+                    "name": "analytical technique",
+                    "schemaKey": "MeasurementTechniqueType"
+                }
+            ],
+            "numberOfBytes": 28840969612,
+            "numberOfFiles": 223,
+            "numberOfSubjects": 223,
+            "schemaKey": "AssetsSummary",
+            "species": [
+                {
+                    "identifier": "http://purl.obolibrary.org/obo/NCBITaxon_7955",
+                    "name": "Danio rerio - Zebra fish",
+                    "schemaKey": "SpeciesType"
+                }
+            ],
+            "variableMeasured": [
+                "PlaneSegmentation",
+                "ImagingPlane",
+                "OpticalChannel",
+                "ProcessingModule",
+                "TwoPhotonSeries"
+            ]
+        },
+        "citation": "Balakrishnan, Kaarthik A; Haesemeyer, Martin (2025) Fixed hot/cold stim medulla (Version draft) [Data set]. DANDI Archive. https://dandiarchive.org/dandiset/001337/draft",
+        "contributor": [
+            {
+                "awardNumber": "5 R01 NS 123887-04",
+                "name": "National Institutes of Health (NIH)",
+                "roleName": [
+                    "dcite:Funder"
+                ],
+                "schemaKey": "Organization"
+            },
+            {
+                "includeInCitation": true,
+                "name": "Balakrishnan, Kaarthik A",
+                "roleName": [
+                    "dcite:DataCollector"
+                ],
+                "schemaKey": "Person"
+            },
+            {
+                "email": "haesemeyer.1@osu.edu",
+                "identifier": "0000-0003-2704-3601",
+                "includeInCitation": true,
+                "name": "Haesemeyer, Martin",
+                "roleName": [
+                    "dcite:ContactPerson"
+                ],
+                "schemaKey": "Person"
+            }
+        ],
+        "data_type": "Neurodata Without Borders (NWB)",
+        "dateCreated": "2025-02-19T19:22:44.092599+00:00",
+        "datePublished": "2025-08-14T19:17:21.725668+00:00",
+        "description": "2-photon calcium imaging in medulla/hindbrain using hot/cold flow stimuli",
+        "ethicsApproval": [],
+        "id": "DANDI:001337/draft",
+        "identifier": "DANDI:001337",
+        "keywords": [],
+        "license": [
+            "spdx:CC-BY-4.0"
+        ],
+        "manifestLocation": [
+            "https://api.dandiarchive.org/api/dandisets/001337/versions/draft/assets/"
+        ],
+        "name": "Fixed hot/cold stim medulla",
+        "num_files": 223,
+        "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:17:21.725668+00:00",
+            "id": "urn:uuid:92341521-abfd-4e10-9079-912667f6d90d",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:17:21.725668+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:9cbdfe87-77b0-4421-ac35-63c054eaeff4",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
+        "relatedResource": [],
+        "repository": "https://dandiarchive.org",
+        "schemaKey": "Dandiset",
+        "schemaVersion": "0.6.9",
+        "species": "Danio rerio - Zebra fish",
+        "studyTarget": [],
+        "url": "https://dandiarchive.org/dandiset/001337/draft",
+        "version": "draft",
+        "wasGeneratedBy": []
+    },
+    {
+        "@context": "https://raw.githubusercontent.com/dandi/schema/master/releases/0.6.9/context.json",
+        "about": [],
+        "access": [
+            {
+                "schemaKey": "AccessRequirements",
+                "status": "dandi:OpenAccess"
+            }
+        ],
+        "assetsSummary": {
+            "approach": [
+                {
+                    "name": "microscopy approach; cell population imaging",
+                    "schemaKey": "ApproachType"
+                }
+            ],
+            "dataStandard": [
+                {
+                    "identifier": "RRID:SCR_015242",
+                    "name": "Neurodata Without Borders (NWB)",
+                    "schemaKey": "StandardsType"
+                }
+            ],
+            "measurementTechnique": [
+                {
+                    "name": "analytical technique",
+                    "schemaKey": "MeasurementTechniqueType"
+                },
+                {
+                    "name": "surgical technique",
+                    "schemaKey": "MeasurementTechniqueType"
+                },
+                {
+                    "name": "two-photon microscopy technique",
+                    "schemaKey": "MeasurementTechniqueType"
+                }
+            ],
+            "numberOfBytes": 4547277886,
+            "numberOfFiles": 82,
+            "numberOfSubjects": 82,
+            "schemaKey": "AssetsSummary",
+            "species": [
+                {
+                    "identifier": "http://purl.obolibrary.org/obo/NCBITaxon_7955",
+                    "name": "Danio rerio - Zebra fish",
+                    "schemaKey": "SpeciesType"
+                }
+            ],
+            "variableMeasured": [
+                "PlaneSegmentation",
+                "ProcessingModule",
+                "ImagingPlane",
+                "TwoPhotonSeries",
+                "OpticalChannel"
+            ]
+        },
+        "citation": "Balakrishnan, Kaarthik A; Haesemeyer, Martin (2025) Fixed hot/cold stim trigeminal ganglion (Version draft) [Data set]. DANDI Archive. https://dandiarchive.org/dandiset/001339/draft",
+        "contributor": [
+            {
+                "awardNumber": "5 R01 NS 123887-04",
+                "name": "National Institutes of Health (NIH)",
+                "roleName": [
+                    "dcite:Funder"
+                ],
+                "schemaKey": "Organization"
+            },
+            {
+                "includeInCitation": true,
+                "name": "Balakrishnan, Kaarthik A",
+                "roleName": [
+                    "dcite:DataCollector"
+                ],
+                "schemaKey": "Person"
+            },
+            {
+                "email": "haesemeyer.1@osu.edu",
+                "identifier": "0000-0003-2704-3601",
+                "includeInCitation": true,
+                "name": "Haesemeyer, Martin",
+                "roleName": [
+                    "dcite:ContactPerson"
+                ],
+                "schemaKey": "Person"
+            }
+        ],
+        "data_type": "Neurodata Without Borders (NWB)",
+        "dateCreated": "2025-02-19T23:00:51.227979+00:00",
+        "datePublished": "2025-08-14T19:16:53.030597+00:00",
+        "description": "2-photon calcium imaging in Trigeminal ganglion / lateral hypothalamus using hot/cold flow stimuli",
+        "ethicsApproval": [],
+        "id": "DANDI:001339/draft",
+        "identifier": "DANDI:001339",
+        "keywords": [],
+        "license": [
+            "spdx:CC-BY-4.0"
+        ],
+        "manifestLocation": [
+            "https://api.dandiarchive.org/api/dandisets/001339/versions/draft/assets/"
+        ],
+        "name": "Fixed hot/cold stim trigeminal ganglion",
+        "num_files": 82,
+        "protocol": [],
+        "publishedBy": {
+            "endDate": "2025-08-14T19:16:53.030597+00:00",
+            "id": "urn:uuid:1cb16140-a7b7-44da-bf50-07cbe6041d40",
+            "name": "DANDI publish",
+            "schemaKey": "PublishActivity",
+            "startDate": "2025-08-14T19:16:53.030597+00:00",
+            "wasAssociatedWith": [
+                {
+                    "id": "urn:uuid:62649d46-0d29-47cc-8d3e-c17dc44e278c",
+                    "identifier": "RRID:SCR_017571",
+                    "name": "DANDI API",
+                    "schemaKey": "Software",
+                    "version": "0.1.0"
+                }
+            ]
+        },
+        "relatedResource": [],
+        "repository": "https://dandiarchive.org",
+        "schemaKey": "Dandiset",
+        "schemaVersion": "0.6.9",
+        "species": "Danio rerio - Zebra fish",
+        "studyTarget": [],
+        "url": "https://dandiarchive.org/dandiset/001339/draft",
+        "version": "draft",
+        "wasGeneratedBy": []
+    },
+    {
+        "@context": "https://raw.githubusercontent.com/dandi/schema/master/releases/0.6.9/context.json",
         "access": [
             {
                 "schemaKey": "AccessRequirements",
@@ -75753,18 +76225,17 @@
             },
             {
                 "awardNumber": "R01MH120228",
+                "identifier": "https://ror.org/04xeg9z08",
                 "name": "National Institute of Mental Health",
-                "schemaKey": "Organization"
-            },
-            {
-                "awardNumber": "R01MH112661",
-                "name": "National Institute of Mental Health",
+                "roleName": [
+                    "dcite:Funder"
+                ],
                 "schemaKey": "Organization"
             }
         ],
         "data_type": "Neurodata Without Borders (NWB)",
         "dateCreated": "2025-07-23T14:51:45.905670+00:00",
-        "datePublished": "2025-08-04T15:38:54.425185+00:00",
+        "datePublished": "2025-08-15T12:03:36.707525+00:00",
         "description": "Hippocampal-prefrontal-olfactory bulb recordings in rats during an Odor-Place Spatial Association Task. Data includes spikes from single units, local field potential recordings, position (x, y, velocity), and trial information. Trial information includes nose-poke on/off times, whether the trial was rewarded or not, and time at the reward well. Each file contains sessions from a single day. Behavioral sessions may include data from standard odor-place, novel odor, or no odor sessions.",
         "ethicsApproval": [
             {
@@ -75794,14 +76265,14 @@
         "name": "Odor-Place Spatial Association Task",
         "num_files": 38,
         "publishedBy": {
-            "endDate": "2025-08-04T15:38:54.425185+00:00",
-            "id": "urn:uuid:a96e9c36-e14b-4ef6-9bc7-49758a0198c6",
+            "endDate": "2025-08-15T12:03:36.707525+00:00",
+            "id": "urn:uuid:d2f172eb-f785-42f4-9d9b-e6138aa35517",
             "name": "DANDI publish",
             "schemaKey": "PublishActivity",
-            "startDate": "2025-08-04T15:38:54.425185+00:00",
+            "startDate": "2025-08-15T12:03:36.707525+00:00",
             "wasAssociatedWith": [
                 {
-                    "id": "urn:uuid:ef7f849f-82b7-466f-9d5b-51cfcbaf290f",
+                    "id": "urn:uuid:7a6d048c-3b8a-44d8-8570-b71316c04880",
                     "identifier": "RRID:SCR_017571",
                     "name": "DANDI API",
                     "schemaKey": "Software",
