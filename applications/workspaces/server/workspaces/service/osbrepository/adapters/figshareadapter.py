@@ -77,10 +77,6 @@ class FigShareAdapter:
         return [str(v["version"]) for v in result]
 
     def get_resources(self, context):
-        # can also be fetched from the full article end point, but this is more
-        # direct
-        contents = self.get_json(
-            f"{self.api_url}/articles/{self.article_id}/files")
 
         tree = RepositoryResourceNode(
             resource=FigshareRepositoryResource(
@@ -91,14 +87,21 @@ class FigShareAdapter:
             children=[],
         )
 
-        for afile in contents:
-            add_to_tree(
-                tree=tree,
-                tree_path=[afile["name"]],
-                path=afile["download_url"],
-                size=afile["size"],
-                osbrepository_id=self.osbrepository.id,
-            )
+        page = 1
+        # max page_size is 1000
+        # min page is 1
+        while ((contents := self.get_json(f"{self.api_url}/articles/{self.article_id}/files?page={page}&page_size=1000")) and len(contents) > 1):
+
+            for afile in contents:
+                add_to_tree(
+                    tree=tree,
+                    tree_path=[afile["name"]],
+                    path=afile["download_url"],
+                    size=afile["size"],
+                    osbrepository_id=self.osbrepository.id,
+                )
+
+            page += 1
 
         return tree
 
