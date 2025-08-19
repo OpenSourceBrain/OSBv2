@@ -91,7 +91,7 @@ nest-asyncio==1.6.0
 netpyne @ git+https://github.com/Neurosim-lab/netpyne.git@3d633bcda9a3ab3fe4a90b7c705cd3692a729185
 networkx==3.4.2
 neuromllite==0.5.4
-NEURON==8.2.6
+NEURON==8.2.7
 notebook==6.4.5
 notebook_shim==0.2.3
 numexpr==2.10.2
