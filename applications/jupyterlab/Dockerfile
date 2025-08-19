@@ -29,18 +29,22 @@ RUN conda install pytorch torchvision cpuonly -c pytorch
 
 USER root
 
+# get default python version instead of hard coding it
+RUN PYVER=$(python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")') && echo "Python version is: $PYVER"
+ENV PYVER=3.13
+
+
 ### Some aliases
 RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
 
-### Set up jnml, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
-RUN chmod +x /opt/conda/bin/jnml
-ENV JNML_HOME=/opt/conda/bin
-
 ### Set up lems, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
-RUN chmod +x /opt/conda/bin/lems
+RUN cat <<EOF > /opt/conda/bin/lems
+#!/bin/bash
+# Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command
+java -classpath /opt/conda/lib/python$PYVER/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@
+EOF
 
+RUN chmod +x /opt/conda/bin/lems
 RUN cat ~/.bashrc
 
 ################################################################################
