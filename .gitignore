@@ -13,3 +13,4 @@ skaffold.yaml
 skaffold-overrides.yaml
 /libraries/client/netpyne-web/
 /.venv
+/libraries/client/*.pyc

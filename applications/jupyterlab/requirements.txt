@@ -1,9 +1,9 @@
 pyneuroml
 pyelectro
-git+https://github.com/NeuralEnsemble/neurotune.git
+neurotune
 
 ####  NEURON & NetPyNE
-neuron==8.2.7
+neuron
 
 # Install specific version of NetPyNE
 git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
@@ -14,14 +14,14 @@ git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
 ### arbor==0.9.0  # problems on py 3.12??
 
 # EDEN
-eden-simulator==0.2.1
+eden-simulator==0.2.3
 
 # Brian
 brian2
 brian2tools
 
 # PyNN
-pynn==0.10.1
+pynn==0.11.0
 
 # elephant
 elephant
@@ -64,8 +64,8 @@ plotly
 
 
 #### Install OMV
-OSBModelValidation==0.3.8
-
+OSBModelValidation==0.3.10
 
 ####  Final updates
-numpy>=2.0.0  # Removes some issues with LFPy...
+numpy>=2.0.0  
+
