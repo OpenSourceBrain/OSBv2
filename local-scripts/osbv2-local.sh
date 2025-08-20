@@ -93,6 +93,12 @@ deploy_live () {
 
         harness_deployment
 
+        echo
+        echo
+        echo "-> Deploying with helm: helm install -n ${OSB_NAMESPACE} osb deployment/helm"
+
+        helm install -n ${OSB_NAMESPACE} osb deployment/helm
+
     popd
 }
 
@@ -116,6 +122,7 @@ show_deployment_status () {
     echo
     echo "-> For a graphical interface, try the minikube dashboard: 'minikube dashboard &'"
 }
+
 deploy () {
     if ! command -v helm >/dev/null || ! command -v $SKAFFOLD >/dev/null || !  command -v harness-deployment  >/dev/null ; then
         echo "helm, skaffold, and cloud-harness are required but were not found."
@@ -151,7 +158,33 @@ deploy () {
     popd
 }
 
-function harness_deployment() {
+list_versions () {
+    if !  command -v harness-deployment  2>&1 >/dev/null ; then
+        echo "cloud-harness is required but were not found."
+        echo "To install cloud-harness, please see the -u/-U options"
+        exit 1
+    fi
+
+    harness_deployment
+
+    HELM_FILE="./deployment/helm/values.yaml"
+
+    echo
+    echo
+    echo "-> Versions of apps (from $HELM_FILE)"
+    sed 's/^[ \t ]*//' $HELM_FILE | grep -i --color=auto "netpyne-ui.git"
+    sed 's/^[ \t ]*//' $HELM_FILE | grep -i --color=auto "nwb-explorer.git"
+
+    echo
+    echo "-> JupyterLab: requirements"
+    cat ./applications/jupyterlab/requirements.txt
+    echo
+    echo "-> JupyterLab: Dockerfile"
+    grep -iE -C2 --color=auto "(pip|apt|conda).*install" ./applications/jupyterlab/Dockerfile
+
+}
+
+harness_deployment() {
     # `-e local` does not build nwbexplorer/netpyne
     # use -e dev for that, but that will send e-mails to Metacell folks
     # suggested: create a new file in deploy/values-something.yaml where you use
@@ -160,10 +193,10 @@ function harness_deployment() {
         if [ "YES" == "$LIVE" ]
         then
             echo "-> harnessing live configuration deployment, and deploying"
-            harness-deployment ../cloud-harness . -l -n ${OSB_NAMESPACE} -d osb.local -r gcr.io/metacellllc -e "local" -t "$LIVE_TAG" --deploy || notify_fail "Failed: harness-deployment (live)"
+            harness-deployment ../cloud-harness . -l -n ${OSB_NAMESPACE} -d osb.local -r gcr.io/metacellllc -e "local" -t "$LIVE_TAG" || notify_fail "Failed: harness-deployment (live)"
         else
             echo "-> harnessing development deployment"
-            harness-deployment ../cloud-harness . -l  -n ${OSB_NAMESPACE} -d osb.local -dtls -m build -e "local" -i $DEPLOYMENT_APP || notify_fail "Failed: harness-deployment (dev)"
+            harness-deployment ../cloud-harness . -l  -n ${OSB_NAMESPACE} -d osb.local -dtls -e "local" ${DEPLOYMENT_APP:+-i $DEPLOYMENT_APP} || notify_fail "Failed: harness-deployment (dev)"
         fi
     popd
 }
@@ -178,7 +211,7 @@ notify_fail () {
     exit 1
 }
 
-function update_cloud_harness() {
+update_cloud_harness() {
     echo "Updating cloud harness"
     CLOUD_HARNESS_PACKAGES=$(pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
     pip uninstall ${CLOUD_HARNESS_PACKAGES} -y || echo "No cloud harness packages installed"
@@ -190,7 +223,7 @@ function update_cloud_harness() {
     pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout ${CLOUD_HARNESS_BRANCH} && git pull && pip install -r requirements.txt && popd
 }
 
-function activate_venv() {
+activate_venv() {
     if [ -f "${VENV_DIR}/bin/activate" ]
     then
         source "${VENV_DIR}/bin/activate"
@@ -202,11 +235,11 @@ function activate_venv() {
 
 # don't actually need this because when the script exists, the environment is
 # lost anyway
-function deactivate_venv() {
+deactivate_venv() {
     deactivate
 }
 
-function print_versions() {
+print_versions() {
     echo "** docker **"
     docker version
     echo -e "\n** minikube **"
@@ -244,11 +277,15 @@ usage () {
     echo "-d: deploy"
     echo "-D: deploy <app>"
     echo "-b: run 'harness-deployment': required when you have made changes and want to refresh the deployment"
+    echo "    by default, runs on the 'osb-portal' app; use -B to not mention an app or to mention another app"
     echo "-B: run 'harness-deployment <app>': required when you have made changes and want to refresh the deployment"
+    echo "    use an empty string \"\" to not specify an app"
     echo "-v: print version information"
     echo "-u branch: update and install provided cloud_harness branch ($CLOUD_HARNESS_DEFAULT)"
     echo "-U branch: update and install specified cloud_harness branch ($CLOUD_HARNESS_DEFAULT)"
     echo "-c: clean up minikube and docker: sometimes needed with an outdated cache"
+    echo "-g: list versions of components (development deployment)"
+    echo "-G: list versions of components (live deployment)"
     echo "-l: deploy a local deployment of the \"live\" configuration"
     echo "-s: show some status information about the deployment"
     echo "-h: print this and exit"
@@ -264,7 +301,7 @@ fi
 
 
 # parse options
-while getopts ":vdD:uU:hbB:cls" OPTION
+while getopts ":vdD:uU:hbB:clsgG" OPTION
 do
     case $OPTION in
         v)
@@ -325,6 +362,16 @@ do
             ;;
         s)
             show_deployment_status
+            exit 0
+            ;;
+        g)
+            DEPLOYMENT_APP=""
+            list_versions
+            exit 0
+            ;;
+        G)
+            LIVE="YES"
+            list_versions
             exit 0
             ;;
         h)
