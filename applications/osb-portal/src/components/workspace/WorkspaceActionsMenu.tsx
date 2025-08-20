@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import makeStyles from "@mui/styles/makeStyles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NestedMenuItem from "../common/NestedMenuItems";
@@ -28,39 +27,35 @@ interface WorkspaceActionsMenuProps {
   updateWorkspace?: (ws: Workspace) => void;
   deleteWorkspace?: (wsId: number) => void;
   refreshWorkspaces?: () => void;
-  user?: UserInfo;
   isWorkspaceOpen?: boolean;
   ButtonComponent?: React.ComponentType<any>;
   [other: string]: any;
 }
 
-const useStyles = makeStyles((theme) => ({
-  snackbar: {
-    "& .MuiSnackbarContent-root": {
-      backgroundColor: bgDarkest,
-      color: textColor,
-    },
+// Styles outside component
+const snackbarStyles = {
+  "& .MuiSnackbarContent-root": {
+    backgroundColor: bgDarkest,
+    color: textColor,
   },
-}));
+};
 
 export default (props: WorkspaceActionsMenuProps) => {
-  const classes = useStyles();
   const {ButtonComponent} = props;
+  const user = useSelector((state: RootState) => state.user);
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const canEdit = canEditWorkspace(props?.user, props?.workspace);
+  const canEdit = canEditWorkspace(user, props?.workspace);
   const navigate = useNavigate();
   const [showDeleteWorkspaceDialog, setShowDeleteWorkspaceDialog] = React.useState(false);
   const [showFailCloneDialog, setShowFailCloneDialog] = React.useState<{open: boolean, message: any}>({
     open: false,
     message: "",
   });
-
-  const user = useSelector((state: RootState) => state.user);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -187,7 +182,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </MenuItem>
           ))}
         </NestedMenuItem>
-        {props.user && (
+        {user && (
           <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
         )}
         {canEdit && (
@@ -211,8 +206,8 @@ export default (props: WorkspaceActionsMenuProps) => {
             Make private
           </MenuItem>
         )}
-        {props.user &&
-          props.user.isAdmin &&
+        {user &&
+          user.isAdmin &&
           props.workspace?.publicable &&
           !props.workspace?.featured && (
             <MenuItem
@@ -223,7 +218,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </MenuItem>
           )}
 
-        {props.user && props.user.isAdmin && props.workspace?.featured && (
+        {user && user.isAdmin && props.workspace?.featured && (
           <MenuItem
             className="remove-featured-workspace"
             onClick={handleFeaturedWorkspace}
@@ -253,7 +248,7 @@ export default (props: WorkspaceActionsMenuProps) => {
           closeHandler={handleCloseEditWorkspace}
           workspace={props.workspace}
           onLoadWorkspace={handleCloseEditWorkspace}
-          user={props.user}
+          user={user}
         />
       )}
       <OSBLoader
@@ -263,7 +258,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         messages={["Cloning workspace. Please wait."]}
       />
        <Snackbar
-        classes={{ root: classes.snackbar }}
+        sx={snackbarStyles}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}
         message="Workspace cloned"

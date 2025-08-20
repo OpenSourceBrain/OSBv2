@@ -1,9 +1,12 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import OSBDialog from "../common/OSBDialog";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { OSBLogo } from "../icons";
+import { RootState } from "../../store/rootReducer";
+import { closeDialog } from "../../store/actions/aboutdialog";
 
 const styles = {
   paper: {
@@ -109,12 +112,19 @@ export const AboutContent = (props: any) => {
   );
 };
 
-export const AboutDialog = (props: any) => {
+export const AboutDialog = () => {
+  const dispatch = useDispatch();
+  const aboutDialog = useSelector((state: RootState) => state.aboutDialog);
+  
+  const handleCloseDialog = () => {
+    dispatch(closeDialog());
+  };
+
   return (
     <OSBDialog
       title="About"
-      open={props.aboutDialog}
-      closeAction={props.closeDialog}
+      open={aboutDialog}
+      closeAction={handleCloseDialog}
     >
       <AboutContent />
     </OSBDialog>

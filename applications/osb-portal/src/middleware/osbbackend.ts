@@ -1,6 +1,6 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as Workspaces from "../store/actions/workspaces";
-import { userLogin, userLogout, userRegister } from "../store/actions/user";
+import { userLogin, userLogout } from "../store/actions/user";
 import { setError } from "../store/actions/error";
 import * as Tags from "../store/actions/tags";
 
@@ -35,11 +35,6 @@ const callAPIMiddlewareFn: Middleware =
       }
       case userLogout.toString():
         UserService.logout();
-        break;
-      case userRegister.toString():
-        UserService.register().then((user: any) =>
-          next({ ...action, payload: user })
-        );
         break;
       case Tags.retrieveAllTags.toString():
         RepositoryService.getAllTags(action.payload).then((tagDetails) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
@@ -42,6 +43,7 @@ import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
+import { RootState } from "../store/rootReducer";
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
@@ -152,7 +154,9 @@ function a11yProps(index: number) {
 }
 
 const BIG_NUMBER_OF_ITEMS = 1000;
-export const UserPage = (props: any) => {
+export const UserPage = () => {
+  const currentUser: UserInfo = useSelector((state: RootState) => state.user);
+  const workspacesCounter = useSelector((state: RootState) => state.workspaces.counter);
   const [tabValue, setTabValue] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
   const [publicWorkspaces, setPublicWorkspaces] = React.useState<Workspace[]>(
@@ -170,7 +174,6 @@ export const UserPage = (props: any) => {
 
 
   const [loading, setLoading] = React.useState(false);
-  const currentUser: UserInfo = props.user;
 
   const handleTabChange = (
     event: React.SyntheticEvent,
@@ -185,7 +188,7 @@ export const UserPage = (props: any) => {
     }).catch((e) => {
       setError(e);
     });
-  }, [userName, props.workspacesCounter]);
+  }, [userName, workspacesCounter]);
 
   React.useEffect(() => {
     if (!user) return;

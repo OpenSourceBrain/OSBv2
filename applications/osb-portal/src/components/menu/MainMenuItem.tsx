@@ -1,5 +1,4 @@
 import * as React from "react";
-import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuList from "@mui/material/MenuList";
@@ -10,15 +9,15 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import CheckIcon from "@mui/icons-material/Check";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   popper: {
     zIndex: 10000,
   },
   checkIcon: {
-    paddingRight: theme.spacing(1),
+    pr: 1,
     marginLeft: "-1em",
   },
-}));
+};
 
 export interface MenuItem {
   label: string;
@@ -28,13 +27,13 @@ export interface MenuItem {
 
 export type MenuItemProps = {
   title: string | React.ReactNode;
-  className: string;
+  className?: string;
+  sx?: any;
   items: MenuItem[];
   popperPlacement?: any;
 };
 
 export const MainMenuItem = (props: MenuItemProps) => {
-  const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -80,6 +79,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
           aria-haspopup="true"
           onClick={handleToggle}
           className={props.className}
+          sx={props.sx}
         >
           {props.title}
         </Button>
@@ -88,7 +88,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
           anchorEl={anchorRef.current}
           transition={true}
           disablePortal={true}
-          className={classes.popper}
+          sx={styles.popper}
           placement={
             typeof props.popperPlacement === "undefined"
               ? "bottom-start"
@@ -114,7 +114,7 @@ export const MainMenuItem = (props: MenuItemProps) => {
                       >
                         {item.checked !== undefined && (
                           <CheckIcon
-                            className={classes.checkIcon}
+                            sx={styles.checkIcon}
                             color={item.checked ? "primary" : "disabled"}
                           />
                         )}

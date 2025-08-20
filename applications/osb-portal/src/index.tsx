@@ -10,9 +10,10 @@ import { retrieveAllTags } from "./store/actions/tags";
 
 import { CONFIGURATION } from "./config";
 import { initErrorHandler } from "./service/ErrorHandleService";
-import { initUser, checkUser } from "./service/UserService";
+import { initUser } from "./service/UserService";
 
 import { UserInfo } from "./types/user";
+import { init } from "@sentry/react/types/sdk";
 
 const root = ReactDOMClient.createRoot(document.getElementById("main"));
 
@@ -29,25 +30,21 @@ const timeout = (ms: number, promise: Promise<any>) => {
 
 console.log(root, App);
 
+// Set the APP_DOMAIN in the window object for backwards compatibility
+(window as any).APP_DOMAIN = import.meta.env.VITE_APP_DOMAIN;
+
+const user = initUser();
+if(user) {
+  store.dispatch(userLogin());
+}
 
 
-
-
-
-timeout(10000, checkUser()).then((user: UserInfo) => {
-  if (user) {
-    store.dispatch(userLogin(user));
-  } 
-  root.render(
+root.render(
     <Provider store={store}>
       <App />
     </Provider>
-  );
-}, () => root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-));
+);
+
 initErrorHandler(appName);
 
 store.dispatch(retrieveAllTags);

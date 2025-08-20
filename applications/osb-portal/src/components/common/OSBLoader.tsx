@@ -1,7 +1,6 @@
 // Derived from https://raw.githubusercontent.com/MetaCell/geppetto-meta/master/geppetto.js/geppetto-ui/src/loader/Loader.js
 
 import React, { Component, Fragment } from "react";
-import makeStyles from '@mui/styles/makeStyles';
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -9,19 +8,6 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { primaryColor } from "../../theme";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: primaryColor,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-  },
-  root: {
-    position: "absolute",
-    flex: "0 0 100%",
-    alignSelf: "stretch",
-  },
-}));
 
 interface OSBLoaderProps {
   active: boolean;
@@ -35,8 +21,6 @@ interface OSBLoaderProps {
 }
 
 export default (props: OSBLoaderProps) => {
-  const classes = useStyles();
-
   const {
     active,
     fullscreen,
@@ -98,10 +82,16 @@ export default (props: OSBLoaderProps) => {
     </Grid>
   );
 
+  const backdropStyles = {
+    zIndex: (theme: any) => theme.zIndex.drawer + 1,
+    color: primaryColor,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  };
+
   const backdrop = fullscreen ? (
     <Fragment>
       <Backdrop
-        className={classes.backdrop}
+        sx={backdropStyles}
         open={active}
         onClick={handleClose}
       >
@@ -113,8 +103,12 @@ export default (props: OSBLoaderProps) => {
       <Backdrop
         open={active}
         onClick={handleClose}
-        className={classes.backdrop}
-        classes={{ root: classes.root }} // class name, e.g. `classes-nesting-root-x`
+        sx={{
+          ...backdropStyles,
+          position: "absolute",
+          flex: "0 0 100%",
+          alignSelf: "stretch",
+        }}
       >
         {content}
       </Backdrop>

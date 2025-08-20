@@ -1,5 +1,3 @@
-import Keycloak from "keycloak-js";
-
 import workspaceService from "./WorkspaceService";
 import repositoryService from "./RepositoryService";
 import groupsService from "./GroupsService"
@@ -10,15 +8,17 @@ import { OSBRepository } from "../apiclient/workspaces";
 import { Configuration, User } from "../apiclient/accounts";
 import * as accountsApi from "../apiclient/accounts/apis";
 
-const keycloak = new Keycloak("/keycloak.json");
 
 const accountsApiUri = "/proxy/accounts-api/api";
+
 
 let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(
   new Configuration({ basePath: accountsApiUri })
 );
 
 declare const window: any;
+
+
 
 export const initApis = (token: string) => {
   if(token) {
@@ -39,14 +39,12 @@ function mapKeycloakUser(userInfo: any): UserInfo {
     firstName: userInfo.given_name,
     lastName: userInfo.family_name,
     email: userInfo.email,
-    isAdmin: isUserAdmin(),
+    isAdmin: userInfo.realm_access.roles?.includes('administrator') || false,
     username: userInfo.preferred_username || userInfo.given_name,
   };
 }
 
-export function isUserAdmin(): boolean {
-  return keycloak.hasRealmRole("administrator");
-}
+
 
 export async function getUser(userid: string): Promise<User> {
   // Note that the keycloak username is expected
@@ -86,78 +84,27 @@ function parseJwt(token: string) {
 }
 
 export function getToken(): string {
-  return getCookie("accessToken");
+  return getCookie("kc-access");
 }
 
 export function initUser(): UserInfo {
-  const kcUser = parseJwt(getToken());
-  return mapKeycloakUser(kcUser);
+  return getCurrentUserFromCookie();
 }
 
-export async function checkUser(): Promise<UserInfo> {
-  let user = null;
 
-  try {
-    let authorized;
-    await keycloak
-      .init({
-        onLoad: "check-sso",
-        silentCheckSsoRedirectUri:
-          window.location.origin + "/silent-check-sso.html",
-      })
-      .then((authenticated) => (authorized = authenticated))
-      .catch(() => console.error("Cannot connect to user authenticator."));
-
-    if (authorized) {
-      const userInfo: any = await keycloak.loadUserInfo();
-      user = mapKeycloakUser(userInfo);
-    }
-    initApis(keycloak.token);
-  } catch (err) {
-    errorCallback(err);
-    return null;
-  }
-
-  const tokenUpdated = (refreshed: any) => {
-    if (refreshed) {
-      initApis(keycloak.token);
-    } else {
-      console.error("not refreshed " + new Date());
-    }
-  };
-  // set token refresh before 5 minutes
-  keycloak.onTokenExpired = () => {
-    keycloak
-      .updateToken(60)
-      .then(tokenUpdated)
-      .catch(() => {
-        console.error("Failed to refresh token " + new Date());
-      });
-  };
-  if (user) {
-    keycloak
-      .updateToken(-1)
-      .then(tokenUpdated)
-      .catch(() => {
-        console.error("Failed to refresh token " + new Date());
-      }); // activate refresh token
-  }
-
-  return user;
+export function getCurrentUserFromCookie(): UserInfo {
+  return mapKeycloakUser(parseJwt(getToken()));
 }
 
-export async function login(): Promise<UserInfo> {
-  const userInfo: any = await keycloak.login();
-  return mapKeycloakUser(userInfo);
+export async function login() {
+  console.log("Login called");
+  // window.location.href = "/login";
 }
 
 export async function logout() {
-  return keycloak.logout();
+  return fetch("/oauth/logout").then(() => window.location.href = "/");
 }
 
-export async function register() {
-  return keycloak.register();
-}
 
 const errorCallback = (error: any) => {
   initApis(null);

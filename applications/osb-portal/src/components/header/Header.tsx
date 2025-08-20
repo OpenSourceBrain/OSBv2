@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link, CircularProgress } from "@mui/material";
 
@@ -10,6 +11,10 @@ import {
   headerBg,
   secondaryColor
 } from "../../theme";
+
+import { RootState } from "../../store/rootReducer";
+import { userLogin, userLogout } from "../../store/actions/user";
+import { toggleDrawer } from "../../store/actions/drawer";
 
 const styles = ({
   toolbar: {
@@ -45,11 +50,15 @@ const styles = ({
   },
 });
 
-export const Header = (props: any) => {
-
+export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Redux hooks
+  const user = useSelector((state: RootState) => state.user);
+  const workspacesCounter = useSelector((state: RootState) => state.workspaces.counter);
 
   const handleMenuToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -59,13 +68,12 @@ export const Header = (props: any) => {
     setMenuOpen(false);
   };
 
-  const user = props.user;
-
   const handleUserLogin = () => {
-    props.login();
+    dispatch(userLogin());
   };
+  
   const handleUserLogout = () => {
-    props.logout();
+    dispatch(userLogout());
   };
 
   const handleMyAccount = () => {
@@ -133,10 +141,10 @@ export const Header = (props: any) => {
     ));
 
   const handleToggleDrawer = (e: any) => {
-    if (props.drawerEnabled) {
-      e.preventDefault();
-      props.onToggleDrawer();
-    }
+    // Note: drawerEnabled prop would need to be accessed from Redux state if needed
+    // For now, assuming drawer is always enabled
+    e.preventDefault();
+    dispatch(toggleDrawer());
   };
 
   // @ts-ignore

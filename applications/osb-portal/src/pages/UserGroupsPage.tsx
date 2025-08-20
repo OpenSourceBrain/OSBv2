@@ -1,5 +1,6 @@
 import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
@@ -30,6 +31,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Link from "@mui/material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkIcon from "@mui/icons-material/Link";
+import { RootState } from "../store/rootReducer";
 
 const styles = {
   groupMembers: (theme) => ({
@@ -130,7 +132,8 @@ function a11yProps(index: number) {
   };
 };
 
-export const UserGroupsPage = (props: any) => {
+export const UserGroupsPage = () => {
+  const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const [tabValue, setTabValue] = React.useState(0);
   const [groupMembers, setGroupMembers] = React.useState(null);

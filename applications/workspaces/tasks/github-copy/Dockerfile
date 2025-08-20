@@ -8,4 +8,4 @@ ADD . /
 ENV shared_directory /
 ENV workspace_id 1
 
-CMD source ./run.sh
+CMD [sh, -c, './run.sh']

@@ -1,0 +1,195 @@
+@import "./variables.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.verticalFit {
+  @media screen and (min-width:960px) {
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-height: calc(100%);
+  }
+
+  @media screen and (min-width:960px) {
+    &.card-container,
+    .scrollbar {
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100%);
+    }
+
+    &.card-container::-webkit-scrollbar,
+    .scrollbar::-webkit-scrollbar {
+      width: calc(var(--gutter) / 4);
+    }
+
+    &.card-container::-webkit-scrollbar-button,
+    .scrollbar::-webkit-scrollbar-button {
+      height: 0;
+    }
+
+    &.card-container::-webkit-scrollbar-thumb,
+    .scrollbar::-webkit-scrollbar-thumb {
+      border-radius: var(--radius);
+      background: var(--bg-lightest);
+    }
+
+    &.card-container::-webkit-scrollbar-track,
+    .scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: var(--radius);
+    }
+  }
+}
+
+*::-webkit-scrollbar {
+  width: calc(var(--gutter) / 4);
+}
+
+*::-webkit-scrollbar-button {
+  height: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: var(--radius);
+  background: var(--bg-lightest);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius);
+}
+
+@media screen and (min-width:960px) {
+  .scrollbar {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: calc(var(--gutter) / 2);
+    overflow: scroll;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: calc(var(--gutter) / 4);
+  }
+
+  .scrollbar::-webkit-scrollbar-button {
+    height: 0;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: var(--radius);
+    background: var(--bg-lightest);
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: var(--radius);
+  }
+
+  .verticalFill {
+    height: calc(100%);
+    overflow: hidden;
+  }
+
+  .verticalFill .scrollbar {
+    max-height: calc(100%);
+  }
+}
+
+.MuiTreeItem-root.first-level > .MuiTreeItem-content > .MuiTreeItem-iconContainer {
+  display: none;
+}
+
+.MuiTreeItem-root.first-level > .MuiTreeItem-content > .MuiTreeItem-label {
+  padding: 0;
+}
+
+.MuiTreeItem-root.first-level > .MuiTreeItem-content > .MuiTreeItem-label:hover .delete-button {
+  display: block;
+}
+
+.MuiTreeItem-root.first-level > .MuiTreeItem-content > .MuiTreeItem-label .delete-button {
+  display: none;
+}
+
+/* Override Markdown editor style */
+div.rc-md-editor {
+  color: var(--paragraph);
+  background-color: var(--bg-darker);
+  border: 1px solid var(--bg-lightest);
+  border-radius: var(--input-radius);
+}
+
+div.rc-md-editor::-webkit-scrollbar {
+  width: calc(var(--gutter) / 4);
+}
+
+div.rc-md-editor::-webkit-scrollbar-button {
+  height: 0;
+}
+
+div.rc-md-editor::-webkit-scrollbar-thumb {
+  border-radius: var(--radius);
+  background: var(--bg-lightest);
+}
+
+div.rc-md-editor::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius);
+}
+
+div.rc-md-editor ::-webkit-resizer {
+  background: var(--bg-darker) !important;
+}
+
+div.rc-md-editor .rc-md-navigation .button-wrap .button:hover {
+  color: white;
+}
+
+div.rc-md-editor .editor-container > .section > .section-container {
+  padding-right: 0;
+}
+
+div.rc-md-editor .rc-md-navigation {
+  color: var(--paragraph);
+  background-color: var(--bg-darker);
+  border-bottom: 1px solid var(--bg-lightest);
+}
+
+div.rc-md-editor .custom-html-style {
+  height: 15em;
+}
+
+div.rc-md-editor .editor-container .sec-md .input {
+  color: var(--paragraph);
+  height: 15em;
+  background-color: var(--bg-darker);
+  resize: vertical;
+}
+
+div.rc-md-editor .editor-container .sec-md .input::-webkit-scrollbar {
+  width: calc(var(--gutter) / 4);
+}
+
+div.rc-md-editor .editor-container .sec-md .input::-webkit-scrollbar-button {
+  height: 0;
+}
+
+div.rc-md-editor .editor-container .sec-md .input::-webkit-scrollbar-thumb {
+  border-radius: var(--radius);
+  background: var(--bg-lightest);
+}
+
+div.rc-md-editor .editor-container .sec-md .input::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius);
+}
+
+div.rc-md-editor .drop-wrap {
+  background-color: var(--bg-regular);
+  border-color: var(--bg-lightest);
+  color: white;
+}

@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 //theme
-import { makeStyles, useTheme } from "@mui/styles";
+import { useTheme } from "@mui/material/styles";
 import clsx from "clsx";
 
 import {
@@ -14,6 +15,10 @@ import {
   selectedMenuItemBg,
   primaryColor,
 } from "../../theme";
+
+// Redux imports
+import { RootState } from "../../store/rootReducer";
+import { openDialog } from "../../store/actions/aboutdialog";
 
 //hooks
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -52,30 +57,26 @@ import { UserInfo } from "../../types/user";
 import TourIcon from '@mui/icons-material/Tour';
 import HomeIcon from '@mui/icons-material/Home';
 
-const styles = {
+const getStyles = (openDrawer: boolean, theme: any) => ({
   drawerContent: {
     width: "100%",
   },
-  root: (openDrawer) => (theme) => ({
+  root: {
     display: "flex",
     flexShrink: 0,
     whiteSpace: "nowrap",
-
     top: "initial",
-
-    transition: theme.transitions.create("width", {
+    transition: theme?.transitions?.create ? theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: openDrawer
         ? theme.transitions.duration.enteringScreen
         : theme.transitions.duration.leavingScreen,
-    }),
+    }) : "width 0.2s ease",
     overflowX: "hidden",
     width: "100%",
-
     "& .verticalFit": {
       display: "block",
     },
-
     "& .MuiListSubheader-root": {
       backgroundColor: "transparent",
       "& .MuiTypography-root": {
@@ -88,13 +89,11 @@ const styles = {
       "& .Mui-selected": {
         background: selectedMenuItemBg,
         borderLeft: `2px solid ${primaryColor}`,
-
         "& .MuiListItemIcon-root": {
           "& .MuiSvgIcon-root": {
             color: secondaryColor,
           },
         },
-
         "& .MuiListItemText-root": {
           "& .MuiTypography-root": {
             color: secondaryColor,
@@ -104,8 +103,7 @@ const styles = {
       "& .MuiButtonBase-root": {
         "& .MuiListItemIcon-root": {
           minWidth: "auto",
-          marginRight: "0.875rem",
-
+          mr: "0.875rem",
           "& .MuiSvgIcon-root": {
             fontSize: "1.143rem",
             color: drawerText,
@@ -126,48 +124,44 @@ const styles = {
         },
       },
     },
-  }),
-  menuButton: (theme) => ({
-    marginRight: theme.spacing(2),
+  },
+  menuButton: {
+    mr: 2,
     display: {
       md: "none",
     },
-  }),
+  },
   toolbar: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 16px",
   },
-
-  drawerPaper: (theme) => ({
+  drawerPaper: {
     position: "static",
     flex: 1,
     display: "flex",
     bottom: 0,
-    paddingTop: theme.spacing(1),
+    pt: 1,
     justifyContent: "space-between",
     borderRight: `1px solid ${bgRegular}`,
     backgroundColor: bgDarkest,
-  }),
-  createMenu: (theme) => ({
+  },
+  createMenu: {
     minWidth: "14.62rem",
     backgroundColor: "#3C3C3C",
     borderRadius: "6px",
-
     "& .MuiList-root": {
       "& .MuiMenuItem-root": {
-        paddingLeft: theme.spacing(3),
+        pl: 3,
         fontSize: "0.857rem",
         color: drawerText,
         fontWeight: 500,
-
         "& .MuiSvgIcon-root": {
-          marginRight: theme.spacing(2),
+          mr: 2,
           fontSize: "1rem",
           color: drawerText,
         },
-
         "&:hover": {
           color: secondaryColor,
           "& .MuiSvgIcon-root": {
@@ -176,17 +170,19 @@ const styles = {
         },
       },
     },
-  }),
-};
+  },
+});
 
 export const MainDrawer = (props: {
   isWorkspacesPage: boolean;
-  user: UserInfo;
   isRepositoriesPage: boolean;
 }) => {
   const theme = useTheme();
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+  const isMdUp = useMediaQuery(theme?.breakpoints?.up("md") || "(min-width:900px)");
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const styles = getStyles(openDrawer, theme || {});
   const [openWorkspaceDialog, setOpenWorkspaceDialog] = React.useState(false);
   const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -200,7 +196,7 @@ export const MainDrawer = (props: {
   
   const handleOpenDialog = (type) => {
     setOpenDrawer(false);
-    if (!props.user) {
+    if (!user) {
       setAskLoginOpen(true);
     } else {
       type === "workspace"
@@ -227,7 +223,7 @@ export const MainDrawer = (props: {
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   const handleAboutDialogOpen = () => {
-    props.openDialog();
+    dispatch(openDialog());
   };
 
   const closeAskLogin = () => setAskLoginOpen(false);
@@ -259,7 +255,7 @@ export const MainDrawer = (props: {
           onClose={toggleDrawer}
           elevation={0}
           open={openDrawer}
-          sx={styles.root(openDrawer)}
+          sx={styles.root}
           PaperProps={{
             sx: styles.drawerPaper,
           }}
@@ -439,7 +435,6 @@ export const MainDrawer = (props: {
         <EditRepoDialog
           dialogOpen={openRepoDialog}
           handleClose={() => handleCloseDialog("repository")}
-          user={props.user}
           title="Add repository"
         />
       )}

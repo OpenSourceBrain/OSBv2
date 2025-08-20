@@ -1,36 +1,39 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
-import makeStyles from '@mui/styles/makeStyles';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import { MainMenuItem } from "./MainMenuItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { openDialog } from "../../store/actions/aboutdialog";
 
-const useStyles = makeStyles(() => ({
-  button: {
-    textTransform: "inherit",
-    minWidth: "auto",
-    width: "auto",
-    marginRight: "3em",
-    lineHeight: 1,
-    fontWeight: 400,
-  },
-  firstButton: {
-    fontWeight: 600,
-  },
-  flipButton: {
-    fontWeight: 700,
-    textTransform: "uppercase",
-    padding: "5px",
-    fontSize: "0.75rem",
-  },
-}));
+const buttonStyles = {
+  textTransform: "inherit",
+  minWidth: "auto",
+  width: "auto",
+  marginRight: "3em",
+  lineHeight: 1,
+  fontWeight: 400,
+};
 
-export const MainMenu = (props: any) => {
-  const classes = useStyles();
+const firstButtonStyles = {
+  ...buttonStyles,
+  fontWeight: 600,
+};
+
+const flipButtonStyles = {
+  fontWeight: 700,
+  textTransform: "uppercase",
+  padding: "5px",
+  fontSize: "0.75rem",
+};
+
+export const MainMenu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const handleDialogOpen = () => {
-    props.openDialog();
+    dispatch(openDialog());
   };
   return (
     <Box
@@ -44,7 +47,7 @@ export const MainMenu = (props: any) => {
       <Box display="flex" flexWrap="wrap" p={0}>
         <MainMenuItem
           title="OSB"
-          className={classes.button + " " + classes.firstButton}
+          sx={firstButtonStyles}
           items={[
             {
               label: "Documentation",
@@ -65,29 +68,29 @@ export const MainMenu = (props: any) => {
         />
         <MainMenuItem
           title="View"
-          className={classes.button}
+          sx={buttonStyles}
           items={[
             {
               label: "Repositories",
               callback: () => navigate("/repositories"),
-              checked: navigate.location.pathname === "/repositories",
+              checked: location.pathname === "/repositories",
             },
             {
               label: "Workspaces",
               callback: () => navigate("/"),
-              checked: navigate.location.pathname === "/",
+              checked: location.pathname === "/",
             },
           ]}
         />
       </Box>
-      {navigate.location.pathname === "/" ? (
+      {location.pathname === "/" ? (
         <MainMenuItem
           title={
             <>
               WORKSPACES <ExpandMoreIcon fontSize="small" />
             </>
           }
-          className={classes.flipButton}
+          sx={flipButtonStyles}
           items={[
             {
               label: "Repositories",
@@ -96,14 +99,14 @@ export const MainMenu = (props: any) => {
           ]}
           popperPlacement="bottom-end"
         />
-      ) : navigate.location.pathname === "/repositories" ? (
+      ) : location.pathname === "/repositories" ? (
         <MainMenuItem
           title={
             <>
               REPOSITORIES <ExpandMoreIcon fontSize="small" />
             </>
           }
-          className={classes.flipButton}
+          sx={flipButtonStyles}
           items={[{ label: "Workspaces", callback: () => navigate("/") }]}
           popperPlacement="bottom-end"
         />
