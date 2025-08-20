@@ -17,7 +17,7 @@ jobs:
     - name: Clone Netpyne UI dependencies
       run: |
         mkdir -p applications/netpyne/dependencies
-        export BRANCH_TAG=$(grep "branch_tag:" deploy/values.yaml | awk '{print $2}')
+        export BRANCH_TAG=$(grep "branch_tag:" applications/nwb-explorer/deploy/values.yaml | awk '{print $2}')
         echo "Using branch: $BRANCH_TAG"
         git clone --branch $BRANCH_TAG https://github.com/MetaCell/NetPyNE-UI.git applications/netpyne/dependencies/NetPyNE-UI
 
