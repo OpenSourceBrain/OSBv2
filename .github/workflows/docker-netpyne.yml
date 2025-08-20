@@ -17,7 +17,9 @@ jobs:
     - name: Clone Netpyne UI dependencies
       run: |
         mkdir -p applications/netpyne/dependencies
-        git clone --branch 1.1.0 https://github.com/MetaCell/NetPyNE-UI.git applications/netpyne/dependencies/NetPyNE-UI
+        export BRANCH_TAG=$(grep "branch_tag:" deploy/values.yaml | awk '{print $2}')
+        echo "Using branch: $BRANCH_TAG"
+        git clone --branch $BRANCH_TAG https://github.com/MetaCell/NetPyNE-UI.git applications/netpyne/dependencies/NetPyNE-UI
 
     - name: Build the Docker image
       run: |
