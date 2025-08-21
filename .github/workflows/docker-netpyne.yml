@@ -26,7 +26,7 @@ jobs:
     - name: Build the Docker image
       run: |
         cd applications/netpyne
-        docker build -t mynpui -f Dockerfile --no-cache .
+        ./build_local.sh 
         
     - name: Info on Docker image sizes
       run: |
