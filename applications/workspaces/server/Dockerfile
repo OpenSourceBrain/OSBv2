@@ -2,20 +2,28 @@ ARG CLOUDHARNESS_FLASK
 
 FROM $CLOUDHARNESS_FLASK
 
-RUN apk update
-RUN apk upgrade
-RUN apk add gcc
-RUN apk add libc-dev
-RUN apk add libffi-dev
-RUN apk add openssl-dev
-RUN apk add postgresql-dev
+
+# RUN apk add gcc
+# RUN apk add libc-dev
+# RUN apk add libffi-dev
+# RUN apk add openssl-dev
+# RUN apk add postgresql-dev
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libc-dev \
+    build-essential \
+    libffi-dev \
+    libssl-dev \
+    postgresql-client \
+    postgresql-server-dev-all
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY requirements.txt /usr/src/app/
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 

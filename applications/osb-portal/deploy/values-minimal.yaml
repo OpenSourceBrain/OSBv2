@@ -5,7 +5,6 @@ harness:
       - accounts-api
       - workspaces
       - jupyterhub
-      - notifications
       - nwb-explorer
-      - netpyne
+      - jupyterlab-minimal
 

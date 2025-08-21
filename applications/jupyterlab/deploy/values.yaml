@@ -1,5 +1,6 @@
 harness:
-  subdomain: notebooks
+  subdomain: lab
+  aliases: [notebooks]
   service:
     auto: false
     port: 80

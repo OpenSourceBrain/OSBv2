@@ -81,7 +81,7 @@ apps:
     resources: *id001
     task-images: {}
     webclient: {id: web-client, secret: 452952ae-922c-4766-b912-7b106271e34b}
-  accounts_api:
+  accounts-api:
     harness:
       aliases: []
       dependencies:

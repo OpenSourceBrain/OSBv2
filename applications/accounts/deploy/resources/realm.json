@@ -1,23 +1,24 @@
-
 {{- define "deploy_accounts_utils.role" }}
-{
-  "id": {{ uuidv4 | quote }},
-  "name": {{ .role| quote }},
-  "composite": false,
-  "clientRole": true,
-  "containerId": {{ .app.harness.name | quote }},
-  "attributes": {}
-}
+    {
+      "id": {{ uuidv4 | quote }},
+      "name": {{ .role| quote }},
+      "composite": false,
+      "clientRole": true,
+      "containerId": {{ .app.harness.name | quote }},
+      "attributes": {}
+    }
 {{- end}}
 {{- define "deploy_accounts_utils.user" }}
     {
-        "username": {{ .user.username | quote }},
+        "username": {{ .user.username | default .user.email | quote }},
         "email": {{ .user.email | default .user.username | quote }},
         "enabled": true,
+        "firstName": {{ .user.firstName | default "Test" | quote }},
+        "lastName": {{ .user.lastName | default "User" | quote }},
         "credentials": [
             {
                 "type": "password",
-                "value": {{ .user.passwword | default "test" | quote }}
+                "value": {{ .user.password | default "test" | quote }}
             }
         ],
         "realmRoles": {{ .user.realmRoles | toJson }},
@@ -25,16 +26,17 @@
             {{ .app.harness.name | quote }}: {{ .user.clientRoles | toJson }}
         } 
     }
-    {{- end}}
+
+{{- end}}
 {
         "id": {{ .Values.namespace | quote }},
         "realm": {{ .Values.namespace | quote }},
         "enabled": true,
-        "sslRequired": "external",
-        "loginTheme": "custom",
-        "accountTheme": "custom",
-        "adminTheme": "custom",
-        "emailTheme": "custom",
+        "sslRequired": {{ ternary "none" "external" (not .Values.tls) | quote }},
+        "loginTheme": "keycloak",
+        "accountTheme": "keycloak",
+        "adminTheme": "keycloak",
+        "emailTheme": "keycloak",
         "registrationAllowed": true,
         "registrationEmailAsUsername": false,
         "rememberMe": true,
@@ -84,12 +86,18 @@
             }
           ],
         "users": [
+            {{- $j := 0}}
             {{- range $app := .Values.apps }}
               {{- if (hasKey $app.harness "accounts")  }}
+                {{- if $j}},{{end}}
+                {{- if len $app.harness.accounts.users}}
+                    {{- $j = add1 $j }}
+                {{- end }}
                 {{- range $i, $user := $app.harness.accounts.users }}{{if $i}},{{end}}
                 {{ include "deploy_accounts_utils.user" (dict "root" $ "app" $app "user" $user) }}
                 {{- end }}
               {{- end }}
+              
             {{- end }}
         ],
         "roles": {
@@ -122,14 +130,18 @@
                 }
             ],
             "client": {
+            {{- $k := 0}}
             {{- range $app := .Values.apps }}
+
               {{- if (hasKey $app.harness "accounts")  }}
+                {{- if $k}},{{end}}
                 {{ $app.harness.name | quote }}: [
                 {{- range $i, $role := $app.harness.accounts.roles }}
                 {{if $i}},{{end}}
-                {{ include "deploy_accounts_utils.role" (dict "root" $ "app" $app "role" $role) }}
+                {{- include "deploy_accounts_utils.role" (dict "root" $ "app" $app "role" $role) }}
                 {{- end }}
                 ]
+                {{- $k = add1 $k }}
               {{- end }}
             {{- end }}
             }
@@ -752,5 +764,5 @@
                 }
             }
         ],
-        "keycloakVersion": "9.0.2"
+        "keycloakVersion": "26.2.1"
     }

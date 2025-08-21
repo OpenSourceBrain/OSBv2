@@ -59,8 +59,8 @@ singleuser:
     limit: 1
     guarantee: 0.02
   memory:
-    limit: 0.5G
-    guarantee: 0.1G
+    limit: 1G
+    guarantee: 0.4G
 prePuller:
 
   # hook relates to the hook-image-awaiter Job and hook-image-puller DaemonSet

@@ -12,7 +12,7 @@ from workspaces.models.base_model_ import Model
 
 from cloudharness import log as logger
 from cloudharness.events.decorators import send_event
-import cloudharness.workflows.argo as argo
+import cloudharness.workflows.argo_service as argo
 from workspaces.config import Config
 
 
@@ -178,7 +178,9 @@ class WorkspaceService(BaseModelService):
     def check_max_num_workspaces_per_user(self, user_id=None):
         if not user_id:
             user_id = keycloak_user_id()
-        if not get_auth_client().user_has_realm_role(user_id=user_id, role="administrator"):
+        auth_client = get_auth_client()
+        print("User ", user_id)
+        if not auth_client.user_has_realm_role(user_id=user_id, role="admin"):
             # for non admin users check if max number of ws per user limit is reached
             num_ws_current_user = self.repository.search(user_id=user_id).total
             max_num_ws_current_user = get_max_workspaces_for_user(user_id)

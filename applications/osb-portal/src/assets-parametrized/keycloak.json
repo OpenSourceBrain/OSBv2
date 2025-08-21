@@ -1,6 +1,6 @@
 {
   "realm": "__NAMESPACE__",
-  "auth-server-url": "https://accounts.__DOMAIN__/auth/",
+  "auth-server-url": "https://accounts.__DOMAIN__/",
   "ssl-required": "external",
   "resource": "web-client",
   "public-client": true,

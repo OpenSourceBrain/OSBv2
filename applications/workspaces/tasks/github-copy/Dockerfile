@@ -1,7 +1,7 @@
 ARG CLOUDHARNESS_BASE
 FROM $CLOUDHARNESS_BASE
 
-RUN apk add git
+RUN apt-get update && apt-get install -y git
 
 ADD . /
 
