@@ -34,16 +34,16 @@ import LinkIcon from "@mui/icons-material/Link";
 import { RootState } from "../store/rootReducer";
 
 const styles = {
-  groupMembers: (theme) => ({
+  groupMembers: {
     flexDirection: "column",
     paddingBottom: "0px !important",
     backgroundColor: bgDarker,
-  }),
-  profileInformation: (theme) => ({
+  },
+  profileInformation: {
     flexDirection: "column",
     backgroundColor: bgDarker,
     borderRight: `1px solid ${lineColor}`,
-    paddingRight: theme.spacing(3),
+    paddingRight: 3,
     overflowY: 'auto',
     maxHeight: "100%",
 
@@ -59,7 +59,7 @@ const styles = {
     "& .MuiAvatar-root": {
       width: "150px",
       height: "150px",
-      marginBottom: theme.spacing(2),
+      marginBottom: 2,
     },
     "& .name": {
       color: textColor,
@@ -89,7 +89,7 @@ const styles = {
         marginLeft: 0,
       },
     },
-  }),
+  },
   dot: {
     height: "5px",
     width: "5px",
@@ -329,7 +329,7 @@ export const UserGroupsPage = () => {
           >
             <Box
               bgcolor={bgDarkest}
-              px={(theme) => theme.spacing(4)}
+              px={4}
               sx={{ borderBottom: `1px solid ${lineColor}` }}
             >
               <Tabs

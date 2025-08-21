@@ -15,14 +15,14 @@ import { alpha } from "@mui/material/styles";
 
 const MAX_ALLOWED_THUMBNAIL_SIZE = 1024 * 1024; // 1MB
 
-export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
+export const StyledDropZoneBox = styled(Box)({
   color: bgInputs,
   border: `2px dashed ${bgInputs}`,
   borderRadius: 5,
   padding: 4,
   "& .MuiTypography-subtitle2": {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+    marginTop: 1,
+    marginBottom: 2,
   },
   "& .MuiButton-outlined": {
     margin: "0 auto",
@@ -32,7 +32,7 @@ export const StyledDropZoneBox = styled(Box)(({ theme }) => ({
     borderRadius: radius,
     border: `2px solid ${bgInputs}`,
   },
-}));
+});
 
 export const StyledImagePreviewSection = styled("section")(() => ({
   display: "flex",

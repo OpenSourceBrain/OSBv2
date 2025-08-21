@@ -166,7 +166,7 @@ const RepoSelect = styled(Select)(({ theme }) => ({
   },
 
   "& .MuiSvgIcon-root": {
-    right: theme.spacing(1),
+    right: 1,
   },
 }));
 

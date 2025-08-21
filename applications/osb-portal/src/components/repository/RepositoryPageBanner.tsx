@@ -20,19 +20,19 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 //types
 import { OSBRepository } from "../../apiclient/workspaces";
 
-const RepoPageBannerBox = styled(Box)(({ theme }) => ({
+const RepoPageBannerBox = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  padding: theme.spacing(5),
+  padding: 5,
   minHeight: "200px",
   
   "& .MuiChip-root": {
     background: chipBg,
     margin: "0.25rem",
   },
-}));
+});
 
 const RepositoryPageBanner = ({
   repository,

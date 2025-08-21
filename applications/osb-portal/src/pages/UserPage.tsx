@@ -663,7 +663,7 @@ export const UserPage = () => {
           >
             <Box
               bgcolor={bgDarkest}
-              px={(theme) => theme.spacing(4)}
+              px={4}
               sx={{ borderBottom: `1px solid ${lineColor}` }}
             >
               <Tabs
