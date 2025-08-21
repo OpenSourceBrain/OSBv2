@@ -50,11 +50,11 @@ import { IconButton } from "@mui/material";
 import { getNotebooksNamedServerLink } from "../utils";
 
 const styles = {
-  profileInformation: (theme) => ({
+  profileInformation: {
     flexDirection: "column",
     backgroundColor: bgDarker,
     borderRight: `1px solid ${lineColor}`,
-    paddingRight: theme.spacing(3),
+    paddingRight: 3,
     "& .MuiSvgIcon-root": {
       marginRight: "5px",
       color: paragraph,
@@ -62,7 +62,7 @@ const styles = {
     "& .MuiAvatar-root": {
       width: "150px",
       height: "150px",
-      marginBottom: theme.spacing(2),
+      marginBottom: 2,
     },
     "& .name": {
       color: textColor,
@@ -92,12 +92,12 @@ const styles = {
         marginLeft: 0,
       },
     },
-  }),
-  repositoriesAndWorkspaces: (theme) => ({
+  },
+  repositoriesAndWorkspaces: {
     flexDirection: "column",
     paddingBottom: "0px !important",
     backgroundColor: bgDarker,
-  }),
+  },
   showMoreText: {
     color: paragraph,
     "& a": {
@@ -191,7 +191,7 @@ export const UserPage = () => {
   }, [userName, workspacesCounter]);
 
   React.useEffect(() => {
-    if (!user) return;
+    if (!user) {return;}
 
     const userId = user.id;
     workspaceService
@@ -616,7 +616,7 @@ export const UserPage = () => {
                           component="p"
                           variant="subtitle2"
                         >
-                          {user.quotas[row]} {USER_QUOTAS[row].showGB && "GB"}
+                          {user.quotas[row] as string} {USER_QUOTAS[row].showGB as string && "GB"}
                         </Typography>
                       </Box>)
                     }

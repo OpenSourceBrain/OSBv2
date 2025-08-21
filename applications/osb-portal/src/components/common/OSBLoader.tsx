@@ -1,6 +1,6 @@
 // Derived from https://raw.githubusercontent.com/MetaCell/geppetto-meta/master/geppetto.js/geppetto-ui/src/loader/Loader.js
 
-import React, { Component, Fragment } from "react";
+import React, { ReactElement, Fragment } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -15,12 +15,12 @@ interface OSBLoaderProps {
   handleClose: () => void;
   messages: string[];
   elapsed?: number;
-  children?: Component;
+  children?: ReactElement;
   className?: string;
   messagesInterval?: number;
 }
 
-export default (props: OSBLoaderProps) => {
+export const OSBLoader = (props: OSBLoaderProps) => {
   const {
     active,
     fullscreen,
@@ -69,7 +69,7 @@ export default (props: OSBLoaderProps) => {
     </Typography>
   );
 
-  const content = children ? (
+  const content: ReactElement = children ? (
     children
   ) : (
     <Grid container={true} spacing={1}>
@@ -117,3 +117,5 @@ export default (props: OSBLoaderProps) => {
 
   return backdrop;
 };
+
+export default OSBLoader;

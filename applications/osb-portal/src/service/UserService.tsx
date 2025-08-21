@@ -2,11 +2,11 @@ import workspaceService from "./WorkspaceService";
 import repositoryService from "./RepositoryService";
 import groupsService from "./GroupsService"
 import { UserInfo } from "../types/user";
-import { getBaseDomain } from "../utils";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import { Configuration, User } from "../apiclient/accounts";
 import * as accountsApi from "../apiclient/accounts/apis";
+import { getBaseDomain } from "@/utils";
 
 
 const accountsApiUri = "/proxy/accounts-api/api";
@@ -20,16 +20,16 @@ declare const window: any;
 
 
 
-export const initApis = (token: string) => {
-  if(token) {
-    document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
-    repositoryService.initApis(token);
-    workspaceService.initApis(token);
-    groupsService.initApis(token);
-    usersApi = new accountsApi.UsersApi(
-      new Configuration({ basePath: accountsApiUri, accessToken: token })
-    );
-  }
+export const initApis = () => {
+  const token = getToken();
+  // Set token used by jupyterhub cloudharness authenticator
+  document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
+  repositoryService.initApis(token);
+  workspaceService.initApis(token);
+  groupsService.initApis(token);
+  usersApi = new accountsApi.UsersApi(
+    new Configuration({ basePath: accountsApiUri, accessToken: token })
+  );
 
 };
 
@@ -88,27 +88,18 @@ export function getToken(): string {
 }
 
 export function initUser(): UserInfo {
-  return getCurrentUserFromCookie();
-}
+  const token = getToken();
 
-
-export function getCurrentUserFromCookie(): UserInfo {
-  return mapKeycloakUser(parseJwt(getToken()));
+  return mapKeycloakUser(parseJwt(token));
 }
 
 export async function login() {
-  console.log("Login called");
-  // window.location.href = "/login";
+  window.location.href = "/login";
 }
 
 export async function logout() {
   return fetch("/oauth/logout").then(() => window.location.href = "/");
 }
-
-
-const errorCallback = (error: any) => {
-  initApis(null);
-};
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
   return Boolean(user && (user.isAdmin || workspace?.userId === user.id));

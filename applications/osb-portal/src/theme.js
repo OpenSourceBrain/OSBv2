@@ -412,17 +412,17 @@ const theme = {
       } },
     MuiDialogTitle: { 
       styleOverrides: { 
-        root: ({ theme }) => ({ 
+        root: { 
           borderBottom: `1px solid ${bgLightest}`,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          paddingRight: theme.spacing(3),
-          paddingLeft: theme.spacing(3),
+          paddingTop: gutter,
+          paddingBottom: gutter,
+          paddingRight: gutter * 1.5,
+          paddingLeft: gutter * 1.5,
 
-        })
+        }
       } 
     },
     MuiDialog: {
@@ -435,23 +435,23 @@ const theme = {
     },
     MuiDialogActions: {
       styleOverrides: {
-        root: ({ theme }) => ( {
+        root:  {
           backgroundColor: bgLightest,
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          paddingRight: theme.spacing(3),
-          paddingLeft: theme.spacing(3),
-        })
+          paddingTop: gutter,
+          paddingBottom: gutter,
+          paddingRight: gutter * 1.5,
+          paddingLeft: gutter * 1.5,
+        }
       }
     },
     MuiDialogContent: { 
       styleOverrides: { 
-        root: ({ theme }) => ( { 
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          paddingRight: theme.spacing(3),
-          paddingLeft: theme.spacing(3),
-        })
+        root: { 
+          paddingTop: gutter,
+          paddingBottom: gutter,
+          paddingRight: gutter * 1.5,
+          paddingLeft: gutter * 1.5,
+        }
       }
     },
     MuiCollapse: {

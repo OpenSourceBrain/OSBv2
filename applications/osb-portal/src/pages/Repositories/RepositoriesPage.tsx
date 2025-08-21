@@ -282,7 +282,7 @@ export const RepositoriesPage = ({
               </Grid>
             </Box>
           </Box>
-          {!repositories?.length && !loading && <Typography sx={{p: 3}}>No repositories found</Typography>}
+          {!repositories?.length && !loading && <Typography sx={{ p: 3 }}>No repositories found</Typography>}
           {listView === "list" ? (
             <RepositoriesTable
               handleRepositoryClick={(repository: OSBRepository) =>

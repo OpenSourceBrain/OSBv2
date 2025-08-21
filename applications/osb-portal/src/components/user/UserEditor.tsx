@@ -93,7 +93,7 @@ interface UserEditProps {
   close: () => void;
 }
 
-export default (props: UserEditProps) => {
+export const UserEditor = (props: UserEditProps) => {
   const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
 
   const profiles = {
@@ -125,7 +125,7 @@ export default (props: UserEditProps) => {
 
       setProfileForm({ ...userForm, website: value });
       setError({ ...error, website: undefined });
-    } catch (_) {
+    } catch (e) {
       setError({ ...error, website: "Invalid URL" });
     }
   };
@@ -134,11 +134,11 @@ export default (props: UserEditProps) => {
     const value = e.target.value;
     try {
       if (value) {
-        const _ = new URL(value);
+        new URL(value);
       }
       setError({ ...error, avatar: undefined });
       setProfileForm({ ...userForm, avatar: value });
-    } catch (_) {
+    } catch (e) {
       setError({ ...error, avatar: "Invalid URL" });
     }
   };
@@ -452,3 +452,5 @@ export default (props: UserEditProps) => {
     </OSBDialog>
   );
 };
+
+export default UserEditor;

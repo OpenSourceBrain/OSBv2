@@ -152,7 +152,7 @@ const styles = {
   },
 };
 
-export default ({
+export const RepositoryResourceBrowser = ({
   repository,
   checkedChanged,
   backAction,
@@ -181,8 +181,8 @@ export default ({
       (e) => !filter || e.resource.name.toLowerCase().includes(filter)
     ), [currentPath, filter]);
 
-  let resourcesListObject: {
-    [id: string]: RepositoryResourceNode;
+  const resourcesListObject: {
+    [id: string]: RepositoryResourceNode | any;
   } = React.useMemo(() => resourcesList?.reduce(
       (resourcesListObject, item) => {
         resourcesListObject[item.resource.path] = item.children;
@@ -378,3 +378,5 @@ export default ({
     </Box>
   </>;
 };
+
+export default RepositoryResourceBrowser;

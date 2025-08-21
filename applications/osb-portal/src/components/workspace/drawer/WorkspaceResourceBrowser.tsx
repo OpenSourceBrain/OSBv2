@@ -113,7 +113,7 @@ const OSBResourceItem = (props: {
   const [waiting, setWaiting] = React.useState(
     resource.status === ResourceStatus.pending
   );
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     setWaiting(resource.status === ResourceStatus.pending);
@@ -137,14 +137,14 @@ const OSBResourceItem = (props: {
       const isApplicationChanged = currentResource && currentResource.type.application.code !== resource.type.application.code;
       if(isApplicationChanged && window.confirm("Unsaved changes will be lost: are you sure you want to change application?")){
         navigate(
-          {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
-            search: `?resource=${encodeURIComponent(resource.name)}`},
+          { pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+            search: `?resource=${encodeURIComponent(resource.name)}` },
         )
       }
       if(!isApplicationChanged){
         navigate(
-          {pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
-            search: `?resource=${encodeURIComponent(resource.name)}`},
+          { pathname: `/workspaces/open/${workspaceId}/${resource.type.application.code}`,
+            search: `?resource=${encodeURIComponent(resource.name)}` },
         )
       }
     };
@@ -197,7 +197,7 @@ interface WorkspaceProps {
   refreshWorkspace: () => void;
   currentResource: WorkspaceResource;
   user: UserInfo;
-  staticPage: Boolean;
+  staticPage: boolean;
 }
 
 const WorkspaceResourceBrowser = (props: WorkspaceProps) => {

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link, CircularProgress } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
-import {BetaIcon, OSBLogo} from "../icons";
+import { BetaIcon, OSBLogo } from "../icons";
 
 import {
   headerBg,
@@ -58,7 +58,6 @@ export const Header = () => {
   
   // Redux hooks
   const user = useSelector((state: RootState) => state.user);
-  const workspacesCounter = useSelector((state: RootState) => state.workspaces.counter);
 
   const handleMenuToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -89,7 +88,7 @@ export const Header = () => {
     user === undefined ? (
       <CircularProgress size={20} />
     ) : 
-    (user === null ? (
+    (!user?.username ? (
       <Button sx={styles.button} onClick={handleUserLogin} className={`sign-in`}>
         Sign in
       </Button>
@@ -147,13 +146,12 @@ export const Header = () => {
     dispatch(toggleDrawer());
   };
 
-  // @ts-ignore
   return (
     <React.Fragment>
       <Toolbar sx={styles.toolbar}>
-        <Box display="flex" sx={{height: "100%", overflow: "hidden", alignItems: "center"}}>
+        <Box display="flex" sx={{ height: "100%", overflow: "hidden", alignItems: "center" }}>
         <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
-          <OSBLogo sx={{mr: "0.4rem", fontSize: "12rem"}}  />
+          <OSBLogo sx={{ mr: "0.4rem", fontSize: "12rem" }}  />
           
         </Link>
         <Box component="sup" sx={styles.logoChip}>v2.0</Box>

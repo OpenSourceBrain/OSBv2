@@ -23,7 +23,7 @@ export const AboutContent = (props: any) => {
 
   return (
     <Box sx={styles.paper}>
-      <OSBLogo sx={{width: "300px", height: "auto"}} />
+      <OSBLogo sx={{ width: "300px", height: "auto" }} />
       <Box>
         <Link
           variant="h5"

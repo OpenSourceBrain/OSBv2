@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import clsx from "clsx";
-import { useTheme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
+import { useSelector } from "react-redux";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -13,66 +11,58 @@ import {
   OSBApplications,
   ResourceStatus,
   Workspace,
-  WorkspaceResource,
 } from "../../../types/workspace";
 
 import workspaceResourceService from "../../../service/WorkspaceResourceService";
 
-import { ShareIcon, ArrowLeft, ArrowRight } from "../../icons";
+import { ArrowLeft, ArrowRight } from "../../icons";
 import { UserInfo } from "../../../types/user";
+import { RootState } from "../../../store/rootReducer";
 
 import { WorkspaceFrame } from "../../../components";
+import { useCallback, useMemo } from "react";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   drawerContent: {
     width: 400,
-  },
-  menuButton: {},
-  hide: {
-    display: "none",
   },
   drawer: {
     flexShrink: 0,
     whiteSpace: "nowrap",
     display: "flex",
   },
-  drawerOpen: {
+  drawerOpen: (theme) => ({
     top: "initial",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  drawerClose: {
+  }),
+  drawerClose: (theme) => ({
     top: "initial",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-
     width: "auto",
-
     "& .verticalFit": {
       display: "block",
     },
-  },
+  }),
   drawerPaper: {
     position: "static",
     flex: 1,
     display: "flex",
     bottom: 0,
-
     justifyContent: "space-between",
   },
-  drawerHeader: {
+  drawerHeader: (theme) => ({
     display: "flex",
     alignItems: "center",
-
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
-  },
+  }),
   closedTextBottom: {
     writingMode: "vertical-lr",
     textOrientation: "mixed",
@@ -82,35 +72,37 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     height: "70vh",
   },
-  loading: {
+  loading: (theme) => ({
     color: theme.palette.grey[600],
-  },
-}));
+  }),
+};
 
 interface WorkspaceDrawerProps {
-  workspace: Workspace;
-  user: UserInfo;
-  refreshWorkspace: () => any;
+  children?: React.ReactNode;
+  app?: string; // App override, if not provided will use app from URL params
 }
 
 export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
-  user,
   children,
-  workspace,
+  app: appProp,
 }) => {
-  if (!workspace) {
-    return <></>;
-  }
-  const classes = useStyles();
-
+  const workspace: Workspace | null = useSelector((state: RootState) => state.workspaces?.selectedWorkspace);
+  const user: UserInfo = useSelector((state: RootState) => state.user);
   const { app } = useParams<{ app: string }>();
   const searchParams = useSearchParams()[0];
 
-  // Keep drawer closed for jupyter by default
-  const [open, setOpen] = React.useState(app === "jupyter" ? false : true);
+  // Use app from props if provided, otherwise from URL params
+  const currentApp = appProp || app;
 
-  const getActiveResource = () => {
-    
+  // Keep drawer closed for jupyter by default
+  const [open, setOpen] = React.useState(currentApp !== "jupyter");
+
+
+
+  const getActiveResource = useCallback(() => {
+    if(!workspace) {
+      return undefined;
+    }
     const resourceFromParam = searchParams.get("resource");
     if (resourceFromParam) {
       return workspace.resources.find(
@@ -118,15 +110,15 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
       );
     } else if (workspace.lastOpen != null) {
       if (
-        !app ||
-        workspace.lastOpen?.type?.application === OSBApplications[app]
+        !currentApp ||
+        workspace.lastOpen?.type?.application === OSBApplications[currentApp]
       ) {
         return workspace.lastOpen;
       }
-    } else if (app) {
+    } else if (currentApp) {
       return workspace.resources.find(
         (resource) =>
-          resource.type?.application === OSBApplications[app] &&
+          resource.type?.application === OSBApplications[currentApp] &&
           resource.status === ResourceStatus.available
       );
     } else if (workspace.resources?.length) {
@@ -134,10 +126,15 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         (resource) => resource.status === ResourceStatus.available
       );
     }
-  };
-  const currentResource = getActiveResource();
+    return undefined;
+  }, [currentApp, searchParams, workspace]);
+
+  const currentResource = useMemo( getActiveResource, [getActiveResource]);
 
   React.useEffect(() => {
+    if(!workspace?.user?.id) {
+      return;
+    }
     if(user && workspace.user.id === user.id && currentResource) {
     workspaceResourceService
       .workspacesControllerWorkspaceResourceOpen(currentResource.id)
@@ -145,10 +142,13 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
         console.error("Error opening resource, ResourceOpen function failed!");
       });
     }
-      return () => {}
-    }, [currentResource]);
+  }, [currentResource, user, workspace?.user.id]);
 
   const handleToggleDrawer = () => setOpen(!open);
+
+  if (!workspace) {
+    return <></>;
+  }
 
   return (
     user &&
@@ -165,27 +165,30 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
           anchor="left"
           elevation={0}
           open={open}
-          className={clsx(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx(classes.drawerPaper, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
+          sx={{
+            ...styles.drawer,
+            ...(open ? styles.drawerOpen : styles.drawerClose),
+          }}
+          PaperProps={{
+            sx: {
+              ...styles.drawerPaper,
+              ...(open ? styles.drawerOpen : styles.drawerClose),
+            }
           }}
         >
-          <div className={`${open ? classes.drawerContent : ""} verticalFit`}>
+          <Box 
+            sx={open ? styles.drawerContent : {}}
+            className="verticalFit"
+          >
             <WorkspaceInteractions
               workspace={workspace}
               open={open}
               currentResource={currentResource}
             />
-          </div>
-          <div>
+          </Box>
+          <Box>
             <Divider />
-            <div className={classes.drawerHeader}>
+            <Box sx={styles.drawerHeader}>
               <IconButton onClick={handleToggleDrawer} size="large">
                 {open ? (
                   <ArrowLeft style={{ fontSize: "1rem" }} />
@@ -193,8 +196,8 @@ export const WorkspaceDrawer: React.FunctionComponent<WorkspaceDrawerProps> = ({
                   <ArrowRight style={{ fontSize: "1rem" }} />
                 )}
               </IconButton>
-            </div>
-          </div>
+            </Box>
+          </Box>
         </Drawer>
 
         <Box display="flex" flex="1">

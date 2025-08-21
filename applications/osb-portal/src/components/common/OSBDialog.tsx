@@ -25,7 +25,8 @@ interface DialogProps {
   actions?: React.ReactElement;
   closeAction: () => void;
   className?: string;
-  sx?: any
+  sx?: any,
+  children?: React.ReactNode;
 }
 
 export const OSBDialog: React.FunctionComponent<DialogProps> = ({
@@ -55,7 +56,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
       sx={sx}
     >
       <DialogTitle>
-        <Typography component="h3" variant="h6" sx={{m: 0}}>
+        <Typography component="h3" variant="h6" sx={{ m: 0 }}>
           {title}
           <Typography
             component="p"
@@ -65,7 +66,7 @@ export const OSBDialog: React.FunctionComponent<DialogProps> = ({
           </Typography>
         </Typography>
 
-        <IconButton sx={{p: 0, fontSize: "1rem"}} onClick={handleClose}>
+        <IconButton sx={{ p: 0, fontSize: "1rem" }} onClick={handleClose}>
           <CloseIcon fontSize="inherit" sx={{ color: drawerText }} />
         </IconButton>
       </DialogTitle>

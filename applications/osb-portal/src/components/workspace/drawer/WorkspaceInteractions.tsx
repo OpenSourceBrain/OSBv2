@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
-import makeStyles from "@mui/styles/makeStyles";
 import { styled } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Tabs from "@mui/material/Tabs";
@@ -29,73 +28,9 @@ import { Workspace, WorkspaceResource } from "../../../types/workspace";
 import AddResourceForm from "../AddResourceForm";
 import { canEditWorkspace } from "../../../service/UserService";
 import OSBDialog from "../../common/OSBDialog";
-import { bgRegular as borderColor, paragraph } from "../../../theme";
+import { paragraph } from "../../../theme";
 import { UserInfo } from "../../../types/user";
 import { Typography } from "@mui/material";
-
-
-const useStyles = makeStyles((theme) => ({
-  drawerContent: {
-    maxWidth: 400,
-  },
-  expansionPanel: {
-    display: "flex",
-    flexDirection: "column",
-    "& .MuiCollapse-root": {
-      height: "100%",
-      "& .MuiCollapse-wrapper": {
-        height: "inherit",
-        "& .MuiCollapse-wrapperInner": {
-          height: "inherit",
-          "& div[role=region]": {
-            height: "inherit",
-          },
-        },
-      },
-    },
-    "& .MuiAccordionSummary-root": {
-      "& .MuiAccordionSummary-content": {
-        "& .MuiTypography-root": {
-          paddingLeft: theme.spacing(1),
-        },
-      },
-    },
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  svgIcon: {},
-  loading: {
-    color: theme.palette.grey[600],
-  },
-  flexCenter: {
-    display: "flex",
-    alignItems: "center",
-  },
-  closedText: {
-    writingMode: "vertical-lr",
-    textOrientation: "mixed",
-    transform: "rotate(-180deg)",
-    display: "flex",
-    alignItems: "center",
-  },
-  rotate180: {
-    transform: "rotate(-180deg)",
-  },
-  treePadding: {
-    paddingLeft: theme.spacing(2),
-  },
-}));
 
 function isWorkspaceWaiting(workspace: Workspace) {
    return workspace.resources.find(r => r.id < 0)
@@ -112,11 +47,11 @@ interface WorkspaceProps {
   [propName: string]: any;
   refreshWorkspacePage?: () => void;
   currentResource: WorkspaceResource;
-  hideTabs: Boolean;
-  staticPage: Boolean;
+  hideTabs: boolean;
+  staticPage: boolean;
 }
 
-const SidebarBox = styled(Box)(({ theme }) => ({
+const SidebarBox = styled(Box)(() => ({
   // borderRight: `0.085rem solid ${borderColor}`,
   width: "100%",
 }));
@@ -140,7 +75,7 @@ function TabPanel(props) {
   );
 }
 
-const SidebarIconButton = styled(IconButton)(({ theme }) => ({
+const SidebarIconButton = styled(IconButton)(() => ({
   padding: 0,
   "& .MuiSvgIcon-root": {
     color: paragraph,
@@ -153,9 +88,8 @@ const SidebarIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export default (props: WorkspaceProps | any) => {
+export const WorkspaceInteractions = (props: WorkspaceProps | any) => {
   const { workspace, refreshWorkspace, hideTabs, refreshWorkspaceResources } = props;
-  const classes = useStyles();
 
   const [tabValue, setTabValue] = React.useState(0);
 
@@ -321,7 +255,16 @@ export default (props: WorkspaceProps | any) => {
                 </Tooltip>
               </IconButton>
             )}
-            <Typography variant="h6" className={classes.closedText}>
+            <Typography 
+              variant="h6" 
+              sx={{
+                writingMode: "vertical-lr",
+                textOrientation: "mixed",
+                transform: "rotate(-180deg)",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               {props.workspace.name}
             </Typography>
           </Box>
@@ -357,3 +300,5 @@ export default (props: WorkspaceProps | any) => {
     </>
   );
 };
+
+export default WorkspaceInteractions;

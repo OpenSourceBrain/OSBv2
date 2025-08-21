@@ -1,5 +1,5 @@
 import React from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -23,10 +23,10 @@ import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
-import {TableCell} from "@mui/material";
+import { TableCell } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import CircularProgress from "@mui/material/CircularProgress";
-import {BitBucketIcon, GroupsIcon} from "../components/icons";
+import { BitBucketIcon, GroupsIcon } from "../components/icons";
 import Tooltip from "@mui/material/Tooltip";
 import Link from "@mui/material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -210,7 +210,7 @@ export const UserGroupsPage = () => {
               </Typography>
 
               <Box display='flex' alignItems='center'>
-                <GroupsIcon sx={{fontSize: '0.9rem'}} />
+                <GroupsIcon sx={{ fontSize: '0.9rem' }} />
 
                 <Typography
                   className="username"
@@ -366,7 +366,7 @@ export const UserGroupsPage = () => {
                             <TableCell component="th" scope="row">
                               <Stack spacing={2} direction="row" alignItems="center">
                                 <Stack>
-                                  <Avatar src={member?.avatar} sx={{width: '50px', height: '50px'}}>
+                                  <Avatar src={member?.avatar} sx={{ width: '50px', height: '50px' }}>
                                     {(member.firstName.length > 0 && member.firstName.charAt(0)) +
                                       (member.lastName.length > 0 && member.lastName.charAt(0))}
                                   </Avatar>
@@ -397,7 +397,7 @@ export const UserGroupsPage = () => {
                                   padding: '8px 12px'
                                 }}
                               >
-                                <Typography component="h5" variant="subtitle2" color='secondary' sx={{margin: 0}}>
+                                <Typography component="h5" variant="subtitle2" color='secondary' sx={{ margin: 0 }}>
                                   See Profile
                                 </Typography>
                               </Button>

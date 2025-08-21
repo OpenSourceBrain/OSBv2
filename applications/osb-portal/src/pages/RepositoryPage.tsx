@@ -339,11 +339,11 @@ export const RepositoryPage = () => {
                       lg: "nowrap",
                     },
                   }}
-                  onClick={() => {
+                  onClick={() => 
                     user
                       ? openExistingWorkspaceDialog()
-                      : setShowUserNotLoggedInAlert(true);
-                  }}
+                      : setShowUserNotLoggedInAlert(true)
+                  }
                 >
                   Add selection to existing workspace
                 </AddSelectionButton>
@@ -366,9 +366,9 @@ export const RepositoryPage = () => {
                     color="primary"
                     id="create-new-workspace-button"
                     disabled={!canAddToWorkspace()}
-                    onClick={() => {
-                      user ? openDialog() : setShowUserNotLoggedInAlert(true);
-                    }}
+                    onClick={() =>
+                      user ? openDialog() : setShowUserNotLoggedInAlert(true)
+                    }
                   >
                     New workspace from selection
                   </NewWorkspaceButton>

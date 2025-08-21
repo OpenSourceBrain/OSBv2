@@ -187,7 +187,7 @@ export const MainDrawer = (props: {
   const [openRepoDialog, setOpenRepoDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [askLoginOpen, setAskLoginOpen] = React.useState(false);
-  const {isWorkspacesPage, isRepositoriesPage} = props;
+  const { isWorkspacesPage, isRepositoriesPage } = props;
 
   const openCreatMenu = Boolean(anchorEl);
 
@@ -199,17 +199,21 @@ export const MainDrawer = (props: {
     if (!user) {
       setAskLoginOpen(true);
     } else {
-      type === "workspace"
-        ? setOpenWorkspaceDialog(true)
-        : setOpenRepoDialog(true);
+      if(type === "workspace") {
+        setOpenWorkspaceDialog(true);
+      } else {
+        setOpenRepoDialog(true);
+      }
       setAnchorEl(null);
     }
   };
 
   const handleCloseDialog = (type) => {
-    type === "workspace"
-      ? setOpenWorkspaceDialog(false)
-      : setOpenRepoDialog(false);
+    if(type === "workspace") {
+      setOpenWorkspaceDialog(false);
+    } else {
+      setOpenRepoDialog(false);
+    }
   };
 
   const handleClickCreatMenu = (event: React.MouseEvent<HTMLElement>) => {

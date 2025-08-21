@@ -35,14 +35,14 @@ console.log(root, App);
 
 const user = initUser();
 if(user) {
-  store.dispatch(userLogin());
+  store.dispatch(userLogin(user));
 }
 
 
 root.render(
-    <Provider store={store}>
-      <App />
-    </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 initErrorHandler(appName);

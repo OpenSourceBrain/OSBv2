@@ -1,7 +1,6 @@
 import * as React from "react";
 import debounce from "lodash/debounce";
 
-import makeStyles from "@mui/styles/makeStyles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -16,7 +15,7 @@ import searchFilter from "../../types/searchFilter";
 import SearchFilterReposWorkspaces from "../common/SearchFilterReposWorkspaces";
 import { Page } from "../../types/model";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   workspacesBox: {
     height: "400px",
     overflow: "auto",
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "0.5rem",
     marginTop: "0.5rem",
   },
-}));
+};
 
 interface ExistingWorkspaceEditorProps {
   setWorkspace: (ws: Workspace) => void;
@@ -82,7 +81,6 @@ interface ExistingWorkspaceEditorProps {
 export const ExistingWorkspaceEditor = (
   props: ExistingWorkspaceEditorProps
 ) => {
-  const classes = useStyles();
 
   const [activeCardClassNames, setActiveCardClassNames] = React.useState<
     string[]
@@ -100,8 +98,8 @@ export const ExistingWorkspaceEditor = (
       ...searchFilterValues,
       text: newTextFilter,
       tags: newTextFilter
-        ? [...searchFilterValues?.tags, newTextFilter]
-        : searchFilterValues?.tags,
+        ? [...(searchFilterValues?.tags ?? []), newTextFilter]
+        : searchFilterValues?.tags ?? [],
     });
   }, 500);
 
@@ -120,7 +118,7 @@ export const ExistingWorkspaceEditor = (
     );
   };
 
-  const getWorkspacesList = (payload?) => {
+  const getWorkspacesList = React.useCallback((payload?) => {
     setWorkspaces(null);
 
     if (payload?.searchFilterValues) {
@@ -132,7 +130,7 @@ export const ExistingWorkspaceEditor = (
         .fetchWorkspaces(null, null, 1, 100)
         .then(setWorkspacesFromPage);
     }
-  };
+  }, [searchFilterValues]);
 
   React.useEffect(() => {
     if (isSearchFieldsEmpty) {
@@ -140,7 +138,7 @@ export const ExistingWorkspaceEditor = (
     } else {
       getWorkspacesList({ searchFilterValues });
     }
-  }, [searchFilterValues]);
+  }, [getWorkspacesList, isSearchFieldsEmpty, searchFilterValues]);
 
   const handleWorkspaceSelection = (index: number) => {
     const placeHolderArray = Array(workspaces.length).fill("not-active");
@@ -161,7 +159,7 @@ export const ExistingWorkspaceEditor = (
           hasTypes={false}
         />
       </Box>
-      <Box className={`${classes.workspacesBox} scrollbar`}>
+      <Box sx={styles.workspacesBox} className={`scrollbar`}>
         {workspaces ? (
           <Grid container={true} spacing={1}>
             {workspaces &&
@@ -177,12 +175,14 @@ export const ExistingWorkspaceEditor = (
                     xl={2}
                   >
                     <Button
-                      className={`${activeCardClassNames[index]}-button ${classes.workspaceButton}`}
+                      sx={styles.workspaceButton}
+                      className={`${activeCardClassNames[index]}-button`}
                       onClick={() => handleWorkspaceSelection(index)}
                       disableRipple={true}
                     >
                       <CheckCircleIcon
-                        className={`${activeCardClassNames[index]} ${classes.checkMarkIcon}`}
+                        className={`${activeCardClassNames[index]}`}
+                        sx={styles.checkMarkIcon}
                         color="primary"
                       />
                       <WorkspaceCard workspace={workspace} hideMenu={true} />

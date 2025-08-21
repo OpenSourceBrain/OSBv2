@@ -7,36 +7,36 @@ import { Button } from "@mui/material";
 
 
 const PrimaryDialog = ({
-	open,
-	setOpen,
-	title,
-	description,
-	handleCallback,
-	actionButtonText,
-	cancelButtonText,
+  open,
+  setOpen,
+  title,
+  description,
+  handleCallback,
+  actionButtonText,
+  cancelButtonText,
 }) => {
-	return (
-		<Dialog
-			open={open}
-			onClose={() => setOpen(false)}
-		>
-			<DialogTitle>{title}</DialogTitle>
-			<DialogContent>{description}</DialogContent>
-			<DialogActions>
-				<Button
-					color="primary"
-					onClick={() => {
-						setOpen(false);
-					}}
-				>
-					{cancelButtonText || "CANCEL"}
-				</Button>
-				<Button color="primary" variant="contained" onClick={handleCallback}>
-					{actionButtonText || "DELETE"}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	)
+  return (
+    <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+    >
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>{description}</DialogContent>
+      <DialogActions>
+        <Button
+          color="primary"
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          {cancelButtonText || "CANCEL"}
+        </Button>
+        <Button color="primary" variant="contained" onClick={handleCallback}>
+          {actionButtonText || "DELETE"}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default PrimaryDialog;

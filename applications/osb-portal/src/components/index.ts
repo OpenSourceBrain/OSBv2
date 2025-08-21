@@ -105,20 +105,14 @@ export const Workspaces = connect(
 )(workspace);
 export const WorkspaceCard = workspaceCard;
 export const HomePage = homePage;
-export const EditRepoDialog = connect(mapRepositoriesPageToProps, {
-  ...dispatchTagsProps,
-  ...dispatchRepositoriesProps,
-})(editRepoDialog);
+export const EditRepoDialog = editRepoDialog;
 export const WorkspaceToolBox = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspacetoolbox);
 
 export const Header = header;
-export const WorkspaceDrawer = connect(
-  mapSelectedWorkspaceStateToProps,
-  dispatchDrawerProps
-)(workspacedrawer) as any; // any to fix weird type mapping error
+export const WorkspaceDrawer = workspacedrawer;
 export const WorkspaceInteractions = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
@@ -138,10 +132,7 @@ export const WorkspaceFrame = connect(
   mapSelectedWorkspaceStateToProps,
   genericDispatch
 )(workspaceFrame);
-export const WorkspaceOpenPage = connect(
-  null,
-  dispatchWorkspaceProps
-)(workspaceOpenPage);
+export const WorkspaceOpenPage = workspaceOpenPage;
 export const WorkspacePage = connect(
   mapSelectedWorkspaceStateToProps,
   dispatchWorkspaceProps

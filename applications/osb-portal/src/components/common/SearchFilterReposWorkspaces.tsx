@@ -88,7 +88,7 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
   },
 }));
 
-const StyledFilterButton = styled(Button)(({ theme }) => ({
+const StyledFilterButton = styled(Button)({
   borderRadius: "0px 8px 8px 0px",
   textTransform: "capitalize",
   boxShadow: "none",
@@ -109,7 +109,7 @@ const StyledFilterButton = styled(Button)(({ theme }) => ({
     color: chipTextColor,
     fontWeight: 500,
   },
-}));
+});
 
 export const SearchFilterReposWorkspaces = (
   props: SearchReposWorkspacesProps
@@ -138,10 +138,10 @@ export const SearchFilterReposWorkspaces = (
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let repositoryTypes = [...props?.searchFilterValues.types];
+    let repositoryTypes = [...(props?.searchFilterValues.types ?? [])];
 
     if (event.target.checked) {
-      repositoryTypes = [...props?.searchFilterValues.types, event.target.name];
+      repositoryTypes = [...(props?.searchFilterValues.types ?? []), event.target.name];
     } else {
       repositoryTypes = repositoryTypes.filter(
         (row) => row !== event.target.name

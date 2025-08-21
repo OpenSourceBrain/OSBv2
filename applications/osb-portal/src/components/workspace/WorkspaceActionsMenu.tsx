@@ -12,11 +12,9 @@ import { useSelector } from "react-redux";
 import { OSBApplications, Workspace } from "../../types/workspace";
 import { WorkspaceEditor } from "../index";
 import { canEditWorkspace } from "../../service/UserService";
-import { UserInfo } from "../../types/user";
 import WorkspaceService from "../../service/WorkspaceService";
 import OSBLoader from "../common/OSBLoader";
-import { bgDarkest, textColor, lightWhite } from "../../theme";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { bgDarkest, textColor } from "../../theme";
 import * as Icons from "../icons";
 import PrimaryDialog from "../dialogs/PrimaryDialog";
 import { RootState } from "../../store/rootReducer";
@@ -40,8 +38,8 @@ const snackbarStyles = {
   },
 };
 
-export default (props: WorkspaceActionsMenuProps) => {
-  const {ButtonComponent} = props;
+export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
+  const { ButtonComponent } = props;
   const user = useSelector((state: RootState) => state.user);
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
@@ -315,3 +313,5 @@ export default (props: WorkspaceActionsMenuProps) => {
     </>
   );
 };
+
+export default WorkspaceActionsMenu;

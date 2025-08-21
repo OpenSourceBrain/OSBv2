@@ -33,6 +33,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      // indent: ["warn", 2],
       // indent: ["warn", 2, {
       //   SwitchCase: 1,
       //   ignoredNodes: ["JSXElement", "JSXElement > *", "JSXAttribute", "JSXIdentifier", "JSXNamespacedName", "JSXMemberExpression", "JSXSpreadAttribute", "JSXExpressionContainer", "JSXOpeningElement", "JSXClosingElement", "JSXText", "JSXEmptyExpression", "JSXSpreadChild"]
@@ -44,6 +45,7 @@ export default tseslint.config(
       }],
       "@typescript-eslint/no-unused-vars": "warn", //
       "@typescript-eslint/no-explicit-any": "off", // No strict typing (annoying especially with React elements and events callbacks)
+      "@typescript-eslint/no-empty-object-type": "warn",
       "consistent-return": "warn", // https://eslint.org/docs/latest/rules/consistent-return
       "prefer-arrow-callback": ["warn"],
       "object-curly-spacing": ["warn", "always"], // enforce consistent spacing inside braces

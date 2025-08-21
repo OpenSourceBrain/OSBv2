@@ -45,7 +45,7 @@ export const Banner = () => {
         <Box>
           <Box display="flex" pt={1} flexDirection="row">
             {// TODO temporarily disabled
-              <Button variant="outlined" sx={{display: "none"}}>Take the tour</Button>
+              <Button variant="outlined" sx={{ display: "none" }}>Take the tour</Button>
             }
             {user === null ? (
               <Button variant="outlined" onClick={handleSignup}>

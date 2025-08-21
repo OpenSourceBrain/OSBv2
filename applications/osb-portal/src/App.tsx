@@ -17,7 +17,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
 import theme from "./theme";
 import SidebarPageLayout from "./layouts/SidebarLayout";
-import * as UserService from "./service/UserService";
 import { RootState } from "./store/rootReducer";
 
 import {
@@ -33,12 +32,12 @@ import {
   GroupsPage
 } from "./components";
 import Box from "@mui/material/Box";
-import { UserInfo } from "./types/user";
 import SampleIframePage from "./pages/SampleIframePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { initApis } from "./service/UserService";
 
 declare module "@mui/styles/defaultTheme" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface DefaultTheme extends Theme {}
 }
 
@@ -56,14 +55,9 @@ const styles = {
 };
 
 
-interface AppProps {
-  error: boolean;
-  user: UserInfo;
-}
-
 export const App = () => {
   const error = useSelector((state: RootState) => state.error);
-  
+  initApis();
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>

@@ -60,7 +60,7 @@ interface WorkspaceEditProps {
   filesSelected?: boolean;
   tags: Tag[];
   retrieveAllTags?: (page: number) => void;
-  children?: any;
+  children?: React.ReactNode;
   title: string;
   open: boolean;
   user: UserInfo;
@@ -70,7 +70,7 @@ interface WorkspaceEditProps {
 
 // let thumbnail: Blob;
 
-export default (props: WorkspaceEditProps) => {
+export const WorkspaceEditor = (props: WorkspaceEditProps) => {
   const { workspace, user } = props;
   const [workspaceForm, setWorkspaceForm] = React.useState<Workspace>({
     ...props.workspace,
@@ -97,9 +97,11 @@ export default (props: WorkspaceEditProps) => {
 
   const handleCreateWorkspaceButtonClick = () => {
     if (typeof props.filesSelected !== "undefined") {
-      props.filesSelected
-        ? handleCreateWorkspace()
-        : setShowNoFilesSelectedDialog(!showNoFilesSelectedDialog);
+      if (props.filesSelected) {
+        handleCreateWorkspace();
+      } else {
+        setShowNoFilesSelectedDialog(!showNoFilesSelectedDialog);
+      }
     } else {
       handleCreateWorkspace();
     }
@@ -221,9 +223,9 @@ export default (props: WorkspaceEditProps) => {
               freeSolo={true}
               options={props.tags.map((tagObject) => tagObject.tag)}
               defaultValue={defaultTags}
-              onChange={(event, value) => setWorkspaceTags(value)}
+              onChange={(event, value: string[]) => setWorkspaceTags(value)}
               renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
+                value.map((option: string, index) => (
                   <Chip
                     variant="outlined"
                     label={option}
@@ -336,3 +338,5 @@ export default (props: WorkspaceEditProps) => {
     </>
   );
 };
+
+export default WorkspaceEditor;

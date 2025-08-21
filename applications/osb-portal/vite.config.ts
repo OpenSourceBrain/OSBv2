@@ -5,7 +5,7 @@ import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const proxyTarget = env.DOMAIN;
+  const proxyTarget = env.DOMAIN || "";
   const osbDomain = env && env.DOMAIN ? env.DOMAIN : 'localhost:8000';
   const replaceHost = (uri, appName) => uri.replace("://", "://" + appName + ".");
 
@@ -32,6 +32,7 @@ export default defineConfig(({mode}) => {
   build: {
     outDir: 'public',
     emptyOutDir: false,
+    sourcemap: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),

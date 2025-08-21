@@ -7,5 +7,5 @@ ADD . /
 
 ENV shared_directory /
 ENV workspace_id 1
-
+RUN chmod +x ./run.sh
 CMD [sh, -c, './run.sh']

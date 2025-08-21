@@ -300,8 +300,8 @@ export const WorkspacesPage = () => {
         </Box>
 
         {workspaces?.length === 0 && user ? (
-          <Box display="flex" alignContent="center" alignItems="center" justifyContent="center" flex="1"sx={{ backgroundColor: bgDarker}}>
-          <Paper sx={{px: 6, py: 6, maxWidth:700, borderRadius: "16px", backgroundColor: bgDark }}>
+          <Box display="flex" alignContent="center" alignItems="center" justifyContent="center" flex="1"sx={{ backgroundColor: bgDarker }}>
+          <Paper sx={{ px: 6, py: 6, maxWidth:700, borderRadius: "16px", backgroundColor: bgDark }}>
             <WorkspaceToolBox
             title="Create your first workspace"
               closeMainDialog={(isClosed) => null}
