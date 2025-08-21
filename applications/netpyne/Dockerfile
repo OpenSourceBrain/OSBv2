@@ -16,7 +16,9 @@ RUN yarn build-dev
 ### Download on a separate stage to run in parallel with buildkit
 FROM quay.io/jupyter/base-notebook:python-3.12 AS downloads
 USER root
-RUN wget --no-check-certificate -O /nyhead.mat https://www.parralab.org/nyhead/sa_nyhead.mat
+RUN apt-get update -qq && apt-get install aria2 -y
+RUN aria2c -j10 -x 10 https://www.parralab.org/nyhead/sa_nyhead.mat
+RUN mv sa_nyhead.mat /nyhead.mat
 
 ###
 FROM quay.io/jupyter/base-notebook:python-3.12
@@ -87,7 +89,7 @@ RUN ln -s /opt/workspace workspace
 
 # RUN jupyter labextension disable @jupyterlab/hub-extension
 
-COPY --from=downloads --chown=1000:1000 /nyhead.mat $NP_LFPYKIT_HEAD_FILE
+COPY --from=downloads --chown=1000:1000 nyhead.mat $NP_LFPYKIT_HEAD_FILE
 COPY --from=jsbuild --chown=1000:1000 $FOLDER/webapp/build webapp/build
 
 RUN chown -R $NB_UID /home/jovyan/.jupyter
