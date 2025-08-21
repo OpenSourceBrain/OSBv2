@@ -13,18 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Clone Netpyne UI dependencies
       run: |
         mkdir -p applications/netpyne/dependencies
-        export BRANCH_TAG=$(grep "branch_tag:" applications/nwb-explorer/deploy/values.yaml | awk '{print $2}')
-        echo "Using branch: $BRANCH_TAG"
-        git clone --branch $BRANCH_TAG https://github.com/MetaCell/NetPyNE-UI.git applications/netpyne/dependencies/NetPyNE-UI
+        export URL=$(grep "url:" applications/netpyne/deploy/values.yaml | awk '{print $3}')
+        export BRANCH_TAG=$(grep "branch_tag:" applications/netpyne/deploy/values.yaml | awk '{print $2}')
+        echo "Using branch: $BRANCH_TAG on $URL"
+        git clone --branch $BRANCH_TAG $URL applications/netpyne/dependencies/NetPyNE-UI
+        ls -alt applications/netpyne/dependencies/NetPyNE-UI
 
     - name: Build the Docker image
       run: |
         cd applications/netpyne
-        docker build -t mynpui -f Dockerfile --no-cache .
+        ./build_local.sh 
         
     - name: Info on Docker image sizes
       run: |
@@ -32,4 +34,5 @@ jobs:
 
     - name: Run the Docker container and list python installs
       run: |
-        docker run -t --rm --entrypoint /bin/bash mynpui  -c "pip3 list"
+        cd applications/netpyne
+        ./pip_info.sh
