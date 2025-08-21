@@ -1,15 +1,12 @@
-from urllib.request import urlopen
-import codecs
 import workspaces_cli
 from pprint import pprint
 from workspaces_cli.api import rest_api, k8s_api
 import logging
 import json
 import sys
-import csv
 
 from utils import get_tags_info
-from utils import known_users, lookup_user
+from utils import known_users, lookup_user, is_known_user
 
 from workspaces_cli.models import (
     OSBRepository,
@@ -38,6 +35,9 @@ if "-dry" in sys.argv:
 else:
     dry_run = False  # dry_run = True
 
+new_json_filename = "cached_info/dandiarchive.json"
+use_new_json = True
+
 
 known_missing_dandisets = [
     "https://dandiarchive.org/dandiset/000069/draft",
@@ -47,7 +47,7 @@ known_missing_dandisets = [
 
 index = 0
 min_index = 0
-max_index = 10
+max_index = 20000
 
 verbose = False
 
@@ -72,6 +72,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     except workspaces_cli.ApiException as e:
         print("Exception when calling K8sApi->live: %s\n" % e)
 
+"""
 dandishowcase_csv_url = "https://raw.githubusercontent.com/OpenSourceBrain/DANDIArchiveShowcase/main/validation_folder/dandiset_summary.csv"
 response = urlopen(dandishowcase_csv_url)
 
@@ -84,6 +85,11 @@ filename = "cached_info/dandishowcase_info.json"
 strj = json.dumps(dandishowcase_info, indent="    ", sort_keys=True)
 with open(filename, "w") as fp:
     fp.write(strj)
+    """
+
+if use_new_json:
+    print("New JSON file being used...")
+    dandishowcase_info = json.load(open(new_json_filename))
 
 
 all_updated = []
@@ -112,19 +118,38 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             print(err_info)
             dandi_errors.append(err_info)
             return
-        search = f"uri__like={dandiset_url.split('/dandiset/')[1].split('/')[0]}"
+
+        search = (
+            f"uri__like=dandiset/{dandiset_url.split('/dandiset/')[1].split('/')[0]}"
+        )
         found = api_instance.osbrepository_get(q=search)
 
         if found.osbrepositories:
-            matching_repos = []
+            if verbose:
+                print(f"  Found with {search} {len(found.osbrepositories)}: ")
+                for r in found.osbrepositories:
+                    print(f"    - {r}")
+
+            matching_repo_info = []
+
             for r in found.osbrepositories:
-                if r.uri == dandiset_url:
-                    matching_repos.append(
+                if verbose:
+                    print(
+                        f"  Checking if {r.uri} == {dandiset_url} ({r.uri == dandiset_url}); or if {r.user_id} is known ({is_known_user(r.user_id)})"
+                    )
+                if r.uri == dandiset_url or is_known_user(r.user_id):
+                    matching_repo_info.append(
                         "URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i (%s)\n"
                         % (v2_or_v2dev, r.id, r.uri)
                     )
-            if len(matching_repos) > 1:
-                print("     *** Matching: %s" % matching_repos)
+                    if verbose:
+                        print("     *** Matching so far: %s" % matching_repo_info)
+
+                    matching_repo = r
+
+            if len(matching_repo_info) > 1:
+                print("     *** Matching: %s" % matching_repo_info)
+
                 err_info = "    More than one match for %s (search: %s):\n" % (
                     dandiset_url,
                     search,
@@ -147,17 +172,21 @@ with workspaces_cli.ApiClient(configuration) as api_client:
                     print("    %s" % dandi_api_info)
                 multi_matches.append(err_info)
                 return False
-            r = found.osbrepositories[0]
+            else:
+                if verbose:
+                    print("     *** Unique match found: %s" % matching_repo)
+
             url_info = (
                 "    URL to OSBv2 repo: https://%s.opensourcebrain.org/repositories/%i"
-                % (v2_or_v2dev, found.osbrepositories[0].id)
+                % (v2_or_v2dev, matching_repo.id)
             )
             try:
                 print(
                     "    %s already exists (owner: %s); updating..."
-                    % (dandiset_url, lookup_user(r.user_id, url_info))
+                    % (dandiset_url, lookup_user(matching_repo.user_id, url_info))
                 )
-            except Exception:
+            except Exception as e:
+                print("Error updating existing DANDI dataset: %s" % e)
                 exit(-1)
             print(url_info)
             all_updated.append(url_info)
@@ -179,7 +208,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
 
             if not dry_run:
                 return api_instance.osbrepository_id_put(
-                    found.osbrepositories[0].id,
+                    matching_repo.id,
                     OSBRepository(
                         uri=dandiset_url,
                         name=dandi_api_info.name,
@@ -233,12 +262,32 @@ with workspaces_cli.ApiClient(configuration) as api_client:
             if int(dandishowcase_entry["num_files"]) < 1:
                 continue
             try:
+                print(f"\n   Trying {min_index}->{index}->{max_index}")
                 added = add_dandiset(dandishowcase_entry, index)
-            except Exception:
-                logging.exception(
-                    "Error adding/updating %s" % dandishowcase_entry["url"]
-                )
-                # exit()
+            except Exception as e:
+                if "context_resources" in str(e):
+                    print("    Error: %s" % str(e))
+                    print("    ** This is a known error, continuing...")
+                elif "Signature has expired" in str(e):
+                    print("    Error: %s" % str(e))
+                    print(
+                        "    ** Token expired - go to your browser and refresh the token..."
+                    )
+                    exit()
+                elif "InvalidToken: Not enough segments" in str(e):
+                    print("    Error: %s" % str(e))
+                    print(
+                        "    ** No token expired - go to your browser and get a token to make changes on the live server..."
+                    )
+                    exit()
+                else:
+                    print("----------")
+                    logging.exception("Error adding %s" % dandishowcase_entry)
+                    print("----------")
+                    print("Error: %s" % str(e))
+                    print("----------")
+                    print("Exiting due to unknown error...")
+                    exit()
 
         index += 1
 

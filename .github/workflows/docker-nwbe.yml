@@ -10,22 +10,31 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Clone NWB Explorer dependencies
       run: |
         mkdir -p applications/nwb-explorer/dependencies
-        git clone --branch development https://github.com/MetaCell/nwb-explorer.git applications/nwb-explorer/dependencies/nwb-explorer
+        export URL=$(grep "url:" applications/nwb-explorer/deploy/values.yaml | awk '{print $3}')
+        export BRANCH_TAG=$(grep "branch_tag:" applications/nwb-explorer/deploy/values.yaml | awk '{print $2}')
+        echo "Using branch: $BRANCH_TAG on $URL"
+        git clone --branch $BRANCH_TAG $URL applications/nwb-explorer/dependencies/nwb-explorer
+        ls -alt applications/nwb-explorer/dependencies/nwb-explorer
 
     - name: Build the Docker image
       run: |
         cd applications/nwb-explorer
-        docker build -t mynwbosb -f Dockerfile --no-cache .
+        ./build_local.sh 
         
     - name: Info on Docker image sizes
       run: |
         docker images
+
+    - name: Run the Docker container and list python installs
+      run: |
+        cd applications/nwb-explorer
+        ./pip_info.sh
 
         

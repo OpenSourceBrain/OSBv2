@@ -12,9 +12,10 @@
 CLOUD_HARNESS_URL="https://github.com/MetaCell/cloud-harness.git"
 CLOUD_HARNESS_DIR_LOCATION="../"
 CLOUD_HARNESS_DIR="${CLOUD_HARNESS_DIR_LOCATION}/cloud-harness"
-CLOUD_HARNESS_DEFAULT="release/2.5.0"
+CLOUD_HARNESS_DEFAULT="develop"
 CLOUD_HARNESS_BRANCH=""
 SKAFFOLD="skaffold"
+SKAFFOLD_MAX_VERSION="2.14.2"
 
 # Application to deploy
 DEPLOYMENT_APP=""
@@ -28,6 +29,18 @@ PY_VERSION="python3.12"
 OSB_DIR="./"
 VENV_DIR="${OSB_DIR}/.venv"
 
+# Resources
+CPUS=8
+MEMORY="10000mb"
+if [[ "$CI" == "true" ]]; then
+    # if not running in GHA, use 4 CPUs
+    CPUS=4
+fi
+
+# https://stackoverflow.com/a/37939589/375067
+get_version () { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
+
 deploy () {
     if ! command -v helm >/dev/null || ! command -v $SKAFFOLD >/dev/null || !  command -v harness-deployment  >/dev/null ; then
         echo "helm, skaffold, and cloud-harness are required but were not found."
@@ -40,12 +53,27 @@ deploy () {
         exit 1
     fi
 
+    skaffold_version="$($SKAFFOLD version)"
+
+    if [ $(get_version ${skaffold_version:1}) -gt $(get_version $SKAFFOLD_MAX_VERSION) ]
+    then
+        echo "-> Found Skaffold version: ${skaffold_version:1}"
+        echo "-> Skaffold version <= ${SKAFFOLD_MAX_VERSION} is currently required"
+        echo "-> Please install it from: https://github.com/GoogleContainerTools/skaffold/releases/tag/v${SKAFFOLD_MAX_VERSION}"
+        echo "-> See: https://github.com/GoogleContainerTools/skaffold/issues/9788"
+        exit 1
+    fi
+
     pushd $OSB_DIR
         echo "-> deploying"
         echo "-> checking (and starting) docker daemon"
-        systemctl is-active docker --quiet || sudo systemctl start docker.service
+        if [[ "$(uname -s)" == "Linux" ]]; then
+            systemctl is-active docker --quiet || sudo systemctl start docker.service
+        else
+            echo "🍏  Assuming Docker is already running on OS: $(uname -s)"
+        fi
         echo "-> starting minkube"
-        minikube start --memory="10000mb" --cpus=8 --disk-size="60000mb" --kubernetes-version=v1.32 --driver=docker || notify_fail "Failed: minikube start"
+        minikube start --memory="10000mb" --cpus="$CPUS" --disk-size="60000mb" --kubernetes-version=v1.32 --driver=docker || notify_fail "Failed: minikube start"
         echo "-> enabling ingress addon"
         minikube addons enable ingress || notify_fail "Failed: ingress add on"
         echo "-> setting up osblocal namespace"
@@ -112,29 +140,29 @@ function deactivate_venv() {
 function print_versions() {
     echo "** docker **"
     docker version
-    echo "\n** minikube **"
+    echo -e "\n** minikube **"
     minikube version
-    echo "\n** cloud harness **"
+    echo -e "\n** cloud harness **"
     pushd "${CLOUD_HARNESS_DIR}" && git log --oneline | head -1 && popd
-    echo "\n** helm **"
+    echo -e "\n** helm **"
     helm version
-    echo "\n** skaffold **"
+    echo -e "\n** skaffold **"
     $SKAFFOLD version
-    echo "\n** python **"
+    echo -e "\n** python **"
     python --version
-    echo "\n** git **"
+    echo -e "\n** git **"
     git --version
 }
 
 clean () {
     pushd $OSB_DIR
         echo "-> Cleaning up all images."
-        docker image prune --all
+        #docker image prune --all
         docker builder prune --all
         $SKAFFOLD delete
         minikube stop
         minikube delete
-        docker image prune --all
+        #docker image prune --all
         docker builder prune --all
     popd
 }

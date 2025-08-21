@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook:latest
+FROM quay.io/jupyter/base-notebook:python-3.12
 USER root
 
 
@@ -11,6 +11,7 @@ RUN apt-get update &&  apt-get install -y graphviz openjdk-11-jre-headless git v
     octave octave-statistics
 ################################################################################
 
+RUN mkdir -p /home/jovyan/.cache/conda && ls -alt /home/jovyan/.cache && chown -R jovyan /home/jovyan/.cache  # give user permission to update existing packages
 
 
 #### Install Python packages
@@ -32,10 +33,6 @@ USER root
 ### Some aliases
 RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
 
-### Set up jnml, reusing pynml jar
-RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the jnml command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar  org.neuroml.JNeuroML $@' >> /opt/conda/bin/jnml
-RUN chmod +x /opt/conda/bin/jnml
-ENV JNML_HOME=/opt/conda/bin
 
 ### Set up lems, reusing pynml jar
 RUN echo -e '#!/bin/bash\n#Reusing the jNeuroML jar from the pip installed pyNeuroML for the lems command\n\njava -classpath /opt/conda/lib/python3.12/site-packages/pyneuroml/lib/jNeuroML-*-jar-with-dependencies.jar org.lemsml.jlems.viz.VizMain $@' >> /opt/conda/bin/lems
@@ -77,21 +74,9 @@ ARG NOCACHE
 USER root
 
 #  NEST 
-# ENV NEST_VER=3.8
-# ENV NEST_HOME=/opt/conda/nest
-# RUN cd /tmp && \
-#     wget -nv https://github.com/nest/nest-simulator/archive/v$NEST_VER.tar.gz && \
-#     tar xvzf v$NEST_VER.tar.gz && \
-#     mv nest-simulator-$NEST_VER nest && \
-#     cd nest && \
-#     mkdir $NEST_HOME && \
-#     apt-get install libgsl-dev -y && \
-#     cmake -DCMAKE_INSTALL_PREFIX:PATH=$NEST_HOME -DPYTHON_EXECUTABLE:FILEPATH=/opt/conda/bin/python -DPYTHON_INCLUDE_DIR=/opt/conda/include/python3.12 . && \
-#     make -j7 && \
-#     make install
-# ENV PYTHONPATH=$NEST_HOME/lib/python3.12/site-packages
-# ENV PATH=$PATH:$NEST_HOME/bin
 RUN conda install conda-forge::nest-simulator
+ENV NEST_HOME=/opt/conda
+
 USER jovyan
 
 #### Install Python packages

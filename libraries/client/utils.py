@@ -7,9 +7,13 @@ known_users = {
     "Sietse_v2": "00711324-c645-4a23-8f4b-6c54bde46a2f",
     "Padraig_v2dev": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
     "Filippo_v2dev": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
-    "Simao_v2dev": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
+    # "Simao_v2dev": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
     "OSBAdmin_v2dev": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
 }
+
+
+def is_known_user(uid):
+    return uid in known_users.values()
 
 
 def lookup_user(uid, url):
@@ -21,9 +25,31 @@ def lookup_user(uid, url):
 
 
 def get_tags_info(
-    dandi_api_info=None, dandishowcase_info=None, osbv1_info=None, modeldb_info=None
+    dandi_api_info=None,
+    dandishowcase_info=None,
+    osbv1_info=None,
+    modeldb_info=None,
+    biomodels_info=None,
 ):
     tags = []
+
+    if biomodels_info is not None:
+        tags.append("BioModels")
+        tags.append("BioModels:%s" % biomodels_info["publicationId"])
+        tags.append(biomodels_info["format"]["identifier"])
+        if "modelLevelAnnotations" in biomodels_info:
+            for mla in biomodels_info["modelLevelAnnotations"]:
+                if mla["qualifier"] == "bqbiol:hasTaxon":
+                    if "name" in mla:
+                        tags.append(mla["name"])
+                elif mla["qualifier"] == "bqbiol:isVersionOf":
+                    if "name" in mla:
+                        n = mla["name"]
+                        tags.append(n[0].upper() + n[1:])
+                elif "resource" in mla and mla["resource"] == "Human Disease Ontology":
+                    if "name" in mla:
+                        n = mla["name"]
+                        tags.append(n[0].upper() + n[1:])
 
     if modeldb_info is not None:
         tags.append("ModelDB")
@@ -77,12 +103,12 @@ def get_tags_info(
             tags.append("%s" % dandishowcase_info["species"])
 
     tags_list = []
-    tags = sorted(tags)
+    tags = sorted(list(dict.fromkeys(tags)))  # sort and remove duplicates
     for tag in tags:
         tags_list.append({"tag": tag})
 
     print("    ------------ Tags: ---------")
-    print("       %s" % tags)
+    print("    %s" % tags)
     # print("       %s"%tags_list)
 
     return tags_list

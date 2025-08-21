@@ -1,4 +1,4 @@
-FROM node:20 as jsbuild
+FROM node:20 AS jsbuild
 
 
 ENV FOLDER=nwb-explorer
@@ -14,7 +14,7 @@ RUN yarn build
 
 
 ###
-FROM quay.io/jupyter/base-notebook:latest
+FROM quay.io/jupyter/base-notebook:python-3.12
 ENV NB_UID=jovyan
 ENV FOLDER=nwb-explorer
 USER root
