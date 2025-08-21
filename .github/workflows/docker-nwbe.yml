@@ -17,7 +17,9 @@ jobs:
     - name: Clone NWB Explorer dependencies
       run: |
         mkdir -p applications/nwb-explorer/dependencies
-        git clone --branch development https://github.com/MetaCell/nwb-explorer.git applications/nwb-explorer/dependencies/nwb-explorer
+        export BRANCH_TAG=$(grep "branch_tag:" applications/nwb-explorer/deploy/values.yaml | awk '{print $2}')
+        echo "Using branch: $BRANCH_TAG"
+        git clone --branch $BRANCH_TAG https://github.com/MetaCell/nwb-explorer.git applications/nwb-explorer/dependencies/nwb-explorer
 
     - name: Build the Docker image
       run: |
