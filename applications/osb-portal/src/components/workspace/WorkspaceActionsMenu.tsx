@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { IconButton, Link } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
 import { WorkspaceEditor } from "../index";
@@ -18,13 +18,11 @@ import { bgDarkest, textColor } from "../../theme";
 import * as Icons from "../icons";
 import PrimaryDialog from "../dialogs/PrimaryDialog";
 import { RootState } from "../../store/rootReducer";
+import { updateWorkspace, deleteWorkspace, refreshWorkspaces } from "../../store/actions/workspaces";
 
 
 interface WorkspaceActionsMenuProps {
   workspace?: Workspace;
-  updateWorkspace?: (ws: Workspace) => void;
-  deleteWorkspace?: (wsId: number) => void;
-  refreshWorkspaces?: () => void;
   isWorkspaceOpen?: boolean;
   ButtonComponent?: React.ComponentType<any>;
   [other: string]: any;
@@ -41,6 +39,7 @@ const snackbarStyles = {
 export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
   const { ButtonComponent } = props;
   const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
@@ -69,7 +68,7 @@ export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleDeleteWorkspace = () => {
-    props.deleteWorkspace(props.workspace.id);
+    dispatch(deleteWorkspace(props.workspace.id));
     handleCloseMenu();
 
     if (window.location.pathname !== "/") {
@@ -78,20 +77,20 @@ export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
   };
 
   const handlePublicWorkspace = () => {
-    props.updateWorkspace({ ...props.workspace, publicable: true });
+    dispatch(updateWorkspace({ ...props.workspace, publicable: true }));
     handleCloseMenu();
   };
 
   const handlePrivateWorkspace = () => {
-    props.updateWorkspace({ ...props.workspace, publicable: false });
+    dispatch(updateWorkspace({ ...props.workspace, publicable: false }));
     handleCloseMenu();
   };
 
   const handleFeaturedWorkspace = () => {
-    props.updateWorkspace({
+    dispatch(updateWorkspace({
       ...props.workspace,
       featured: !props.workspace.featured,
-    });
+    }));
     handleCloseMenu();
   };
 
@@ -101,7 +100,7 @@ export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
 
   const handleCloseEditWorkspace = () => {
     setEditWorkspaceOpen(false);
-    props.refreshWorkspaces();
+    dispatch(refreshWorkspaces());
   };
 
   const handleCloneWorkspace = () => {
@@ -109,7 +108,7 @@ export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
     setCloneInProgress(true);
     WorkspaceService.cloneWorkspace(props.workspace.id).then(
       (res) => {
-        props.refreshWorkspaces();
+        dispatch(refreshWorkspaces());
         setCloneInProgress(false);
         setCloneComplete(true);
         setClonedWSId(res.id);
