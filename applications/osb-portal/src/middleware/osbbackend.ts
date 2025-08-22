@@ -1,6 +1,6 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from "redux";
 import * as Workspaces from "../store/actions/workspaces";
-import { userLogin, userLogout, userRegister } from "../store/actions/user";
+import { userLogin, userLogout } from "../store/actions/user";
 import { setError } from "../store/actions/error";
 import * as Tags from "../store/actions/tags";
 
@@ -36,25 +36,20 @@ const callAPIMiddlewareFn: Middleware =
       case userLogout.toString():
         UserService.logout();
         break;
-      case userRegister.toString():
-        UserService.register().then((user: any) =>
-          next({ ...action, payload: user })
-        );
-        break;
       case Tags.retrieveAllTags.toString():
         RepositoryService.getAllTags(action.payload).then((tagDetails) => {
           next(Tags.loadTags(tagDetails.tags));
         });
         break;
 
-      case Workspaces.refreshWorkspaceResources.toString():
+      case Workspaces.refreshWorkspaceResources.toString(): {
         const selectedWorkspaceId =
             action.payload || getState().workspaces.selectedWorkspace?.id;
         workspaceService.refreshResources(selectedWorkspaceId).then(dispatch(Workspaces.refreshWorkspace(selectedWorkspaceId)));
         break;
-
+      }
       case Workspaces.selectWorkspace.toString():
-      case Workspaces.refreshWorkspace.toString():
+      case Workspaces.refreshWorkspace.toString():{
         async function refreshWorkspace(callback: (workspace: Workspace) => any) {
           const selectedWorkspaceId =
             action.payload || getState().workspaces.selectedWorkspace?.id;
@@ -98,7 +93,7 @@ const callAPIMiddlewareFn: Middleware =
         );
 
         break;
-
+}
       case Workspaces.updateWorkspace.toString():
         workspaceService.updateWorkspace(action.payload).then((workspace) => {
           next({ ...action, payload: workspace });
@@ -109,7 +104,7 @@ const callAPIMiddlewareFn: Middleware =
           next(action);
         });
         break;
-      case Workspaces.resourceAdded.toString():
+      case Workspaces.resourceAdded.toString():{
         const { path, name } = action.payload as { path: string; name: string };
         const workspaceId = getState().workspaces.selectedWorkspace.id;
         workspaceResourceService
@@ -126,6 +121,7 @@ const callAPIMiddlewareFn: Middleware =
               .then((workspace) => next(Workspaces.updateWorkspace(workspace)));
           });
         break;
+      }
       default:
         return next(action);
       //

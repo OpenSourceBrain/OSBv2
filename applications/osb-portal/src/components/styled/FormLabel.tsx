@@ -6,12 +6,12 @@ import Typography from "@mui/material/Typography";
 //style
 import styled from "@mui/system/styled";
 
-export const StyledLabel = styled((props) => (
+export const StyledLabel = styled((props: any) => (
   <Typography {...props} component="label" />
-))(({ theme }) => ({
+))({
   fontWeight: "bold",
   lineHeight: "2em",
   fontSize: "0.8rem",
-}));
+});
 
 export default StyledLabel;

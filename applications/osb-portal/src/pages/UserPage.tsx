@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
@@ -42,17 +43,18 @@ import UserEditor from "../components/user/UserEditor";
 import { User } from "../apiclient/accounts";
 import { getUser, updateUser } from "../service/UserService";
 import { UserInfo } from "../types/user";
+import { RootState } from "../store/rootReducer";
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
 import { getNotebooksNamedServerLink } from "../utils";
 
 const styles = {
-  profileInformation: (theme) => ({
+  profileInformation: {
     flexDirection: "column",
     backgroundColor: bgDarker,
     borderRight: `1px solid ${lineColor}`,
-    paddingRight: theme.spacing(3),
+    paddingRight: 3,
     "& .MuiSvgIcon-root": {
       marginRight: "5px",
       color: paragraph,
@@ -60,7 +62,7 @@ const styles = {
     "& .MuiAvatar-root": {
       width: "150px",
       height: "150px",
-      marginBottom: theme.spacing(2),
+      marginBottom: 2,
     },
     "& .name": {
       color: textColor,
@@ -90,12 +92,12 @@ const styles = {
         marginLeft: 0,
       },
     },
-  }),
-  repositoriesAndWorkspaces: (theme) => ({
+  },
+  repositoriesAndWorkspaces: {
     flexDirection: "column",
     paddingBottom: "0px !important",
     backgroundColor: bgDarker,
-  }),
+  },
   showMoreText: {
     color: paragraph,
     "& a": {
@@ -152,7 +154,9 @@ function a11yProps(index: number) {
 }
 
 const BIG_NUMBER_OF_ITEMS = 1000;
-export const UserPage = (props: any) => {
+export const UserPage = () => {
+  const currentUser: UserInfo = useSelector((state: RootState) => state.user);
+  const workspacesCounter = useSelector((state: RootState) => state.workspaces.counter);
   const [tabValue, setTabValue] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
   const [publicWorkspaces, setPublicWorkspaces] = React.useState<Workspace[]>(
@@ -170,7 +174,6 @@ export const UserPage = (props: any) => {
 
 
   const [loading, setLoading] = React.useState(false);
-  const currentUser: UserInfo = props.user;
 
   const handleTabChange = (
     event: React.SyntheticEvent,
@@ -185,10 +188,10 @@ export const UserPage = (props: any) => {
     }).catch((e) => {
       setError(e);
     });
-  }, [userName, props.workspacesCounter]);
+  }, [userName, workspacesCounter]);
 
   React.useEffect(() => {
-    if (!user) return;
+    if (!user) {return;}
 
     const userId = user.id;
     workspaceService
@@ -613,7 +616,7 @@ export const UserPage = (props: any) => {
                           component="p"
                           variant="subtitle2"
                         >
-                          {user.quotas[row]} {USER_QUOTAS[row].showGB && "GB"}
+                          {user.quotas[row] as string} {USER_QUOTAS[row].showGB as string && "GB"}
                         </Typography>
                       </Box>)
                     }
@@ -660,7 +663,7 @@ export const UserPage = (props: any) => {
           >
             <Box
               bgcolor={bgDarkest}
-              px={(theme) => theme.spacing(4)}
+              px={4}
               sx={{ borderBottom: `1px solid ${lineColor}` }}
             >
               <Tabs

@@ -85,7 +85,7 @@ export interface User {
      * @type {{ [key: string]: object; }}
      * @memberof User
      */
-    quotas?: { [key: string]: object; };
+    quotas?: { [key: string]: string; };
 }
 
 export function UserFromJSON(json: any): User {

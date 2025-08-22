@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //theme
 import { styled } from "@mui/styles";
@@ -10,6 +11,15 @@ import {
   chipBg,
   bgDarkest,
 } from "../theme";
+
+//types
+import {
+  OSBRepository,
+  RepositoryResourceNode,
+  RepositoryType,
+} from "../apiclient/workspaces";
+import { UserInfo } from "../types/user";
+import { RootState } from "../store/rootReducer";
 
 //components
 import CircularProgress from "@mui/material/CircularProgress";
@@ -31,14 +41,6 @@ import {
 } from "../components/workspace/ExistingWorkspaceSelector";
 import RepositoryActionsMenu from "../components/repository/RepositoryActionsMenu";
 import WorkspaceConfirmDialog from "../components/dialogs/WorkspaceConfirmDialog";
-
-//types
-import {
-  OSBRepository,
-  RepositoryResourceNode,
-  RepositoryType,
-} from "../apiclient/workspaces";
-import { UserInfo } from "../types/user";
 
 //icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -92,8 +94,8 @@ const defaultWorkspace: Workspace = {
   user: null,
 };
 
-export const RepositoryPage = (props: any) => {
-  const user: UserInfo = props.user;
+export const RepositoryPage = () => {
+  const user: UserInfo = useSelector((state: RootState) => state.user);
 
   const { repositoryId } = useParams<{ repositoryId: string }>();
   const navigate = useNavigate();
@@ -112,7 +114,7 @@ export const RepositoryPage = (props: any) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [resetChecked, setResetChecked] = React.useState<boolean>(false);
 
-  const canEdit = canEditRepository(props.user, props.repository);
+  const canEdit = canEditRepository(user, repository);
   const [createdWorkspaceConfirmationContent, setCreatedWorkspaceConfirmationContent] = React.useState({
     title: "",
     content: "",
@@ -337,11 +339,11 @@ export const RepositoryPage = (props: any) => {
                       lg: "nowrap",
                     },
                   }}
-                  onClick={() => {
+                  onClick={() => 
                     user
                       ? openExistingWorkspaceDialog()
-                      : setShowUserNotLoggedInAlert(true);
-                  }}
+                      : setShowUserNotLoggedInAlert(true)
+                  }
                 >
                   Add selection to existing workspace
                 </AddSelectionButton>
@@ -364,9 +366,9 @@ export const RepositoryPage = (props: any) => {
                     color="primary"
                     id="create-new-workspace-button"
                     disabled={!canAddToWorkspace()}
-                    onClick={() => {
-                      user ? openDialog() : setShowUserNotLoggedInAlert(true);
-                    }}
+                    onClick={() =>
+                      user ? openDialog() : setShowUserNotLoggedInAlert(true)
+                    }
                   >
                     New workspace from selection
                   </NewWorkspaceButton>
@@ -485,7 +487,7 @@ export const RepositoryPage = (props: any) => {
         open={showUserNotLoggedInAlert}
         closeAction={() => setShowUserNotLoggedInAlert(false)}
       >
-        <NewWorkspaceAskUser />
+        <NewWorkspaceAskUser type="workspaces" />
       </OSBDialog>
 
       {/* Confirm to user if workspace creation/modification was successful */}

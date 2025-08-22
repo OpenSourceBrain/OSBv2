@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
 import Box from "@mui/material/Box";
 
 import ArrowUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -11,70 +10,40 @@ import ArrowDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { FileLinkIcon, LoadingIcon, FolderIcon } from "../../icons";
 
-const useStyles = makeStyles((theme) => ({
-  drawerContent: {
-    maxWidth: 400,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  expandHeader: {
-    display: "flex",
-    flexDirection: "row-reverse",
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-
-  content: {
-    flex: 1,
+// Module-level styles
+const styles = {
+  flexDisplay: {
     display: "flex",
   },
-  loading: {
-    color: theme.palette.grey[600],
-  },
-  FlexDisplay: {
-    display: "flex",
-  },
-  FlexGrowOne: {
+  flexGrowOne: {
     flex: 1,
   },
-}));
+};
 
 const LinkItem = (props: any) => {
-  const classes = useStyles();
   return (
-    <div className={classes.FlexDisplay}>
+    <Box sx={styles.flexDisplay}>
       <FileLinkIcon />
       <div>{props.name}</div>
-    </div>
+    </Box>
   );
 };
 
 const FolderItem = (props: any) => {
-  const classes = useStyles();
   return (
-    <div className={classes.FlexDisplay}>
+    <Box sx={styles.flexDisplay}>
       <FolderIcon />
       <div>{props.name}</div>
-    </div>
+    </Box>
   );
 };
 
 const LoadingItem = (props: any) => {
-  const classes = useStyles();
   return (
-    <div className={classes.FlexDisplay}>
-      <div className={classes.FlexGrowOne}>Loading {props.name}</div>
+    <Box sx={styles.flexDisplay}>
+      <Box sx={styles.flexGrowOne}>Loading {props.name}</Box>
       <LoadingIcon />
-    </div>
+    </Box>
   );
 };
 

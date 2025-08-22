@@ -2,6 +2,7 @@ import * as React from "react";
 import { ReactElement } from "react";
 import debounce from "lodash/debounce";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //components
 import Box from "@mui/material/Box";
@@ -36,6 +37,7 @@ import WorkspacesList from "../components/workspace/WorkspacesTable";
 import { Tag } from "../apiclient/workspaces";
 import OSBPagination from "../components/common/OSBPagination";
 import { UserInfo } from "../types/user";
+import { RootState } from "../store/rootReducer";
 import Paper from "@mui/material/Paper";
 import { WorkspaceToolBox } from "../components";
 
@@ -44,7 +46,10 @@ interface WorkspacesPageProps {
   counter: number;
 }
 
-export const WorkspacesPage = (props: WorkspacesPageProps) => {
+export const WorkspacesPage = () => {
+  const user: UserInfo = useSelector((state: RootState) => state.user);
+  const counter = useSelector((state: RootState) => state.workspaces?.counter);
+  
   const navigate = useNavigate();
   const [searchParams, ] = useSearchParams();
 
@@ -61,7 +66,7 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [tabValue, setTabValue] = React.useState(
-    props.user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
+    user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
   const [listView, setListView] = React.useState<string>("grid");
   const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
@@ -175,7 +180,7 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
     } else {
       getWorkspacesList({ searchFilterValues });
     }
-  }, [page, searchFilterValues, tabValue, props.counter]);
+  }, [page, searchFilterValues, tabValue, counter]);
 
   return (
     <>
@@ -208,12 +213,12 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
                 className="verticalFill"
               >
                 <Tabs value={tabValue} onChange={handleTabChange}>
-                  {props.user ? (
+                  {user ? (
                     <Tab
                       id="your-all-workspaces-tab"
                       value={WorkspaceSelection.USER}
                       label={
-                        props.user.isAdmin ? (
+                        user.isAdmin ? (
                           <div className="tabTitle">
                             <Typography>All workspaces</Typography>
                             {tabValue === WorkspaceSelection.USER && (
@@ -294,9 +299,9 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
           </Box>
         </Box>
 
-        {workspaces?.length === 0 && props.user ? (
-          <Box display="flex" alignContent="center" alignItems="center" justifyContent="center" flex="1"sx={{ backgroundColor: bgDarker}}>
-          <Paper sx={{px: 6, py: 6, maxWidth:700, borderRadius: "16px", backgroundColor: bgDark }}>
+        {workspaces?.length === 0 && user ? (
+          <Box display="flex" alignContent="center" alignItems="center" justifyContent="center" flex="1"sx={{ backgroundColor: bgDarker }}>
+          <Paper sx={{ px: 6, py: 6, maxWidth:700, borderRadius: "16px", backgroundColor: bgDark }}>
             <WorkspaceToolBox
             title="Create your first workspace"
               closeMainDialog={(isClosed) => null}
@@ -340,7 +345,7 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
               }
               searchFilterValues={searchFilterValues}
               loading={loading}
-              user={props?.user}
+              user={user}
             />
           )
         ) 

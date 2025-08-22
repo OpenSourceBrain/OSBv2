@@ -1,5 +1,6 @@
 import React from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
@@ -22,26 +23,27 @@ import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
-import {TableCell} from "@mui/material";
+import { TableCell } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import CircularProgress from "@mui/material/CircularProgress";
-import {BitBucketIcon, GroupsIcon} from "../components/icons";
+import { BitBucketIcon, GroupsIcon } from "../components/icons";
 import Tooltip from "@mui/material/Tooltip";
 import Link from "@mui/material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkIcon from "@mui/icons-material/Link";
+import { RootState } from "../store/rootReducer";
 
 const styles = {
-  groupMembers: (theme) => ({
+  groupMembers: {
     flexDirection: "column",
     paddingBottom: "0px !important",
     backgroundColor: bgDarker,
-  }),
-  profileInformation: (theme) => ({
+  },
+  profileInformation: {
     flexDirection: "column",
     backgroundColor: bgDarker,
     borderRight: `1px solid ${lineColor}`,
-    paddingRight: theme.spacing(3),
+    paddingRight: 3,
     overflowY: 'auto',
     maxHeight: "100%",
 
@@ -57,7 +59,7 @@ const styles = {
     "& .MuiAvatar-root": {
       width: "150px",
       height: "150px",
-      marginBottom: theme.spacing(2),
+      marginBottom: 2,
     },
     "& .name": {
       color: textColor,
@@ -87,7 +89,7 @@ const styles = {
         marginLeft: 0,
       },
     },
-  }),
+  },
   dot: {
     height: "5px",
     width: "5px",
@@ -130,7 +132,8 @@ function a11yProps(index: number) {
   };
 };
 
-export const UserGroupsPage = (props: any) => {
+export const UserGroupsPage = () => {
+  const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const [tabValue, setTabValue] = React.useState(0);
   const [groupMembers, setGroupMembers] = React.useState(null);
@@ -207,7 +210,7 @@ export const UserGroupsPage = (props: any) => {
               </Typography>
 
               <Box display='flex' alignItems='center'>
-                <GroupsIcon sx={{fontSize: '0.9rem'}} />
+                <GroupsIcon sx={{ fontSize: '0.9rem' }} />
 
                 <Typography
                   className="username"
@@ -326,7 +329,7 @@ export const UserGroupsPage = (props: any) => {
           >
             <Box
               bgcolor={bgDarkest}
-              px={(theme) => theme.spacing(4)}
+              px={4}
               sx={{ borderBottom: `1px solid ${lineColor}` }}
             >
               <Tabs
@@ -363,7 +366,7 @@ export const UserGroupsPage = (props: any) => {
                             <TableCell component="th" scope="row">
                               <Stack spacing={2} direction="row" alignItems="center">
                                 <Stack>
-                                  <Avatar src={member?.avatar} sx={{width: '50px', height: '50px'}}>
+                                  <Avatar src={member?.avatar} sx={{ width: '50px', height: '50px' }}>
                                     {(member.firstName.length > 0 && member.firstName.charAt(0)) +
                                       (member.lastName.length > 0 && member.lastName.charAt(0))}
                                   </Avatar>
@@ -394,7 +397,7 @@ export const UserGroupsPage = (props: any) => {
                                   padding: '8px 12px'
                                 }}
                               >
-                                <Typography component="h5" variant="subtitle2" color='secondary' sx={{margin: 0}}>
+                                <Typography component="h5" variant="subtitle2" color='secondary' sx={{ margin: 0 }}>
                                   See Profile
                                 </Typography>
                               </Button>

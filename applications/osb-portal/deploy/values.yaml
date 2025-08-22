@@ -1,6 +1,6 @@
 harness:
   subdomain: www
-  secured: false
+  secured: true
   deployment:
     auto: true
     port: 80
@@ -39,3 +39,11 @@ harness:
       smoketest: true
       ignoreRequestErrors: false
       ignoreConsoleErrors: false
+  uri_role_mapping:
+    - roles: []
+      uri: /*
+      white-listed: true
+    - uri: /login
+      roles: []
+    - uri: /workspaces/open/*
+      roles: []

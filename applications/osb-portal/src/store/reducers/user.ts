@@ -14,9 +14,6 @@ export const userSlice = createSlice({
     userLogout(state, action: PayloadAction<UserInfo>) {
       return null;
     },
-    userRegister(state, action: PayloadAction<UserInfo>) {
-      return { ...action.payload };
-    },
   },
 });
 

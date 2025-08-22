@@ -1,5 +1,5 @@
 /* tslint:disable */
-/* eslint-disable */
+ 
 /**
  * OSB Workspaces manager API
  * Opensource Brain Platform - Reference Workspaces manager API

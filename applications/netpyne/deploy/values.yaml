@@ -1,5 +1,7 @@
 harness:
   subdomain: netpyne
+  secured: true
+  uri_role_mapping: []
   service:
     auto: false
     port: 80

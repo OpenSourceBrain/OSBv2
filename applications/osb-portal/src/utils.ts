@@ -1,6 +1,6 @@
 import { OSBApplication, OSBApplications as OSBAllApplications } from "./types/workspace";
 
-declare var window: any;
+declare let window: any;
 
 export function formatDate(date: Date) {
   return date.toLocaleDateString("en-UK", {

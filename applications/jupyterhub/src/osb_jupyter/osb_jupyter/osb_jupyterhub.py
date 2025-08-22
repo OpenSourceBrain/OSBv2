@@ -38,7 +38,7 @@ class CookieNotFound(Exception):
 
 def change_pod_manifest(self: KubeSpawner):
     """
-    Application Hook to change the manifest of the notebook image
+    Application Hook to change the manifest of the notebook pod
     before spawning it.
 
     Args:

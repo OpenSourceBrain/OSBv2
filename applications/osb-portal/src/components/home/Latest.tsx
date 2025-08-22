@@ -1,22 +1,20 @@
 import * as React from "react";
 
-import makeStyles from '@mui/styles/makeStyles';
 import { Typography, Box, Link } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   paper: {
-    padding: theme.spacing(2),
-    margin: theme.spacing(1),
+    p: 2,
+    m: 1,
     textAlign: "left",
   },
   partners: {
     fontSize: "0.9em",
     marginBottom: "0.5em",
   },
-}));
+};
 
 export const Latest = () => {
-  const classes = useStyles();
 
   return (
     <Box display="flex" flexDirection="column" className="verticalFill">
@@ -66,7 +64,7 @@ export const Latest = () => {
         alignItems="center"
         textAlign="right"
       >
-        <Typography className={classes.partners}>Supported by</Typography>
+        <Typography sx={styles.partners}>Supported by</Typography>
         <Link href="https://wellcome.org" target="_blank" underline="hover">
           <img
             alt="Wellcome"

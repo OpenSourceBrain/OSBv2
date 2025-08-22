@@ -34,8 +34,6 @@ import RepositoryActionsMenu from "../../components/repository/RepositoryActions
 import CardTitle from "../../components/styled/CardTitle";
 import Grid from "@mui/material/Grid";
 import CardFooter from "../../components/styled/CardFooter";
-import { useNavigate } from "react-router-dom";
-import { refreshRepositories } from "../../store/actions/repositories";
 
 interface RepositoriesProps {
   repositories: OSBRepository[];
@@ -45,7 +43,7 @@ interface RepositoriesProps {
   refreshRepositories: () => void;
 }
 
-export const StyledContextChip = styled(Chip)((theme) => ({
+export const StyledContextChip = styled(Chip)({
   background: chipBg,
   borderRadius: "16px",
   maxWidth: "5.5rem",
@@ -53,7 +51,7 @@ export const StyledContextChip = styled(Chip)((theme) => ({
   color: chipTextColor,
   fontSize: "0.857rem",
   padding: "0.143rem",
-}));
+});
 
 export const RepositoriesListCards = (props: RepositoriesProps) => {
   const { repositories, loading, handleRepositoryClick, refreshRepositories } =

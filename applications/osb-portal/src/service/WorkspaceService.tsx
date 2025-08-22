@@ -65,7 +65,7 @@ class WorkspaceService {
 
   async refreshResources(selectedWorkspaceId: any) {
     return this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(
-      {id: selectedWorkspaceId, inlineObject: {}}
+      { id: selectedWorkspaceId, inlineObject: {} }
     );
   }
 

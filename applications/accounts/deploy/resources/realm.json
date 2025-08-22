@@ -146,7 +146,75 @@
             {{- end }}
             }
         },
+          "clientScopeMappings": {
+                "account": [
+                {
+                    "client": "account-console",
+                    "roles": [
+                    "manage-account",
+                    "view-groups"
+                    ]
+                }
+                ]
+            },
         "clients": [
+             {
+            "id": "18893fbb-8252-4aaa-bc9b-60799ceb9932",
+            "clientId": "account-console",
+            "name": "${client_account-console}",
+            "rootUrl": "${authBaseUrl}",
+            "baseUrl": {{ printf "/realms/%s/account" .Values.namespace | quote }},
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "redirectUris": [
+                {{ printf "/realms/%s/account/*" .Values.namespace | quote }}
+            ],
+            "webOrigins": [],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": false,
+            "serviceAccountsEnabled": false,
+            "publicClient": true,
+            "frontchannelLogout": false,
+            "protocol": "openid-connect",
+            "attributes": {
+                "realm_client": "false",
+                "post.logout.redirect.uris": "+",
+                "pkce.code.challenge.method": "S256"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": false,
+            "nodeReRegistrationTimeout": 0,
+            "protocolMappers": [
+                {
+                "id": "9a68ec2d-943d-49cb-9fdd-cd821d606210",
+                "name": "audience resolve",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-audience-resolve-mapper",
+                "consentRequired": false,
+                "config": {}
+                }
+            ],
+            "defaultClientScopes": [
+                "service_account",
+                "web-origins",
+                "acr",
+                "address",
+                "administrator-scope",
+                "phone",
+                "profile",
+                "roles",
+                "microprofile-jwt",
+                "basic",
+                "email"
+            ],
+            "optionalClientScopes": []
+            },
             {
                 "id": "9a6a2560-c6be-4493-8bd5-3fdc4522d82b",
                 "clientId": {{ .Values.apps.accounts.client.id | quote }},
@@ -319,6 +387,17 @@
                             "claim.name": "groups",
                             "jsonType.label": "String"
                         }
+                    },
+                    {
+                    "id": "f99f57ac-a765-4aba-9b45-9425beec0a9f",
+                    "name": "sub",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-sub-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "introspection.token.claim": "true",
+                        "access.token.claim": "true"
+                    }
                     }
                 ]
             },

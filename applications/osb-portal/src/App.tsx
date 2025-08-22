@@ -4,7 +4,9 @@ import {
   Route,
   Routes,
   useNavigate,
+  Navigate,
 } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   ThemeProvider,
   Theme,
@@ -15,7 +17,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import OSBErrorBoundary from "./components/handlers/OSBErrorBoundary";
 import theme from "./theme";
 import SidebarPageLayout from "./layouts/SidebarLayout";
-import * as UserService from "./service/UserService";
+import { RootState } from "./store/rootReducer";
 
 import {
   Header,
@@ -30,12 +32,12 @@ import {
   GroupsPage
 } from "./components";
 import Box from "@mui/material/Box";
-import { UserInfo } from "./types/user";
 import SampleIframePage from "./pages/SampleIframePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { initApis } from "./service/UserService";
 
 declare module "@mui/styles/defaultTheme" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface DefaultTheme extends Theme {}
 }
 
@@ -52,32 +54,17 @@ const styles = {
   },
 };
 
-const UserActionThenRedirect = ({ userAction, user }) => {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    if (user) {
-      navigate("/");
-    } else {
-      userAction();
-    }
-  }, [navigate, user, userAction]);
 
-  return <></>;
-};
-
-interface AppProps {
-  error: boolean;
-  user: UserInfo;
-}
-
-export const App = (props: AppProps) => {
+export const App = () => {
+  const error = useSelector((state: RootState) => state.error);
+  initApis();
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <OSBErrorBoundary error={props.error} >
+        <OSBErrorBoundary error={error} >
           <CssBaseline />
           <AboutDialog />
-          {!props.error && (
+          {!error && (
             <Router>
               <Box sx={styles.mainContainer}>
                 <Box id="header">
@@ -175,21 +162,7 @@ export const App = (props: AppProps) => {
                   />
                   <Route
                     path="/login"
-                    element={
-                      <UserActionThenRedirect
-                        userAction={UserService.login}
-                        user={props.user}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/register"
-                    element={
-                      <UserActionThenRedirect
-                        userAction={UserService.register}
-                        user={props.user}
-                      />
-                    }
+                    element={<Navigate to="/" replace />}
                   />
                   <Route
                     path="/testapp"
