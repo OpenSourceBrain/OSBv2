@@ -19,10 +19,10 @@ export const StyledDropZoneBox = styled(Box)({
   color: bgInputs,
   border: `2px dashed ${bgInputs}`,
   borderRadius: 5,
-  padding: 4,
+  padding: "2rem",
   "& .MuiTypography-subtitle2": {
-    marginTop: 1,
-    marginBottom: 2,
+    marginTop: "0.75rem",
+    marginBottom: "1rem",
   },
   "& .MuiButton-outlined": {
     margin: "0 auto",
@@ -43,7 +43,7 @@ export const StyledImagePreviewSection = styled("section")(() => ({
   flex: 1,
 }));
 
-export const dropAreaStyle = (error: any) => ({
+const dropAreaStyle = (error: any) => ({
   flex: 1,
   display: "flex",
   alignItems: "center",

@@ -48,7 +48,7 @@ const StyledLabel = styled(Typography)({
   color: bgInputs,
   fontWeight: 700,
   fontSize: ".88rem",
-  marginBottom: 1,
+  marginBottom: "0.75rem",
   display: "inline-block",
 });
 
@@ -68,7 +68,7 @@ const StyledPopover = styled(Popover)({
       paddingBottom: 0,
       marginBottom: ".88rem",
       "& .MuiSvgIcon-root": {
-        marginLeft: 1,
+        marginLeft: "0.75rem",
         color: paragraph,
       },
       "& .MuiInputBase-root": {

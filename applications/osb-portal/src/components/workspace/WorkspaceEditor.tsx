@@ -24,7 +24,7 @@ import "react-markdown-editor-lite/lib/index.css";
 
 //style
 import styled from "@mui/system/styled";
-import { bgLight, radius, gutter, bgInputs, bgDarkest } from "../../theme";
+import { bgLight } from "../../theme";
 
 //types
 import { Workspace } from "../../types/workspace";
@@ -39,7 +39,7 @@ import { readFile } from "../../utils";
 
 
 
-const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
+const StyledAutocomplete = styled(Autocomplete)({
   "& .MuiChip-root": {
     backgroundColor: bgLight,
   },
@@ -51,7 +51,7 @@ const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
       border: "0 !important",
     },
   },
-}));
+});
 
 interface WorkspaceEditProps {
   workspace: Workspace;

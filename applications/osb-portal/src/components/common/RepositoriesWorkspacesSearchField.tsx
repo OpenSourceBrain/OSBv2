@@ -14,7 +14,7 @@ import { debounce } from "lodash";
 
 const StyledTextField = styled(TextField)({
   backgroundColor: bgRegular,
-  padding: 1,
+  padding: "0.75rem",
   marginRight: "0.286rem",
   "& .MuiSvgIcon-root": {
     width: "1.25rem",

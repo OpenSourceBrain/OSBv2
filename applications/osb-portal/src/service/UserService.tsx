@@ -64,6 +64,10 @@ function getCookie(name): string {
   return null;
 }
 
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${getBaseDomain()}`;
+}
+
 function parseJwt(token: string) {
   if (!token) {
     return null;
@@ -84,7 +88,45 @@ function parseJwt(token: string) {
 }
 
 export function getToken(): string {
-  return getCookie("kc-access");
+  const token = getCookie("kc-access");
+  
+  if (!token) {
+    return null;
+  }
+
+  try {
+    // Use the existing parseJwt function to decode the token
+    const decoded = parseJwt(token);
+    
+    if (!decoded || !decoded.exp) {
+      // If token doesn't have expiration field, delete cookies (only if not localhost)
+      if (!window.location.hostname.includes('localhost')) {
+        deleteCookie("kc-access");
+        deleteCookie("accessToken");
+      }
+      return null;
+    }
+
+    // Check if token is expired (exp is in seconds, Date.now() is in milliseconds)
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (decoded.exp < currentTime) {
+      // Token is expired, delete cookies (only if not localhost)
+      if (!window.location.hostname.includes('localhost')) {
+        deleteCookie("kc-access");
+        deleteCookie("accessToken");
+      }
+      return null;
+    }
+
+    return token;
+  } catch {
+    // If decoding fails, delete the cookies (only if not localhost)
+    if (!window.location.hostname.includes('localhost')) {
+      deleteCookie("kc-access");
+      deleteCookie("accessToken");
+    }
+    return null;
+  }
 }
 
 export function initUser(): UserInfo {
