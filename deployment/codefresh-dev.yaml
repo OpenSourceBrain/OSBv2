@@ -30,8 +30,8 @@ steps:
       clone_NetPyNE-UI_git_netpyne:
         title: Cloning NetPyNE-UI.git repository...
         type: git-clone
-        repo: https://github.com/MetaCell/NetPyNE-UI.git
-        revision: dev_netpyne_updates
+        repo: https://github.com/OpenSourceBrain/NetPyNE-UI.git
+        revision: osbv2_tests
         working_directory: applications/netpyne/dependencies/
         git: github
       clone_nwb-explorer_git_nwb-explorer:
