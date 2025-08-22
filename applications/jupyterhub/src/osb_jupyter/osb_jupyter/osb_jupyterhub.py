@@ -65,7 +65,7 @@ def change_pod_manifest(self: KubeSpawner):
     def workspace_volume_is_legacy(workspace_id):
         return int(workspace_id) < self.config['apps']['jupyterhub'].get('legacyworkspacemax', 0)
 
-    appname = self.image.split('/')[-1].split(':')[0]
+    appname = self.handler.request.host.split(str(self.config['domain']))[0][0:-1]
 
     try:
         workspace_id = get_from_cookie('workspaceId')
