@@ -68244,7 +68244,7 @@
                 {
                     "affiliation": "University of Auckland",
                     "email": "n.holford@auckland.ac.nz",
-                    "external": false,
+                    "external": true,
                     "name": "Nick Holford",
                     "orcid": "0000-0002-4031-2514"
                 }
@@ -147907,13 +147907,13 @@
             "Modeller": [
                 {
                     "affiliation": "University of Nottingham",
-                    "email": "pmxmb2@nottingham.ac.uk",
+                    "email": "michelle.baker@nottingham.ac.uk",
                     "external": false,
                     "name": "Michelle Baker"
                 },
                 {
                     "affiliation": "University of Nottingham",
-                    "email": "michelle.baker@nottingham.ac.uk",
+                    "email": "pmxmb2@nottingham.ac.uk",
                     "external": false,
                     "name": "Michelle Baker"
                 },
@@ -180103,16 +180103,16 @@
         "contributors": {
             "Modeller": [
                 {
-                    "affiliation": "Centro de Investigacion y de Estudios Avanzados del Instituto Politecnico Nacional (CINVESTAV-IPN), Unidad Monterrey, Apodaca, Nuevo Leon, Mexico.",
-                    "email": "ncperez@cinvestav.mx",
-                    "external": false,
-                    "name": "Norma Citlalcue Perez-Rosas"
-                },
-                {
                     "affiliation": "EMBL - European Bioinformatics Institute (EBI)",
                     "email": "biomodels-developers@ebi.ac.uk",
                     "external": false,
                     "name": "administrator"
+                },
+                {
+                    "affiliation": "Centro de Investigacion y de Estudios Avanzados del Instituto Politecnico Nacional (CINVESTAV-IPN), Unidad Monterrey, Apodaca, Nuevo Leon, Mexico.",
+                    "email": "ncperez@cinvestav.mx",
+                    "external": false,
+                    "name": "Norma Citlalcue Perez-Rosas"
                 }
             ]
         },
@@ -184333,16 +184333,16 @@
             ],
             "Modeller": [
                 {
-                    "affiliation": "EMBL - European Bioinformatics Institute (EBI)",
-                    "email": "biomodels-developers@ebi.ac.uk",
-                    "external": false,
-                    "name": "administrator"
-                },
-                {
                     "affiliation": "EMBL-EBI",
                     "email": "tvarusai@ebi.ac.uk",
                     "external": false,
                     "name": "Thawfeek Varusai"
+                },
+                {
+                    "affiliation": "EMBL - European Bioinformatics Institute (EBI)",
+                    "email": "biomodels-developers@ebi.ac.uk",
+                    "external": false,
+                    "name": "administrator"
                 }
             ]
         },
@@ -198440,18 +198440,18 @@
             ],
             "Modeller": [
                 {
-                    "affiliation": "European Molecular Biology Laboratory-European Bioinformatics Institute (EMBL-EBI), Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK.",
-                    "email": "sheriff@ebi.ac.uk",
-                    "external": false,
-                    "name": "Rahuman S Malik-Sheriff",
-                    "orcid": "0000-0003-0705-9809"
-                },
-                {
                     "affiliation": "Department of Biochemistry, University of Oxford, OX1 3QU Oxford, United Kingdom; stefan.heldt@bioch.ox.ac.uk bela.novak@bioch.ox.ac.uk.",
                     "email": "st.heldt@gmail.com",
                     "external": false,
                     "name": "Frank Stefan Heldt",
                     "orcid": "0000-0002-9276-5013"
+                },
+                {
+                    "affiliation": "European Molecular Biology Laboratory-European Bioinformatics Institute (EMBL-EBI), Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK.",
+                    "email": "sheriff@ebi.ac.uk",
+                    "external": false,
+                    "name": "Rahuman S Malik-Sheriff",
+                    "orcid": "0000-0003-0705-9809"
                 }
             ]
         },
@@ -257216,17 +257216,17 @@
                     "orcid": "0000-0003-3985-2879"
                 },
                 {
+                    "affiliation": "National Center for cell science",
+                    "email": "bhavnitas@nccs.res.in",
+                    "external": false,
+                    "name": "Bhavnita Soni"
+                },
+                {
                     "affiliation": "EMBL-EBI",
                     "email": "ktiwari@ebi.ac.uk",
                     "external": false,
                     "name": "Krishna Kumar Tiwari",
                     "orcid": "0000-0002-3699-0937"
-                },
-                {
-                    "affiliation": "National Center for cell science",
-                    "email": "bhavnitas@nccs.res.in",
-                    "external": false,
-                    "name": "Bhavnita Soni"
                 }
             ]
         },
@@ -306294,18 +306294,18 @@
             ],
             "Modeller": [
                 {
-                    "affiliation": "EBML-EBI",
-                    "email": "lenov@ebi.ac.uk",
-                    "external": false,
-                    "name": "Nicolas Le Nov\u00e8re",
-                    "orcid": "0000-0002-6309-7327"
-                },
-                {
                     "affiliation": "EMBL-EBI",
                     "email": "ktiwari@ebi.ac.uk",
                     "external": false,
                     "name": "Krishna Kumar Tiwari",
                     "orcid": "0000-0002-3699-0937"
+                },
+                {
+                    "affiliation": "EBML-EBI",
+                    "email": "lenov@ebi.ac.uk",
+                    "external": false,
+                    "name": "Nicolas Le Nov\u00e8re",
+                    "orcid": "0000-0002-6309-7327"
                 }
             ]
         },
@@ -315251,18 +315251,18 @@
             ],
             "Modeller": [
                 {
-                    "affiliation": "EMBL Heidelberg",
-                    "email": "jan.rombouts@embl.de",
-                    "external": false,
-                    "name": "Jan Rombouts",
-                    "orcid": "0000-0003-4135-0771"
-                },
-                {
                     "affiliation": "EMBL-EBI",
                     "email": "ktiwari@ebi.ac.uk",
                     "external": false,
                     "name": "Krishna Kumar Tiwari",
                     "orcid": "0000-0002-3699-0937"
+                },
+                {
+                    "affiliation": "EMBL Heidelberg",
+                    "email": "jan.rombouts@embl.de",
+                    "external": false,
+                    "name": "Jan Rombouts",
+                    "orcid": "0000-0003-4135-0771"
                 }
             ]
         },
