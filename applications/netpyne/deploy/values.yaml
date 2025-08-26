@@ -1,6 +1,6 @@
 harness:
   subdomain: netpyne
-  secured: true
+  secured: false
   uri_role_mapping: []
   service:
     auto: false
