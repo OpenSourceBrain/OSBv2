@@ -3,6 +3,6 @@ set -e
 
 # A script to run the NetPyNE container locally (build it first with ./build_local.sh)
 
-docker run --network host  -it --rm  --name mynp mynetpyneosb
+docker run --network host -v $PWD/shared:/opt/workspace/local:rw -it --rm  --name mynp mynetpyneosb
 
 
