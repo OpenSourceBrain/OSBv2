@@ -271,6 +271,8 @@ paths:
             security:
                 -
                     bearerAuth: []
+                -
+                    cookieAuth: []
             operationId: workspaces.controllers.workspace_controller.setthumbnail
             summary: Sets the thumbnail of the workspace.
         parameters:
@@ -302,6 +304,8 @@ paths:
             security:
                 -
                     bearerAuth: []
+                -
+                    cookieAuth: []
             operationId: workspaces.controllers.workspace_controller.addimage
             summary: Adds and image to the workspace.
         parameters:
@@ -324,6 +328,8 @@ paths:
             security:
                 -
                     bearerAuth: []
+                -
+                    cookieAuth: []
             operationId: delimage
             summary: Delete a Workspace Image from the workspace.
             x-openapi-router-controller: workspaces.controllers.workspace_controller
@@ -365,6 +371,8 @@ paths:
             security:
                 -
                     bearerAuth: []
+                -
+                    cookieAuth: []
             summary: Used to save a WorkspaceResource to the repository.
     '/workspaceresource/{id}':
         get:
@@ -382,6 +390,8 @@ paths:
             security:
                 -
                     bearerAuth: []
+                -
+                    cookieAuth: []
             summary: Used to retrieve a WorkspaceResource.
         put:
             requestBody:
@@ -1517,6 +1527,11 @@ components:
             bearerFormat: JWT
             type: http
             x-bearerInfoFunc: cloudharness.auth.AuthClient.decode_token
+        cookieAuth:
+            type: apiKey
+            name: kc-access
+            in: cookie
+            x-apikeyInfoFunc: cloudharness.auth.decode_token
 tags:
     -
         name: rest
