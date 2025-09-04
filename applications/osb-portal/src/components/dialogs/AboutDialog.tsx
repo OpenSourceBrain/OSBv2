@@ -18,8 +18,8 @@ const styles = {
 
 export const AboutContent = (props: any) => {
 
-  const logoMetaCell = "/images/metacell.png";
-  const logoWellcome = "/images/wellcome.png";
+  const logoMetaCell = "https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/refs/heads/master/applications/osb-portal/src/assets/images/metacell.png";
+  const logoWellcome = "https://raw.githubusercontent.com/OpenSourceBrain/OSBv2/refs/heads/master/applications/osb-portal/src/assets/images/wellcome.png";
 
   return (
     <Box sx={styles.paper}>
@@ -60,9 +60,16 @@ export const AboutContent = (props: any) => {
         <Typography variant="body1">
           OSBv2 is being developed by the{" "}
           <Link href="http://silverlab.org/" target="_blank" underline="hover">
-            Silver Lab at University College London
+            Silver Lab
           </Link>{" "}
-          in collaboration with{" "}
+          and the{" "}
+          <Link href="http://openneuroai.org/" target="_blank" underline="hover">
+            Gleeson Lab
+          </Link>{" "}
+           at {" "}
+          <Link href="http://ucl.ac.uk/" target="_blank" underline="hover">
+            University College London
+          </Link>, in collaboration with{" "}
           <Link href="https://metacell.us" target="_blank" underline="hover">
             MetaCell
           </Link>

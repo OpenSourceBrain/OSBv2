@@ -27,10 +27,13 @@ ENV NP_LFPYKIT_HEAD_FILE=/home/jovyan/nyhead.mat
 
 USER root
 
+### Some helpful aliases
+RUN echo -e '\n\nalias cd..="cd .." \nalias h=history \nalias ll="ls -alt" \n' >> ~/.bashrc
+
 RUN rm -rf /var/lib/apt/lists
 RUN apt-get update -qq &&\
     apt-get install python3-tk vim nano unzip git make libtool g++ -qq pkg-config libfreetype6-dev libpng-dev libopenmpi-dev -y
-RUN apt-get install openjdk-11-jre-headless -y
+RUN apt-get install openjdk-11-jre-headless htop ncdu -y
 # RUN conda install python=3.7 -y
 
 
