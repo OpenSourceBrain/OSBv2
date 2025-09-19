@@ -1024,6 +1024,28 @@
         "main_branch": "master",
         "name": "GHK & Nernst examples"
     },
+    "golgi-cell-network-gurnani-et-al": {
+        "Brain region": "Cerebellum",
+        "Brian support": "0",
+        "Category": "Project",
+        "Cell type": "Golgi cell",
+        "Curation level": "2",
+        "Endorsement": "1",
+        "Family": "Mammalian",
+        "GitHub repository": "https://github.com/sanjayankur31/GoC_Network_Sim_BehInputs.git",
+        "NEST support": "0",
+        "NeuroML v1.x support": "-1",
+        "NeuroML version": "v2.x",
+        "PSICS support": "0",
+        "PyNN support": "0",
+        "Specie": "Rodent",
+        "Spine classification": "Vertebrate",
+        "description": "Test",
+        "id": 298,
+        "identifier": "golgi-cell-network-gurnani-et-al",
+        "main_branch": "development",
+        "name": "Golgi cell network Gurnani et al"
+    },
     "golgicelldendgapjunctions": {
         "Brain region": "Cerebellum",
         "Brian support": "-1",

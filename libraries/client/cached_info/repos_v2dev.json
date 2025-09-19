@@ -3,14 +3,14 @@
         "content_types": {
             "experimental": 471,
             "experimental,modeling": 4,
-            "modeling": 3114,
+            "modeling": 3115,
             "modeling,experimental": 0
         },
         "repository_type": {
             "biomodels": 1095,
             "dandi": 453,
             "figshare": 1,
-            "github": 2040
+            "github": 2041
         },
         "user_repos": {
             "a": 19,
@@ -20,7 +20,7 @@
             "ca": 3,
             "gopal": 4,
             "nik": 1,
-            "osbadmin": 3552,
+            "osbadmin": 3553,
             "padraig6": 1,
             "pgleeson": 2,
             "simao-osb": 2
@@ -191254,6 +191254,47 @@
                 "username": "ankursinha"
             },
             "user_id": "f09f4521-4323-415d-b388-8160ae858d57"
+        },
+        "3664": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "development",
+            "id": 3664,
+            "name": "Golgi cell network Gurnani et al",
+            "repository_type": "github",
+            "summary": "Test",
+            "tags": [
+                {
+                    "id": 618,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 619,
+                    "tag": "Golgi cell"
+                },
+                {
+                    "id": 540,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 603,
+                    "tag": "Rodent"
+                }
+            ],
+            "timestamp_created": "2025-08-26 14:40:41.995523+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/sanjayankur31/GoC_Network_Sim_BehInputs",
+            "user": {
+                "email": "info@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "095e311e-336f-47d6-b4f6-16f6dd771a8d"
         }
     }
 }
