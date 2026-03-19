@@ -322,6 +322,34 @@
                     "offline_access",
                     "microprofile-jwt"
                 ]
+            },
+            {
+                "clientId": "idp-arc",
+                "name": "idp-arc",
+                "enabled": true,
+                "publicClient": true,
+                "standardFlowEnabled": true,
+                "implicitFlowEnabled": false,
+                "directAccessGrantsEnabled": false,
+                "serviceAccountsEnabled": false,
+                "protocol": "openid-connect",
+                "rootUrl": "{{ .Values.idpArc.rootUrl }}",
+                "redirectUris": [
+                    "{{ .Values.idpArc.rootUrl }}/*"
+                ],
+                "webOrigins": [
+                    "{{ .Values.idpArc.rootUrl }}"
+                ],
+                "attributes": {
+                    "pkce.code.challenge.method": "S256"
+                },
+                "fullScopeAllowed": true,
+                "defaultClientScopes": [
+                    "web-origins", "profile", "roles", "email"
+                ],
+                "optionalClientScopes": [
+                    "offline_access"
+                ]
             }
         ],
         "clientScopes": [

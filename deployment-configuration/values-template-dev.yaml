@@ -1,2 +1,12 @@
 backup:
   active: false
+
+idpArc:
+  rootUrl: "https://idp-arc.idp-arc.dev.metacell.us"
+
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://idp-arc.idp-arc.dev.metacell.us"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization, Content-Type"
