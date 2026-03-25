@@ -27,7 +27,7 @@ steps:
         revision: '${{CLOUDHARNESS_BRANCH}}'
         working_directory: .
         git: github
-      clone_NetPyNE-UI_git_1.1.0_netpyne:
+      clone_NetPyNEUI_git_1.1.0_netpyne:
         title: Cloning NetPyNE-UI.git repository...
         type: git-clone
         repo: https://github.com/MetaCell/NetPyNE-UI.git
