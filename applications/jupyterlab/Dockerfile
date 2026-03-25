@@ -77,14 +77,14 @@ USER root
 RUN conda install conda-forge::nest-simulator
 ENV NEST_HOME=/opt/conda
 
-USER jovyan
-
-#### Install Python packages
+#### Install Python packages (as root to avoid permission issues with conda-managed packages)
 
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip && \ 
     pip install backports.tarfile>=1.2 # temp fix for error: ImportError: cannot import name 'tarfile' from 'backports'
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip &&\ 
     pip install -r requirements.txt --upgrade --no-cache-dir
+
+USER jovyan
 
 #  Compile NEURON mod files for PyNN
 RUN cd /opt/conda/lib/python3.12/site-packages/pyNN/neuron/nmodl && nrnivmodl
