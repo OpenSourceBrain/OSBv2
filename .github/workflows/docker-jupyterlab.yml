@@ -1,4 +1,4 @@
-name: Docker Image Build Jupyterlab
+name: Docker Image Build JupyterLab
 
 on:
   push:
@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Build the Docker image
       run: |
         cd applications/jupyterlab
-        docker build -t myjlab -f Dockerfile --no-cache .
+        ./build_local.sh 
 
     - name: Info on Docker image sizes
       run: |
@@ -26,4 +26,5 @@ jobs:
 
     - name: Run the Docker container and list python installs
       run: |
-        docker run -t --rm --entrypoint /bin/bash myjlab  -c "pip3 list"
+        cd applications/jupyterlab
+        ./pip_omv_info.sh

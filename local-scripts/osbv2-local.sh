@@ -153,8 +153,8 @@ deploy () {
         harness_deployment
 
         echo "-> running skaffold"
-        $SKAFFOLD dev --cleanup=false || { notify_fail "Failed: skaffold" ; minikube stop; }
-        #$SKAFFOLD dev || notify_fail "Failed: skaffold"
+        $SKAFFOLD dev --cleanup=false || { notify_fail "Failed: skaffold" ; }
+        minkube status
     popd
 }
 
@@ -193,10 +193,18 @@ harness_deployment() {
         if [ "YES" == "$LIVE" ]
         then
             echo "-> harnessing live configuration deployment, and deploying"
+            set -x
+            set -v
             harness-deployment ../cloud-harness . -l -n ${OSB_NAMESPACE} -d osb.local -r gcr.io/metacellllc -e "local" -t "$LIVE_TAG" || notify_fail "Failed: harness-deployment (live)"
+            set +x
+            set +v
         else
             echo "-> harnessing development deployment"
+            set -x
+            set -v
             harness-deployment ../cloud-harness . -l  -n ${OSB_NAMESPACE} -d osb.local -dtls -e "local" ${DEPLOYMENT_APP:+-i $DEPLOYMENT_APP} || notify_fail "Failed: harness-deployment (dev)"
+            set +x
+            set +v
         fi
     popd
 }
@@ -242,10 +250,12 @@ deactivate_venv() {
 print_versions() {
     echo "** docker **"
     docker version
+    echo -e "\n** kubernetes **"
+    kubectl version
     echo -e "\n** minikube **"
     minikube version
     echo -e "\n** cloud harness **"
-    pushd "${CLOUD_HARNESS_DIR}" && git log --oneline | head -1 && popd
+    pushd "${CLOUD_HARNESS_DIR}" 2>&1 > /dev/null && git log --oneline | head -1 && popd 2>&1 > /dev/null
     echo -e "\n** helm **"
     helm version
     echo -e "\n** skaffold **"
