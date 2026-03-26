@@ -348,7 +348,7 @@
                     "web-origins", "profile", "roles", "email"
                 ],
                 "optionalClientScopes": [
-                    "offline_access"
+                    "offline_access", "{{ .Values.apps.accounts.admin.role }}-scope"
                 ]
             }
         ],
