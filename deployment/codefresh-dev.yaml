@@ -683,11 +683,18 @@ steps:
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
     - kubectl config set-context --current --namespace=${{NAMESPACE}}
-    - |
-      for dep in accounts accounts-api backoffice common notifications osb-portal volumemanager workflows workspaces workspaces-postgres-host; do
-        kubectl delete deployment "$dep" --ignore-not-found=true
-      done
-    - kubectl delete deployment hub proxy --ignore-not-found=true
+    - kubectl delete deployment accounts --ignore-not-found=true
+    - kubectl delete deployment accounts-api --ignore-not-found=true
+    - kubectl delete deployment backoffice --ignore-not-found=true
+    - kubectl delete deployment common --ignore-not-found=true
+    - kubectl delete deployment notifications --ignore-not-found=true
+    - kubectl delete deployment osb-portal --ignore-not-found=true
+    - kubectl delete deployment volumemanager --ignore-not-found=true
+    - kubectl delete deployment workflows --ignore-not-found=true
+    - kubectl delete deployment workspaces --ignore-not-found=true
+    - kubectl delete deployment workspaces-postgres-host --ignore-not-found=true
+    - kubectl delete deployment hub --ignore-not-found=true
+    - kubectl delete deployment proxy --ignore-not-found=true
     - kubectl delete statefulset user-placeholder --ignore-not-found=true
   deployment:
     stage: deploy
