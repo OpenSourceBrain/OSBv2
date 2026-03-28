@@ -676,26 +676,6 @@ steps:
         - pip install -r /usr/src/app/test-requirements.txt
         - pytest /usr/src/app/
         image: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
-  delete_immutable_resources:
-    stage: deploy
-    title: Delete Deployments with immutable selector changes
-    image: codefresh/kubectl
-    commands:
-    - kubectl config use-context ${{CLUSTER_NAME}}
-    - kubectl config set-context --current --namespace=${{NAMESPACE}}
-    - kubectl delete deployment accounts --ignore-not-found=true
-    - kubectl delete deployment accounts-api --ignore-not-found=true
-    - kubectl delete deployment backoffice --ignore-not-found=true
-    - kubectl delete deployment common --ignore-not-found=true
-    - kubectl delete deployment notifications --ignore-not-found=true
-    - kubectl delete deployment osb-portal --ignore-not-found=true
-    - kubectl delete deployment volumemanager --ignore-not-found=true
-    - kubectl delete deployment workflows --ignore-not-found=true
-    - kubectl delete deployment workspaces --ignore-not-found=true
-    - kubectl delete deployment workspaces-postgres-host --ignore-not-found=true
-    - kubectl delete deployment hub --ignore-not-found=true
-    - kubectl delete deployment proxy --ignore-not-found=true
-    - kubectl delete statefulset user-placeholder --ignore-not-found=true
   deployment:
     stage: deploy
     type: helm
