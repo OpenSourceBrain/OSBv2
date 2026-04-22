@@ -24,11 +24,10 @@ harness:
       mountpath: /usr/src/app/workspaces/static/workspaces
     resources:
       requests:
-        memory: 128Mi
+        memory: 512Mi
         cpu: 20m
       limits:
         memory: 512Mi
-        cpu: 1500m
   quotas:
     # sets the max number of workspaces per user
     quota-ws-max: 5

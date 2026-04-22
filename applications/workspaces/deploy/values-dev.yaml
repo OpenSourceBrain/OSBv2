@@ -9,10 +9,9 @@ harness:
   deployment:
     resources:
       requests:
-        memory: 128Mi
+        memory: 512Mi
         cpu: 10m
       limits:
         memory: 512Mi
-        cpu: 1500m
 
     
