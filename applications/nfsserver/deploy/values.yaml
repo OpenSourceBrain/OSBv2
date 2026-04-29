@@ -2,7 +2,7 @@
 harness:
   deployment:
     auto: false
-    image: gcr.io/metacellllc/osb/nfsserver:0.7.6
+    image: gcr.io/metacellllc/cloud-harness/nfsserver:featurech-261
 # nfs server pvc disk size (/exports)
 server:
   diskSize: 240Gi
