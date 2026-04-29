@@ -11,28 +11,28 @@ steps:
     title: Clone main repository
     type: git-clone
     stage: prepare
-    repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
-    revision: '${{CF_BRANCH}}'
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    revision: ${{CF_BRANCH}}
     git: github
   post_main_clone:
     title: Post main clone
     type: parallel
     stage: prepare
     steps:
+      clone_NetPyNE-UI_git_1.1.0_netpyne:
+        title: Cloning NetPyNE-UI.git repository...
+        type: git-clone
+        repo: https://github.com/MetaCell/NetPyNE-UI.git
+        revision: 1.1.0
+        working_directory: applications/netpyne/dependencies/
+        git: github
       clone_cloud_harness:
         title: Cloning cloud-harness repository...
         type: git-clone
         stage: prepare
         repo: https://github.com/MetaCell/cloud-harness.git
-        revision: '${{CLOUDHARNESS_BRANCH}}'
+        revision: ${{CLOUDHARNESS_BRANCH}}
         working_directory: .
-        git: github
-      clone_NetPyNEUI_git_110_netpyne:
-        title: Cloning NetPyNE-UI.git repository...
-        type: git-clone
-        repo: https://github.com/MetaCell/NetPyNE-UI.git
-        revision: osb2-dev
-        working_directory: applications/netpyne/dependencies/
         git: github
       clone_nwb-explorer_git_development_nwb-explorer:
         title: Cloning nwb-explorer.git repository...
@@ -48,8 +48,18 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
-    - harness-deployment cloud-harness . -d ${{DOMAIN}} -r ${{REGISTRY}} -rs '${{REGISTRY_SECRET}}'
-      -n ${{NAMESPACE}} --write-env -e dev --cache-url '${{IMAGE_CACHE_URL}}' -i osb-portal
+    - export HELM_NAME_ARG="$( [ -n "${{CHART_NAME}}" ] && printf -- "--name %s" "${{CHART_NAME}}"
+      )"
+    - export HELM_CHART_VERSION_ARG="$( [ -n "${{CHART_VERSION}}" ] && printf -- "--chart-version
+      %s" "${{CHART_VERSION}}" )"
+    - export HELM_APP_VERSION_ARG="$( APP_VERSION_RESOLVED="${{APP_VERSION}}"; [ -z
+      "$APP_VERSION_RESOLVED" ] && APP_VERSION_RESOLVED="${{DEPLOYMENT_TAG}}"; [ -n
+      "$APP_VERSION_RESOLVED" ] && printf -- "--app-version %s" "$APP_VERSION_RESOLVED"
+      )"
+    - export HELM_META_ARGS="$HELM_NAME_ARG $HELM_CHART_VERSION_ARG $HELM_APP_VERSION_ARG"
+    - harness-deployment cloud-harness . -d ${{DOMAIN}} -r ${{REGISTRY}} -rsn '${{REGISTRY_SECRET}}'
+      -n ${{NAMESPACE}} --write-env -e dev --cache-url '${{IMAGE_CACHE_URL}}' $HELM_META_ARGS
+      -i osb-portal
     - cat deployment/.env >> ${{CF_VOLUME_PATH}}/env_vars_to_export
     - cat ${{CF_VOLUME_PATH}}/env_vars_to_export
   prepare_deployment_view:
@@ -65,77 +75,55 @@ steps:
     type: parallel
     stage: build
     steps:
-      nwb-explorer:
+      accounts:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/nwb-explorer
-        title: Nwb explorer
-        working_directory: ./applications/nwb-explorer
+        image_name: osb/accounts
+        title: Accounts
+        working_directory: ./.overrides/applications/accounts
         tags:
-        - '${{NWB_EXPLORER_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{ACCOUNTS_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{NWB_EXPLORER_TAG_EXISTS}}', '{{NWB_EXPLORER_TAG_EXISTS}}')
+              buildDoesNotExist: includes('${{ACCOUNTS_TAG_EXISTS}}', '{{ACCOUNTS_TAG_EXISTS}}')
                 == true
-              forceNoCache: includes('${{NWB_EXPLORER_TAG_FORCE_BUILD}}', '{{NWB_EXPLORER_TAG_FORCE_BUILD}}')
+              forceNoCache: includes('${{ACCOUNTS_TAG_FORCE_BUILD}}', '{{ACCOUNTS_TAG_FORCE_BUILD}}')
                 == false
-      cloudharness-frontend-build:
-        type: build
-        stage: build
-        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/cloudharness-frontend-build
-        title: Cloudharness frontend build
-        working_directory: ./cloud-harness
-        tags:
-        - '${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}',
-                '{{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_FORCE_BUILD}}',
-                '{{CLOUDHARNESS_FRONTEND_BUILD_TAG_FORCE_BUILD}}') == false
-      workspaces-dandi-copy:
+      backoffice:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/workspaces-dandi-copy
-        title: Workspaces dandi copy
-        working_directory: ./applications/workspaces/tasks/dandi-copy
+        image_name: osb/backoffice
+        title: Backoffice
+        working_directory: ./applications/backoffice
         tags:
-        - '${{WORKSPACES_DANDI_COPY_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{BACKOFFICE_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{WORKSPACES_DANDI_COPY_TAG_EXISTS}}',
-                '{{WORKSPACES_DANDI_COPY_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{WORKSPACES_DANDI_COPY_TAG_FORCE_BUILD}}',
-                '{{WORKSPACES_DANDI_COPY_TAG_FORCE_BUILD}}') == false
+              buildDoesNotExist: includes('${{BACKOFFICE_TAG_EXISTS}}', '{{BACKOFFICE_TAG_EXISTS}}')
+                == true
+              forceNoCache: includes('${{BACKOFFICE_TAG_FORCE_BUILD}}', '{{BACKOFFICE_TAG_FORCE_BUILD}}')
+                == false
       cloudharness-base:
         type: build
         stage: build
         dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -143,9 +131,9 @@ steps:
         title: Cloudharness base
         working_directory: ./cloud-harness
         tags:
-        - '${{CLOUDHARNESS_BASE_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{CLOUDHARNESS_BASE_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -153,34 +141,33 @@ steps:
                 == true
               forceNoCache: includes('${{CLOUDHARNESS_BASE_TAG_FORCE_BUILD}}', '{{CLOUDHARNESS_BASE_TAG_FORCE_BUILD}}')
                 == false
-      test-e2e:
+      cloudharness-frontend-build:
         type: build
         stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/test-e2e
-        title: Test e2e
-        working_directory: ./cloud-harness/test/test-e2e
+        image_name: osb/cloudharness-frontend-build
+        title: Cloudharness frontend build
+        working_directory: ./cloud-harness
         tags:
-        - '${{TEST_E2E_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        - latest
+        - ${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{TEST_E2E_TAG_EXISTS}}', '{{TEST_E2E_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{TEST_E2E_TAG_FORCE_BUILD}}', '{{TEST_E2E_TAG_FORCE_BUILD}}')
-                == false
+              buildDoesNotExist: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}',
+                '{{CLOUDHARNESS_FRONTEND_BUILD_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{CLOUDHARNESS_FRONTEND_BUILD_TAG_FORCE_BUILD}}',
+                '{{CLOUDHARNESS_FRONTEND_BUILD_TAG_FORCE_BUILD}}') == false
       jupyterlab:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -188,9 +175,9 @@ steps:
         title: Jupyterlab
         working_directory: ./applications/jupyterlab
         tags:
-        - '${{JUPYTERLAB_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{JUPYTERLAB_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -202,7 +189,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -210,9 +197,9 @@ steps:
         title: Netpyne
         working_directory: ./applications/netpyne
         tags:
-        - '${{NETPYNE_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{NETPYNE_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -220,33 +207,33 @@ steps:
                 == true
               forceNoCache: includes('${{NETPYNE_TAG_FORCE_BUILD}}', '{{NETPYNE_TAG_FORCE_BUILD}}')
                 == false
-      accounts:
+      nwb-explorer:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/accounts
-        title: Accounts
-        working_directory: ./.overrides/applications/accounts
+        image_name: osb/nwb-explorer
+        title: Nwb explorer
+        working_directory: ./applications/nwb-explorer
         tags:
-        - '${{ACCOUNTS_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{NWB_EXPLORER_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{ACCOUNTS_TAG_EXISTS}}', '{{ACCOUNTS_TAG_EXISTS}}')
+              buildDoesNotExist: includes('${{NWB_EXPLORER_TAG_EXISTS}}', '{{NWB_EXPLORER_TAG_EXISTS}}')
                 == true
-              forceNoCache: includes('${{ACCOUNTS_TAG_FORCE_BUILD}}', '{{ACCOUNTS_TAG_FORCE_BUILD}}')
+              forceNoCache: includes('${{NWB_EXPLORER_TAG_FORCE_BUILD}}', '{{NWB_EXPLORER_TAG_FORCE_BUILD}}')
                 == false
       osb-portal:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -254,9 +241,9 @@ steps:
         title: Osb portal
         working_directory: ./applications/osb-portal
         tags:
-        - '${{OSB_PORTAL_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{OSB_PORTAL_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -264,84 +251,130 @@ steps:
                 == true
               forceNoCache: includes('${{OSB_PORTAL_TAG_FORCE_BUILD}}', '{{OSB_PORTAL_TAG_FORCE_BUILD}}')
                 == false
-      backoffice:
+      test-e2e:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/backoffice
-        title: Backoffice
-        working_directory: ./applications/backoffice
+        image_name: osb/test-e2e
+        title: Test e2e
+        working_directory: ./cloud-harness/test/test-e2e
         tags:
-        - '${{BACKOFFICE_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{TEST_E2E_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        - latest
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{BACKOFFICE_TAG_EXISTS}}', '{{BACKOFFICE_TAG_EXISTS}}')
+              buildDoesNotExist: includes('${{TEST_E2E_TAG_EXISTS}}', '{{TEST_E2E_TAG_EXISTS}}')
                 == true
-              forceNoCache: includes('${{BACKOFFICE_TAG_FORCE_BUILD}}', '{{BACKOFFICE_TAG_FORCE_BUILD}}')
+              forceNoCache: includes('${{TEST_E2E_TAG_FORCE_BUILD}}', '{{TEST_E2E_TAG_FORCE_BUILD}}')
                 == false
+      workspaces-dandi-copy:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        image_name: osb/workspaces-dandi-copy
+        title: Workspaces dandi copy
+        working_directory: ./applications/workspaces/tasks/dandi-copy
+        tags:
+        - ${{WORKSPACES_DANDI_COPY_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_DANDI_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_DANDI_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_DANDI_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_DANDI_COPY_TAG_FORCE_BUILD}}') == false
     title: Build parallel step 1
   build_application_images_1:
     type: parallel
     stage: build
     steps:
-      workspaces-biomodels-copy:
+      cloudharness-flask:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/workspaces-biomodels-copy
-        title: Workspaces biomodels copy
-        working_directory: ./applications/workspaces/tasks/biomodels-copy
+        image_name: osb/cloudharness-flask
+        title: Cloudharness flask
+        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
         tags:
-        - '${{WORKSPACES_BIOMODELS_COPY_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{CLOUDHARNESS_FLASK_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{WORKSPACES_BIOMODELS_COPY_TAG_EXISTS}}',
-                '{{WORKSPACES_BIOMODELS_COPY_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{WORKSPACES_BIOMODELS_COPY_TAG_FORCE_BUILD}}',
-                '{{WORKSPACES_BIOMODELS_COPY_TAG_FORCE_BUILD}}') == false
-      workspaces-scan-workspace:
+              buildDoesNotExist: includes('${{CLOUDHARNESS_FLASK_TAG_EXISTS}}', '{{CLOUDHARNESS_FLASK_TAG_EXISTS}}')
+                == true
+              forceNoCache: includes('${{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}', '{{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}')
+                == false
+      jupyterhub:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/workspaces-scan-workspace
-        title: Workspaces scan workspace
-        working_directory: ./applications/workspaces/tasks/scan-workspace
+        image_name: osb/jupyterhub
+        title: Jupyterhub
+        working_directory: ./.overrides/applications/jupyterhub
         tags:
-        - '${{WORKSPACES_SCAN_WORKSPACE_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{JUPYTERHUB_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}',
-                '{{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_FORCE_BUILD}}',
-                '{{WORKSPACES_SCAN_WORKSPACE_TAG_FORCE_BUILD}}') == false
+              buildDoesNotExist: includes('${{JUPYTERHUB_TAG_EXISTS}}', '{{JUPYTERHUB_TAG_EXISTS}}')
+                == true
+              forceNoCache: includes('${{JUPYTERHUB_TAG_FORCE_BUILD}}', '{{JUPYTERHUB_TAG_FORCE_BUILD}}')
+                == false
+      notifications:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
+        image_name: osb/notifications
+        title: Notifications
+        working_directory: ./.overrides/applications/notifications/server
+        tags:
+        - ${{NOTIFICATIONS_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{NOTIFICATIONS_TAG_EXISTS}}', '{{NOTIFICATIONS_TAG_EXISTS}}')
+                == true
+              forceNoCache: includes('${{NOTIFICATIONS_TAG_FORCE_BUILD}}', '{{NOTIFICATIONS_TAG_FORCE_BUILD}}')
+                == false
       test-api:
         type: build
         stage: build
         dockerfile: test/test-api/Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -350,9 +383,9 @@ steps:
         title: Test api
         working_directory: ./cloud-harness
         tags:
-        - '${{TEST_API_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{TEST_API_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         - latest
         when:
           condition:
@@ -365,7 +398,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -374,9 +407,9 @@ steps:
         title: Workflows extract download
         working_directory: ./cloud-harness/applications/workflows/tasks/extract-download
         tags:
-        - '${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -384,126 +417,11 @@ steps:
                 '{{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_EXISTS}}') == true
               forceNoCache: includes('${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_FORCE_BUILD}}',
                 '{{WORKFLOWS_EXTRACT_DOWNLOAD_TAG_FORCE_BUILD}}') == false
-      workspaces-github-copy:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/workspaces-github-copy
-        title: Workspaces github copy
-        working_directory: ./applications/workspaces/tasks/github-copy
-        tags:
-        - '${{WORKSPACES_GITHUB_COPY_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}',
-                '{{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{WORKSPACES_GITHUB_COPY_TAG_FORCE_BUILD}}',
-                '{{WORKSPACES_GITHUB_COPY_TAG_FORCE_BUILD}}') == false
-      notifications:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/notifications
-        title: Notifications
-        working_directory: ./.overrides/applications/notifications/server
-        tags:
-        - '${{NOTIFICATIONS_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{NOTIFICATIONS_TAG_EXISTS}}', '{{NOTIFICATIONS_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{NOTIFICATIONS_TAG_FORCE_BUILD}}', '{{NOTIFICATIONS_TAG_FORCE_BUILD}}')
-                == false
-      jupyterhub:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/jupyterhub
-        title: Jupyterhub
-        working_directory: ./.overrides/applications/jupyterhub
-        tags:
-        - '${{JUPYTERHUB_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{JUPYTERHUB_TAG_EXISTS}}', '{{JUPYTERHUB_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{JUPYTERHUB_TAG_FORCE_BUILD}}', '{{JUPYTERHUB_TAG_FORCE_BUILD}}')
-                == false
-      workspaces-figshare-copy:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/workspaces-figshare-copy
-        title: Workspaces figshare copy
-        working_directory: ./applications/workspaces/tasks/figshare-copy
-        tags:
-        - '${{WORKSPACES_FIGSHARE_COPY_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}',
-                '{{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_FORCE_BUILD}}',
-                '{{WORKSPACES_FIGSHARE_COPY_TAG_FORCE_BUILD}}') == false
-      workflows-send-result-event:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/workflows-send-result-event
-        title: Workflows send result event
-        working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
-        tags:
-        - '${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}',
-                '{{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}') == true
-              forceNoCache: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_FORCE_BUILD}}',
-                '{{WORKFLOWS_SEND_RESULT_EVENT_TAG_FORCE_BUILD}}') == false
       workflows-notify-queue:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -512,9 +430,9 @@ steps:
         title: Workflows notify queue
         working_directory: ./cloud-harness/applications/workflows/tasks/notify-queue
         tags:
-        - '${{WORKFLOWS_NOTIFY_QUEUE_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKFLOWS_NOTIFY_QUEUE_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -522,62 +440,131 @@ steps:
                 '{{WORKFLOWS_NOTIFY_QUEUE_TAG_EXISTS}}') == true
               forceNoCache: includes('${{WORKFLOWS_NOTIFY_QUEUE_TAG_FORCE_BUILD}}',
                 '{{WORKFLOWS_NOTIFY_QUEUE_TAG_FORCE_BUILD}}') == false
-      cloudharness-flask:
+      workflows-send-result-event:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
         - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
-        image_name: osb/cloudharness-flask
-        title: Cloudharness flask
-        working_directory: ./cloud-harness/infrastructure/common-images/cloudharness-flask
+        image_name: osb/workflows-send-result-event
+        title: Workflows send result event
+        working_directory: ./cloud-harness/applications/workflows/tasks/send-result-event
         tags:
-        - '${{CLOUDHARNESS_FLASK_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{CLOUDHARNESS_FLASK_TAG_EXISTS}}', '{{CLOUDHARNESS_FLASK_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}', '{{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}')
-                == false
+              buildDoesNotExist: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}',
+                '{{WORKFLOWS_SEND_RESULT_EVENT_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKFLOWS_SEND_RESULT_EVENT_TAG_FORCE_BUILD}}',
+                '{{WORKFLOWS_SEND_RESULT_EVENT_TAG_FORCE_BUILD}}') == false
+      workspaces-biomodels-copy:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
+        image_name: osb/workspaces-biomodels-copy
+        title: Workspaces biomodels copy
+        working_directory: ./applications/workspaces/tasks/biomodels-copy
+        tags:
+        - ${{WORKSPACES_BIOMODELS_COPY_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_BIOMODELS_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_BIOMODELS_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_BIOMODELS_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_BIOMODELS_COPY_TAG_FORCE_BUILD}}') == false
+      workspaces-figshare-copy:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
+        image_name: osb/workspaces-figshare-copy
+        title: Workspaces figshare copy
+        working_directory: ./applications/workspaces/tasks/figshare-copy
+        tags:
+        - ${{WORKSPACES_FIGSHARE_COPY_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_FIGSHARE_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_FIGSHARE_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_FIGSHARE_COPY_TAG_FORCE_BUILD}}') == false
+      workspaces-github-copy:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
+        image_name: osb/workspaces-github-copy
+        title: Workspaces github copy
+        working_directory: ./applications/workspaces/tasks/github-copy
+        tags:
+        - ${{WORKSPACES_GITHUB_COPY_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}',
+                '{{WORKSPACES_GITHUB_COPY_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_GITHUB_COPY_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_GITHUB_COPY_TAG_FORCE_BUILD}}') == false
+      workspaces-scan-workspace:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        - CLOUDHARNESS_BASE=${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
+        image_name: osb/workspaces-scan-workspace
+        title: Workspaces scan workspace
+        working_directory: ./applications/workspaces/tasks/scan-workspace
+        tags:
+        - ${{WORKSPACES_SCAN_WORKSPACE_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}',
+                '{{WORKSPACES_SCAN_WORKSPACE_TAG_EXISTS}}') == true
+              forceNoCache: includes('${{WORKSPACES_SCAN_WORKSPACE_TAG_FORCE_BUILD}}',
+                '{{WORKSPACES_SCAN_WORKSPACE_TAG_FORCE_BUILD}}') == false
     title: Build parallel step 2
   build_application_images_2:
     type: parallel
     stage: build
     steps:
-      workspaces:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
-        image_name: osb/workspaces
-        title: Workspaces
-        working_directory: ./applications/workspaces/server
-        tags:
-        - '${{WORKSPACES_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{WORKSPACES_TAG_EXISTS}}', '{{WORKSPACES_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{WORKSPACES_TAG_FORCE_BUILD}}', '{{WORKSPACES_TAG_FORCE_BUILD}}')
-                == false
       accounts-api:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -586,9 +573,9 @@ steps:
         title: Accounts api
         working_directory: ./applications/accounts-api
         tags:
-        - '${{ACCOUNTS_API_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{ACCOUNTS_API_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -596,11 +583,34 @@ steps:
                 == true
               forceNoCache: includes('${{ACCOUNTS_API_TAG_FORCE_BUILD}}', '{{ACCOUNTS_API_TAG_FORCE_BUILD}}')
                 == false
+      common:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
+        image_name: osb/common
+        title: Common
+        working_directory: ./.overrides/applications/common/server
+        tags:
+        - ${{COMMON_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{COMMON_TAG_EXISTS}}', '{{COMMON_TAG_EXISTS}}')
+                == true
+              forceNoCache: includes('${{COMMON_TAG_FORCE_BUILD}}', '{{COMMON_TAG_FORCE_BUILD}}')
+                == false
       volumemanager:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -609,9 +619,9 @@ steps:
         title: Volumemanager
         working_directory: ./cloud-harness/applications/volumemanager/server
         tags:
-        - '${{VOLUMEMANAGER_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{VOLUMEMANAGER_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -623,7 +633,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -632,9 +642,9 @@ steps:
         title: Workflows
         working_directory: ./cloud-harness/applications/workflows/server
         tags:
-        - '${{WORKFLOWS_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKFLOWS_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -642,28 +652,28 @@ steps:
                 == true
               forceNoCache: includes('${{WORKFLOWS_TAG_FORCE_BUILD}}', '{{WORKFLOWS_TAG_FORCE_BUILD}}')
                 == false
-      common:
+      workspaces:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
         - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
-        image_name: osb/common
-        title: Common
-        working_directory: ./.overrides/applications/common/server
+        image_name: osb/workspaces
+        title: Workspaces
+        working_directory: ./applications/workspaces/server
         tags:
-        - '${{COMMON_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKSPACES_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{COMMON_TAG_EXISTS}}', '{{COMMON_TAG_EXISTS}}')
+              buildDoesNotExist: includes('${{WORKSPACES_TAG_EXISTS}}', '{{WORKSPACES_TAG_EXISTS}}')
                 == true
-              forceNoCache: includes('${{COMMON_TAG_FORCE_BUILD}}', '{{COMMON_TAG_FORCE_BUILD}}')
+              forceNoCache: includes('${{WORKSPACES_TAG_FORCE_BUILD}}', '{{WORKSPACES_TAG_FORCE_BUILD}}')
                 == false
     title: Build parallel step 3
   tests_unit:
@@ -675,7 +685,7 @@ steps:
         commands:
         - pip install -r /usr/src/app/test-requirements.txt
         - pytest /usr/src/app/
-        image: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
+        image: ${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}
   deployment:
     stage: deploy
     type: helm
@@ -684,18 +694,18 @@ steps:
     arguments:
       helm_version: 3.6.2
       chart_name: deployment/helm
-      release_name: '${{NAMESPACE}}'
-      kube_context: '${{CLUSTER_NAME}}'
-      namespace: '${{NAMESPACE}}'
-      chart_version: '${{CF_BUILD_ID}}'
+      release_name: ${{NAMESPACE}}
+      kube_context: ${{CLUSTER_NAME}}
+      namespace: ${{NAMESPACE}}
+      chart_version: ${{CF_BUILD_ID}}
       cmd_ps: --wait --timeout 600s --create-namespace
       custom_value_files:
       - ./deployment/helm/values.yaml
       custom_values:
-      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
-      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
-      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
-      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
+      - 'apps_notifications_harness_secrets_email-user="${{EMAIL-USER}}"'
+      - 'apps_notifications_harness_secrets_email-password="${{EMAIL-PASSWORD}}"'
+      - 'apps_workspaces_harness_secrets_github-user="${{GITHUB-USER}}"'
+      - 'apps_workspaces_harness_secrets_github-token="${{GITHUB-TOKEN}}"'
     image: codefresh/cfstep-helm:3.6.2
     environment:
     - CHART_REF=./deployment/helm
@@ -714,20 +724,20 @@ steps:
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
     - kubectl config set-context --current --namespace=${{NAMESPACE}}
-    - kubectl rollout status deployment/accounts-api
-    - kubectl rollout status deployment/notifications
-    - kubectl rollout status deployment/netpyne-gk
-    - kubectl rollout status deployment/accounts
-    - kubectl rollout status deployment/workspaces
     - kubectl rollout status deployment/argo-gk
-    - kubectl rollout status deployment/backoffice
-    - kubectl rollout status deployment/admin-gk
-    - kubectl rollout status deployment/volumemanager
     - kubectl rollout status deployment/osb-portal
     - kubectl rollout status deployment/www-gk
+    - kubectl rollout status deployment/backoffice
+    - kubectl rollout status deployment/admin-gk
     - kubectl rollout status deployment/events-gk
     - kubectl rollout status deployment/workflows
+    - kubectl rollout status deployment/netpyne-gk
+    - kubectl rollout status deployment/accounts
+    - kubectl rollout status deployment/volumemanager
     - kubectl rollout status deployment/common
+    - kubectl rollout status deployment/notifications
+    - kubectl rollout status deployment/workspaces
+    - kubectl rollout status deployment/accounts-api
     - sleep 60
     when:
       condition:
@@ -737,7 +747,7 @@ steps:
     stage: qa
     title: Api tests
     working_directory: /home/test
-    image: '${{REGISTRY}}/osb/test-api:${{TEST_API_TAG}}'
+    image: ${{REGISTRY}}/osb/test-api:${{TEST_API_TAG}}
     fail_fast: false
     commands:
     - echo $APP_NAME
@@ -745,8 +755,8 @@ steps:
       common_api_test:
         title: common api test
         volumes:
-        - '${{CF_REPO_NAME}}/.overrides/applications/common:/home/test'
-        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        - ${{CF_REPO_NAME}}/.overrides/applications/common:/home/test
+        - ${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml
         environment:
         - APP_URL=https://common.${{DOMAIN}}/api
         commands:
@@ -755,8 +765,8 @@ steps:
       workflows_api_test:
         title: workflows api test
         volumes:
-        - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
-        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        - ${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test
+        - ${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml
         environment:
         - APP_URL=https://workflows.${{DOMAIN}}/api
         commands:
@@ -770,7 +780,7 @@ steps:
     stage: qa
     title: End to end tests
     working_directory: /home/test
-    image: '${{REGISTRY}}/osb/test-e2e:${{TEST_E2E_TAG}}'
+    image: ${{REGISTRY}}/osb/test-e2e:${{TEST_E2E_TAG}}
     fail_fast: false
     commands:
     - npx puppeteer browsers install chrome
@@ -779,13 +789,13 @@ steps:
       jupyterhub_e2e_test:
         title: jupyterhub e2e test
         volumes:
-        - '${{CF_REPO_NAME}}/.overrides/applications/jupyterhub/test/e2e:/home/test/__tests__/jupyterhub'
+        - ${{CF_REPO_NAME}}/.overrides/applications/jupyterhub/test/e2e:/home/test/__tests__/jupyterhub
         environment:
         - APP_URL=https://hub.${{DOMAIN}}
       osb-portal_e2e_test:
         title: osb-portal e2e test
         volumes:
-        - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
+        - ${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal
         environment:
         - APP_URL=https://www.${{DOMAIN}}
     when:
@@ -804,222 +814,344 @@ steps:
     type: parallel
     stage: publish
     steps:
-      publish_cloudharness-base:
-        stage: publish
-        type: push
-        title: Cloudharness base
-        candidate: '${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-frontend-build:
-        stage: publish
-        type: push
-        title: Cloudharness frontend build
-        candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-flask:
-        stage: publish
-        type: push
-        title: Cloudharness flask
-        candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_notifications:
-        stage: publish
-        type: push
-        title: Notifications
-        candidate: '${{REGISTRY}}/osb/notifications:${{NOTIFICATIONS_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_accounts:
         stage: publish
         type: push
         title: Accounts
-        candidate: '${{REGISTRY}}/osb/accounts:${{ACCOUNTS_TAG}}'
+        candidate: ${{REGISTRY}}/osb/accounts:${{ACCOUNTS_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_volumemanager:
-        stage: publish
-        type: push
-        title: Volumemanager
-        candidate: '${{REGISTRY}}/osb/volumemanager:${{VOLUMEMANAGER_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterhub:
-        stage: publish
-        type: push
-        title: Jupyterhub
-        candidate: '${{REGISTRY}}/osb/jupyterhub:${{JUPYTERHUB_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_common:
-        stage: publish
-        type: push
-        title: Common
-        candidate: '${{REGISTRY}}/osb/common:${{COMMON_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-send-result-event:
-        stage: publish
-        type: push
-        title: Workflows send result event
-        candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-download:
-        stage: publish
-        type: push
-        title: Workflows extract download
-        candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-notify-queue:
-        stage: publish
-        type: push
-        title: Workflows notify queue
-        candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{WORKFLOWS_NOTIFY_QUEUE_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows:
-        stage: publish
-        type: push
-        title: Workflows
-        candidate: '${{REGISTRY}}/osb/workflows:${{WORKFLOWS_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-biomodels-copy:
-        stage: publish
-        type: push
-        title: Workspaces biomodels copy
-        candidate: '${{REGISTRY}}/osb/workspaces-biomodels-copy:${{WORKSPACES_BIOMODELS_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-figshare-copy:
-        stage: publish
-        type: push
-        title: Workspaces figshare copy
-        candidate: '${{REGISTRY}}/osb/workspaces-figshare-copy:${{WORKSPACES_FIGSHARE_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-scan-workspace:
-        stage: publish
-        type: push
-        title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{WORKSPACES_SCAN_WORKSPACE_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-github-copy:
-        stage: publish
-        type: push
-        title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{WORKSPACES_GITHUB_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-dandi-copy:
-        stage: publish
-        type: push
-        title: Workspaces dandi copy
-        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{WORKSPACES_DANDI_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces:
-        stage: publish
-        type: push
-        title: Workspaces
-        candidate: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
-        stage: publish
-        type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{NETPYNE_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{ACCOUNTS_PUBLISH_SKIP}}', '{{ACCOUNTS_PUBLISH_SKIP}}')
+                == true
       publish_accounts-api:
         stage: publish
         type: push
         title: Accounts api
-        candidate: '${{REGISTRY}}/osb/accounts-api:${{ACCOUNTS_API_TAG}}'
+        candidate: ${{REGISTRY}}/osb/accounts-api:${{ACCOUNTS_API_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_osb-portal:
-        stage: publish
-        type: push
-        title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{OSB_PORTAL_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{ACCOUNTS_API_PUBLISH_SKIP}}', '{{ACCOUNTS_API_PUBLISH_SKIP}}')
+                == true
       publish_backoffice:
         stage: publish
         type: push
         title: Backoffice
-        candidate: '${{REGISTRY}}/osb/backoffice:${{BACKOFFICE_TAG}}'
+        candidate: ${{REGISTRY}}/osb/backoffice:${{BACKOFFICE_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{BACKOFFICE_PUBLISH_SKIP}}', '{{BACKOFFICE_PUBLISH_SKIP}}')
+                == true
+      publish_cloudharness-base:
         stage: publish
         type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{NWB_EXPLORER_TAG}}'
+        title: Cloudharness base
+        candidate: ${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{CLOUDHARNESS_BASE_PUBLISH_SKIP}}', '{{CLOUDHARNESS_BASE_PUBLISH_SKIP}}')
+                == true
+      publish_cloudharness-flask:
+        stage: publish
+        type: push
+        title: Cloudharness flask
+        candidate: ${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{CLOUDHARNESS_FLASK_PUBLISH_SKIP}}', '{{CLOUDHARNESS_FLASK_PUBLISH_SKIP}}')
+                == true
+      publish_cloudharness-frontend-build:
+        stage: publish
+        type: push
+        title: Cloudharness frontend build
+        candidate: 
+          ${{REGISTRY}}/osb/cloudharness-frontend-build:${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{CLOUDHARNESS_FRONTEND_BUILD_PUBLISH_SKIP}}',
+                '{{CLOUDHARNESS_FRONTEND_BUILD_PUBLISH_SKIP}}') == true
+      publish_common:
+        stage: publish
+        type: push
+        title: Common
+        candidate: ${{REGISTRY}}/osb/common:${{COMMON_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{COMMON_PUBLISH_SKIP}}', '{{COMMON_PUBLISH_SKIP}}')
+                == true
+      publish_jupyterhub:
+        stage: publish
+        type: push
+        title: Jupyterhub
+        candidate: ${{REGISTRY}}/osb/jupyterhub:${{JUPYTERHUB_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{JUPYTERHUB_PUBLISH_SKIP}}', '{{JUPYTERHUB_PUBLISH_SKIP}}')
+                == true
       publish_jupyterlab:
         stage: publish
         type: push
         title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{JUPYTERLAB_TAG}}'
+        candidate: ${{REGISTRY}}/osb/jupyterlab:${{JUPYTERLAB_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{JUPYTERLAB_PUBLISH_SKIP}}', '{{JUPYTERLAB_PUBLISH_SKIP}}')
+                == true
+      publish_netpyne:
+        stage: publish
+        type: push
+        title: Netpyne
+        candidate: ${{REGISTRY}}/osb/netpyne:${{NETPYNE_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NETPYNE_PUBLISH_SKIP}}', '{{NETPYNE_PUBLISH_SKIP}}')
+                == true
+      publish_notifications:
+        stage: publish
+        type: push
+        title: Notifications
+        candidate: ${{REGISTRY}}/osb/notifications:${{NOTIFICATIONS_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NOTIFICATIONS_PUBLISH_SKIP}}', '{{NOTIFICATIONS_PUBLISH_SKIP}}')
+                == true
+      publish_nwb-explorer:
+        stage: publish
+        type: push
+        title: Nwb explorer
+        candidate: ${{REGISTRY}}/osb/nwb-explorer:${{NWB_EXPLORER_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NWB_EXPLORER_PUBLISH_SKIP}}', '{{NWB_EXPLORER_PUBLISH_SKIP}}')
+                == true
+      publish_osb-portal:
+        stage: publish
+        type: push
+        title: Osb portal
+        candidate: ${{REGISTRY}}/osb/osb-portal:${{OSB_PORTAL_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{OSB_PORTAL_PUBLISH_SKIP}}', '{{OSB_PORTAL_PUBLISH_SKIP}}')
+                == true
+      publish_volumemanager:
+        stage: publish
+        type: push
+        title: Volumemanager
+        candidate: ${{REGISTRY}}/osb/volumemanager:${{VOLUMEMANAGER_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{VOLUMEMANAGER_PUBLISH_SKIP}}', '{{VOLUMEMANAGER_PUBLISH_SKIP}}')
+                == true
+      publish_workflows:
+        stage: publish
+        type: push
+        title: Workflows
+        candidate: ${{REGISTRY}}/osb/workflows:${{WORKFLOWS_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_PUBLISH_SKIP}}', '{{WORKFLOWS_PUBLISH_SKIP}}')
+                == true
+      publish_workflows-extract-download:
+        stage: publish
+        type: push
+        title: Workflows extract download
+        candidate: ${{REGISTRY}}/osb/workflows-extract-download:${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_EXTRACT_DOWNLOAD_PUBLISH_SKIP}}',
+                '{{WORKFLOWS_EXTRACT_DOWNLOAD_PUBLISH_SKIP}}') == true
+      publish_workflows-notify-queue:
+        stage: publish
+        type: push
+        title: Workflows notify queue
+        candidate: ${{REGISTRY}}/osb/workflows-notify-queue:${{WORKFLOWS_NOTIFY_QUEUE_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_NOTIFY_QUEUE_PUBLISH_SKIP}}', '{{WORKFLOWS_NOTIFY_QUEUE_PUBLISH_SKIP}}')
+                == true
+      publish_workflows-send-result-event:
+        stage: publish
+        type: push
+        title: Workflows send result event
+        candidate: 
+          ${{REGISTRY}}/osb/workflows-send-result-event:${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_SEND_RESULT_EVENT_PUBLISH_SKIP}}',
+                '{{WORKFLOWS_SEND_RESULT_EVENT_PUBLISH_SKIP}}') == true
+      publish_workspaces:
+        stage: publish
+        type: push
+        title: Workspaces
+        candidate: ${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_PUBLISH_SKIP}}', '{{WORKSPACES_PUBLISH_SKIP}}')
+                == true
+      publish_workspaces-biomodels-copy:
+        stage: publish
+        type: push
+        title: Workspaces biomodels copy
+        candidate: ${{REGISTRY}}/osb/workspaces-biomodels-copy:${{WORKSPACES_BIOMODELS_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_BIOMODELS_COPY_PUBLISH_SKIP}}',
+                '{{WORKSPACES_BIOMODELS_COPY_PUBLISH_SKIP}}') == true
+      publish_workspaces-dandi-copy:
+        stage: publish
+        type: push
+        title: Workspaces dandi copy
+        candidate: ${{REGISTRY}}/osb/workspaces-dandi-copy:${{WORKSPACES_DANDI_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_DANDI_COPY_PUBLISH_SKIP}}', '{{WORKSPACES_DANDI_COPY_PUBLISH_SKIP}}')
+                == true
+      publish_workspaces-figshare-copy:
+        stage: publish
+        type: push
+        title: Workspaces figshare copy
+        candidate: ${{REGISTRY}}/osb/workspaces-figshare-copy:${{WORKSPACES_FIGSHARE_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_FIGSHARE_COPY_PUBLISH_SKIP}}',
+                '{{WORKSPACES_FIGSHARE_COPY_PUBLISH_SKIP}}') == true
+      publish_workspaces-github-copy:
+        stage: publish
+        type: push
+        title: Workspaces github copy
+        candidate: ${{REGISTRY}}/osb/workspaces-github-copy:${{WORKSPACES_GITHUB_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_GITHUB_COPY_PUBLISH_SKIP}}', '{{WORKSPACES_GITHUB_COPY_PUBLISH_SKIP}}')
+                == true
+      publish_workspaces-scan-workspace:
+        stage: publish
+        type: push
+        title: Workspaces scan workspace
+        candidate: ${{REGISTRY}}/osb/workspaces-scan-workspace:${{WORKSPACES_SCAN_WORKSPACE_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_SCAN_WORKSPACE_PUBLISH_SKIP}}',
+                '{{WORKSPACES_SCAN_WORKSPACE_PUBLISH_SKIP}}') == true
     when:
       condition:
         all:
