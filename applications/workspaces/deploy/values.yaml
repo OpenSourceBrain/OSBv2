@@ -27,7 +27,9 @@ harness:
         memory: 512Mi
         cpu: 20m
       limits:
-        memory: 512Mi
+        # Raised 512Mi -> 1Gi: the app's steady-state RSS sits at ~490Mi, so a
+        # 512Mi limit caused recurring OOMKills (exit 137) under load.
+        memory: 1Gi
   quotas:
     # sets the max number of workspaces per user
     quota-ws-max: 5

@@ -12,6 +12,6 @@ harness:
         memory: 512Mi
         cpu: 10m
       limits:
-        memory: 512Mi
+        memory: 750Mi
 
     
