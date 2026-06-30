@@ -63,6 +63,37 @@ class WorkspaceService {
     return ws;
   }
 
+  /**
+   * Ensure the workspace volume exists and is ready (bound) before the app
+   * iframe is spawned. The backend blocks up to 5s waiting for the PVC; if it
+   * is still not ready it answers 503, which we surface via `volumeNotReady` so
+   * the caller can show a temporary, retryable error instead of spawning the
+   * iframe. Only a 503 is retryable — other statuses are reported as-is so the
+   * caller can tell a transient storage hiccup from a real auth/not-found error.
+   *
+   * NOTE: this uses fetch rather than `this.workspacesApi` because the generated
+   * client does not yet expose the `/workspace/{id}/open` operation; switch to
+   * the generated client once the apiclient is regenerated from the OpenAPI
+   * spec. The bearer token is taken from the same `accessToken` the client uses.
+   */
+  async ensureWorkspaceReady(id: number): Promise<void> {
+    const response = await fetch(`${workspacesApiUri}/workspace/${id}/open`, {
+      headers: this.accessToken
+        ? { Authorization: `Bearer ${this.accessToken}` }
+        : {},
+    });
+    if (response.ok) {
+      return;
+    }
+    const error: any = new Error(
+      `Could not open workspace ${id} (status ${response.status})`
+    );
+    error.status = response.status;
+    // 503 => volume not ready yet: a transient, retryable server error.
+    error.volumeNotReady = response.status === 503;
+    throw error;
+  }
+
   async refreshResources(selectedWorkspaceId: any) {
     return this.workspacesApi.workspacesControllersWorkspaceControllerImportResources(
       { id: selectedWorkspaceId, inlineObject: {} }

@@ -250,6 +250,31 @@ paths:
                     type: integer
                 in: path
                 required: true
+    '/workspace/{id}/open':
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    description: The workspace volume is ready to be mounted.
+                '404':
+                    description: The workspace was not found.
+                '503':
+                    description: The workspace volume is not ready yet. Temporary error, the client should retry.
+            security:
+                - {}
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.workspace_controller.open
+            summary: Ensure the workspace volume exists and is ready before opening the workspace.
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
     '/workspace/{id}/thumbnail':
         post:
             requestBody:
