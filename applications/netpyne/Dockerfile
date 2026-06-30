@@ -72,7 +72,7 @@ USER root
 RUN jupyter nbextension install --py --symlink --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix jupyter_geppetto
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
-RUN jupyter server extension enable --py --sys-prefix jupyter_geppetto
+RUN jupyter serverextension enable --py --sys-prefix jupyter_geppetto
 
 ARG BUILD_ARGS=""
 ARG WORKSPACE_VERSION=master
