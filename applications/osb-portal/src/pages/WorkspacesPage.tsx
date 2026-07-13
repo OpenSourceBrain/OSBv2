@@ -64,7 +64,9 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
     props.user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
   const [listView, setListView] = React.useState<string>("grid");
-  const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
+  const isPublic =
+    tabValue === WorkspaceSelection.PUBLIC ||
+    tabValue === WorkspaceSelection.FEATURED;  
   const isFeatured = tabValue === WorkspaceSelection.FEATURED;
 
   const getTabValue = () => {
@@ -91,12 +93,26 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
       ...searchFilterValues,
       text: newTextFilter,
     });
+    
+  // 1. Create the persistent debounced function using useMemo
+  const debouncedSearch = React.useMemo(
+    () =>
+      debounce((text: string) => {
+        getWorkspacesList({
+          searchFilterValues: { ...searchFilterValues, text },
+        });
+      }, 500),
+    [getWorkspacesList, searchFilterValues]
+  );
 
-    debounce(() => {
-      getWorkspacesList({ searchFilterValues: { ...searchFilterValues, text: newTextFilter } });
-    }, 500);
+  // 2. Fix the syntax and call the debounce function inside the filter handler
+  const debouncedHandleSearchFilter = (newTextFilter: string) => {
+    setSearchFilterValues({
+      ...searchFilterValues,
+      text: newTextFilter,
+    });
+    debouncedSearch(newTextFilter);
   };
-
 
 
 
