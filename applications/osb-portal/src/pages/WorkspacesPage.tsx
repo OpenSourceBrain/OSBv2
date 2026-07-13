@@ -64,7 +64,9 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
     props.user ? WorkspaceSelection.USER : WorkspaceSelection.FEATURED
   );
   const [listView, setListView] = React.useState<string>("grid");
-  const isPublic = tabValue === WorkspaceSelection.PUBLIC || true;
+  const isPublic =
+    tabValue === WorkspaceSelection.PUBLIC ||
+    tabValue === WorkspaceSelection.FEATURED;  
   const isFeatured = tabValue === WorkspaceSelection.FEATURED;
 
   const getTabValue = () => {
@@ -85,20 +87,24 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
     navigate(`/workspaces/${workspaceId}`);
   };
 
+  // Create a stable debounced function to update search filters
+  const debouncedHandleSearchFilter = React.useMemo(
+    () =>
+      debounce((newTextFilter: string) => {
+        setSearchFilterValues((current) => ({
+          ...current,
+          text: newTextFilter,
+        }));
+      }, 500),
+    []
+  );
 
-  const debouncedHandleSearchFilter = (newTextFilter: string) => {
-    setSearchFilterValues({
-      ...searchFilterValues,
-      text: newTextFilter,
-    });
-
-    debounce(() => {
-      getWorkspacesList({ searchFilterValues: { ...searchFilterValues, text: newTextFilter } });
-    }, 500);
-  };
-
-
-
+  // Clean up the debounce timer on unmount
+  React.useEffect(() => {
+    return () => {
+      debouncedHandleSearchFilter.cancel();
+    };
+  }, [debouncedHandleSearchFilter]);
 
   const setWorkspacesValues = (workspacesDetails) => {
     setWorkspaces(workspacesDetails.items);
