@@ -87,34 +87,24 @@ export const WorkspacesPage = (props: WorkspacesPageProps) => {
     navigate(`/workspaces/${workspaceId}`);
   };
 
-
-  const debouncedHandleSearchFilter = (newTextFilter: string) => {
-    setSearchFilterValues({
-      ...searchFilterValues,
-      text: newTextFilter,
-    });
-    
-  // 1. Create the persistent debounced function using useMemo
-  const debouncedSearch = React.useMemo(
+  // Create a stable debounced function to update search filters
+  const debouncedHandleSearchFilter = React.useMemo(
     () =>
-      debounce((text: string) => {
-        getWorkspacesList({
-          searchFilterValues: { ...searchFilterValues, text },
-        });
+      debounce((newTextFilter: string) => {
+        setSearchFilterValues((current) => ({
+          ...current,
+          text: newTextFilter,
+        }));
       }, 500),
-    [getWorkspacesList, searchFilterValues]
+    []
   );
 
-  // 2. Fix the syntax and call the debounce function inside the filter handler
-  const debouncedHandleSearchFilter = (newTextFilter: string) => {
-    setSearchFilterValues({
-      ...searchFilterValues,
-      text: newTextFilter,
-    });
-    debouncedSearch(newTextFilter);
-  };
-
-
+  // Clean up the debounce timer on unmount
+  React.useEffect(() => {
+    return () => {
+      debouncedHandleSearchFilter.cancel();
+    };
+  }, [debouncedHandleSearchFilter]);
 
   const setWorkspacesValues = (workspacesDetails) => {
     setWorkspaces(workspacesDetails.items);
