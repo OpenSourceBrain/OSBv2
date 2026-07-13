@@ -12,3 +12,5 @@ skaffold.yaml
 /libraries/client/github.auth
 skaffold-overrides.yaml
 /libraries/client/netpyne-web/
+
+.DS_Store
