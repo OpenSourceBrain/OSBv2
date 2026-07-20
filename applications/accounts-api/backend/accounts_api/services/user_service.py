@@ -61,7 +61,15 @@ def get_users(query: str) -> typing.List[User]:
 
 
 def map_user(kc_user) -> User:
-    user =  User.from_dict(kc_user if isinstance(kc_user, dict) else kc_user._raw_dict)
+    if isinstance(kc_user, dict):
+        raw = kc_user
+    else:
+        try:
+            raw = kc_user._raw_dict
+        except AttributeError:
+            # cloudharness model base changed the raw dict attribute name
+            raw = kc_user.var__raw_dict
+    user = User.from_dict(raw)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
 
