@@ -2,15 +2,15 @@
     "content_summary": {
         "content_types": {
             "experimental": 459,
-            "experimental,modeling": 6,
-            "modeling": 3182,
+            "experimental,modeling": 7,
+            "modeling": 3184,
             "modeling,experimental": 4
         },
         "repository_type": {
             "biomodels": 1094,
             "dandi": 451,
             "figshare": 1,
-            "github": 2105
+            "github": 2108
         },
         "user_repos": {
             "0000-0002-4040-3141": 2,
@@ -18,6 +18,7 @@
             "ankursinha": 2,
             "cengique": 1,
             "cngzlsh0211@gmail.com": 1,
+            "codingflower20": 1,
             "darshanmandge": 1,
             "erik-ski": 1,
             "filippo": 1,
@@ -26,6 +27,7 @@
             "kishon": 1,
             "kusanele": 1,
             "latavia.thompson@yale.edu": 1,
+            "leonardoguge": 1,
             "matteo@metacell.us": 1,
             "osbadmin": 3564,
             "padraig": 45,
@@ -34,7 +36,7 @@
             "re5275": 4,
             "saeedtaghavi": 1,
             "salvadordura@gmail.com": 5,
-            "sietse09": 2,
+            "sietse09": 3,
             "urdapile@gmail.com": 1,
             "vbragin": 7,
             "warddpeeters": 1,
@@ -193143,6 +193145,84 @@
                 "username": "osbadmin"
             },
             "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3661": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "ValeryMatias",
+            "id": 3661,
+            "name": "PAC 2",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2026-01-26 17:39:19.530390+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/andres-aracena/Theta-gamma-CA1",
+            "user": {
+                "email": "leonardo.guge@ufpe.br",
+                "first_name": "Leonardo",
+                "id": "a9c8932d-953f-4d6a-a6e0-81dc6ba7aed9",
+                "last_name": "Oliveira Gug\u00e9",
+                "username": "leonardoguge"
+            },
+            "user_id": "a9c8932d-953f-4d6a-a6e0-81dc6ba7aed9"
+        },
+        "3662": {
+            "auto_sync": true,
+            "content_types": "experimental,modeling",
+            "content_types_list": [
+                "experimental",
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3662,
+            "name": "neuromorphic",
+            "repository_type": "github",
+            "summary": "ZnO RRAM Memristor:\nDescription: This repository contains a NeuroML/LEMS implementation of a frequency-locked ZnO RRAM switch. It models the transition between HRS and LRS by incorporating ion drift and Maxwell-Wagner interfacial diffusion effects.\nKey Features: Supports I-V double sweep validation, frequency response emulation (125 kHz resonance), and pulse programming for spike-based neural networks.",
+            "tags": [
+                {
+                    "id": 6,
+                    "tag": "Neuromatch"
+                }
+            ],
+            "timestamp_created": "2026-04-28 08:33:57.084435+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/Codingflower20/neuromorphic",
+            "user": {
+                "email": "ojaswinii2005@gmail.com",
+                "first_name": "Ojaswini",
+                "id": "c3da91ac-60f5-4abb-9a01-f86c6f661cfa",
+                "last_name": "Sharma",
+                "username": "codingflower20"
+            },
+            "user_id": "c3da91ac-60f5-4abb-9a01-f86c6f661cfa"
+        },
+        "3663": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "main",
+            "id": 3663,
+            "name": "bep last version",
+            "repository_type": "github",
+            "summary": "",
+            "tags": [],
+            "timestamp_created": "2026-06-26 13:59:22.536816+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/Sietse20/BEP-morphologies",
+            "user": {
+                "email": "s.reissenweber12@gmail.com",
+                "first_name": "Sietse",
+                "id": "00711324-c645-4a23-8f4b-6c54bde46a2f",
+                "last_name": "Reissenweber",
+                "username": "sietse09"
+            },
+            "user_id": "00711324-c645-4a23-8f4b-6c54bde46a2f"
         }
     }
 }
