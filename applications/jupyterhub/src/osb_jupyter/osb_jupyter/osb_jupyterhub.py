@@ -153,9 +153,9 @@ def change_pod_manifest(self: KubeSpawner):
             cpu_conf = {}
             mem_conf = {}
 
-        jh_conf = get_configuration('jupyterhub')
-        cpu_conf = {**jh_conf.singleuser["cpu"].to_dict(), **cpu_conf}
-        mem_conf = {**jh_conf.singleuser["memory"].to_dict(), **mem_conf}
+        jh_conf = get_configuration('jupyterhub').to_dict()
+        cpu_conf = {**jh_conf.get("singleuser", {}).get("cpu", {}), **cpu_conf}
+        mem_conf = {**jh_conf.get("singleuser", {}).get("memory", {}), **mem_conf}
         set_key_value(self, key="cpu_guarantee", value=cpu_conf["guarantee"])
         set_key_value(self, key="cpu_limit", value=cpu_conf["limit"])
         set_key_value(self, key="mem_guarantee",
