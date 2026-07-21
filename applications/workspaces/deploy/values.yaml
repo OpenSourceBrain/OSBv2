@@ -60,7 +60,6 @@ harness:
       - cloudharness-flask
     soft:
       - events
-      - common
       - workflows
       - notifications
       - nfsserver

@@ -583,52 +583,6 @@ steps:
                 == true
               forceNoCache: includes('${{ACCOUNTS_API_TAG_FORCE_BUILD}}', '{{ACCOUNTS_API_TAG_FORCE_BUILD}}')
                 == false
-      common:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: ${{CODEFRESH_REGISTRY}}
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
-        image_name: osb/common
-        title: Common
-        working_directory: ./.overrides/applications/common/server
-        tags:
-        - ${{COMMON_TAG}}
-        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
-        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{COMMON_TAG_EXISTS}}', '{{COMMON_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{COMMON_TAG_FORCE_BUILD}}', '{{COMMON_TAG_FORCE_BUILD}}')
-                == false
-      volumemanager:
-        type: build
-        stage: build
-        dockerfile: Dockerfile
-        registry: ${{CODEFRESH_REGISTRY}}
-        buildkit: true
-        build_arguments:
-        - NOCACHE=${{CF_BUILD_ID}}
-        - CLOUDHARNESS_FLASK=${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
-        image_name: osb/volumemanager
-        title: Volumemanager
-        working_directory: ./cloud-harness/applications/volumemanager/server
-        tags:
-        - ${{VOLUMEMANAGER_TAG}}
-        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
-        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
-        when:
-          condition:
-            any:
-              buildDoesNotExist: includes('${{VOLUMEMANAGER_TAG_EXISTS}}', '{{VOLUMEMANAGER_TAG_EXISTS}}')
-                == true
-              forceNoCache: includes('${{VOLUMEMANAGER_TAG_FORCE_BUILD}}', '{{VOLUMEMANAGER_TAG_FORCE_BUILD}}')
-                == false
       workflows:
         type: build
         stage: build
@@ -724,18 +678,15 @@ steps:
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
     - kubectl config set-context --current --namespace=${{NAMESPACE}}
-    - kubectl rollout status deployment/common
-    - kubectl rollout status deployment/netpyne-gk
+    - kubectl rollout status deployment/accounts
     - kubectl rollout status deployment/notifications
+    - kubectl rollout status deployment/accounts-api
+    - kubectl rollout status deployment/workflows
+    - kubectl rollout status deployment/osb-portal
+    - kubectl rollout status deployment/www-gk
     - kubectl rollout status deployment/backoffice
     - kubectl rollout status deployment/admin-gk
     - kubectl rollout status deployment/workspaces
-    - kubectl rollout status deployment/osb-portal
-    - kubectl rollout status deployment/www-gk
-    - kubectl rollout status deployment/accounts
-    - kubectl rollout status deployment/accounts-api
-    - kubectl rollout status deployment/workflows
-    - kubectl rollout status deployment/volumemanager
     - kubectl rollout status deployment/events-gk
     - kubectl rollout status deployment/argo-gk
     - sleep 60
@@ -752,16 +703,6 @@ steps:
     commands:
     - echo $APP_NAME
     scale:
-      common_api_test:
-        title: common api test
-        volumes:
-        - ${{CF_REPO_NAME}}/.overrides/applications/common:/home/test
-        - ${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml
-        environment:
-        - APP_URL=https://common.${{DOMAIN}}/api
-        commands:
-        - st --pre-run cloudharness_test.apitest_init run api/openapi.yaml --base-url
-          https://common.${{DOMAIN}}/api -c all
       workflows_api_test:
         title: workflows api test
         volumes:
@@ -899,20 +840,6 @@ steps:
             all:
               skipPublish: includes('${{CLOUDHARNESS_FRONTEND_BUILD_PUBLISH_SKIP}}',
                 '{{CLOUDHARNESS_FRONTEND_BUILD_PUBLISH_SKIP}}') == true
-      publish_common:
-        stage: publish
-        type: push
-        title: Common
-        candidate: ${{REGISTRY}}/osb/common:${{COMMON_TAG}}
-        tags:
-        - ${{DEPLOYMENT_PUBLISH_TAG}}
-        - latest
-        registry: ${{REGISTRY_PUBLISH_URL}}
-        when:
-          condition:
-            all:
-              skipPublish: includes('${{COMMON_PUBLISH_SKIP}}', '{{COMMON_PUBLISH_SKIP}}')
-                == true
       publish_jupyterhub:
         stage: publish
         type: push
@@ -996,20 +923,6 @@ steps:
           condition:
             all:
               skipPublish: includes('${{OSB_PORTAL_PUBLISH_SKIP}}', '{{OSB_PORTAL_PUBLISH_SKIP}}')
-                == true
-      publish_volumemanager:
-        stage: publish
-        type: push
-        title: Volumemanager
-        candidate: ${{REGISTRY}}/osb/volumemanager:${{VOLUMEMANAGER_TAG}}
-        tags:
-        - ${{DEPLOYMENT_PUBLISH_TAG}}
-        - latest
-        registry: ${{REGISTRY_PUBLISH_URL}}
-        when:
-          condition:
-            all:
-              skipPublish: includes('${{VOLUMEMANAGER_PUBLISH_SKIP}}', '{{VOLUMEMANAGER_PUBLISH_SKIP}}')
                 == true
       publish_workflows:
         stage: publish

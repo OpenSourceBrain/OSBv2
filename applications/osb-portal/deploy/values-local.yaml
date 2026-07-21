@@ -4,8 +4,6 @@ harness:
   #   soft:
   #     - accounts
   #     - accounts-api
-  #     - common
-  #     - volumemanager
   #     - workspaces
   #     - workflows
   #     - jupyterhub

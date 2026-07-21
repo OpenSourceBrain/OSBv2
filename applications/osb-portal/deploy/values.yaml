@@ -14,7 +14,6 @@ harness:
   sentry: true
   use_services:
     - name: workspaces
-    - name: common
     - name: accounts-api
   dependencies:
     build:
@@ -23,8 +22,6 @@ harness:
     soft:
       - accounts
       - accounts-api
-      - common
-      - volumemanager
       - workspaces
       - workflows
       - netpyne
