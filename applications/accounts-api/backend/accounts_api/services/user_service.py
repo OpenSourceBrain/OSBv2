@@ -94,7 +94,11 @@ def update_user(userid, user: User):
     client = AuthClient()
 
     try:
-        current_user = client.get_current_user()
+        try:
+            current_user = client.get_current_user()
+        except UserNotFound:
+            # No (valid) authenticated user in the request context
+            raise UserNotAuthorized
         if current_user['id'] != user.id:
             raise UserNotAuthorized
         admin_client = client.get_admin_client()
