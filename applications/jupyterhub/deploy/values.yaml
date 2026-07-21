@@ -35,11 +35,11 @@ hub:
   # CPU-throttled/OOM-killed under load, which surfaced downstream as 503s.
   resources:
     requests:
-      cpu: 0.1
-      memory: 1Gi
+      cpu: 0.01
+      memory: 256Mi
     limits:
       cpu: 4
-      memory: 1Gi
+      memory: 256Mi
   config:
     Authenticator:
       # Users granted JupyterHub admin rights.
