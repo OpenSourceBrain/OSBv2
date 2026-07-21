@@ -64,11 +64,9 @@ def map_user(kc_user) -> User:
     if isinstance(kc_user, dict):
         raw = kc_user
     else:
-        try:
-            raw = kc_user._raw_dict
-        except AttributeError:
-            # cloudharness model base changed the raw dict attribute name
-            raw = kc_user.var__raw_dict
+        # cloudharness models no longer expose the raw keycloak payload as
+        # `_raw_dict`; to_dict() serializes the model back to a plain dict.
+        raw = kc_user.to_dict()
     user = User.from_dict(raw)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
