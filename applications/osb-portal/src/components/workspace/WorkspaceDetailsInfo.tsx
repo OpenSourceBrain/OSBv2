@@ -16,6 +16,7 @@ import Link from "@mui/material/Link";
 import PersonIcon from "@mui/icons-material/Person";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import CollectionsBookmarkOutlinedIcon from "@mui/icons-material/CollectionsBookmarkOutlined";
+import { getUserName } from "../../utils";
 
 const WorkspaceInfoSection = styled(Stack)(({ theme }) => ({
   "& .MuiTypography-subtitle1": {
@@ -46,9 +47,7 @@ const WorkspaceDetailsInfo = (props: any) => {
           </Typography>
           <Stack direction="row" spacing={1}>
             <PersonIcon fontSize="small" />
-            {props.workspace.user &&
-            (props.workspace.user.firstName ||
-              props.workspace.user.lastName) ? (
+            {props.workspace.user && getUserName(props.workspace.user) ? (
               <Typography
                 component="span"
                 variant="subtitle2"
@@ -60,10 +59,7 @@ const WorkspaceDetailsInfo = (props: any) => {
                     href={`/user/${props.workspace.user.username}`}
                     underline="hover"
                   >
-                    {" " +
-                      props.workspace.user.firstName +
-                      " " +
-                      props.workspace.user.lastName}
+                    {" " + getUserName(props.workspace.user)}
                   </Link>
                 }
               </Typography>

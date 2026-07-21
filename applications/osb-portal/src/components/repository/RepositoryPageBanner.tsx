@@ -19,6 +19,7 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 
 //types
 import { OSBRepository } from "../../apiclient/workspaces";
+import { getUserName } from "../../utils";
 
 const RepoPageBannerBox = styled(Box)({
   display: "flex",
@@ -60,11 +61,7 @@ const RepositoryPageBanner = ({
               <Typography variant="body2">
                 By{" "}
                 <Link href={`/user/${repository?.user?.id}`} underline="hover">
-                  <span>
-                    {repository?.user?.firstName +
-                      " " +
-                      repository?.user?.lastName}
-                  </span>
+                  <span>{getUserName(repository?.user)}</span>
                 </Link>
               </Typography>
             }

@@ -47,7 +47,7 @@ import { RootState } from "../store/rootReducer";
 import RepositoriesTable from "../components/repository/RespositoriesTable";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton } from "@mui/material";
-import { getNotebooksNamedServerLink } from "../utils";
+import { getNotebooksNamedServerLink, getUserName, getUserInitials } from "../utils";
 
 const styles = {
   profileInformation: {
@@ -331,11 +331,10 @@ export const UserPage = () => {
           >
             <Stack pt={5} px={4} spacing={4}>
               <Avatar alt="user-profile-avatar" src={user.avatar}>
-                {(user.firstName.length > 0 && user.firstName.charAt(0)) +
-                  (user.lastName.length > 0 && user.lastName.charAt(0))}
+                {getUserInitials(user)}
               </Avatar>
               <Typography className="name" component="h1" variant="h2">
-                {user.firstName + " " + user.lastName}
+                {getUserName(user)}
                 <Typography
                   className="username"
                   component="p"

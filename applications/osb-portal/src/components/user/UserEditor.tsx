@@ -18,6 +18,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import GroupIcon from "@mui/icons-material/Group";
 import BusinessIcon from "@mui/icons-material/Business";
 import FormLabel from "../styled/FormLabel";
+import { getUserName, getUserInitials } from "../../utils";
 
 interface ProfileLink {
   text: string;
@@ -237,7 +238,7 @@ export const UserEditor = (props: UserEditProps) => {
             alt="user-profile-avatar"
             src={userForm.avatar}
           >
-            {userForm.firstName?.charAt(0) + userForm.lastName?.charAt(0)}
+            {getUserInitials(userForm)}
           </Avatar>
           <Box width="100%">
             <FormLabel>Profile picture URL</FormLabel>
@@ -260,7 +261,7 @@ export const UserEditor = (props: UserEditProps) => {
             fullWidth={true}
             onChange={setProfileDisplayName}
             variant="outlined"
-            defaultValue={userForm.firstName + " " + userForm.lastName}
+            defaultValue={getUserName(userForm)}
           />
         </Box>
         <Box mb={1} mt={1}>

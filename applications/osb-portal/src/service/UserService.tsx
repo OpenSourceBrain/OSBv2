@@ -39,7 +39,7 @@ function mapKeycloakUser(userInfo: any): UserInfo {
     firstName: userInfo.given_name,
     lastName: userInfo.family_name,
     email: userInfo.email,
-    isAdmin: userInfo.realm_access.roles?.includes('administrator') || false,
+    isAdmin: userInfo.realm_access?.roles?.includes('administrator') || false,
     username: userInfo.preferred_username || userInfo.given_name,
   };
 }
