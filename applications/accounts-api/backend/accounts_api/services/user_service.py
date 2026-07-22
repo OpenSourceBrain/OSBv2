@@ -103,6 +103,8 @@ def update_user(userid, user: User):
             raise UserNotAuthorized
         admin_client = client.get_admin_client()
         updated_user = {
+            # Keycloak 26's user update requires the username in the payload
+            'username': current_user['username'],
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'email': user.email or current_user['email'],
