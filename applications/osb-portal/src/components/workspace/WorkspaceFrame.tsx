@@ -141,7 +141,14 @@ export const WorkspaceFrame = (props: {
       const type = application.subdomain.slice(0, 4);
       document.cookie = `workspaceId=${workspace.id};path=/;domain=${domain}`;
       if (applicationDomain) {
-        setFrameUrl(`//${applicationDomain}/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`);
+        // Go through chkclogin rather than straight to /hub/spawn: the hub
+        // session cookie is per app subdomain, so a stale anonymous session
+        // (e.g. from browsing before logging in) would otherwise stick and
+        // make the spawn 404 with "No access to resources". chkclogin clears
+        // the hub login cookie and re-derives the user from the Keycloak
+        // token cookie before redirecting to `next`.
+        const spawnUrl = `/hub/spawn/${userParam}/${workspace.id}${type}${document.location.search ?? ''}`;
+        setFrameUrl(`//${applicationDomain}/hub/chkclogin?next=${encodeURIComponent(spawnUrl)}`);
       } else {
         setFrameUrl(`/testapp?workspaceId=${workspace.id}&type=${type}&user=${userParam}&application=${application.name}`);
       }
