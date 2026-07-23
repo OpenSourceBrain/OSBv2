@@ -17,7 +17,6 @@
             </div>
         </form>
 
-        <script type="text/javascript" src="${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="${url.resourcesPath}/js/base64url.js"></script>
         <script type="text/javascript">
 
@@ -91,21 +90,21 @@
                         let attestationObject = result.response.attestationObject;
                         let publicKeyCredentialId = result.rawId;
 
-                        $("#clientDataJSON").val(base64url.encode(new Uint8Array(clientDataJSON), {pad: false}));
-                        $("#attestationObject").val(base64url.encode(new Uint8Array(attestationObject), {pad: false}));
-                        $("#publicKeyCredentialId").val(base64url.encode(new Uint8Array(publicKeyCredentialId), {pad: false}));
+                        document.getElementById("clientDataJSON").value = base64url.encode(new Uint8Array(clientDataJSON), {pad: false});
+                        document.getElementById("attestationObject").value = base64url.encode(new Uint8Array(attestationObject), {pad: false});
+                        document.getElementById("publicKeyCredentialId").value = base64url.encode(new Uint8Array(publicKeyCredentialId), {pad: false});
 
                         let initLabel = "WebAuthn Authenticator (Default Label)";
                         let labelResult = window.prompt("Please input your registered authenticator's label", initLabel);
                         if (labelResult === null) labelResult = initLabel;
-                        $("#authenticatorLabel").val(labelResult);
+                        document.getElementById("authenticatorLabel").value = labelResult;
 
-                        $("#register").submit();
+                        document.getElementById("register").submit();
 
                     })
                     .catch(function (err) {
-                        $("#error").val(err);
-                        $("#register").submit();
+                        document.getElementById("error").value = err;
+                        document.getElementById("register").submit();
 
                     });
             }
