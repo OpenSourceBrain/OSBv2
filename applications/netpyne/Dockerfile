@@ -16,7 +16,7 @@ RUN yarn build-dev
 ### Download on a separate stage to run in parallel with buildkit
 FROM quay.io/jupyter/base-notebook:python-3.12 AS downloads
 USER root
-RUN apt-get update -qq && apt-get install aria2 -y && aria2c -j10 -x 10 https://www.parralab.org/nyhead/sa_nyhead.mat && mv sa_nyhead.mat /nyhead.mat
+RUN apt-get update -qq && apt-get install aria2 -y && aria2c -j10 -x 10 --check-certificate=false https://www.parralab.org/nyhead/sa_nyhead.mat && mv sa_nyhead.mat /nyhead.mat
 
 ###
 FROM quay.io/jupyter/base-notebook:python-3.12
