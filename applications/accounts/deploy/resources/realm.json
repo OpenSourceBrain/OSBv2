@@ -45,6 +45,19 @@
         "duplicateEmailsAllowed": false,
         "resetPasswordAllowed": true,
         "editUsernameAllowed": true,
+        "defaultDefaultClientScopes": [
+            "role_list",
+            "profile",
+            "email",
+            "roles",
+            "web-origins",
+            "basic"
+        ],
+        "defaultOptionalClientScopes": [
+            "address",
+            "phone",
+            "microprofile-jwt"
+        ],
         "identityProviders": [
             {
               "alias": "orcid",
@@ -158,6 +171,40 @@
                 ]
             },
         "clients": [
+            {
+            "id": "1da42a19-c050-42f4-a558-ca0cf6515651",
+            "clientId": "account",
+            "name": "${client_account}",
+            "rootUrl": "${authBaseUrl}",
+            "baseUrl": {{ printf "/realms/%s/account/" .Values.namespace | quote }},
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "redirectUris": [
+                {{ printf "/realms/%s/account/*" .Values.namespace | quote }}
+            ],
+            "webOrigins": [],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": false,
+            "serviceAccountsEnabled": false,
+            "publicClient": true,
+            "frontchannelLogout": false,
+            "protocol": "openid-connect",
+            "attributes": {
+                "realm_client": "false",
+                "post.logout.redirect.uris": "+"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": false,
+            "nodeReRegistrationTimeout": 0,
+            "defaultClientScopes": [],
+            "optionalClientScopes": []
+            },
              {
             "id": "18893fbb-8252-4aaa-bc9b-60799ceb9932",
             "clientId": "account-console",
@@ -312,6 +359,7 @@
                     "web-origins",
                     "role_list",
                     "{{ .Values.apps.accounts.admin.role }}-scope",
+                    "basic",
                     "profile",
                     "roles",
                     "email"
@@ -353,6 +401,41 @@
             }
         ],
         "clientScopes": [
+            {
+                "name": "basic",
+                "description": "OpenID Connect basic claims (sub, auth_time). Required in Keycloak 26+ to emit the sub claim.",
+                "protocol": "openid-connect",
+                "attributes": {
+                    "include.in.token.scope": "false",
+                    "display.on.consent.screen": "false"
+                },
+                "protocolMappers": [
+                    {
+                        "name": "sub",
+                        "protocol": "openid-connect",
+                        "protocolMapper": "oidc-sub-mapper",
+                        "consentRequired": false,
+                        "config": {
+                            "introspection.token.claim": "true",
+                            "access.token.claim": "true"
+                        }
+                    },
+                    {
+                        "name": "auth_time",
+                        "protocol": "openid-connect",
+                        "protocolMapper": "oidc-usersessionmodel-note-mapper",
+                        "consentRequired": false,
+                        "config": {
+                            "user.session.note": "AUTH_TIME",
+                            "id.token.claim": "true",
+                            "access.token.claim": "true",
+                            "introspection.token.claim": "true",
+                            "claim.name": "auth_time",
+                            "jsonType.label": "long"
+                        }
+                    }
+                ]
+            },
             {
                 "id": "a8cddc84-c506-4196-8f2d-1bd5e8769f3c",
                 "name": "{{ .Values.apps.accounts.admin.role }}-scope",

@@ -218,48 +218,48 @@ export const EditRepoDialog = ({
   }, [dispatch]);
 
   const setRepositoryTags = useCallback((tags: string[]) => {
-    const arrayOfTags: Tag[] = [];
-    tags.forEach((tag) => arrayOfTags.push({ tag }));
-    setFormValues({ ...formValues, tags: arrayOfTags });
-  }, [formValues]);
+    const arrayOfTags: Tag[] = tags.map((tag) => ({ tag }));
+    setFormValues((prevValues) => ({ ...prevValues, tags: arrayOfTags }));
+  }, []);
 
   React.useEffect(() => {
-    setFormValues({ ...repository, userId: user?.id });
-    const repositoryTags: string[] =
-      repository && repository.tags
-        ? repository.tags.map((tagObject) => tagObject.tag)
-        : [];
-    setRepositoryTags(repositoryTags);
-  }, [repository, setRepositoryTags, user?.id]);
+    setFormValues({
+      ...repository,
+      userId: user?.id,
+      tags: repository?.tags ?? [],
+    });
+  }, [repository, user?.id]);
 
   React.useEffect(() => {
-    if (uri) {
-      setLoading(true);
-      setError({ ...error, uri: undefined });
-      RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
-        (info: RepositoryInfo) => {
-          setContexts(info.contexts);
-          setLoading(false);
-          if(repository !== RepositoryService.EMPTY_REPOSITORY) {
-            setFormValues({
-              ...formValues,
-              tags: repository.tags || info.tags.map((tag) => ({ tag })),
-              defaultContext: repository.defaultContext ||
-                info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
-                info.contexts[0],
-              summary: repository.summary || info.summary,
-              name: repository.name || info.name,
-            });
-          }
-          setLoading(false);
-        },
-        () => {
-          setError({ ...error, uri: "Invalid url" });
-          setLoading(false);
-        }
-      );
+    if (!uri) {
+      return;
     }
-  }, [error, formValues, repository, uri]);
+    setLoading(true);
+    setError((prevError) => ({ ...prevError, uri: undefined }));
+    RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
+      (info: RepositoryInfo) => {
+        setContexts(info.contexts);
+        if (repository !== RepositoryService.EMPTY_REPOSITORY) {
+          setFormValues((prevValues) => ({
+            ...prevValues,
+            tags: repository.tags || info.tags.map((tag) => ({ tag })),
+            defaultContext:
+              repository.defaultContext ||
+              info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
+              info.contexts[0],
+            summary: repository.summary || info.summary,
+            name: repository.name || info.name,
+          }));
+        }
+        setLoading(false);
+      },
+      () => {
+        setError((prevError) => ({ ...prevError, uri: "Invalid url" }));
+        setLoading(false);
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uri, formValues.repositoryType, repository]);
 
   const handleInput = (event: any, key: any) => {
     const value = event?.target?.value || event.text;
@@ -300,7 +300,6 @@ export const EditRepoDialog = ({
         });
       setThumbnail(null);
     } else {
-      setLoading(true);
       doRefreshRepositories();
     }
   }
@@ -585,13 +584,6 @@ export const EditRepoDialog = ({
         <Box>
           <Label>Repository tags</Label>
           <FormControl variant="outlined" fullWidth={true}>
-            <InputLabel
-              shrink={false}
-              htmlFor="repository-tags-input-element"
-              sx={{ color: paragraph }}
-            >
-              {!formValues?.tags?.length && "Select tags"}
-            </InputLabel>
             <RepoAutocomplete
               id="repository-tags-input-element"
               className="repository-tags-input-element"
@@ -612,16 +604,14 @@ export const EditRepoDialog = ({
               }
               renderInput={(params) => (
                 <TextField
-                  InputProps={{ disableUnderline: true }}
                   fullWidth={true}
                   {...params}
+                  InputProps={{ ...params.InputProps, disableUnderline: true }}
+                  placeholder={formValues?.tags?.length ? undefined : "Select tags"}
                   variant="filled"
                 />
               )}
-              value={
-                formValues.tags &&
-                formValues.tags.map((tagObject) => tagObject.tag)
-              }
+              value={formValues.tags?.map((tagObject) => tagObject.tag) ?? []}
               sx={{
                 "& .MuiInputBase-root": {
                   "&:hover": {
