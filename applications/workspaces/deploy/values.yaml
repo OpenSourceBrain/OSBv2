@@ -11,10 +11,26 @@ harness:
     path: /api/live
     initialDelaySeconds: 5
     periodSeconds: 15
+    # 1s (the k8s default) is too tight: under node CPU contention even the
+    # trivial /api/live handler can take >1s, which liveness-killed the pod.
+    timeoutSeconds: 5
+    failureThreshold: 6
   readinessProbe:
     path: /api/ready
     initialDelaySeconds: 10
     periodSeconds: 15
+    timeoutSeconds: 5
+  # The server runs 4 gunicorn workers loading a heavy connexion/SQLAlchemy app
+  # and can take well over the ~50s liveness window to start serving — more so
+  # under the CPU contention of a spot-node reschedule storm. Without a startup
+  # probe, liveness kills it mid-boot and it crash-loops. Give it up to ~300s
+  # (30 x 10s) to come up before liveness/readiness apply.
+  startupProbe:
+    path: /api/live
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
   deployment:
     auto: true
     port: 8080
@@ -24,11 +40,12 @@ harness:
       mountpath: /usr/src/app/workspaces/static/workspaces
     resources:
       requests:
-        memory: 128Mi
-        cpu: 20m
-      limits:
         memory: 512Mi
-        cpu: 1500m
+        cpu: 100m
+      limits:
+        # Raised 512Mi -> 1Gi: the app's steady-state RSS sits at ~490Mi, so a
+        # 512Mi limit caused recurring OOMKills (exit 137) under load.
+        memory: 1Gi
   quotas:
     # sets the max number of workspaces per user
     quota-ws-max: 5
@@ -43,7 +60,6 @@ harness:
       - cloudharness-flask
     soft:
       - events
-      - common
       - workflows
       - notifications
       - nfsserver
@@ -75,3 +91,8 @@ harness:
       - pip install -r /usr/src/app/test-requirements.txt
       - pytest /usr/src/app/
 workspace_size: 2Gi
+
+
+sentry:
+  dsn: https://fc2326dc50e34ac2b7188130e173f002@o4506739169951744.ingest.us.sentry.io/4506758817382400
+  sample_rate: 1.0

@@ -61,7 +61,13 @@ def get_users(query: str) -> typing.List[User]:
 
 
 def map_user(kc_user) -> User:
-    user =  User.from_dict(kc_user if isinstance(kc_user, dict) else kc_user._raw_dict)
+    if isinstance(kc_user, dict):
+        raw = kc_user
+    else:
+        # cloudharness models no longer expose the raw keycloak payload as
+        # `_raw_dict`; to_dict() serializes the model back to a plain dict.
+        raw = kc_user.to_dict()
+    user = User.from_dict(raw)
     if 'attributes' not in kc_user or not kc_user['attributes']:
         kc_user['attributes'] = {}
 
@@ -88,11 +94,17 @@ def update_user(userid, user: User):
     client = AuthClient()
 
     try:
-        current_user = client.get_current_user()
+        try:
+            current_user = client.get_current_user()
+        except UserNotFound:
+            # No (valid) authenticated user in the request context
+            raise UserNotAuthorized
         if current_user['id'] != user.id:
             raise UserNotAuthorized
         admin_client = client.get_admin_client()
         updated_user = {
+            # Keycloak 26's user update requires the username in the payload
+            'username': current_user['username'],
             'firstName': user.first_name or current_user['firstName'],
             'lastName': user.last_name or current_user['lastName'],
             'email': user.email or current_user['email'],

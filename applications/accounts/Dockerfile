@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:26.2.5
+FROM quay.io/keycloak/keycloak:26.5
 
 EXPOSE 9000
 EXPOSE 8080
@@ -15,4 +15,4 @@ COPY themes/custom /opt/keycloak/themes/custom
 COPY plugins/* /opt/keycloak/providers/
 
 ENTRYPOINT [ "/opt/keycloak/bin/kc-entrypoint.sh" ]
-CMD [ "start-dev", "--import-realm", "--health-enabled=true", "--metrics-enabled=true", "--verbose" ]
+CMD [ "start", "--import-realm", "--health-enabled=true", "--metrics-enabled=true", "--verbose" ]

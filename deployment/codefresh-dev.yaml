@@ -11,20 +11,27 @@ steps:
     title: Clone main repository
     type: git-clone
     stage: prepare
-    repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
-    revision: '${{CF_BRANCH}}'
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    revision: ${{CF_BRANCH}}
     git: github
   post_main_clone:
     title: Post main clone
     type: parallel
     stage: prepare
     steps:
+      clone_NetPyNE_UI_git_1_1_0_netpyne:
+        title: Cloning NetPyNE-UI.git repository...
+        type: git-clone
+        repo: https://github.com/MetaCell/NetPyNE-UI.git
+        revision: 1.1.0
+        working_directory: applications/netpyne/dependencies/
+        git: github
       clone_cloud_harness:
         title: Cloning cloud-harness repository...
         type: git-clone
         stage: prepare
         repo: https://github.com/MetaCell/cloud-harness.git
-        revision: '${{CLOUDHARNESS_BRANCH}}'
+        revision: ${{CLOUDHARNESS_BRANCH}}
         working_directory: .
         git: github
       clone_NetPyNE-UI_git_osbv2_tests_netpyne:
@@ -48,8 +55,18 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
-    - harness-deployment cloud-harness . -d ${{DOMAIN}} -r ${{REGISTRY}} -rs '${{REGISTRY_SECRET}}'
-      -n ${{NAMESPACE}} --write-env -e dev --cache-url '${{IMAGE_CACHE_URL}}' -i osb-portal
+    - export HELM_NAME_ARG="$( [ -n "${{CHART_NAME}}" ] && printf -- "--name %s" "${{CHART_NAME}}"
+      )"
+    - export HELM_CHART_VERSION_ARG="$( [ -n "${{CHART_VERSION}}" ] && printf -- "--chart-version
+      %s" "${{CHART_VERSION}}" )"
+    - export HELM_APP_VERSION_ARG="$( APP_VERSION_RESOLVED="${{APP_VERSION}}"; [ -z
+      "$APP_VERSION_RESOLVED" ] && APP_VERSION_RESOLVED="${{DEPLOYMENT_TAG}}"; [ -n
+      "$APP_VERSION_RESOLVED" ] && printf -- "--app-version %s" "$APP_VERSION_RESOLVED"
+      )"
+    - export HELM_META_ARGS="$HELM_NAME_ARG $HELM_CHART_VERSION_ARG $HELM_APP_VERSION_ARG"
+    - harness-deployment cloud-harness . -d ${{DOMAIN}} -r ${{REGISTRY}} -rsn '${{REGISTRY_SECRET}}'
+      -n ${{NAMESPACE}} --write-env -e dev --cache-url '${{IMAGE_CACHE_URL}}' $HELM_META_ARGS
+      -i osb-portal
     - cat deployment/.env >> ${{CF_VOLUME_PATH}}/env_vars_to_export
     - cat ${{CF_VOLUME_PATH}}/env_vars_to_export
   prepare_deployment_view:
@@ -91,7 +108,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -113,7 +130,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -135,8 +152,8 @@ steps:
       jupyterhub-jupyterhub-examples-postgres-hub:
         type: build
         stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        dockerfile: infrastructure/base-images/cloudharness-base/Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -180,8 +197,8 @@ steps:
       nwb-explorer:
         type: build
         stage: build
-        dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        dockerfile: infrastructure/base-images/cloudharness-frontend-build/Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -203,7 +220,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -314,7 +331,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -336,29 +353,29 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
-        image_name: osb/jupyterlab
-        title: Jupyterlab
-        working_directory: ./applications/jupyterlab
+        image_name: osb/osb-portal
+        title: Osb portal
+        working_directory: ./applications/osb-portal
         tags:
-        - '${{JUPYTERLAB_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{OSB_PORTAL_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{JUPYTERLAB_TAG_EXISTS}}', '{{JUPYTERLAB_TAG_EXISTS}}')
+              buildDoesNotExist: includes('${{OSB_PORTAL_TAG_EXISTS}}', '{{OSB_PORTAL_TAG_EXISTS}}')
                 == true
-              forceNoCache: includes('${{JUPYTERLAB_TAG_FORCE_BUILD}}', '{{JUPYTERLAB_TAG_FORCE_BUILD}}')
+              forceNoCache: includes('${{OSB_PORTAL_TAG_FORCE_BUILD}}', '{{OSB_PORTAL_TAG_FORCE_BUILD}}')
                 == false
       backoffice:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -380,7 +397,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -404,7 +421,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -426,7 +443,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -453,7 +470,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -462,9 +479,9 @@ steps:
         title: Workspaces figshare copy
         working_directory: ./applications/workspaces/tasks/figshare-copy
         tags:
-        - '${{WORKSPACES_FIGSHARE_COPY_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{NOTIFICATIONS_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -495,11 +512,11 @@ steps:
                 == true
               forceNoCache: includes('${{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}', '{{CLOUDHARNESS_FLASK_TAG_FORCE_BUILD}}')
                 == false
-      workspaces-biomodels-copy:
+      workflows-extract-download:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -508,9 +525,9 @@ steps:
         title: Workspaces biomodels copy
         working_directory: ./applications/workspaces/tasks/biomodels-copy
         tags:
-        - '${{WORKSPACES_BIOMODELS_COPY_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -546,7 +563,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -638,7 +655,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -647,9 +664,9 @@ steps:
         title: Jupyterhub
         working_directory: ./.overrides/applications/jupyterhub
         tags:
-        - '${{JUPYTERHUB_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKSPACES_BIOMODELS_COPY_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -661,7 +678,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -684,7 +701,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -712,7 +729,7 @@ steps:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -731,11 +748,11 @@ steps:
                 == true
               forceNoCache: includes('${{WORKFLOWS_TAG_FORCE_BUILD}}', '{{WORKFLOWS_TAG_FORCE_BUILD}}')
                 == false
-      volumemanager:
+      workflows:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -744,21 +761,21 @@ steps:
         title: Volumemanager
         working_directory: ./cloud-harness/applications/volumemanager/server
         tags:
-        - '${{VOLUMEMANAGER_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKFLOWS_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
-              buildDoesNotExist: includes('${{VOLUMEMANAGER_TAG_EXISTS}}', '{{VOLUMEMANAGER_TAG_EXISTS}}')
+              buildDoesNotExist: includes('${{WORKFLOWS_TAG_EXISTS}}', '{{WORKFLOWS_TAG_EXISTS}}')
                 == true
-              forceNoCache: includes('${{VOLUMEMANAGER_TAG_FORCE_BUILD}}', '{{VOLUMEMANAGER_TAG_FORCE_BUILD}}')
+              forceNoCache: includes('${{WORKFLOWS_TAG_FORCE_BUILD}}', '{{WORKFLOWS_TAG_FORCE_BUILD}}')
                 == false
       workspaces:
         type: build
         stage: build
         dockerfile: Dockerfile
-        registry: '${{CODEFRESH_REGISTRY}}'
+        registry: ${{CODEFRESH_REGISTRY}}
         buildkit: true
         build_arguments:
         - NOCACHE=${{CF_BUILD_ID}}
@@ -767,9 +784,9 @@ steps:
         title: Workspaces
         working_directory: ./applications/workspaces/server
         tags:
-        - '${{WORKSPACES_TAG}}'
-        - '${{DEPLOYMENT_PUBLISH_TAG}}-dev'
-        - '${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}'
+        - ${{WORKSPACES_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
         when:
           condition:
             any:
@@ -833,7 +850,7 @@ steps:
         commands:
         - pip install -r /usr/src/app/test-requirements.txt
         - pytest /usr/src/app/
-        image: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
+        image: ${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}
   deployment:
     stage: deploy
     type: helm
@@ -842,10 +859,10 @@ steps:
     arguments:
       helm_version: 3.6.2
       chart_name: deployment/helm
-      release_name: '${{NAMESPACE}}'
-      kube_context: '${{CLUSTER_NAME}}'
-      namespace: '${{NAMESPACE}}'
-      chart_version: '${{CF_BUILD_ID}}'
+      release_name: ${{NAMESPACE}}
+      kube_context: ${{CLUSTER_NAME}}
+      namespace: ${{NAMESPACE}}
+      chart_version: ${{CF_BUILD_ID}}
       cmd_ps: --wait --timeout 600s --create-namespace
       custom_value_files:
       - ./deployment/helm/values.yaml
@@ -912,8 +929,8 @@ steps:
       workflows_api_test:
         title: workflows api test
         volumes:
-        - '${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test'
-        - '${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml'
+        - ${{CF_REPO_NAME}}/cloud-harness/applications/workflows:/home/test
+        - ${{CF_REPO_NAME}}/deployment/helm/values.yaml:/opt/cloudharness/resources/allvalues.yaml
         environment:
         - APP_URL=https://workflows.${{DOMAIN}}/api
         commands:
@@ -936,13 +953,13 @@ steps:
       jupyterhub_e2e_test:
         title: jupyterhub e2e test
         volumes:
-        - '${{CF_REPO_NAME}}/.overrides/applications/jupyterhub/test/e2e:/home/test/__tests__/jupyterhub'
+        - ${{CF_REPO_NAME}}/.overrides/applications/jupyterhub/test/e2e:/home/test/__tests__/jupyterhub
         environment:
         - APP_URL=https://hub.${{DOMAIN}}
       osb-portal_e2e_test:
         title: osb-portal e2e test
         volumes:
-        - '${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal'
+        - ${{CF_REPO_NAME}}/applications/osb-portal/test/e2e:/home/test/__tests__/osb-portal
         environment:
         - APP_URL=https://www.${{DOMAIN}}
     when:
@@ -961,60 +978,90 @@ steps:
     type: parallel
     stage: publish
     steps:
-      publish_cloudharness-base:
+      publish_accounts:
         stage: publish
         type: push
         title: Cloudharness base
         candidate: '${{REGISTRY}}/osb/cloudharness-base:${{CLOUDHARNESS_BASE_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-frontend-build:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{ACCOUNTS_PUBLISH_SKIP}}', '{{ACCOUNTS_PUBLISH_SKIP}}')
+                == true
+      publish_accounts-api:
         stage: publish
         type: push
         title: Cloudharness frontend build
         candidate: '${{REGISTRY}}/osb/cloudharness-frontend-build:${{CLOUDHARNESS_FRONTEND_BUILD_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_cloudharness-flask:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{ACCOUNTS_API_PUBLISH_SKIP}}', '{{ACCOUNTS_API_PUBLISH_SKIP}}')
+                == true
+      publish_backoffice:
         stage: publish
         type: push
         title: Cloudharness flask
         candidate: '${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_notifications:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{BACKOFFICE_PUBLISH_SKIP}}', '{{BACKOFFICE_PUBLISH_SKIP}}')
+                == true
+      publish_cloudharness-base:
         stage: publish
         type: push
         title: Notifications
         candidate: '${{REGISTRY}}/osb/notifications:${{NOTIFICATIONS_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{CLOUDHARNESS_BASE_PUBLISH_SKIP}}', '{{CLOUDHARNESS_BASE_PUBLISH_SKIP}}')
+                == true
+      publish_cloudharness-flask:
         stage: publish
         type: push
-        title: Accounts
-        candidate: '${{REGISTRY}}/osb/accounts:${{ACCOUNTS_TAG}}'
+        title: Cloudharness flask
+        candidate: ${{REGISTRY}}/osb/cloudharness-flask:${{CLOUDHARNESS_FLASK_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_volumemanager:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{CLOUDHARNESS_FLASK_PUBLISH_SKIP}}', '{{CLOUDHARNESS_FLASK_PUBLISH_SKIP}}')
+                == true
+      publish_cloudharness-frontend-build:
         stage: publish
         type: push
         title: Volumemanager
         candidate: '${{REGISTRY}}/osb/volumemanager:${{VOLUMEMANAGER_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{CLOUDHARNESS_FRONTEND_BUILD_PUBLISH_SKIP}}',
+                '{{CLOUDHARNESS_FRONTEND_BUILD_PUBLISH_SKIP}}') == true
       publish_jupyterhub:
         stage: publish
         type: push
@@ -1030,151 +1077,218 @@ steps:
         title: Common
         candidate: '${{REGISTRY}}/osb/common:${{COMMON_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-send-result-event:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{JUPYTERHUB_PUBLISH_SKIP}}', '{{JUPYTERHUB_PUBLISH_SKIP}}')
+                == true
+      publish_jupyterlab:
         stage: publish
         type: push
         title: Workflows send result event
         candidate: '${{REGISTRY}}/osb/workflows-send-result-event:${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-extract-download:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{JUPYTERLAB_PUBLISH_SKIP}}', '{{JUPYTERLAB_PUBLISH_SKIP}}')
+                == true
+      publish_netpyne:
         stage: publish
         type: push
         title: Workflows extract download
         candidate: '${{REGISTRY}}/osb/workflows-extract-download:${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows-notify-queue:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NETPYNE_PUBLISH_SKIP}}', '{{NETPYNE_PUBLISH_SKIP}}')
+                == true
+      publish_notifications:
         stage: publish
         type: push
         title: Workflows notify queue
         candidate: '${{REGISTRY}}/osb/workflows-notify-queue:${{WORKFLOWS_NOTIFY_QUEUE_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workflows:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NOTIFICATIONS_PUBLISH_SKIP}}', '{{NOTIFICATIONS_PUBLISH_SKIP}}')
+                == true
+      publish_nwb-explorer:
         stage: publish
         type: push
         title: Workflows
         candidate: '${{REGISTRY}}/osb/workflows:${{WORKFLOWS_TAG}}'
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-biomodels-copy:
-        stage: publish
-        type: push
-        title: Workspaces biomodels copy
-        candidate: '${{REGISTRY}}/osb/workspaces-biomodels-copy:${{WORKSPACES_BIOMODELS_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-figshare-copy:
-        stage: publish
-        type: push
-        title: Workspaces figshare copy
-        candidate: '${{REGISTRY}}/osb/workspaces-figshare-copy:${{WORKSPACES_FIGSHARE_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-scan-workspace:
-        stage: publish
-        type: push
-        title: Workspaces scan workspace
-        candidate: '${{REGISTRY}}/osb/workspaces-scan-workspace:${{WORKSPACES_SCAN_WORKSPACE_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-github-copy:
-        stage: publish
-        type: push
-        title: Workspaces github copy
-        candidate: '${{REGISTRY}}/osb/workspaces-github-copy:${{WORKSPACES_GITHUB_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces-dandi-copy:
-        stage: publish
-        type: push
-        title: Workspaces dandi copy
-        candidate: '${{REGISTRY}}/osb/workspaces-dandi-copy:${{WORKSPACES_DANDI_COPY_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_workspaces:
-        stage: publish
-        type: push
-        title: Workspaces
-        candidate: '${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_netpyne:
-        stage: publish
-        type: push
-        title: Netpyne
-        candidate: '${{REGISTRY}}/osb/netpyne:${{NETPYNE_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_accounts-api:
-        stage: publish
-        type: push
-        title: Accounts api
-        candidate: '${{REGISTRY}}/osb/accounts-api:${{ACCOUNTS_API_TAG}}'
-        tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
-        - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NWB_EXPLORER_PUBLISH_SKIP}}', '{{NWB_EXPLORER_PUBLISH_SKIP}}')
+                == true
       publish_osb-portal:
         stage: publish
         type: push
         title: Osb portal
-        candidate: '${{REGISTRY}}/osb/osb-portal:${{OSB_PORTAL_TAG}}'
+        candidate: ${{REGISTRY}}/osb/osb-portal:${{OSB_PORTAL_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_backoffice:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{OSB_PORTAL_PUBLISH_SKIP}}', '{{OSB_PORTAL_PUBLISH_SKIP}}')
+                == true
+      publish_workflows:
         stage: publish
         type: push
-        title: Backoffice
-        candidate: '${{REGISTRY}}/osb/backoffice:${{BACKOFFICE_TAG}}'
+        title: Workflows
+        candidate: ${{REGISTRY}}/osb/workflows:${{WORKFLOWS_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_nwb-explorer:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_PUBLISH_SKIP}}', '{{WORKFLOWS_PUBLISH_SKIP}}')
+                == true
+      publish_workflows-extract-download:
         stage: publish
         type: push
-        title: Nwb explorer
-        candidate: '${{REGISTRY}}/osb/nwb-explorer:${{NWB_EXPLORER_TAG}}'
+        title: Workflows extract download
+        candidate: ${{REGISTRY}}/osb/workflows-extract-download:${{WORKFLOWS_EXTRACT_DOWNLOAD_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
-        registry: '${{REGISTRY_PUBLISH_URL}}'
-      publish_jupyterlab:
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_EXTRACT_DOWNLOAD_PUBLISH_SKIP}}',
+                '{{WORKFLOWS_EXTRACT_DOWNLOAD_PUBLISH_SKIP}}') == true
+      publish_workflows-notify-queue:
         stage: publish
         type: push
-        title: Jupyterlab
-        candidate: '${{REGISTRY}}/osb/jupyterlab:${{JUPYTERLAB_TAG}}'
+        title: Workflows notify queue
+        candidate: ${{REGISTRY}}/osb/workflows-notify-queue:${{WORKFLOWS_NOTIFY_QUEUE_TAG}}
         tags:
-        - '${{DEPLOYMENT_PUBLISH_TAG}}'
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_NOTIFY_QUEUE_PUBLISH_SKIP}}', '{{WORKFLOWS_NOTIFY_QUEUE_PUBLISH_SKIP}}')
+                == true
+      publish_workflows-send-result-event:
+        stage: publish
+        type: push
+        title: Workflows send result event
+        candidate: 
+          ${{REGISTRY}}/osb/workflows-send-result-event:${{WORKFLOWS_SEND_RESULT_EVENT_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKFLOWS_SEND_RESULT_EVENT_PUBLISH_SKIP}}',
+                '{{WORKFLOWS_SEND_RESULT_EVENT_PUBLISH_SKIP}}') == true
+      publish_workspaces:
+        stage: publish
+        type: push
+        title: Workspaces
+        candidate: ${{REGISTRY}}/osb/workspaces:${{WORKSPACES_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_PUBLISH_SKIP}}', '{{WORKSPACES_PUBLISH_SKIP}}')
+                == true
+      publish_workspaces-biomodels-copy:
+        stage: publish
+        type: push
+        title: Workspaces biomodels copy
+        candidate: ${{REGISTRY}}/osb/workspaces-biomodels-copy:${{WORKSPACES_BIOMODELS_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_BIOMODELS_COPY_PUBLISH_SKIP}}',
+                '{{WORKSPACES_BIOMODELS_COPY_PUBLISH_SKIP}}') == true
+      publish_workspaces-dandi-copy:
+        stage: publish
+        type: push
+        title: Workspaces dandi copy
+        candidate: ${{REGISTRY}}/osb/workspaces-dandi-copy:${{WORKSPACES_DANDI_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_DANDI_COPY_PUBLISH_SKIP}}', '{{WORKSPACES_DANDI_COPY_PUBLISH_SKIP}}')
+                == true
+      publish_workspaces-figshare-copy:
+        stage: publish
+        type: push
+        title: Workspaces figshare copy
+        candidate: ${{REGISTRY}}/osb/workspaces-figshare-copy:${{WORKSPACES_FIGSHARE_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_FIGSHARE_COPY_PUBLISH_SKIP}}',
+                '{{WORKSPACES_FIGSHARE_COPY_PUBLISH_SKIP}}') == true
+      publish_workspaces-github-copy:
+        stage: publish
+        type: push
+        title: Workspaces github copy
+        candidate: ${{REGISTRY}}/osb/workspaces-github-copy:${{WORKSPACES_GITHUB_COPY_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{WORKSPACES_GITHUB_COPY_PUBLISH_SKIP}}', '{{WORKSPACES_GITHUB_COPY_PUBLISH_SKIP}}')
+                == true
+      publish_workspaces-scan-workspace:
+        stage: publish
+        type: push
+        title: Workspaces scan workspace
+        candidate: ${{REGISTRY}}/osb/workspaces-scan-workspace:${{WORKSPACES_SCAN_WORKSPACE_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
         - latest
         registry: '${{REGISTRY_PUBLISH_URL}}'
       publish_jupyterhub-jupyterhub:

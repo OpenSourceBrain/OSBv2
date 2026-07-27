@@ -1,6 +1,6 @@
 
 
-FROM node:18 AS jsbuild
+FROM node:16-bullseye AS jsbuild
 ARG APP_DIR=dependencies/NetPyNE-UI
 ENV FOLDER=netpyne
 

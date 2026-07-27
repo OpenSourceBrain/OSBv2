@@ -1,5 +1,6 @@
 import connexion
 import six
+from flask import request
 from cloudharness.auth import AuthClient
 from accounts_api.models.user import User  # noqa: E501
 from accounts_api import util
@@ -17,8 +18,8 @@ def create_user(user):  # noqa: E501
 
     :rtype: User
     """
-    if connexion.request.is_json:
-        user = User.from_dict(connexion.request.get_json())  # noqa: E501
+    if request.is_json:
+        user = User.from_dict(request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
@@ -60,8 +61,8 @@ def update_user(userid, user=None):  # noqa: E501
 
     :rtype: User
     """
-    if connexion.request.is_json:
-        user = User.from_dict(connexion.request.get_json())  # noqa: E501
+    if request.is_json:
+        user = User.from_dict(request.get_json())  # noqa: E501
     try:
         return user_service.update_user(userid, user)
     except user_service.UserNotFound as e:

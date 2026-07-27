@@ -16,6 +16,12 @@ class Config(object):
 
     SQLALCHEMY_DATABASE_URI = "postgresql://workspace:secret@workspaces-postgres-host:5432/workspaces"
 
+    # Validate pooled connections before use and recycle stale ones. Postgres runs
+    # on preemptible nodes and is periodically rescheduled to a new pod; without this
+    # the app hands out dead pooled connections after a reschedule, raising
+    # "server closed the connection unexpectedly" until the pool drains.
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
     BASE_DIR = os.path.dirname(__file__)

@@ -2,6 +2,7 @@ from functools import cache
 import json
 import os
 import shutil
+import threading
 from typing import List
 
 from cloudharness.service.pvc import create_persistent_volume_claim, delete_persistent_volume_claim
@@ -28,7 +29,7 @@ from workspaces.persistence import (
 from workspaces.persistence.base_crud_persistence import BaseModelRepository
 from workspaces.persistence.models import OSBRepositoryEntity, TOSBRepositoryEntity, TWorkspaceEntity, TWorkspaceResourceEntity, WorkspaceResourceEntity
 from workspaces.service import osbrepository as osbrepository_helper
-from workspaces.service.kubernetes import create_volume
+from workspaces.service.kubernetes import create_volume, wait_for_volume_ready, volume_is_ready
 from workspaces.service.auth import get_auth_client, keycloak_user_id
 from workspaces.service.user_quota_service import get_pvc_size, get_max_workspaces_for_user
 
@@ -171,6 +172,13 @@ class WorkspaceService(BaseModelService):
 
     calculated_fields = {"user"}
 
+    # Per-process guard so repeated reads of the same workspace (e.g. the
+    # portal's polling loop) don't each spawn a thread + Kubernetes API call for
+    # a volume we have already ensured this process lifetime. This is per worker
+    # process, so dedup is only within a worker, not across the fleet.
+    _ensured_volumes = set()
+    _ensured_volumes_lock = threading.Lock()
+
     @staticmethod
     def get_pvc_name(workspace_id):
         return f"workspace-{workspace_id}"
@@ -208,8 +216,7 @@ class WorkspaceService(BaseModelService):
 
         workspace = super().post(body)
 
-        create_volume(name=self.get_pvc_name(workspace.id),
-                      size=self.get_workspace_volume_size(workspace))
+        self.ensure_volume(workspace)
 
         for workspace_resource in workspace.resources:
             WorkspaceresourceService.handle_resource_data(workspace_resource)
@@ -224,6 +231,76 @@ class WorkspaceService(BaseModelService):
         # Place to change whenever we implement user or workspace based sizing
         user_id = keycloak_user_id()
         return get_pvc_size(user_id)
+
+    def ensure_volume(self, workspace: Workspace):
+        """Ensure the workspace persistent volume exists, creating it if missing.
+
+        Called when a workspace is created/cloned, so a workspace whose volume is
+        absent (never created, deleted, or migrated from an older deployment) is
+        repaired instead of failing to mount. ``create_volume`` is idempotent: it
+        is a no-op when the PVC already exists.
+        """
+        create_volume(name=self.get_pvc_name(workspace.id),
+                      size=self.get_workspace_volume_size(workspace))
+
+    def ensure_volume_background(self, workspace: Workspace):
+        """Best-effort, non-blocking volume creation used on plain workspace reads.
+
+        The volume is created in a background thread so that simply viewing a
+        workspace never blocks on (or fails because of) the Kubernetes/NFS API.
+        Only the owner's own read triggers creation, sized from their quota; a
+        non-owner viewing a public workspace must not create a PVC sized from
+        their own quota (a missing volume is still repaired synchronously when
+        the workspace is opened, see ``ensure_volume_ready``). A per-process
+        guard avoids respawning a thread for a workspace already ensured.
+        """
+        if workspace.user_id and workspace.user_id != keycloak_user_id():
+            return
+
+        with self._ensured_volumes_lock:
+            if workspace.id in self._ensured_volumes:
+                return
+            self._ensured_volumes.add(workspace.id)
+
+        # Size is computed up-front because it depends on the current request
+        # context (it is read from the authenticated user's quota).
+        name = self.get_pvc_name(workspace.id)
+        size = self.get_workspace_volume_size(workspace)
+
+        def _create():
+            try:
+                create_volume(name=name, size=size)
+            except Exception:
+                logger.warning(
+                    "Background volume creation failed for %s", name, exc_info=True)
+                # Let a later read retry rather than leaving it marked ensured.
+                with self._ensured_volumes_lock:
+                    self._ensured_volumes.discard(workspace.id)
+
+        threading.Thread(target=_create, daemon=True).start()
+
+    def ensure_volume_ready(self, workspace: Workspace, timeout=5) -> bool:
+        """Ensure the volume exists and is bound, blocking up to ``timeout`` seconds.
+
+        Used when fully opening a workspace, right before the app iframe is
+        spawned. Returns True once the PVC is bound and ready to mount, False if
+        it is still not ready after ``timeout`` seconds (NFS flakiness), so the
+        caller can surface a temporary error instead of spawning a pod that would
+        fail to mount.
+
+        Under Immediate binding the PVC is almost always already bound, so the
+        common case returns straight away without creating or waiting — keeping
+        the request off the slow path. (gunicorn runs sync workers, so a
+        genuinely-unbound volume still holds one worker for up to ``timeout``;
+        that is why ``timeout`` is kept small.)
+        """
+        name = self.get_pvc_name(workspace.id)
+        # Common case: already bound — no create, no wait.
+        if volume_is_ready(name):
+            return True
+        # Create if missing (idempotent) and wait for it to bind.
+        self.ensure_volume(workspace)
+        return wait_for_volume_ready(name, timeout=timeout)
 
     @send_event(message_type="workspace", operation="create")
     def clone(self, workspace_id):
@@ -245,8 +322,7 @@ class WorkspaceService(BaseModelService):
 
             cloned = self.repository.post(workspace)
 
-            create_volume(name=self.get_pvc_name(cloned.id),
-                          size=self.get_workspace_volume_size(workspace))
+            self.ensure_volume(cloned)
             clone_workspaces_content(workspace_id, cloned.id)
         return cloned
 

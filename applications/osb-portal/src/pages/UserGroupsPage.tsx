@@ -32,6 +32,7 @@ import Link from "@mui/material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkIcon from "@mui/icons-material/Link";
 import { RootState } from "../store/rootReducer";
+import { getUserName, getUserInitials } from "../utils";
 
 const styles = {
   groupMembers: {
@@ -367,13 +368,12 @@ export const UserGroupsPage = () => {
                               <Stack spacing={2} direction="row" alignItems="center">
                                 <Stack>
                                   <Avatar src={member?.avatar} sx={{ width: '50px', height: '50px' }}>
-                                    {(member.firstName.length > 0 && member.firstName.charAt(0)) +
-                                      (member.lastName.length > 0 && member.lastName.charAt(0))}
+                                    {getUserInitials(member)}
                                   </Avatar>
                                 </Stack>
                                 <Stack sx={{ minWidth: 0 }}>
                                   <Typography component="h5" variant="subtitle2" color='secondary'>
-                                    {member.firstName + " " + member.lastName}
+                                    {getUserName(member)}
                                   </Typography>
                                   <Typography
                                     className="username"

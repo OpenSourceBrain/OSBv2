@@ -38,6 +38,7 @@ import {
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
+import { getUserName } from "../../utils";
 
 import {
   StyledShowMoreText,
@@ -157,7 +158,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                             }}
                               onClick={() => navigate(`/user/${row?.user?.username}`)}
                             >
-                              {row?.user?.username}
+                              {getUserName(row?.user)}
                             </Button>
                         }
                       </TableCell>}
