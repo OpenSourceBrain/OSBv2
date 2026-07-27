@@ -1,5 +1,7 @@
 harness:
   subdomain: netpyne
+  secured: false
+  uri_role_mapping: []
   service:
     auto: false
     port: 80
@@ -19,8 +21,8 @@ harness:
     hard:
     - jupyterhub
     git:
-      - url: https://github.com/MetaCell/NetPyNE-UI.git
-        branch_tag: 1.1.0
+      - url: https://github.com/OpenSourceBrain/NetPyNE-UI.git
+        branch_tag: osbv2_tests
 singleuser:
   cpu:
     limit: 1

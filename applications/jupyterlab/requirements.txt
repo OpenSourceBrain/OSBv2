@@ -6,7 +6,7 @@ neurotune
 neuron<9
 
 # Install specific version of NetPyNE
-git+https://github.com/Neurosim-lab/netpyne.git@osbv2#egg=netpyne
+git+https://github.com/Neurosim-lab/netpyne.git@osbv2-dev#egg=netpyne
 
 ####  Other simulators
 
