@@ -34,7 +34,7 @@ import {
 import Box from "@mui/material/Box";
 import SampleIframePage from "./pages/SampleIframePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import { initApis } from "./service/UserService";
+import { initApis, popLoginRedirect } from "./service/UserService";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -54,6 +54,10 @@ const styles = {
   },
 };
 
+
+// Lands the user back where they were before the auth round-trip. Reads the
+// stored path only on mount, i.e. only when the /login route actually matches.
+const LoginRedirect = () => <Navigate to={popLoginRedirect()} replace />;
 
 export const App = () => {
   const error = useSelector((state: RootState) => state.error);
@@ -162,7 +166,7 @@ export const App = () => {
                   />
                   <Route
                     path="/login"
-                    element={<Navigate to="/" replace />}
+                    element={<LoginRedirect />}
                   />
                   <Route
                     path="/testapp"

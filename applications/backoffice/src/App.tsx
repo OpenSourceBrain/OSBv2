@@ -3,14 +3,16 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  useNavigate,
+  Navigate,
 } from "react-router-dom";
 import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles";
 import { Box, CssBaseline } from "@mui/material";
 
 
 import HomePage from "./pages/HomePage";
+import Header from "./components/Header";
 import theme from "./theme";
+import { initApis, popLoginRedirect } from "./service/UserService";
 
 
 
@@ -35,8 +37,14 @@ const styles = {
   },
 };
 
+// Lands the user back where they were before the auth round-trip. Reads the
+// stored path only on mount, i.e. only when the /login route actually matches.
+const LoginRedirect = () => <Navigate to={popLoginRedirect()} replace={true} />;
+
 export const App = (props: any) => {
 
+  // Sets up the API clients from the gatekeeper token before the first render.
+  initApis();
 
   return (
     // tslint:disable-next-line:jsx-boolean-value
@@ -48,11 +56,15 @@ export const App = (props: any) => {
           {!props.error &&
             <Router>
               <Box sx={styles.mainContainer}>
-
+                  <Header />
                   <Routes>
                     <Route
                       path="/"
                       element={<HomePage />}
+                    />
+                    <Route
+                      path="/login"
+                      element={<LoginRedirect />}
                     />
                   </Routes>
               </Box>

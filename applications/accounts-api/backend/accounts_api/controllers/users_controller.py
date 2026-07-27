@@ -1,3 +1,5 @@
+import math
+
 import connexion
 import six
 from flask import request
@@ -39,16 +41,29 @@ def get_user(userid):  # noqa: E501
         return "User not found", 404
 
 
-def get_users(query={}):
-    """get all users
+def get_users(search=None, page=1, per_page=20):
+    """get a page of users
 
-    :param query: user filter
-    :type query: str
+    :param search: free-text filter on username, first/last name or email
+    :type search: str
+    :param page: 1-based page number
+    :type page: int
+    :param per_page: page size
+    :type per_page: int
 
     :rtype: {}
     """
-
-    return {'users': user_service.get_users(query)}
+    users, total = user_service.get_users(search=search, page=page, per_page=per_page)
+    number_of_pages = math.ceil(total / per_page) if per_page else 0
+    return {
+        'users': users,
+        'pagination': {
+            'total': total,
+            'current_page': page,
+            'per_page': per_page,
+            'number_of_pages': number_of_pages,
+        },
+    }
 
 
 def update_user(userid, user=None):  # noqa: E501

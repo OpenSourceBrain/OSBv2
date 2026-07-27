@@ -1,5 +1,3 @@
-import Keycloak from 'keycloak-js';
-
 import workspaceService from './WorkspaceService';
 import repositoryService from './RepositoryService';
 
@@ -11,58 +9,76 @@ import { Configuration, User } from "../apiclient/accounts";
 import * as accountsApi from '../apiclient/accounts/apis';
 
 
-
 const accountsApiUri = '/proxy/accounts-api/api';
 
-let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(new Configuration({ basePath: accountsApiUri })); ;
+// Tolerance (in seconds) applied to the token expiry check to absorb clock
+// skew between the browser and the auth server. Mirrors osb-portal.
+const TOKEN_EXPIRY_LEEWAY_SECONDS = 30;
+
+// Where to send the user back after an auth round-trip.
+const LOGIN_REDIRECT_KEY = "osb-login-redirect";
+
+let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(new Configuration({ basePath: accountsApiUri }));
 
 declare const window: any;
 
-export const initApis = (token: string) => {
+export const initApis = () => {
+  const token = getToken();
+  // Set (or clear) the token used by the downstream proxies. Never write the
+  // literal string "null": that leaks a bogus token and looks like a
+  // logged-in-but-broken session.
+  if (token) {
+    document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
+  } else {
+    clearAuthCookies();
+  }
   repositoryService.initApis(token);
   workspaceService.initApis(token);
-  usersApi = new accountsApi.UsersApi(new Configuration({ basePath: accountsApiUri, accessToken: getToken() }));
+  usersApi = new accountsApi.UsersApi(new Configuration({ basePath: accountsApiUri, accessToken: token }));
+};
+
+function mapKeycloakUser(userInfo: any): UserInfo {
+  return userInfo && {
+    id: userInfo.sub,
+    firstName: userInfo.given_name,
+    lastName: userInfo.family_name,
+    email: userInfo.email,
+    isAdmin: userInfo.realm_access?.roles?.includes('administrator') || false,
+    username: userInfo.preferred_username || userInfo.given_name,
+  };
+}
+
+export interface UsersPage {
+  users: User[];
+  total: number;
+  numberOfPages: number;
 }
 
 export async function getUser(userid: string): Promise<User> {
+  // Note that the keycloak username is expected
   return usersApi.getUser({ userid });
 }
 
-export async function getUsers(): Promise<User[]> {
-  return (await usersApi.getUsers({})).users;
+export async function getUsers(page = 1, perPage = 20, search = ""): Promise<UsersPage> {
+  const response = await usersApi.getUsers({ page, perPage, search: search || undefined });
+  return {
+    users: response.users || [],
+    total: response.pagination?.total ?? (response.users?.length || 0),
+    numberOfPages: response.pagination?.numberOfPages ?? 1,
+  };
 }
 
 export async function updateUser(user: User): Promise<User> {
   return usersApi.updateUser({ userid: user.id, requestBody: user });
 }
 
-
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
-  return Boolean(user && (user.isAdmin || workspace?.userId === user.id))
+  return Boolean(user && (user.isAdmin || workspace?.userId === user.id));
 }
 
 export function canEditRepository(user: UserInfo, repository: OSBRepository) {
   return user && (user.isAdmin || repository?.userId === user.id);
 }
-
-export function getCurrentUser() {
-  if (
-    document.location.hostname === "localhost" &&
-    document.location.pathname === "/login"
-  ) {
-    setCookie(
-      "kc-access",
-      "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2ZU5kTUlHSWtha3duYjF2NDNMYWNNZ1k4emx3WDJ0X0dkZnAxdnNsYmVNIn0.eyJleHAiOjE2NjI5ODY1MzcsImlhdCI6MTY2Mjk4NjIzNywiYXV0aF90aW1lIjoxNjYyOTg2MDk3LCJqdGkiOiI0YTE0N2RiMi0zNWY3LTRiM2YtOWU5Mi0zZGNiMzEyODFlZjMiLCJpc3MiOiJodHRwOi8vYWNjb3VudHMuYXJlZy5sb2NhbC9hdXRoL3JlYWxtcy9hcmVnIiwiYXVkIjpbIndlYi1jbGllbnQiLCJhcmVnLXBvcnRhbCIsImFyZWdfcG9ydGFsIl0sInN1YiI6ImRjZWEzZjIxLWMwMmYtNDU2MS1iNzI3LTU2OGFhNjk5Njc5YSIsInR5cCI6IkJlYXJlciIsImF6cCI6IndlYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNTllMGI0YWEtNDhlOC00YTIyLTg2MWMtMTU1NjQzMDgyMTdkIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhZG1pbmlzdHJhdG9yIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYXJlZy1wb3J0YWwiOnsicm9sZXMiOlsiYWRtaW5pc3RyYXRvciIsImFyZWdfcG9ydGFsOmFkbWluaXN0cmF0b3IiXX0sImFyZWdfcG9ydGFsIjp7InJvbGVzIjpbImFkbWluaXN0cmF0b3IiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGFkbWluaXN0cmF0b3Itc2NvcGUgZW1haWwiLCJzaWQiOiI1OWUwYjRhYS00OGU4LTRhMjItODYxYy0xNTU2NDMwODIxN2QiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkB0ZXN0dXNlci5jb20ifQ.Es7VpTPssG_aqOa2g5LCgvAb6ihafYc109C4Ri92XQKI1fiOPQcUnK-uYzAK-5jfsKHhcd9yU1F4TUXbPHHBEJ-cc1a9toC8GzuYCM6wo9HvbYTa5kmUh782SnfGG60Kblg22mkg1I8Rf5SKdo-SA9YEqAKEwOkzF2w_0FEG5lW_w6DCyir7t6n3mzOHWaGIRBjjfAMgAZzDALD90CS8AK4447Gc7rpAoLjKIM5RRLwU188bXQaDqkETcMDndT2qviXTN5wZLlcRDePjJVMR5wVInKtv7_k_RO-8xZW2UTukpTOzHYxE1oeylCG9jmLvItqg1mWtoyuhyFQ6lPtnHA; kc-state=tNkG7Xz78f8LXXFmSs6iF4udrRkkOoT3B+JvFUgThizsXy7IJ13UllLu9eCRq+hx5BL8rmlXC4r64a1SudvRsWoMfQUOvE7HmFK6wpMelQcTwjnCjcvYw6V7K/bXDq7AmpLLq2QJMc56JYT08gll9uXLBoBEDKfyPyFoRUgxJXXxHnzAPHiBFruN1jKVuTh7Yqcg0m0GHrD+hmcRsARLofprIyYpQw3HcBjD5nBv1LSunAmTwWfnyejPDcKqGZMAwnqBJfPvQjIfYxCXKYGCOtrTd8mrQcfXJB1I8oTc8qXvv2qCQ/mjfwkwBPxo4a7UXnfoNzmaYWWOCenYoYoxj0HSoZ5kxlFxn+XIGFkZMLdjsZ2JRhQePREF5oPrQY9Mqo41f3KSSjkj9Tb6H6RRxg0sLHTXMFv6CD6M/OcSNgDeWZSunRRENZUzCIYmJ+tAzvz2jfT5fbMw2t0jR2DhldGF0MpEEbMEqg8y1F5Wo36431Rh9pUQ7cM+7frQeWCAsISRH+pT1BIKtoFZp9pBX9jBnSrs3EKCYJMIFsMqXx7U8CUXkelyJrW4fV+n3beRr7FOgrbNMxTAuOYF01HQxbnhQLWuLmfPIouF7SgMWDBm+yxpn6iMA4ZsSov/DsEntBUAuBAWRvQpXahWrbWY22WVUWRlNeSehsEgCo9eHJSnzfMGS1BRaXoZVIWyvSU+t2LfvuG9//J96RguWklLYEMajfSZdt5JYMy+YAKzao9pLVzTRwzFEuY0HRpFfe+5mIREPFEWcfgohdiZk8kmz62DV28xUk9UZhjF0DwsxbsMvBNAtHa/9lMSNNuMUddgd/2QybmErqFd8lxd+x1wuvPyHTbilQk1STpVx7PJTypL3T7QPHfzDS2RRsPpy4EwcnjXFRw1+uSh/WEJi+NQmcLp6sL9nulSZnPBX5qPf9SudoyqK5l0AVqVlkl0AM1rJ7bFgRaWVn0x",
-      1
-    );
-  }
-  return parseJwt(getToken());
-}
-
-export function getToken(): string {
-  return getCookie("kc-access");
-}
-
 
 function getCookie(name: string): string {
   const value = `; ${document.cookie}`;
@@ -73,7 +89,36 @@ function getCookie(name: string): string {
   return null;
 }
 
-function parseJwt(token: string): User {
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${getBaseDomain()}`;
+}
+
+function isLocalhost(): boolean {
+  return window.location.hostname.includes("localhost");
+}
+
+// Clears the auth cookies so the gatekeeper starts a clean OAuth flow. Skipped
+// on localhost where auth is proxied and cookies are managed externally.
+function clearAuthCookies() {
+  if (isLocalhost()) {
+    return;
+  }
+  deleteCookie("kc-access");
+  deleteCookie("accessToken");
+}
+
+// True when the decoded token is missing, has no expiry, or expired more than
+// the leeway ago. The leeway keeps a just-issued token valid despite clock skew.
+function isTokenExpired(decoded: any): boolean {
+  if (!decoded || !decoded.exp) {
+    return true;
+  }
+  // exp is in seconds, Date.now() is in milliseconds.
+  const currentTime = Math.floor(Date.now() / 1000);
+  return decoded.exp + TOKEN_EXPIRY_LEEWAY_SECONDS < currentTime;
+}
+
+function parseJwt(token: string): any {
   if (!token) {
     return null;
   }
@@ -92,15 +137,82 @@ function parseJwt(token: string): User {
   return JSON.parse(jsonPayload);
 }
 
+export function getToken(): string {
+  const token = getCookie("kc-access");
 
-function setCookie(name, value, days) {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    expires = "; expires=" + date.toUTCString();
+  if (!token) {
+    return null;
   }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+
+  let decoded: any = null;
+  try {
+    decoded = parseJwt(token);
+  } catch {
+    // Malformed token: treat as expired so the stale cookie gets cleared below.
+    decoded = null;
+  }
+
+  if (isTokenExpired(decoded)) {
+    clearAuthCookies();
+    return null;
+  }
+
+  return token;
 }
 
-initApis(getToken());
+export function initUser(): UserInfo {
+  const token = getToken();
+
+  return mapKeycloakUser(parseJwt(token));
+}
+
+export async function login() {
+  // Drop any stale/expired auth cookies first so the gatekeeper always begins a
+  // fresh OAuth flow instead of trying to reuse an expired token.
+  clearAuthCookies();
+
+  // Remember where the user was so we can return them there after auth.
+  try {
+    const returnTo = window.location.pathname + window.location.search;
+    if (
+      returnTo.startsWith("/") &&
+      !returnTo.startsWith("//") &&
+      returnTo !== "/login"
+    ) {
+      sessionStorage.setItem(LOGIN_REDIRECT_KEY, returnTo);
+    }
+  } catch {
+    // sessionStorage may be unavailable (e.g. private mode); ignore.
+  }
+
+  window.location.href = "/login";
+}
+
+// Consumes the path stored before an auth redirect, defaulting to home.
+export function popLoginRedirect(): string {
+  try {
+    const target = sessionStorage.getItem(LOGIN_REDIRECT_KEY);
+    sessionStorage.removeItem(LOGIN_REDIRECT_KEY);
+    if (target && target.startsWith("/") && !target.startsWith("//")) {
+      return target;
+    }
+  } catch {
+    // ignore
+  }
+  return "/";
+}
+
+export async function logout() {
+  // Drop the local auth cookies before hitting the gatekeeper so a stale
+  // kc-access can't silently re-authenticate the previous user on the next
+  // visit (the "stuck after switching users" bug).
+  clearAuthCookies();
+  try {
+    await fetch("/oauth/logout");
+  } catch {
+    // ignore network errors and redirect anyway
+  }
+  window.location.href = "/";
+}
+
+initApis();

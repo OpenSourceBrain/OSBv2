@@ -45,10 +45,23 @@ def get_user(username_or_id: str) -> User:
     return user
 
 
-def get_users(query: str) -> typing.List[User]:
+def get_users(search: str = None, page: int = 1, per_page: int = 20) -> typing.Tuple[typing.List[User], int]:
+    """Return a page of users plus the total number of matching users.
+
+    Pagination is delegated to Keycloak: passing ``first``/``max`` makes
+    python-keycloak fetch a single page instead of every user, so the backoffice
+    scales regardless of how many accounts exist.
+    """
     try:
         client = AuthClient()
+        query = {'first': (page - 1) * per_page, 'max': per_page}
+        count_query = {}
+        if search:
+            query['search'] = search
+            count_query['search'] = search
         kc_users = client.get_users(query)
+        # users_count honours the same `search` filter, so the total matches the page.
+        total = client.get_admin_client().users_count(count_query)
     except KeycloakError as e:
         raise Exception("Unhandled Keycloak exception") from e
     all_users = []
@@ -57,7 +70,7 @@ def get_users(query: str) -> typing.List[User]:
         auser.email = None  # strip out the e-mail address
         all_users.append(auser)
 
-    return all_users
+    return all_users, total
 
 
 def map_user(kc_user) -> User:

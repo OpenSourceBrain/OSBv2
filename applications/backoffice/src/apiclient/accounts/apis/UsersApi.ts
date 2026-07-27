@@ -28,7 +28,9 @@ export interface GetUserRequest {
 }
 
 export interface GetUsersRequest {
-    queryString?: string;
+    search?: string;
+    page?: number;
+    perPage?: number;
 }
 
 export interface UpdateUserRequest {
@@ -75,8 +77,16 @@ export class UsersApi extends runtime.BaseAPI {
     async getUsersRaw(requestParameters: GetUsersRequest): Promise<runtime.ApiResponse<InlineResponse200>> {
         const queryParameters: any = {};
 
-        if (requestParameters.queryString !== undefined) {
-            queryParameters['query_string'] = requestParameters.queryString;
+        if (requestParameters.search !== undefined) {
+            queryParameters['search'] = requestParameters.search;
+        }
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.perPage !== undefined) {
+            queryParameters['per_page'] = requestParameters.perPage;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

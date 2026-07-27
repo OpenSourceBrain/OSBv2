@@ -1,77 +1,152 @@
 import * as React from "react";
-import Cookies from 'js-cookie'
 
 import Box from "@mui/material/Box";
 import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import makeStyles from '@mui/styles/makeStyles';
-
-import { initApis, getUsers } from  "../service/UserService";
-import { UserInfo } from '../types/user';
-import WorkspaceService from "../service/WorkspaceService"
+import { initApis, getToken, getUsers } from "../service/UserService";
+import { User } from "../apiclient/accounts";
+import WorkspaceService from "../service/WorkspaceService";
 import RepositoryService from "../service/RepositoryService";
+import SearchFilter from "../types/searchFilter";
 
-const BIG_NUMBER_OF_ITEMS = 5000;
+const DEFAULT_PAGE_SIZE = 20;
+const SEARCH_DEBOUNCE_MS = 350;
 
-
+interface UserCounts {
+  workspaces?: number;
+  repositories?: number;
+}
 
 export default (props: any) => {
 
-  const [ users, setUsers ] = React.useState<any[]>(null);
-  const [ workspaces, setWorkspaces ] = React.useState<any>(null);
-  const [ repositories, setRepositories ] = React.useState<any>(null);
-  const [ error, setError ] = React.useState<any>(null);
+  const [users, setUsers] = React.useState<User[]>(null);
+  const [rowCount, setRowCount] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(0); // DataGrid pages are 0-based
+  const [pageSize, setPageSize] = React.useState<number>(DEFAULT_PAGE_SIZE);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<any>(null);
 
-  let realm = "osb2"
+  const [searchInput, setSearchInput] = React.useState<string>("");
+  const [search, setSearch] = React.useState<string>("");
+
+  // Per-user workspace/repository counts, loaded lazily after each page renders.
+  const [counts, setCounts] = React.useState<{ [userId: string]: UserCounts }>({});
+  // Cheap grand totals for the summary line.
+  const [totals, setTotals] = React.useState<{ workspaces?: number; repositories?: number }>({});
+
+  const [ready, setReady] = React.useState<boolean>(false);
+
+  let realm = "osb2";
   if (window.location.hostname.includes("local")) {
-    realm = "osblocal"
+    realm = "osblocal";
   } else if (window.location.hostname.includes("dev")) {
-    realm = "osb2dev"
+    realm = "osb2dev";
   }
 
-  const fetchInfo = () => {
-    // Initialise APIs with token
-    const token = Cookies.get('accessToken');
-    if (token !== "undefined") {
-      initApis(token);
-
-      /* Does not require logging in */
-      getUsers().then((userlist) => {
-        setUsers(userlist);
-        setError(null);
-      }, (e) => setError(e));
-
-      /* Requires user to be logged in, and to be admin to see all workspaces */
-      WorkspaceService.fetchWorkspaces(null, null, 1, BIG_NUMBER_OF_ITEMS).then((workspaceList) => {
-        setWorkspaces(workspaceList.items);
-        setError(null);
-      }, (e) => setError(e))
-
-      /* Does not require logging in */
-      RepositoryService.getRepositories(1, BIG_NUMBER_OF_ITEMS, null).then((repositoryList) => {
-        setRepositories(repositoryList);
-        setError(null);
-      }, (e) => setError(e))
-    }
-  };
-
-  const getUserRepos = (userid: string) => {
-    return repositories.filter((repository: any) => {
-      return repository.userId === userid;
-    })
-  }
-
-  const getUserWorkspaces = (userid: string) => {
-    return workspaces.filter((workspace: any) => {
-      return workspace.user.id === userid;
-    })
-  }
-
+  // Set up the API clients from the gatekeeper token once on mount.
   React.useEffect(() => {
-    fetchInfo();
-  }, [ ]);
+    initApis();
+    if (getToken()) {
+      setReady(true);
+    } else {
+      setError("You are not logged in.");
+    }
+  }, []);
+
+  // Debounce the search box, resetting to the first page on a new query.
+  React.useEffect(() => {
+    const handle = setTimeout(() => {
+      setSearch(searchInput.trim());
+      setPage(0);
+    }, SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(handle);
+  }, [searchInput]);
+
+  // Fetch a single page of users server-side whenever paging or search changes.
+  React.useEffect(() => {
+    if (!ready) {
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    getUsers(page + 1, pageSize, search).then(
+      (result) => {
+        if (cancelled) {
+          return;
+        }
+        setUsers(result.users);
+        setRowCount(result.total);
+        setCounts({}); // drop counts from the previous page
+        setError(null);
+        setLoading(false);
+      },
+      (e) => {
+        if (cancelled) {
+          return;
+        }
+        setError(e);
+        setLoading(false);
+      }
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [ready, page, pageSize, search]);
+
+  // Lazily load per-user workspace/repository counts for the current page.
+  React.useEffect(() => {
+    if (!users || users.length === 0) {
+      return;
+    }
+    let cancelled = false;
+
+    users.forEach((user) => {
+      const userId = user.id;
+
+      const wsFilter: SearchFilter = { user_id: userId };
+      WorkspaceService.fetchWorkspacesByFilter(false, false, 1, wsFilter, 1).then(
+        (res) => {
+          if (cancelled) {
+            return;
+          }
+          setCounts((prev) => ({ ...prev, [userId]: { ...prev[userId], workspaces: res.total } }));
+        },
+        () => { /* leave the count blank on error */ }
+      );
+
+      RepositoryService.getUserRepositoriesDetails(userId, 1, 1).then(
+        (res) => {
+          if (cancelled) {
+            return;
+          }
+          setCounts((prev) => ({ ...prev, [userId]: { ...prev[userId], repositories: res.pagination?.total ?? 0 } }));
+        },
+        () => { /* leave the count blank on error */ }
+      );
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [users]);
+
+  // Cheap grand totals for the summary (one lightweight request each).
+  React.useEffect(() => {
+    if (!ready) {
+      return;
+    }
+    WorkspaceService.fetchWorkspaces(false, false, 1, 1).then(
+      (res) => setTotals((prev) => ({ ...prev, workspaces: res?.total })),
+      () => { /* ignore */ }
+    );
+    RepositoryService.getRepositoriesDetails(1, 1).then(
+      (res) => setTotals((prev) => ({ ...prev, repositories: res.pagination?.total })),
+      () => { /* ignore */ }
+    );
+  }, [ready]);
 
   // Get hostname without sub-domain
   const getHostname = (subdomain: string) => {
@@ -80,86 +155,97 @@ export default (props: any) => {
     if (subdomain === "") {
       return "https://" + hostname.join('.');
     }
-    else {
-      return "https://" + subdomain + "." + hostname.join('.');
-      }
-  }
+    return "https://" + subdomain + "." + hostname.join('.');
+  };
 
   const keycloakBaseUrl = React.useMemo(() => {
-
     return "/auth/admin/master/console/#/realms/" + realm + "/users/";
   }, [realm]);
 
   // for links to profiles
   const osbProfile = "/user/";
 
-  const getDataGridData = () => {
-    const gridData: any = [];
-    users.forEach((auser) => {
-      const arow: any = {
-        id: auser.id,
-        name: auser.firstName + " " + auser.lastName,
-        username: auser.username,
-        registration_date: auser.registrationDate,
-        groups: auser.groups,
-        workspaces: getUserWorkspaces(auser.id).length,
-        repositories: getUserRepos(auser.id).length
-      }
-      gridData.push(arow);
-    })
+  const displayName = (user: User) =>
+    [user.firstName, user.lastName].filter(Boolean).join(" ") || user.username || user.email || "—";
 
-    return gridData;
-  }
+  const getDataGridData = () => {
+    if (!users) {
+      return [];
+    }
+    return users.map((auser) => ({
+      id: auser.id,
+      name: displayName(auser),
+      username: auser.username,
+      registration_date: auser.registrationDate,
+      groups: auser.groups,
+      workspaces: counts[auser.id]?.workspaces,
+      repositories: counts[auser.id]?.repositories,
+    }));
+  };
+
+  const renderCount = (value: any) =>
+    value === undefined ? <CircularProgress size={14} /> : value;
 
   const dataColumns: GridColDef[] = [
     {
-      field: 'id', headerName: 'Profile', renderCell: (param: any) =>
-      <>
-        <Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>
-        &nbsp;|&nbsp;
-        <Link href={`${getHostname("accounts")}${keycloakBaseUrl}${param.value}`} target="_blank"> KeyCloak </Link>
-      </>,
+      field: 'id', headerName: 'Profile', sortable: false, renderCell: (param: any) =>
+        <>
+          <Link href={`${getHostname("")}${osbProfile}${param.value}`} target="_blank"> OSB </Link>
+          &nbsp;|&nbsp;
+          <Link href={`${getHostname("accounts")}${keycloakBaseUrl}${param.value}`} target="_blank"> KeyCloak </Link>
+        </>,
       minWidth: 50, flex: 2,
     },
+    { field: 'name', headerName: 'Name', minWidth: 50, flex: 2 },
+    { field: 'username', headerName: 'Username', minWidth: 50, flex: 2 },
+    { field: 'registration_date', headerName: 'Registration date', minWidth: 50, flex: 4 },
+    { field: 'groups', headerName: 'Groups', sortable: false, minWidth: 50, flex: 2 },
     {
-      field: 'name', headerName: 'Name',
-      minWidth: 50, flex: 2,
+      field: 'workspaces', headerName: 'Workspaces', sortable: false,
+      minWidth: 50, flex: 1, renderCell: (param: any) => renderCount(param.value),
     },
     {
-      field: 'username', headerName: 'Username',
-      minWidth: 50, flex: 2,
+      field: 'repositories', headerName: 'Repositories', sortable: false,
+      minWidth: 50, flex: 1, renderCell: (param: any) => renderCount(param.value),
     },
-    {
-      field: 'registration_date', headerName: 'Registration date',
-      minWidth: 50, flex: 4,
-    },
-    {
-      field: 'groups', headerName: 'Groups',
-      minWidth: 50, flex: 2,
-    },
-    {
-      field: 'workspaces', headerName: 'Workspaces',
-      minWidth: 50, flex: 1,
-    },
-    {
-      field: 'repositories', headerName: 'Repositories',
-      minWidth: 50, flex: 1,
-    }
-  ]
+  ];
 
-  return <>
-    { (error !== null) ? <>"An error occured: " { error }</> : (users === null || workspaces === null || repositories === null) ? <CircularProgress /> :
-      <Box p={1} style={{ height: '100%', overflow: 'auto' }}>
-        Summary: { `${users.length} users` } { workspaces !== null ? ` ${workspaces.length} workspaces,` : "? workspaces," } { repositories !== null ? ` and ${repositories.length} repositories.` : "? repositories." }
-        <div style={{ height: '100%', width: '100%' }}>
-          <DataGrid
-            rows={getDataGridData()}
-            columns={dataColumns}
-            autoHeight={true}
-            rowsPerPageOptions={[20, 50, 100]}
-          />
-        </div>
+  if (error !== null) {
+    return <Box p={2}>An error occured: {String(error?.message || error)}</Box>;
+  }
+
+  return (
+    <Box p={1} style={{ height: '100%', overflow: 'auto' }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1} gap={2}>
+        <span>
+          Summary: {`${rowCount} users`}
+          {totals.workspaces !== undefined ? `, ${totals.workspaces} workspaces` : ", … workspaces"}
+          {totals.repositories !== undefined ? ` and ${totals.repositories} repositories.` : " and … repositories."}
+        </span>
+        <TextField
+          size="small"
+          variant="outlined"
+          label="Search users"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
       </Box>
-      }
-  </>
+      <div style={{ height: '100%', width: '100%' }}>
+        <DataGrid
+          rows={getDataGridData()}
+          columns={dataColumns}
+          autoHeight={true}
+          loading={loading}
+          paginationMode="server"
+          rowCount={rowCount}
+          page={page}
+          onPageChange={(newPage) => setPage(newPage)}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => { setPageSize(newPageSize); setPage(0); }}
+          rowsPerPageOptions={[20, 50, 100]}
+          disableSelectionOnClick={true}
+        />
+      </div>
+    </Box>
+  );
 };
