@@ -42,7 +42,11 @@ def get_tags_info(
                 if mla["qualifier"] == "bqbiol:hasTaxon":
                     if "name" in mla:
                         tags.append(mla["name"])
-                elif mla["qualifier"] == "bqbiol:isVersionOf" or "resource" in mla and mla["resource"] == "Human Disease Ontology":
+                elif (
+                    mla["qualifier"] == "bqbiol:isVersionOf"
+                    or "resource" in mla
+                    and mla["resource"] == "Human Disease Ontology"
+                ):
                     if "name" in mla:
                         n = mla["name"]
                         tags.append(n[0].upper() + n[1:])
