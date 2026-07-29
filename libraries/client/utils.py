@@ -8,7 +8,7 @@ known_users = {
     "Padraig_v2dev": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
     "Filippo_v2dev": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
     # "Simao_v2dev": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
-    "OSBAdmin_v2dev": "095e311e-336f-47d6-b4f6-16f6dd771a8d",
+    "OSBAdmin_v2dev": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
 }
 
 
@@ -42,11 +42,7 @@ def get_tags_info(
                 if mla["qualifier"] == "bqbiol:hasTaxon":
                     if "name" in mla:
                         tags.append(mla["name"])
-                elif mla["qualifier"] == "bqbiol:isVersionOf":
-                    if "name" in mla:
-                        n = mla["name"]
-                        tags.append(n[0].upper() + n[1:])
-                elif "resource" in mla and mla["resource"] == "Human Disease Ontology":
+                elif mla["qualifier"] == "bqbiol:isVersionOf" or "resource" in mla and mla["resource"] == "Human Disease Ontology":
                     if "name" in mla:
                         n = mla["name"]
                         tags.append(n[0].upper() + n[1:])
@@ -70,8 +66,7 @@ def get_tags_info(
             for tag in ts:
                 if len(tag) > 0:
                     tag = tag.strip()
-                    if tag.endswith(","):
-                        tag = tag[:-1]
+                    tag = tag.removesuffix(",")
                     tags.append(tag)
 
         for field in ["Original format", "Cell type", "Brain region", "Specie"]:
@@ -87,8 +82,7 @@ def get_tags_info(
         for tag in dandi_api_info.tags:
             if len(tag) > 0:
                 tag = tag.strip()
-                if tag.endswith(","):
-                    tag = tag[:-1]
+                tag = tag.removesuffix(",")
                 tags.append(tag)
 
     if dandishowcase_info is not None:
@@ -115,10 +109,8 @@ def get_tags_info(
 
 
 def get_github():
-    from github import Github
-
     # Authentication is defined via github.Auth
-    from github import Auth
+    from github import Auth, Github
 
     # using an access token
     auth_token = str(open("github.auth", "r").readline()).strip()

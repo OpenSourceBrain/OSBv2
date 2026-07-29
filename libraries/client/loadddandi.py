@@ -1,17 +1,17 @@
-import workspaces_cli
-from pprint import pprint
-from workspaces_cli.api import rest_api, k8s_api
-import logging
 import json
+import logging
 import sys
+from pprint import pprint
 
-from utils import get_tags_info
-from utils import known_users, lookup_user, is_known_user
-
+import workspaces_cli
+from workspaces_cli.api import k8s_api, rest_api
 from workspaces_cli.models import (
     OSBRepository,
     RepositoryContentType,
 )
+
+from utils import get_tags_info, is_known_user, known_users, lookup_user
+
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
 

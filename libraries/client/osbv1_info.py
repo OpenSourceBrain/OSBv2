@@ -2,13 +2,14 @@
 Script to get OSBv1 project info
 """
 
-import sys
 import json
+import operator
+import pprint
+import sys
 
 # https://github.com/OpenSourceBrain/OSB_API
 import osb
-import operator
-import pprint
+
 from utils import get_github
 
 gh = get_github()

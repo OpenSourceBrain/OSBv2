@@ -2,11 +2,12 @@
 Script to get BioModels project info
 """
 
-import requests
 import json
 import pprint
 
-verbose = True  #
+import requests
+
+verbose = True
 verbose = False
 
 info_all = {}

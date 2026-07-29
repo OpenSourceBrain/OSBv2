@@ -3,11 +3,12 @@
 # the current contents. Makes it easier to track (small) changes following API calls
 ######################################################################################
 
-import workspaces_cli
-from pprint import pprint
-from workspaces_cli.api import rest_api, k8s_api
 import json
 import sys
+from pprint import pprint
+
+import workspaces_cli
+from workspaces_cli.api import k8s_api, rest_api
 
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.

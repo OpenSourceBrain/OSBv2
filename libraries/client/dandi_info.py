@@ -1,5 +1,6 @@
-from dandi.dandiapi import DandiAPIClient
 import json
+
+from dandi.dandiapi import DandiAPIClient
 
 # Initialize client
 client = DandiAPIClient()

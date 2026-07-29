@@ -9,7 +9,7 @@ from utils import get_github
 
 info = {}
 
-verbose = True  #
+verbose = True
 verbose = False
 
 gh = get_github()

@@ -1,16 +1,16 @@
-import workspaces_cli
-from pprint import pprint
-from workspaces_cli.api import rest_api, k8s_api
-import logging
 import json
+import logging
 import sys
+from pprint import pprint
+
+import workspaces_cli
+from workspaces_cli.api import k8s_api, rest_api
 from workspaces_cli.models import (
     OSBRepository,
     RepositoryContentType,
 )
 
-from utils import get_tags_info
-from utils import known_users, lookup_user
+from utils import get_tags_info, known_users, lookup_user
 
 known_ignores = ["dentate", "nc_superdeep", "tvb_neuroml"]
 
@@ -39,9 +39,9 @@ else:
 
 index = 0
 min_index = 0
-max_index = 1000
+max_index = 100
 
-verbose = True  #
+verbose = True
 verbose = False
 
 configuration = workspaces_cli.Configuration(

@@ -3,13 +3,13 @@ Script to get info on all models on ModelDB via their API, and potentially
 add forks of the ModelDB GitHub repos on github.com/OpenSourceBrain
 """
 
-import sys
 import json
 import pprint
+import sys
 
 from utils import get_github
 
-verbose = True  #
+verbose = True
 verbose = False
 
 info = {}

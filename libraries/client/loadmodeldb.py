@@ -1,18 +1,18 @@
-import workspaces_cli
-from pprint import pprint
-from workspaces_cli.api import rest_api, k8s_api
-import logging
 import json
+import logging
 import sys
+from pprint import pprint
 
-from utils import get_tags_info
-from utils import known_users, lookup_user
-from modeldb_info import known_no_mdb_github_repo, empty_on_mdb_github
-
+import workspaces_cli
+from workspaces_cli.api import k8s_api, rest_api
 from workspaces_cli.models import (
     OSBRepository,
     RepositoryContentType,
 )
+
+from modeldb_info import empty_on_mdb_github, known_no_mdb_github_repo
+from utils import get_tags_info, known_users, lookup_user
+
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
 
@@ -39,7 +39,7 @@ index = 0
 min_index = 0
 max_index = 10000
 
-verbose = True  #
+verbose = True
 verbose = False
 
 configuration = workspaces_cli.Configuration(
