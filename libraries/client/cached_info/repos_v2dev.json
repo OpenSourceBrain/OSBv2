@@ -3,18 +3,18 @@
         "content_types": {
             "experimental": 1,
             "experimental,modeling": 0,
-            "modeling": 115,
+            "modeling": 119,
             "modeling,experimental": 0
         },
         "repository_type": {
-            "biomodels": 0,
+            "biomodels": 4,
             "dandi": 0,
             "figshare": 0,
             "github": 116
         },
         "user_repos": {
             "aaa": 1,
-            "osbadmin": 114,
+            "osbadmin": 118,
             "testpat3": 1
         }
     },
@@ -453,18 +453,6 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 25,
-                    "tag": "Generic"
-                },
-                {
-                    "id": 26,
-                    "tag": "Integrate and fire neuron"
-                },
-                {
-                    "id": 27,
-                    "tag": "NEST"
-                },
-                {
                     "id": 5,
                     "tag": "Neocortex"
                 },
@@ -475,6 +463,18 @@
                 {
                     "id": 7,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 25,
+                    "tag": "Generic"
+                },
+                {
+                    "id": 26,
+                    "tag": "Integrate and fire neuron"
+                },
+                {
+                    "id": 27,
+                    "tag": "NEST"
                 },
                 {
                     "id": 28,
@@ -885,6 +885,14 @@
             "summary": "![](http://www.opensourcebrain.org/attachments/download/22/medium.png)\r\n\r\n**The latest version of this model can be found at http://www.opensourcebrain.org/projects/c302**\r\nNote: the development of the OpenWorm model of [C. elegans](http://en.wikipedia.org/wiki/Caenorhabditis_elegans) is taking place at [http://www.openworm.org](http://www.openworm.org).\r\n\r\nA full list of those involved in that project can be found [here](http://www.openworm.org/people.html).\r\n\r\nThe C. elegans 3D model this was derived from was produced by Dr. Christian Grove and Dr. Paul Sternberg at the VirtualWorm project (WormBase, CalTech) and released into the public domain. You can visit the VirtualWorm home page at http://caltech.wormbase.org/virtualworm/ .\r\n\r\nFor details on running this neuroConstruct project see: https://github.com/openworm/OpenWorm/wiki/Running-the-C.-elegans-model-in-neuroConstruct.\r\n\r\nThis is a **work in progress**. Please [get in contact](http://www.openworm.org/contacts.html) for more information.\r\n",
             "tags": [
                 {
+                    "id": 6,
+                    "tag": "Network model"
+                },
+                {
+                    "id": 7,
+                    "tag": "OSBv1"
+                },
+                {
                     "id": 18,
                     "tag": "Blender"
                 },
@@ -895,14 +903,6 @@
                 {
                     "id": 20,
                     "tag": "Nervous system"
-                },
-                {
-                    "id": 6,
-                    "tag": "Network model"
-                },
-                {
-                    "id": 7,
-                    "tag": "OSBv1"
                 },
                 {
                     "id": 21,
@@ -995,20 +995,8 @@
             "summary": "Multicompartmental model of cerebellar Golgi cell from: Solinas S, Forti L, Cesana E, Mapelli J, De Schutter E, D\u2019Angelo E. **Computational reconstruction of pacemaking and intrinsic electroresponsiveness in cerebellar Golgi cells**. [Front Cell Neurosci. 2007;1:2](http://journal.frontiersin.org/article/10.3389/neuro.03.002.2007/abstract). \r\n\r\nBased on implementation in NEURON taken from: http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=112685.\r\n",
             "tags": [
                 {
-                    "id": 46,
-                    "tag": "Cerebellum"
-                },
-                {
                     "id": 3,
                     "tag": "Detailed cell model"
-                },
-                {
-                    "id": 47,
-                    "tag": "Golgi cell"
-                },
-                {
-                    "id": 16,
-                    "tag": "NEURON"
                 },
                 {
                     "id": 7,
@@ -1021,6 +1009,18 @@
                 {
                     "id": 10,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 16,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 46,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 47,
+                    "tag": "Golgi cell"
                 }
             ],
             "timestamp_created": "2026-07-27 16:26:56+00:00",
@@ -1253,18 +1253,6 @@
             "summary": "Network simulations of self-sustained activity in networks of adaptive exponential integrate and fire neurons.\r\n\r\nFrom: Self-sustained asynchronous irregular states and Up\u2013Down states in thalamic, cortical and thalamocortical networks of nonlinear integrate-and-fire neurons, Alain Destexhe, [J Comp Neuroscience 2009](http://link.springer.com/article/10.1007%2Fs10827-009-0164-4)\r\n",
             "tags": [
                 {
-                    "id": 55,
-                    "tag": "Adaptive exponential integrate and fire neuron"
-                },
-                {
-                    "id": 25,
-                    "tag": "Generic"
-                },
-                {
-                    "id": 16,
-                    "tag": "NEURON"
-                },
-                {
                     "id": 5,
                     "tag": "Neocortex"
                 },
@@ -1277,8 +1265,20 @@
                     "tag": "OSBv1"
                 },
                 {
+                    "id": 16,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 25,
+                    "tag": "Generic"
+                },
+                {
                     "id": 28,
                     "tag": "Point neuron network"
+                },
+                {
+                    "id": 55,
+                    "tag": "Adaptive exponential integrate and fire neuron"
                 }
             ],
             "timestamp_created": "2026-07-29 10:14:21+00:00",
@@ -1355,6 +1355,10 @@
                     "tag": "Detailed cell model"
                 },
                 {
+                    "id": 7,
+                    "tag": "OSBv1"
+                },
+                {
                     "id": 42,
                     "tag": "Drosophila"
                 },
@@ -1365,10 +1369,6 @@
                 {
                     "id": 59,
                     "tag": "Neuromuscular system"
-                },
-                {
-                    "id": 7,
-                    "tag": "OSBv1"
                 },
                 {
                     "id": 60,
@@ -1404,32 +1404,32 @@
             "summary": "![](/attachments/download/50/Selection_140.png)\r\n\r\nIn early stages of development!\r\n\r\nCell model based on pubmed:19439602. \r\n",
             "tags": [
                 {
-                    "id": 62,
-                    "tag": "Antennal lobe"
-                },
-                {
                     "id": 3,
                     "tag": "Detailed cell model"
-                },
-                {
-                    "id": 42,
-                    "tag": "Drosophila"
-                },
-                {
-                    "id": 16,
-                    "tag": "NEURON"
                 },
                 {
                     "id": 7,
                     "tag": "OSBv1"
                 },
                 {
-                    "id": 63,
-                    "tag": "Projection neuron"
-                },
-                {
                     "id": 10,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 16,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 42,
+                    "tag": "Drosophila"
+                },
+                {
+                    "id": 62,
+                    "tag": "Antennal lobe"
+                },
+                {
+                    "id": 63,
+                    "tag": "Projection neuron"
                 }
             ],
             "timestamp_created": "2026-07-29 10:14:22+00:00",
@@ -1563,10 +1563,6 @@
                     "tag": "GENESIS"
                 },
                 {
-                    "id": 25,
-                    "tag": "Generic"
-                },
-                {
                     "id": 5,
                     "tag": "Neocortex"
                 },
@@ -1577,6 +1573,10 @@
                 {
                     "id": 7,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 25,
+                    "tag": "Generic"
                 },
                 {
                     "id": 66,
@@ -1989,22 +1989,6 @@
             "summary": "This project contains an integrate and fire model of the cerebellar granule cell and a simple model of the mossy fibre to granule cell synapse. The cell model (IaF\\_GrC.nml) is the average (ie the one whose parameters have the average value) of the model population developed by Jason Rothman and published in Schwartz et, J Neurosci (2012). The synaptic model is based on the one used in that same paper, but it has been developed further to improve the fit to the experimental data and to ensure LEMS/NeuroMLv2 compatibility.\n",
             "tags": [
                 {
-                    "id": 46,
-                    "tag": "Cerebellum"
-                },
-                {
-                    "id": 75,
-                    "tag": "Granule cell"
-                },
-                {
-                    "id": 76,
-                    "tag": "Igor Pro"
-                },
-                {
-                    "id": 26,
-                    "tag": "Integrate and fire neuron"
-                },
-                {
                     "id": 7,
                     "tag": "OSBv1"
                 },
@@ -2015,6 +1999,22 @@
                 {
                     "id": 10,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 26,
+                    "tag": "Integrate and fire neuron"
+                },
+                {
+                    "id": 46,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 75,
+                    "tag": "Granule cell"
+                },
+                {
+                    "id": 76,
+                    "tag": "Igor Pro"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:36+00:00",
@@ -2209,16 +2209,8 @@
             "summary": "![](http://www.opensourcebrain.org/attachments/download/25/shutter98.png)\r\nA project illustrating the behaviour of the cerebellar granule cell model from: Maex, R and De Schutter, E. [Synchronization of Golgi and Granule Cell Firing in a Detailed Network Model of the Cerebellar Granule Cell Layer](http://www.ncbi.nlm.nih.gov/pubmed/9819260) J Neurophysiol, Nov 1998; 80: 2521 - 2537. \r\n\r\nBased on scripts obtained from: http://www.tnb.ua.ac.be/models/network.shtml.\r\n\r\nFor more details see the [[Wiki]].\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/GranuleCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/GranuleCell)\r\n",
             "tags": [
                 {
-                    "id": 46,
-                    "tag": "Cerebellum"
-                },
-                {
                     "id": 4,
                     "tag": "GENESIS"
-                },
-                {
-                    "id": 75,
-                    "tag": "Granule cell"
                 },
                 {
                     "id": 7,
@@ -2229,12 +2221,20 @@
                     "tag": "Rodent"
                 },
                 {
+                    "id": 10,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 46,
+                    "tag": "Cerebellum"
+                },
+                {
                     "id": 66,
                     "tag": "Single compartment conductance based neuron model"
                 },
                 {
-                    "id": 10,
-                    "tag": "neuroConstruct"
+                    "id": 75,
+                    "tag": "Granule cell"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:38+00:00",
@@ -2262,18 +2262,6 @@
             "summary": "![](http://www.opensourcebrain.org/attachments/download/26/steubersaviane.png)\nConversion to NeuroML of a model granule cell developed by Volker Steuber and Chiara Saviane (Silver lab).\n\nBased on a Granule cell model from Michiel Berends, Neural Comp 15, 2531-47 (2005) originally modified by Chiara Saviane and further modified by VS, July 2006.\n",
             "tags": [
                 {
-                    "id": 46,
-                    "tag": "Cerebellum"
-                },
-                {
-                    "id": 75,
-                    "tag": "Granule cell"
-                },
-                {
-                    "id": 16,
-                    "tag": "NEURON"
-                },
-                {
                     "id": 7,
                     "tag": "OSBv1"
                 },
@@ -2282,12 +2270,24 @@
                     "tag": "Rodent"
                 },
                 {
+                    "id": 10,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 16,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 46,
+                    "tag": "Cerebellum"
+                },
+                {
                     "id": 66,
                     "tag": "Single compartment conductance based neuron model"
                 },
                 {
-                    "id": 10,
-                    "tag": "neuroConstruct"
+                    "id": 75,
+                    "tag": "Granule cell"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:38+00:00",
@@ -2397,22 +2397,6 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 78,
-                    "tag": "Demo"
-                },
-                {
-                    "id": 31,
-                    "tag": "Hippocampal formation"
-                },
-                {
-                    "id": 32,
-                    "tag": "Hippocampus"
-                },
-                {
-                    "id": 12,
-                    "tag": "Network"
-                },
-                {
                     "id": 7,
                     "tag": "OSBv1"
                 },
@@ -2423,6 +2407,22 @@
                 {
                     "id": 10,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 12,
+                    "tag": "Network"
+                },
+                {
+                    "id": 31,
+                    "tag": "Hippocampal formation"
+                },
+                {
+                    "id": 32,
+                    "tag": "Hippocampus"
+                },
+                {
+                    "id": 78,
+                    "tag": "Demo"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:39+00:00",
@@ -2646,14 +2646,6 @@
                     "tag": "Detailed cell model"
                 },
                 {
-                    "id": 88,
-                    "tag": "L2/3 pyramidal cell"
-                },
-                {
-                    "id": 16,
-                    "tag": "NEURON"
-                },
-                {
                     "id": 5,
                     "tag": "Neocortex"
                 },
@@ -2668,6 +2660,14 @@
                 {
                     "id": 9,
                     "tag": "Rodent"
+                },
+                {
+                    "id": 16,
+                    "tag": "NEURON"
+                },
+                {
+                    "id": 88,
+                    "tag": "L2/3 pyramidal cell"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:41+00:00",
@@ -3062,16 +3062,20 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 16,
-                    "tag": "NEURON"
-                },
-                {
                     "id": 6,
                     "tag": "Network model"
                 },
                 {
                     "id": 7,
                     "tag": "OSBv1"
+                },
+                {
+                    "id": 9,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 16,
+                    "tag": "NEURON"
                 },
                 {
                     "id": 94,
@@ -3084,10 +3088,6 @@
                 {
                     "id": 96,
                     "tag": "Olfactory system"
-                },
-                {
-                    "id": 9,
-                    "tag": "Rodent"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:43+00:00",
@@ -3401,8 +3401,20 @@
             "summary": "![](http://www.openworm.org/img/OpenWormLogo.png)\r\n\r\nThis project is being developed as part of the [OpenWorm](http://www.openworm.org) project. This is an attempt to convert the model of [Boyle & Cohen, 2008](http://www.sciencedirect.com/science/article/pii/S0303264708001408) into NeuroML format for use on NEURON and other simulators.\r\n\r\nSee [here](/projects/muscle_model/wiki) for more details.\r\n",
             "tags": [
                 {
+                    "id": 7,
+                    "tag": "OSBv1"
+                },
+                {
                     "id": 19,
                     "tag": "C. elegans"
+                },
+                {
+                    "id": 21,
+                    "tag": "OpenWorm"
+                },
+                {
+                    "id": 59,
+                    "tag": "Neuromuscular system"
                 },
                 {
                     "id": 104,
@@ -3413,20 +3425,8 @@
                     "tag": "Muscle cell model"
                 },
                 {
-                    "id": 59,
-                    "tag": "Neuromuscular system"
-                },
-                {
                     "id": 106,
                     "tag": "Neuromusculature system"
-                },
-                {
-                    "id": 7,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 21,
-                    "tag": "OpenWorm"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:45+00:00",
@@ -3568,18 +3568,6 @@
             "summary": "![](http://nengo.ca/sites/nengo.ca/files/logo_ctn.png)\n\nProject to test scenarios for NeuroML & [Nengo](http://nengo.ca) interoperability\n",
             "tags": [
                 {
-                    "id": 25,
-                    "tag": "Generic"
-                },
-                {
-                    "id": 90,
-                    "tag": "Large scale network simulation"
-                },
-                {
-                    "id": 110,
-                    "tag": "Nengo"
-                },
-                {
                     "id": 6,
                     "tag": "Network model"
                 },
@@ -3588,12 +3576,24 @@
                     "tag": "OSBv1"
                 },
                 {
+                    "id": 25,
+                    "tag": "Generic"
+                },
+                {
                     "id": 53,
                     "tag": "Python tools for computational neuroscience"
                 },
                 {
                     "id": 73,
                     "tag": "Simulator showcase"
+                },
+                {
+                    "id": 90,
+                    "tag": "Large scale network simulation"
+                },
+                {
+                    "id": 110,
+                    "tag": "Nengo"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:46+00:00",
@@ -4398,14 +4398,6 @@
                     "tag": "OSBv1"
                 },
                 {
-                    "id": 96,
-                    "tag": "Olfactory system"
-                },
-                {
-                    "id": 130,
-                    "tag": "Piriform cortex"
-                },
-                {
                     "id": 8,
                     "tag": "Pyramidal cell"
                 },
@@ -4416,6 +4408,14 @@
                 {
                     "id": 10,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 96,
+                    "tag": "Olfactory system"
+                },
+                {
+                    "id": 130,
+                    "tag": "Piriform cortex"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:52+00:00",
@@ -4561,10 +4561,6 @@
             "summary": "![](http://www.opensourcebrain.org/attachments/download/28/shutterbower94.png)\nAn initial implementation in NeuroML of the Purkinje Cell model from De Schutter, E. and Bower, J. M. (1994). Based on Arnd Roth el al\u2019s conversion of the original GENESIS code to NEURON. Note: conversion not fully complete.\n",
             "tags": [
                 {
-                    "id": 46,
-                    "tag": "Cerebellum"
-                },
-                {
                     "id": 3,
                     "tag": "Detailed cell model"
                 },
@@ -4577,16 +4573,20 @@
                     "tag": "OSBv1"
                 },
                 {
-                    "id": 132,
-                    "tag": "Purkinje cell"
-                },
-                {
                     "id": 9,
                     "tag": "Rodent"
                 },
                 {
                     "id": 10,
                     "tag": "neuroConstruct"
+                },
+                {
+                    "id": 46,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 132,
+                    "tag": "Purkinje cell"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:53+00:00",
@@ -4614,6 +4614,18 @@
             "summary": "Implementation of the pyloric network of the lobster stomatogastric ganglion system of Prinz, Marder, et al.\r\n\r\nWork in progress! For more details see the [[Wiki]].\r\n",
             "tags": [
                 {
+                    "id": 7,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 10,
+                    "tag": "neuroConstruct"
+                },
+                {
+                    "id": 28,
+                    "tag": "Point neuron network"
+                },
+                {
                     "id": 133,
                     "tag": "C"
                 },
@@ -4626,20 +4638,8 @@
                     "tag": "Multiple cells"
                 },
                 {
-                    "id": 7,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 28,
-                    "tag": "Point neuron network"
-                },
-                {
                     "id": 136,
                     "tag": "Stomatogastric ganglion"
-                },
-                {
-                    "id": 10,
-                    "tag": "neuroConstruct"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:53+00:00",
@@ -4876,16 +4876,8 @@
             "summary": "[Striatal spiny projection neuron](http://neurolex.org/wiki/Category:Neostriatum_direct_pathway_spiny_neuron) model being developed by Avrama Blackwell. A version of this model in \u201cpure\u201d NeuroML v2.0 is being developed here.\n\nFor more information, see the [[Wiki]]\n",
             "tags": [
                 {
-                    "id": 116,
-                    "tag": "Basal ganglia"
-                },
-                {
                     "id": 4,
                     "tag": "GENESIS"
-                },
-                {
-                    "id": 14,
-                    "tag": "Goldman-Hodgkin-Katz current"
                 },
                 {
                     "id": 7,
@@ -4896,8 +4888,16 @@
                     "tag": "Rodent"
                 },
                 {
+                    "id": 14,
+                    "tag": "Goldman-Hodgkin-Katz current"
+                },
+                {
                     "id": 66,
                     "tag": "Single compartment conductance based neuron model"
+                },
+                {
+                    "id": 116,
+                    "tag": "Basal ganglia"
                 },
                 {
                     "id": 139,
@@ -5484,8 +5484,16 @@
             "summary": "",
             "tags": [
                 {
-                    "id": 150,
-                    "tag": "?"
+                    "id": 7,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 9,
+                    "tag": "Rodent"
+                },
+                {
+                    "id": 12,
+                    "tag": "Network"
                 },
                 {
                     "id": 31,
@@ -5500,16 +5508,8 @@
                     "tag": "Interneuron"
                 },
                 {
-                    "id": 12,
-                    "tag": "Network"
-                },
-                {
-                    "id": 7,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 9,
-                    "tag": "Rodent"
+                    "id": 150,
+                    "tag": "?"
                 }
             ],
             "timestamp_created": "2026-07-29 10:18:59+00:00",
@@ -5658,6 +5658,210 @@
             "timestamp_created": "2026-07-29 10:19:00+00:00",
             "timestamp_updated": "---",
             "uri": "https://github.com/openworm/CE_locomotion",
+            "user": {
+                "email": "osbadmin@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac"
+        },
+        "120": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "4",
+            "id": 120,
+            "name": "Edelstein1996 - EPSP ACh event",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Edelstein1996 - EPSP ACh event</div><div class=\"dc:description\">  <p>Model of a nicotinic Excitatory Post-Synaptic Potential in a  Torpedo electric organ. Acetylcholine is not represented  explicitely, but by an event that changes the constants of  transition from unliganded to liganded.\u00a0  <br /></p></div><div class=\"dc:provenance\">  <p>This model has initially been encoded using StochSim.</p></div><div class=\"dc:bibliographicCitation\">  <p>This model is described in the article:</p>  <div class=\"bibo:title\">    <a href=\"http://identifiers.org/pubmed/8983160\" title=\"Access to this publication\">A kinetic mechanism for    nicotinic acetylcholine receptors based on multiple allosteric    transitions.</a>  </div>  <div class=\"bibo:authorList\">Edelstein SJ, Schaad O, Henry E,  Bertrand D, Changeux JP.</div>  <div class=\"bibo:Journal\">Biol Cybern 1996 Nov; 75(5):  361-379</div>  <p>Abstract:</p>  <div class=\"bibo:abstract\">    <p>Nicotinic acetylcholine receptors are transmembrane    oligomeric proteins that mediate interconversions between open    and closed channel states under the control of    neurotransmitters. Fast in vitro chemical kinetics and in vivo    electrophysiological recordings are consistent with the    following multi-step scheme. Upon binding of agonists, receptor    molecules in the closed but activatable resting state (the    Basal state, B) undergo rapid transitions to states of higher    affinities with either open channels (the Active state, A) or    closed channels (the initial Inactivatable and fully    Desensitized states, I and D). In order to represent the    functional properties of such receptors, we have developed a    kinetic model that links conformational interconversion rates    to agonist binding and extends the general principles of the    Monod-Wyman-Changeux model of allosteric transitions. The    crucial assumption is that the linkage is controlled by the    position of the interconversion transition states on a    hypothetical linear reaction coordinate. Application of the    model to the peripheral nicotine acetylcholine receptor (nAChR)    accounts for the main properties of ligand-gating, including    single-channel events, and several new relationships are    predicted. Kinetic simulations reveal errors inherent in using    the dose-response analysis, but justify its application under    defined conditions. The model predicts that (in order to    overcome the intrinsic stability of the B state and to produce    the appropriate cooperativity) channel activation is driven by    an A state with a Kd in the 50 nM range, hence some 140-fold    stronger than the apparent affinity of the open state deduced    previously. According to the model, recovery from the    desensitized states may occur via rapid transit through the A    state with minimal channel opening, thus without necessarily    undergoing a distinct recovery pathway, as assumed in the    standard 'cycle' model. Transitions to the desensitized states    by low concentration 'pre-pulses' are predicted to occur    without significant channel opening, but equilibrium values of    IC50 can be obtained only with long pre-pulse times.    Predictions are also made concerning allosteric effectors and    their possible role in coincidence detection. In terms of    future developments, the analysis presented here provides a    physical basis for constructing more biologically realistic    models of synaptic modulation that may be applied to artificial    neural networks.</p>  </div></div><div class=\"dc:publisher\">  <p>This model is hosted on   <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>  and identified by:   <a href=\"http://identifiers.org/biomodels.db/BIOMD0000000001\">BIOMD0000000001</a>.</p>  <p>To cite BioModels Database, please use:   <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database:  An enhanced, curated and annotated resource for published  quantitative kinetic models</a>.</p></div><div class=\"dc:license\">  <p>To the extent possible under law, all copyright and related or  neighbouring rights to this encoded model have been dedicated to  the public domain worldwide. Please refer to   <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0  Public Domain Dedication</a> for more information.</p></div></body>    </notes>",
+            "tags": [
+                {
+                    "id": 115,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 152,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 153,
+                    "tag": "BioModels:BIOMD0000000001"
+                },
+                {
+                    "id": 154,
+                    "tag": "Cell surface receptor signaling pathway"
+                },
+                {
+                    "id": 155,
+                    "tag": "Neuromuscular synaptic transmission"
+                },
+                {
+                    "id": 156,
+                    "tag": "Tetronarce californica"
+                },
+                {
+                    "id": 157,
+                    "tag": "Transmission of nerve impulse"
+                }
+            ],
+            "timestamp_created": "2026-07-31 11:11:08+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000001",
+            "user": {
+                "email": "osbadmin@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac"
+        },
+        "121": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 121,
+            "name": "Edelstein1996 - EPSP ACh species",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Edelstein1996 - EPSP ACh species</div>            <div class=\"dc:description\">      <p>Model of a nicotinic Excitatory Post-Synaptic Potential in a Torpedo electric organ. Acetylcholine is represented explicitely as a molecular species.</p>                </div>            <div class=\"dc:provenance\">      <p>This model has initially been encoded using StochSim.</p>                </div>            <div class=\"dc:bibliographicCitation\">      <p>This model is described in the article:</p>                <div class=\"bibo:title\">        <a href=\"http://identifiers.org/pubmed/8983160\" title=\"Access to this publication\">A kinetic mechanism for nicotinic acetylcholine receptors based on multiple allosteric transitions.</a>                    </div>                <div class=\"bibo:authorList\">Edelstein SJ, Schaad O, Henry E, Bertrand D, Changeux JP.</div>                <div class=\"bibo:Journal\">Biol. Cybern. 1996 Nov; 75(5):361-79</div>                <p>Abstract:</p>                <div class=\"bibo:abstract\">        <p>Nicotinic acetylcholine receptors are transmembrane oligomeric proteins that mediate interconversions between open and closed channel states under the control of neurotransmitters. Fast in vitro chemical kinetics and in vivo electrophysiological recordings are consistent with the following multi-step scheme. Upon binding of agonists, receptor molecules in the closed but activatable resting state (the Basal state, B) undergo rapid transitions to states of higher affinities with either open channels (the Active state, A) or closed channels (the initial Inactivatable and fully Desensitized states, I and D). In order to represent the functional properties of such receptors, we have developed a kinetic model that links conformational interconversion rates to agonist binding and extends the general principles of the Monod-Wyman-Changeux model of allosteric transitions. The crucial assumption is that the linkage is controlled by the position of the interconversion transition states on a hypothetical linear reaction coordinate. Application of the model to the peripheral nicotine acetylcholine receptor (nAChR) accounts for the main properties of ligand-gating, including single-channel events, and several new relationships are predicted. Kinetic simulations reveal errors inherent in using the dose-response analysis, but justify its application under defined conditions. The model predicts that (in order to overcome the intrinsic stability of the B state and to produce the appropriate cooperativity) channel activation is driven by an A state with a Kd in the 50 nM range, hence some 140-fold stronger than the apparent affinity of the open state deduced previously. According to the model, recovery from the desensitized states may occur via rapid transit through the A state with minimal channel opening, thus without necessarily undergoing a distinct recovery pathway, as assumed in the standard 'cycle' model. Transitions to the desensitized states by low concentration 'pre-pulses' are predicted to occur without significant channel opening, but equilibrium values of IC50 can be obtained only with long pre-pulse times. Predictions are also made concerning allosteric effectors and their possible role in coincidence detection. In terms of future developments, the analysis presented here provides a physical basis for constructing more biologically realistic models of synaptic modulation that may be applied to artificial neural networks.</p>                    </div>                </div>            <div class=\"dc:publisher\">      <p>This model is hosted on        <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>            and identified by:        <a href=\"http://identifiers.org/biomodels.db/BIOMD0000000002\">BIOMD0000000002</a>            .        </p>                <p>To cite BioModels Database, please use:        <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models</a>            .        </p>                </div>            <div class=\"dc:license\">      <p>To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to        <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0 Public Domain Dedication</a>            for more information.        </p>                </div>            </body>          </notes>",
+            "tags": [
+                {
+                    "id": 115,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 152,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 154,
+                    "tag": "Cell surface receptor signaling pathway"
+                },
+                {
+                    "id": 155,
+                    "tag": "Neuromuscular synaptic transmission"
+                },
+                {
+                    "id": 156,
+                    "tag": "Tetronarce californica"
+                },
+                {
+                    "id": 157,
+                    "tag": "Transmission of nerve impulse"
+                },
+                {
+                    "id": 158,
+                    "tag": "BioModels:BIOMD0000000002"
+                }
+            ],
+            "timestamp_created": "2026-07-31 11:11:09+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000002",
+            "user": {
+                "email": "osbadmin@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac"
+        },
+        "122": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 122,
+            "name": "Goldbeter1991 - Min Mit Oscil",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Goldbeter1991 - Min Mit Oscil</div>            <div class=\"dc:description\">      <p>Minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase.</p>                </div>            <div class=\"dc:provenance\">      <p>This model has been generated by MathSBML 2.4.6 (14-January-2005) 14-January-2005 18:33:39.806932.</p>                </div>            <div class=\"dc:bibliographicCitation\">      <p>This model is described in the article:</p>                <div class=\"bibo:title\">        <a href=\"http://identifiers.org/pubmed/1833774\" title=\"Access to this publication\">A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase.</a>                    </div>                <div class=\"bibo:authorList\">Goldbeter A.</div>                <div class=\"bibo:Journal\">Proc. Natl. Acad. Sci. U.S.A. 1991; 88(20):9107-11</div>                <p>Abstract:</p>                <div class=\"bibo:abstract\">        <p>A minimal model for the mitotic oscillator is presented. The model, built on recent experimental advances, is based on the cascade of post-translational modification that modulates the activity of cdc2 kinase during the cell cycle. The model pertains to the situation encountered in early amphibian embryos, where the accumulation of cyclin suffices to trigger the onset of mitosis. In the first cycle of the bicyclic cascade model, cyclin promotes the activation of cdc2 kinase through reversible dephosphorylation, and in the second cycle, cdc2 kinase activates a cyclin protease by reversible phosphorylation. That cyclin activates cdc2 kinase while the kinase triggers the degradation of cyclin has suggested that oscillations may originate from such a negative feedback loop [F\u00e9lix, M. A., Labb\u00e9, J. C., Dor\u00e9e, M., Hunt, T. &amp; Karsenti, E. (1990) Nature (London) 346, 379-382]. This conjecture is corroborated by the model, which indicates that sustained oscillations of the limit cycle type can arise in the cascade, provided that a threshold exists in the activation of cdc2 kinase by cyclin and in the activation of cyclin proteolysis by cdc2 kinase. The analysis shows how miototic oscillations may readily arise from time lags associated with these thresholds and from the delayed negative feedback provided by cdc2-induced cyclin degradation. A mechanism for the origin of the thresholds is proposed in terms of the phenomenon of zero-order ultrasensitivity previously described for biochemical systems regulated by covalent modification.</p>                    </div>                </div>            <div class=\"dc:publisher\">      <p>This model is hosted on        <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>            and identified by:        <a href=\"http://identifiers.org/biomodels.db/BIOMD0000000003\">BIOMD0000000003</a>            .        </p>                <p>To cite BioModels Database, please use:        <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models</a>            .        </p>                </div>            <div class=\"dc:license\">      <p>To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to        <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0 Public Domain Dedication</a>            for more information.        </p>                </div>            </body>          </notes>",
+            "tags": [
+                {
+                    "id": 115,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 152,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 159,
+                    "tag": "Amphibia"
+                },
+                {
+                    "id": 160,
+                    "tag": "BioModels:BIOMD0000000003"
+                },
+                {
+                    "id": 161,
+                    "tag": "Cell cycle - Homo sapiens (human)"
+                },
+                {
+                    "id": 162,
+                    "tag": "Mitotic cell cycle"
+                }
+            ],
+            "timestamp_created": "2026-07-31 11:11:09+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000003",
+            "user": {
+                "email": "osbadmin@opensourcebrain.org",
+                "first_name": "OSB",
+                "id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "897f31bd-b8a4-49bb-97e1-309a12ee6dac"
+        },
+        "123": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "3",
+            "id": 123,
+            "name": "Goldbeter1991 - Min Mit Oscil, Expl Inact",
+            "repository_type": "biomodels",
+            "summary": "<notes xmlns=\"http://www.sbml.org/sbml/level2/version4\">      <body xmlns=\"http://www.w3.org/1999/xhtml\">        <div class=\"dc:title\">Goldbeter1991 - Min Mit Oscil, Expl Inact</div>            <div class=\"dc:description\">      <p>This model represents the inactive forms of CDC-2 Kinase and Cyclin Protease as separate species, unlike the ODEs in the published paper, in which the equations for the inactive forms are substituted into the equations for the active forms using a mass conservation rule M+MI=1,X+XI=1. Mass is still conserved in this model through the explicit reactions M&lt;-&gt;MI and X&lt;-&gt;XI. The terms in the kinetic laws are identical to the corresponding terms in the kinetic laws in the published paper.</p>                </div>            <div class=\"dc:provenance\">      <p>This model has been generated by MathSBML 2.4.6 (14-January-2005) 14-January-2005 18:37:35.503857.</p>                </div>            <div class=\"dc:bibliographicCitation\">      <p>This model is described in the article:</p>                <div class=\"bibo:title\">        <a href=\"http://identifiers.org/pubmed/1833774\" title=\"Access to this publication\">A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase.</a>                    </div>                <div class=\"bibo:authorList\">Goldbeter A.</div>                <div class=\"bibo:Journal\">Proc. Natl. Acad. Sci. USA 1991 Oct; 88(20):9107-11</div>                <p>Abstract:</p>                <div class=\"bibo:abstract\">        <p>A minimal model for the mitotic oscillator is presented. The model, built on recent experimental advances, is based on the cascade of post-translational modification that modulates the activity of cdc2 kinase during the cell cycle. The model pertains to the situation encountered in early amphibian embryos, where the accumulation of cyclin suffices to trigger the onset of mitosis. In the first cycle ofthe bicyclic cascade model, cyclin promotes the activation of cdc2 kinase through reversible dephosphorylation, and in the second cycle, cdc2 kinase activates a cyclin protease by reversible phosphorylation. That cyclin activates cdc2 kinase while the kinase triggers the degradation of cyclin has suggested that oscillations may originate from such a negative feedback loop [F\u00e9lix, M. A., Labb\u00e9, J. C., Dor\u00e9e, M., Hunt, T. &amp; Karsenti, E. (1990) Nature (London) 346, 379-382]. Thisconjecture is corroborated by the model, which indicates that sustained oscillations of the limit cycle type can arise in the cascade, provided that a threshold exists in the activation of cdc2 kinase by cyclin and in the activation of cyclinproteolysis by cdc2 kinase. The analysis shows how miototic oscillations may readily arise from time lags associated with these thresholds and from the delayed negative feedback provided by cdc2-induced cyclin degradation. A mechanism for theorigin of the thresholds is proposed in terms of the phenomenon of zero-order ultrasensitivity previously described for biochemical systems regulated by covalent modification.</p>                    </div>                </div>            <div class=\"dc:publisher\">      <p>This model is hosted on        <a href=\"http://www.ebi.ac.uk/biomodels/\">BioModels Database</a>            and identified by:        <a href=\"http://identifiers.org/biomodels.db/BIOMD0000000004\">BIOMD0000000004</a>            .        </p>                <p>To cite BioModels Database, please use:        <a href=\"http://identifiers.org/pubmed/20587024\" title=\"Latest BioModels Database publication\">BioModels Database: An enhanced, curated and annotated resource for published quantitative kinetic models</a>            .        </p>                </div>            <div class=\"dc:license\">      <p>To the extent possible under law, all copyright and related or neighbouring rights to this encoded model have been dedicated to the public domain worldwide. Please refer to        <a href=\"http://creativecommons.org/publicdomain/zero/1.0/\" title=\"Access to: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication\">CC0 Public Domain Dedication</a>            for more information.        </p>                </div>            </body>          </notes>",
+            "tags": [
+                {
+                    "id": 115,
+                    "tag": "SBML"
+                },
+                {
+                    "id": 152,
+                    "tag": "BioModels"
+                },
+                {
+                    "id": 159,
+                    "tag": "Amphibia"
+                },
+                {
+                    "id": 161,
+                    "tag": "Cell cycle - Homo sapiens (human)"
+                },
+                {
+                    "id": 162,
+                    "tag": "Mitotic cell cycle"
+                },
+                {
+                    "id": 163,
+                    "tag": "BioModels:BIOMD0000000004"
+                }
+            ],
+            "timestamp_created": "2026-07-31 11:11:09+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://www.ebi.ac.uk/biomodels/BIOMD0000000004",
             "user": {
                 "email": "osbadmin@opensourcebrain.org",
                 "first_name": "OSB",
