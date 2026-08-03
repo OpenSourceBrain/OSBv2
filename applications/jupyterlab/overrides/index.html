@@ -9,13 +9,31 @@
    }
 
 
+   /* The single server base url (e.g. /user/<id>/). Never derive it by
+      splitting the full href on "/lab": the app is served from the "lab"
+      subdomain, so the first match is the "//lab." of the host and the
+      redirect ends up on the bogus host "lab" (DNS failure in the iframe). */
+   const serverBaseUrl = () => {
+    let baseUrl = "";
+    try {
+     baseUrl = JSON.parse(document.getElementById("jupyter-config-data").textContent).baseUrl || "";
+    } catch (e) {
+     baseUrl = "";
+    }
+    if (!baseUrl) {
+     // Fall back to the path only, so the host can never be part of the split.
+     baseUrl = window.location.pathname.split("/lab")[0];
+    }
+    return baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+   };
+
    const loadFromEvent = (event) => {
     switch (event.data.type) {
      case "LOAD_RESOURCE":
       console.debug("Load resource", event.data);
       const relativeResourcePath = event.data.payload.replace("/opt/workspace/", "")
       if (!window.location.href.includes(relativeResourcePath)) {
-       window.location.href = window.location.href.split("/lab")[0] + `/lab/tree/${relativeResourcePath}`;
+       window.location.href = new URL(`${serverBaseUrl()}lab/tree/${relativeResourcePath}`, window.location.origin).href;
       }
       break;
      case "NO_RESOURCE": {
