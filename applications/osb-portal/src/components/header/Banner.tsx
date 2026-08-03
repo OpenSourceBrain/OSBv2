@@ -22,7 +22,7 @@ export const Banner = () => {
     <Box
       sx={{
         position: "relative",
-        backgroundImage: "url(images/banner.png)",
+        backgroundImage: "url(/images/banner.png)",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",

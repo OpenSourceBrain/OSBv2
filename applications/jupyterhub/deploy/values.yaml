@@ -10,6 +10,8 @@ harness:
   dependencies:
     build:
       - cloudharness-base
+    hard:
+      - accounts
   quotas:
     # default for User Quotas
     # user quotas can be set as Keycloak attributes on Groups and Users
