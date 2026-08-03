@@ -15,7 +15,7 @@ CLOUD_HARNESS_DIR="${CLOUD_HARNESS_DIR_LOCATION}/cloud-harness"
 CLOUD_HARNESS_DEFAULT="develop"
 CLOUD_HARNESS_BRANCH=""
 SKAFFOLD="skaffold"
-SKAFFOLD_MAX_VERSION="2.14.2"
+SKAFFOLD_MAX_VERSION="2.30.0"
 
 # Application to deploy
 DEPLOYMENT_APP=""
@@ -213,20 +213,35 @@ notify_fail () {
 
 update_cloud_harness() {
     echo "Updating cloud harness"
-    CLOUD_HARNESS_PACKAGES=$(pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
-    pip uninstall "${CLOUD_HARNESS_PACKAGES}" -y || echo "No cloud harness packages installed"
+    if command -v uv >/dev/null
+    then
+        CLOUD_HARNESS_PACKAGES=$(uv pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
+        uv pip uninstall ${CLOUD_HARNESS_PACKAGES} || echo "No cloud harness packages installed"
+    else
+        CLOUD_HARNESS_PACKAGES=$(pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
+        pip uninstall "${CLOUD_HARNESS_PACKAGES}" -y || echo "No cloud harness packages installed"
+    fi
     if ! [ -d "${CLOUD_HARNESS_DIR}" ]
     then
         echo "Cloud harness folder does not exist. Cloning"
         pushd "${CLOUD_HARNESS_DIR_LOCATION}" && git clone "${CLOUD_HARNESS_URL}" && popd || exit 1
     fi
-    pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout "${CLOUD_HARNESS_BRANCH}" && git pull && pip install -r requirements.txt && popd || exit 1
+    if command -v uv >/dev/null
+    then
+        pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout "${CLOUD_HARNESS_BRANCH}" && git pull && uv pip install -r requirements.txt && popd || exit 1
+    else
+        pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout "${CLOUD_HARNESS_BRANCH}" && git pull && pip install -r requirements.txt && popd || exit 1
+    fi
 }
 
 activate_venv() {
     if [ -f "${VENV_DIR}/bin/activate" ]
     then
         source "${VENV_DIR}/bin/activate"
+    elif command -v uv >/dev/null
+    then
+        echo "No virtual environment found at ${VENV_DIR}. Creating (uv)"
+        uv venv --python "${PY_VERSION}" "${VENV_DIR}" && source "${VENV_DIR}/bin/activate"
     else
         echo "No virtual environment found at ${VENV_DIR}. Creating"
         ${PY_VERSION} -m venv "${VENV_DIR}" && source "${VENV_DIR}/bin/activate"
