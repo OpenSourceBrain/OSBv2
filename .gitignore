@@ -15,3 +15,4 @@ skaffold-overrides.yaml
 /.venv
 /libraries/client/*.pyc
 /.DS_Store
+*.pyc
