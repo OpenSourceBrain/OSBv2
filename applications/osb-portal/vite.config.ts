@@ -16,6 +16,11 @@ export default defineConfig(({mode, command}) => {
 
   return {
   plugins: [react()],
+  // Static assets (images, favicon, splash, silent-check-sso.html, api-mocks) live
+  // under src/assets and are served from the root: /images/banner.png etc.
+  // The pre-Vite webpack build copied src/assets -> public with CopyPlugin; using it
+  // as Vite's publicDir keeps the same URLs in dev and in the build output.
+  publicDir: 'src/assets',
   server: {
     host: '0.0.0.0',
     port: 3000,
