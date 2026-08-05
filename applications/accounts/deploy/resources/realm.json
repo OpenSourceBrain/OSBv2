@@ -370,7 +370,8 @@
                     "offline_access",
                     "microprofile-jwt"
                 ]
-            },
+            }
+            {{- if .Values.idpArc.rootUrl }},
             {
                 "clientId": "idp-arc",
                 "name": "idp-arc",
@@ -399,6 +400,7 @@
                     "offline_access", "{{ .Values.apps.accounts.admin.role }}-scope"
                 ]
             }
+            {{- end }}
         ],
         "clientScopes": [
             {
