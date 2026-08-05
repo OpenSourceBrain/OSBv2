@@ -185,7 +185,7 @@ def test_figshare_api_files():
 @pytest.mark.network
 def test_biomodels_api():
     """Test BioModels API is reachable and returns valid model info."""
-    url = "https://www.ebi.ac.uk/biomodels/BIOMD0000000001"
+    url = "https://www.biomodels.org/BIOMD0000000001"
     response = requests.get(url, params={"format": "json"}, timeout=TIMEOUT)
     assert response.status_code == 200
     data = response.json()
@@ -205,7 +205,7 @@ def test_biomodels_api():
 @pytest.mark.network
 def test_biomodels_api_files():
     """Test BioModels files endpoint returns expected fields."""
-    url = "https://www.ebi.ac.uk/biomodels/model/files/BIOMD0000000001.1"
+    url = "https://www.biomodels.org/model/files/BIOMD0000000001.1"
     response = requests.get(url, params={"format": "json"}, timeout=TIMEOUT)
     assert response.status_code == 200
     data = response.json()
