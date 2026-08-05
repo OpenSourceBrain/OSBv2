@@ -15,7 +15,8 @@ CLOUD_HARNESS_DIR="${CLOUD_HARNESS_DIR_LOCATION}/cloud-harness"
 CLOUD_HARNESS_DEFAULT="develop"
 CLOUD_HARNESS_BRANCH=""
 SKAFFOLD="skaffold"
-SKAFFOLD_MAX_VERSION="2.30.0"
+SKAFFOLD_MAX_VERSION="2.15.0"
+HELM_MAX_VERSION="4.0.0"
 
 # Application to deploy
 DEPLOYMENT_APP=""
@@ -97,7 +98,7 @@ deploy_live () {
         echo
         echo "-> Deploying with helm: helm install -n ${OSB_NAMESPACE} osb deployment/helm"
 
-        helm install -n ${OSB_NAMESPACE} osb deployment/helm
+        helm install --debug -n ${OSB_NAMESPACE} osb deployment/helm
 
     popd || exit 1
 }
@@ -140,12 +141,26 @@ deploy () {
     if [ "$(get_version ${skaffold_version:1})" -gt "$(get_version $SKAFFOLD_MAX_VERSION)" ]
     then
         echo "-> Found Skaffold version: ${skaffold_version:1}"
-        echo "-> Skaffold version <= ${SKAFFOLD_MAX_VERSION} is currently required"
+        echo "-> Skaffold version < ${SKAFFOLD_MAX_VERSION} is currently required"
         echo "-> Please install it from: https://github.com/GoogleContainerTools/skaffold/releases/tag/v${SKAFFOLD_MAX_VERSION}"
         echo "-> See: https://github.com/GoogleContainerTools/skaffold/issues/9788"
         exit 1
+    else
+        echo "Got skaffold version: ${skaffold_version}"
     fi
 
+
+    helm_version="$(helm version |  grep -o 'Version:"v[^"]*"' | cut -d'"' -f2 )"
+
+    if [ "$(get_version ${helm_version:1})" -gt "$(get_version $HELM_MAX_VERSION)" ]
+    then
+        echo "-> Found helm version: ${skaffold_version:1}"
+        echo "-> helm version < ${HELM_MAX_VERSION} is currently required"
+        echo "-> Please install it from: https://github.com/helm/helm/releases#release-v${HELM_MAX_VERSION}"
+        exit 1
+    else
+        echo "Got helm version: ${helm_version}"
+    fi
     pushd $OSB_DIR || exit 1
         echo "-> deploying"
         start_minikube
@@ -153,8 +168,8 @@ deploy () {
         harness_deployment
 
         echo "-> running skaffold"
-        $SKAFFOLD dev --cleanup=false || { notify_fail "Failed: skaffold" ; minikube stop; }
-        #$SKAFFOLD dev || notify_fail "Failed: skaffold"
+        #$SKAFFOLD dev --cleanup=false || { notify_fail "Failed: skaffold" ; minikube stop; }
+        $SKAFFOLD dev || notify_fail "Failed: skaffold"
     popd || exit 1
 }
 
