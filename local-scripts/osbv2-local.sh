@@ -15,7 +15,7 @@ CLOUD_HARNESS_DIR="${CLOUD_HARNESS_DIR_LOCATION}/cloud-harness"
 CLOUD_HARNESS_DEFAULT="develop"
 CLOUD_HARNESS_BRANCH=""
 SKAFFOLD="skaffold"
-SKAFFOLD_MAX_VERSION="2.14.2"
+SKAFFOLD_MAX_VERSION="2.30.0"
 
 # Application to deploy
 DEPLOYMENT_APP=""
@@ -54,7 +54,7 @@ start_minikube () {
         echo "🍏  Assuming Docker is already running on OS: $(uname -s)"
     fi
 
-    echo "-> starting minkube"
+    echo "-> starting minikube"
     if minikube status
     then
         echo "-> Minikube is already running: not restarting it"
@@ -66,10 +66,10 @@ start_minikube () {
         minikube addons enable metrics-server || notify_fail "Failed: ingress add on"
         echo "-> setting up ${OSB_NAMESPACE} namespace"
         kubectl get ns ${OSB_NAMESPACE} || kubectl create ns ${OSB_NAMESPACE} || notify_fail "Failed: ns set up"
-        kubectl config set-context NAME --namespace=${OSB_NAMESPACE} || notify_fail "Failed: ns set up"
+        kubectl config set-context --current --namespace=${OSB_NAMESPACE} || notify_fail "Failed: ns set up"
         echo "-> setting up minikube docker env"
 
-    eval $(minikube docker-env) || notify_fail "Failed: env setup"
+    eval "$(minikube docker-env)" || notify_fail "Failed: env setup"
     fi
 }
 
@@ -86,7 +86,7 @@ deploy_live () {
 
     LIVE="YES"
 
-    pushd $OSB_DIR
+    pushd $OSB_DIR || exit 1
         echo "-> deploying live configuration"
 
         start_minikube
@@ -99,7 +99,7 @@ deploy_live () {
 
         helm install -n ${OSB_NAMESPACE} osb deployment/helm
 
-    popd
+    popd || exit 1
 }
 
 show_deployment_status () {
@@ -137,7 +137,7 @@ deploy () {
 
     skaffold_version="$($SKAFFOLD version)"
 
-    if [ $(get_version ${skaffold_version:1}) -gt $(get_version $SKAFFOLD_MAX_VERSION) ]
+    if [ "$(get_version ${skaffold_version:1})" -gt "$(get_version $SKAFFOLD_MAX_VERSION)" ]
     then
         echo "-> Found Skaffold version: ${skaffold_version:1}"
         echo "-> Skaffold version <= ${SKAFFOLD_MAX_VERSION} is currently required"
@@ -146,7 +146,7 @@ deploy () {
         exit 1
     fi
 
-    pushd $OSB_DIR
+    pushd $OSB_DIR || exit 1
         echo "-> deploying"
         start_minikube
 
@@ -155,11 +155,11 @@ deploy () {
         echo "-> running skaffold"
         $SKAFFOLD dev --cleanup=false || { notify_fail "Failed: skaffold" ; minikube stop; }
         #$SKAFFOLD dev || notify_fail "Failed: skaffold"
-    popd
+    popd || exit 1
 }
 
 list_versions () {
-    if !  command -v harness-deployment  2>&1 >/dev/null ; then
+    if !  command -v harness-deployment >/dev/null 2>&1 ; then
         echo "cloud-harness is required but were not found."
         echo "To install cloud-harness, please see the -u/-U options"
         exit 1
@@ -189,7 +189,7 @@ harness_deployment() {
     # use -e dev for that, but that will send e-mails to Metacell folks
     # suggested: create a new file in deploy/values-something.yaml where you use
     # your e-mail address, and then use `-e something` to use these values.
-    pushd $OSB_DIR
+    pushd $OSB_DIR || exit 1
         if [ "YES" == "$LIVE" ]
         then
             echo "-> harnessing live configuration deployment, and deploying"
@@ -198,7 +198,7 @@ harness_deployment() {
             echo "-> harnessing development deployment"
             harness-deployment ../cloud-harness . -l  -n ${OSB_NAMESPACE} -d osb.local -dtls -e "local" ${DEPLOYMENT_APP:+-i $DEPLOYMENT_APP} || notify_fail "Failed: harness-deployment (dev)"
         fi
-    popd
+    popd || exit 1
 }
 
 notify_fail () {
@@ -213,20 +213,35 @@ notify_fail () {
 
 update_cloud_harness() {
     echo "Updating cloud harness"
-    CLOUD_HARNESS_PACKAGES=$(pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
-    pip uninstall ${CLOUD_HARNESS_PACKAGES} -y || echo "No cloud harness packages installed"
+    if command -v uv >/dev/null
+    then
+        CLOUD_HARNESS_PACKAGES=$(uv pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
+        uv pip uninstall ${CLOUD_HARNESS_PACKAGES} || echo "No cloud harness packages installed"
+    else
+        CLOUD_HARNESS_PACKAGES=$(pip list | grep cloud | tr -s " " | cut -d " " -f1 | tr '\n' ' ')
+        pip uninstall "${CLOUD_HARNESS_PACKAGES}" -y || echo "No cloud harness packages installed"
+    fi
     if ! [ -d "${CLOUD_HARNESS_DIR}" ]
     then
         echo "Cloud harness folder does not exist. Cloning"
-        pushd "${CLOUD_HARNESS_DIR_LOCATION}" && git clone "${CLOUD_HARNESS_URL}" && popd
+        pushd "${CLOUD_HARNESS_DIR_LOCATION}" && git clone "${CLOUD_HARNESS_URL}" && popd || exit 1
     fi
-    pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout ${CLOUD_HARNESS_BRANCH} && git pull && pip install -r requirements.txt && popd
+    if command -v uv >/dev/null
+    then
+        pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout "${CLOUD_HARNESS_BRANCH}" && git pull && uv pip install -r requirements.txt && popd || exit 1
+    else
+        pushd "$CLOUD_HARNESS_DIR" && git clean -dfx && git fetch && git checkout "${CLOUD_HARNESS_BRANCH}" && git pull && pip install -r requirements.txt && popd || exit 1
+    fi
 }
 
 activate_venv() {
     if [ -f "${VENV_DIR}/bin/activate" ]
     then
         source "${VENV_DIR}/bin/activate"
+    elif command -v uv >/dev/null
+    then
+        echo "No virtual environment found at ${VENV_DIR}. Creating (uv)"
+        uv venv --python "${PY_VERSION}" "${VENV_DIR}" && source "${VENV_DIR}/bin/activate"
     else
         echo "No virtual environment found at ${VENV_DIR}. Creating"
         ${PY_VERSION} -m venv "${VENV_DIR}" && source "${VENV_DIR}/bin/activate"
@@ -245,7 +260,7 @@ print_versions() {
     echo -e "\n** minikube **"
     minikube version
     echo -e "\n** cloud harness **"
-    pushd "${CLOUD_HARNESS_DIR}" && git log --oneline | head -1 && popd
+    pushd "${CLOUD_HARNESS_DIR}" && git log --oneline | head -1 && popd || exit 1
     echo -e "\n** helm **"
     helm version
     echo -e "\n** skaffold **"
@@ -257,7 +272,7 @@ print_versions() {
 }
 
 clean () {
-    pushd $OSB_DIR
+    pushd $OSB_DIR || exit 1
         echo "-> Cleaning up all images."
         #docker image prune --all
         docker builder prune --all
@@ -266,7 +281,7 @@ clean () {
         minikube delete
         #docker image prune --all
         docker builder prune --all
-    popd
+    popd || exit 1
 }
 
 usage () {
@@ -355,7 +370,6 @@ do
             exit 0
             ;;
         l)
-            CLOUD_HARNESS_BRANCH="${OPTARG}"
             activate_venv
             deploy_live
             exit 0
