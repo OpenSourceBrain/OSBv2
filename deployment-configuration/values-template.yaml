@@ -6,3 +6,6 @@ smtp:
   port: 587
 backup:
   active: true
+
+idpArc:
+  rootUrl: 
