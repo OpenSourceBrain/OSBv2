@@ -28,18 +28,25 @@ ANONYMOUS_USER_PREFIX = "anon-"
 # spawner and the reaper keep treating the leftovers as anonymous.
 LEGACY_ANONYMOUS_USER_PREFIX = "a-"
 
-# Pins a browser to one anonymous identity: without it every iframe mount, page
-# reload and app switch created another user (and another pod). The value only
-# names a scratch session - access is still governed by the hub's own signed
-# login cookie - but it is http-only so page scripts cannot read or forge it.
+# Pins a browser to one anonymous identity per app, so reloading a page or
+# remounting the portal's iframe reuses a session instead of creating another
+# user (and another pod).
+#
+# Deliberately host-only, not shared across the base domain: the identity
+# decides which server the visitor lands on, and a direct visit to an app goes to
+# that user's *default* server. One identity across netpyne.<domain> and
+# nwbexplorer.<domain> would send both to the same default server, so the second
+# app would be routed into the pod the first one spawned - running the wrong
+# image. Host scope also matches the hub's own login cookie, which carries no
+# domain either.
+#
+# The value only names a scratch session - access is still governed by that
+# signed login cookie - but it is http-only so page scripts cannot read or forge
+# it.
 ANONYMOUS_ID_COOKIE = "osb-anon-id"
 ANONYMOUS_ID_BYTES = 8
 ANONYMOUS_ID_PATTERN = re.compile("^[0-9a-f]{%d}$" % (2 * ANONYMOUS_ID_BYTES))
 ANONYMOUS_ID_COOKIE_DAYS = 30
-
-# Hosts that cannot carry a cookie Domain attribute, so the identity ends up
-# pinned to the exact host instead of being shared across app subdomains.
-NO_COOKIE_DOMAIN_PATTERN = re.compile(r"^(localhost|[0-9.]+|\[[0-9a-fA-F:]+\])$")
 
 
 class CloudHarnessAuthenticateHandler(BaseHandler):
@@ -137,14 +144,11 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
         return cookie.value
 
     def _anonymous_id_cookie_options(self):
-        """Attributes the cookie is set with, and has to be cleared with."""
+        """Attributes the cookie is set with, and has to be cleared with.
+
+        No domain: see ANONYMOUS_ID_COOKIE, the identity is per app host.
+        """
         options = dict(path="/", httponly=True)
-        domain = self._cookie_domain()
-        if domain:
-            # The apps are served from sibling subdomains (jupyterlab.<domain>,
-            # netpyne.<domain>, ...), so the identity has to be shared across
-            # the whole base domain or each app would get its own user.
-            options["domain"] = domain
         if self.request.protocol == "https":
             # The hub is loaded in the portal's iframe: without these the
             # cookie is dropped on the way back by browsers that treat the
@@ -165,24 +169,6 @@ class CloudHarnessAuthenticateHandler(BaseHandler):
         # `SameSite=None` one.
         self.clear_cookie(ANONYMOUS_ID_COOKIE,
                           **self._anonymous_id_cookie_options())
-
-    def _cookie_domain(self):
-        """Base domain to share the anonymous identity on, or None for host-only."""
-        host = self.request.host.split(":")[0]
-        try:
-            from cloudharness.utils.config import CloudharnessConfig
-            domain = CloudharnessConfig.get_domain()
-            if domain and host.endswith(domain):
-                return domain
-        except Exception as e:
-            # Deriving it from the host is a fine fallback, so this is not worth
-            # a stack trace on every anonymous request.
-            logging.info(
-                "No CloudHarness domain (%s), deriving the cookie domain from %s",
-                e, host)
-        if NO_COOKIE_DOMAIN_PATTERN.match(host) or "." not in host:
-            return None
-        return host.split(".", 1)[1]
 
 
 class CloudHarnessAuthenticator(Authenticator):
