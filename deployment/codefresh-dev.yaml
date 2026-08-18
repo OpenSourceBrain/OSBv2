@@ -207,6 +207,28 @@ steps:
                 == true
               forceNoCache: includes('${{NETPYNE_TAG_FORCE_BUILD}}', '{{NETPYNE_TAG_FORCE_BUILD}}')
                 == false
+      nfsserver:
+        type: build
+        stage: build
+        dockerfile: Dockerfile
+        registry: ${{CODEFRESH_REGISTRY}}
+        buildkit: true
+        build_arguments:
+        - NOCACHE=${{CF_BUILD_ID}}
+        image_name: osb/nfsserver
+        title: Nfsserver
+        working_directory: ./.overrides/applications/nfsserver
+        tags:
+        - ${{NFSSERVER_TAG}}
+        - ${{DEPLOYMENT_PUBLISH_TAG}}-dev
+        - ${{CF_BRANCH_TAG_NORMALIZED_LOWER_CASE}}
+        when:
+          condition:
+            any:
+              buildDoesNotExist: includes('${{NFSSERVER_TAG_EXISTS}}', '{{NFSSERVER_TAG_EXISTS}}')
+                == true
+              forceNoCache: includes('${{NFSSERVER_TAG_FORCE_BUILD}}', '{{NFSSERVER_TAG_FORCE_BUILD}}')
+                == false
       nwb-explorer:
         type: build
         stage: build
@@ -678,17 +700,17 @@ steps:
     commands:
     - kubectl config use-context ${{CLUSTER_NAME}}
     - kubectl config set-context --current --namespace=${{NAMESPACE}}
-    - kubectl rollout status deployment/accounts
-    - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/events-gk
-    - kubectl rollout status deployment/backoffice
-    - kubectl rollout status deployment/admin-gk
+    - kubectl rollout status deployment/accounts-api
+    - kubectl rollout status deployment/accounts
     - kubectl rollout status deployment/workflows
+    - kubectl rollout status deployment/argo-gk
     - kubectl rollout status deployment/osb-portal
     - kubectl rollout status deployment/www-gk
-    - kubectl rollout status deployment/argo-gk
+    - kubectl rollout status deployment/backoffice
+    - kubectl rollout status deployment/admin-gk
+    - kubectl rollout status deployment/notifications
     - kubectl rollout status deployment/workspaces
-    - kubectl rollout status deployment/accounts-api
     - sleep 60
     when:
       condition:
@@ -881,6 +903,20 @@ steps:
           condition:
             all:
               skipPublish: includes('${{NETPYNE_PUBLISH_SKIP}}', '{{NETPYNE_PUBLISH_SKIP}}')
+                == true
+      publish_nfsserver:
+        stage: publish
+        type: push
+        title: Nfsserver
+        candidate: ${{REGISTRY}}/osb/nfsserver:${{NFSSERVER_TAG}}
+        tags:
+        - ${{DEPLOYMENT_PUBLISH_TAG}}
+        - latest
+        registry: ${{REGISTRY_PUBLISH_URL}}
+        when:
+          condition:
+            all:
+              skipPublish: includes('${{NFSSERVER_PUBLISH_SKIP}}', '{{NFSSERVER_PUBLISH_SKIP}}')
                 == true
       publish_notifications:
         stage: publish

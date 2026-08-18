@@ -1,5 +1,5 @@
 
-harness:
+# harness:
   # deployment:
   #   auto: false
   #   image: gcr.io/metacellllc/cloud-harness/nfsserver:featurech-261
