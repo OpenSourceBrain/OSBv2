@@ -1,11 +1,8 @@
-# coding: utf-8
-
-from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from accounts_api.models.base_model_ import Model
+from accounts_api.models.base_model import Model
 from accounts_api import util
 
 
@@ -93,7 +90,7 @@ class User(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self):
+    def id(self) -> str:
         """Gets the id of this User.
 
         user id  # noqa: E501
@@ -104,7 +101,7 @@ class User(Model):
         return self._id
 
     @id.setter
-    def id(self, id):
+    def id(self, id: str):
         """Sets the id of this User.
 
         user id  # noqa: E501
@@ -116,7 +113,7 @@ class User(Model):
         self._id = id
 
     @property
-    def username(self):
+    def username(self) -> str:
         """Gets the username of this User.
 
         Username of the keycloak user  # noqa: E501
@@ -127,7 +124,7 @@ class User(Model):
         return self._username
 
     @username.setter
-    def username(self, username):
+    def username(self, username: str):
         """Sets the username of this User.
 
         Username of the keycloak user  # noqa: E501
@@ -139,7 +136,7 @@ class User(Model):
         self._username = username
 
     @property
-    def email(self):
+    def email(self) -> str:
         """Gets the email of this User.
 
         Email address of the keycloak user  # noqa: E501
@@ -150,7 +147,7 @@ class User(Model):
         return self._email
 
     @email.setter
-    def email(self, email):
+    def email(self, email: str):
         """Sets the email of this User.
 
         Email address of the keycloak user  # noqa: E501
@@ -162,7 +159,7 @@ class User(Model):
         self._email = email
 
     @property
-    def first_name(self):
+    def first_name(self) -> str:
         """Gets the first_name of this User.
 
         First Name of the keycloak user  # noqa: E501
@@ -173,7 +170,7 @@ class User(Model):
         return self._first_name
 
     @first_name.setter
-    def first_name(self, first_name):
+    def first_name(self, first_name: str):
         """Sets the first_name of this User.
 
         First Name of the keycloak user  # noqa: E501
@@ -185,7 +182,7 @@ class User(Model):
         self._first_name = first_name
 
     @property
-    def last_name(self):
+    def last_name(self) -> str:
         """Gets the last_name of this User.
 
         Last Name of the keycloak user  # noqa: E501
@@ -196,7 +193,7 @@ class User(Model):
         return self._last_name
 
     @last_name.setter
-    def last_name(self, last_name):
+    def last_name(self, last_name: str):
         """Sets the last_name of this User.
 
         Last Name of the keycloak user  # noqa: E501
@@ -208,7 +205,7 @@ class User(Model):
         self._last_name = last_name
 
     @property
-    def groups(self):
+    def groups(self) -> List[str]:
         """Gets the groups of this User.
 
           # noqa: E501
@@ -219,7 +216,7 @@ class User(Model):
         return self._groups
 
     @groups.setter
-    def groups(self, groups):
+    def groups(self, groups: List[str]):
         """Sets the groups of this User.
 
           # noqa: E501
@@ -231,7 +228,7 @@ class User(Model):
         self._groups = groups
 
     @property
-    def profiles(self):
+    def profiles(self) -> Dict[str, object]:
         """Gets the profiles of this User.
 
           # noqa: E501
@@ -242,7 +239,7 @@ class User(Model):
         return self._profiles
 
     @profiles.setter
-    def profiles(self, profiles):
+    def profiles(self, profiles: Dict[str, object]):
         """Sets the profiles of this User.
 
           # noqa: E501
@@ -254,7 +251,7 @@ class User(Model):
         self._profiles = profiles
 
     @property
-    def registration_date(self):
+    def registration_date(self) -> date:
         """Gets the registration_date of this User.
 
           # noqa: E501
@@ -265,7 +262,7 @@ class User(Model):
         return self._registration_date
 
     @registration_date.setter
-    def registration_date(self, registration_date):
+    def registration_date(self, registration_date: date):
         """Sets the registration_date of this User.
 
           # noqa: E501
@@ -277,7 +274,7 @@ class User(Model):
         self._registration_date = registration_date
 
     @property
-    def avatar(self):
+    def avatar(self) -> str:
         """Gets the avatar of this User.
 
           # noqa: E501
@@ -288,7 +285,7 @@ class User(Model):
         return self._avatar
 
     @avatar.setter
-    def avatar(self, avatar):
+    def avatar(self, avatar: str):
         """Sets the avatar of this User.
 
           # noqa: E501
@@ -300,7 +297,7 @@ class User(Model):
         self._avatar = avatar
 
     @property
-    def website(self):
+    def website(self) -> str:
         """Gets the website of this User.
 
           # noqa: E501
@@ -311,7 +308,7 @@ class User(Model):
         return self._website
 
     @website.setter
-    def website(self, website):
+    def website(self, website: str):
         """Sets the website of this User.
 
           # noqa: E501
@@ -323,7 +320,7 @@ class User(Model):
         self._website = website
 
     @property
-    def quotas(self):
+    def quotas(self) -> Dict[str, object]:
         """Gets the quotas of this User.
 
           # noqa: E501
@@ -334,7 +331,7 @@ class User(Model):
         return self._quotas
 
     @quotas.setter
-    def quotas(self, quotas):
+    def quotas(self, quotas: Dict[str, object]):
         """Sets the quotas of this User.
 
           # noqa: E501

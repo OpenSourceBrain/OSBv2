@@ -1,11 +1,8 @@
-# coding: utf-8
-
-from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from accounts_api.models.base_model_ import Model
+from accounts_api.models.base_model import Model
 from accounts_api import util
 
 
@@ -43,7 +40,7 @@ class Valid(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def response(self):
+    def response(self) -> str:
         """Gets the response of this Valid.
 
 
@@ -53,7 +50,7 @@ class Valid(Model):
         return self._response
 
     @response.setter
-    def response(self, response):
+    def response(self, response: str):
         """Sets the response of this Valid.
 
 
