@@ -7,23 +7,30 @@ steps:
     title: Clone main repository
     type: git-clone
     stage: prepare
-    repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
-    revision: '${{CF_BRANCH}}'
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    revision: ${{CF_BRANCH}}
     git: github
   post_main_clone:
     title: Post main clone
     type: parallel
     stage: prepare
     steps:
+      clone_NetPyNE_UI_git_1_1_0_netpyne:
+        title: Cloning NetPyNE-UI.git repository...
+        type: git-clone
+        repo: https://github.com/MetaCell/NetPyNE-UI.git
+        revision: 1.1.0
+        working_directory: applications/netpyne/dependencies/
+        git: github
       clone_cloud_harness:
         title: Cloning cloud-harness repository...
         type: git-clone
         stage: prepare
         repo: https://github.com/MetaCell/cloud-harness.git
-        revision: '${{CLOUDHARNESS_BRANCH}}'
+        revision: ${{CLOUDHARNESS_BRANCH}}
         working_directory: .
         git: github
-      clone_nwb-explorer.git_nwb-explorer:
+      clone_nwb_explorer_git_development_nwb_explorer:
         title: Cloning nwb-explorer.git repository...
         type: git-clone
         repo: https://github.com/MetaCell/nwb-explorer.git
@@ -37,15 +44,25 @@ steps:
     working_directory: .
     commands:
     - bash cloud-harness/install.sh
+    - export HELM_NAME_ARG="$( [ -n "${{CHART_NAME}}" ] && printf -- "--name %s" "${{CHART_NAME}}"
+      )"
+    - export HELM_CHART_VERSION_ARG="$( [ -n "${{CHART_VERSION}}" ] && printf -- "--chart-version
+      %s" "${{CHART_VERSION}}" )"
+    - export HELM_APP_VERSION_ARG="$( APP_VERSION_RESOLVED="${{APP_VERSION}}"; [ -z
+      "$APP_VERSION_RESOLVED" ] && APP_VERSION_RESOLVED="${{DEPLOYMENT_TAG}}"; [ -n
+      "$APP_VERSION_RESOLVED" ] && printf -- "--app-version %s" "$APP_VERSION_RESOLVED"
+      )"
+    - export HELM_META_ARGS="$HELM_NAME_ARG $HELM_CHART_VERSION_ARG $HELM_APP_VERSION_ARG"
     - harness-deployment cloud-harness . -t ${{DEPLOYMENT_TAG}} -d ${{DOMAIN}} -r
-      ${{REGISTRY}} -rs ${{REGISTRY_SECRET}} -n ${{NAMESPACE}} -e prod -i osb-portal
+      ${{REGISTRY}} -rsn '${{REGISTRY_SECRET}}' -n ${{NAMESPACE}} -e prod --no-cd
+      $HELM_META_ARGS -i osb-portal
   prepare_deployment_view:
     commands:
     - helm template ./deployment/helm --debug -n ${{NAMESPACE}}
     environment:
     - ACTION=auth
     - KUBE_CONTEXT=${{NAMESPACE}}
-    image: codefresh/cfstep-helm:3.6.2
+    image: codefresh/cfstep-helm:3.14.4
     stage: prepare
     title: View helm chart
   deployment:
@@ -54,20 +71,20 @@ steps:
     working_directory: ./${{CF_REPO_NAME}}
     title: Installing chart
     arguments:
-      helm_version: 3.6.2
+      helm_version: 3.14.4
       chart_name: deployment/helm
-      release_name: '${{NAMESPACE}}'
-      kube_context: '${{CLUSTER_NAME}}'
-      namespace: '${{NAMESPACE}}'
-      chart_version: '${{DEPLOYMENT_TAG}}'
+      release_name: ${{NAMESPACE}}
+      kube_context: ${{CLUSTER_NAME}}
+      namespace: ${{NAMESPACE}}
+      chart_version: ${{DEPLOYMENT_TAG}}
       cmd_ps: --wait --timeout 600s --create-namespace
       custom_value_files:
       - ./deployment/helm/values.yaml
       custom_values:
-      - apps_notifications_harness_secrets_email-user=${{EMAIL-USER}}
-      - apps_notifications_harness_secrets_email-password=${{EMAIL-PASSWORD}}
-      - apps_workspaces_harness_secrets_github-user=${{GITHUB-USER}}
-      - apps_workspaces_harness_secrets_github-token=${{GITHUB-TOKEN}}
+      - 'apps_workspaces_harness_secrets_github-user="${{GITHUB-USER}}"'
+      - 'apps_workspaces_harness_secrets_github-token="${{GITHUB-TOKEN}}"'
+      - 'apps_notifications_harness_secrets_email-user="${{EMAIL-USER}}"'
+      - 'apps_notifications_harness_secrets_email-password="${{EMAIL-PASSWORD}}"'
     image: codefresh/cfstep-helm:3.6.2
     environment:
     - CHART_REF=./deployment/helm
