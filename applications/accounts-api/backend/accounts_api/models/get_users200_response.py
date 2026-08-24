@@ -1,14 +1,13 @@
-# coding: utf-8
-
-from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from accounts_api.models.base_model_ import Model
+from accounts_api.models.base_model import Model
+from accounts_api.models.get_users200_response_pagination import GetUsers200ResponsePagination
 from accounts_api.models.user import User
 from accounts_api import util
 
+from accounts_api.models.get_users200_response_pagination import GetUsers200ResponsePagination  # noqa: E501
 from accounts_api.models.user import User  # noqa: E501
 
 class GetUsers200Response(Model):
@@ -17,21 +16,26 @@ class GetUsers200Response(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, users=None):  # noqa: E501
+    def __init__(self, users=None, pagination=None):  # noqa: E501
         """GetUsers200Response - a model defined in OpenAPI
 
         :param users: The users of this GetUsers200Response.  # noqa: E501
         :type users: List[User]
+        :param pagination: The pagination of this GetUsers200Response.  # noqa: E501
+        :type pagination: GetUsers200ResponsePagination
         """
         self.openapi_types = {
-            'users': List[User]
+            'users': List[User],
+            'pagination': GetUsers200ResponsePagination
         }
 
         self.attribute_map = {
-            'users': 'users'
+            'users': 'users',
+            'pagination': 'pagination'
         }
 
         self._users = users
+        self._pagination = pagination
 
     @classmethod
     def from_dict(cls, dikt) -> 'GetUsers200Response':
@@ -45,7 +49,7 @@ class GetUsers200Response(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def users(self):
+    def users(self) -> List[User]:
         """Gets the users of this GetUsers200Response.
 
 
@@ -55,7 +59,7 @@ class GetUsers200Response(Model):
         return self._users
 
     @users.setter
-    def users(self, users):
+    def users(self, users: List[User]):
         """Sets the users of this GetUsers200Response.
 
 
@@ -64,3 +68,24 @@ class GetUsers200Response(Model):
         """
 
         self._users = users
+
+    @property
+    def pagination(self) -> GetUsers200ResponsePagination:
+        """Gets the pagination of this GetUsers200Response.
+
+
+        :return: The pagination of this GetUsers200Response.
+        :rtype: GetUsers200ResponsePagination
+        """
+        return self._pagination
+
+    @pagination.setter
+    def pagination(self, pagination: GetUsers200ResponsePagination):
+        """Sets the pagination of this GetUsers200Response.
+
+
+        :param pagination: The pagination of this GetUsers200Response.
+        :type pagination: GetUsers200ResponsePagination
+        """
+
+        self._pagination = pagination

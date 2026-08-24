@@ -71,7 +71,7 @@ harness:
     name: workspaces-postgres-host
     type: postgres
     port: 5432
-    image: postgres:13
+    image: postgres:18
     initialdb: workspaces
     user: workspace
     password: secret

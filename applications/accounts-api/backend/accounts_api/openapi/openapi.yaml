@@ -123,13 +123,33 @@ paths:
     get:
       operationId: get_users
       parameters:
-      - description: query filter
+      - description: "free-text filter on username, first/last name or email"
         explode: true
         in: query
-        name: query_string
+        name: search
         required: false
         schema:
           type: string
+        style: form
+      - description: 1-based page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          minimum: 1
+          type: integer
+        style: form
+      - description: page size
+        explode: true
+        in: query
+        name: per_page
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
         style: form
       responses:
         "200":
@@ -326,8 +346,34 @@ components:
       - name
       title: Group
       type: object
+    get_users_200_response_pagination:
+      example:
+        per_page: 1
+        total: 0
+        number_of_pages: 5
+        current_page: 6
+      properties:
+        total:
+          title: total
+          type: integer
+        current_page:
+          title: current_page
+          type: integer
+        per_page:
+          title: per_page
+          type: integer
+        number_of_pages:
+          title: number_of_pages
+          type: integer
+      title: get_users_200_response_pagination
+      type: object
     get_users_200_response:
       example:
+        pagination:
+          per_page: 1
+          total: 0
+          number_of_pages: 5
+          current_page: 6
         users:
         - firstName: firstName
           lastName: lastName
@@ -365,6 +411,8 @@ components:
             $ref: '#/components/schemas/User'
           title: users
           type: array
+        pagination:
+          $ref: '#/components/schemas/get_users_200_response_pagination'
       title: get_users_200_response
       type: object
   securitySchemes:
