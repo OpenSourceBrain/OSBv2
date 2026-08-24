@@ -19,13 +19,13 @@ class BiomodelsAdapter:
     """
     Adapter for Biomodels
 
-    https://www.ebi.ac.uk/biomodels/
+    https://www.biomodels.org/
     """
 
     def __init__(self, osbrepository, uri=None):
         self.osbrepository = osbrepository
         self.uri = uri if uri else osbrepository.uri
-        self.api_url = "https://www.ebi.ac.uk/biomodels"
+        self.api_url = "https://www.biomodels.org"
 
         try:
             self.model_id = re.search(
