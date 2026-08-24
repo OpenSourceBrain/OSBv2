@@ -338,7 +338,7 @@ export const MainDrawer = (props: {
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
-                <ListItemText primary="Main site" />
+                <ListItemText primary="OSB homepage" />
               </ListItemButton>
 
               <ListItemButton 

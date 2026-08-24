@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 # Set the platform flag if we're on ARM
 arch=$(uname -m)
@@ -9,4 +9,5 @@ else
     platform_flag=""
 fi
 
-time DOCKER_BUILDKIT=1 docker build $platform_flag -t mynwbosb -f Dockerfile .
+time DOCKER_BUILDKIT=1 docker build $platform_flag -t myjlab -f Dockerfile .
+
