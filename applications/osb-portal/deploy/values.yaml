@@ -11,7 +11,7 @@ harness:
     - name: "keycloak"
       src: "keycloak.json"
       dst: "/usr/share/nginx/html/keycloak.json"
-  sentry: true
+  sentry: false
   use_services:
     - name: workspaces
     - name: accounts-api
