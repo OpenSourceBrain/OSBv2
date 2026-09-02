@@ -208,6 +208,21 @@ export default (props: any) => {
   const renderCount = (value: any) =>
     value === undefined ? <CircularProgress size={14} /> : value;
 
+  // Browser-locale date + time, e.g. "Sep 2, 2026, 12:23 PM" / "2 set 2026, 12:23".
+  const formatRegistrationDate = (value: any) => {
+    if (!value) {
+      return "";
+    }
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) {
+      return String(value);
+    }
+    return date.toLocaleString(undefined, {
+      year: "numeric", month: "short", day: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
+  };
+
   const dataColumns: GridColDef[] = [
     {
       field: 'id', headerName: 'Profile', sortable: false, renderCell: (param: any) =>
@@ -220,7 +235,10 @@ export default (props: any) => {
     },
     { field: 'name', headerName: 'Name', minWidth: 50, flex: 2 },
     { field: 'username', headerName: 'Username', minWidth: 50, flex: 2 },
-    { field: 'registration_date', headerName: 'Registration date', minWidth: 50, flex: 4 },
+    {
+      field: 'registration_date', headerName: 'Registration date', minWidth: 150, flex: 2,
+      valueFormatter: (params: any) => formatRegistrationDate(params.value),
+    },
     { field: 'groups', headerName: 'Groups', sortable: false, minWidth: 50, flex: 2 },
     {
       field: 'workspaces', headerName: 'Workspaces',
