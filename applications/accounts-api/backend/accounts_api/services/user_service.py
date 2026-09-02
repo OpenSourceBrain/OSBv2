@@ -45,27 +45,50 @@ def get_user(username_or_id: str) -> User:
     return user
 
 
-def get_users(search: str = None, page: int = 1, per_page: int = 20) -> typing.Tuple[typing.List[User], int]:
+# Sortable fields, mapped to a sort key over the raw Keycloak user dict.
+# Keycloak's admin REST API cannot sort users, so sorting happens here.
+USER_SORT_KEYS = {
+    'registration_date': lambda u: u.get('createdTimestamp') or 0,
+    'username': lambda u: (u.get('username') or '').lower(),
+    'name': lambda u: ((u.get('firstName') or '') + ' ' + (u.get('lastName') or '')).strip().lower(),
+    'first_name': lambda u: (u.get('firstName') or '').lower(),
+    'last_name': lambda u: (u.get('lastName') or '').lower(),
+}
+
+
+def get_users(search: str = None, page: int = 1, per_page: int = 20,
+              sort_by: str = 'registration_date', sort_order: str = 'desc') -> typing.Tuple[typing.List[User], int]:
     """Return a page of users plus the total number of matching users.
 
-    Pagination is delegated to Keycloak: passing ``first``/``max`` makes
-    python-keycloak fetch a single page instead of every user, so the backoffice
-    scales regardless of how many accounts exist.
+    Keycloak cannot sort its users list, so the whole (brief) matching list is
+    fetched, sorted here, and sliced to the requested page. Brief
+    representations keep that fetch light but omit ``attributes`` (profiles,
+    avatar, website) and groups; groups are re-fetched for the page rows only.
     """
     try:
         client = AuthClient()
-        query = {'first': (page - 1) * per_page, 'max': per_page}
-        count_query = {}
+        admin_client = client.get_admin_client()
+        query = {'briefRepresentation': 'true'}
         if search:
             query['search'] = search
-            count_query['search'] = search
-        kc_users = client.get_users(query)
-        # users_count honours the same `search` filter, so the total matches the page.
-        total = client.get_admin_client().users_count(count_query)
+        # No first/max in the query: python-keycloak fetches all matching users.
+        kc_users = admin_client.get_users(query)
     except KeycloakError as e:
         raise Exception("Unhandled Keycloak exception") from e
+
+    sort_key = USER_SORT_KEYS.get(sort_by, USER_SORT_KEYS['registration_date'])
+    kc_users.sort(key=sort_key, reverse=sort_order != 'asc')
+
+    total = len(kc_users)
+    first = (page - 1) * per_page
+    page_users = kc_users[first:first + per_page]
+
     all_users = []
-    for kc_user in kc_users:
+    for kc_user in page_users:
+        try:
+            kc_user['userGroups'] = admin_client.get_user_groups(user_id=kc_user['id'], brief_representation=True)
+        except KeycloakError:
+            log.warning("Could not fetch groups for user %s", kc_user.get('id'), exc_info=True)
         auser = map_user(kc_user)
         auser.email = None  # strip out the e-mail address
         all_users.append(auser)

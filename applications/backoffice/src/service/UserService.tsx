@@ -59,8 +59,14 @@ export async function getUser(userid: string): Promise<User> {
   return usersApi.getUser({ userid });
 }
 
-export async function getUsers(page = 1, perPage = 20, search = ""): Promise<UsersPage> {
-  const response = await usersApi.getUsers({ page, perPage, search: search || undefined });
+export async function getUsers(
+  page = 1,
+  perPage = 20,
+  search = "",
+  sortBy?: accountsApi.GetUsersSortByEnum,
+  sortOrder?: accountsApi.GetUsersSortOrderEnum
+): Promise<UsersPage> {
+  const response = await usersApi.getUsers({ page, perPage, search: search || undefined, sortBy, sortOrder });
   return {
     users: response.users || [],
     total: response.pagination?.total ?? (response.users?.length || 0),

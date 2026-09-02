@@ -41,7 +41,7 @@ def get_user(userid):  # noqa: E501
         return "User not found", 404
 
 
-def get_users(search=None, page=1, per_page=20):
+def get_users(search=None, page=1, per_page=20, sort_by="registration_date", sort_order="desc"):
     """get a page of users
 
     :param search: free-text filter on username, first/last name or email
@@ -50,10 +50,15 @@ def get_users(search=None, page=1, per_page=20):
     :type page: int
     :param per_page: page size
     :type per_page: int
+    :param sort_by: field to sort by
+    :type sort_by: str
+    :param sort_order: asc or desc
+    :type sort_order: str
 
     :rtype: {}
     """
-    users, total = user_service.get_users(search=search, page=page, per_page=per_page)
+    users, total = user_service.get_users(search=search, page=page, per_page=per_page,
+                                          sort_by=sort_by, sort_order=sort_order)
     number_of_pages = math.ceil(total / per_page) if per_page else 0
     return {
         'users': users,

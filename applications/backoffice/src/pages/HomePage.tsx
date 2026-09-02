@@ -3,17 +3,27 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { initApis, getToken, getUsers } from "../service/UserService";
-import { User } from "../apiclient/accounts";
+import { User, GetUsersSortByEnum, GetUsersSortOrderEnum } from "../apiclient/accounts";
 import WorkspaceService from "../service/WorkspaceService";
 import RepositoryService from "../service/RepositoryService";
 import SearchFilter from "../types/searchFilter";
 
 const DEFAULT_PAGE_SIZE = 20;
 const SEARCH_DEBOUNCE_MS = 350;
+
+// Latest registered users first; also the backend's default ordering.
+const DEFAULT_SORT_MODEL: GridSortModel = [{ field: "registration_date", sort: "desc" }];
+
+// Grid columns whose sorting is delegated to the backend.
+const SORT_FIELD_MAP: { [field: string]: GetUsersSortByEnum } = {
+  registration_date: GetUsersSortByEnum.RegistrationDate,
+  username: GetUsersSortByEnum.Username,
+  name: GetUsersSortByEnum.Name,
+};
 
 interface UserCounts {
   workspaces?: number;
@@ -31,6 +41,8 @@ export default (props: any) => {
 
   const [searchInput, setSearchInput] = React.useState<string>("");
   const [search, setSearch] = React.useState<string>("");
+
+  const [sortModel, setSortModel] = React.useState<GridSortModel>(DEFAULT_SORT_MODEL);
 
   // Per-user workspace/repository counts, loaded lazily after each page renders.
   const [counts, setCounts] = React.useState<{ [userId: string]: UserCounts }>({});
@@ -65,14 +77,18 @@ export default (props: any) => {
     return () => clearTimeout(handle);
   }, [searchInput]);
 
-  // Fetch a single page of users server-side whenever paging or search changes.
+  // Fetch a single page of users server-side whenever paging, search or sorting changes.
   React.useEffect(() => {
     if (!ready) {
       return;
     }
     let cancelled = false;
     setLoading(true);
-    getUsers(page + 1, pageSize, search).then(
+    // An empty sort model (third click on a header) falls back to the default.
+    const sortItem = sortModel.length > 0 ? sortModel[0] : DEFAULT_SORT_MODEL[0];
+    const sortBy = SORT_FIELD_MAP[sortItem.field];
+    const sortOrder = sortItem.sort === "asc" ? GetUsersSortOrderEnum.Asc : GetUsersSortOrderEnum.Desc;
+    getUsers(page + 1, pageSize, search, sortBy, sortOrder).then(
       (result) => {
         if (cancelled) {
           return;
@@ -94,7 +110,7 @@ export default (props: any) => {
     return () => {
       cancelled = true;
     };
-  }, [ready, page, pageSize, search]);
+  }, [ready, page, pageSize, search, sortModel]);
 
   // Lazily load per-user workspace/repository counts for the current page.
   React.useEffect(() => {
@@ -237,6 +253,9 @@ export default (props: any) => {
           autoHeight={true}
           loading={loading}
           paginationMode="server"
+          sortingMode="server"
+          sortModel={sortModel}
+          onSortModelChange={(newSortModel) => { setSortModel(newSortModel); setPage(0); }}
           rowCount={rowCount}
           page={page}
           onPageChange={(newPage) => setPage(newPage)}

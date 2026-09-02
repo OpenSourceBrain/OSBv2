@@ -179,6 +179,31 @@ paths:
                         minimum: 1
                     in: query
                     required: false
+                -
+                    name: sort_by
+                    description: field to sort by
+                    schema:
+                        type: string
+                        enum:
+                            - registration_date
+                            - username
+                            - name
+                            - first_name
+                            - last_name
+                        default: registration_date
+                    in: query
+                    required: false
+                -
+                    name: sort_order
+                    description: sort direction
+                    schema:
+                        type: string
+                        enum:
+                            - asc
+                            - desc
+                        default: desc
+                    in: query
+                    required: false
             responses:
                 '200':
                     content:
