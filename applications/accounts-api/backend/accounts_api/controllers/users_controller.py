@@ -57,8 +57,8 @@ def get_users(search=None, page=1, per_page=20, sort_by="registration_date", sor
 
     :rtype: {}
     """
-    users, total = user_service.get_users(search=search, page=page, per_page=per_page,
-                                          sort_by=sort_by, sort_order=sort_order)
+    users, total, counts = user_service.get_users(search=search, page=page, per_page=per_page,
+                                                  sort_by=sort_by, sort_order=sort_order)
     number_of_pages = math.ceil(total / per_page) if per_page else 0
     return {
         'users': users,
@@ -68,6 +68,7 @@ def get_users(search=None, page=1, per_page=20, sort_by="registration_date", sor
             'per_page': per_page,
             'number_of_pages': number_of_pages,
         },
+        'counts': counts,
     }
 
 

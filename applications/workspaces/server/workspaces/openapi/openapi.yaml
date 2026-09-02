@@ -988,6 +988,33 @@ paths:
                     type: integer
                 in: path
                 required: true
+    /user-resource-counts:
+        get:
+            tags:
+                - rest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                description: 'Per-user resource counts, keyed by keycloak user id'
+                                type: object
+                                additionalProperties:
+                                    type: object
+                                    properties:
+                                        workspaces:
+                                            type: integer
+                                        repositories:
+                                            type: integer
+                    description: Per-user workspace and repository counts.
+                '401':
+                    description: The user is not authorized.
+            security:
+                -
+                    bearerAuth: []
+            operationId: user_resource_counts
+            summary: Per-user workspace and repository counts (admin only).
+            x-openapi-router-controller: workspaces.controllers.admin_controller
 components:
     schemas:
         Valid:

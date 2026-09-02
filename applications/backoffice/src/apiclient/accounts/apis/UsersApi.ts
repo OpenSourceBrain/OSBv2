@@ -181,7 +181,9 @@ export enum GetUsersSortByEnum {
     Username = 'username',
     Name = 'name',
     FirstName = 'first_name',
-    LastName = 'last_name'
+    LastName = 'last_name',
+    Workspaces = 'workspaces',
+    Repositories = 'repositories'
 }
 /**
     * @export

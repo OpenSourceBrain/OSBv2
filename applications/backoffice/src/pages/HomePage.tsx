@@ -23,6 +23,8 @@ const SORT_FIELD_MAP: { [field: string]: GetUsersSortByEnum } = {
   registration_date: GetUsersSortByEnum.RegistrationDate,
   username: GetUsersSortByEnum.Username,
   name: GetUsersSortByEnum.Name,
+  workspaces: GetUsersSortByEnum.Workspaces,
+  repositories: GetUsersSortByEnum.Repositories,
 };
 
 interface UserCounts {
@@ -44,8 +46,10 @@ export default (props: any) => {
 
   const [sortModel, setSortModel] = React.useState<GridSortModel>(DEFAULT_SORT_MODEL);
 
-  // Per-user workspace/repository counts, loaded lazily after each page renders.
+  // Per-user workspace/repository counts. Normally these come with the users
+  // response; rows the backend had no counts for are loaded lazily as a fallback.
   const [counts, setCounts] = React.useState<{ [userId: string]: UserCounts }>({});
+  const [usersNeedingCounts, setUsersNeedingCounts] = React.useState<User[]>([]);
   // Cheap grand totals for the summary line.
   const [totals, setTotals] = React.useState<{ workspaces?: number; repositories?: number }>({});
 
@@ -95,7 +99,9 @@ export default (props: any) => {
         }
         setUsers(result.users);
         setRowCount(result.total);
-        setCounts({}); // drop counts from the previous page
+        setCounts(result.counts);
+        // Rows without server-side counts fall back to lazy per-user loading.
+        setUsersNeedingCounts(result.users.filter((u) => !result.counts[u.id]));
         setError(null);
         setLoading(false);
       },
@@ -112,14 +118,14 @@ export default (props: any) => {
     };
   }, [ready, page, pageSize, search, sortModel]);
 
-  // Lazily load per-user workspace/repository counts for the current page.
+  // Fallback: lazily load counts for rows the backend had no counts for.
   React.useEffect(() => {
-    if (!users || users.length === 0) {
+    if (usersNeedingCounts.length === 0) {
       return;
     }
     let cancelled = false;
 
-    users.forEach((user) => {
+    usersNeedingCounts.forEach((user) => {
       const userId = user.id;
 
       const wsFilter: SearchFilter = { user_id: userId };
@@ -147,7 +153,7 @@ export default (props: any) => {
     return () => {
       cancelled = true;
     };
-  }, [users]);
+  }, [usersNeedingCounts]);
 
   // Cheap grand totals for the summary (one lightweight request each).
   React.useEffect(() => {
@@ -217,11 +223,11 @@ export default (props: any) => {
     { field: 'registration_date', headerName: 'Registration date', minWidth: 50, flex: 4 },
     { field: 'groups', headerName: 'Groups', sortable: false, minWidth: 50, flex: 2 },
     {
-      field: 'workspaces', headerName: 'Workspaces', sortable: false,
+      field: 'workspaces', headerName: 'Workspaces',
       minWidth: 50, flex: 1, renderCell: (param: any) => renderCount(param.value),
     },
     {
-      field: 'repositories', headerName: 'Repositories', sortable: false,
+      field: 'repositories', headerName: 'Repositories',
       minWidth: 50, flex: 1, renderCell: (param: any) => renderCount(param.value),
     },
   ];

@@ -52,6 +52,9 @@ export interface UsersPage {
   users: User[];
   total: number;
   numberOfPages: number;
+  // Per-user workspace/repository counts, keyed by user id; empty when the
+  // backend could not provide them (the frontend then falls back to lazy loading).
+  counts: { [id: string]: accountsApi.UserResourceCounts };
 }
 
 export async function getUser(userid: string): Promise<User> {
@@ -71,6 +74,7 @@ export async function getUsers(
     users: response.users || [],
     total: response.pagination?.total ?? (response.users?.length || 0),
     numberOfPages: response.pagination?.numberOfPages ?? 1,
+    counts: response.counts || {},
   };
 }
 

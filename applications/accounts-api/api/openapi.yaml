@@ -190,6 +190,8 @@ paths:
                             - name
                             - first_name
                             - last_name
+                            - workspaces
+                            - repositories
                         default: registration_date
                     in: query
                     required: false
@@ -226,6 +228,16 @@ paths:
                                                 type: integer
                                             number_of_pages:
                                                 type: integer
+                                    counts:
+                                        description: 'Workspace/repository counts for the returned users, keyed by user id. Omitted entries mean the counts are unknown.'
+                                        type: object
+                                        additionalProperties:
+                                            type: object
+                                            properties:
+                                                workspaces:
+                                                    type: integer
+                                                repositories:
+                                                    type: integer
                     description: Get list of users
             security:
                 -
