@@ -1015,8 +1015,172 @@ paths:
             operationId: user_resource_counts
             summary: Per-user workspace and repository counts (admin only).
             x-openapi-router-controller: workspaces.controllers.admin_controller
+    /dandi/upload/init:
+        post:
+            requestBody:
+                description: The file to reserve an upload slot for in EMBER-DANDI.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UploadInitRequest'
+                required: true
+            tags:
+                - dandi
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadInitResponse'
+                    description: >-
+                        Upload reserved. Returns presigned S3 part URLs the browser PUTs to
+                        directly, or (when the content already exists in the archive) an empty
+                        parts list plus the existing blob_id.
+                '401':
+                    description: Missing or invalid token
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.dandi_upload_controller.dandi_upload_init
+            summary: >-
+                Reserve a DANDI upload. The asset path is derived server-side from the caller's
+                identity and is never taken from the request body.
+    /dandi/upload/finalize:
+        post:
+            requestBody:
+                description: The completed upload to register, attach to a workspace, and analyse.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UploadFinalizeRequest'
+                required: true
+            tags:
+                - dandi
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadFinalizeResponse'
+                    description: Asset registered, workspace attached, script run.
+                '401':
+                    description: Missing or invalid token
+            security:
+                -
+                    bearerAuth: []
+            operationId: workspaces.controllers.dandi_upload_controller.dandi_upload_finalize
+            summary: >-
+                Complete the DANDI upload, create/attach the workspace, and run the protocol
+                script in it. Synchronous — does not return until the script finishes, which
+                can take minutes.
 components:
     schemas:
+        UploadPart:
+            type: object
+            properties:
+                part_number:
+                    type: integer
+                url:
+                    type: string
+                    description: Presigned S3 URL the browser PUTs this part's bytes to directly.
+        UploadedPart:
+            type: object
+            properties:
+                part_number:
+                    type: integer
+                size:
+                    type: integer
+                etag:
+                    type: string
+                    description: The ETag S3 returned for this part's PUT.
+        UploadInitRequest:
+            type: object
+            required:
+                - filename
+                - size
+                - dandi_etag
+            properties:
+                task_id:
+                    type: string
+                    description: >-
+                        Slug of the selected protocol; becomes the first segment of the asset path.
+                filename:
+                    type: string
+                size:
+                    type: integer
+                dandi_etag:
+                    type: string
+                    description: >-
+                        S3-multipart digest in DANDI's format (32 hex chars, a dash, the part
+                        count), computed in the browser since the bytes never reach this server.
+        UploadInitResponse:
+            type: object
+            properties:
+                upload_id:
+                    type: string
+                    description: Absent when the content was already in the archive.
+                path:
+                    type: string
+                    description: Asset path derived server-side from the caller's identity.
+                parts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UploadPart'
+                blob_id:
+                    type: string
+                    description: Set only on the deduplicated path.
+        UploadFinalizeRequest:
+            type: object
+            required:
+                - path
+            properties:
+                upload_id:
+                    type: string
+                    description: Omitted on the deduplicated path, where no upload took place.
+                path:
+                    type: string
+                parts:
+                    type: array
+                    description: Omitted on the deduplicated path.
+                    items:
+                        $ref: '#/components/schemas/UploadedPart'
+                blob_id:
+                    type: string
+                    description: >-
+                        Echoed back from init's deduplicated response; when present,
+                        complete/validate are skipped.
+                workspace_id:
+                    type: integer
+                    description: Existing workspace to attach to. Omit to create a new one.
+                workspace_name:
+                    type: string
+                    description: Name for a new workspace, used only when workspace_id is omitted.
+                script_url:
+                    type: string
+                    description: >-
+                        Publicly-reachable URL of the protocol's analysis script. Fetched and run
+                        server-side inside the workspace; omit to skip running anything.
+                script_name:
+                    type: string
+                    description: Filename the script lands under in the workspace.
+        UploadFinalizeResponse:
+            type: object
+            required:
+                - asset_path
+                - workspace_id
+            properties:
+                asset_path:
+                    type: string
+                    description: Path of the registered DANDI asset.
+                dandiset_url:
+                    type: string
+                workspace_id:
+                    type: integer
+                script_output:
+                    type: string
+                    description: >-
+                        Everything the protocol script printed, or an explanation of why it did
+                        not run. Absent when no script_url was supplied.
         Valid:
             type: object
             properties:
@@ -1582,3 +1746,8 @@ tags:
     -
         name: Client
         description: Client
+    -
+        name: dandi
+        description: >-
+            Brokered uploads into EMBER-DANDI (IDP-43). File bytes go browser -> S3 directly via
+            presigned part URLs; only metadata passes through this server.
