@@ -394,7 +394,7 @@
                 },
                 "fullScopeAllowed": true,
                 "defaultClientScopes": [
-                    "web-origins", "profile", "roles", "email"
+                    "web-origins", "profile", "roles", "email", "basic"
                 ],
                 "optionalClientScopes": [
                     "offline_access", "{{ .Values.apps.accounts.admin.role }}-scope"
