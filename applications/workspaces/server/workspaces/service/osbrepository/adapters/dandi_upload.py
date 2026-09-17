@@ -5,6 +5,7 @@ from the *public* DANDI archive (hardcoded api.dandiarchive.org), read-only, no 
 module is the write-side counterpart, against EMBER-DANDI specifically, and is the only code
 holding the admin key.
 """
+import mimetypes
 import os
 
 import requests
@@ -127,13 +128,25 @@ def register_asset(path: str, blob_id: str) -> dict:
 
     The collection endpoint only supports GET/POST — PUT is for updating a specific existing
     asset at `.../assets/{asset_id}/`. AssetRequest only requires `metadata`, and `path` goes
-    *inside* it rather than being a top-level field. Metadata is deliberately minimal here; real
-    asset metadata (subject, session, etc.) is not populated yet.
+    *inside* it rather than being a top-level field.
+
+    `schemaKey` and `encodingFormat` are the only two fields the dandi-schema `Asset` model
+    requires beyond what DANDI backfills itself (contentSize, digest, id, contentUrl) — leaving
+    either out is what was producing "'X' is a required property" validation errors on every
+    asset. Real subject/session metadata is still not populated here.
     """
+    encoding_format, _ = mimetypes.guess_type(path)
     resp = requests.post(
         f"{DANDI_API_BASE}/dandisets/{DANDI_DANDISET_ID}/versions/draft/assets/",
         headers=_headers(),
-        json={"metadata": {"path": path}, "blob_id": blob_id},
+        json={
+            "metadata": {
+                "path": path,
+                "schemaKey": "Asset",
+                "encodingFormat": encoding_format or "application/octet-stream",
+            },
+            "blob_id": blob_id,
+        },
     )
     if resp.status_code == 409:
         # Already registered at this path — almost always a retry after a later step (the
