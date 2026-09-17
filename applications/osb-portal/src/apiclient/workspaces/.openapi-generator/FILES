@@ -1,3 +1,4 @@
+apis/DandiApi.ts
 apis/K8sApi.ts
 apis/RestApi.ts
 apis/index.ts
@@ -30,6 +31,12 @@ models/ResourceOrigin.ts
 models/ResourceStatus.ts
 models/ResourceType.ts
 models/Tag.ts
+models/UploadFinalizeRequest.ts
+models/UploadFinalizeResponse.ts
+models/UploadInitRequest.ts
+models/UploadInitResponse.ts
+models/UploadPart.ts
+models/UploadedPart.ts
 models/User.ts
 models/Valid.ts
 models/VolumeStorage.ts

@@ -54,6 +54,7 @@ harness:
   secrets:
     github-user:
     github-token:
+    dandi-api-key: ""
   dependencies:
     build:
       - cloudharness-base

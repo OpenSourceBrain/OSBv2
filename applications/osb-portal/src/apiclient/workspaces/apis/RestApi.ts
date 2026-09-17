@@ -200,6 +200,10 @@ export interface WorkspacesControllersWorkspaceControllerImportResourcesRequest 
     inlineObject?: InlineObject;
 }
 
+export interface WorkspacesControllersWorkspaceControllerOpenRequest {
+    id: number;
+}
+
 export interface WorkspacesControllersWorkspaceControllerSetthumbnailRequest {
     id: number;
     thumbNail?: Blob;
@@ -1482,6 +1486,43 @@ export class RestApi extends runtime.BaseAPI {
      */
     async workspacesControllersWorkspaceControllerImportResources(requestParameters: WorkspacesControllersWorkspaceControllerImportResourcesRequest): Promise<void> {
         await this.workspacesControllersWorkspaceControllerImportResourcesRaw(requestParameters);
+    }
+
+    /**
+     * Ensure the workspace volume exists and is ready before opening the workspace.
+     */
+    async workspacesControllersWorkspaceControllerOpenRaw(requestParameters: WorkspacesControllersWorkspaceControllerOpenRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling workspacesControllersWorkspaceControllerOpen.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/workspace/{id}/open`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Ensure the workspace volume exists and is ready before opening the workspace.
+     */
+    async workspacesControllersWorkspaceControllerOpen(requestParameters: WorkspacesControllersWorkspaceControllerOpenRequest): Promise<void> {
+        await this.workspacesControllersWorkspaceControllerOpenRaw(requestParameters);
     }
 
     /**
