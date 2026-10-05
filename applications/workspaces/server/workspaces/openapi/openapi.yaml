@@ -243,7 +243,7 @@ paths:
                                 $ref: '#/components/schemas/WorkspaceRunResponse'
                     description: Run submitted; poll GET /workspace/{id}/run/{workflow}.
                 '400':
-                    description: A path is not inside the workspace.
+                    description: A path is not inside the workspace, or the request is incomplete.
                 '401':
                     description: Missing or invalid token.
                 '403':
@@ -255,10 +255,9 @@ paths:
                     bearerAuth: []
             operationId: run_notebooks
             summary: >-
-                Run a protocol repository's notebooks on the workspace's volume (papermill in an
-                Argo task): requirements.txt, then scripts/, then notebooks/*.ipynb in order.
-                Returns at once. The task is scheduled next to the workspace's lab pod, so the
-                workspace server must be started.
+                Run notebooks of a repository on the workspace's volume (papermill in an Argo
+                task), in the order given, after setting up what the request names (requirements,
+                PYTHONPATH, installs). Returns at once.
             x-openapi-router-controller: workspaces.controllers.workspace_run_controller
         parameters:
             -
@@ -1136,24 +1135,71 @@ components:
         WorkspaceRunRequest:
             type: object
             required:
-                - notebooks_dir
+                - repo_dir
+                - notebooks
             properties:
-                notebooks_dir:
+                repo_dir:
                     type: string
                     description: >-
-                        The repository's notebooks folder on the volume, e.g.
-                        four-choice-example-main/notebooks. Its parent is the repository.
+                        The repository on the volume, e.g. idp/<run id>/repo/four-choice-example-main.
+                        The run works in a copy of it; the repository itself is not changed.
+                notebooks:
+                    type: array
+                    minItems: 1
+                    items:
+                        type: string
+                    description: >-
+                        The notebooks to run, relative to repo_dir, in the order to run them. Each runs
+                        in its own folder; the run stops at the first that fails.
                 input_path:
                     type: string
                     description: The imported data on the volume (a file, or a folder), if any.
                 input_dir:
                     type: string
                     description: >-
-                        Repository-relative folder the notebooks read their input from (e.g.
-                        example_data); for the run it holds input_path instead.
+                        Folder in the repository the notebooks read their input from (e.g.
+                        example_data); for the run it holds input_path instead. Required with input_path.
+                outputs:
+                    type: array
+                    items:
+                        type: string
+                    description: >-
+                        Folders in the repository whose contents are this run's results (e.g. outputs);
+                        emptied before the run and copied into the results folder after it, also when
+                        the run fails.
+                requirements:
+                    type: string
+                    description: >-
+                        A requirements file in the repository (e.g. requirements.txt), installed with pip
+                        before the notebooks run. Skipped if the repository has no such file.
+                python_path:
+                    type: array
+                    items:
+                        type: string
+                    description: >-
+                        Folders in the repository to put on the notebooks' PYTHONPATH (e.g. scripts).
+                        Ones the repository doesn't have are skipped.
+                install:
+                    type: array
+                    items:
+                        type: string
+                    description: >-
+                        How to install the repository's own code, as candidates in order of preference
+                        (e.g. scripts/install.py, scripts/setup.py, scripts/pyproject.toml); the first
+                        the repository has is used, after the requirements. A setup.py or pyproject.toml
+                        has its folder pip-installed; any other .py file is run in its folder. A failure
+                        is logged and the run goes on.
                 output_dir:
                     type: string
-                    description: Where results go, relative to the volume; the run adds its own folder. Default results.
+                    description: >-
+                        Where results go, relative to the volume; the run adds its own folder,
+                        run-[<name>-]<UTC timestamp>. Default results.
+                name:
+                    type: string
+                    pattern: '^[a-z0-9][a-z0-9-]{0,62}$'
+                    description: >-
+                        Short name for the run's folder, e.g. the protocol id: results go to
+                        <output_dir>/run-<name>-<UTC timestamp>/.
         WorkspaceRunResponse:
             type: object
             required:

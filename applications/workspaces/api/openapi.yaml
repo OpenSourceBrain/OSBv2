@@ -224,6 +224,85 @@ paths:
                     type: integer
                 in: path
                 required: true
+    '/workspace/{id}/run':
+        post:
+            requestBody:
+                description: The notebooks to run, and the data to run them on.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkspaceRunRequest'
+                required: true
+            tags:
+                - run
+            responses:
+                '202':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WorkspaceRunResponse'
+                    description: Run submitted; poll GET /workspace/{id}/run/{workflow}.
+                '400':
+                    description: A path is not inside the workspace, or the request is incomplete.
+                '401':
+                    description: Missing or invalid token.
+                '403':
+                    description: Only the workspace's owner may run in it.
+                '404':
+                    description: The workspace was not found.
+            security:
+                -
+                    bearerAuth: []
+            operationId: run_notebooks
+            summary: >-
+                Run notebooks of a repository on the workspace's volume (papermill in an Argo
+                task), in the order given, after setting up what the request names (requirements,
+                PYTHONPATH, installs). Returns at once.
+            x-openapi-router-controller: workspaces.controllers.workspace_run_controller
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/workspace/{id}/run/{workflow}':
+        get:
+            tags:
+                - run
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WorkspaceRunStatus'
+                    description: The run's state.
+                '401':
+                    description: Missing or invalid token.
+                '404':
+                    description: No such run in this workspace (or it was cleaned up).
+            security:
+                -
+                    bearerAuth: []
+            operationId: get_run
+            summary: The state of a notebook run.
+            x-openapi-router-controller: workspaces.controllers.workspace_run_controller
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
+            -
+                name: workflow
+                description: The run's workflow name, from POST /workspace/{id}/run.
+                schema:
+                    type: string
+                in: path
+                required: true
     '/workspace/{id}/clone':
         put:
             tags:
@@ -990,64 +1069,6 @@ paths:
             operationId: user_resource_counts
             summary: Per-user workspace and repository counts (admin only).
             x-openapi-router-controller: workspaces.controllers.admin_controller
-    /dandi/upload/init:
-        post:
-            requestBody:
-                description: The file to reserve an upload slot for in EMBER-DANDI.
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UploadInitRequest'
-                required: true
-            tags:
-                - dandi
-            responses:
-                '200':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UploadInitResponse'
-                    description: >-
-                        Upload reserved. Returns presigned S3 part URLs the browser PUTs to
-                        directly, or (when the content already exists in the archive) an empty
-                        parts list plus the existing blob_id.
-                '401':
-                    description: Missing or invalid token
-            security:
-                -
-                    bearerAuth: []
-            operationId: workspaces.controllers.dandi_upload_controller.dandi_upload_init
-            summary: >-
-                Reserve a DANDI upload. The asset path is derived server-side from the caller's
-                identity and is never taken from the request body.
-    /dandi/upload/finalize:
-        post:
-            requestBody:
-                description: The completed upload to register, attach to a workspace, and analyse.
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UploadFinalizeRequest'
-                required: true
-            tags:
-                - dandi
-            responses:
-                '200':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UploadFinalizeResponse'
-                    description: Asset registered, workspace attached, script run.
-                '401':
-                    description: Missing or invalid token
-            security:
-                -
-                    bearerAuth: []
-            operationId: workspaces.controllers.dandi_upload_controller.dandi_upload_finalize
-            summary: >-
-                Complete the DANDI upload, create/attach the workspace, and run the protocol
-                script in it. Synchronous — does not return until the script finishes, which
-                can take minutes.
 components:
     schemas:
         UploadPart:
@@ -1068,94 +1089,104 @@ components:
                 etag:
                     type: string
                     description: The ETag S3 returned for this part's PUT.
-        UploadInitRequest:
+        WorkspaceRunRequest:
             type: object
             required:
-                - filename
-                - size
-                - dandi_etag
+                - repo_dir
+                - notebooks
             properties:
-                task_id:
+                repo_dir:
                     type: string
                     description: >-
-                        Slug of the selected protocol; becomes the first segment of the asset path.
-                filename:
+                        The repository on the volume, e.g. idp/<run id>/repo/four-choice-example-main.
+                        The run works in a copy of it; the repository itself is not changed.
+                notebooks:
+                    type: array
+                    minItems: 1
+                    items:
+                        type: string
+                    description: >-
+                        The notebooks to run, relative to repo_dir, in the order to run them. Each runs
+                        in its own folder; the run stops at the first that fails.
+                input_path:
                     type: string
-                size:
-                    type: integer
-                dandi_etag:
+                    description: The imported data on the volume (a file, or a folder), if any.
+                input_dir:
                     type: string
                     description: >-
-                        S3-multipart digest in DANDI's format (32 hex chars, a dash, the part
-                        count), computed in the browser since the bytes never reach this server.
-        UploadInitResponse:
-            type: object
-            properties:
-                upload_id:
-                    type: string
-                    description: Absent when the content was already in the archive.
-                path:
-                    type: string
-                    description: Asset path derived server-side from the caller's identity.
-                parts:
+                        Folder in the repository the notebooks read their input from (e.g.
+                        example_data); for the run it holds input_path instead. Required with input_path.
+                outputs:
                     type: array
                     items:
-                        $ref: '#/components/schemas/UploadPart'
-                blob_id:
+                        type: string
+                    description: >-
+                        Folders in the repository whose contents are this run's results (e.g. outputs);
+                        emptied before the run and copied into the results folder after it, also when
+                        the run fails.
+                requirements:
                     type: string
-                    description: Set only on the deduplicated path.
-        UploadFinalizeRequest:
-            type: object
-            required:
-                - path
-            properties:
-                upload_id:
-                    type: string
-                    description: Omitted on the deduplicated path, where no upload took place.
-                path:
-                    type: string
-                parts:
+                    description: >-
+                        A requirements file in the repository (e.g. requirements.txt), installed with pip
+                        before the notebooks run. Skipped if the repository has no such file.
+                python_path:
                     type: array
-                    description: Omitted on the deduplicated path.
                     items:
-                        $ref: '#/components/schemas/UploadedPart'
-                blob_id:
+                        type: string
+                    description: >-
+                        Folders in the repository to put on the notebooks' PYTHONPATH (e.g. scripts).
+                        Ones the repository doesn't have are skipped.
+                install:
+                    type: array
+                    items:
+                        type: string
+                    description: >-
+                        How to install the repository's own code, as candidates in order of preference
+                        (e.g. scripts/install.py, scripts/setup.py, scripts/pyproject.toml); the first
+                        the repository has is used, after the requirements. A setup.py or pyproject.toml
+                        has its folder pip-installed; any other .py file is run in its folder. A failure
+                        is logged and the run goes on.
+                output_dir:
                     type: string
                     description: >-
-                        Echoed back from init's deduplicated response; when present,
-                        complete/validate are skipped.
-                workspace_id:
-                    type: integer
-                    description: Existing workspace to attach to. Omit to create a new one.
-                workspace_name:
+                        Where results go, relative to the volume; the run adds its own folder,
+                        run-[<name>-]<UTC timestamp>. Default results.
+                name:
                     type: string
-                    description: Name for a new workspace, used only when workspace_id is omitted.
-                script_url:
-                    type: string
+                    pattern: '^[a-z0-9][a-z0-9-]{0,62}$'
                     description: >-
-                        Publicly-reachable URL of the protocol's analysis script. Fetched and run
-                        server-side inside the workspace; omit to skip running anything.
-                script_name:
-                    type: string
-                    description: Filename the script lands under in the workspace.
-        UploadFinalizeResponse:
+                        Short name for the run's folder, e.g. the protocol id: results go to
+                        <output_dir>/run-<name>-<UTC timestamp>/.
+        WorkspaceRunResponse:
             type: object
             required:
-                - asset_path
-                - workspace_id
+                - workflow
+                - output_dir
             properties:
-                asset_path:
+                workflow:
                     type: string
-                    description: Path of the registered DANDI asset.
-                dandiset_url:
+                    description: The run's id, for GET /workspace/{id}/run/{workflow}.
+                output_dir:
                     type: string
-                workspace_id:
-                    type: integer
-                script_output:
+                    description: This run's results folder on the volume.
+        WorkspaceRunStatus:
+            type: object
+            required:
+                - workflow
+                - phase
+            properties:
+                workflow:
                     type: string
-                    description: >-
-                        Everything the protocol script printed, or an explanation of why it did
-                        not run. Absent when no script_url was supplied.
+                phase:
+                    type: string
+                    enum:
+                        - Pending
+                        - Running
+                        - Succeeded
+                        - Failed
+                message:
+                    type: string
+                    description: Why it failed (e.g. which notebook), or Argo's message.
         Valid:
             type: object
             properties:
@@ -1709,6 +1740,9 @@ components:
             type: http
             x-bearerInfoFunc: cloudharness.auth.AuthClient.decode_token
 tags:
+    -
+        name: run
+        description: Running protocol notebooks in a workspace (IDP-43, MAABCD)
     -
         name: rest
         description: rest API for Workspaces manager

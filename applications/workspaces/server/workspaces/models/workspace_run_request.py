@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
+import re
 from workspaces import util
 
 class WorkspaceRunRequest(Model):
@@ -13,37 +14,66 @@ class WorkspaceRunRequest(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self, notebooks_dir=None, input_path=None, input_dir=None, output_dir=None):  # noqa: E501
+    def __init__(self, repo_dir=None, notebooks=None, input_path=None, input_dir=None, outputs=None, requirements=None, python_path=None, install=None, output_dir=None, name=None):  # noqa: E501
         """WorkspaceRunRequest - a model defined in OpenAPI
 
-        :param notebooks_dir: The notebooks_dir of this WorkspaceRunRequest.  # noqa: E501
-        :type notebooks_dir: str
+        :param repo_dir: The repo_dir of this WorkspaceRunRequest.  # noqa: E501
+        :type repo_dir: str
+        :param notebooks: The notebooks of this WorkspaceRunRequest.  # noqa: E501
+        :type notebooks: List[str]
         :param input_path: The input_path of this WorkspaceRunRequest.  # noqa: E501
         :type input_path: str
         :param input_dir: The input_dir of this WorkspaceRunRequest.  # noqa: E501
         :type input_dir: str
+        :param outputs: The outputs of this WorkspaceRunRequest.  # noqa: E501
+        :type outputs: List[str]
+        :param requirements: The requirements of this WorkspaceRunRequest.  # noqa: E501
+        :type requirements: str
+        :param python_path: The python_path of this WorkspaceRunRequest.  # noqa: E501
+        :type python_path: List[str]
+        :param install: The install of this WorkspaceRunRequest.  # noqa: E501
+        :type install: List[str]
         :param output_dir: The output_dir of this WorkspaceRunRequest.  # noqa: E501
         :type output_dir: str
+        :param name: The name of this WorkspaceRunRequest.  # noqa: E501
+        :type name: str
         """
         self.openapi_types = {
-            'notebooks_dir': str,
+            'repo_dir': str,
+            'notebooks': List[str],
             'input_path': str,
             'input_dir': str,
-            'output_dir': str
+            'outputs': List[str],
+            'requirements': str,
+            'python_path': List[str],
+            'install': List[str],
+            'output_dir': str,
+            'name': str
         }
 
         self.attribute_map = {
-            'notebooks_dir': 'notebooks_dir',
+            'repo_dir': 'repo_dir',
+            'notebooks': 'notebooks',
             'input_path': 'input_path',
             'input_dir': 'input_dir',
-            'output_dir': 'output_dir'
+            'outputs': 'outputs',
+            'requirements': 'requirements',
+            'python_path': 'python_path',
+            'install': 'install',
+            'output_dir': 'output_dir',
+            'name': 'name'
         }
 
-        self._notebooks_dir = notebooks_dir
+        self._repo_dir = repo_dir
+        self._notebooks = notebooks
         self._input_path = input_path
         self._input_dir = input_dir
+        self._outputs = outputs
+        self._requirements = requirements
+        self._python_path = python_path
+        self._install = install
         self._output_dir = output_dir
+        self._name = name
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceRunRequest':
@@ -57,29 +87,54 @@ class WorkspaceRunRequest(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def notebooks_dir(self):
-        """Gets the notebooks_dir of this WorkspaceRunRequest.
+    def repo_dir(self):
+        """Gets the repo_dir of this WorkspaceRunRequest.
 
-        The repository's notebooks folder on the volume, e.g. four-choice-example-main/notebooks. Its parent is the repository.  # noqa: E501
+        The repository on the volume, e.g. idp/<run id>/repo/four-choice-example-main. The run works in a copy of it; the repository itself is not changed.  # noqa: E501
 
-        :return: The notebooks_dir of this WorkspaceRunRequest.
+        :return: The repo_dir of this WorkspaceRunRequest.
         :rtype: str
         """
-        return self._notebooks_dir
+        return self._repo_dir
 
-    @notebooks_dir.setter
-    def notebooks_dir(self, notebooks_dir):
-        """Sets the notebooks_dir of this WorkspaceRunRequest.
+    @repo_dir.setter
+    def repo_dir(self, repo_dir):
+        """Sets the repo_dir of this WorkspaceRunRequest.
 
-        The repository's notebooks folder on the volume, e.g. four-choice-example-main/notebooks. Its parent is the repository.  # noqa: E501
+        The repository on the volume, e.g. idp/<run id>/repo/four-choice-example-main. The run works in a copy of it; the repository itself is not changed.  # noqa: E501
 
-        :param notebooks_dir: The notebooks_dir of this WorkspaceRunRequest.
-        :type notebooks_dir: str
+        :param repo_dir: The repo_dir of this WorkspaceRunRequest.
+        :type repo_dir: str
         """
-        if notebooks_dir is None:
-            raise ValueError("Invalid value for `notebooks_dir`, must not be `None`")  # noqa: E501
+        if repo_dir is None:
+            raise ValueError("Invalid value for `repo_dir`, must not be `None`")  # noqa: E501
 
-        self._notebooks_dir = notebooks_dir
+        self._repo_dir = repo_dir
+
+    @property
+    def notebooks(self):
+        """Gets the notebooks of this WorkspaceRunRequest.
+
+        The notebooks to run, relative to repo_dir, in the order to run them. Each runs in its own folder; the run stops at the first that fails.  # noqa: E501
+
+        :return: The notebooks of this WorkspaceRunRequest.
+        :rtype: List[str]
+        """
+        return self._notebooks
+
+    @notebooks.setter
+    def notebooks(self, notebooks):
+        """Sets the notebooks of this WorkspaceRunRequest.
+
+        The notebooks to run, relative to repo_dir, in the order to run them. Each runs in its own folder; the run stops at the first that fails.  # noqa: E501
+
+        :param notebooks: The notebooks of this WorkspaceRunRequest.
+        :type notebooks: List[str]
+        """
+        if notebooks is None:
+            raise ValueError("Invalid value for `notebooks`, must not be `None`")  # noqa: E501
+
+        self._notebooks = notebooks
 
     @property
     def input_path(self):
@@ -108,7 +163,7 @@ class WorkspaceRunRequest(Model):
     def input_dir(self):
         """Gets the input_dir of this WorkspaceRunRequest.
 
-        Repository-relative folder the notebooks read their input from (e.g. example_data); for the run it holds input_path instead.  # noqa: E501
+        Folder in the repository the notebooks read their input from (e.g. example_data); for the run it holds input_path instead. Required with input_path.  # noqa: E501
 
         :return: The input_dir of this WorkspaceRunRequest.
         :rtype: str
@@ -119,7 +174,7 @@ class WorkspaceRunRequest(Model):
     def input_dir(self, input_dir):
         """Sets the input_dir of this WorkspaceRunRequest.
 
-        Repository-relative folder the notebooks read their input from (e.g. example_data); for the run it holds input_path instead.  # noqa: E501
+        Folder in the repository the notebooks read their input from (e.g. example_data); for the run it holds input_path instead. Required with input_path.  # noqa: E501
 
         :param input_dir: The input_dir of this WorkspaceRunRequest.
         :type input_dir: str
@@ -128,10 +183,102 @@ class WorkspaceRunRequest(Model):
         self._input_dir = input_dir
 
     @property
+    def outputs(self):
+        """Gets the outputs of this WorkspaceRunRequest.
+
+        Folders in the repository whose contents are this run's results (e.g. outputs); emptied before the run and copied into the results folder after it, also when the run fails.  # noqa: E501
+
+        :return: The outputs of this WorkspaceRunRequest.
+        :rtype: List[str]
+        """
+        return self._outputs
+
+    @outputs.setter
+    def outputs(self, outputs):
+        """Sets the outputs of this WorkspaceRunRequest.
+
+        Folders in the repository whose contents are this run's results (e.g. outputs); emptied before the run and copied into the results folder after it, also when the run fails.  # noqa: E501
+
+        :param outputs: The outputs of this WorkspaceRunRequest.
+        :type outputs: List[str]
+        """
+
+        self._outputs = outputs
+
+    @property
+    def requirements(self):
+        """Gets the requirements of this WorkspaceRunRequest.
+
+        A requirements file in the repository (e.g. requirements.txt), installed with pip before the notebooks run. Skipped if the repository has no such file.  # noqa: E501
+
+        :return: The requirements of this WorkspaceRunRequest.
+        :rtype: str
+        """
+        return self._requirements
+
+    @requirements.setter
+    def requirements(self, requirements):
+        """Sets the requirements of this WorkspaceRunRequest.
+
+        A requirements file in the repository (e.g. requirements.txt), installed with pip before the notebooks run. Skipped if the repository has no such file.  # noqa: E501
+
+        :param requirements: The requirements of this WorkspaceRunRequest.
+        :type requirements: str
+        """
+
+        self._requirements = requirements
+
+    @property
+    def python_path(self):
+        """Gets the python_path of this WorkspaceRunRequest.
+
+        Folders in the repository to put on the notebooks' PYTHONPATH (e.g. scripts). Ones the repository doesn't have are skipped.  # noqa: E501
+
+        :return: The python_path of this WorkspaceRunRequest.
+        :rtype: List[str]
+        """
+        return self._python_path
+
+    @python_path.setter
+    def python_path(self, python_path):
+        """Sets the python_path of this WorkspaceRunRequest.
+
+        Folders in the repository to put on the notebooks' PYTHONPATH (e.g. scripts). Ones the repository doesn't have are skipped.  # noqa: E501
+
+        :param python_path: The python_path of this WorkspaceRunRequest.
+        :type python_path: List[str]
+        """
+
+        self._python_path = python_path
+
+    @property
+    def install(self):
+        """Gets the install of this WorkspaceRunRequest.
+
+        How to install the repository's own code, as candidates in order of preference (e.g. scripts/install.py, scripts/setup.py, scripts/pyproject.toml); the first the repository has is used, after the requirements. A setup.py or pyproject.toml has its folder pip-installed; any other .py file is run in its folder. A failure is logged and the run goes on.  # noqa: E501
+
+        :return: The install of this WorkspaceRunRequest.
+        :rtype: List[str]
+        """
+        return self._install
+
+    @install.setter
+    def install(self, install):
+        """Sets the install of this WorkspaceRunRequest.
+
+        How to install the repository's own code, as candidates in order of preference (e.g. scripts/install.py, scripts/setup.py, scripts/pyproject.toml); the first the repository has is used, after the requirements. A setup.py or pyproject.toml has its folder pip-installed; any other .py file is run in its folder. A failure is logged and the run goes on.  # noqa: E501
+
+        :param install: The install of this WorkspaceRunRequest.
+        :type install: List[str]
+        """
+
+        self._install = install
+
+    @property
     def output_dir(self):
         """Gets the output_dir of this WorkspaceRunRequest.
 
-        Where results go, relative to the volume; the run adds its own folder. Default results.  # noqa: E501
+        Where results go, relative to the volume; the run adds its own folder, run-[<name>-]<UTC timestamp>. Default results.  # noqa: E501
 
         :return: The output_dir of this WorkspaceRunRequest.
         :rtype: str
@@ -142,10 +289,35 @@ class WorkspaceRunRequest(Model):
     def output_dir(self, output_dir):
         """Sets the output_dir of this WorkspaceRunRequest.
 
-        Where results go, relative to the volume; the run adds its own folder. Default results.  # noqa: E501
+        Where results go, relative to the volume; the run adds its own folder, run-[<name>-]<UTC timestamp>. Default results.  # noqa: E501
 
         :param output_dir: The output_dir of this WorkspaceRunRequest.
         :type output_dir: str
         """
 
         self._output_dir = output_dir
+
+    @property
+    def name(self):
+        """Gets the name of this WorkspaceRunRequest.
+
+        Short name for the run's folder, e.g. the protocol id: results go to <output_dir>/run-<name>-<UTC timestamp>/.  # noqa: E501
+
+        :return: The name of this WorkspaceRunRequest.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Sets the name of this WorkspaceRunRequest.
+
+        Short name for the run's folder, e.g. the protocol id: results go to <output_dir>/run-<name>-<UTC timestamp>/.  # noqa: E501
+
+        :param name: The name of this WorkspaceRunRequest.
+        :type name: str
+        """
+        if name is not None and not re.search(r'^[a-z0-9][a-z0-9-]{0,62}$', name):  # noqa: E501
+            raise ValueError("Invalid value for `name`, must be a follow pattern or equal to `/^[a-z0-9][a-z0-9-]{0,62}$/`")  # noqa: E501
+
+        self._name = name
