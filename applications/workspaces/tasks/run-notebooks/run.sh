@@ -7,8 +7,9 @@ set -euo pipefail
 # A cell still running after this long is stopped, and its notebook fails.
 CELL_TIMEOUT_SECONDS=3600
 
-volume_root=$(echo "${shared_directory:-/project_download}" | cut -d ":" -f 2)
-volume_root=${volume_root:-/project_download}
+# shared_directory is <volume>:<mount path>:<mode>, as for OSB's copy tasks.
+mount=${shared_directory:-volume:/project_download}
+volume_root=${mount#*:} && volume_root=${volume_root%%:*}
 
 # ── Helpers ──────────────────────────────────────────────────────────────────────────────────
 
@@ -19,8 +20,8 @@ fail() {
     exit 1
 }
 
-require_relative() {  # $1 = name, $2 = value: a path inside the volume or the repository
-    case "/$2/" in
+require_relative() {  # $1 = a path inside the volume or the repository
+    case "/$1/" in
         //*|*/../*|*/./*) fail "$1 must be a relative path and must not contain '..'" ;;
     esac
 }
@@ -41,7 +42,7 @@ read_list python_path python_path_list
 read_list install install_list
 for path in "$repo_dir" "$output_dir" "$executed_notebooks_dir" "$log_file" "${notebook_list[@]}" \
         "${python_path_list[@]}" "${install_list[@]}" ${input_dir:+"$input_dir"} ${requirements:+"$requirements"}; do
-    require_relative "$path" "$path"
+    require_relative "$path"
 done
 [ -z "${input_dir:-}" ] || [ -e "${volume_root}/${input_dir}" ] || fail "${input_dir} is not on the workspace volume"
 
@@ -98,8 +99,9 @@ fi
 # ── Clean environment for the repository's own code ─────────────────────────────────────────
 
 # It must not see the CH_* variables this container inherits from the workspaces server. Only
-# what pip may need (a proxy or a mirror) is passed through.
-clean_env=(env -i PATH=/usr/local/bin:/usr/bin:/bin HOME=/tmp LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 MPLBACKEND=Agg)
+# what pip may need (a proxy or a mirror) is passed through; pip's own options are set here once.
+clean_env=(env -i PATH=/usr/local/bin:/usr/bin:/bin HOME=/tmp LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 MPLBACKEND=Agg
+    PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_ROOT_USER_ACTION=ignore PIP_NO_CACHE_DIR=1)
 for name in HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy PIP_INDEX_URL PIP_EXTRA_INDEX_URL; do
     if [ -n "${!name:-}" ]; then clean_env+=("${name}=${!name}"); fi
 done
@@ -109,8 +111,8 @@ done
 if [ -n "${requirements:-}" ]; then
     if [ -f "${repo_copy}/${requirements}" ]; then
         echo "Installing ${requirements}"
-        (cd "$repo_copy" && "${clean_env[@]}" python -m pip install --disable-pip-version-check \
-            --root-user-action=ignore --no-cache-dir -r "$requirements") || fail "pip install -r ${requirements} failed; see ${log_file}"
+        (cd "$repo_copy" && "${clean_env[@]}" python -m pip install -r "$requirements") \
+            || fail "pip install -r ${requirements} failed; see ${log_file}"
     else
         echo "No ${requirements} in the repository; nothing to install"
     fi
@@ -130,8 +132,8 @@ for candidate in "${install_list[@]}"; do
     echo "Installing with ${candidate}"
     case "$(basename "$candidate")" in
         setup.py|pyproject.toml)
-            "${clean_env[@]}" python -m pip install --disable-pip-version-check --root-user-action=ignore \
-                --no-cache-dir "$(dirname "${repo_copy}/${candidate}")" || echo "WARNING: installing with ${candidate} failed" ;;
+            "${clean_env[@]}" python -m pip install "$(dirname "${repo_copy}/${candidate}")" \
+                || echo "WARNING: installing with ${candidate} failed" ;;
         *)
             (cd "$(dirname "${repo_copy}/${candidate}")" && "${clean_env[@]}" python "${repo_copy}/${candidate}") \
                 || echo "WARNING: ${candidate} failed" ;;
@@ -149,7 +151,7 @@ sys.exit(0 if any("parameters" in c.get("metadata", {}).get("tags", []) for c in
 }
 parameters=(-p OUTPUT_DIR "${volume_root}/${output_dir}")
 [ -z "${input_dir:-}" ] || parameters+=(-p INPUT_DIR "${volume_root}/${input_dir}")
-mkdir -p "${volume_root}/${output_dir}"
+mkdir -p "${volume_root}/${output_dir}" "$running_dir"
 
 echo "Notebooks: ${notebook_list[*]}"
 for nb in "${notebook_list[@]}"; do
@@ -157,9 +159,8 @@ for nb in "${notebook_list[@]}"; do
     has_parameters_cell "${repo_copy}/${nb}" || fail "${nb} has no cell tagged parameters (INPUT_DIR, OUTPUT_DIR)"
     echo "Running ${nb}"
     executed="${running_dir}/$(basename "$nb")"
-    mkdir -p "$running_dir"
-    (cd "$(dirname "${repo_copy}/${nb}")" && "${clean_env[@]}" python -m papermill --kernel python3 \
-        --execution-timeout "$CELL_TIMEOUT_SECONDS" --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "$executed" "${parameters[@]}") \
+    "${clean_env[@]}" python -m papermill --kernel python3 --execution-timeout "$CELL_TIMEOUT_SECONDS" \
+        --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "$executed" "${parameters[@]}" \
         || fail "${nb} failed; see ${executed_notebooks_dir}.failed/$(basename "$nb")"
 done
 echo "Done"
