@@ -14,25 +14,25 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * A run's workflow, as CloudHarness's workflows API reports an operation.
  * @export
  * @interface WorkspaceRunStatus
  */
 export interface WorkspaceRunStatus {
     /**
-     * 
+     * The workflow name, from POST /workspace/{id}/run.
      * @type {string}
      * @memberof WorkspaceRunStatus
      */
-    workflow: string;
+    name: string;
     /**
-     * 
+     * Argo's phase of the workflow.
      * @type {string}
      * @memberof WorkspaceRunStatus
      */
-    phase: WorkspaceRunStatusPhaseEnum;
+    status: WorkspaceRunStatusStatusEnum;
     /**
-     * Why it failed (e.g. which notebook), or Argo's message.
+     * Set when the run failed (e.g. which notebook).
      * @type {string}
      * @memberof WorkspaceRunStatus
      */
@@ -43,11 +43,13 @@ export interface WorkspaceRunStatus {
 * @export
 * @enum {string}
 */
-export enum WorkspaceRunStatusPhaseEnum {
+export enum WorkspaceRunStatusStatusEnum {
     Pending = 'Pending',
     Running = 'Running',
     Succeeded = 'Succeeded',
-    Failed = 'Failed'
+    Skipped = 'Skipped',
+    Failed = 'Failed',
+    Error = 'Error'
 }
 
 export function WorkspaceRunStatusFromJSON(json: any): WorkspaceRunStatus {
@@ -60,8 +62,8 @@ export function WorkspaceRunStatusFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'workflow': json['workflow'],
-        'phase': json['phase'],
+        'name': json['name'],
+        'status': json['status'],
         'message': !exists(json, 'message') ? undefined : json['message'],
     };
 }
@@ -75,8 +77,8 @@ export function WorkspaceRunStatusToJSON(value?: WorkspaceRunStatus | null): any
     }
     return {
         
-        'workflow': value.workflow,
-        'phase': value.phase,
+        'name': value.name,
+        'status': value.status,
         'message': value.message,
     };
 }

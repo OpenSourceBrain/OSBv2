@@ -14,30 +14,30 @@ class WorkspaceRunStatus(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, workflow=None, phase=None, message=None):  # noqa: E501
+    def __init__(self, name=None, status=None, message=None):  # noqa: E501
         """WorkspaceRunStatus - a model defined in OpenAPI
 
-        :param workflow: The workflow of this WorkspaceRunStatus.  # noqa: E501
-        :type workflow: str
-        :param phase: The phase of this WorkspaceRunStatus.  # noqa: E501
-        :type phase: str
+        :param name: The name of this WorkspaceRunStatus.  # noqa: E501
+        :type name: str
+        :param status: The status of this WorkspaceRunStatus.  # noqa: E501
+        :type status: str
         :param message: The message of this WorkspaceRunStatus.  # noqa: E501
         :type message: str
         """
         self.openapi_types = {
-            'workflow': str,
-            'phase': str,
+            'name': str,
+            'status': str,
             'message': str
         }
 
         self.attribute_map = {
-            'workflow': 'workflow',
-            'phase': 'phase',
+            'name': 'name',
+            'status': 'status',
             'message': 'message'
         }
 
-        self._workflow = workflow
-        self._phase = phase
+        self._workflow = name
+        self._phase = status
         self._message = message
 
     @classmethod
@@ -52,62 +52,66 @@ class WorkspaceRunStatus(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def workflow(self):
-        """Gets the workflow of this WorkspaceRunStatus.
+    def name(self):
+        """Gets the name of this WorkspaceRunStatus.
 
+        The workflow name, from POST /workspace/{id}/run.  # noqa: E501
 
-        :return: The workflow of this WorkspaceRunStatus.
+        :return: The name of this WorkspaceRunStatus.
         :rtype: str
         """
         return self._workflow
 
-    @workflow.setter
-    def workflow(self, workflow):
-        """Sets the workflow of this WorkspaceRunStatus.
+    @name.setter
+    def name(self, name):
+        """Sets the name of this WorkspaceRunStatus.
 
+        The workflow name, from POST /workspace/{id}/run.  # noqa: E501
 
-        :param workflow: The workflow of this WorkspaceRunStatus.
-        :type workflow: str
+        :param name: The name of this WorkspaceRunStatus.
+        :type name: str
         """
-        if workflow is None:
-            raise ValueError("Invalid value for `workflow`, must not be `None`")  # noqa: E501
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
-        self._workflow = workflow
+        self._workflow = name
 
     @property
-    def phase(self):
-        """Gets the phase of this WorkspaceRunStatus.
+    def status(self):
+        """Gets the status of this WorkspaceRunStatus.
 
+        Argo's phase of the workflow.  # noqa: E501
 
-        :return: The phase of this WorkspaceRunStatus.
+        :return: The status of this WorkspaceRunStatus.
         :rtype: str
         """
         return self._phase
 
-    @phase.setter
-    def phase(self, phase):
-        """Sets the phase of this WorkspaceRunStatus.
+    @status.setter
+    def status(self, status):
+        """Sets the status of this WorkspaceRunStatus.
 
+        Argo's phase of the workflow.  # noqa: E501
 
-        :param phase: The phase of this WorkspaceRunStatus.
-        :type phase: str
+        :param status: The status of this WorkspaceRunStatus.
+        :type status: str
         """
-        if phase is None:
-            raise ValueError("Invalid value for `phase`, must not be `None`")  # noqa: E501
-        allowed_values = ['Pending', 'Running', 'Succeeded', 'Failed']  # noqa: E501
-        if phase not in allowed_values:
+        if status is None:
+            raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
+        allowed_values = ['Pending', 'Running', 'Succeeded', 'Skipped', 'Failed', 'Error']  # noqa: E501
+        if status not in allowed_values:
             raise ValueError(
-                "Invalid value for `phase` ({0}), must be one of {1}"
-                .format(phase, allowed_values)
+                "Invalid value for `status` ({0}), must be one of {1}"
+                .format(status, allowed_values)
             )
 
-        self._phase = phase
+        self._phase = status
 
     @property
     def message(self):
         """Gets the message of this WorkspaceRunStatus.
 
-        Why it failed (e.g. which notebook), or Argo's message.  # noqa: E501
+        Set when the run failed (e.g. which notebook).  # noqa: E501
 
         :return: The message of this WorkspaceRunStatus.
         :rtype: str
@@ -118,7 +122,7 @@ class WorkspaceRunStatus(Model):
     def message(self, message):
         """Sets the message of this WorkspaceRunStatus.
 
-        Why it failed (e.g. which notebook), or Argo's message.  # noqa: E501
+        Set when the run failed (e.g. which notebook).  # noqa: E501
 
         :param message: The message of this WorkspaceRunStatus.
         :type message: str

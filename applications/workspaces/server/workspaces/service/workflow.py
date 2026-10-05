@@ -115,3 +115,68 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
     )
     op.volumes=(source_volume, dest_volume)
     workflow = op.execute()
+
+# ── Notebook runs ────────────────────────────────────────────────────────
+# A run executes the notebooks it is given, in order, with papermill (tasks/run-notebooks) in an
+# Argo pod that mounts the workspace volume. Submitted like the copy tasks, with the same
+# `workspace` pod context: next to the workspace's lab pod if one runs, and without one otherwise.
+
+RUN_NOTEBOOKS_BASENAME = "osb-run-notebooks-job"
+# CustomTask sets no limits by default; the notebooks are third-party code.
+RUN_NOTEBOOKS_RESOURCES = {"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "1", "memory": "2Gi"}}
+
+
+def run_notebooks(workspace_id, repo_dir, notebooks, output_dir, input_path=None, input_dir=None, outputs=None,
+                  requirements=None, python_path=None, install=None) -> str:
+    """Submits the run and returns at once with the workflow name, which is the run id.
+    Results go to `output_dir` on the volume (the controller names it per run)."""
+
+    class RunNotebooksTask(tasks.CustomTask):
+        def cloudharness_configmap_spec(self):
+            # Drop the Keycloak accounts secret and the deployment's allvalues, which CloudHarness
+            # mounts into every task: this one runs third-party code.
+            return [m for m in super().cloudharness_configmap_spec()
+                    if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")]
+
+    # Lists go one path per line (the controller rejects newlines in paths).
+    optional = {
+        "input_path": input_path, "input_dir": input_dir, "outputs": "\n".join(outputs or []),
+        "requirements": requirements, "python_path": "\n".join(python_path or []), "install": "\n".join(install or []),
+    }
+    inputs = {k: v for k, v in optional.items() if v}
+    task = RunNotebooksTask(
+        name=f"run-notebooks-{str(uuid.uuid4())[:8]}",
+        image_name="workspaces-run-notebooks",
+        retry_limit=0,  # notebooks aren't safe to re-run blindly
+        resources=RUN_NOTEBOOKS_RESOURCES,
+        repo_dir=repo_dir,
+        notebooks="\n".join(notebooks),
+        output_dir=output_dir,
+        run_id="{{workflow.name}}",  # filled in by Argo; run.sh logs it
+        **inputs,
+    )
+    op = operations.PipelineOperation(
+        basename=RUN_NOTEBOOKS_BASENAME,
+        tasks=(task,),
+        shared_directory=f"{WorkspaceService.get_pvc_name(workspace_id)}:/project_download:rwx",
+        ttl_strategy=ttl_strategy,
+        pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),
+    )
+    return op.execute().name
+
+
+def get_run_workflow(run_id):
+    """The run's Argo workflow, or None if there is none (never submitted, or already deleted by
+    `ttl_strategy`). Not argo_service.get_workflow: that raises for a failed workflow, and a
+    failed run is a normal answer here."""
+    from cloudharness.workflows import argo_service
+
+    if not run_id or not run_id.startswith(RUN_NOTEBOOKS_BASENAME):
+        return None
+    service = argo_service.WorkflowServiceApi(api_client=argo_service.get_api_client())
+    try:
+        return service.get_workflow(argo_service.namespace, name=run_id)
+    except argo_service.exceptions.ApiException as e:
+        if e.status == 404:
+            return None
+        raise

@@ -4,6 +4,9 @@
 
 set -euo pipefail
 
+# A cell still running after this long is stopped, and its notebook fails.
+CELL_TIMEOUT_SECONDS=3600
+
 volume_root=$(echo "${shared_directory:-/project_download}" | cut -d ":" -f 2)
 volume_root=${volume_root:-/project_download}
 
@@ -163,7 +166,7 @@ for nb in "${notebook_list[@]}"; do
     echo "Running ${nb}"
     mkdir -p "$(dirname "${results_dir}/${nb}")"
     (cd "$(dirname "${repo_copy}/${nb}")" && "${clean_env[@]}" python -m papermill --kernel python3 \
-        --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "${results_dir}/${nb}") \
+        --execution-timeout "$CELL_TIMEOUT_SECONDS" --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "${results_dir}/${nb}") \
         || fail "${nb} failed; see ${output_dir}/${nb}"
 done
 echo "Done: ${output_dir}/"

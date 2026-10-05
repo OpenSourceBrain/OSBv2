@@ -84,7 +84,7 @@ export class RunApi extends runtime.BaseAPI {
     }
 
     /**
-     * Run a protocol repository\'s notebooks on the workspace\'s volume (papermill in an Argo task): requirements.txt, then scripts/, then notebooks/_*.ipynb in order. Returns at once. The task is scheduled next to the workspace\'s lab pod, so the workspace server must be started.
+     * Run notebooks of a repository on the workspace\'s volume (papermill in an Argo task), in the order given, after setting up what the request names (requirements, PYTHONPATH, installs). Returns at once.
      */
     async runNotebooksRaw(requestParameters: RunNotebooksRequest): Promise<runtime.ApiResponse<WorkspaceRunResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -121,7 +121,7 @@ export class RunApi extends runtime.BaseAPI {
     }
 
     /**
-     * Run a protocol repository\'s notebooks on the workspace\'s volume (papermill in an Argo task): requirements.txt, then scripts/, then notebooks/_*.ipynb in order. Returns at once. The task is scheduled next to the workspace\'s lab pod, so the workspace server must be started.
+     * Run notebooks of a repository on the workspace\'s volume (papermill in an Argo task), in the order given, after setting up what the request names (requirements, PYTHONPATH, installs). Returns at once.
      */
     async runNotebooks(requestParameters: RunNotebooksRequest): Promise<WorkspaceRunResponse> {
         const response = await this.runNotebooksRaw(requestParameters);

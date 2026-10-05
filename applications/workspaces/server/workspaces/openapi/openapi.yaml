@@ -1213,23 +1213,28 @@ components:
                     type: string
                     description: This run's results folder on the volume.
         WorkspaceRunStatus:
+            description: A run's workflow, as CloudHarness's workflows API reports an operation.
             type: object
             required:
-                - workflow
-                - phase
+                - name
+                - status
             properties:
-                workflow:
+                name:
                     type: string
-                phase:
+                    description: The workflow name, from POST /workspace/{id}/run.
+                status:
                     type: string
+                    description: Argo's phase of the workflow.
                     enum:
                         - Pending
                         - Running
                         - Succeeded
+                        - Skipped
                         - Failed
+                        - Error
                 message:
                     type: string
-                    description: Why it failed (e.g. which notebook), or Argo's message.
+                    description: Set when the run failed (e.g. which notebook).
         Valid:
             type: object
             properties:
