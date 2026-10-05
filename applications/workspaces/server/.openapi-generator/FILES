@@ -33,10 +33,6 @@ workspaces/models/resource_origin.py
 workspaces/models/resource_status.py
 workspaces/models/resource_type.py
 workspaces/models/tag.py
-workspaces/models/upload_finalize_request.py
-workspaces/models/upload_finalize_response.py
-workspaces/models/upload_init_request.py
-workspaces/models/upload_init_response.py
 workspaces/models/upload_part.py
 workspaces/models/uploaded_part.py
 workspaces/models/user.py
@@ -57,3 +53,6 @@ workspaces/models/workspace_resource_entity_all_of.py
 workspaces/openapi/openapi.yaml
 workspaces/typing_utils.py
 workspaces/util.py
+workspaces/models/workspace_run_request.py
+workspaces/models/workspace_run_response.py
+workspaces/models/workspace_run_status.py
