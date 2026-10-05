@@ -241,7 +241,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/WorkspaceRunResponse'
-                    description: Run submitted; poll GET /workspace/{id}/run/{workflow}.
+                    description: Run submitted. While it runs, GET /workspace/{id} lists the "Refreshing resources" placeholder, as for an import.
                 '400':
                     description: A path is not inside the workspace, or the request is incomplete.
                 '401':
@@ -265,42 +265,6 @@ paths:
                 description: Workspace ID of the workspace
                 schema:
                     type: integer
-                in: path
-                required: true
-    '/workspace/{id}/run/{workflow}':
-        get:
-            tags:
-                - run
-            responses:
-                '200':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/WorkspaceRunStatus'
-                    description: The run's state.
-                '401':
-                    description: Missing or invalid token.
-                '404':
-                    description: No such run in this workspace (or it was cleaned up).
-            security:
-                -
-                    bearerAuth: []
-            operationId: get_run
-            summary: The state of a notebook run.
-            x-openapi-router-controller: workspaces.controllers.workspace_run_controller
-        parameters:
-            -
-                name: id
-                description: Workspace ID of the workspace
-                schema:
-                    type: integer
-                in: path
-                required: true
-            -
-                name: workflow
-                description: The run's workflow name, from POST /workspace/{id}/run.
-                schema:
-                    type: string
                 in: path
                 required: true
     '/workspace/{id}/clone':
@@ -1242,30 +1206,7 @@ components:
             properties:
                 workflow:
                     type: string
-                    description: The run's id, for GET /workspace/{id}/run/{workflow}.
-        WorkspaceRunStatus:
-            description: A run's workflow, as CloudHarness's workflows API reports an operation.
-            type: object
-            required:
-                - name
-                - status
-            properties:
-                name:
-                    type: string
-                    description: The workflow name, from POST /workspace/{id}/run.
-                status:
-                    type: string
-                    description: Argo's phase of the workflow.
-                    enum:
-                        - Pending
-                        - Running
-                        - Succeeded
-                        - Skipped
-                        - Failed
-                        - Error
-                message:
-                    type: string
-                    description: Set when the run failed (e.g. which notebook).
+                    description: The run's Argo workflow name.
         Valid:
             type: object
             properties:

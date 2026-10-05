@@ -45,7 +45,7 @@ class WorkspaceRunResponse(Model):
     def workflow(self):
         """Gets the workflow of this WorkspaceRunResponse.
 
-        The run's id, for GET /workspace/{id}/run/{workflow}.  # noqa: E501
+        The run's Argo workflow name.  # noqa: E501
 
         :return: The workflow of this WorkspaceRunResponse.
         :rtype: str
@@ -56,7 +56,7 @@ class WorkspaceRunResponse(Model):
     def workflow(self, workflow):
         """Sets the workflow of this WorkspaceRunResponse.
 
-        The run's id, for GET /workspace/{id}/run/{workflow}.  # noqa: E501
+        The run's Argo workflow name.  # noqa: E501
 
         :param workflow: The workflow of this WorkspaceRunResponse.
         :type workflow: str

@@ -14,8 +14,7 @@ volume_root=${volume_root:-/project_download}
 
 fail() {
     echo "ERROR: $*" >&2
-    # Kubernetes' termination message: Argo shows it as the step's message, so the reason
-    # reaches GET /workspace/{id}/run/{workflow}.
+    # Kubernetes' termination message: Argo shows it as the step's message.
     echo "$*" > /dev/termination-log 2>/dev/null || true
     exit 1
 }

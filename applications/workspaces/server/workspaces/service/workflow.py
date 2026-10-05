@@ -160,26 +160,12 @@ def run_notebooks(workspace_id, run: dict) -> str:
     )
     op = operations.PipelineOperation(
         basename=RUN_NOTEBOOKS_BASENAME,
-        tasks=(task,),
+        # With the repository discarded, its notebooks are gone from the volume: rescan, as the copy
+        # workflows do, so the workspace's resources list the executed ones instead.
+        tasks=(task, create_scan_task(workspace_id)) if run["discard_repo"] else (task,),
         shared_directory=f"{WorkspaceService.get_pvc_name(workspace_id)}:/project_download:rwx",
         ttl_strategy=ttl_strategy,
         pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),
     )
     return op.execute().name
 
-
-def get_run_workflow(run_id):
-    """The run's Argo workflow, or None if there is none (never submitted, or already deleted by
-    `ttl_strategy`). Not argo_service.get_workflow: that raises for a failed workflow, and a
-    failed run is a normal answer here."""
-    from cloudharness.workflows import argo_service
-
-    if not run_id or not run_id.startswith(RUN_NOTEBOOKS_BASENAME):
-        return None
-    service = argo_service.WorkflowServiceApi(api_client=argo_service.get_api_client())
-    try:
-        return service.get_workflow(argo_service.namespace, name=run_id)
-    except argo_service.exceptions.ApiException as e:
-        if e.status == 404:
-            return None
-        raise

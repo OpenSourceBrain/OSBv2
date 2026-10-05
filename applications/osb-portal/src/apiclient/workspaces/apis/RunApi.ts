@@ -21,15 +21,7 @@ import {
     WorkspaceRunResponse,
     WorkspaceRunResponseFromJSON,
     WorkspaceRunResponseToJSON,
-    WorkspaceRunStatus,
-    WorkspaceRunStatusFromJSON,
-    WorkspaceRunStatusToJSON,
 } from '../models';
-
-export interface GetRunRequest {
-    id: number;
-    workflow: string;
-}
 
 export interface RunNotebooksRequest {
     id: number;
@@ -40,48 +32,6 @@ export interface RunNotebooksRequest {
  * 
  */
 export class RunApi extends runtime.BaseAPI {
-
-    /**
-     * The state of a notebook run.
-     */
-    async getRunRaw(requestParameters: GetRunRequest): Promise<runtime.ApiResponse<WorkspaceRunStatus>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getRun.');
-        }
-
-        if (requestParameters.workflow === null || requestParameters.workflow === undefined) {
-            throw new runtime.RequiredError('workflow','Required parameter requestParameters.workflow was null or undefined when calling getRun.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/workspace/{id}/run/{workflow}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))).replace(`{${"workflow"}}`, encodeURIComponent(String(requestParameters.workflow))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceRunStatusFromJSON(jsonValue));
-    }
-
-    /**
-     * The state of a notebook run.
-     */
-    async getRun(requestParameters: GetRunRequest): Promise<WorkspaceRunStatus> {
-        const response = await this.getRunRaw(requestParameters);
-        return await response.value();
-    }
 
     /**
      * Run notebooks of a repository on the workspace\'s volume (papermill in an Argo task), in the order given, after setting up what the request names (requirements, PYTHONPATH, installs). Returns at once.

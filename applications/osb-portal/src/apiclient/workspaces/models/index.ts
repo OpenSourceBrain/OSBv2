@@ -50,4 +50,3 @@ export * from './WorkspaceRunRequest';
 export * from './WorkspaceRunResponse';
 export * from './WorkspaceRunResults';
 export * from './WorkspaceRunSetup';
-export * from './WorkspaceRunStatus';

@@ -21,7 +21,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface WorkspaceRunResponse {
     /**
-     * The run's id, for GET /workspace/{id}/run/{workflow}.
+     * The run's Argo workflow name.
      * @type {string}
      * @memberof WorkspaceRunResponse
      */

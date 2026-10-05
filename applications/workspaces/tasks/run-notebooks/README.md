@@ -39,4 +39,4 @@ Owned by the notebook user (1000:100), so they can be changed from JupyterLab:
 - each `outputs` target: what the code wrote, collected after a failure too.
 - `log_file`: the full log.
 
-On failure, the reason is in the step's message, which `GET /workspace/{id}/run/{workflow}` returns.
+On failure, the reason is at the end of the log, and in the Argo step's message.

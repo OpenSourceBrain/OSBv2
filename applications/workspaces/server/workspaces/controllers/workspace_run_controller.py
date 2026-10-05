@@ -3,7 +3,8 @@
 `POST /workspace/{id}/run` submits an Argo workflow (`osb-run-notebooks-job`, task image
 tasks/run-notebooks) and returns its name at once, like `POST /workspace/{id}/import` does for a
 copy. The pod mounts the workspace volume and runs the notebooks it is given, in the order given,
-with papermill; `GET /workspace/{id}/run/{workflow}` reports its state. Which notebooks, where the
+with papermill. While it runs, `GET /workspace/{id}` lists the "Refreshing resources" placeholder,
+as for an import (crud_service.get_workspace_workflows). Which notebooks, where the
 input goes, how to set up the environment, which folders are the outputs and the run's own folder
 are the caller's to decide; the run uses the setup paths the repository has and skips the others.
 
@@ -18,8 +19,6 @@ from cloudharness import log as logger
 from workspaces.models.workspace_run_setup import WorkspaceRunSetup
 from workspaces.models.workspace_run_request import WorkspaceRunRequest
 from workspaces.models.workspace_run_response import WorkspaceRunResponse
-from workspaces.models.workspace_run_status import WorkspaceRunStatus
-# Not `workflow`: that's get_run's path parameter, which connexion passes by name.
 from workspaces.service import workflow as workflow_service
 from workspaces.service.auth import keycloak_user_id
 from workspaces.service.crud_service import WorkspaceService
@@ -69,25 +68,6 @@ def _owned_workspace(workspace_id):
     return workspace, None
 
 
-def _workspace_label(run) -> str:
-    """The workspace a run belongs to: the `workspace` label that PodExecutionContext puts on
-    every template (the same label crud_service.get_workspace_workflows reads)."""
-    try:
-        return str(run.spec.templates[0].metadata.labels.get("workspace", "")).strip()
-    except (AttributeError, IndexError, TypeError):
-        return ""
-
-
-def _failure_message(run) -> str:
-    """The failed pod's message is the useful one (run.sh's termination message, e.g. which
-    notebook failed); the workflow's own message only says which step failed."""
-    status = run.status
-    for node in (status.nodes or {}).values():
-        if node.type == "Pod" and node.phase in ("Failed", "Error") and node.message:
-            return node.message.strip()
-    return status.message or "The run failed"
-
-
 
 def _copies(name, entries, source, target):
     """(source, target) path pairs of `inputs` or `outputs`, checked."""
@@ -127,19 +107,3 @@ def run_notebooks(id_, body):
                 run_id, workspace.id, run["repo_dir"], len(run["notebooks"]))
     return WorkspaceRunResponse(workflow=run_id), 202
 
-
-def get_run(id_, workflow):
-    """GET /workspace/{id}/run/{workflow}"""
-    _workspace, error = _owned_workspace(id_)
-    if error:
-        return error
-    not_found = f"Run {workflow} not found in workspace {id_}", 404
-
-    run = workflow_service.get_run_workflow(workflow)
-    if run is None or _workspace_label(run) != str(id_):
-        return not_found
-
-    # Argo's phase as is, like CloudHarness's workflows API; a just-submitted workflow has none yet.
-    status = (run.status.phase if run.status else None) or "Pending"
-    message = _failure_message(run) if status in ("Failed", "Error") else None
-    return WorkspaceRunStatus(name=workflow, status=status, message=message)
