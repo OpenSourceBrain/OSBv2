@@ -1133,85 +1133,116 @@ components:
                     type: string
                     description: The ETag S3 returned for this part's PUT.
         WorkspaceRunRequest:
+            description: What to run, how to set it up, and where its files go. All paths are relative.
             type: object
             required:
-                - repo_dir
+                - repo
                 - notebooks
+                - results
             properties:
-                repo_dir:
-                    type: string
-                    description: >-
-                        The repository on the volume, e.g. idp/<run id>/repo/four-choice-example-main.
-                        The run works in a copy of it; the repository itself is not changed.
+                repo:
+                    $ref: '#/components/schemas/WorkspaceRunRepo'
+                setup:
+                    $ref: '#/components/schemas/WorkspaceRunSetup'
                 notebooks:
                     type: array
                     minItems: 1
                     items:
                         type: string
                     description: >-
-                        The notebooks to run, relative to repo_dir, in the order to run them. Each runs
-                        in its own folder; the run stops at the first that fails.
-                input_path:
-                    type: string
-                    description: The imported data on the volume (a file, or a folder), if any.
-                input_dir:
-                    type: string
-                    description: >-
-                        Folder in the repository the notebooks read their input from (e.g.
-                        example_data); for the run it holds input_path instead. Required with input_path.
+                        The notebooks to run, relative to repo.dir, in this order. Each runs in its own
+                        folder; the run stops at the first that fails.
+                inputs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/WorkspaceRunInput'
+                    description: Copied into the repository before the run.
                 outputs:
                     type: array
                     items:
-                        type: string
-                    description: >-
-                        Folders in the repository whose contents are this run's results (e.g. outputs);
-                        emptied before the run and copied into the results folder after it, also when
-                        the run fails.
+                        $ref: '#/components/schemas/WorkspaceRunOutput'
+                    description: Copied out of the repository after the run, also when it fails.
+                results:
+                    $ref: '#/components/schemas/WorkspaceRunResults'
+        WorkspaceRunRepo:
+            description: The repository the notebooks are in.
+            type: object
+            required:
+                - dir
+            properties:
+                dir:
+                    type: string
+                    description: The repository on the volume. The run works in a copy of it.
+                discard:
+                    type: boolean
+                    description: Remove it from the volume once copied, so the next run imports it fresh.
+        WorkspaceRunSetup:
+            description: How to set up the repository before the notebooks run; paths it doesn't have are skipped.
+            type: object
+            properties:
                 requirements:
                     type: string
-                    description: >-
-                        A requirements file in the repository (e.g. requirements.txt), installed with pip
-                        before the notebooks run. Skipped if the repository has no such file.
+                    description: A requirements file in the repository, installed with pip first.
                 python_path:
                     type: array
                     items:
                         type: string
-                    description: >-
-                        Folders in the repository to put on the notebooks' PYTHONPATH (e.g. scripts).
-                        Ones the repository doesn't have are skipped.
+                    description: Folders in the repository to put on PYTHONPATH.
                 install:
                     type: array
                     items:
                         type: string
                     description: >-
-                        How to install the repository's own code, as candidates in order of preference
-                        (e.g. scripts/install.py, scripts/setup.py, scripts/pyproject.toml); the first
-                        the repository has is used, after the requirements. A setup.py or pyproject.toml
-                        has its folder pip-installed; any other .py file is run in its folder. A failure
-                        is logged and the run goes on.
-                output_dir:
+                        Candidates for installing the repository's own code; the first it has is used.
+                        A setup.py or pyproject.toml has its folder pip-installed; any other .py is run.
+                        A failure is logged and the run goes on.
+        WorkspaceRunInput:
+            description: A file or folder on the volume, copied into a folder of the repository before the run.
+            type: object
+            required:
+                - from_volume
+                - to_repo
+            properties:
+                from_volume:
                     type: string
-                    description: >-
-                        Where results go, relative to the volume; the run adds its own folder,
-                        run-[<name>-]<UTC timestamp>. Default results.
-                name:
+                    description: A file, or a folder whose contents are copied (a folder holding only one subfolder is unwrapped).
+                to_repo:
                     type: string
-                    pattern: '^[a-z0-9][a-z0-9-]{0,62}$'
-                    description: >-
-                        Short name for the run's folder, e.g. the protocol id: results go to
-                        <output_dir>/run-<name>-<UTC timestamp>/.
+                    description: The folder in the repository; emptied first.
+        WorkspaceRunOutput:
+            description: A folder of the repository, copied to the volume after the run.
+            type: object
+            required:
+                - from_repo
+                - to_volume
+            properties:
+                from_repo:
+                    type: string
+                    description: The folder the code writes to; emptied before the run.
+                to_volume:
+                    type: string
+                    description: The folder on the volume its contents are merged into.
+        WorkspaceRunResults:
+            description: Where the run task's own products go on the volume.
+            type: object
+            required:
+                - notebooks
+                - log
+            properties:
+                notebooks:
+                    type: string
+                    description: Folder for the executed notebooks.
+                log:
+                    type: string
+                    description: The run's log file. The run is refused if it already exists.
         WorkspaceRunResponse:
             type: object
             required:
                 - workflow
-                - output_dir
             properties:
                 workflow:
                     type: string
                     description: The run's id, for GET /workspace/{id}/run/{workflow}.
-                output_dir:
-                    type: string
-                    description: This run's results folder on the volume.
         WorkspaceRunStatus:
             description: A run's workflow, as CloudHarness's workflows API reports an operation.
             type: object

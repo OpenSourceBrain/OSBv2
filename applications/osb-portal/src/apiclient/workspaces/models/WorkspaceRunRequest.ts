@@ -13,6 +13,29 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    WorkspaceRunInput,
+    WorkspaceRunInputFromJSON,
+    WorkspaceRunInputFromJSONTyped,
+    WorkspaceRunInputToJSON,
+    WorkspaceRunOutput,
+    WorkspaceRunOutputFromJSON,
+    WorkspaceRunOutputFromJSONTyped,
+    WorkspaceRunOutputToJSON,
+    WorkspaceRunRepo,
+    WorkspaceRunRepoFromJSON,
+    WorkspaceRunRepoFromJSONTyped,
+    WorkspaceRunRepoToJSON,
+    WorkspaceRunResults,
+    WorkspaceRunResultsFromJSON,
+    WorkspaceRunResultsFromJSONTyped,
+    WorkspaceRunResultsToJSON,
+    WorkspaceRunSetup,
+    WorkspaceRunSetupFromJSON,
+    WorkspaceRunSetupFromJSONTyped,
+    WorkspaceRunSetupToJSON,
+} from './';
+
 /**
  * 
  * @export
@@ -20,65 +43,41 @@ import { exists, mapValues } from '../runtime';
  */
 export interface WorkspaceRunRequest {
     /**
-     * The repository on the volume, e.g. idp/<run id>/repo/four-choice-example-main. The run works in a copy of it; the repository itself is not changed.
-     * @type {string}
+     * 
+     * @type {WorkspaceRunRepo}
      * @memberof WorkspaceRunRequest
      */
-    repoDir: string;
+    repo: WorkspaceRunRepo;
     /**
-     * The notebooks to run, relative to repo_dir, in the order to run them. Each runs in its own folder; the run stops at the first that fails.
+     * 
+     * @type {WorkspaceRunSetup}
+     * @memberof WorkspaceRunRequest
+     */
+    setup?: WorkspaceRunSetup;
+    /**
+     * The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder; the run stops at the first that fails.
      * @type {Array<string>}
      * @memberof WorkspaceRunRequest
      */
     notebooks: Array<string>;
     /**
-     * The imported data on the volume (a file, or a folder), if any.
-     * @type {string}
+     * Copied into the repository before the run.
+     * @type {Array<WorkspaceRunInput>}
      * @memberof WorkspaceRunRequest
      */
-    inputPath?: string;
+    inputs?: Array<WorkspaceRunInput>;
     /**
-     * Folder in the repository the notebooks read their input from (e.g. example_data); for the run it holds input_path instead. Required with input_path.
-     * @type {string}
+     * Copied out of the repository after the run, also when it fails.
+     * @type {Array<WorkspaceRunOutput>}
      * @memberof WorkspaceRunRequest
      */
-    inputDir?: string;
+    outputs?: Array<WorkspaceRunOutput>;
     /**
-     * Folders in the repository whose contents are this run's results (e.g. outputs); emptied before the run and copied into the results folder after it, also when the run fails.
-     * @type {Array<string>}
+     * 
+     * @type {WorkspaceRunResults}
      * @memberof WorkspaceRunRequest
      */
-    outputs?: Array<string>;
-    /**
-     * A requirements file in the repository (e.g. requirements.txt), installed with pip before the notebooks run. Skipped if the repository has no such file.
-     * @type {string}
-     * @memberof WorkspaceRunRequest
-     */
-    requirements?: string;
-    /**
-     * Folders in the repository to put on the notebooks' PYTHONPATH (e.g. scripts). Ones the repository doesn't have are skipped.
-     * @type {Array<string>}
-     * @memberof WorkspaceRunRequest
-     */
-    pythonPath?: Array<string>;
-    /**
-     * How to install the repository's own code, as candidates in order of preference (e.g. scripts/install.py, scripts/setup.py, scripts/pyproject.toml); the first the repository has is used, after the requirements. A setup.py or pyproject.toml has its folder pip-installed; any other .py file is run in its folder. A failure is logged and the run goes on.
-     * @type {Array<string>}
-     * @memberof WorkspaceRunRequest
-     */
-    install?: Array<string>;
-    /**
-     * Where results go, relative to the volume; the run adds its own folder, run-[<name>-]<UTC timestamp>. Default results.
-     * @type {string}
-     * @memberof WorkspaceRunRequest
-     */
-    outputDir?: string;
-    /**
-     * Short name for the run's folder, e.g. the protocol id: results go to <output_dir>/run-<name>-<UTC timestamp>/.
-     * @type {string}
-     * @memberof WorkspaceRunRequest
-     */
-    name?: string;
+    results: WorkspaceRunResults;
 }
 
 export function WorkspaceRunRequestFromJSON(json: any): WorkspaceRunRequest {
@@ -91,16 +90,12 @@ export function WorkspaceRunRequestFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'repoDir': json['repo_dir'],
+        'repo': WorkspaceRunRepoFromJSON(json['repo']),
+        'setup': !exists(json, 'setup') ? undefined : WorkspaceRunSetupFromJSON(json['setup']),
         'notebooks': json['notebooks'],
-        'inputPath': !exists(json, 'input_path') ? undefined : json['input_path'],
-        'inputDir': !exists(json, 'input_dir') ? undefined : json['input_dir'],
-        'outputs': !exists(json, 'outputs') ? undefined : json['outputs'],
-        'requirements': !exists(json, 'requirements') ? undefined : json['requirements'],
-        'pythonPath': !exists(json, 'python_path') ? undefined : json['python_path'],
-        'install': !exists(json, 'install') ? undefined : json['install'],
-        'outputDir': !exists(json, 'output_dir') ? undefined : json['output_dir'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'inputs': !exists(json, 'inputs') ? undefined : ((json['inputs'] as Array<any>).map(WorkspaceRunInputFromJSON)),
+        'outputs': !exists(json, 'outputs') ? undefined : ((json['outputs'] as Array<any>).map(WorkspaceRunOutputFromJSON)),
+        'results': WorkspaceRunResultsFromJSON(json['results']),
     };
 }
 
@@ -113,16 +108,12 @@ export function WorkspaceRunRequestToJSON(value?: WorkspaceRunRequest | null): a
     }
     return {
         
-        'repo_dir': value.repoDir,
+        'repo': WorkspaceRunRepoToJSON(value.repo),
+        'setup': WorkspaceRunSetupToJSON(value.setup),
         'notebooks': value.notebooks,
-        'input_path': value.inputPath,
-        'input_dir': value.inputDir,
-        'outputs': value.outputs,
-        'requirements': value.requirements,
-        'python_path': value.pythonPath,
-        'install': value.install,
-        'output_dir': value.outputDir,
-        'name': value.name,
+        'inputs': value.inputs === undefined ? undefined : ((value.inputs as Array<any>).map(WorkspaceRunInputToJSON)),
+        'outputs': value.outputs === undefined ? undefined : ((value.outputs as Array<any>).map(WorkspaceRunOutputToJSON)),
+        'results': WorkspaceRunResultsToJSON(value.results),
     };
 }
 

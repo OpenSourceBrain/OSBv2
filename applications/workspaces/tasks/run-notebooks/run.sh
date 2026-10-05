@@ -34,25 +34,31 @@ read_list() {  # $1 = variable holding one item per line, $2 = array to fill (em
 
 # ── Inputs: read and check before anything is touched ───────────────────────────────────────
 
-for name in repo_dir notebooks output_dir; do
+for name in repo_dir notebooks executed_notebooks_dir log_file; do
     [ -n "${!name:-}" ] || fail "$name is not set"
 done
 read_list notebooks notebook_list
-read_list outputs outputs_list
 read_list python_path python_path_list
 read_list install install_list
-for path in "$repo_dir" "$output_dir" "${notebook_list[@]}" "${outputs_list[@]}" "${python_path_list[@]}" "${install_list[@]}" \
-        ${input_path:+"$input_path"} ${input_dir:+"$input_dir"} ${requirements:+"$requirements"}; do
+read_list inputs inputs_list       # "<volume path>\t<repository folder>" per line
+read_list outputs outputs_list     # "<repository folder>\t<volume folder>" per line
+for rule in "${inputs_list[@]}" "${outputs_list[@]}"; do
+    [ "${rule#*$'\t'}" != "$rule" ] || fail "an input or output must be <from><tab><to>"
+done
+for path in "$repo_dir" "$executed_notebooks_dir" "$log_file" "${notebook_list[@]}" "${python_path_list[@]}" \
+        "${install_list[@]}" ${requirements:+"$requirements"}; do
     require_relative "$path" "$path"
 done
-# The data reaches the notebooks only by being put in input_dir.
-[ -z "${input_path:-}" ] || [ -n "${input_dir:-}" ] || fail "input_dir is required with input_path"
+for rule in "${inputs_list[@]}" "${outputs_list[@]}"; do
+    require_relative "${rule%%$'\t'*}" "${rule%%$'\t'*}"
+    require_relative "${rule#*$'\t'}" "${rule#*$'\t'}"
+done
 
-results_dir="${volume_root}/${output_dir}"
-# Each run has its own folder; never mix two runs' results.
-[ ! -e "$results_dir" ] || fail "the results folder ${output_dir} already exists"
+log_path="${volume_root}/${log_file}"
+# The run's folder may already hold its data and repository; never mix two runs' results.
+[ ! -e "$log_path" ] || fail "${log_file} already exists: this run has already happened"
 
-# ── Results folder, log, and what is saved on exit ──────────────────────────────────────────
+# ── Log, and what is saved on exit ──────────────────────────────────────────────────────────
 
 scratch_dir=$(mktemp -d /tmp/run-XXXXXX)
 repo_copy="${scratch_dir}/repo"
@@ -62,57 +68,63 @@ repo_copy="${scratch_dir}/repo"
 save_on_exit() {
     local status=$?
     set +e
-    for folder in "${outputs_list[@]}"; do
-        if [ -d "${repo_copy}/${folder}" ]; then
-            mkdir -p "${results_dir}/${folder}" && cp -a "${repo_copy}/${folder}/." "${results_dir}/${folder}/" \
-                || echo "WARNING: could not save ${folder}/ to the results"
+    # What the repository's code wrote, merged into the given volume folders.
+    for rule in "${outputs_list[@]}"; do
+        source="${rule%%$'\t'*}" target="${rule#*$'\t'}"
+        if [ -d "${repo_copy}/${source}" ]; then
+            mkdir -p "${volume_root}/${target}" && cp -a "${repo_copy}/${source}/." "${volume_root}/${target}/" \
+                || echo "WARNING: could not save ${source}/ to ${target}/"
         fi
     done
-    # The task runs as root; hand the results, and the folders above them, to the notebook user.
-    if [ -d "$results_dir" ]; then
-        chown -R 1000:100 "$results_dir"
-        parent=$(dirname "$output_dir")
-        while [ "$parent" != "." ]; do
-            chown 1000:100 "${volume_root}/${parent}"
-            parent=$(dirname "$parent")
-        done
-    fi
+    # The task runs as root; hand what it wrote, and the folders above the log, to the notebook user.
+    written=("${volume_root}/${executed_notebooks_dir}" "$(dirname "$log_path")")
+    for rule in "${outputs_list[@]}"; do written+=("${volume_root}/${rule#*$'\t'}"); done
+    for folder in "${written[@]}"; do [ -d "$folder" ] && chown -R 1000:100 "$folder"; done
+    parent=$(dirname "$(dirname "$log_file")")
+    while [ "$parent" != "." ]; do
+        chown 1000:100 "${volume_root}/${parent}"
+        parent=$(dirname "$parent")
+    done
     exit "$status"
 }
 trap save_on_exit EXIT
 
-mkdir -p "$results_dir"
-exec > >(tee -a "${results_dir}/run.log") 2>&1
-echo "Run ${run_id:-?}: ${repo_dir} -> ${output_dir}"
+mkdir -p "$(dirname "$log_path")"
+exec > >(tee -a "$log_path") 2>&1
+echo "Run ${run_id:-?}: ${repo_dir}"
 
 # ── 1. Scratch copy of the repository ──────────────────────────────────────────────────────
 
 mkdir -p "$repo_copy" && cp -a "${volume_root}/${repo_dir}/." "${repo_copy}/"
+# The run works on the copy from here on; with discard_repo the next run imports a fresh one.
+if [ "${discard_repo:-}" = "true" ]; then
+    rm -rf "${volume_root:?}/${repo_dir:?}" && echo "Removed ${repo_dir} from the workspace (discard_repo)"
+fi
 
-# ── 2. Empty the outputs folders, put the data in input_dir ─────────────────────────────────
+# ── 2. Empty the outputs folders, copy the inputs in ─────────────────────────────────────────
 
 # Results committed to the repository would otherwise pass for this run's.
-for folder in "${outputs_list[@]}"; do
-    rm -rf "${repo_copy:?}/${folder}" && mkdir -p "${repo_copy}/${folder}"
+for rule in "${outputs_list[@]}"; do
+    source="${rule%%$'\t'*}"
+    rm -rf "${repo_copy:?}/${source}" && mkdir -p "${repo_copy}/${source}"
 done
 
-if [ -n "${input_path:-}" ]; then
-    data_source="${volume_root}/${input_path}"
+for rule in "${inputs_list[@]}"; do
+    source="${volume_root}/${rule%%$'\t'*}" target="${repo_copy}/${rule#*$'\t'}"
     # A zip of one folder is unpacked by the import into a single subfolder: use that folder.
     # OS metadata (macOS's __MACOSX/, hidden files) is not data and is skipped.
-    if [ -d "$data_source" ]; then
-        mapfile -t entries < <(find "$data_source" -mindepth 1 -maxdepth 1 ! -name '__MACOSX' ! -name '.*')
-        if [ "${#entries[@]}" -eq 1 ] && [ -d "${entries[0]}" ]; then data_source="${entries[0]}"; fi
+    if [ -d "$source" ]; then
+        mapfile -t entries < <(find "$source" -mindepth 1 -maxdepth 1 ! -name '__MACOSX' ! -name '.*')
+        if [ "${#entries[@]}" -eq 1 ] && [ -d "${entries[0]}" ]; then source="${entries[0]}"; fi
     fi
-    data_dest="${repo_copy}/${input_dir}"
-    rm -rf "$data_dest" && mkdir -p "$data_dest"
-    if [ -d "$data_source" ]; then
-        (cd "$data_source" && find . -mindepth 1 -maxdepth 1 ! -name '__MACOSX' ! -name '.*' -exec cp -a {} "$data_dest/" \;)
+    rm -rf "$target" && mkdir -p "$target"
+    if [ -d "$source" ]; then
+        (cd "$source" && find . -mindepth 1 -maxdepth 1 ! -name '__MACOSX' ! -name '.*' -exec cp -a {} "$target/" \;)
     else
-        cp -a "$data_source" "$data_dest/"
+        cp -a "$source" "$target/"
     fi
-    echo "Input: ${input_path} -> ${input_dir}/ ($(ls -1 "$data_dest" | wc -l | tr -d ' ') files)"
-fi
+    echo "Input: ${rule%%$'\t'*} -> ${rule#*$'\t'}/ ($(ls -1 "$target" | wc -l | tr -d ' ') files)"
+done
 
 # ── Clean environment for the repository's own code ─────────────────────────────────────────
 
@@ -129,7 +141,7 @@ if [ -n "${requirements:-}" ]; then
     if [ -f "${repo_copy}/${requirements}" ]; then
         echo "Installing ${requirements}"
         (cd "$repo_copy" && "${clean_env[@]}" python -m pip install --disable-pip-version-check \
-            --root-user-action=ignore --no-cache-dir -r "$requirements") || fail "pip install -r ${requirements} failed; see ${output_dir}/run.log"
+            --root-user-action=ignore --no-cache-dir -r "$requirements") || fail "pip install -r ${requirements} failed; see ${log_file}"
     else
         echo "No ${requirements} in the repository; nothing to install"
     fi
@@ -164,9 +176,10 @@ echo "Notebooks: ${notebook_list[*]}"
 for nb in "${notebook_list[@]}"; do
     [ -f "${repo_copy}/${nb}" ] || fail "${nb} is not in the repository"
     echo "Running ${nb}"
-    mkdir -p "$(dirname "${results_dir}/${nb}")"
+    executed="${volume_root}/${executed_notebooks_dir}/$(basename "$nb")"
+    mkdir -p "${volume_root}/${executed_notebooks_dir}"
     (cd "$(dirname "${repo_copy}/${nb}")" && "${clean_env[@]}" python -m papermill --kernel python3 \
-        --execution-timeout "$CELL_TIMEOUT_SECONDS" --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "${results_dir}/${nb}") \
-        || fail "${nb} failed; see ${output_dir}/${nb}"
+        --execution-timeout "$CELL_TIMEOUT_SECONDS" --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "$executed") \
+        || fail "${nb} failed; see ${executed_notebooks_dir}/$(basename "$nb")"
 done
-echo "Done: ${output_dir}/"
+echo "Done"

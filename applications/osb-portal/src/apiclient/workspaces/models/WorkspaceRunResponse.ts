@@ -13,6 +13,7 @@
  */
 
 import { exists, mapValues } from '../runtime';
+
 /**
  * 
  * @export
@@ -25,12 +26,6 @@ export interface WorkspaceRunResponse {
      * @memberof WorkspaceRunResponse
      */
     workflow: string;
-    /**
-     * This run's results folder on the volume.
-     * @type {string}
-     * @memberof WorkspaceRunResponse
-     */
-    outputDir: string;
 }
 
 export function WorkspaceRunResponseFromJSON(json: any): WorkspaceRunResponse {
@@ -44,7 +39,6 @@ export function WorkspaceRunResponseFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'workflow': json['workflow'],
-        'outputDir': json['output_dir'],
     };
 }
 
@@ -58,7 +52,6 @@ export function WorkspaceRunResponseToJSON(value?: WorkspaceRunResponse | null):
     return {
         
         'workflow': value.workflow,
-        'output_dir': value.outputDir,
     };
 }
 

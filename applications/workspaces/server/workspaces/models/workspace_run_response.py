@@ -14,26 +14,21 @@ class WorkspaceRunResponse(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, workflow=None, output_dir=None):  # noqa: E501
+    def __init__(self, workflow=None):  # noqa: E501
         """WorkspaceRunResponse - a model defined in OpenAPI
 
         :param workflow: The workflow of this WorkspaceRunResponse.  # noqa: E501
         :type workflow: str
-        :param output_dir: The output_dir of this WorkspaceRunResponse.  # noqa: E501
-        :type output_dir: str
         """
         self.openapi_types = {
-            'workflow': str,
-            'output_dir': str
+            'workflow': str
         }
 
         self.attribute_map = {
-            'workflow': 'workflow',
-            'output_dir': 'output_dir'
+            'workflow': 'workflow'
         }
 
         self._workflow = workflow
-        self._output_dir = output_dir
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceRunResponse':
@@ -70,28 +65,3 @@ class WorkspaceRunResponse(Model):
             raise ValueError("Invalid value for `workflow`, must not be `None`")  # noqa: E501
 
         self._workflow = workflow
-
-    @property
-    def output_dir(self):
-        """Gets the output_dir of this WorkspaceRunResponse.
-
-        This run's results folder on the volume.  # noqa: E501
-
-        :return: The output_dir of this WorkspaceRunResponse.
-        :rtype: str
-        """
-        return self._output_dir
-
-    @output_dir.setter
-    def output_dir(self, output_dir):
-        """Sets the output_dir of this WorkspaceRunResponse.
-
-        This run's results folder on the volume.  # noqa: E501
-
-        :param output_dir: The output_dir of this WorkspaceRunResponse.
-        :type output_dir: str
-        """
-        if output_dir is None:
-            raise ValueError("Invalid value for `output_dir`, must not be `None`")  # noqa: E501
-
-        self._output_dir = output_dir

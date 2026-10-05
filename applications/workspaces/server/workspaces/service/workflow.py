@@ -126,10 +126,9 @@ RUN_NOTEBOOKS_BASENAME = "osb-run-notebooks-job"
 RUN_NOTEBOOKS_RESOURCES = {"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "1", "memory": "2Gi"}}
 
 
-def run_notebooks(workspace_id, repo_dir, notebooks, output_dir, input_path=None, input_dir=None, outputs=None,
-                  requirements=None, python_path=None, install=None) -> str:
-    """Submits the run and returns at once with the workflow name, which is the run id.
-    Results go to `output_dir` on the volume (the controller names it per run)."""
+def run_notebooks(workspace_id, run: dict) -> str:
+    """Submits the run and returns at once with the workflow name, which is the run id. `run` holds
+    the checked request (workspace_run_controller.run_notebooks); paths are the caller's."""
 
     class RunNotebooksTask(tasks.CustomTask):
         def cloudharness_configmap_spec(self):
@@ -138,22 +137,26 @@ def run_notebooks(workspace_id, repo_dir, notebooks, output_dir, input_path=None
             return [m for m in super().cloudharness_configmap_spec()
                     if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")]
 
-    # Lists go one path per line (the controller rejects newlines in paths).
-    optional = {
-        "input_path": input_path, "input_dir": input_dir, "outputs": "\n".join(outputs or []),
-        "requirements": requirements, "python_path": "\n".join(python_path or []), "install": "\n".join(install or []),
+    # Lists go one path per line, inputs and outputs as "<from>\t<to>" (the controller rejects both in paths).
+    env = {
+        "repo_dir": run["repo_dir"],
+        "notebooks": "\n".join(run["notebooks"]),
+        "executed_notebooks_dir": run["executed_notebooks_dir"],
+        "log_file": run["log_file"],
+        "discard_repo": "true" if run["discard_repo"] else None,
+        "requirements": run["requirements"],
+        "python_path": "\n".join(run["python_path"]),
+        "install": "\n".join(run["install"]),
+        "inputs": "\n".join(f"{volume}\t{repo}" for volume, repo in run["inputs"]),
+        "outputs": "\n".join(f"{repo}\t{volume}" for repo, volume in run["outputs"]),
     }
-    inputs = {k: v for k, v in optional.items() if v}
     task = RunNotebooksTask(
         name=f"run-notebooks-{str(uuid.uuid4())[:8]}",
         image_name="workspaces-run-notebooks",
         retry_limit=0,  # notebooks aren't safe to re-run blindly
         resources=RUN_NOTEBOOKS_RESOURCES,
-        repo_dir=repo_dir,
-        notebooks="\n".join(notebooks),
-        output_dir=output_dir,
         run_id="{{workflow.name}}",  # filled in by Argo; run.sh logs it
-        **inputs,
+        **{name: value for name, value in env.items() if value},
     )
     op = operations.PipelineOperation(
         basename=RUN_NOTEBOOKS_BASENAME,

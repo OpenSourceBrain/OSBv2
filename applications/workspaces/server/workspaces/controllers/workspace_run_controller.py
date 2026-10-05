@@ -4,18 +4,18 @@
 tasks/run-notebooks) and returns its name at once, like `POST /workspace/{id}/import` does for a
 copy. The pod mounts the workspace volume and runs the notebooks it is given, in the order given,
 with papermill; `GET /workspace/{id}/run/{workflow}` reports its state. Which notebooks, where the
-input goes, how to set up the environment and which folders are the outputs are the caller's to
-decide; the run uses the setup paths the repository has and skips the others.
+input goes, how to set up the environment, which folders are the outputs and the run's own folder
+are the caller's to decide; the run uses the setup paths the repository has and skips the others.
 
 The repository and the data are the workspace's own (imported with `POST /workspaceresource`), so
 only the workspace's owner may run in it: a run executes that code with write access to the whole
 volume. The pod gets no CloudHarness credentials (service/workflow.py).
 """
 import posixpath
-from datetime import datetime, timezone
 
 from cloudharness import log as logger
 
+from workspaces.models.workspace_run_setup import WorkspaceRunSetup
 from workspaces.models.workspace_run_request import WorkspaceRunRequest
 from workspaces.models.workspace_run_response import WorkspaceRunResponse
 from workspaces.models.workspace_run_status import WorkspaceRunStatus
@@ -24,17 +24,14 @@ from workspaces.service import workflow as workflow_service
 from workspaces.service.auth import keycloak_user_id
 from workspaces.service.crud_service import WorkspaceService
 
-DEFAULT_OUTPUT_DIR = "results"
-
-
 class InvalidPath(ValueError):
     pass
 
 
 def check_relative_path(name: str, value: str) -> str:
     """Paths are joined onto the volume root in the run pod, so they must stay inside it."""
-    # No newlines either: lists reach the run task one path per line.
-    if not value or value.startswith("/") or any(c in value for c in "\\\0\n\r"):
+    # No newlines or tabs either: lists reach the run task one path (or tab-separated pair) per line.
+    if not value or value.startswith("/") or any(c in value for c in "\\\0\n\r\t"):
         raise InvalidPath(f"{name} must be a path relative to the workspace root")
     if ".." in value.split("/"):
         raise InvalidPath(f"{name} must not contain '..'")
@@ -56,14 +53,6 @@ def check_install(value: str) -> str:
     if not candidate.endswith((".py", "pyproject.toml")):
         raise InvalidPath("install must list .py files or pyproject.toml")
     return candidate
-
-
-def run_folder(name=None, now=None) -> str:
-    """This run's results folder under output_dir: `run-[<name>-]<UTC timestamp>`, readable and in
-    run order when listed. No `:` (not allowed in file names on Windows or in macOS Finder). Two runs
-    of the same name in the same second would share it; run.sh refuses to write into an existing one."""
-    stamp = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H-%M-%SZ")
-    return f"run-{name}-{stamp}" if name else f"run-{stamp}"
 
 
 def _owned_workspace(workspace_id):
@@ -100,26 +89,32 @@ def _failure_message(run) -> str:
 
 
 
+def _copies(name, entries, source, target):
+    """(source, target) path pairs of `inputs` or `outputs`, checked."""
+    return [(check_relative_path(f"{name}.{source}", getattr(entry, source)),
+             check_relative_path(f"{name}.{target}", getattr(entry, target)))
+            for entry in entries or []]
+
+
 def run_notebooks(id_, body):
     """POST /workspace/{id}/run"""
     request = WorkspaceRunRequest.from_dict(body)
+    setup = request.setup or WorkspaceRunSetup()
     try:
-        repo_dir = check_relative_path("repo_dir", request.repo_dir)
-        notebooks = [check_notebook(notebook) for notebook in request.notebooks or []]
-        if not notebooks:
-            raise InvalidPath("notebooks must list at least one notebook")
-        input_path = check_relative_path("input_path", request.input_path) if request.input_path else None
-        input_dir = check_relative_path("input_dir", request.input_dir) if request.input_dir else None
-        if input_path and not input_dir:
-            # The input reaches the notebooks only by being put in that folder.
-            raise InvalidPath("input_dir is required with input_path")
-        outputs = [check_relative_path("outputs", folder) for folder in request.outputs or []]
-        setup = {
-            "requirements": check_relative_path("requirements", request.requirements) if request.requirements else None,
-            "python_path": [check_relative_path("python_path", folder) for folder in request.python_path or []],
-            "install": [check_install(candidate) for candidate in request.install or []],
+        run = {
+            "repo_dir": check_relative_path("repo.dir", request.repo.dir),
+            "discard_repo": bool(request.repo.discard),
+            "notebooks": [check_notebook(notebook) for notebook in request.notebooks or []],
+            "requirements": check_relative_path("setup.requirements", setup.requirements) if setup.requirements else None,
+            "python_path": [check_relative_path("setup.python_path", folder) for folder in setup.python_path or []],
+            "install": [check_install(candidate) for candidate in setup.install or []],
+            "inputs": _copies("inputs", request.inputs, "from_volume", "to_repo"),
+            "outputs": _copies("outputs", request.outputs, "from_repo", "to_volume"),
+            "executed_notebooks_dir": check_relative_path("results.notebooks", request.results.notebooks),
+            "log_file": check_relative_path("results.log", request.results.log),
         }
-        output_root = check_relative_path("output_dir", request.output_dir or DEFAULT_OUTPUT_DIR)
+        if not run["notebooks"]:
+            raise InvalidPath("notebooks must list at least one notebook")
     except InvalidPath as exc:
         return str(exc), 400
 
@@ -127,12 +122,10 @@ def run_notebooks(id_, body):
     if error:
         return error
 
-    output_dir = f"{output_root}/{run_folder(request.name)}"
-    run_id = workflow_service.run_notebooks(workspace.id, repo_dir, notebooks, output_dir,
-                                            input_path=input_path, input_dir=input_dir, outputs=outputs, **setup)
-    logger.info("Submitted notebook run %s in workspace %s (%s: %d notebooks -> %s)",
-                run_id, workspace.id, repo_dir, len(notebooks), output_dir)
-    return WorkspaceRunResponse(workflow=run_id, output_dir=output_dir), 202
+    run_id = workflow_service.run_notebooks(workspace.id, run)
+    logger.info("Submitted notebook run %s in workspace %s (%s: %d notebooks)",
+                run_id, workspace.id, run["repo_dir"], len(run["notebooks"]))
+    return WorkspaceRunResponse(workflow=run_id), 202
 
 
 def get_run(id_, workflow):
