@@ -33,51 +33,46 @@ read_list() {  # $1 = variable holding one item per line, $2 = array to fill (em
 
 # ── Inputs: read and check before anything is touched ───────────────────────────────────────
 
-for name in repo_dir notebooks executed_notebooks_dir log_file; do
+for name in repo_dir notebooks output_dir executed_notebooks_dir log_file; do
     [ -n "${!name:-}" ] || fail "$name is not set"
 done
 read_list notebooks notebook_list
 read_list python_path python_path_list
 read_list install install_list
-read_list inputs inputs_list       # "<volume path>\t<repository folder>" per line
-read_list outputs outputs_list     # "<repository folder>\t<volume folder>" per line
-for rule in "${inputs_list[@]}" "${outputs_list[@]}"; do
-    [ "${rule#*$'\t'}" != "$rule" ] || fail "an input or output must be <from><tab><to>"
-done
-for path in "$repo_dir" "$executed_notebooks_dir" "$log_file" "${notebook_list[@]}" "${python_path_list[@]}" \
-        "${install_list[@]}" ${requirements:+"$requirements"}; do
+for path in "$repo_dir" "$output_dir" "$executed_notebooks_dir" "$log_file" "${notebook_list[@]}" \
+        "${python_path_list[@]}" "${install_list[@]}" ${input_dir:+"$input_dir"} ${requirements:+"$requirements"}; do
     require_relative "$path" "$path"
 done
-for rule in "${inputs_list[@]}" "${outputs_list[@]}"; do
-    require_relative "${rule%%$'\t'*}" "${rule%%$'\t'*}"
-    require_relative "${rule#*$'\t'}" "${rule#*$'\t'}"
-done
+[ -z "${input_dir:-}" ] || [ -e "${volume_root}/${input_dir}" ] || fail "${input_dir} is not on the workspace volume"
 
 log_path="${volume_root}/${log_file}"
 # The run's folder may already hold its data and repository; never mix two runs' results.
 [ ! -e "$log_path" ] || fail "${log_file} already exists: this run has already happened"
 
-# ── Log, and what is saved on exit ──────────────────────────────────────────────────────────
+# The executed notebooks are written to <dir>.running, and on exit the folder becomes <dir> if every
+# notebook passed or <dir>.failed if not: <dir> existing means the whole run succeeded.
+running_dir="${volume_root}/${executed_notebooks_dir}.running"
+failed_dir="${volume_root}/${executed_notebooks_dir}.failed"
+for folder in "${volume_root}/${executed_notebooks_dir}" "$running_dir" "$failed_dir"; do
+    [ ! -e "$folder" ] || fail "${folder#"${volume_root}/"} already exists: this run has already happened"
+done
+
+# ── Log, and the results' owner on exit ─────────────────────────────────────────────────────
 
 scratch_dir=$(mktemp -d /tmp/run-XXXXXX)
 repo_copy="${scratch_dir}/repo"
 
-# On every exit, failures included: partial results are worth keeping. Keeps the run's exit
-# status, so a problem here can't turn a finished run into a failed one.
+# On every exit, failures included. Keeps the run's exit status, so a problem here can't turn a
+# finished run into a failed one.
 save_on_exit() {
     local status=$?
     set +e
-    # What the repository's code wrote, merged into the given volume folders.
-    for rule in "${outputs_list[@]}"; do
-        source="${rule%%$'\t'*}" target="${rule#*$'\t'}"
-        if [ -d "${repo_copy}/${source}" ]; then
-            mkdir -p "${volume_root}/${target}" && cp -a "${repo_copy}/${source}/." "${volume_root}/${target}/" \
-                || echo "WARNING: could not save ${source}/ to ${target}/"
-        fi
-    done
-    # The task runs as root; hand what it wrote, and the folders above the log, to the notebook user.
-    written=("${volume_root}/${executed_notebooks_dir}" "$(dirname "$log_path")")
-    for rule in "${outputs_list[@]}"; do written+=("${volume_root}/${rule#*$'\t'}"); done
+    if [ -d "$running_dir" ]; then
+        if [ "$status" -eq 0 ]; then mv "$running_dir" "${volume_root}/${executed_notebooks_dir}"
+        else mv "$running_dir" "$failed_dir"; fi
+    fi
+    # The task runs as root; hand what was written, and the folders above the log, to the notebook user.
+    written=("${volume_root}/${output_dir}" "${volume_root}/${executed_notebooks_dir}" "$failed_dir" "$(dirname "$log_path")")
     for folder in "${written[@]}"; do [ -d "$folder" ] && chown -R 1000:100 "$folder"; done
     parent=$(dirname "$(dirname "$log_file")")
     while [ "$parent" != "." ]; do
@@ -100,31 +95,6 @@ if [ "${discard_repo:-}" = "true" ]; then
     rm -rf "${volume_root:?}/${repo_dir:?}" && echo "Removed ${repo_dir} from the workspace (discard_repo)"
 fi
 
-# ── 2. Empty the outputs folders, copy the inputs in ─────────────────────────────────────────
-
-# Results committed to the repository would otherwise pass for this run's.
-for rule in "${outputs_list[@]}"; do
-    source="${rule%%$'\t'*}"
-    rm -rf "${repo_copy:?}/${source}" && mkdir -p "${repo_copy}/${source}"
-done
-
-for rule in "${inputs_list[@]}"; do
-    source="${volume_root}/${rule%%$'\t'*}" target="${repo_copy}/${rule#*$'\t'}"
-    # A zip of one folder is unpacked by the import into a single subfolder: use that folder.
-    # OS metadata (macOS's __MACOSX/, hidden files) is not data and is skipped.
-    if [ -d "$source" ]; then
-        mapfile -t entries < <(find "$source" -mindepth 1 -maxdepth 1 ! -name '__MACOSX' ! -name '.*')
-        if [ "${#entries[@]}" -eq 1 ] && [ -d "${entries[0]}" ]; then source="${entries[0]}"; fi
-    fi
-    rm -rf "$target" && mkdir -p "$target"
-    if [ -d "$source" ]; then
-        (cd "$source" && find . -mindepth 1 -maxdepth 1 ! -name '__MACOSX' ! -name '.*' -exec cp -a {} "$target/" \;)
-    else
-        cp -a "$source" "$target/"
-    fi
-    echo "Input: ${rule%%$'\t'*} -> ${rule#*$'\t'}/ ($(ls -1 "$target" | wc -l | tr -d ' ') files)"
-done
-
 # ── Clean environment for the repository's own code ─────────────────────────────────────────
 
 # It must not see the CH_* variables this container inherits from the workspaces server. Only
@@ -134,7 +104,7 @@ for name in HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy PIP_
     if [ -n "${!name:-}" ]; then clean_env+=("${name}=${!name}"); fi
 done
 
-# ── 3. Requirements (a failure stops the run) ─────────────────────────────────────────────────
+# ── 2. Requirements (a failure stops the run) ─────────────────────────────────────────────────
 
 if [ -n "${requirements:-}" ]; then
     if [ -f "${repo_copy}/${requirements}" ]; then
@@ -146,7 +116,7 @@ if [ -n "${requirements:-}" ]; then
     fi
 fi
 
-# ── 4. PYTHONPATH and the first install candidate the repository has (not fatal) ───────────
+# ── 3. PYTHONPATH and the first install candidate the repository has (not fatal) ───────────
 
 pythonpath=""
 for folder in "${python_path_list[@]}"; do
@@ -169,16 +139,27 @@ for candidate in "${install_list[@]}"; do
     break
 done
 
-# ── 5. The notebooks, in order, each in its own folder (the first failure stops the run) ────
+# ── 4. The notebooks, in order, each in its own folder (the first failure stops the run) ────
+
+# The notebooks read from INPUT_DIR and write to OUTPUT_DIR, set in a cell tagged `parameters`
+# (papermill's way); a notebook without one would ignore them, so it isn't run.
+has_parameters_cell() {  # $1 = notebook
+    python -c 'import json, sys; nb = json.load(open(sys.argv[1]))
+sys.exit(0 if any("parameters" in c.get("metadata", {}).get("tags", []) for c in nb["cells"]) else 1)' "$1"
+}
+parameters=(-p OUTPUT_DIR "${volume_root}/${output_dir}")
+[ -z "${input_dir:-}" ] || parameters+=(-p INPUT_DIR "${volume_root}/${input_dir}")
+mkdir -p "${volume_root}/${output_dir}"
 
 echo "Notebooks: ${notebook_list[*]}"
 for nb in "${notebook_list[@]}"; do
     [ -f "${repo_copy}/${nb}" ] || fail "${nb} is not in the repository"
+    has_parameters_cell "${repo_copy}/${nb}" || fail "${nb} has no cell tagged parameters (INPUT_DIR, OUTPUT_DIR)"
     echo "Running ${nb}"
-    executed="${volume_root}/${executed_notebooks_dir}/$(basename "$nb")"
-    mkdir -p "${volume_root}/${executed_notebooks_dir}"
+    executed="${running_dir}/$(basename "$nb")"
+    mkdir -p "$running_dir"
     (cd "$(dirname "${repo_copy}/${nb}")" && "${clean_env[@]}" python -m papermill --kernel python3 \
-        --execution-timeout "$CELL_TIMEOUT_SECONDS" --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "$executed") \
-        || fail "${nb} failed; see ${executed_notebooks_dir}/$(basename "$nb")"
+        --execution-timeout "$CELL_TIMEOUT_SECONDS" --cwd "$(dirname "${repo_copy}/${nb}")" "${repo_copy}/${nb}" "$executed" "${parameters[@]}") \
+        || fail "${nb} failed; see ${executed_notebooks_dir}.failed/$(basename "$nb")"
 done
 echo "Done"

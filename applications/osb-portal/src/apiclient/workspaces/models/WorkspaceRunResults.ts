@@ -21,7 +21,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface WorkspaceRunResults {
     /**
-     * Folder for the executed notebooks.
+     * Folder for the executed notebooks, created only if every notebook passes; if one fails, they are in <folder>.failed instead.
      * @type {string}
      * @memberof WorkspaceRunResults
      */

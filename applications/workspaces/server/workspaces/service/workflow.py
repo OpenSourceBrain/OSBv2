@@ -126,6 +126,25 @@ RUN_NOTEBOOKS_BASENAME = "osb-run-notebooks-job"
 RUN_NOTEBOOKS_RESOURCES = {"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "1", "memory": "2Gi"}}
 
 
+class PipelineScannedOnExit(operations.PipelineOperation):
+    """A pipeline whose workspace scan is Argo's exit handler: it runs however the pipeline ended
+    (failed, or its pod killed, included), and the workflow keeps the pipeline's own phase."""
+
+    def __init__(self, basename, tasks, scan_task, *args, **kwargs):
+        self.scan_task = scan_task
+        super().__init__(basename, tasks, *args, **kwargs)
+
+    def task_list(self):
+        # Listed with the tasks (not a step of the pipeline) so its template is defined and gets the
+        # shared directory's volume and `shared_directory` variable like theirs.
+        return list(self.tasks) + [self.scan_task]
+
+    def spec(self):
+        spec = super().spec()
+        spec["onExit"] = self.scan_task.instance()["template"]
+        return spec
+
+
 def run_notebooks(workspace_id, run: dict) -> str:
     """Submits the run and returns at once with the workflow name, which is the run id. `run` holds
     the checked request (workspace_run_controller.run_notebooks); paths are the caller's."""
@@ -137,7 +156,7 @@ def run_notebooks(workspace_id, run: dict) -> str:
             return [m for m in super().cloudharness_configmap_spec()
                     if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")]
 
-    # Lists go one path per line, inputs and outputs as "<from>\t<to>" (the controller rejects both in paths).
+    # Lists go one path per line (the controller rejects newlines in paths).
     env = {
         "repo_dir": run["repo_dir"],
         "notebooks": "\n".join(run["notebooks"]),
@@ -147,8 +166,8 @@ def run_notebooks(workspace_id, run: dict) -> str:
         "requirements": run["requirements"],
         "python_path": "\n".join(run["python_path"]),
         "install": "\n".join(run["install"]),
-        "inputs": "\n".join(f"{volume}\t{repo}" for volume, repo in run["inputs"]),
-        "outputs": "\n".join(f"{repo}\t{volume}" for repo, volume in run["outputs"]),
+        "input_dir": run["input_dir"],
+        "output_dir": run["output_dir"],
     }
     task = RunNotebooksTask(
         name=f"run-notebooks-{str(uuid.uuid4())[:8]}",
@@ -158,11 +177,13 @@ def run_notebooks(workspace_id, run: dict) -> str:
         run_id="{{workflow.name}}",  # filled in by Argo; run.sh logs it
         **{name: value for name, value in env.items() if value},
     )
-    op = operations.PipelineOperation(
+    op = PipelineScannedOnExit(
         basename=RUN_NOTEBOOKS_BASENAME,
-        # With the repository discarded, its notebooks are gone from the volume: rescan, as the copy
-        # workflows do, so the workspace's resources list the executed ones instead.
-        tasks=(task, create_scan_task(workspace_id)) if run["discard_repo"] else (task,),
+        tasks=(task,),
+        # Then rescan, as the copy workflows do, so the workspace's resources list the executed
+        # notebooks (in notebooks/ or notebooks.failed/) and drop a discarded repository's; on
+        # exit, so a failed run is rescanned too.
+        scan_task=create_scan_task(workspace_id),
         shared_directory=f"{WorkspaceService.get_pvc_name(workspace_id)}:/project_download:rwx",
         ttl_strategy=ttl_strategy,
         pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),

@@ -4,9 +4,10 @@
 tasks/run-notebooks) and returns its name at once, like `POST /workspace/{id}/import` does for a
 copy. The pod mounts the workspace volume and runs the notebooks it is given, in the order given,
 with papermill. While it runs, `GET /workspace/{id}` lists the "Refreshing resources" placeholder,
-as for an import (crud_service.get_workspace_workflows). Which notebooks, where the
-input goes, how to set up the environment, which folders are the outputs and the run's own folder
-are the caller's to decide; the run uses the setup paths the repository has and skips the others.
+as for an import (crud_service.get_workspace_workflows). Which notebooks, how to set up the
+environment, and the folders the notebooks read from and write to (their INPUT_DIR and OUTPUT_DIR
+parameters) are the caller's to decide; the run uses the setup paths the repository has and skips
+the others.
 
 The repository and the data are the workspace's own (imported with `POST /workspaceresource`), so
 only the workspace's owner may run in it: a run executes that code with write access to the whole
@@ -29,8 +30,8 @@ class InvalidPath(ValueError):
 
 def check_relative_path(name: str, value: str) -> str:
     """Paths are joined onto the volume root in the run pod, so they must stay inside it."""
-    # No newlines or tabs either: lists reach the run task one path (or tab-separated pair) per line.
-    if not value or value.startswith("/") or any(c in value for c in "\\\0\n\r\t"):
+    # No newlines either: lists reach the run task one path per line.
+    if not value or value.startswith("/") or any(c in value for c in "\\\0\n\r"):
         raise InvalidPath(f"{name} must be a path relative to the workspace root")
     if ".." in value.split("/"):
         raise InvalidPath(f"{name} must not contain '..'")
@@ -69,13 +70,6 @@ def _owned_workspace(workspace_id):
 
 
 
-def _copies(name, entries, source, target):
-    """(source, target) path pairs of `inputs` or `outputs`, checked."""
-    return [(check_relative_path(f"{name}.{source}", getattr(entry, source)),
-             check_relative_path(f"{name}.{target}", getattr(entry, target)))
-            for entry in entries or []]
-
-
 def run_notebooks(id_, body):
     """POST /workspace/{id}/run"""
     request = WorkspaceRunRequest.from_dict(body)
@@ -88,8 +82,8 @@ def run_notebooks(id_, body):
             "requirements": check_relative_path("setup.requirements", setup.requirements) if setup.requirements else None,
             "python_path": [check_relative_path("setup.python_path", folder) for folder in setup.python_path or []],
             "install": [check_install(candidate) for candidate in setup.install or []],
-            "inputs": _copies("inputs", request.inputs, "from_volume", "to_repo"),
-            "outputs": _copies("outputs", request.outputs, "from_repo", "to_volume"),
+            "input_dir": check_relative_path("input_dir", request.input_dir) if request.input_dir else None,
+            "output_dir": check_relative_path("output_dir", request.output_dir),
             "executed_notebooks_dir": check_relative_path("results.notebooks", request.results.notebooks),
             "log_file": check_relative_path("results.log", request.results.log),
         }

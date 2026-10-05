@@ -14,14 +14,6 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    WorkspaceRunInput,
-    WorkspaceRunInputFromJSON,
-    WorkspaceRunInputFromJSONTyped,
-    WorkspaceRunInputToJSON,
-    WorkspaceRunOutput,
-    WorkspaceRunOutputFromJSON,
-    WorkspaceRunOutputFromJSONTyped,
-    WorkspaceRunOutputToJSON,
     WorkspaceRunRepo,
     WorkspaceRunRepoFromJSON,
     WorkspaceRunRepoFromJSONTyped,
@@ -61,17 +53,17 @@ export interface WorkspaceRunRequest {
      */
     notebooks: Array<string>;
     /**
-     * Copied into the repository before the run.
-     * @type {Array<WorkspaceRunInput>}
+     * The run's input on the volume, passed to the notebooks as their INPUT_DIR parameter. Without it they use their own default (e.g. example data).
+     * @type {string}
      * @memberof WorkspaceRunRequest
      */
-    inputs?: Array<WorkspaceRunInput>;
+    inputDir?: string;
     /**
-     * Copied out of the repository after the run, also when it fails.
-     * @type {Array<WorkspaceRunOutput>}
+     * Where the notebooks write their results on the volume, passed to them as their OUTPUT_DIR parameter.
+     * @type {string}
      * @memberof WorkspaceRunRequest
      */
-    outputs?: Array<WorkspaceRunOutput>;
+    outputDir: string;
     /**
      * 
      * @type {WorkspaceRunResults}
@@ -93,8 +85,8 @@ export function WorkspaceRunRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'repo': WorkspaceRunRepoFromJSON(json['repo']),
         'setup': !exists(json, 'setup') ? undefined : WorkspaceRunSetupFromJSON(json['setup']),
         'notebooks': json['notebooks'],
-        'inputs': !exists(json, 'inputs') ? undefined : ((json['inputs'] as Array<any>).map(WorkspaceRunInputFromJSON)),
-        'outputs': !exists(json, 'outputs') ? undefined : ((json['outputs'] as Array<any>).map(WorkspaceRunOutputFromJSON)),
+        'inputDir': !exists(json, 'input_dir') ? undefined : json['input_dir'],
+        'outputDir': json['output_dir'],
         'results': WorkspaceRunResultsFromJSON(json['results']),
     };
 }
@@ -111,8 +103,8 @@ export function WorkspaceRunRequestToJSON(value?: WorkspaceRunRequest | null): a
         'repo': WorkspaceRunRepoToJSON(value.repo),
         'setup': WorkspaceRunSetupToJSON(value.setup),
         'notebooks': value.notebooks,
-        'inputs': value.inputs === undefined ? undefined : ((value.inputs as Array<any>).map(WorkspaceRunInputToJSON)),
-        'outputs': value.outputs === undefined ? undefined : ((value.outputs as Array<any>).map(WorkspaceRunOutputToJSON)),
+        'input_dir': value.inputDir,
+        'output_dir': value.outputDir,
         'results': WorkspaceRunResultsToJSON(value.results),
     };
 }

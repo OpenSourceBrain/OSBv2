@@ -1060,48 +1060,13 @@ paths:
             x-openapi-router-controller: workspaces.controllers.admin_controller
 components:
     schemas:
-        UploadPart:
-            type: object
-            properties:
-                part_number:
-                    type: integer
-                url:
-                    type: string
-                    description: Presigned S3 URL the browser PUTs this part's bytes to directly.
-        UploadedPart:
-            type: object
-            properties:
-                part_number:
-                    type: integer
-                size:
-                    type: integer
-                etag:
-                    type: string
-                    description: The ETag S3 returned for this part's PUT.
-        UploadPart:
-            type: object
-            properties:
-                part_number:
-                    type: integer
-                url:
-                    type: string
-                    description: Presigned S3 URL the browser PUTs this part's bytes to directly.
-        UploadedPart:
-            type: object
-            properties:
-                part_number:
-                    type: integer
-                size:
-                    type: integer
-                etag:
-                    type: string
-                    description: The ETag S3 returned for this part's PUT.
         WorkspaceRunRequest:
             description: What to run, how to set it up, and where its files go. All paths are relative.
             type: object
             required:
                 - repo
                 - notebooks
+                - output_dir
                 - results
             properties:
                 repo:
@@ -1116,16 +1081,16 @@ components:
                     description: >-
                         The notebooks to run, relative to repo.dir, in this order. Each runs in its own
                         folder; the run stops at the first that fails.
-                inputs:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/WorkspaceRunInput'
-                    description: Copied into the repository before the run.
-                outputs:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/WorkspaceRunOutput'
-                    description: Copied out of the repository after the run, also when it fails.
+                input_dir:
+                    type: string
+                    description: >-
+                        The run's input on the volume, passed to the notebooks as their INPUT_DIR
+                        parameter. Without it they use their own default (e.g. example data).
+                output_dir:
+                    type: string
+                    description: >-
+                        Where the notebooks write their results on the volume, passed to them as their
+                        OUTPUT_DIR parameter.
                 results:
                     $ref: '#/components/schemas/WorkspaceRunResults'
         WorkspaceRunRepo:
@@ -1160,32 +1125,6 @@ components:
                         Candidates for installing the repository's own code; the first it has is used.
                         A setup.py or pyproject.toml has its folder pip-installed; any other .py is run.
                         A failure is logged and the run goes on.
-        WorkspaceRunInput:
-            description: A file or folder on the volume, copied into a folder of the repository before the run.
-            type: object
-            required:
-                - from_volume
-                - to_repo
-            properties:
-                from_volume:
-                    type: string
-                    description: A file, or a folder whose contents are copied (a folder holding only one subfolder is unwrapped).
-                to_repo:
-                    type: string
-                    description: The folder in the repository; emptied first.
-        WorkspaceRunOutput:
-            description: A folder of the repository, copied to the volume after the run.
-            type: object
-            required:
-                - from_repo
-                - to_volume
-            properties:
-                from_repo:
-                    type: string
-                    description: The folder the code writes to; emptied before the run.
-                to_volume:
-                    type: string
-                    description: The folder on the volume its contents are merged into.
         WorkspaceRunResults:
             description: Where the run task's own products go on the volume.
             type: object
@@ -1195,7 +1134,7 @@ components:
             properties:
                 notebooks:
                     type: string
-                    description: Folder for the executed notebooks.
+                    description: Folder for the executed notebooks, created only if every notebook passes; if one fails, they are in <folder>.failed instead.
                 log:
                     type: string
                     description: The run's log file. The run is refused if it already exists.

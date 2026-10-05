@@ -6,15 +6,11 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from workspaces.models.base_model_ import Model
-from workspaces.models.workspace_run_input import WorkspaceRunInput
-from workspaces.models.workspace_run_output import WorkspaceRunOutput
 from workspaces.models.workspace_run_repo import WorkspaceRunRepo
 from workspaces.models.workspace_run_results import WorkspaceRunResults
 from workspaces.models.workspace_run_setup import WorkspaceRunSetup
 from workspaces import util
 
-from workspaces.models.workspace_run_input import WorkspaceRunInput  # noqa: E501
-from workspaces.models.workspace_run_output import WorkspaceRunOutput  # noqa: E501
 from workspaces.models.workspace_run_repo import WorkspaceRunRepo  # noqa: E501
 from workspaces.models.workspace_run_results import WorkspaceRunResults  # noqa: E501
 from workspaces.models.workspace_run_setup import WorkspaceRunSetup  # noqa: E501
@@ -25,7 +21,7 @@ class WorkspaceRunRequest(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, repo=None, setup=None, notebooks=None, inputs=None, outputs=None, results=None):  # noqa: E501
+    def __init__(self, repo=None, setup=None, notebooks=None, input_dir=None, output_dir=None, results=None):  # noqa: E501
         """WorkspaceRunRequest - a model defined in OpenAPI
 
         :param repo: The repo of this WorkspaceRunRequest.  # noqa: E501
@@ -34,10 +30,10 @@ class WorkspaceRunRequest(Model):
         :type setup: WorkspaceRunSetup
         :param notebooks: The notebooks of this WorkspaceRunRequest.  # noqa: E501
         :type notebooks: List[str]
-        :param inputs: The inputs of this WorkspaceRunRequest.  # noqa: E501
-        :type inputs: List[WorkspaceRunInput]
-        :param outputs: The outputs of this WorkspaceRunRequest.  # noqa: E501
-        :type outputs: List[WorkspaceRunOutput]
+        :param input_dir: The input_dir of this WorkspaceRunRequest.  # noqa: E501
+        :type input_dir: str
+        :param output_dir: The output_dir of this WorkspaceRunRequest.  # noqa: E501
+        :type output_dir: str
         :param results: The results of this WorkspaceRunRequest.  # noqa: E501
         :type results: WorkspaceRunResults
         """
@@ -45,8 +41,8 @@ class WorkspaceRunRequest(Model):
             'repo': WorkspaceRunRepo,
             'setup': WorkspaceRunSetup,
             'notebooks': List[str],
-            'inputs': List[WorkspaceRunInput],
-            'outputs': List[WorkspaceRunOutput],
+            'input_dir': str,
+            'output_dir': str,
             'results': WorkspaceRunResults
         }
 
@@ -54,16 +50,16 @@ class WorkspaceRunRequest(Model):
             'repo': 'repo',
             'setup': 'setup',
             'notebooks': 'notebooks',
-            'inputs': 'inputs',
-            'outputs': 'outputs',
+            'input_dir': 'input_dir',
+            'output_dir': 'output_dir',
             'results': 'results'
         }
 
         self._repo = repo
         self._setup = setup
         self._notebooks = notebooks
-        self._inputs = inputs
-        self._outputs = outputs
+        self._input_dir = input_dir
+        self._output_dir = output_dir
         self._results = results
 
     @classmethod
@@ -147,50 +143,52 @@ class WorkspaceRunRequest(Model):
         self._notebooks = notebooks
 
     @property
-    def inputs(self):
-        """Gets the inputs of this WorkspaceRunRequest.
+    def input_dir(self):
+        """Gets the input_dir of this WorkspaceRunRequest.
 
-        Copied into the repository before the run.  # noqa: E501
+        The run's input on the volume, passed to the notebooks as their INPUT_DIR parameter. Without it they use their own default (e.g. example data).  # noqa: E501
 
-        :return: The inputs of this WorkspaceRunRequest.
-        :rtype: List[WorkspaceRunInput]
+        :return: The input_dir of this WorkspaceRunRequest.
+        :rtype: str
         """
-        return self._inputs
+        return self._input_dir
 
-    @inputs.setter
-    def inputs(self, inputs):
-        """Sets the inputs of this WorkspaceRunRequest.
+    @input_dir.setter
+    def input_dir(self, input_dir):
+        """Sets the input_dir of this WorkspaceRunRequest.
 
-        Copied into the repository before the run.  # noqa: E501
+        The run's input on the volume, passed to the notebooks as their INPUT_DIR parameter. Without it they use their own default (e.g. example data).  # noqa: E501
 
-        :param inputs: The inputs of this WorkspaceRunRequest.
-        :type inputs: List[WorkspaceRunInput]
+        :param input_dir: The input_dir of this WorkspaceRunRequest.
+        :type input_dir: str
         """
 
-        self._inputs = inputs
+        self._input_dir = input_dir
 
     @property
-    def outputs(self):
-        """Gets the outputs of this WorkspaceRunRequest.
+    def output_dir(self):
+        """Gets the output_dir of this WorkspaceRunRequest.
 
-        Copied out of the repository after the run, also when it fails.  # noqa: E501
+        Where the notebooks write their results on the volume, passed to them as their OUTPUT_DIR parameter.  # noqa: E501
 
-        :return: The outputs of this WorkspaceRunRequest.
-        :rtype: List[WorkspaceRunOutput]
+        :return: The output_dir of this WorkspaceRunRequest.
+        :rtype: str
         """
-        return self._outputs
+        return self._output_dir
 
-    @outputs.setter
-    def outputs(self, outputs):
-        """Sets the outputs of this WorkspaceRunRequest.
+    @output_dir.setter
+    def output_dir(self, output_dir):
+        """Sets the output_dir of this WorkspaceRunRequest.
 
-        Copied out of the repository after the run, also when it fails.  # noqa: E501
+        Where the notebooks write their results on the volume, passed to them as their OUTPUT_DIR parameter.  # noqa: E501
 
-        :param outputs: The outputs of this WorkspaceRunRequest.
-        :type outputs: List[WorkspaceRunOutput]
+        :param output_dir: The output_dir of this WorkspaceRunRequest.
+        :type output_dir: str
         """
+        if output_dir is None:
+            raise ValueError("Invalid value for `output_dir`, must not be `None`")  # noqa: E501
 
-        self._outputs = outputs
+        self._output_dir = output_dir
 
     @property
     def results(self):

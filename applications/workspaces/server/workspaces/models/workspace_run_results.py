@@ -50,7 +50,7 @@ class WorkspaceRunResults(Model):
     def notebooks(self):
         """Gets the notebooks of this WorkspaceRunResults.
 
-        Folder for the executed notebooks.  # noqa: E501
+        Folder for the executed notebooks, created only if every notebook passes; if one fails, they are in <folder>.failed instead.  # noqa: E501
 
         :return: The notebooks of this WorkspaceRunResults.
         :rtype: str
@@ -61,7 +61,7 @@ class WorkspaceRunResults(Model):
     def notebooks(self, notebooks):
         """Sets the notebooks of this WorkspaceRunResults.
 
-        Folder for the executed notebooks.  # noqa: E501
+        Folder for the executed notebooks, created only if every notebook passes; if one fails, they are in <folder>.failed instead.  # noqa: E501
 
         :param notebooks: The notebooks of this WorkspaceRunResults.
         :type notebooks: str
