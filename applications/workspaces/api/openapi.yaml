@@ -1676,7 +1676,7 @@ components:
 tags:
     -
         name: run
-        description: Running protocol notebooks in a workspace (IDP-43, MAABCD)
+        description: Run notebooks in a workspace
     -
         name: rest
         description: rest API for Workspaces manager
@@ -1689,8 +1689,3 @@ tags:
     -
         name: Client
         description: Client
-    -
-        name: dandi
-        description: >-
-            Brokered uploads into EMBER-DANDI (IDP-43). File bytes go browser -> S3 directly via
-            presigned part URLs; only metadata passes through this server.

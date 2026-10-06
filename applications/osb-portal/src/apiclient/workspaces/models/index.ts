@@ -26,8 +26,6 @@ export * from './ResourceOrigin';
 export * from './ResourceStatus';
 export * from './ResourceType';
 export * from './Tag';
-export * from './UploadPart';
-export * from './UploadedPart';
 export * from './User';
 export * from './Valid';
 export * from './VolumeStorage';

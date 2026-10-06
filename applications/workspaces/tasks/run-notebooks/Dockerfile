@@ -1,7 +1,7 @@
 FROM python:3.12
 
 # papermill executes the notebooks; ipykernel provides the "python3" kernel they ask for. The
-# protocol's own dependencies come from its requirements.txt at run time.
+# repository's own dependencies come from its requirements.txt at run time.
 RUN --mount=type=cache,target=/root/.cache python -m pip install --upgrade pip && \
     pip install --prefer-binary papermill ipykernel && \
     python -m ipykernel install --sys-prefix --name python3

@@ -46,9 +46,6 @@ from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
 from workspaces.models.repository_info import RepositoryInfo
 from workspaces.models.biomodels_repository_resource import BiomodelsRepositoryResource
-# IDP-43 DANDI upload (ported from the standalone idp-arc backend, 2026-09-14)
-from workspaces.models.upload_part import UploadPart
-from workspaces.models.uploaded_part import UploadedPart
 from workspaces.models.workspace_run_repo import WorkspaceRunRepo
 from workspaces.models.workspace_run_request import WorkspaceRunRequest
 from workspaces.models.workspace_run_response import WorkspaceRunResponse

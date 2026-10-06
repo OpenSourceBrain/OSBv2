@@ -1,18 +1,3 @@
-"""Runs a protocol repository's notebooks in a workspace (IDP-43, MAABCD).
-
-`POST /workspace/{id}/run` submits an Argo workflow (`osb-run-notebooks-job`, task image
-tasks/run-notebooks) and returns its name at once, like `POST /workspace/{id}/import` does for a
-copy. The pod mounts the workspace volume and runs the notebooks it is given, in the order given,
-with papermill. While it runs, `GET /workspace/{id}` lists the "Refreshing resources" placeholder,
-as for an import (crud_service.get_workspace_workflows). Which notebooks, how to set up the
-environment, and the folders the notebooks read from and write to (their INPUT_DIR and OUTPUT_DIR
-parameters) are the caller's to decide; the run uses the setup paths the repository has and skips
-the others.
-
-The repository and the data are the workspace's own (imported with `POST /workspaceresource`), so
-only the workspace's owner may run in it: a run executes that code with write access to the whole
-volume. The pod gets no CloudHarness credentials (service/workflow.py).
-"""
 import posixpath
 
 from cloudharness import log as logger
@@ -23,6 +8,7 @@ from workspaces.models.workspace_run_response import WorkspaceRunResponse
 from workspaces.service import workflow as workflow_service
 from workspaces.service.auth import keycloak_user_id
 from workspaces.service.crud_service import WorkspaceService
+
 
 class InvalidPath(ValueError):
     pass
@@ -69,7 +55,6 @@ def _owned_workspace(workspace_id):
     return workspace, None
 
 
-
 def run_notebooks(id_, body):
     """POST /workspace/{id}/run"""
     request = WorkspaceRunRequest.from_dict(body)
@@ -100,4 +85,3 @@ def run_notebooks(id_, body):
     logger.info("Submitted notebook run %s in workspace %s (%s: %d notebooks)",
                 run_id, workspace.id, run["repo_dir"], len(run["notebooks"]))
     return WorkspaceRunResponse(workflow=run_id), 202
-

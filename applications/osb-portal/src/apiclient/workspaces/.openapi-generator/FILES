@@ -30,8 +30,6 @@ models/ResourceOrigin.ts
 models/ResourceStatus.ts
 models/ResourceType.ts
 models/Tag.ts
-models/UploadPart.ts
-models/UploadedPart.ts
 models/User.ts
 models/Valid.ts
 models/VolumeStorage.ts
