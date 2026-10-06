@@ -121,10 +121,9 @@ if [ -e "$results_path" ]; then rm -rf "${results_path:?}"; fi
 
 # ── Clean environment for the repository's own code ─────────────────────────────────────────
 
-# The repository's code runs without the CH_* variables CloudHarness copies from the workspaces
-# server (CH_SECRET among them), only with what is listed here. The credential files are kept out
-# of the pod by RunNotebooksTask (service/workflow.py). The image's python stays first on PATH
-# (e.g. /opt/conda/bin in the Jupyter images).
+# The repository's code runs only with what is listed here. CloudHarness's CH_* variables and
+# credential files are kept out of the pod by RunNotebooksTask (service/workflow.py). The image's
+# python stays first on PATH (e.g. /opt/conda/bin in the Jupyter images).
 python_bin=$(command -v python) || fail "the image has no python"
 clean_env=(env -i PATH="$(dirname "$python_bin"):/usr/local/bin:/usr/bin:/bin" HOME=/tmp LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 MPLBACKEND=Agg
     PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_ROOT_USER_ACTION=ignore PIP_NO_CACHE_DIR=1)
