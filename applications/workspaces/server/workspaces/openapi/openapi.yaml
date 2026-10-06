@@ -250,6 +250,10 @@ paths:
                     description: Only the workspace's owner may run in it.
                 '404':
                     description: The workspace was not found.
+                '409':
+                    description: >-
+                        A run is already in progress in this workspace, or its owner has as many runs in
+                        progress as their quota allows (quota-ws-open).
             security:
                 -
                     bearerAuth: []
@@ -1068,7 +1072,6 @@ components:
                 - notebooks
                 - output_dir
                 - results
-                - script
             properties:
                 repo:
                     $ref: '#/components/schemas/WorkspaceRunRepo'
@@ -1095,12 +1098,11 @@ components:
                         OUTPUT_DIR parameter, relative to the notebook's folder.
                 results:
                     $ref: '#/components/schemas/WorkspaceRunResults'
-                script:
+                image:
                     type: string
                     description: >-
-                        The script that runs the notebooks, one of those the deployment allows (e.g.
-                        run-notebooks); the run is refused without it. Every run uses OSB's JupyterLab
-                        image, which gives the notebooks their environment.
+                        The image to run the notebooks in: an OSB workspace application (e.g. netpyne)
+                        or an image from a trusted registry. Defaults to OSB's JupyterLab.
         WorkspaceRunRepo:
             description: The repository the notebooks are in.
             type: object

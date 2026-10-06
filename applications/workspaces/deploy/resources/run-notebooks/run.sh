@@ -1,10 +1,8 @@
 #!/bin/bash
 # Argo task behind POST /workspace/{id}/run: runs a repository's notebooks on the workspace volume.
-# Steps and outputs: see README.md.
 #
-# The run-notebooks script of notebook runs (run_notebooks.scripts in deploy/values.yaml). Runs in the
-# deployment's image (OSB's JupyterLab), mounted there from the workspaces-run-notebooks ConfigMap:
-# it needs only bash and python from the image.
+# Runs in the image the request names (OSB's JupyterLab without one), mounted there from the
+# workspaces-run-notebooks ConfigMap: it needs only bash and python from the image.
 #
 # Inputs: environment variables set by service/workflow.py from the request. Paths are relative to
 # the volume, already checked by the controller; lists have one item per line.

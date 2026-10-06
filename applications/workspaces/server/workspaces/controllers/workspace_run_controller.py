@@ -9,14 +9,14 @@ from workspaces.models.workspace_run_response import WorkspaceRunResponse
 from workspaces.service import workflow as workflow_service
 from workspaces.service.auth import keycloak_user_id
 from workspaces.service.crud_service import WorkspaceService
-from workspaces.service.user_quota_service import get_run_resources
+from workspaces.service.user_quota_service import get_max_concurrent_notebook_runs, get_notebook_run_resources
 
 
 class InvalidPath(ValueError):
     pass
 
 
-class InvalidScript(ValueError):
+class InvalidImage(ValueError):
     pass
 
 
@@ -47,30 +47,33 @@ def check_install(value: str) -> str:
     return candidate
 
 
-# Runs use OSB's JupyterLab, the environment users get in their workspaces. A deployment without it
-# (a local one: it isn't built there) uses the minimal one.
-RUN_IMAGE = "jupyterlab"
-RUN_IMAGE_WITHOUT_IT = "jupyterlab-minimal"
+# Without an image in the request, runs use OSB's JupyterLab, the environment users get in their
+# workspaces. A deployment without it (a local one: it isn't built there) uses the minimal one.
+DEFAULT_NOTEBOOK_RUN_IMAGE = "jupyterlab"
+MINIMAL_NOTEBOOK_RUN_IMAGE = "jupyterlab-minimal"
 
 
-def run_settings() -> dict:
-    """The deployment's settings for notebook runs (deploy/values.yaml, run_notebooks)."""
-    return CloudharnessConfig.get_configuration()["apps"]["workspaces"].get("run_notebooks") or {}
+def get_notebook_run_image_registries() -> list:
+    """Registries a run's image may come from besides OSB's workspace applications (deploy/values.yaml,
+    notebook_run_image_registries): images built outside OSB's release, so a notebook's environment can
+    change without an OSB update."""
+    registries = CloudharnessConfig.get_configuration()["apps"]["workspaces"].get("notebook_run_image_registries")
+    return [registry.rstrip("/") + "/" for registry in registries or [] if registry]
 
 
-def run_image() -> str:
-    """The application whose image runs the notebooks."""
-    deployed = {app["name"] for app in CloudharnessConfig.get_applications().values()}
-    return RUN_IMAGE if RUN_IMAGE in deployed else RUN_IMAGE_WITHOUT_IT
-
-
-def check_script(value) -> str:
-    """The script the run asks for: only one the deployment lists, as each is mounted from its own
-    ConfigMap (deploy/templates/run-notebook-configmap.yaml)."""
-    scripts = run_settings().get("scripts") or []
-    if value not in scripts:
-        raise InvalidScript(f"script must be one of: {', '.join(scripts)}")
-    return value
+def get_notebook_run_image(requested) -> str:
+    """The image the notebooks run in. Without one requested, the default. Otherwise the requested one, if
+    allowed: a workspace application deployed here (one JupyterHub runs) or an image from
+    notebook_run_image_registries. The run executes the repository's code in it."""
+    if requested is None:
+        deployed = {app["name"] for app in CloudharnessConfig.get_applications().values()}
+        return DEFAULT_NOTEBOOK_RUN_IMAGE if DEFAULT_NOTEBOOK_RUN_IMAGE in deployed else MINIMAL_NOTEBOOK_RUN_IMAGE
+    workspace_apps = {app["name"] for app in CloudharnessConfig.get_application_by_filter(harness__jupyterhub=True)}
+    registries = get_notebook_run_image_registries()
+    if requested in workspace_apps or any(requested.startswith(registry) for registry in registries):
+        return requested
+    raise InvalidImage(f"image must be a workspace application ({', '.join(sorted(workspace_apps))})"
+                       f" or an image under {' or '.join(registries) or '(no registry configured)'}")
 
 
 def _owned_workspace(workspace_id):
@@ -85,6 +88,20 @@ def _owned_workspace(workspace_id):
     if workspace.user_id != user_id:
         return None, ("Only the workspace's owner may run notebooks in it", 403)
     return workspace, None
+
+
+def _concurrent_runs_error(workspace):
+    """An error response if the workspace already has a run going, or its owner as many as their quota
+    allows (each run's pod gets the owner's full CPU/memory quota); otherwise None."""
+    running = workflow_service.get_notebook_run_workspaces()
+    if workspace.id in running:
+        return "A notebook run is already in progress in this workspace", 409
+    repository = WorkspaceService().repository
+    owners = [getattr(repository.get(ws_id), "user_id", None) for ws_id in running]  # deleted: None
+    max_runs = get_max_concurrent_notebook_runs(workspace.user_id)
+    if owners.count(workspace.user_id) >= max_runs:
+        return f"At most {max_runs} notebook runs can be in progress at once", 409
+    return None
 
 
 def run_notebooks(id_, body):
@@ -102,8 +119,7 @@ def run_notebooks(id_, body):
             "output_dir": check_relative_path("output_dir", request.output_dir),
             "executed_notebooks_dir": check_relative_path("results.notebooks", request.results.notebooks),
             "log_file": check_relative_path("results.log", request.results.log),
-            "script": check_script(request.script),
-            "image": run_image(),
+            "image": get_notebook_run_image(request.image),
         }
         if not run["notebooks"]:
             raise InvalidPath("notebooks must list at least one notebook")
@@ -112,16 +128,19 @@ def run_notebooks(id_, body):
         run["project_dir"] = posixpath.dirname(run["repo_dir"])
         if not run["project_dir"]:
             raise InvalidPath("repo.dir must be inside a folder (the run's), not at the workspace's top level")
-    except (InvalidPath, InvalidScript) as exc:
+    except (InvalidPath, InvalidImage) as exc:
         return str(exc), 400
 
     workspace, error = _owned_workspace(id_)
     if error:
         return error
+    error = _concurrent_runs_error(workspace)
+    if error:
+        return error
     # Third-party code: the run's pod is sized by the owner's quotas, as their lab pod is.
-    run["resources"] = get_run_resources(workspace.user_id)
+    run["resources"] = get_notebook_run_resources(workspace.user_id)
 
     run_id = workflow_service.run_notebooks(workspace.id, run)
-    logger.info("Submitted notebook run %s in workspace %s (%s: %d notebooks, %s in %s)",
-                run_id, workspace.id, run["repo_dir"], len(run["notebooks"]), run["script"], run["image"])
+    logger.info("Submitted notebook run %s in workspace %s: %d notebooks from %s, image %s",
+                run_id, workspace.id, len(run["notebooks"]), run["repo_dir"], run["image"])
     return WorkspaceRunResponse(workflow=run_id), 202

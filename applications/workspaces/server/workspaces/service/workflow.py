@@ -116,18 +116,23 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
     op.volumes=(source_volume, dest_volume)
     workflow = op.execute()
 
+
 # ── Notebook runs ────────────────────────────────────────────────────────
 # A run executes the notebooks it is given, in order, with papermill in an Argo pod that mounts the
 # workspace volume. Submitted like the copy tasks, with the same `workspace` pod context: next to the
 # workspace's lab pod if one runs, and without one otherwise.
 #
-# The pod runs in OSB's JupyterLab image (chosen by the controller), so the notebooks get its environment;
-# the script that runs them, the one the request picks (checked by the controller), isn't in that
-# image but mounted from its ConfigMap, workspaces-<script> (deploy/templates/run-notebook-configmap.yaml).
+# The pod runs in the image the request names (OSB's JupyterLab without one; see the controller), so the
+# notebooks get its environment. The script that runs them, run.sh, isn't in that image but mounted from
+# the workspaces-run-notebooks ConfigMap (deploy/templates/run-notebook-configmap.yaml).
 
 RUN_NOTEBOOKS_BASENAME = "osb-run-notebooks-job"
 RUN_NOTEBOOKS_SCRIPT_VOLUME = "run-notebooks-script"
+RUN_NOTEBOOKS_SCRIPT_CONFIGMAP = "workspaces-run-notebooks"
 RUN_NOTEBOOKS_SCRIPT_DIR = "/opt/run-notebooks"
+# An empty folder over the service account token's path, in the run's container only.
+NO_TOKEN_VOLUME = "no-service-account-token"
+SERVICE_ACCOUNT_TOKEN_DIR = "/var/run/secrets/kubernetes.io/serviceaccount"
 
 
 class PipelineScannedOnExit(operations.PipelineOperation):
@@ -149,26 +154,52 @@ class PipelineScannedOnExit(operations.PipelineOperation):
         return spec
 
 
+class RunNotebooksTask(tasks.CustomTask):
+    # Third-party code runs here: leave out the Keycloak secret and allvalues mounts CloudHarness
+    # adds to every task (a mounted file can't be hidden from inside the pod). run.sh clears
+    # the CH_* variables. Mount run.sh instead.
+    def cloudharness_configmap_spec(self):
+        return [m for m in super().cloudharness_configmap_spec()
+                if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")] + [
+            {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "mountPath": RUN_NOTEBOOKS_SCRIPT_DIR, "readOnly": True},
+            # No service account token either (argo-workflows is cluster-admin): with a folder at its path,
+            # Kubernetes doesn't mount it in this container. Argo's wait container keeps its own.
+            {"name": NO_TOKEN_VOLUME, "mountPath": SERVICE_ACCOUNT_TOKEN_DIR, "readOnly": True}]
+
+    @property
+    def envs(self):
+        # Nor the CH_* variables CloudHarness copies from the workspaces server into every task, with
+        # CH_SECRET and CH_ACCOUNTS_CLIENT_SECRET among them: clearing them in run.sh isn't enough, as
+        # the repository's code can read run.sh's environment (/proc). run.sh needs none of them.
+        return [env for env in super().envs if not env["name"].startswith("CH_")]
+
+
+class RunNotebooksPipeline(PipelineScannedOnExit):
+    # The workflow declares the volumes its tasks mount; CloudHarness only adds its own and PVCs.
+    def spec(self):
+        spec = super().spec()
+        spec["volumes"] += [
+            {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "configMap": {"name": RUN_NOTEBOOKS_SCRIPT_CONFIGMAP}},
+            {"name": NO_TOKEN_VOLUME, "emptyDir": {}}]
+        return spec
+
+
+def get_notebook_run_workspaces() -> list:
+    """The workspace id of each notebook run in progress, one per run. A run submitted a moment ago
+    may not be listed yet."""
+    workspace_ids = []
+    for phase in ("Pending", "Running"):
+        for workflow in get_workflows(status=phase, limit=9999).items:
+            if workflow.name.startswith(RUN_NOTEBOOKS_BASENAME):
+                labels = workflow.raw.spec.templates[0].metadata.labels or {}
+                if labels.get("workspace", "").strip().isdigit():
+                    workspace_ids.append(int(labels["workspace"]))
+    return workspace_ids
+
+
 def run_notebooks(workspace_id, run: dict) -> str:
     """Submits the run and returns at once with the workflow name, which is the run id. `run` holds
     the checked request (workspace_run_controller.run_notebooks); paths are the caller's."""
-
-    class RunNotebooksTask(tasks.CustomTask):
-        # Third-party code runs here: leave out the Keycloak secret and allvalues mounts CloudHarness
-        # adds to every task (a mounted file can't be hidden from inside the pod). run.sh clears
-        # the CH_* variables. Mount run.sh instead.
-        def cloudharness_configmap_spec(self):
-            return [m for m in super().cloudharness_configmap_spec()
-                    if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")] + [
-                {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "mountPath": RUN_NOTEBOOKS_SCRIPT_DIR, "readOnly": True}]
-
-    class RunNotebooksPipeline(PipelineScannedOnExit):
-        # The workflow declares the volumes its tasks mount; CloudHarness only adds its own and PVCs.
-        def spec(self):
-            spec = super().spec()
-            spec["volumes"].append(
-                {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "configMap": {"name": f"workspaces-{run['script']}"}})
-            return spec
 
     # Lists go one path per line (the controller rejects newlines in paths).
     env = {
@@ -185,10 +216,10 @@ def run_notebooks(workspace_id, run: dict) -> str:
     }
     task = RunNotebooksTask(
         name=f"run-notebooks-{str(uuid.uuid4())[:8]}",
-        image_name=run["image"],  # an application's name: its image, as this deployment builds it
+        image_name=run["image"],  # an application's name (its image as built here) or an image reference
         command=["bash", f"{RUN_NOTEBOOKS_SCRIPT_DIR}/run.sh"],
         retry_limit=0,  # notebooks aren't safe to re-run blindly
-        resources=run["resources"],  # the owner's quotas (user_quota_service.get_run_resources)
+        resources=run["resources"],  # the owner's quotas (user_quota_service.get_notebook_run_resources)
         run_id="{{workflow.name}}",  # filled in by Argo; run.sh logs it
         **{name: value for name, value in env.items() if value},
     )
@@ -203,4 +234,3 @@ def run_notebooks(workspace_id, run: dict) -> str:
         pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),
     )
     return op.execute().name
-

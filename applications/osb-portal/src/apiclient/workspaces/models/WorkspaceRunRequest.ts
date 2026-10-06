@@ -71,11 +71,11 @@ export interface WorkspaceRunRequest {
      */
     results: WorkspaceRunResults;
     /**
-     * The script that runs the notebooks, one of those the deployment allows (e.g. run-notebooks); the run is refused without it. Every run uses OSB's JupyterLab image, which gives the notebooks their environment.
+     * The image to run the notebooks in: an OSB workspace application (e.g. netpyne) or an image from a trusted registry. Defaults to OSB's JupyterLab.
      * @type {string}
      * @memberof WorkspaceRunRequest
      */
-    script: string;
+    image?: string;
 }
 
 export function WorkspaceRunRequestFromJSON(json: any): WorkspaceRunRequest {
@@ -94,7 +94,7 @@ export function WorkspaceRunRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'inputDir': !exists(json, 'input_dir') ? undefined : json['input_dir'],
         'outputDir': json['output_dir'],
         'results': WorkspaceRunResultsFromJSON(json['results']),
-        'script': json['script'],
+        'image': !exists(json, 'image') ? undefined : json['image'],
     };
 }
 
@@ -113,7 +113,7 @@ export function WorkspaceRunRequestToJSON(value?: WorkspaceRunRequest | null): a
         'input_dir': value.inputDir,
         'output_dir': value.outputDir,
         'results': WorkspaceRunResultsToJSON(value.results),
-        'script': value.script,
+        'image': value.image,
     };
 }
 

@@ -14,7 +14,14 @@ def get_max_workspaces_for_user(user_id) -> int:
     return int(user_quotas.get('quota-ws-max', '1'))
 
 
-def get_run_resources(user_id) -> dict:
+def get_max_concurrent_notebook_runs(user_id) -> int:
+    """How many notebook runs a user may have at once: as many as the workspaces they may have open
+    (jupyterhub's quota-ws-open), so runs can't multiply their CPU/memory quotas."""
+    quotas = get_user_quotas(get_configuration('jupyterhub'), user_id=user_id)
+    return int(quotas.get('quota-ws-open', 1))
+
+
+def get_notebook_run_resources(user_id) -> dict:
     """A notebook run's pod gets what the user's lab pod gets: jupyterhub's CPU/memory quotas
     (deployment defaults, overridden per user or group in Keycloak)."""
     quotas = get_user_quotas(get_configuration('jupyterhub'), user_id=user_id)
