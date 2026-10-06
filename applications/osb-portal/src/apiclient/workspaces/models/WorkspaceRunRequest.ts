@@ -47,7 +47,7 @@ export interface WorkspaceRunRequest {
      */
     setup?: WorkspaceRunSetup;
     /**
-     * The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder; the run stops at the first that fails.
+     * The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder in the project (see repo.dir); the run stops at the first that fails.
      * @type {Array<string>}
      * @memberof WorkspaceRunRequest
      */
@@ -70,6 +70,12 @@ export interface WorkspaceRunRequest {
      * @memberof WorkspaceRunRequest
      */
     results: WorkspaceRunResults;
+    /**
+     * The script that runs the notebooks, one of those the deployment allows (e.g. run-notebooks); the run is refused without it. Every run uses OSB's JupyterLab image, which gives the notebooks their environment.
+     * @type {string}
+     * @memberof WorkspaceRunRequest
+     */
+    script: string;
 }
 
 export function WorkspaceRunRequestFromJSON(json: any): WorkspaceRunRequest {
@@ -88,6 +94,7 @@ export function WorkspaceRunRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'inputDir': !exists(json, 'input_dir') ? undefined : json['input_dir'],
         'outputDir': json['output_dir'],
         'results': WorkspaceRunResultsFromJSON(json['results']),
+        'script': json['script'],
     };
 }
 
@@ -106,6 +113,7 @@ export function WorkspaceRunRequestToJSON(value?: WorkspaceRunRequest | null): a
         'input_dir': value.inputDir,
         'output_dir': value.outputDir,
         'results': WorkspaceRunResultsToJSON(value.results),
+        'script': value.script,
     };
 }
 

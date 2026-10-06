@@ -14,26 +14,21 @@ class WorkspaceRunRepo(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, dir=None, discard=None):  # noqa: E501
+    def __init__(self, dir=None):  # noqa: E501
         """WorkspaceRunRepo - a model defined in OpenAPI
 
         :param dir: The dir of this WorkspaceRunRepo.  # noqa: E501
         :type dir: str
-        :param discard: The discard of this WorkspaceRunRepo.  # noqa: E501
-        :type discard: bool
         """
         self.openapi_types = {
-            'dir': str,
-            'discard': bool
+            'dir': str
         }
 
         self.attribute_map = {
-            'dir': 'dir',
-            'discard': 'discard'
+            'dir': 'dir'
         }
 
         self._dir = dir
-        self._discard = discard
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceRunRepo':
@@ -50,7 +45,7 @@ class WorkspaceRunRepo(Model):
     def dir(self):
         """Gets the dir of this WorkspaceRunRepo.
 
-        The repository on the volume. The run works in a copy of it.  # noqa: E501
+        The repository on the volume, as imported, inside the run's folder (e.g. the zip's <repo>-<ref>/). That folder is the notebooks' project: the run copies the repository's files there, except names it already has (e.g. the input and output folders), and runs the notebooks from there as they would from the repository, so their executed copies can be run again in JupyterLab. The repository is left as it is.  # noqa: E501
 
         :return: The dir of this WorkspaceRunRepo.
         :rtype: str
@@ -61,7 +56,7 @@ class WorkspaceRunRepo(Model):
     def dir(self, dir):
         """Sets the dir of this WorkspaceRunRepo.
 
-        The repository on the volume. The run works in a copy of it.  # noqa: E501
+        The repository on the volume, as imported, inside the run's folder (e.g. the zip's <repo>-<ref>/). That folder is the notebooks' project: the run copies the repository's files there, except names it already has (e.g. the input and output folders), and runs the notebooks from there as they would from the repository, so their executed copies can be run again in JupyterLab. The repository is left as it is.  # noqa: E501
 
         :param dir: The dir of this WorkspaceRunRepo.
         :type dir: str
@@ -70,26 +65,3 @@ class WorkspaceRunRepo(Model):
             raise ValueError("Invalid value for `dir`, must not be `None`")  # noqa: E501
 
         self._dir = dir
-
-    @property
-    def discard(self):
-        """Gets the discard of this WorkspaceRunRepo.
-
-        Remove it from the volume once copied, so the next run imports it fresh.  # noqa: E501
-
-        :return: The discard of this WorkspaceRunRepo.
-        :rtype: bool
-        """
-        return self._discard
-
-    @discard.setter
-    def discard(self, discard):
-        """Sets the discard of this WorkspaceRunRepo.
-
-        Remove it from the volume once copied, so the next run imports it fresh.  # noqa: E501
-
-        :param discard: The discard of this WorkspaceRunRepo.
-        :type discard: bool
-        """
-
-        self._discard = discard

@@ -1043,6 +1043,7 @@ components:
                 - notebooks
                 - output_dir
                 - results
+                - script
             properties:
                 repo:
                     $ref: '#/components/schemas/WorkspaceRunRepo'
@@ -1055,19 +1056,26 @@ components:
                         type: string
                     description: >-
                         The notebooks to run, relative to repo.dir, in this order. Each runs in its own
-                        folder; the run stops at the first that fails.
+                        folder in the project (see repo.dir); the run stops at the first that fails.
                 input_dir:
                     type: string
                     description: >-
                         The run's input on the volume, passed to the notebooks as their INPUT_DIR
-                        parameter. Without it they use their own default (e.g. example data).
+                        parameter, relative to the notebook's folder. Without it they use their own
+                        default (e.g. example data).
                 output_dir:
                     type: string
                     description: >-
                         Where the notebooks write their results on the volume, passed to them as their
-                        OUTPUT_DIR parameter.
+                        OUTPUT_DIR parameter, relative to the notebook's folder.
                 results:
                     $ref: '#/components/schemas/WorkspaceRunResults'
+                script:
+                    type: string
+                    description: >-
+                        The script that runs the notebooks, one of those the deployment allows (e.g.
+                        run-notebooks); the run is refused without it. Every run uses OSB's JupyterLab
+                        image, which gives the notebooks their environment.
         WorkspaceRunRepo:
             description: The repository the notebooks are in.
             type: object
@@ -1076,10 +1084,12 @@ components:
             properties:
                 dir:
                     type: string
-                    description: The repository on the volume. The run works in a copy of it.
-                discard:
-                    type: boolean
-                    description: Remove it from the volume once copied, so the next run imports it fresh.
+                    description: >-
+                        The repository on the volume, as imported, inside the run's folder (e.g. the zip's
+                        <repo>-<ref>/). That folder is the notebooks' project: the run copies the
+                        repository's files there, except names it already has (e.g. the input and output
+                        folders), and runs the notebooks from there as they would from the repository, so
+                        their executed copies can be run again in JupyterLab. The repository is left as it is.
         WorkspaceRunSetup:
             description: How to set up the repository before the notebooks run; paths it doesn't have are skipped.
             type: object
@@ -1109,7 +1119,11 @@ components:
             properties:
                 notebooks:
                     type: string
-                    description: Folder for the executed notebooks, created only if every notebook passes; if one fails, they are in <folder>.failed instead.
+                    description: >-
+                        Folder for the executed notebooks, created only if every notebook passes; if one
+                        fails, they are in <folder>.failed instead. To run them again in JupyterLab, it is
+                        their own folder in the project (e.g. <run folder>/notebooks): they replace the
+                        originals there.
                 log:
                     type: string
                     description: The run's log file. The run is refused if it already exists.

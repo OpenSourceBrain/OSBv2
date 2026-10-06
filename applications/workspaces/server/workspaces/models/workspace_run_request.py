@@ -21,7 +21,7 @@ class WorkspaceRunRequest(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, repo=None, setup=None, notebooks=None, input_dir=None, output_dir=None, results=None):  # noqa: E501
+    def __init__(self, repo=None, setup=None, notebooks=None, input_dir=None, output_dir=None, results=None, script=None):  # noqa: E501
         """WorkspaceRunRequest - a model defined in OpenAPI
 
         :param repo: The repo of this WorkspaceRunRequest.  # noqa: E501
@@ -36,6 +36,8 @@ class WorkspaceRunRequest(Model):
         :type output_dir: str
         :param results: The results of this WorkspaceRunRequest.  # noqa: E501
         :type results: WorkspaceRunResults
+        :param script: The script of this WorkspaceRunRequest.  # noqa: E501
+        :type script: str
         """
         self.openapi_types = {
             'repo': WorkspaceRunRepo,
@@ -43,7 +45,8 @@ class WorkspaceRunRequest(Model):
             'notebooks': List[str],
             'input_dir': str,
             'output_dir': str,
-            'results': WorkspaceRunResults
+            'results': WorkspaceRunResults,
+            'script': str
         }
 
         self.attribute_map = {
@@ -52,7 +55,8 @@ class WorkspaceRunRequest(Model):
             'notebooks': 'notebooks',
             'input_dir': 'input_dir',
             'output_dir': 'output_dir',
-            'results': 'results'
+            'results': 'results',
+            'script': 'script'
         }
 
         self._repo = repo
@@ -61,6 +65,7 @@ class WorkspaceRunRequest(Model):
         self._input_dir = input_dir
         self._output_dir = output_dir
         self._results = results
+        self._script = script
 
     @classmethod
     def from_dict(cls, dikt) -> 'WorkspaceRunRequest':
@@ -121,7 +126,7 @@ class WorkspaceRunRequest(Model):
     def notebooks(self):
         """Gets the notebooks of this WorkspaceRunRequest.
 
-        The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder; the run stops at the first that fails.  # noqa: E501
+        The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder in the project (see repo.dir); the run stops at the first that fails.  # noqa: E501
 
         :return: The notebooks of this WorkspaceRunRequest.
         :rtype: List[str]
@@ -132,7 +137,7 @@ class WorkspaceRunRequest(Model):
     def notebooks(self, notebooks):
         """Sets the notebooks of this WorkspaceRunRequest.
 
-        The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder; the run stops at the first that fails.  # noqa: E501
+        The notebooks to run, relative to repo.dir, in this order. Each runs in its own folder in the project (see repo.dir); the run stops at the first that fails.  # noqa: E501
 
         :param notebooks: The notebooks of this WorkspaceRunRequest.
         :type notebooks: List[str]
@@ -212,3 +217,28 @@ class WorkspaceRunRequest(Model):
             raise ValueError("Invalid value for `results`, must not be `None`")  # noqa: E501
 
         self._results = results
+
+    @property
+    def script(self):
+        """Gets the script of this WorkspaceRunRequest.
+
+        The script that runs the notebooks, one of those the deployment allows (e.g. run-notebooks); the run is refused without it. Every run uses OSB's JupyterLab image, which gives the notebooks their environment.  # noqa: E501
+
+        :return: The script of this WorkspaceRunRequest.
+        :rtype: str
+        """
+        return self._script
+
+    @script.setter
+    def script(self, script):
+        """Sets the script of this WorkspaceRunRequest.
+
+        The script that runs the notebooks, one of those the deployment allows (e.g. run-notebooks); the run is refused without it. Every run uses OSB's JupyterLab image, which gives the notebooks their environment.  # noqa: E501
+
+        :param script: The script of this WorkspaceRunRequest.
+        :type script: str
+        """
+        if script is None:
+            raise ValueError("Invalid value for `script`, must not be `None`")  # noqa: E501
+
+        self._script = script

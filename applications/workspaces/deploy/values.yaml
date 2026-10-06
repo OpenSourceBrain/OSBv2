@@ -91,5 +91,9 @@ harness:
       - pip install -r /usr/src/app/test-requirements.txt
       - pytest /usr/src/app/
 workspace_size: 2Gi
+# Scripts a notebook run (POST /workspace/{id}/run) may name; each runs in JupyterLab, mounted from deploy/resources/<script>/run.sh.
+run_notebooks:
+  scripts:
+    - run-notebooks
 
 

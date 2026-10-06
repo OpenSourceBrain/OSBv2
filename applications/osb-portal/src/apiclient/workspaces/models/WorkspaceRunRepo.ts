@@ -21,17 +21,11 @@ import { exists, mapValues } from '../runtime';
  */
 export interface WorkspaceRunRepo {
     /**
-     * The repository on the volume. The run works in a copy of it.
+     * The repository on the volume, as imported, inside the run's folder (e.g. the zip's <repo>-<ref>/). That folder is the notebooks' project: the run copies the repository's files there, except names it already has (e.g. the input and output folders), and runs the notebooks from there as they would from the repository, so their executed copies can be run again in JupyterLab. The repository is left as it is.
      * @type {string}
      * @memberof WorkspaceRunRepo
      */
     dir: string;
-    /**
-     * Remove it from the volume once copied, so the next run imports it fresh.
-     * @type {boolean}
-     * @memberof WorkspaceRunRepo
-     */
-    discard?: boolean;
 }
 
 export function WorkspaceRunRepoFromJSON(json: any): WorkspaceRunRepo {
@@ -45,7 +39,6 @@ export function WorkspaceRunRepoFromJSONTyped(json: any, ignoreDiscriminator: bo
     return {
         
         'dir': json['dir'],
-        'discard': !exists(json, 'discard') ? undefined : json['discard'],
     };
 }
 
@@ -59,7 +52,6 @@ export function WorkspaceRunRepoToJSON(value?: WorkspaceRunRepo | null): any {
     return {
         
         'dir': value.dir,
-        'discard': value.discard,
     };
 }
 

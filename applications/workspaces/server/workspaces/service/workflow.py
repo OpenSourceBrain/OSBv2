@@ -117,13 +117,17 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
     workflow = op.execute()
 
 # ── Notebook runs ────────────────────────────────────────────────────────
-# A run executes the notebooks it is given, in order, with papermill (tasks/run-notebooks) in an
-# Argo pod that mounts the workspace volume. Submitted like the copy tasks, with the same
-# `workspace` pod context: next to the workspace's lab pod if one runs, and without one otherwise.
+# A run executes the notebooks it is given, in order, with papermill in an Argo pod that mounts the
+# workspace volume. Submitted like the copy tasks, with the same `workspace` pod context: next to the
+# workspace's lab pod if one runs, and without one otherwise.
+#
+# The pod runs in OSB's JupyterLab image (chosen by the controller), so the notebooks get its environment;
+# the script that runs them, the one the request picks (checked by the controller), isn't in that
+# image but mounted from its ConfigMap, workspaces-<script> (deploy/templates/run-notebook-configmap.yaml).
 
 RUN_NOTEBOOKS_BASENAME = "osb-run-notebooks-job"
-# CustomTask sets no limits by default; the notebooks are third-party code.
-RUN_NOTEBOOKS_RESOURCES = {"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "1", "memory": "2Gi"}}
+RUN_NOTEBOOKS_SCRIPT_VOLUME = "run-notebooks-script"
+RUN_NOTEBOOKS_SCRIPT_DIR = "/opt/run-notebooks"
 
 
 class PipelineScannedOnExit(operations.PipelineOperation):
@@ -152,18 +156,27 @@ def run_notebooks(workspace_id, run: dict) -> str:
     class RunNotebooksTask(tasks.CustomTask):
         # Third-party code runs here: leave out the Keycloak secret and allvalues mounts CloudHarness
         # adds to every task (a mounted file can't be hidden from inside the pod). run.sh clears
-        # the CH_* variables.
+        # the CH_* variables. Mount run.sh instead.
         def cloudharness_configmap_spec(self):
             return [m for m in super().cloudharness_configmap_spec()
-                    if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")]
+                    if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")] + [
+                {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "mountPath": RUN_NOTEBOOKS_SCRIPT_DIR, "readOnly": True}]
+
+    class RunNotebooksPipeline(PipelineScannedOnExit):
+        # The workflow declares the volumes its tasks mount; CloudHarness only adds its own and PVCs.
+        def spec(self):
+            spec = super().spec()
+            spec["volumes"].append(
+                {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "configMap": {"name": f"workspaces-{run['script']}"}})
+            return spec
 
     # Lists go one path per line (the controller rejects newlines in paths).
     env = {
         "repo_dir": run["repo_dir"],
+        "project_dir": run["project_dir"],
         "notebooks": "\n".join(run["notebooks"]),
         "executed_notebooks_dir": run["executed_notebooks_dir"],
         "log_file": run["log_file"],
-        "discard_repo": "true" if run["discard_repo"] else None,
         "requirements": run["requirements"],
         "python_path": "\n".join(run["python_path"]),
         "install": "\n".join(run["install"]),
@@ -172,18 +185,18 @@ def run_notebooks(workspace_id, run: dict) -> str:
     }
     task = RunNotebooksTask(
         name=f"run-notebooks-{str(uuid.uuid4())[:8]}",
-        image_name="workspaces-run-notebooks",
+        image_name=run["image"],  # an application's name: its image, as this deployment builds it
+        command=["bash", f"{RUN_NOTEBOOKS_SCRIPT_DIR}/run.sh"],
         retry_limit=0,  # notebooks aren't safe to re-run blindly
-        resources=RUN_NOTEBOOKS_RESOURCES,
+        resources=run["resources"],  # the owner's quotas (user_quota_service.get_run_resources)
         run_id="{{workflow.name}}",  # filled in by Argo; run.sh logs it
         **{name: value for name, value in env.items() if value},
     )
-    op = PipelineScannedOnExit(
+    op = RunNotebooksPipeline(
         basename=RUN_NOTEBOOKS_BASENAME,
         tasks=(task,),
         # Then rescan, as the copy workflows do, so the workspace's resources list the executed
-        # notebooks (in notebooks/ or notebooks.failed/) and drop a discarded repository's; on
-        # exit, so a failed run is rescanned too.
+        # notebooks (in notebooks/ or notebooks.failed/); on exit, so a failed run is rescanned too.
         scan_task=create_scan_task(workspace_id),
         shared_directory=f"{WorkspaceService.get_pvc_name(workspace_id)}:/project_download:rwx",
         ttl_strategy=ttl_strategy,

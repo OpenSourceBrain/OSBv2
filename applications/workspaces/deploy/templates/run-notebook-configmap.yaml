@@ -1,0 +1,15 @@
+{{- /* The scripts notebook runs (POST /workspace/{id}/run) can use, one ConfigMap each:
+workspaces-<script>, holding deploy/resources/<script>/run.sh. Not built into an image: the run's pod
+mounts the one the request picks (service/workflow.py). The list is run_notebooks.scripts in values.yaml. */}}
+{{- range $script := $.Values.apps.workspaces.run_notebooks.scripts }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: workspaces-{{ $script }}
+  labels:
+    app: workspaces
+{{ include "deploy_utils.labels" $ | indent 4 }}
+data:
+  run.sh: {{ required (printf "deploy/resources/%s/run.sh is missing" $script) ($.Files.Get (printf "resources/workspaces/%s/run.sh" $script)) | quote }}
+{{- end }}
