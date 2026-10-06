@@ -150,9 +150,10 @@ def run_notebooks(workspace_id, run: dict) -> str:
     the checked request (workspace_run_controller.run_notebooks); paths are the caller's."""
 
     class RunNotebooksTask(tasks.CustomTask):
+        # Third-party code runs here: leave out the Keycloak secret and allvalues mounts CloudHarness
+        # adds to every task (a mounted file can't be hidden from inside the pod). run.sh clears
+        # the CH_* variables.
         def cloudharness_configmap_spec(self):
-            # Drop the Keycloak accounts secret and the deployment's allvalues, which CloudHarness
-            # mounts into every task: this one runs third-party code.
             return [m for m in super().cloudharness_configmap_spec()
                     if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")]
 

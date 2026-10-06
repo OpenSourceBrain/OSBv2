@@ -1,6 +1,17 @@
 #!/bin/bash
 # Argo task behind POST /workspace/{id}/run: runs a repository's notebooks on the workspace volume.
-# Inputs, steps and outputs: see README.md.
+# Steps and outputs: see README.md.
+#
+# Inputs: environment variables set by service/workflow.py from the request. Paths are relative to
+# the volume, already checked by the controller; lists have one item per line.
+#   repo_dir, discard_repo        the repository; "true": remove it from the volume once copied
+#   notebooks                     the notebooks to run, in this order, relative to repo_dir
+#   input_dir, output_dir         the notebooks' INPUT_DIR and OUTPUT_DIR (input_dir is optional:
+#                                 without it the notebooks use their own default)
+#   requirements, python_path,    optional set-up, relative to repo_dir: a requirements file,
+#   install                       folders for PYTHONPATH, install candidates (the first found is used)
+#   executed_notebooks_dir,       where the executed notebooks and the run's log go
+#   log_file
 
 set -euo pipefail
 
@@ -20,12 +31,6 @@ fail() {
     exit 1
 }
 
-require_relative() {  # $1 = a path inside the volume or the repository
-    case "/$1/" in
-        //*|*/../*|*/./*) fail "$1 must be a relative path and must not contain '..'" ;;
-    esac
-}
-
 read_list() {  # $1 = variable holding one item per line, $2 = array to fill (empty if unset)
     local -n into=$2
     into=()
@@ -40,10 +45,6 @@ done
 read_list notebooks notebook_list
 read_list python_path python_path_list
 read_list install install_list
-for path in "$repo_dir" "$output_dir" "$executed_notebooks_dir" "$log_file" "${notebook_list[@]}" \
-        "${python_path_list[@]}" "${install_list[@]}" ${input_dir:+"$input_dir"} ${requirements:+"$requirements"}; do
-    require_relative "$path"
-done
 [ -z "${input_dir:-}" ] || [ -e "${volume_root}/${input_dir}" ] || fail "${input_dir} is not on the workspace volume"
 
 log_path="${volume_root}/${log_file}"
@@ -58,13 +59,13 @@ for folder in "${volume_root}/${executed_notebooks_dir}" "$running_dir" "$failed
     [ ! -e "$folder" ] || fail "${folder#"${volume_root}/"} already exists: this run has already happened"
 done
 
-# ── Log, and the results' owner on exit ─────────────────────────────────────────────────────
+# ── Log, and the outcome on exit ───────────────────────────────────────────────────────────
 
 scratch_dir=$(mktemp -d /tmp/run-XXXXXX)
 repo_copy="${scratch_dir}/repo"
 
-# On every exit, failures included. Keeps the run's exit status, so a problem here can't turn a
-# finished run into a failed one.
+# On exit, success or failure: record the outcome in the executed notebooks' folder name, and keep
+# the run's exit status. (Ownership for JupyterLab is set by the workflow's scan, which runs after.)
 save_on_exit() {
     local status=$?
     set +e
@@ -72,14 +73,6 @@ save_on_exit() {
         if [ "$status" -eq 0 ]; then mv "$running_dir" "${volume_root}/${executed_notebooks_dir}"
         else mv "$running_dir" "$failed_dir"; fi
     fi
-    # The task runs as root; hand what was written, and the folders above the log, to the notebook user.
-    written=("${volume_root}/${output_dir}" "${volume_root}/${executed_notebooks_dir}" "$failed_dir" "$(dirname "$log_path")")
-    for folder in "${written[@]}"; do [ -d "$folder" ] && chown -R 1000:100 "$folder"; done
-    parent=$(dirname "$(dirname "$log_file")")
-    while [ "$parent" != "." ]; do
-        chown 1000:100 "${volume_root}/${parent}"
-        parent=$(dirname "$parent")
-    done
     exit "$status"
 }
 trap save_on_exit EXIT
@@ -98,8 +91,9 @@ fi
 
 # ── Clean environment for the repository's own code ─────────────────────────────────────────
 
-# It must not see the CH_* variables this container inherits from the workspaces server. Only
-# what pip may need (a proxy or a mirror) is passed through; pip's own options are set here once.
+# The repository's code runs without the CH_* variables CloudHarness copies from the workspaces
+# server (CH_SECRET among them), only with what is listed here. The credential files are kept out
+# of the pod by RunNotebooksTask (service/workflow.py).
 clean_env=(env -i PATH=/usr/local/bin:/usr/bin:/bin HOME=/tmp LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 MPLBACKEND=Agg
     PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_ROOT_USER_ACTION=ignore PIP_NO_CACHE_DIR=1)
 for name in HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy PIP_INDEX_URL PIP_EXTRA_INDEX_URL; do
