@@ -1,0 +1,10 @@
+# coding: utf-8
+#
+# Selenium test suite dependencies for OSBv2.
+# Install with: pip install -r tests/requirements.txt
+#
+selenium>=4.20.0
+pytest>=8.0.0
+pytest-xdist>=3.6.0
+webdriver-manager>=4.0.0
+python-dotenv>=1.0.0
