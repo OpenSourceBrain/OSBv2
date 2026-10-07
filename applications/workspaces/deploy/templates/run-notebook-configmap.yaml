@@ -1,5 +1,5 @@
-{{- /* The script notebook runs (POST /workspace/{id}/run) use, deploy/resources/run-notebooks/run.sh. Not
-built into an image: the run's pod mounts it, in whichever image the request names (service/workflow.py). */}}
+{{- /* run.sh for notebook runs (POST /workspace/{id}/run), from deploy/resources/run-notebooks/. Mounted into
+the run's pod, whatever image it runs in (service/workflow.py). */}}
 kind: ConfigMap
 apiVersion: v1
 metadata:

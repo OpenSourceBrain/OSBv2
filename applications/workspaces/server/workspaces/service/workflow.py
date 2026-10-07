@@ -156,8 +156,7 @@ class PipelineScannedOnExit(operations.PipelineOperation):
 
 class RunNotebooksTask(tasks.CustomTask):
     # Third-party code runs here: leave out the Keycloak secret and allvalues mounts CloudHarness
-    # adds to every task (a mounted file can't be hidden from inside the pod). run.sh clears
-    # the CH_* variables. Mount run.sh instead.
+    # adds to every task (a mounted file can't be hidden from inside the pod). Mount run.sh instead.
     def cloudharness_configmap_spec(self):
         return [m for m in super().cloudharness_configmap_spec()
                 if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")] + [

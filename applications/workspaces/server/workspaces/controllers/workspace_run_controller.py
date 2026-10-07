@@ -54,9 +54,8 @@ MINIMAL_NOTEBOOK_RUN_IMAGE = "jupyterlab-minimal"
 
 
 def get_notebook_run_image_registries() -> list:
-    """Registries a run's image may come from besides OSB's workspace applications (deploy/values.yaml,
-    notebook_run_image_registries): images built outside OSB's release, so a notebook's environment can
-    change without an OSB update."""
+    """Registries a run's image may come from, besides OSB's workspace applications (values.yaml:
+    notebook_run_image_registries)."""
     registries = CloudharnessConfig.get_configuration()["apps"]["workspaces"].get("notebook_run_image_registries")
     return [registry.rstrip("/") + "/" for registry in registries or [] if registry]
 
@@ -64,7 +63,7 @@ def get_notebook_run_image_registries() -> list:
 def get_notebook_run_image(requested) -> str:
     """The image the notebooks run in. Without one requested, the default. Otherwise the requested one, if
     allowed: a workspace application deployed here (one JupyterHub runs) or an image from
-    notebook_run_image_registries. The run executes the repository's code in it."""
+    notebook_run_image_registries."""
     if requested is None:
         deployed = {app["name"] for app in CloudharnessConfig.get_applications().values()}
         return DEFAULT_NOTEBOOK_RUN_IMAGE if DEFAULT_NOTEBOOK_RUN_IMAGE in deployed else MINIMAL_NOTEBOOK_RUN_IMAGE
@@ -91,13 +90,13 @@ def _owned_workspace(workspace_id):
 
 
 def _concurrent_runs_error(workspace):
-    """An error response if the workspace already has a run going, or its owner as many as their quota
-    allows (each run's pod gets the owner's full CPU/memory quota); otherwise None."""
+    """A 409 response if the workspace already has a run in progress, or its owner already has as many
+    as quota-ws-open allows; otherwise None."""
     running = workflow_service.get_notebook_run_workspaces()
     if workspace.id in running:
         return "A notebook run is already in progress in this workspace", 409
     repository = WorkspaceService().repository
-    owners = [getattr(repository.get(ws_id), "user_id", None) for ws_id in running]  # deleted: None
+    owners = [getattr(repository.get(ws_id), "user_id", None) for ws_id in running]  # None if the workspace was deleted
     max_runs = get_max_concurrent_notebook_runs(workspace.user_id)
     if owners.count(workspace.user_id) >= max_runs:
         return f"At most {max_runs} notebook runs can be in progress at once", 409
