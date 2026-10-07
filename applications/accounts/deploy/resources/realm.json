@@ -373,8 +373,8 @@
             }
             {{- if .Values.idpArc.rootUrl }},
             {
-                "clientId": "idp-arc",
-                "name": "idp-arc",
+                "clientId": "maabcd",
+                "name": "maabcd",
                 "enabled": true,
                 "publicClient": true,
                 "standardFlowEnabled": true,
