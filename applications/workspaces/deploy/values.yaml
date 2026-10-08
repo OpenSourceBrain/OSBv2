@@ -91,5 +91,9 @@ harness:
       - pip install -r /usr/src/app/test-requirements.txt
       - pytest /usr/src/app/
 workspace_size: 2Gi
+# Registries whose images a notebook run (POST /workspace/{id}/run) may use, besides OSB's workspace
+# applications. The run executes the notebooks' code in that image.
+notebook_run_image_registries:
+  - gcr.io/metacellllc/
 
 

@@ -41,3 +41,8 @@ export * from './WorkspaceResourceAllOf';
 export * from './WorkspaceResourceBase';
 export * from './WorkspaceResourceEntity';
 export * from './WorkspaceResourceEntityAllOf';
+export * from './WorkspaceRunRepo';
+export * from './WorkspaceRunRequest';
+export * from './WorkspaceRunResponse';
+export * from './WorkspaceRunResults';
+export * from './WorkspaceRunSetup';

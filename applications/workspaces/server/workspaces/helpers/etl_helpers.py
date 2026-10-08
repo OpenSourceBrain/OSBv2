@@ -1,4 +1,5 @@
 import json
+import posixpath
 from typing import List
 
 from cloudharness import log as logger
@@ -11,7 +12,9 @@ import workspaces.service.workflow as workflow
 from workspaces.models.resource_status import ResourceStatus
 
 
-def copy_origins(workspace_id, origins: List[ResourceOrigin]):
+def copy_origins(workspace_id, origins: List[ResourceOrigin], folder: str = ""):
+    """Copies the origins onto the workspace volume. Download origins go into `folder` (relative to
+    the volume root; the volume root when empty), where a zip is also unpacked."""
     tasks = []
     
     osbrepository_id = origins[0].osbrepository_id if origins else None
@@ -35,7 +38,7 @@ def copy_origins(workspace_id, origins: List[ResourceOrigin]):
             tasks.append(
                 workflow.create_copy_task(
                     workspace_id=workspace_id,
-                    folder="",
+                    folder=folder,
                     path=origin.path,
                 )
             )
@@ -46,7 +49,16 @@ def copy_workspace_resource(workspace_resource: WorkspaceResource):
     if workspace_resource.status == ResourceStatus.P and workspace_resource.origin:
         
         workspace_resource.origin.name = workspace_resource.origin.name or workspace_resource.name,
-        copy_origins(workspace_resource.workspace_id, (workspace_resource.origin,))
+        copy_origins(workspace_resource.workspace_id, (workspace_resource.origin,),
+                     folder=resource_folder(workspace_resource.path))
+
+
+def resource_folder(path) -> str:
+    """Get the folder of the resource's `path` on the volume"""
+    folder = posixpath.dirname(path or "")
+    if not folder or folder.startswith("/") or ".." in folder.split("/"):
+        return ""
+    return posixpath.normpath(folder)
 
 
 def delete_workspace_resource(workspace_resource: WorkspaceResource):

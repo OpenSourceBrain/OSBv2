@@ -224,6 +224,53 @@ paths:
                     type: integer
                 in: path
                 required: true
+    '/workspace/{id}/run':
+        post:
+            requestBody:
+                description: The notebooks to run, and the data to run them on.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WorkspaceRunRequest'
+                required: true
+            tags:
+                - run
+            responses:
+                '202':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WorkspaceRunResponse'
+                    description: Run submitted. While it runs, GET /workspace/{id} lists the "Refreshing resources" placeholder, as for an import.
+                '400':
+                    description: A path is not inside the workspace, or the request is incomplete.
+                '401':
+                    description: Missing or invalid token.
+                '403':
+                    description: Only the workspace's owner may run in it.
+                '404':
+                    description: The workspace was not found.
+                '409':
+                    description: >-
+                        A run is already in progress in this workspace, or its owner has as many runs in
+                        progress as their quota allows (quota-ws-open).
+            security:
+                -
+                    bearerAuth: []
+            operationId: run_notebooks
+            summary: >-
+                Run notebooks of a repository on the workspace's volume (papermill in an Argo
+                task), in the order given, after setting up what the request names (requirements,
+                PYTHONPATH, installs). Returns at once.
+            x-openapi-router-controller: workspaces.controllers.workspace_run_controller
+        parameters:
+            -
+                name: id
+                description: Workspace ID of the workspace
+                schema:
+                    type: integer
+                in: path
+                required: true
     '/workspace/{id}/clone':
         put:
             tags:
@@ -992,6 +1039,104 @@ paths:
             x-openapi-router-controller: workspaces.controllers.admin_controller
 components:
     schemas:
+        WorkspaceRunRequest:
+            description: What to run, how to set it up, and where its files go. All paths are relative.
+            type: object
+            required:
+                - repo
+                - notebooks
+                - output_dir
+                - results
+            properties:
+                repo:
+                    $ref: '#/components/schemas/WorkspaceRunRepo'
+                setup:
+                    $ref: '#/components/schemas/WorkspaceRunSetup'
+                notebooks:
+                    type: array
+                    minItems: 1
+                    items:
+                        type: string
+                    description: >-
+                        The notebooks to run, relative to repo.dir, in this order. Each runs in its own
+                        folder in the project (see repo.dir); the run stops at the first that fails.
+                input_dir:
+                    type: string
+                    description: >-
+                        The run's input on the volume, passed to the notebooks as their INPUT_DIR
+                        parameter, relative to the notebook's folder. Without it they use their own
+                        default (e.g. example data).
+                output_dir:
+                    type: string
+                    description: >-
+                        Where the notebooks write their results on the volume, passed to them as their
+                        OUTPUT_DIR parameter, relative to the notebook's folder.
+                results:
+                    $ref: '#/components/schemas/WorkspaceRunResults'
+                image:
+                    type: string
+                    description: >-
+                        The image to run the notebooks in: an OSB workspace application (e.g. netpyne)
+                        or an image from a trusted registry. Defaults to OSB's JupyterLab.
+        WorkspaceRunRepo:
+            description: The repository the notebooks are in.
+            type: object
+            required:
+                - dir
+            properties:
+                dir:
+                    type: string
+                    description: >-
+                        The repository on the volume, as imported, inside the run's folder (e.g. the zip's
+                        <repo>-<ref>/). That folder is the notebooks' project: the run copies the
+                        repository's files there, except names it already has (e.g. the input and output
+                        folders), and runs the notebooks from there as they would from the repository, so
+                        their executed copies can be run again in JupyterLab. The repository is left as it is.
+        WorkspaceRunSetup:
+            description: How to set up the repository before the notebooks run; paths it doesn't have are skipped.
+            type: object
+            properties:
+                requirements:
+                    type: string
+                    description: A requirements file in the repository, installed with pip first.
+                python_path:
+                    type: array
+                    items:
+                        type: string
+                    description: Folders in the repository to put on PYTHONPATH.
+                install:
+                    type: array
+                    items:
+                        type: string
+                    description: >-
+                        Candidates for installing the repository's own code; the first it has is used.
+                        A setup.py or pyproject.toml has its folder pip-installed; any other .py is run.
+                        A failure is logged and the run goes on.
+        WorkspaceRunResults:
+            description: Where the run task's own products go on the volume.
+            type: object
+            required:
+                - notebooks
+                - log
+            properties:
+                notebooks:
+                    type: string
+                    description: >-
+                        Folder for the executed notebooks, created only if every notebook passes; if one
+                        fails, they are in <folder>.failed instead. To run them again in JupyterLab, it is
+                        their own folder in the project (e.g. <run folder>/notebooks): they replace the
+                        originals there.
+                log:
+                    type: string
+                    description: The run's log file. The run is refused if it already exists.
+        WorkspaceRunResponse:
+            type: object
+            required:
+                - workflow
+            properties:
+                workflow:
+                    type: string
+                    description: The run's Argo workflow name.
         Valid:
             type: object
             properties:
@@ -1545,6 +1690,9 @@ components:
             type: http
             x-bearerInfoFunc: cloudharness.auth.AuthClient.decode_token
 tags:
+    -
+        name: run
+        description: Run notebooks in a workspace
     -
         name: rest
         description: rest API for Workspaces manager
