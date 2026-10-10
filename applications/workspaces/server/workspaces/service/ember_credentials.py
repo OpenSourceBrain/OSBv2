@@ -1,11 +1,6 @@
-"""EMBER-DANDI keys for the /ember upload endpoints, held on Keycloak users.
-
-The client names a Keycloak user (`username` in the request); that user's attribute `EMBER_API_KEY`
-is the key the upload is signed with. The key never leaves OSB: not in a response, a log or an
-error. Read on every call, so a changed attribute takes effect without a restart.
-
-The client also says which dandiset to upload into; OSB doesn't decide. EMBER-DANDI itself refuses
-a dandiset the key can't write to (that surfaces as a 502 with EMBER's reason).
+"""The EMBER-DANDI key for an upload: the `EMBER_API_KEY` attribute of the Keycloak user the request
+names. It never leaves OSB (no response, log or error carries it), and is read on every call, so a
+changed attribute applies without a restart.
 """
 from cloudharness.auth import UserNotFound
 
@@ -19,17 +14,15 @@ class EmberKeyMissing(Exception):
 
 
 class EmberKeyUnavailable(Exception):
-    """503: Keycloak couldn't be asked."""
+    """503: Keycloak could not be reached."""
 
 
 def _user_attributes(username: str) -> dict:
-    """The Keycloak user's attributes (each a list of strings); raises if there is no such user."""
     user = get_auth_client().get_user(username)
     return user.attributes or {}
 
 
 def ember_api_key(username: str) -> str:
-    """The EMBER-DANDI key held by the Keycloak user `username`. Never log the return value."""
     try:
         attributes = _user_attributes(username)
     except UserNotFound as exc:

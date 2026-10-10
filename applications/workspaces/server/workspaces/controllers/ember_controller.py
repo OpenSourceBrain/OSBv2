@@ -1,19 +1,13 @@
-"""Uploads into EMBER-DANDI with a key held on a Keycloak user, for clients that don't hold one themselves.
+"""Uploads into EMBER-DANDI for clients that don't hold an EMBER-DANDI key.
 
-The file's bytes go from the client to S3 directly, through presigned part URLs, never through this
-server: a 500 MB recording costs this process a few hundred bytes of JSON. These endpoints make the
-EMBER-DANDI calls that need the key (service/ember_credentials.py):
+1. POST /ember/get_upload_urls: reserve the upload, return the S3 part URLs.
+2. The client PUTs each part to S3 itself; the bytes never pass through OSB.
+3. POST /ember/validate_upload: complete, validate and register the asset, in one call so a
+   half-finished upload never leaves an asset pointing at an unvalidated blob.
 
-1. POST /ember/get_upload_urls: reserve the upload, return the part URLs.
-2. (client) PUT each part to S3.
-3. POST /ember/validate_upload: complete the multipart upload, validate the blob, register the
-   asset. One call, so a half-finished upload can't leave an asset pointing at an unvalidated blob.
-
-The client names the dandiset and the Keycloak user whose key signs the upload; OSB doesn't know
-what either is for. The asset path is built here from the caller's identity, so one caller can't
-register over another caller's files. Importing the asset into a workspace is a separate, ordinary
-POST /workspaceresource with its download URL.
+OSB builds the asset path from the caller's id, so no caller can write over another's files.
 """
+import re
 import uuid
 
 from cloudharness import log as logger
@@ -43,7 +37,6 @@ class _Forbidden(Exception):
 
 
 def _caller_sub() -> str:
-    """The caller's Keycloak id (`sub`), as the other controllers get it."""
     sub = keycloak_user_id()
     if not sub:
         raise _NotAuthenticated("Not authorized")
@@ -51,34 +44,47 @@ def _caller_sub() -> str:
 
 
 def _asset_path(sub: str, filename: str) -> str:
-    """`<caller id>/<upload id>/<filename>`: the only place an asset path is built, never taken from
-    the request. secure_filename drops any `../` or `/` from the client's filename (so it can't add
-    segments) and any character DANDI rejects in a path, such as `@`. The caller id is a UUID."""
+    """Built here, never taken from the request, so a caller can't write over another's files.
+    secure_filename strips `../`, `/` and characters DANDI rejects, such as `@`."""
     return f"{sub}/{uuid.uuid4()}/{secure_filename(filename) or 'unnamed'}"
 
 
 def _assert_path_owned_by_caller(path: str, sub: str) -> None:
-    """validate_upload only echoes back the path get_upload_urls returned. Check it still sits under
-    the caller's own segment before anything is registered, with no extra segments."""
+    """validate_upload echoes back the path get_upload_urls returned: it must still be the caller's."""
     segments = (path or "").split("/")
     if len(segments) != 3 or segments[0] != sub:
         raise _Forbidden(f"The path does not belong to the caller: {path!r}")
 
 
 def _assert_all_parts(parts: list) -> None:
-    """Part numbers must be exactly 1..N. A missing part would complete a truncated file, which
-    only fails later, at validation, with a less useful message."""
+    """A missing part would complete a truncated file, which only fails later, less clearly."""
     numbers = sorted(p["part_number"] for p in parts)
     if numbers != list(range(1, len(numbers) + 1)):
         raise _RequestInvalid(f"parts must be numbered 1..{len(numbers)} with none missing; got {numbers}")
 
 
 def _require(request, *fields: str) -> None:
-    """The generated models don't enforce `required` (a missing key is just skipped), so check here,
-    before anything is looked up: a missing field is the client's mistake, a 400."""
+    """The generated models don't enforce `required`: a missing key is just skipped."""
     missing = [f for f in fields if getattr(request, f, None) in (None, "")]
     if missing:
         raise _RequestInvalid(f"Missing required field(s): {', '.join(missing)}")
+
+
+_DANDISET_ID = re.compile(r"[0-9]{6}")
+
+
+def _dandiset_id(value: str) -> str:
+    if not _DANDISET_ID.fullmatch(value or ""):
+        raise _RequestInvalid(f"dandiset_id must be six digits, got {value!r}")
+    return value
+
+
+def _uuid(name: str, value: str) -> str:
+    """Only the canonical form reaches EMBER's URLs, never the client's own string."""
+    try:
+        return str(uuid.UUID(value))
+    except (TypeError, ValueError, AttributeError):
+        raise _RequestInvalid(f"{name} must be a UUID, got {value!r}") from None
 
 
 def _handle(impl, body):
@@ -86,13 +92,13 @@ def _handle(impl, body):
         return impl(body)
     except _NotAuthenticated as exc:
         return str(exc), 401
-    except (_RequestInvalid, ValueError) as exc:  # ValueError: a required field missing, from the models
+    except (_RequestInvalid, ValueError) as exc:  # ValueError: raised by the generated models
         return str(exc), 400
     except _Forbidden as exc:
         logger.warning("EMBER upload refused: %s", exc)
         return str(exc), 403
     except EmberKeyMissing as exc:
-        # Ours to fix, not the caller's: the details go to the log (and Sentry), not the response.
+        # Ours to fix, not the caller's: details go to the log (and Sentry) only.
         logger.error("EMBER upload misconfigured: %s", exc)
         return "EMBER-DANDI uploads are not available right now", 503
     except EmberKeyUnavailable as exc:
@@ -104,22 +110,21 @@ def _handle(impl, body):
 
 
 def get_upload_urls(body):
-    """POST /ember/get_upload_urls: reserves an upload into the given dandiset, returns presigned S3 part URLs."""
     return _handle(_get_upload_urls, body)
 
 
 def _get_upload_urls(body):
     request = EmberUploadUrlsRequest.from_dict(body)
     _require(request, "username", "dandiset_id", "filename", "size", "dandi_etag")
+    dandiset_id = _dandiset_id(request.dandiset_id)
     sub = _caller_sub()
     path = _asset_path(sub, request.filename)
     init = ember_upload.initialize_upload(
-        ember_credentials.ember_api_key(request.username), request.dandiset_id, request.size, request.dandi_etag
+        ember_credentials.ember_api_key(request.username), dandiset_id, request.size, request.dandi_etag
     )
-    # On the deduplicated path there is no upload_id and no parts, just the existing blob_id: the
-    # client skips the S3 upload and goes straight to validate_upload.
+    # When EMBER already has the content: no upload_id or parts, just its blob_id.
     return EmberUploadUrlsResponse(
-        dandiset_id=request.dandiset_id,
+        dandiset_id=dandiset_id,
         upload_id=init.get("upload_id"),
         path=path,
         parts=[EmberUploadPart(part_number=p["part_number"], url=p["upload_url"]) for p in init["parts"]],
@@ -128,35 +133,34 @@ def _get_upload_urls(body):
 
 
 def validate_upload(body):
-    """POST /ember/validate_upload: completes, validates and registers the upload as an asset."""
     return _handle(_validate_upload, body)
 
 
 def _validate_upload(body):
     request = EmberValidateUploadRequest.from_dict(body)
     _require(request, "username", "dandiset_id", "path")
+    dandiset_id = _dandiset_id(request.dandiset_id)
     sub = _caller_sub()
     _assert_path_owned_by_caller(request.path, sub)
     api_key = ember_credentials.ember_api_key(request.username)
 
     if request.blob_id:
-        # Deduplicated: the content was already in the archive, so nothing was uploaded and
-        # there is nothing to complete or validate; just attach a new asset to the blob.
-        blob_id = request.blob_id
+        # EMBER already had the content: nothing to complete or validate.
+        blob_id = _uuid("blob_id", request.blob_id)
     else:
         if not request.upload_id or not request.parts:
             raise _RequestInvalid("upload_id and parts are required when blob_id is not set")
         parts = [{"part_number": p.part_number, "size": p.size, "etag": p.etag} for p in request.parts]
         _assert_all_parts(parts)
-        ember_upload.complete_upload(api_key, request.upload_id, parts)
-        # validate_upload is what turns the completed multipart upload into a real AssetBlob.
-        blob_id = ember_upload.validate_upload(api_key, request.upload_id)["blob_id"]
+        upload_id = _uuid("upload_id", request.upload_id)
+        ember_upload.complete_upload(api_key, upload_id, parts)
+        blob_id = ember_upload.validate_upload(api_key, upload_id)["blob_id"]
 
-    asset = ember_upload.register_asset(api_key, request.dandiset_id, request.path, blob_id)
+    asset = ember_upload.register_asset(api_key, dandiset_id, request.path, blob_id)
     return EmberValidateUploadResponse(
         asset_id=asset["asset_id"],
         asset_path=asset["path"],
-        dandiset_id=request.dandiset_id,
-        dandiset_url=ember_upload.dandiset_url(request.dandiset_id),
+        dandiset_id=dandiset_id,
+        dandiset_url=ember_upload.dandiset_url(dandiset_id),
         download_url=ember_upload.asset_download_url(asset["asset_id"]),
     ), 201
