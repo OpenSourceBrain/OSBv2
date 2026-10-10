@@ -1062,8 +1062,192 @@ paths:
             operationId: user_resource_counts
             summary: Per-user workspace and repository counts (admin only).
             x-openapi-router-controller: workspaces.controllers.admin_controller
+    /ember/get_upload_urls:
+        post:
+            requestBody:
+                description: The file to upload and the EMBER-DANDI dandiset to upload it into.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/EmberUploadUrlsRequest'
+                required: true
+            tags:
+                - ember
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/EmberUploadUrlsResponse'
+                    description: >-
+                        Upload reserved. Presigned S3 part URLs the browser PUTs to directly, or
+                        (when EMBER-DANDI already holds this content) an empty parts list and the
+                        existing blob_id.
+                '400':
+                    description: Missing or inconsistent fields.
+                '401':
+                    description: Missing or invalid OSB token.
+                '403':
+                    description: The upload is not allowed; the message names the failed condition.
+                '502':
+                    description: EMBER-DANDI refused or failed the call.
+            security:
+                -
+                    bearerAuth: []
+            operationId: get_upload_urls
+            summary: >-
+                Reserve an upload into an EMBER-DANDI dandiset with OSB's EMBER-DANDI key (never
+                returned) and return presigned part URLs. The asset path is derived server-side
+                from the caller's identity.
+            x-openapi-router-controller: workspaces.controllers.ember_controller
+    /ember/validate_upload:
+        post:
+            requestBody:
+                description: The parts the browser uploaded, to complete, validate and register as an asset.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/EmberValidateUploadRequest'
+                required: true
+            tags:
+                - ember
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/EmberValidateUploadResponse'
+                    description: Upload completed, validated and registered in the dandiset's draft version.
+                '400':
+                    description: Missing or inconsistent fields.
+                '401':
+                    description: Missing or invalid OSB token.
+                '403':
+                    description: The upload is not allowed; the message names the failed condition.
+                '502':
+                    description: EMBER-DANDI refused or failed the call.
+            security:
+                -
+                    bearerAuth: []
+            operationId: validate_upload
+            summary: >-
+                Complete the multipart upload, validate the blob and register the asset in the
+                dandiset's draft version, with OSB's EMBER-DANDI key.
+            x-openapi-router-controller: workspaces.controllers.ember_controller
 components:
     schemas:
+        EmberUploadPart:
+            type: object
+            properties:
+                part_number:
+                    type: integer
+                url:
+                    type: string
+                    description: Presigned S3 URL the browser PUTs this part's bytes to directly.
+        EmberUploadedPart:
+            type: object
+            properties:
+                part_number:
+                    type: integer
+                size:
+                    type: integer
+                etag:
+                    type: string
+                    description: The ETag S3 returned for this part's PUT.
+        EmberUploadUrlsRequest:
+            type: object
+            required:
+                - username
+                - dandiset_id
+                - filename
+                - size
+                - dandi_etag
+            properties:
+                username:
+                    type: string
+                    description: >-
+                        Keycloak username whose EMBER-DANDI key (user attribute EMBER_API_KEY)
+                        signs the upload.
+                dandiset_id:
+                    type: string
+                    description: The EMBER-DANDI dandiset to upload into, chosen by the client.
+                filename:
+                    type: string
+                size:
+                    type: integer
+                dandi_etag:
+                    type: string
+                    description: >-
+                        S3-multipart digest in DANDI's format (32 hex chars, a dash, the part
+                        count), computed in the browser since the bytes never reach this server.
+        EmberUploadUrlsResponse:
+            type: object
+            required:
+                - dandiset_id
+                - path
+                - parts
+            properties:
+                dandiset_id:
+                    type: string
+                upload_id:
+                    type: string
+                    description: Absent when the content was already in EMBER-DANDI.
+                path:
+                    type: string
+                    description: Asset path, derived server-side from the caller's identity.
+                parts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/EmberUploadPart'
+                blob_id:
+                    type: string
+                    description: Set only when the content was already in EMBER-DANDI (parts is then empty).
+        EmberValidateUploadRequest:
+            type: object
+            required:
+                - username
+                - dandiset_id
+                - path
+            properties:
+                username:
+                    type: string
+                    description: >-
+                        Keycloak username whose EMBER-DANDI key (user attribute EMBER_API_KEY)
+                        signs the upload.
+                dandiset_id:
+                    type: string
+                upload_id:
+                    type: string
+                    description: Omitted when get_upload_urls returned a blob_id (nothing was uploaded).
+                path:
+                    type: string
+                    description: The path get_upload_urls returned.
+                parts:
+                    type: array
+                    description: Omitted when get_upload_urls returned a blob_id.
+                    items:
+                        $ref: '#/components/schemas/EmberUploadedPart'
+                blob_id:
+                    type: string
+                    description: Echoed from get_upload_urls; when present, complete/validate are skipped.
+        EmberValidateUploadResponse:
+            type: object
+            required:
+                - asset_id
+                - asset_path
+                - download_url
+            properties:
+                asset_id:
+                    type: string
+                asset_path:
+                    type: string
+                dandiset_id:
+                    type: string
+                dandiset_url:
+                    type: string
+                download_url:
+                    type: string
+                    description: Where the asset's bytes can be fetched from, e.g. by OSB's workspace import.
         WorkspaceRunRequest:
             description: What to run, how to set it up, and where its files go. All paths are relative.
             type: object
@@ -1718,6 +1902,9 @@ tags:
     -
         name: run
         description: Run notebooks in a workspace
+    -
+        name: ember
+        description: Uploads into EMBER-DANDI dandisets with OSB's key (presigned URLs, completion)
     -
         name: rest
         description: rest API for Workspaces manager

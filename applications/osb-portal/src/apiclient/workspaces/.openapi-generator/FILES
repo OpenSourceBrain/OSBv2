@@ -1,3 +1,4 @@
+apis/EmberApi.ts
 apis/K8sApi.ts
 apis/RestApi.ts
 apis/index.ts
@@ -5,6 +6,12 @@ index.ts
 models/BiomodelsRepositoryResource.ts
 models/DandiRepositoryResource.ts
 models/DownloadResource.ts
+models/EmberUploadPart.ts
+models/EmberUploadUrlsRequest.ts
+models/EmberUploadUrlsResponse.ts
+models/EmberUploadedPart.ts
+models/EmberValidateUploadRequest.ts
+models/EmberValidateUploadResponse.ts
 models/FigshareRepositoryResource.ts
 models/GITRepositoryResource.ts
 models/GITRepositoryResourceAllOf.ts
@@ -45,11 +52,11 @@ models/WorkspaceResourceAllOf.ts
 models/WorkspaceResourceBase.ts
 models/WorkspaceResourceEntity.ts
 models/WorkspaceResourceEntityAllOf.ts
-models/index.ts
+models/WorkspaceRunRepo.ts
 runtime.ts
 apis/RunApi.ts
-models/WorkspaceRunRepo.ts
 models/WorkspaceRunRequest.ts
 models/WorkspaceRunResponse.ts
 models/WorkspaceRunResults.ts
 models/WorkspaceRunSetup.ts
+models/index.ts
