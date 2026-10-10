@@ -6,14 +6,12 @@ EMBER-DANDI. It holds no credentials of its own: every call
 gets the API key (service/ember_credentials.py) and the dandiset to use.
 """
 import mimetypes
-import os
 
 import requests
 
-# EMBER-DANDI is a separate dandi-archive deployment from the public archive, with its own API
-# root that its web UI never advertises.
-EMBER_API_BASE = os.environ.get("WORKSPACES_EMBER_API_BASE", "https://api-dandi.emberarchive.org/api")
-EMBER_WEB_BASE = os.environ.get("WORKSPACES_EMBER_WEB_BASE", "https://dandi.emberarchive.org")
+# EMBER-DANDI is a separate dandi-archive deployment from the public archive.
+EMBER_API_BASE = "https://api-dandi.emberarchive.org/api"
+EMBER_WEB_BASE = "https://dandi.emberarchive.org"
 
 # The digest key DANDI stores and echoes back in asset metadata.
 _DANDI_ETAG_ALGORITHM = "dandi:dandi-etag"
