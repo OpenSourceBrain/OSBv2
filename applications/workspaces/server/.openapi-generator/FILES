@@ -1,6 +1,7 @@
 .travis.yml
 README.md
 git_push.sh
+workspaces/controllers/ember_controller.py
 workspaces/controllers/k8s_controller.py
 workspaces/controllers/rest_controller.py
 workspaces/controllers/security_controller_.py
@@ -8,6 +9,12 @@ workspaces/models/base_model_.py
 workspaces/models/biomodels_repository_resource.py
 workspaces/models/dandi_repository_resource.py
 workspaces/models/download_resource.py
+workspaces/models/ember_upload_part.py
+workspaces/models/ember_upload_urls_request.py
+workspaces/models/ember_upload_urls_response.py
+workspaces/models/ember_uploaded_part.py
+workspaces/models/ember_validate_upload_request.py
+workspaces/models/ember_validate_upload_response.py
 workspaces/models/figshare_repository_resource.py
 workspaces/models/git_repository_resource.py
 workspaces/models/git_repository_resource_all_of.py
