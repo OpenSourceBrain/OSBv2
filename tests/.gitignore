@@ -1,0 +1,9 @@
+# Never commit real credentials
+.env
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# pytest
+.pytest_cache/
