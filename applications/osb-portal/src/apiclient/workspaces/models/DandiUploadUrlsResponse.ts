@@ -14,55 +14,55 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    EmberUploadPart,
-    EmberUploadPartFromJSON,
-    EmberUploadPartFromJSONTyped,
-    EmberUploadPartToJSON,
-} from './EmberUploadPart';
+    DandiUploadPart,
+    DandiUploadPartFromJSON,
+    DandiUploadPartFromJSONTyped,
+    DandiUploadPartToJSON,
+} from './DandiUploadPart';
 
 /**
  * 
  * @export
- * @interface EmberUploadUrlsResponse
+ * @interface DandiUploadUrlsResponse
  */
-export interface EmberUploadUrlsResponse {
+export interface DandiUploadUrlsResponse {
     /**
      * 
      * @type {string}
-     * @memberof EmberUploadUrlsResponse
+     * @memberof DandiUploadUrlsResponse
      */
     dandisetId: string;
     /**
-     * Absent when the content was already in EMBER-DANDI.
+     * Absent when the content was already in DANDI.
      * @type {string}
-     * @memberof EmberUploadUrlsResponse
+     * @memberof DandiUploadUrlsResponse
      */
     uploadId?: string;
     /**
      * Asset path, derived server-side from the caller's identity.
      * @type {string}
-     * @memberof EmberUploadUrlsResponse
+     * @memberof DandiUploadUrlsResponse
      */
     path: string;
     /**
      * 
-     * @type {Array<EmberUploadPart>}
-     * @memberof EmberUploadUrlsResponse
+     * @type {Array<DandiUploadPart>}
+     * @memberof DandiUploadUrlsResponse
      */
-    parts: Array<EmberUploadPart>;
+    parts: Array<DandiUploadPart>;
     /**
-     * Set only when the content was already in EMBER-DANDI (parts is then empty).
+     * Set only when the content was already in DANDI (parts is then empty).
      * @type {string}
-     * @memberof EmberUploadUrlsResponse
+     * @memberof DandiUploadUrlsResponse
      */
     blobId?: string;
 }
 
-export function EmberUploadUrlsResponseFromJSON(json: any): EmberUploadUrlsResponse {
-    return EmberUploadUrlsResponseFromJSONTyped(json, false);
+export function DandiUploadUrlsResponseFromJSON(json: any): DandiUploadUrlsResponse {
+    return DandiUploadUrlsResponseFromJSONTyped(json, false);
 }
 
-export function EmberUploadUrlsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmberUploadUrlsResponse {
+export function DandiUploadUrlsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DandiUploadUrlsResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -71,12 +71,12 @@ export function EmberUploadUrlsResponseFromJSONTyped(json: any, ignoreDiscrimina
         'dandisetId': json['dandiset_id'],
         'uploadId': !exists(json, 'upload_id') ? undefined : json['upload_id'],
         'path': json['path'],
-        'parts': ((json['parts'] as Array<any>).map(EmberUploadPartFromJSON)),
+        'parts': ((json['parts'] as Array<any>).map(DandiUploadPartFromJSON)),
         'blobId': !exists(json, 'blob_id') ? undefined : json['blob_id'],
     };
 }
 
-export function EmberUploadUrlsResponseToJSON(value?: EmberUploadUrlsResponse | null): any {
+export function DandiUploadUrlsResponseToJSON(value?: DandiUploadUrlsResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -88,7 +88,7 @@ export function EmberUploadUrlsResponseToJSON(value?: EmberUploadUrlsResponse | 
         'dandiset_id': value.dandisetId,
         'upload_id': value.uploadId,
         'path': value.path,
-        'parts': ((value.parts as Array<any>).map(EmberUploadPartToJSON)),
+        'parts': ((value.parts as Array<any>).map(DandiUploadPartToJSON)),
         'blob_id': value.blobId,
     };
 }

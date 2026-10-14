@@ -17,51 +17,58 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface EmberUploadUrlsRequest
+ * @interface DandiUploadUrlsRequest
  */
-export interface EmberUploadUrlsRequest {
+export interface DandiUploadUrlsRequest {
     /**
-     * Keycloak username whose EMBER-DANDI key (user attribute EMBER_API_KEY) signs the upload.
+     * The DANDI deployment, by its dandi-cli name: dandi, dandi-sandbox, ember-dandi or ember-dandi-sandbox.
      * @type {string}
-     * @memberof EmberUploadUrlsRequest
+     * @memberof DandiUploadUrlsRequest
+     */
+    instance: string;
+    /**
+     * Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must belong to that deployment.
+     * @type {string}
+     * @memberof DandiUploadUrlsRequest
      */
     username: string;
     /**
-     * The EMBER-DANDI dandiset to upload into, chosen by the client.
+     * The DANDI dandiset to upload into, chosen by the client.
      * @type {string}
-     * @memberof EmberUploadUrlsRequest
+     * @memberof DandiUploadUrlsRequest
      */
     dandisetId: string;
     /**
      * 
      * @type {string}
-     * @memberof EmberUploadUrlsRequest
+     * @memberof DandiUploadUrlsRequest
      */
     filename: string;
     /**
      * 
      * @type {number}
-     * @memberof EmberUploadUrlsRequest
+     * @memberof DandiUploadUrlsRequest
      */
     size: number;
     /**
      * S3-multipart digest in DANDI's format (32 hex chars, a dash, the part count), computed in the browser since the bytes never reach this server.
      * @type {string}
-     * @memberof EmberUploadUrlsRequest
+     * @memberof DandiUploadUrlsRequest
      */
     dandiEtag: string;
 }
 
-export function EmberUploadUrlsRequestFromJSON(json: any): EmberUploadUrlsRequest {
-    return EmberUploadUrlsRequestFromJSONTyped(json, false);
+export function DandiUploadUrlsRequestFromJSON(json: any): DandiUploadUrlsRequest {
+    return DandiUploadUrlsRequestFromJSONTyped(json, false);
 }
 
-export function EmberUploadUrlsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmberUploadUrlsRequest {
+export function DandiUploadUrlsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DandiUploadUrlsRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'instance': json['instance'],
         'username': json['username'],
         'dandisetId': json['dandiset_id'],
         'filename': json['filename'],
@@ -70,7 +77,7 @@ export function EmberUploadUrlsRequestFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function EmberUploadUrlsRequestToJSON(value?: EmberUploadUrlsRequest | null): any {
+export function DandiUploadUrlsRequestToJSON(value?: DandiUploadUrlsRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -79,6 +86,7 @@ export function EmberUploadUrlsRequestToJSON(value?: EmberUploadUrlsRequest | nu
     }
     return {
         
+        'instance': value.instance,
         'username': value.username,
         'dandiset_id': value.dandisetId,
         'filename': value.filename,

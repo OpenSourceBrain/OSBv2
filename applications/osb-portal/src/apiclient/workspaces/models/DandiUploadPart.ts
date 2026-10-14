@@ -16,28 +16,28 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface EmberUploadPart
+ * @interface DandiUploadPart
  */
-export interface EmberUploadPart {
+export interface DandiUploadPart {
     /**
      * 
      * @type {number}
-     * @memberof EmberUploadPart
+     * @memberof DandiUploadPart
      */
     partNumber?: number;
     /**
      * Presigned S3 URL the browser PUTs this part's bytes to directly.
      * @type {string}
-     * @memberof EmberUploadPart
+     * @memberof DandiUploadPart
      */
     url?: string;
 }
 
-export function EmberUploadPartFromJSON(json: any): EmberUploadPart {
-    return EmberUploadPartFromJSONTyped(json, false);
+export function DandiUploadPartFromJSON(json: any): DandiUploadPart {
+    return DandiUploadPartFromJSONTyped(json, false);
 }
 
-export function EmberUploadPartFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmberUploadPart {
+export function DandiUploadPartFromJSONTyped(json: any, ignoreDiscriminator: boolean): DandiUploadPart {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -48,7 +48,7 @@ export function EmberUploadPartFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function EmberUploadPartToJSON(value?: EmberUploadPart | null): any {
+export function DandiUploadPartToJSON(value?: DandiUploadPart | null): any {
     if (value === undefined) {
         return undefined;
     }

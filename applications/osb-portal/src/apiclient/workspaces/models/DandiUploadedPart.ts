@@ -16,34 +16,34 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface EmberUploadedPart
+ * @interface DandiUploadedPart
  */
-export interface EmberUploadedPart {
+export interface DandiUploadedPart {
     /**
      * 
      * @type {number}
-     * @memberof EmberUploadedPart
+     * @memberof DandiUploadedPart
      */
     partNumber?: number;
     /**
      * 
      * @type {number}
-     * @memberof EmberUploadedPart
+     * @memberof DandiUploadedPart
      */
     size?: number;
     /**
      * The ETag S3 returned for this part's PUT.
      * @type {string}
-     * @memberof EmberUploadedPart
+     * @memberof DandiUploadedPart
      */
     etag?: string;
 }
 
-export function EmberUploadedPartFromJSON(json: any): EmberUploadedPart {
-    return EmberUploadedPartFromJSONTyped(json, false);
+export function DandiUploadedPartFromJSON(json: any): DandiUploadedPart {
+    return DandiUploadedPartFromJSONTyped(json, false);
 }
 
-export function EmberUploadedPartFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmberUploadedPart {
+export function DandiUploadedPartFromJSONTyped(json: any, ignoreDiscriminator: boolean): DandiUploadedPart {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -55,7 +55,7 @@ export function EmberUploadedPartFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function EmberUploadedPartToJSON(value?: EmberUploadedPart | null): any {
+export function DandiUploadedPartToJSON(value?: DandiUploadedPart | null): any {
     if (value === undefined) {
         return undefined;
     }

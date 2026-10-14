@@ -17,46 +17,40 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface EmberValidateUploadResponse
+ * @interface DandiValidateUploadResponse
  */
-export interface EmberValidateUploadResponse {
+export interface DandiValidateUploadResponse {
     /**
      * 
      * @type {string}
-     * @memberof EmberValidateUploadResponse
+     * @memberof DandiValidateUploadResponse
      */
     assetId: string;
     /**
      * 
      * @type {string}
-     * @memberof EmberValidateUploadResponse
+     * @memberof DandiValidateUploadResponse
      */
     assetPath: string;
     /**
      * 
      * @type {string}
-     * @memberof EmberValidateUploadResponse
+     * @memberof DandiValidateUploadResponse
      */
     dandisetId?: string;
     /**
-     * 
-     * @type {string}
-     * @memberof EmberValidateUploadResponse
-     */
-    dandisetUrl?: string;
-    /**
      * Where the asset's bytes can be fetched from, e.g. by OSB's workspace import.
      * @type {string}
-     * @memberof EmberValidateUploadResponse
+     * @memberof DandiValidateUploadResponse
      */
     downloadUrl: string;
 }
 
-export function EmberValidateUploadResponseFromJSON(json: any): EmberValidateUploadResponse {
-    return EmberValidateUploadResponseFromJSONTyped(json, false);
+export function DandiValidateUploadResponseFromJSON(json: any): DandiValidateUploadResponse {
+    return DandiValidateUploadResponseFromJSONTyped(json, false);
 }
 
-export function EmberValidateUploadResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmberValidateUploadResponse {
+export function DandiValidateUploadResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DandiValidateUploadResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -65,12 +59,11 @@ export function EmberValidateUploadResponseFromJSONTyped(json: any, ignoreDiscri
         'assetId': json['asset_id'],
         'assetPath': json['asset_path'],
         'dandisetId': !exists(json, 'dandiset_id') ? undefined : json['dandiset_id'],
-        'dandisetUrl': !exists(json, 'dandiset_url') ? undefined : json['dandiset_url'],
         'downloadUrl': json['download_url'],
     };
 }
 
-export function EmberValidateUploadResponseToJSON(value?: EmberValidateUploadResponse | null): any {
+export function DandiValidateUploadResponseToJSON(value?: DandiValidateUploadResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -82,7 +75,6 @@ export function EmberValidateUploadResponseToJSON(value?: EmberValidateUploadRes
         'asset_id': value.assetId,
         'asset_path': value.assetPath,
         'dandiset_id': value.dandisetId,
-        'dandiset_url': value.dandisetUrl,
         'download_url': value.downloadUrl,
     };
 }

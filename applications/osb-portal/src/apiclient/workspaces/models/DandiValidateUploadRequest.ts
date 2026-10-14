@@ -14,76 +14,83 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    EmberUploadedPart,
-    EmberUploadedPartFromJSON,
-    EmberUploadedPartFromJSONTyped,
-    EmberUploadedPartToJSON,
-} from './EmberUploadedPart';
+    DandiUploadedPart,
+    DandiUploadedPartFromJSON,
+    DandiUploadedPartFromJSONTyped,
+    DandiUploadedPartToJSON,
+} from './DandiUploadedPart';
 
 /**
  * 
  * @export
- * @interface EmberValidateUploadRequest
+ * @interface DandiValidateUploadRequest
  */
-export interface EmberValidateUploadRequest {
+export interface DandiValidateUploadRequest {
     /**
-     * Keycloak username whose EMBER-DANDI key (user attribute EMBER_API_KEY) signs the upload.
+     * The DANDI deployment, by its dandi-cli name: dandi, dandi-sandbox, ember-dandi or ember-dandi-sandbox.
      * @type {string}
-     * @memberof EmberValidateUploadRequest
+     * @memberof DandiValidateUploadRequest
+     */
+    instance: string;
+    /**
+     * Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must belong to that deployment.
+     * @type {string}
+     * @memberof DandiValidateUploadRequest
      */
     username: string;
     /**
      * 
      * @type {string}
-     * @memberof EmberValidateUploadRequest
+     * @memberof DandiValidateUploadRequest
      */
     dandisetId: string;
     /**
      * Omitted when get_upload_urls returned a blob_id (nothing was uploaded).
      * @type {string}
-     * @memberof EmberValidateUploadRequest
+     * @memberof DandiValidateUploadRequest
      */
     uploadId?: string;
     /**
      * The path get_upload_urls returned.
      * @type {string}
-     * @memberof EmberValidateUploadRequest
+     * @memberof DandiValidateUploadRequest
      */
     path: string;
     /**
      * Omitted when get_upload_urls returned a blob_id.
-     * @type {Array<EmberUploadedPart>}
-     * @memberof EmberValidateUploadRequest
+     * @type {Array<DandiUploadedPart>}
+     * @memberof DandiValidateUploadRequest
      */
-    parts?: Array<EmberUploadedPart>;
+    parts?: Array<DandiUploadedPart>;
     /**
      * Echoed from get_upload_urls; when present, complete/validate are skipped.
      * @type {string}
-     * @memberof EmberValidateUploadRequest
+     * @memberof DandiValidateUploadRequest
      */
     blobId?: string;
 }
 
-export function EmberValidateUploadRequestFromJSON(json: any): EmberValidateUploadRequest {
-    return EmberValidateUploadRequestFromJSONTyped(json, false);
+export function DandiValidateUploadRequestFromJSON(json: any): DandiValidateUploadRequest {
+    return DandiValidateUploadRequestFromJSONTyped(json, false);
 }
 
-export function EmberValidateUploadRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmberValidateUploadRequest {
+export function DandiValidateUploadRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DandiValidateUploadRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'instance': json['instance'],
         'username': json['username'],
         'dandisetId': json['dandiset_id'],
         'uploadId': !exists(json, 'upload_id') ? undefined : json['upload_id'],
         'path': json['path'],
-        'parts': !exists(json, 'parts') ? undefined : ((json['parts'] as Array<any>).map(EmberUploadedPartFromJSON)),
+        'parts': !exists(json, 'parts') ? undefined : ((json['parts'] as Array<any>).map(DandiUploadedPartFromJSON)),
         'blobId': !exists(json, 'blob_id') ? undefined : json['blob_id'],
     };
 }
 
-export function EmberValidateUploadRequestToJSON(value?: EmberValidateUploadRequest | null): any {
+export function DandiValidateUploadRequestToJSON(value?: DandiValidateUploadRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -92,11 +99,12 @@ export function EmberValidateUploadRequestToJSON(value?: EmberValidateUploadRequ
     }
     return {
         
+        'instance': value.instance,
         'username': value.username,
         'dandiset_id': value.dandisetId,
         'upload_id': value.uploadId,
         'path': value.path,
-        'parts': value.parts === undefined ? undefined : ((value.parts as Array<any>).map(EmberUploadedPartToJSON)),
+        'parts': value.parts === undefined ? undefined : ((value.parts as Array<any>).map(DandiUploadedPartToJSON)),
         'blob_id': value.blobId,
     };
 }
