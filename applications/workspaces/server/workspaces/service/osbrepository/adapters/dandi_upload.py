@@ -1,24 +1,29 @@
-"""EMBER-DANDI's upload calls. Every call is given the key and the dandiset; this module holds no
-credentials. (dandiadapter.py is unrelated: it only reads from the public DANDI archive.)
+"""Upload calls to a DANDI deployment. Every call is given the deployment's API URL, the key and the
+dandiset; this module holds no credentials. (dandiadapter.py only reads from the public archive.)
 """
 import mimetypes
 
 import requests
 
-# EMBER-DANDI is a separate dandi-archive deployment from the public archive.
-EMBER_API_BASE = "https://api-dandi.emberarchive.org/api"
-EMBER_WEB_BASE = "https://dandi.emberarchive.org"
+# The DANDI deployments an upload can go to, as dandi-cli names them (LINC left out: private, unverified):
+# https://github.com/dandi/dandi-cli/blob/0.81.0/dandi/consts.py#L134
+DANDI_API_URLS = {
+    "dandi": "https://api.dandiarchive.org/api",
+    "dandi-sandbox": "https://api.sandbox.dandiarchive.org/api",
+    "ember-dandi": "https://api-dandi.emberarchive.org/api",
+    "ember-dandi-sandbox": "https://api-dandi.sandbox.emberarchive.org/api",
+}
 
 # The digest key DANDI stores and echoes back in asset metadata.
 _DANDI_ETAG_ALGORITHM = "dandi:dandi-etag"
 
 
-class EmberError(RuntimeError):
-    """An EMBER-DANDI or S3 call failed. The message carries the response body, never a key."""
+class DandiError(RuntimeError):
+    """A DANDI or S3 call failed. The message carries the response body, never a key."""
 
 
-# (connect, read) seconds. Without one, a call EMBER or S3 never answers holds a server worker forever.
-EMBER_REQUEST_TIMEOUT = (15, 90)
+# (connect, read) seconds. Without one, a call DANDI or S3 never answers holds a server worker forever.
+DANDI_REQUEST_TIMEOUT = (15, 90)
 
 
 def _headers(api_key: str) -> dict:
@@ -26,13 +31,13 @@ def _headers(api_key: str) -> dict:
 
 
 def _check(resp, what: str):
-    """Keeps EMBER's explanation of a failure, which raise_for_status() drops (never the request)."""
+    """Keeps DANDI's explanation of a failure, which raise_for_status() drops (never the request)."""
     if not resp.ok:
-        raise EmberError(f"EMBER-DANDI {what} failed: HTTP {resp.status_code}: {resp.text[:1000]}")
+        raise DandiError(f"DANDI {what} failed: HTTP {resp.status_code}: {resp.text[:1000]}")
     return resp
 
 
-def get_blob_by_digest(api_key: str, dandi_etag: str) -> dict | None:
+def get_blob_by_digest(api_url: str, api_key: str, dandi_etag: str) -> dict | None:
     """POST /blobs/digest/: returns the existing AssetBlob for this content, or None.
 
     DANDI separates blobs (content-addressed, deduplicated archive-wide) from assets (a path
@@ -40,8 +45,8 @@ def get_blob_by_digest(api_key: str, dandi_etag: str) -> dict | None:
     assets. This is how we resolve the blob when initialize_upload reports it already exists.
     """
     resp = requests.post(
-        f"{EMBER_API_BASE}/blobs/digest/",
-        timeout=EMBER_REQUEST_TIMEOUT,
+        f"{api_url}/blobs/digest/",
+        timeout=DANDI_REQUEST_TIMEOUT,
         headers=_headers(api_key),
         json={"algorithm": _DANDI_ETAG_ALGORITHM, "value": dandi_etag},
     )
@@ -51,7 +56,7 @@ def get_blob_by_digest(api_key: str, dandi_etag: str) -> dict | None:
     return resp.json()
 
 
-def initialize_upload(api_key: str, dandiset_id: str, size: int, dandi_etag: str) -> dict:
+def initialize_upload(api_url: str, api_key: str, dandiset_id: str, size: int, dandi_etag: str) -> dict:
     """POST /uploads/initialize/: returns {upload_id, parts: [{part_number, size, upload_url}]}.
 
     Reserves space for content only; the asset path is supplied later, at `register_asset`.
@@ -63,8 +68,8 @@ def initialize_upload(api_key: str, dandiset_id: str, size: int, dandi_etag: str
     parts, letting the caller skip straight to registering a new asset against it.
     """
     resp = requests.post(
-        f"{EMBER_API_BASE}/uploads/initialize/",
-        timeout=EMBER_REQUEST_TIMEOUT,
+        f"{api_url}/uploads/initialize/",
+        timeout=DANDI_REQUEST_TIMEOUT,
         headers=_headers(api_key),
         json={
             "contentSize": size,
@@ -73,10 +78,10 @@ def initialize_upload(api_key: str, dandiset_id: str, size: int, dandi_etag: str
         },
     )
     if resp.status_code == 409:
-        blob = get_blob_by_digest(api_key, dandi_etag)
+        blob = get_blob_by_digest(api_url, api_key, dandi_etag)
         if not blob:
-            raise EmberError(
-                f"EMBER-DANDI reported the blob already exists (409) but no blob matches digest {dandi_etag}"
+            raise DandiError(
+                f"DANDI reported the blob already exists (409) but no blob matches digest {dandi_etag}"
             )
         return {"upload_id": None, "parts": [], "blob_id": blob["blob_id"]}
 
@@ -84,15 +89,15 @@ def initialize_upload(api_key: str, dandiset_id: str, size: int, dandi_etag: str
     return resp.json()
 
 
-def complete_upload(api_key: str, upload_id: str, parts: list) -> dict:
+def complete_upload(api_url: str, api_key: str, upload_id: str, parts: list) -> dict:
     """POST /uploads/{upload_id}/complete/, then POST the returned presigned S3
     CompleteMultipartUpload request ourselves; the client never sees this request.
 
     `parts` is [{part_number, size, etag}], `etag` being what S3 returned for each part PUT.
     """
     resp = requests.post(
-        f"{EMBER_API_BASE}/uploads/{upload_id}/complete/",
-        timeout=EMBER_REQUEST_TIMEOUT,
+        f"{api_url}/uploads/{upload_id}/complete/",
+        timeout=DANDI_REQUEST_TIMEOUT,
         headers=_headers(api_key),
         json={"parts": parts},
     )
@@ -101,7 +106,7 @@ def complete_upload(api_key: str, upload_id: str, parts: list) -> dict:
 
     s3_resp = requests.post(
         completion["complete_url"],
-        timeout=EMBER_REQUEST_TIMEOUT,
+        timeout=DANDI_REQUEST_TIMEOUT,
         data=completion["body"],
         headers={"Content-Type": "text/xml"},
     )
@@ -109,14 +114,14 @@ def complete_upload(api_key: str, upload_id: str, parts: list) -> dict:
     return {"status": s3_resp.status_code}
 
 
-def validate_upload(api_key: str, upload_id: str) -> dict:
+def validate_upload(api_url: str, api_key: str, upload_id: str) -> dict:
     """POST /uploads/{upload_id}/validate/: returns AssetBlob: {blob_id, etag, size, sha256}."""
-    resp = requests.post(f"{EMBER_API_BASE}/uploads/{upload_id}/validate/", headers=_headers(api_key), timeout=EMBER_REQUEST_TIMEOUT)
+    resp = requests.post(f"{api_url}/uploads/{upload_id}/validate/", headers=_headers(api_key), timeout=DANDI_REQUEST_TIMEOUT)
     _check(resp, "validate_upload")
     return resp.json()
 
 
-def register_asset(api_key: str, dandiset_id: str, path: str, blob_id: str) -> dict:
+def register_asset(api_url: str, api_key: str, dandiset_id: str, path: str, blob_id: str) -> dict:
     """POST the completed blob into the dandiset's draft version as a new asset.
 
     The collection endpoint takes POST (PUT updates one asset, at `.../assets/{asset_id}/`).
@@ -129,8 +134,8 @@ def register_asset(api_key: str, dandiset_id: str, path: str, blob_id: str) -> d
     """
     encoding_format, _ = mimetypes.guess_type(path)
     resp = requests.post(
-        f"{EMBER_API_BASE}/dandisets/{dandiset_id}/versions/draft/assets/",
-        timeout=EMBER_REQUEST_TIMEOUT,
+        f"{api_url}/dandisets/{dandiset_id}/versions/draft/assets/",
+        timeout=DANDI_REQUEST_TIMEOUT,
         headers=_headers(api_key),
         json={
             "metadata": {
@@ -144,18 +149,18 @@ def register_asset(api_key: str, dandiset_id: str, path: str, blob_id: str) -> d
     if resp.status_code == 409:
         # Already registered at this path: almost always a retry after something later failed.
         # Reuse it rather than failing, so validate_upload is idempotent.
-        existing = get_asset_by_path(api_key, dandiset_id, path)
+        existing = get_asset_by_path(api_url, api_key, dandiset_id, path)
         if existing:
             return existing
     _check(resp, f"register_asset(path={path!r})")
     return resp.json()
 
 
-def get_asset_by_path(api_key: str, dandiset_id: str, path: str) -> dict | None:
+def get_asset_by_path(api_url: str, api_key: str, dandiset_id: str, path: str) -> dict | None:
     """GET the asset at an exact path in the draft version, or None."""
     resp = requests.get(
-        f"{EMBER_API_BASE}/dandisets/{dandiset_id}/versions/draft/assets/",
-        timeout=EMBER_REQUEST_TIMEOUT,
+        f"{api_url}/dandisets/{dandiset_id}/versions/draft/assets/",
+        timeout=DANDI_REQUEST_TIMEOUT,
         headers=_headers(api_key),
         params={"path": path},
     )
@@ -166,10 +171,6 @@ def get_asset_by_path(api_key: str, dandiset_id: str, path: str) -> dict | None:
     return None
 
 
-def dandiset_url(dandiset_id: str) -> str:
-    return f"{EMBER_WEB_BASE}/dandiset/{dandiset_id}/draft"
-
-
-def asset_download_url(asset_id: str) -> str:
+def asset_download_url(api_url: str, asset_id: str) -> str:
     """The asset's download endpoint (redirects to S3). Needs a key while the dandiset is embargoed."""
-    return f"{EMBER_API_BASE}/assets/{asset_id}/download/"
+    return f"{api_url}/assets/{asset_id}/download/"
