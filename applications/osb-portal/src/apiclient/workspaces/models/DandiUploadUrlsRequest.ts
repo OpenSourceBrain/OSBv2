@@ -13,7 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-
 /**
  * 
  * @export
@@ -21,11 +20,11 @@ import { exists, mapValues } from '../runtime';
  */
 export interface DandiUploadUrlsRequest {
     /**
-     * The DANDI deployment, by its dandi-cli name: dandi, dandi-sandbox, ember-dandi or ember-dandi-sandbox.
+     * The DANDI deployment, by its dandi-cli name.
      * @type {string}
      * @memberof DandiUploadUrlsRequest
      */
-    instance: string;
+    instance: DandiUploadUrlsRequestInstanceEnum;
     /**
      * Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must belong to that deployment.
      * @type {string}
@@ -33,7 +32,7 @@ export interface DandiUploadUrlsRequest {
      */
     username: string;
     /**
-     * The DANDI dandiset to upload into, chosen by the client.
+     * The dandiset to upload into, chosen by the client.
      * @type {string}
      * @memberof DandiUploadUrlsRequest
      */
@@ -51,11 +50,22 @@ export interface DandiUploadUrlsRequest {
      */
     size: number;
     /**
-     * S3-multipart digest in DANDI's format (32 hex chars, a dash, the part count), computed in the browser since the bytes never reach this server.
+     * S3-multipart digest in DANDI's format (32 hex chars, a dash, the part count), computed by the client since the bytes never reach this server.
      * @type {string}
      * @memberof DandiUploadUrlsRequest
      */
     dandiEtag: string;
+}
+
+/**
+* @export
+* @enum {string}
+*/
+export enum DandiUploadUrlsRequestInstanceEnum {
+    Dandi = 'dandi',
+    DandiSandbox = 'dandi-sandbox',
+    EmberDandi = 'ember-dandi',
+    EmberDandiSandbox = 'ember-dandi-sandbox'
 }
 
 export function DandiUploadUrlsRequestFromJSON(json: any): DandiUploadUrlsRequest {
@@ -94,4 +104,5 @@ export function DandiUploadUrlsRequestToJSON(value?: DandiUploadUrlsRequest | nu
         'dandi_etag': value.dandiEtag,
     };
 }
+
 

@@ -91,7 +91,7 @@ class DandiUploadUrlsResponse(Model):
     def upload_id(self):
         """Gets the upload_id of this DandiUploadUrlsResponse.
 
-        Absent when the content was already in DANDI.  # noqa: E501
+        Absent when the deployment already held this content.  # noqa: E501
 
         :return: The upload_id of this DandiUploadUrlsResponse.
         :rtype: str
@@ -102,7 +102,7 @@ class DandiUploadUrlsResponse(Model):
     def upload_id(self, upload_id):
         """Sets the upload_id of this DandiUploadUrlsResponse.
 
-        Absent when the content was already in DANDI.  # noqa: E501
+        Absent when the deployment already held this content.  # noqa: E501
 
         :param upload_id: The upload_id of this DandiUploadUrlsResponse.
         :type upload_id: str
@@ -114,7 +114,7 @@ class DandiUploadUrlsResponse(Model):
     def path(self):
         """Gets the path of this DandiUploadUrlsResponse.
 
-        Asset path, derived server-side from the caller's identity.  # noqa: E501
+        Asset path, built by OSB from the caller's id.  # noqa: E501
 
         :return: The path of this DandiUploadUrlsResponse.
         :rtype: str
@@ -125,7 +125,7 @@ class DandiUploadUrlsResponse(Model):
     def path(self, path):
         """Sets the path of this DandiUploadUrlsResponse.
 
-        Asset path, derived server-side from the caller's identity.  # noqa: E501
+        Asset path, built by OSB from the caller's id.  # noqa: E501
 
         :param path: The path of this DandiUploadUrlsResponse.
         :type path: str
@@ -162,7 +162,7 @@ class DandiUploadUrlsResponse(Model):
     def blob_id(self):
         """Gets the blob_id of this DandiUploadUrlsResponse.
 
-        Set only when the content was already in DANDI (parts is then empty).  # noqa: E501
+        Set only when the deployment already held this content (parts is then empty).  # noqa: E501
 
         :return: The blob_id of this DandiUploadUrlsResponse.
         :rtype: str
@@ -173,7 +173,7 @@ class DandiUploadUrlsResponse(Model):
     def blob_id(self, blob_id):
         """Sets the blob_id of this DandiUploadUrlsResponse.
 
-        Set only when the content was already in DANDI (parts is then empty).  # noqa: E501
+        Set only when the deployment already held this content (parts is then empty).  # noqa: E501
 
         :param blob_id: The blob_id of this DandiUploadUrlsResponse.
         :type blob_id: str

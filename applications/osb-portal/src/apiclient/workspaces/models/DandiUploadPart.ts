@@ -26,7 +26,7 @@ export interface DandiUploadPart {
      */
     partNumber?: number;
     /**
-     * Presigned S3 URL the browser PUTs this part's bytes to directly.
+     * Presigned S3 URL the client PUTs this part's bytes to directly.
      * @type {string}
      * @memberof DandiUploadPart
      */

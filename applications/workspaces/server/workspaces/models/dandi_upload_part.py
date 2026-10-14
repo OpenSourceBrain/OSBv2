@@ -72,7 +72,7 @@ class DandiUploadPart(Model):
     def url(self):
         """Gets the url of this DandiUploadPart.
 
-        Presigned S3 URL the browser PUTs this part's bytes to directly.  # noqa: E501
+        Presigned S3 URL the client PUTs this part's bytes to directly.  # noqa: E501
 
         :return: The url of this DandiUploadPart.
         :rtype: str
@@ -83,7 +83,7 @@ class DandiUploadPart(Model):
     def url(self, url):
         """Sets the url of this DandiUploadPart.
 
-        Presigned S3 URL the browser PUTs this part's bytes to directly.  # noqa: E501
+        Presigned S3 URL the client PUTs this part's bytes to directly.  # noqa: E501
 
         :param url: The url of this DandiUploadPart.
         :type url: str

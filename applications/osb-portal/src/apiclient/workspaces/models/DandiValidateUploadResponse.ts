@@ -13,7 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-
 /**
  * 
  * @export
@@ -78,4 +77,5 @@ export function DandiValidateUploadResponseToJSON(value?: DandiValidateUploadRes
         'download_url': value.downloadUrl,
     };
 }
+
 

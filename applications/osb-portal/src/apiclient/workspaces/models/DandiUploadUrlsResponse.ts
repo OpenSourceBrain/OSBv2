@@ -18,7 +18,7 @@ import {
     DandiUploadPartFromJSON,
     DandiUploadPartFromJSONTyped,
     DandiUploadPartToJSON,
-} from './DandiUploadPart';
+} from './';
 
 /**
  * 
@@ -33,13 +33,13 @@ export interface DandiUploadUrlsResponse {
      */
     dandisetId: string;
     /**
-     * Absent when the content was already in DANDI.
+     * Absent when the deployment already held this content.
      * @type {string}
      * @memberof DandiUploadUrlsResponse
      */
     uploadId?: string;
     /**
-     * Asset path, derived server-side from the caller's identity.
+     * Asset path, built by OSB from the caller's id.
      * @type {string}
      * @memberof DandiUploadUrlsResponse
      */
@@ -51,7 +51,7 @@ export interface DandiUploadUrlsResponse {
      */
     parts: Array<DandiUploadPart>;
     /**
-     * Set only when the content was already in DANDI (parts is then empty).
+     * Set only when the deployment already held this content (parts is then empty).
      * @type {string}
      * @memberof DandiUploadUrlsResponse
      */
@@ -92,4 +92,5 @@ export function DandiUploadUrlsResponseToJSON(value?: DandiUploadUrlsResponse | 
         'blob_id': value.blobId,
     };
 }
+
 

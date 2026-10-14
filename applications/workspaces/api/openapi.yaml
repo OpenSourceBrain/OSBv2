@@ -1143,19 +1143,26 @@ components:
             properties:
                 instance:
                     type: string
-                    description: >-
-                        The DANDI deployment, by its dandi-cli name: dandi, dandi-sandbox,
-                        ember-dandi or ember-dandi-sandbox.
+                    enum:
+                        - dandi
+                        - dandi-sandbox
+                        - ember-dandi
+                        - ember-dandi-sandbox
+                    description: The DANDI deployment, by its dandi-cli name.
                 username:
                     type: string
+                    minLength: 1
                     description: >-
                         Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must
                         belong to that deployment.
                 dandiset_id:
                     type: string
+                    pattern: '^[0-9]{6}$'
+                    maxLength: 6
                     description: The dandiset to upload into, chosen by the client.
                 filename:
                     type: string
+                    minLength: 1
                 size:
                     type: integer
                 dandi_etag:
@@ -1195,21 +1202,30 @@ components:
             properties:
                 instance:
                     type: string
-                    description: >-
-                        The DANDI deployment, by its dandi-cli name: dandi, dandi-sandbox,
-                        ember-dandi or ember-dandi-sandbox.
+                    enum:
+                        - dandi
+                        - dandi-sandbox
+                        - ember-dandi
+                        - ember-dandi-sandbox
+                    description: The DANDI deployment, by its dandi-cli name.
                 username:
                     type: string
+                    minLength: 1
                     description: >-
                         Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must
                         belong to that deployment.
                 dandiset_id:
                     type: string
+                    pattern: '^[0-9]{6}$'
+                    maxLength: 6
                 upload_id:
                     type: string
+                    pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                    maxLength: 36
                     description: Omitted when get_upload_urls returned a blob_id (nothing was uploaded).
                 path:
                     type: string
+                    minLength: 1
                     description: The path get_upload_urls returned.
                 parts:
                     type: array
@@ -1218,6 +1234,8 @@ components:
                         $ref: '#/components/schemas/DandiUploadedPart'
                 blob_id:
                     type: string
+                    pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                    maxLength: 36
                     description: Echoed from get_upload_urls; when present, complete/validate are skipped.
         DandiValidateUploadResponse:
             type: object

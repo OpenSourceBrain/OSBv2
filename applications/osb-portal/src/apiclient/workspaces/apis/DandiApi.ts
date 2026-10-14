@@ -15,26 +15,26 @@
 
 import * as runtime from '../runtime';
 import {
-    DandiValidateUploadRequest,
-    DandiValidateUploadRequestFromJSON,
-    DandiValidateUploadRequestToJSON,
-    DandiValidateUploadResponse,
-    DandiValidateUploadResponseFromJSON,
-    DandiValidateUploadResponseToJSON,
     DandiUploadUrlsRequest,
     DandiUploadUrlsRequestFromJSON,
     DandiUploadUrlsRequestToJSON,
     DandiUploadUrlsResponse,
     DandiUploadUrlsResponseFromJSON,
     DandiUploadUrlsResponseToJSON,
+    DandiValidateUploadRequest,
+    DandiValidateUploadRequestFromJSON,
+    DandiValidateUploadRequestToJSON,
+    DandiValidateUploadResponse,
+    DandiValidateUploadResponseFromJSON,
+    DandiValidateUploadResponseToJSON,
 } from '../models';
-
-export interface ValidateUploadRequest {
-    dandiValidateUploadRequest: DandiValidateUploadRequest;
-}
 
 export interface GetUploadUrlsRequest {
     dandiUploadUrlsRequest: DandiUploadUrlsRequest;
+}
+
+export interface ValidateUploadRequest {
+    dandiValidateUploadRequest: DandiValidateUploadRequest;
 }
 
 /**
@@ -43,48 +43,7 @@ export interface GetUploadUrlsRequest {
 export class DandiApi extends runtime.BaseAPI {
 
     /**
-     * Complete the multipart upload, validate the blob and register the asset in the dandiset\'s draft version, with OSB\'s DANDI key.
-     */
-    async validateUploadRaw(requestParameters: ValidateUploadRequest): Promise<runtime.ApiResponse<DandiValidateUploadResponse>> {
-        if (requestParameters.dandiValidateUploadRequest === null || requestParameters.dandiValidateUploadRequest === undefined) {
-            throw new runtime.RequiredError('dandiValidateUploadRequest','Required parameter requestParameters.dandiValidateUploadRequest was null or undefined when calling validateUpload.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/dandi/validate_upload`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: DandiValidateUploadRequestToJSON(requestParameters.dandiValidateUploadRequest),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => DandiValidateUploadResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Complete the multipart upload, validate the blob and register the asset in the dandiset\'s draft version, with OSB\'s DANDI key.
-     */
-    async validateUpload(requestParameters: ValidateUploadRequest): Promise<DandiValidateUploadResponse> {
-        const response = await this.validateUploadRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * Reserve an upload into a DANDI dandiset with OSB\'s DANDI key (never returned) and return presigned part URLs. The asset path is derived server-side from the caller\'s identity.
+     * Reserve an upload into a dandiset and return presigned part URLs. OSB builds the asset path from the caller\'s id.
      */
     async getUploadUrlsRaw(requestParameters: GetUploadUrlsRequest): Promise<runtime.ApiResponse<DandiUploadUrlsResponse>> {
         if (requestParameters.dandiUploadUrlsRequest === null || requestParameters.dandiUploadUrlsRequest === undefined) {
@@ -117,10 +76,51 @@ export class DandiApi extends runtime.BaseAPI {
     }
 
     /**
-     * Reserve an upload into a DANDI dandiset with OSB\'s DANDI key (never returned) and return presigned part URLs. The asset path is derived server-side from the caller\'s identity.
+     * Reserve an upload into a dandiset and return presigned part URLs. OSB builds the asset path from the caller\'s id.
      */
     async getUploadUrls(requestParameters: GetUploadUrlsRequest): Promise<DandiUploadUrlsResponse> {
         const response = await this.getUploadUrlsRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Complete the multipart upload, validate the blob and register the asset in the dandiset\'s draft.
+     */
+    async validateUploadRaw(requestParameters: ValidateUploadRequest): Promise<runtime.ApiResponse<DandiValidateUploadResponse>> {
+        if (requestParameters.dandiValidateUploadRequest === null || requestParameters.dandiValidateUploadRequest === undefined) {
+            throw new runtime.RequiredError('dandiValidateUploadRequest','Required parameter requestParameters.dandiValidateUploadRequest was null or undefined when calling validateUpload.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/dandi/validate_upload`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DandiValidateUploadRequestToJSON(requestParameters.dandiValidateUploadRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DandiValidateUploadResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Complete the multipart upload, validate the blob and register the asset in the dandiset\'s draft.
+     */
+    async validateUpload(requestParameters: ValidateUploadRequest): Promise<DandiValidateUploadResponse> {
+        const response = await this.validateUploadRaw(requestParameters);
         return await response.value();
     }
 

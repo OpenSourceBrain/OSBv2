@@ -18,7 +18,7 @@ import {
     DandiUploadedPartFromJSON,
     DandiUploadedPartFromJSONTyped,
     DandiUploadedPartToJSON,
-} from './DandiUploadedPart';
+} from './';
 
 /**
  * 
@@ -27,11 +27,11 @@ import {
  */
 export interface DandiValidateUploadRequest {
     /**
-     * The DANDI deployment, by its dandi-cli name: dandi, dandi-sandbox, ember-dandi or ember-dandi-sandbox.
+     * The DANDI deployment, by its dandi-cli name.
      * @type {string}
      * @memberof DandiValidateUploadRequest
      */
-    instance: string;
+    instance: DandiValidateUploadRequestInstanceEnum;
     /**
      * Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must belong to that deployment.
      * @type {string}
@@ -68,6 +68,17 @@ export interface DandiValidateUploadRequest {
      * @memberof DandiValidateUploadRequest
      */
     blobId?: string;
+}
+
+/**
+* @export
+* @enum {string}
+*/
+export enum DandiValidateUploadRequestInstanceEnum {
+    Dandi = 'dandi',
+    DandiSandbox = 'dandi-sandbox',
+    EmberDandi = 'ember-dandi',
+    EmberDandiSandbox = 'ember-dandi-sandbox'
 }
 
 export function DandiValidateUploadRequestFromJSON(json: any): DandiValidateUploadRequest {
@@ -108,4 +119,5 @@ export function DandiValidateUploadRequestToJSON(value?: DandiValidateUploadRequ
         'blob_id': value.blobId,
     };
 }
+
 
