@@ -3,7 +3,14 @@
 # flake8: noqa
 from __future__ import absolute_import
 # import models into model package
+from workspaces.models.biomodels_repository_resource import BiomodelsRepositoryResource
 from workspaces.models.dandi_repository_resource import DandiRepositoryResource
+from workspaces.models.dandi_upload_part import DandiUploadPart
+from workspaces.models.dandi_upload_urls_request import DandiUploadUrlsRequest
+from workspaces.models.dandi_upload_urls_response import DandiUploadUrlsResponse
+from workspaces.models.dandi_uploaded_part import DandiUploadedPart
+from workspaces.models.dandi_validate_upload_request import DandiValidateUploadRequest
+from workspaces.models.dandi_validate_upload_response import DandiValidateUploadResponse
 from workspaces.models.download_resource import DownloadResource
 from workspaces.models.figshare_repository_resource import FigshareRepositoryResource
 from workspaces.models.git_repository_resource import GITRepositoryResource
@@ -19,6 +26,7 @@ from workspaces.models.osb_repository_base import OSBRepositoryBase
 from workspaces.models.osb_repository_entity import OSBRepositoryEntity
 from workspaces.models.pagination import Pagination
 from workspaces.models.repository_content_type import RepositoryContentType
+from workspaces.models.repository_info import RepositoryInfo
 from workspaces.models.repository_resource import RepositoryResource
 from workspaces.models.repository_resource_base import RepositoryResourceBase
 from workspaces.models.repository_resource_base_all_of import RepositoryResourceBaseAllOf
@@ -44,8 +52,6 @@ from workspaces.models.workspace_resource_all_of import WorkspaceResourceAllOf
 from workspaces.models.workspace_resource_base import WorkspaceResourceBase
 from workspaces.models.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces.models.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
-from workspaces.models.repository_info import RepositoryInfo
-from workspaces.models.biomodels_repository_resource import BiomodelsRepositoryResource
 from workspaces.models.workspace_run_repo import WorkspaceRunRepo
 from workspaces.models.workspace_run_request import WorkspaceRunRequest
 from workspaces.models.workspace_run_response import WorkspaceRunResponse
