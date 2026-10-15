@@ -1,0 +1,9 @@
+@import "./variables.css";
+
+body .MuiTreeItem-label:hover {
+  background-color: var(--bg-darker);
+}
+
+body .MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label {
+  background-color: var(--bg-regular) !important;
+}

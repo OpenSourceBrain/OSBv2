@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import makeStyles from "@mui/styles/makeStyles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NestedMenuItem from "../common/NestedMenuItems";
@@ -8,59 +7,52 @@ import Button from "@mui/material/Button";
 import { IconButton, Link } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { OSBApplications, Workspace } from "../../types/workspace";
 import { WorkspaceEditor } from "../index";
 import { canEditWorkspace } from "../../service/UserService";
-import { UserInfo } from "../../types/user";
 import WorkspaceService from "../../service/WorkspaceService";
 import OSBLoader from "../common/OSBLoader";
-import { bgDarkest, textColor, lightWhite } from "../../theme";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { bgDarkest, textColor } from "../../theme";
 import * as Icons from "../icons";
 import PrimaryDialog from "../dialogs/PrimaryDialog";
 import { RootState } from "../../store/rootReducer";
+import { updateWorkspace, deleteWorkspace, refreshWorkspaces } from "../../store/actions/workspaces";
 
 
 interface WorkspaceActionsMenuProps {
   workspace?: Workspace;
-  updateWorkspace?: (ws: Workspace) => void;
-  deleteWorkspace?: (wsId: number) => void;
-  refreshWorkspaces?: () => void;
-  user?: UserInfo;
   isWorkspaceOpen?: boolean;
   ButtonComponent?: React.ComponentType<any>;
   [other: string]: any;
 }
 
-const useStyles = makeStyles((theme) => ({
-  snackbar: {
-    "& .MuiSnackbarContent-root": {
-      backgroundColor: bgDarkest,
-      color: textColor,
-    },
+// Styles outside component
+const snackbarStyles = {
+  "& .MuiSnackbarContent-root": {
+    backgroundColor: bgDarkest,
+    color: textColor,
   },
-}));
+};
 
-export default (props: WorkspaceActionsMenuProps) => {
-  const classes = useStyles();
-  const {ButtonComponent} = props;
+export const WorkspaceActionsMenu = (props: WorkspaceActionsMenuProps) => {
+  const { ButtonComponent } = props;
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   const [editWorkspaceOpen, setEditWorkspaceOpen] = React.useState(false);
   const [cloneInProgress, setCloneInProgress] = React.useState<boolean>(false);
   const [cloneComplete, setCloneComplete] = React.useState<boolean>(false);
   const [clonedWSId, setClonedWSId] = React.useState<number>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const canEdit = canEditWorkspace(props?.user, props?.workspace);
+  const canEdit = canEditWorkspace(user, props?.workspace);
   const navigate = useNavigate();
   const [showDeleteWorkspaceDialog, setShowDeleteWorkspaceDialog] = React.useState(false);
   const [showFailCloneDialog, setShowFailCloneDialog] = React.useState<{open: boolean, message: any}>({
     open: false,
     message: "",
   });
-
-  const user = useSelector((state: RootState) => state.user);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -76,7 +68,7 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handleDeleteWorkspace = () => {
-    props.deleteWorkspace(props.workspace.id);
+    dispatch(deleteWorkspace(props.workspace.id));
     handleCloseMenu();
 
     if (window.location.pathname !== "/") {
@@ -85,20 +77,20 @@ export default (props: WorkspaceActionsMenuProps) => {
   };
 
   const handlePublicWorkspace = () => {
-    props.updateWorkspace({ ...props.workspace, publicable: true });
+    dispatch(updateWorkspace({ ...props.workspace, publicable: true }));
     handleCloseMenu();
   };
 
   const handlePrivateWorkspace = () => {
-    props.updateWorkspace({ ...props.workspace, publicable: false });
+    dispatch(updateWorkspace({ ...props.workspace, publicable: false }));
     handleCloseMenu();
   };
 
   const handleFeaturedWorkspace = () => {
-    props.updateWorkspace({
+    dispatch(updateWorkspace({
       ...props.workspace,
       featured: !props.workspace.featured,
-    });
+    }));
     handleCloseMenu();
   };
 
@@ -108,7 +100,7 @@ export default (props: WorkspaceActionsMenuProps) => {
 
   const handleCloseEditWorkspace = () => {
     setEditWorkspaceOpen(false);
-    props.refreshWorkspaces();
+    dispatch(refreshWorkspaces());
   };
 
   const handleCloneWorkspace = () => {
@@ -116,7 +108,7 @@ export default (props: WorkspaceActionsMenuProps) => {
     setCloneInProgress(true);
     WorkspaceService.cloneWorkspace(props.workspace.id).then(
       (res) => {
-        props.refreshWorkspaces();
+        dispatch(refreshWorkspaces());
         setCloneInProgress(false);
         setCloneComplete(true);
         setClonedWSId(res.id);
@@ -187,7 +179,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </MenuItem>
           ))}
         </NestedMenuItem>
-        {props.user && (
+        {user && (
           <MenuItem onClick={handleCloneWorkspace}>Clone workspace</MenuItem>
         )}
         {canEdit && (
@@ -211,8 +203,8 @@ export default (props: WorkspaceActionsMenuProps) => {
             Make private
           </MenuItem>
         )}
-        {props.user &&
-          props.user.isAdmin &&
+        {user &&
+          user.isAdmin &&
           props.workspace?.publicable &&
           !props.workspace?.featured && (
             <MenuItem
@@ -223,7 +215,7 @@ export default (props: WorkspaceActionsMenuProps) => {
             </MenuItem>
           )}
 
-        {props.user && props.user.isAdmin && props.workspace?.featured && (
+        {user && user.isAdmin && props.workspace?.featured && (
           <MenuItem
             className="remove-featured-workspace"
             onClick={handleFeaturedWorkspace}
@@ -253,7 +245,7 @@ export default (props: WorkspaceActionsMenuProps) => {
           closeHandler={handleCloseEditWorkspace}
           workspace={props.workspace}
           onLoadWorkspace={handleCloseEditWorkspace}
-          user={props.user}
+          user={user}
         />
       )}
       <OSBLoader
@@ -263,7 +255,7 @@ export default (props: WorkspaceActionsMenuProps) => {
         messages={["Cloning workspace. Please wait."]}
       />
        <Snackbar
-        classes={{ root: classes.snackbar }}
+        sx={snackbarStyles}
         open={cloneComplete}
         onClose={() => setCloneComplete(false)}
         message="Workspace cloned"
@@ -320,3 +312,5 @@ export default (props: WorkspaceActionsMenuProps) => {
     </>
   );
 };
+
+export default WorkspaceActionsMenu;

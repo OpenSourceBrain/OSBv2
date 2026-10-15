@@ -13,18 +13,36 @@ from workspaces.service.crud_service import (
 
 
 from workspaces.controllers.crud.base_model_controller import BaseModelView
-from cloudharness.workflows.argo import delete_workflow
+from cloudharness.workflows.argo_service import delete_workflow
 
 
 
 class WorkspaceView(BaseModelView):
     service = WorkspaceService()
-    
+
     def post(self, body):
         try:
             return super().post(body)
         except NotAllowed:
             return "Not allowed", 405
+
+    def get(self, id_):
+        """Get a workspace, kicking off best-effort volume creation in the background.
+
+        Volume creation must never make a plain read fail, so it runs in a
+        background thread. The blocking readiness check happens separately when
+        the workspace is fully opened (see workspace_controller.open).
+        """
+        try:
+            workspace = self.service.get(id_)
+        except NotAuthorized:
+            return "Access to the requested resources not authorized", 401
+        except NotFoundException:
+            return f"{self.service.repository} with id {id_} not found.", 404
+        if workspace is None:
+            return f"{self.service.repository} with id {id_} not found.", 404
+        self.service.ensure_volume_background(workspace)
+        return workspace.to_dict(), 200
 
     
         

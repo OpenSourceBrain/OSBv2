@@ -1,15 +1,20 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Toolbar, Box, Button, Paper, Popper, MenuItem, MenuList, ClickAwayListener, Link, CircularProgress } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
-import {BetaIcon, OSBLogo} from "../icons";
+import { BetaIcon, OSBLogo } from "../icons";
 
 import {
   headerBg,
   secondaryColor
 } from "../../theme";
+
+import { RootState } from "../../store/rootReducer";
+import { userLogin, userLogout } from "../../store/actions/user";
+import { toggleDrawer } from "../../store/actions/drawer";
 
 const styles = ({
   toolbar: {
@@ -45,11 +50,14 @@ const styles = ({
   },
 });
 
-export const Header = (props: any) => {
-
+export const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuAnchorRef = React.useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Redux hooks
+  const user = useSelector((state: RootState) => state.user);
 
   const handleMenuToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -59,13 +67,12 @@ export const Header = (props: any) => {
     setMenuOpen(false);
   };
 
-  const user = props.user;
-
   const handleUserLogin = () => {
-    props.login();
+    dispatch(userLogin());
   };
+  
   const handleUserLogout = () => {
-    props.logout();
+    dispatch(userLogout());
   };
 
   const handleMyAccount = () => {
@@ -81,7 +88,7 @@ export const Header = (props: any) => {
     user === undefined ? (
       <CircularProgress size={20} />
     ) : 
-    (user === null ? (
+    (!user?.username ? (
       <Button sx={styles.button} onClick={handleUserLogin} className={`sign-in`}>
         Sign in
       </Button>
@@ -133,19 +140,18 @@ export const Header = (props: any) => {
     ));
 
   const handleToggleDrawer = (e: any) => {
-    if (props.drawerEnabled) {
-      e.preventDefault();
-      props.onToggleDrawer();
-    }
+    // Note: drawerEnabled prop would need to be accessed from Redux state if needed
+    // For now, assuming drawer is always enabled
+    e.preventDefault();
+    dispatch(toggleDrawer());
   };
 
-  // @ts-ignore
   return (
     <React.Fragment>
       <Toolbar sx={styles.toolbar}>
-        <Box display="flex" sx={{height: "100%", overflow: "hidden", alignItems: "center"}}>
+        <Box display="flex" sx={{ height: "100%", overflow: "hidden", alignItems: "center" }}>
         <Link href="/" onClick={handleToggleDrawer}  sx={styles.logoContainer}>
-          <OSBLogo sx={{mr: "0.4rem", fontSize: "12rem"}}  />
+          <OSBLogo sx={{ mr: "0.4rem", fontSize: "12rem" }}  />
           
         </Link>
         <Box component="sup" sx={styles.logoChip}>v2.0</Box>

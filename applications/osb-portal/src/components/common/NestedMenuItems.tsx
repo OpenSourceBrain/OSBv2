@@ -1,10 +1,8 @@
-import React, {useState, useRef, useImperativeHandle} from 'react'
-import Menu, {MenuProps} from '@mui/material/Menu'
-import MenuItem, {MenuItemProps} from '@mui/material/MenuItem'
+import React, { useState, useRef, useImperativeHandle } from 'react'
+import Menu, { MenuProps } from '@mui/material/Menu'
+import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import ArrowRight from '@mui/icons-material/ArrowRight'
-import clsx from 'clsx'
-import makeStyles from '@mui/styles/makeStyles'
-import {Theme} from '@mui/material'
+import { Theme, useTheme } from '@mui/material'
 
 export interface NestedMenuItemProps extends Omit<MenuItemProps, 'button'> {
   /**
@@ -42,11 +40,11 @@ export interface NestedMenuItemProps extends Omit<MenuItemProps, 'button'> {
 }
 
 const TRANSPARENT = 'rgba(0,0,0,0)'
-const useMenuItemStyles = makeStyles((theme: Theme) => ({
-  root: (props: any) => ({
-    backgroundColor: props.open ? theme.palette.action.hover : TRANSPARENT
-  })
-}))
+
+// Module-level styles
+const getMenuItemStyles = (open: boolean, theme: Theme) => ({
+  backgroundColor: open ? theme.palette.action.hover : TRANSPARENT
+})
 
 /**
  * Use as a drop-in replacement for `<MenuItem>` when you need to add cascading
@@ -55,7 +53,7 @@ const useMenuItemStyles = makeStyles((theme: Theme) => ({
 const NestedMenuItem = React.forwardRef<
   HTMLLIElement | null,
   NestedMenuItemProps
->(function NestedMenuItem(props, ref) {
+>((props, ref) => {
   const {
     parentMenuOpen,
     component = 'div',
@@ -69,7 +67,7 @@ const NestedMenuItem = React.forwardRef<
     ...MenuItemProps
   } = props
 
-  const {ref: containerRefProp, ...ContainerProps} = ContainerPropsProp
+  const { ref: containerRefProp, ...ContainerProps } = ContainerPropsProp
 
   const menuItemRef = useRef<HTMLLIElement>(null)
   useImperativeHandle(ref, () => menuItemRef.current as HTMLLIElement)
@@ -145,7 +143,7 @@ const NestedMenuItem = React.forwardRef<
   }
 
   const open = isSubMenuOpen && parentMenuOpen
-  const menuItemClasses = useMenuItemStyles({open})
+  const theme = useTheme()
 
   // Root element must have a `tabIndex` attribute for keyboard navigation
   let tabIndex
@@ -165,8 +163,12 @@ const NestedMenuItem = React.forwardRef<
     >
       <MenuItem
         {...MenuItemProps}
-        className={clsx(menuItemClasses.root, className)}
+        className={className}
         ref={menuItemRef}
+        sx={{
+          ...getMenuItemStyles(open, theme),
+          ...MenuItemProps.sx
+        }}
       >
         {label}
         {rightIcon}
@@ -174,7 +176,7 @@ const NestedMenuItem = React.forwardRef<
       <Menu
         // Set pointer events to 'none' to prevent the invisible Popover div
         // from capturing events for clicks and hovers
-        style={{pointerEvents: 'none'}}
+        style={{ pointerEvents: 'none' }}
         anchorEl={menuItemRef.current}
         anchorOrigin={{
           vertical: 'top',
@@ -192,7 +194,7 @@ const NestedMenuItem = React.forwardRef<
           setIsSubMenuOpen(false)
         }}
       >
-        <div ref={menuContainerRef} style={{pointerEvents: 'auto'}}>
+        <div ref={menuContainerRef} style={{ pointerEvents: 'auto' }}>
           {children}
         </div>
       </Menu>

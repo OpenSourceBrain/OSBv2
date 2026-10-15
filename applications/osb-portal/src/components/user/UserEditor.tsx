@@ -1,5 +1,4 @@
 import * as React from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -19,6 +18,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import GroupIcon from "@mui/icons-material/Group";
 import BusinessIcon from "@mui/icons-material/Business";
 import FormLabel from "../styled/FormLabel";
+import { getUserName, getUserInitials } from "../../utils";
 
 interface ProfileLink {
   text: string;
@@ -94,7 +94,7 @@ interface UserEditProps {
   close: () => void;
 }
 
-export default (props: UserEditProps) => {
+export const UserEditor = (props: UserEditProps) => {
   const [addLinkDialogOpen, setAddLinkDialogOpen] = React.useState(false);
 
   const profiles = {
@@ -126,7 +126,7 @@ export default (props: UserEditProps) => {
 
       setProfileForm({ ...userForm, website: value });
       setError({ ...error, website: undefined });
-    } catch (_) {
+    } catch (e) {
       setError({ ...error, website: "Invalid URL" });
     }
   };
@@ -135,11 +135,11 @@ export default (props: UserEditProps) => {
     const value = e.target.value;
     try {
       if (value) {
-        const _ = new URL(value);
+        new URL(value);
       }
       setError({ ...error, avatar: undefined });
       setProfileForm({ ...userForm, avatar: value });
-    } catch (_) {
+    } catch (e) {
       setError({ ...error, avatar: "Invalid URL" });
     }
   };
@@ -238,7 +238,7 @@ export default (props: UserEditProps) => {
             alt="user-profile-avatar"
             src={userForm.avatar}
           >
-            {userForm.firstName?.charAt(0) + userForm.lastName?.charAt(0)}
+            {getUserInitials(userForm)}
           </Avatar>
           <Box width="100%">
             <FormLabel>Profile picture URL</FormLabel>
@@ -261,7 +261,7 @@ export default (props: UserEditProps) => {
             fullWidth={true}
             onChange={setProfileDisplayName}
             variant="outlined"
-            defaultValue={userForm.firstName + " " + userForm.lastName}
+            defaultValue={getUserName(userForm)}
           />
         </Box>
         <Box mb={1} mt={1}>
@@ -453,3 +453,5 @@ export default (props: UserEditProps) => {
     </OSBDialog>
   );
 };
+
+export default UserEditor;

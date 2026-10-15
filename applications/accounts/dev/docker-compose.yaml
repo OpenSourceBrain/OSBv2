@@ -1,0 +1,43 @@
+name: keycloak-dev
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_data:/var/lib/postgresql/data/pgdata
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5
+    command: ["start-dev",
+              "--spi-theme-static-max-age=1",
+              "--spi-theme-cache-themes=false",
+              "--spi-theme-cache-templates=false",
+              "--hostname", "http://localhost:8080",
+              "--hostname-backchannel-dynamic", "true"]
+    environment:
+      KC_DB_VENDOR: POSTGRES
+      KC_DB_URL_HOST: postgres
+      KC_DB: postgres
+      KC_DB_URL_DATABASE: "postgres"
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: Pa55w0rd
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    volumes:
+      - type: bind
+        source: ../themes/custom
+        target: /opt/keycloak/themes/custom
+volumes:
+  pg_data:

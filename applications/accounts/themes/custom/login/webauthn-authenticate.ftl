@@ -25,7 +25,6 @@
         </form>
     </#if>
 
-    <script type="text/javascript" src="${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="${url.resourcesPath}/js/base64url.js"></script>
     <script type="text/javascript">
 
@@ -84,18 +83,18 @@
                 let authenticatorData = result.response.authenticatorData;
                 let signature = result.response.signature;
 
-                $("#clientDataJSON").val(base64url.encode(new Uint8Array(clientDataJSON), { pad: false }));
-                $("#authenticatorData").val(base64url.encode(new Uint8Array(authenticatorData), { pad: false }));
-                $("#signature").val(base64url.encode(new Uint8Array(signature), { pad: false }));
-                $("#credentialId").val(result.id);
+                document.getElementById("clientDataJSON").value = base64url.encode(new Uint8Array(clientDataJSON), { pad: false });
+                document.getElementById("authenticatorData").value = base64url.encode(new Uint8Array(authenticatorData), { pad: false });
+                document.getElementById("signature").value = base64url.encode(new Uint8Array(signature), { pad: false });
+                document.getElementById("credentialId").value = result.id;
                 if(result.response.userHandle) {
-                    $("#userHandle").val(base64url.encode(new Uint8Array(result.response.userHandle), { pad: false }));
+                    document.getElementById("userHandle").value = base64url.encode(new Uint8Array(result.response.userHandle), { pad: false });
                 }
-                $("#webauth").submit();
+                document.getElementById("webauth").submit();
             })
             .catch((err) => {
-                $("#error").val(err);
-                $("#webauth").submit();
+                document.getElementById("error").value = err;
+                document.getElementById("webauth").submit();
             })
         ;
     }

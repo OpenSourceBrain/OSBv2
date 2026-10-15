@@ -155,10 +155,55 @@ paths:
                 - users
             parameters:
                 -
-                    name: query_string
-                    description: query filter
+                    name: search
+                    description: 'free-text filter on username, first/last name or email'
                     schema:
                         type: string
+                    in: query
+                    required: false
+                -
+                    name: page
+                    description: '1-based page number'
+                    schema:
+                        type: integer
+                        default: 1
+                        minimum: 1
+                    in: query
+                    required: false
+                -
+                    name: per_page
+                    description: page size
+                    schema:
+                        type: integer
+                        default: 20
+                        minimum: 1
+                    in: query
+                    required: false
+                -
+                    name: sort_by
+                    description: field to sort by
+                    schema:
+                        type: string
+                        enum:
+                            - registration_date
+                            - username
+                            - name
+                            - first_name
+                            - last_name
+                            - workspaces
+                            - repositories
+                        default: registration_date
+                    in: query
+                    required: false
+                -
+                    name: sort_order
+                    description: sort direction
+                    schema:
+                        type: string
+                        enum:
+                            - asc
+                            - desc
+                        default: desc
                     in: query
                     required: false
             responses:
@@ -172,6 +217,27 @@ paths:
                                         type: array
                                         items:
                                             $ref: '#/components/schemas/User'
+                                    pagination:
+                                        type: object
+                                        properties:
+                                            total:
+                                                type: integer
+                                            current_page:
+                                                type: integer
+                                            per_page:
+                                                type: integer
+                                            number_of_pages:
+                                                type: integer
+                                    counts:
+                                        description: 'Workspace/repository counts for the returned users, keyed by user id. Omitted entries mean the counts are unknown.'
+                                        type: object
+                                        additionalProperties:
+                                            type: object
+                                            properties:
+                                                workspaces:
+                                                    type: integer
+                                                repositories:
+                                                    type: integer
                     description: Get list of users
             security:
                 -

@@ -13,7 +13,6 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import FolderIcon from "@mui/icons-material/Folder";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import IconButton from "@mui/material/IconButton";
-import makeStyles from '@mui/styles/makeStyles';
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -36,13 +35,14 @@ import {
   bgLightestShade,
   bgInputs,
 } from "../../theme";
+import { Tooltip } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   textField: {
-    borderRadius: 4,
-    marginTop: theme.spacing(2),
+    borderRadius: 1,
+    mt: 2,
     backgroundColor: bgLightestShade,
-    padding: theme.spacing(2),
+    p: 2,
     "& .MuiSvgIcon-root": {
       width: "1.25rem",
       borderRadius: 0,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     "& .MuiInputBase-input": {
-      padding: theme.spacing(0),
+      p: 0,
       fontSize: ".88rem",
     },
   },
@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
         color: linkColor,
       },
     },
-
     "& .MuiListItemIcon-root": {
       minWidth: 1,
     },
@@ -91,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "bold",
       color: bgInputs,
     },
-
     "& .MuiAvatar-root": {
       width: "1.5rem",
       borderRadius: 0,
@@ -102,10 +100,10 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
     "& .MuiListItem-root": {
-      borderRadius: 4,
+      borderRadius: 1,
       padding: 0,
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
+      pl: 2,
+      pr: 2,
       "&:first-child": {
         "& .flex-grow-1": {
           borderTop: 0,
@@ -152,9 +150,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-}));
+};
 
-export default ({
+export const RepositoryResourceBrowser = ({
   repository,
   checkedChanged,
   backAction,
@@ -173,10 +171,25 @@ export default ({
   >([repository.contextResources]);
   const [filter, setFilter] = React.useState<string>();
   const handleToggle = (value: any) => () => "";
-  const classes = useStyles();
   React.useEffect(() => {
     setChecked({});
   }, [refresh]);
+
+  const resourcesList = React.useMemo(() => currentPath
+    ?.slice(-1)[0]
+    ?.children?.filter(
+      (e) => !filter || e.resource.name.toLowerCase().includes(filter)
+    ), [currentPath, filter]);
+
+  const resourcesListObject: {
+    [id: string]: RepositoryResourceNode | any;
+  } = React.useMemo(() => resourcesList?.reduce(
+      (resourcesListObject, item) => {
+        resourcesListObject[item.resource.path] = item.children;
+        return resourcesListObject;
+      },
+      {}
+    ), [resourcesList]);
 
   const onCheck = (isChecked: boolean, value: RepositoryResourceNode) => {
     if (isChecked) {
@@ -192,6 +205,17 @@ export default ({
     setCurrentPath([...currentPath, n]);
   };
 
+  const onSelectAllFiles = (value) => {
+    if (value) {
+      setChecked(resourcesListObject);
+      checkedChanged(resourcesList);
+    } else {
+      setChecked({});
+      checkedChanged([])
+    }
+  };
+
+
   return <>
     <Box display="flex" flex-direction="row" alignItems="center">
       {backAction && (
@@ -202,7 +226,7 @@ export default ({
       <Breadcrumbs
         separator={<Avatar src="/images/separator.svg" />}
         aria-label="breadcrumb"
-        className={classes.breadcrumbs}
+        sx={styles.breadcrumbs}
       >
         {currentPath.map((element, i) => (
           <Link
@@ -220,7 +244,7 @@ export default ({
       id="standard-start-adornment"
       fullWidth={true}
       placeholder="Search"
-      className={classes.textField}
+      sx={styles.textField}
       onChange={(e) => setFilter(e.target.value.toLowerCase())}
       InputProps={{
         startAdornment: (
@@ -232,8 +256,41 @@ export default ({
 
     <Box mt={1} className="scrollbar">
       <TableContainer component="div">
-        <Table className={classes.list} aria-label="repository resources">
+        <Table sx={styles.list} aria-label="repository resources">
+        <TableHead
+                                  sx={{
+                                    "& .MuiTableCell-root": {
+                                      padding: "8px 8px 8px 0",
+            
+                                      "& .MuiButtonBase-root": {
+                                        padding: 0,
+                                      },
+                                    },
+                                  }}
+                                >
+                                  <TableRow>
+                                    <TableCell padding="checkbox" sx={{ width: "1.8em" }}>
+                                      <Tooltip title="Select all files">
+                                      <Checkbox
+                                        color="primary"
+                                        checked={
+                                          Object.keys(checked)?.length ===
+                                          currentPath.slice(-1)[0].children?.length
+                                        }
+                                        onChange={(e) => onSelectAllFiles(e.target.checked)}
+                                        inputProps={{
+                                          "aria-label": "select all files",
+                                        }}
+                                      />
+                                      </Tooltip>
+                                    </TableCell>
+                                    <TableCell component="th">
+                                      <Typography component="p">Name</Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
           <TableBody>
+            
             {currentPath
               .slice(-1)[0]
               .children.filter(
@@ -321,3 +378,5 @@ export default ({
     </Box>
   </>;
 };
+
+export default RepositoryResourceBrowser;

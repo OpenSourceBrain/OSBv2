@@ -21,8 +21,8 @@ body {
 .login-pf-logo {
   background: url(../img/osb-logo.png) no-repeat;
   background-size: contain;
-  width: 132px;
-  height: 20px;
+  width: 155px;
+  height: 28px;
   cursor: pointer;
 }
 
@@ -353,7 +353,7 @@ div.kc-logo-text span {
   margin-bottom: 20px;
 }
 
-.login-pf-header span:last-child {
+.login-register-link div span {
   margin: 0 0 0 11px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 400;
@@ -367,7 +367,7 @@ div.kc-logo-text span {
   outline: 0;
 }
 
-.login-pf-header span:hover {
+.login-register-link div span:hover {
   color: #fff;
 }
 

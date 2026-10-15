@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 
 interface OSBErrorBoundaryProps {
   error?: any;
+  children: React.ReactNode;
 }
 
 interface OwnState {

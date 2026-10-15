@@ -1,11 +1,8 @@
-# coding: utf-8
-
-from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from accounts_api.models.base_model_ import Model
+from accounts_api.models.base_model import Model
 from accounts_api import util
 
 
@@ -73,7 +70,7 @@ class Group(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def quotas(self):
+    def quotas(self) -> Dict[str, object]:
         """Gets the quotas of this Group.
 
           # noqa: E501
@@ -84,7 +81,7 @@ class Group(Model):
         return self._quotas
 
     @quotas.setter
-    def quotas(self, quotas):
+    def quotas(self, quotas: Dict[str, object]):
         """Sets the quotas of this Group.
 
           # noqa: E501
@@ -96,7 +93,7 @@ class Group(Model):
         self._quotas = quotas
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Gets the name of this Group.
 
           # noqa: E501
@@ -107,7 +104,7 @@ class Group(Model):
         return self._name
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str):
         """Sets the name of this Group.
 
           # noqa: E501
@@ -121,7 +118,7 @@ class Group(Model):
         self._name = name
 
     @property
-    def description(self):
+    def description(self) -> object:
         """Gets the description of this Group.
 
           # noqa: E501
@@ -132,7 +129,7 @@ class Group(Model):
         return self._description
 
     @description.setter
-    def description(self, description):
+    def description(self, description: object):
         """Sets the description of this Group.
 
           # noqa: E501
@@ -144,7 +141,7 @@ class Group(Model):
         self._description = description
 
     @property
-    def links(self):
+    def links(self) -> Dict[str, object]:
         """Gets the links of this Group.
 
           # noqa: E501
@@ -155,7 +152,7 @@ class Group(Model):
         return self._links
 
     @links.setter
-    def links(self, links):
+    def links(self, links: Dict[str, object]):
         """Sets the links of this Group.
 
           # noqa: E501
@@ -167,7 +164,7 @@ class Group(Model):
         self._links = links
 
     @property
-    def keywords(self):
+    def keywords(self) -> List[str]:
         """Gets the keywords of this Group.
 
           # noqa: E501
@@ -178,7 +175,7 @@ class Group(Model):
         return self._keywords
 
     @keywords.setter
-    def keywords(self, keywords):
+    def keywords(self, keywords: List[str]):
         """Sets the keywords of this Group.
 
           # noqa: E501
@@ -190,7 +187,7 @@ class Group(Model):
         self._keywords = keywords
 
     @property
-    def image(self):
+    def image(self) -> str:
         """Gets the image of this Group.
 
           # noqa: E501
@@ -201,7 +198,7 @@ class Group(Model):
         return self._image
 
     @image.setter
-    def image(self, image):
+    def image(self, image: str):
         """Sets the image of this Group.
 
           # noqa: E501
@@ -213,7 +210,7 @@ class Group(Model):
         self._image = image
 
     @property
-    def email(self):
+    def email(self) -> str:
         """Gets the email of this Group.
 
           # noqa: E501
@@ -224,7 +221,7 @@ class Group(Model):
         return self._email
 
     @email.setter
-    def email(self, email):
+    def email(self, email: str):
         """Sets the email of this Group.
 
           # noqa: E501

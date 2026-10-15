@@ -12,9 +12,9 @@ import { bgRegular, chipTextColor } from "../../theme";
 import styled from "@mui/system/styled";
 import { debounce } from "lodash";
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
+const StyledTextField = styled(TextField)({
   backgroundColor: bgRegular,
-  padding: theme.spacing(1),
+  padding: "0.75rem",
   marginRight: "0.286rem",
   "& .MuiSvgIcon-root": {
     width: "1.25rem",
@@ -31,12 +31,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     },
   },
   "& .MuiInputBase-input": {
-    padding: theme.spacing(0),
+    padding: 0,
     fontSize: ".88rem",
     color: chipTextColor,
     fontWeight: 500,
   },
-}));
+});
 
 interface RepositoriesSearchProps {
   filterChanged: (newFilter: string) => void;

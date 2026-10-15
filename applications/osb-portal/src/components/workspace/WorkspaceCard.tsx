@@ -14,7 +14,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 import { Workspace } from "../../types/workspace";
-import { formatDate } from "../../utils";
+import { formatDate, getUserName } from "../../utils";
 import { UserInfo } from "../../types/user";
 import { WorkspaceActionsMenu } from "..";
 import {
@@ -115,28 +115,30 @@ export const WorkspaceCard = (props: Props) => {
                 )}
               </Link>
             </Tooltip>
-            <Link
-              sx={{
-                "&:hover": {
-                  textDecoration: "underline",
-                  textDecorationColor: chipTextColor,
-                },
-              }}
-              underline="none"
-              onClick={() => navigate(`/user/${workspace.user.username}`)}
-            >
-              <Typography
-                variant="caption"
+            {workspace.user && (
+              <Link
                 sx={{
-                  fontSize: ".857rem",
-                  color: chipTextColor,
-                  lineHeight: 1.143,
+                  "&:hover": {
+                    textDecoration: "underline",
+                    textDecorationColor: chipTextColor,
+                  },
                 }}
-                mb={"4px"}
+                underline="none"
+                onClick={() => navigate(`/user/${workspace.user.username}`)}
               >
-                {workspace.user.firstName + " " + workspace.user.lastName}
-              </Typography>
-            </Link>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontSize: ".857rem",
+                    color: chipTextColor,
+                    lineHeight: 1.143,
+                  }}
+                  mb={"4px"}
+                >
+                  {getUserName(workspace.user)}
+                </Typography>
+              </Link>
+            )}
           </Box>
         </CardContent>
         <Box sx={{ padding: 1 }}>

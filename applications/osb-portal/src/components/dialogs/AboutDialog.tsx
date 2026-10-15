@@ -1,9 +1,12 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import OSBDialog from "../common/OSBDialog";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { OSBLogo } from "../icons";
+import { RootState } from "../../store/rootReducer";
+import { closeDialog } from "../../store/actions/aboutdialog";
 
 const styles = {
   paper: {
@@ -20,7 +23,7 @@ export const AboutContent = (props: any) => {
 
   return (
     <Box sx={styles.paper}>
-      <OSBLogo sx={{width: "300px", height: "auto"}} />
+      <OSBLogo sx={{ width: "300px", height: "auto" }} />
       <Box>
         <Link
           variant="h5"
@@ -57,13 +60,20 @@ export const AboutContent = (props: any) => {
         <Typography variant="body1">
           OSBv2 is being developed by the{" "}
           <Link href="http://silverlab.org/" target="_blank" underline="hover">
-            Silver Lab at University College London
+            Silver Lab
           </Link>{" "}
-          in collaboration with{" "}
+          and the{" "}
+          <Link href="http://openneuroai.org/" target="_blank" underline="hover">
+            Gleeson Lab
+          </Link>{" "}
+           at {" "}
+          <Link href="http://ucl.ac.uk/" target="_blank" underline="hover">
+            UCL
+          </Link>, in collaboration with{" "}
           <Link href="https://metacell.us" target="_blank" underline="hover">
             MetaCell
           </Link>
-          , and is funded by{" "}
+          , and has been funded by{" "}
           <Link href="https://wellcome.org/" target="_blank" underline="hover">
             Wellcome
           </Link>
@@ -109,12 +119,19 @@ export const AboutContent = (props: any) => {
   );
 };
 
-export const AboutDialog = (props: any) => {
+export const AboutDialog = () => {
+  const dispatch = useDispatch();
+  const aboutDialog = useSelector((state: RootState) => state.aboutDialog);
+  
+  const handleCloseDialog = () => {
+    dispatch(closeDialog());
+  };
+
   return (
     <OSBDialog
       title="About"
-      open={props.aboutDialog}
-      closeAction={props.closeDialog}
+      open={aboutDialog}
+      closeAction={handleCloseDialog}
     >
       <AboutContent />
     </OSBDialog>

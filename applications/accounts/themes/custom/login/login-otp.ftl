@@ -47,24 +47,30 @@
                         </div>
                     </div>
                 </form>
-            <script type="text/javascript" src="${url.resourcesCommonPath}/node_modules/jquery/dist/jquery.min.js"></script>
             <script type="text/javascript">
-            $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', function() {
                 // Card Single Select
-                $('.card-pf-view-single-select').click(function() {
-                  if ($(this).hasClass('active'))
-                  { $(this).removeClass('active'); $(this).children().removeAttr('name'); }
-                  else
-                  { $('.card-pf-view-single-select').removeClass('active');
-                  $('.card-pf-view-single-select').children().removeAttr('name');
-                  $(this).addClass('active'); $(this).children().attr('name', 'selectedCredentialId'); }
+                var cards = document.querySelectorAll('.card-pf-view-single-select');
+                cards.forEach(function(card) {
+                    card.addEventListener('click', function() {
+                        if (card.classList.contains('active')) {
+                            card.classList.remove('active');
+                            Array.from(card.children).forEach(function(c) { c.removeAttribute('name'); });
+                        } else {
+                            cards.forEach(function(other) {
+                                other.classList.remove('active');
+                                Array.from(other.children).forEach(function(c) { c.removeAttribute('name'); });
+                            });
+                            card.classList.add('active');
+                            Array.from(card.children).forEach(function(c) { c.setAttribute('name', 'selectedCredentialId'); });
+                        }
+                    });
                 });
 
-                var defaultCred = $('.card-pf-view-single-select')[0];
-                if (defaultCred) {
-                    defaultCred.click();
+                if (cards[0]) {
+                    cards[0].click();
                 }
-              });
+            });
             </script>
         </#if>
         </@layout.registrationLayout>

@@ -155,9 +155,7 @@ const RepositoryPageDetails = ({
     RepositoryResourceNode[]
   >([repository?.contextResources]);
   const [filter, setFilter] = React.useState<string>();
-  const [checked, setChecked] = React.useState<{
-    [id: string]: RepositoryResourceNode;
-  }>({});
+  const [checked, setChecked] = React.useState<Record<string, RepositoryResourceNode>>({});
   const [repositoryEditorOpen, setRepositoryEditorOpen] = React.useState(false);
 
   const canEdit = canEditRepository(user, repository);
@@ -168,7 +166,7 @@ const RepositoryPageDetails = ({
       (e) => !filter || e.resource.name.toLowerCase().includes(filter)
     );
 
-  let resourcesListObject: {[id: string]: RepositoryResourceNode} = resourcesList?.reduce(
+  const resourcesListObject: Record<string, RepositoryResourceNode | any> = resourcesList?.reduce(
     (resourcesListObject, item) => {
       resourcesListObject[item.resource.path] = item.children;
       return resourcesListObject;
@@ -325,11 +323,11 @@ const RepositoryPageDetails = ({
                 borderBottom={`1px solid ${lineColor}`}
               >
                 <Typography variant="h5">Repository preview</Typography>
-                <Link href="#" onClick={openRepoUrl} fontSize="small" sx={{display: "flex", alignItems: "center"}}>
+                <Link href="#" onClick={openRepoUrl} fontSize="small" sx={{ display: "flex", alignItems: "center" }}>
                   View on{" "}
                   {Resources[repository?.repositoryType] ||
                     repository?.repositoryType}
-                  <OpenInNewIcon fontSize="small" sx={{paddingLeft: "0.3em"}} />
+                  <OpenInNewIcon fontSize="small" sx={{ paddingLeft: "0.3em" }} />
                 </Link>
               </Box>
               <Box className="verticalFit">
@@ -438,6 +436,7 @@ const RepositoryPageDetails = ({
                     >
                       <TableRow>
                         <TableCell padding="checkbox" sx={{ width: "1.8em" }}>
+                          <Tooltip title="Select all files">
                           <Checkbox
                             color="primary"
                             checked={
@@ -446,9 +445,10 @@ const RepositoryPageDetails = ({
                             }
                             onChange={(e) => onSelectAllFiles(e.target.checked)}
                             inputProps={{
-                              "aria-label": "select all desserts",
+                              "aria-label": "select all files",
                             }}
                           />
+                          </Tooltip>
                         </TableCell>
                         <TableCell component="th">
                           <Typography component="p">Name</Typography>
@@ -575,7 +575,6 @@ const RepositoryPageDetails = ({
 
         {repositoryEditorOpen && (
           <EditRepoDialog
-            user={user}
             title="Edit repository"
             dialogOpen={repositoryEditorOpen}
             handleClose={handleCloseDialog}

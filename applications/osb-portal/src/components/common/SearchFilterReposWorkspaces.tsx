@@ -44,19 +44,19 @@ interface SearchReposWorkspacesProps {
   setLoading?: (loading: boolean) => void;
 }
 
-const StyledLabel = styled(Typography)(({ theme }) => ({
+const StyledLabel = styled(Typography)({
   color: bgInputs,
   fontWeight: 700,
   fontSize: ".88rem",
-  marginBottom: theme.spacing(1),
+  marginBottom: "0.75rem",
   display: "inline-block",
-}));
+});
 
-const StyledPopover = styled(Popover)(({ theme }) => ({
+const StyledPopover = styled(Popover)({
   "& .MuiPaper-root": {
     background: chipBg,
     minWidth: "350px !important",
-    padding: theme.spacing(3),
+    padding: 3,
     boxShadow: "0px 10px 60px rgba(0, 0, 0, 0.5)",
     "& .MuiSvgIcon-root": {
       cursor: "pointer",
@@ -68,7 +68,7 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
       paddingBottom: 0,
       marginBottom: ".88rem",
       "& .MuiSvgIcon-root": {
-        marginLeft: theme.spacing(1),
+        marginLeft: "0.75rem",
         color: paragraph,
       },
       "& .MuiInputBase-root": {
@@ -86,9 +86,9 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
       },
     },
   },
-}));
+});
 
-const StyledFilterButton = styled(Button)(({ theme }) => ({
+const StyledFilterButton = styled(Button)({
   borderRadius: "0px 8px 8px 0px",
   textTransform: "capitalize",
   boxShadow: "none",
@@ -109,7 +109,7 @@ const StyledFilterButton = styled(Button)(({ theme }) => ({
     color: chipTextColor,
     fontWeight: 500,
   },
-}));
+});
 
 export const SearchFilterReposWorkspaces = (
   props: SearchReposWorkspacesProps
@@ -138,10 +138,10 @@ export const SearchFilterReposWorkspaces = (
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let repositoryTypes = [...props?.searchFilterValues.types];
+    let repositoryTypes = [...(props?.searchFilterValues.types ?? [])];
 
     if (event.target.checked) {
-      repositoryTypes = [...props?.searchFilterValues.types, event.target.name];
+      repositoryTypes = [...(props?.searchFilterValues.types ?? []), event.target.name];
     } else {
       repositoryTypes = repositoryTypes.filter(
         (row) => row !== event.target.name

@@ -21,17 +21,64 @@ import {
 } from './';
 
 /**
- * 
+ *
+ * @export
+ * @interface Pagination
+ */
+export interface Pagination {
+    total?: number;
+    currentPage?: number;
+    perPage?: number;
+    numberOfPages?: number;
+}
+
+/**
+ *
+ * @export
+ * @interface UserResourceCounts
+ */
+export interface UserResourceCounts {
+    workspaces?: number;
+    repositories?: number;
+}
+
+/**
+ *
  * @export
  * @interface InlineResponse200
  */
 export interface InlineResponse200 {
     /**
-     * 
+     *
      * @type {Array<User>}
      * @memberof InlineResponse200
      */
     users?: Array<User>;
+    /**
+     *
+     * @type {Pagination}
+     * @memberof InlineResponse200
+     */
+    pagination?: Pagination;
+    /**
+     * Workspace/repository counts for the returned users, keyed by user id.
+     * Omitted entries mean the counts are unknown.
+     * @type {{ [key: string]: UserResourceCounts }}
+     * @memberof InlineResponse200
+     */
+    counts?: { [key: string]: UserResourceCounts };
+}
+
+export function PaginationFromJSON(json: any): Pagination {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        'total': !exists(json, 'total') ? undefined : json['total'],
+        'currentPage': !exists(json, 'current_page') ? undefined : json['current_page'],
+        'perPage': !exists(json, 'per_page') ? undefined : json['per_page'],
+        'numberOfPages': !exists(json, 'number_of_pages') ? undefined : json['number_of_pages'],
+    };
 }
 
 export function InlineResponse200FromJSON(json: any): InlineResponse200 {
@@ -43,8 +90,10 @@ export function InlineResponse200FromJSONTyped(json: any, ignoreDiscriminator: b
         return json;
     }
     return {
-        
+
         'users': !exists(json, 'users') ? undefined : ((json['users'] as Array<any>).map(UserFromJSON)),
+        'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
+        'counts': !exists(json, 'counts') ? undefined : json['counts'],
     };
 }
 
@@ -56,7 +105,7 @@ export function InlineResponse200ToJSON(value?: InlineResponse200 | null): any {
         return null;
     }
     return {
-        
+
         'users': value.users === undefined ? undefined : ((value.users as Array<any>).map(UserToJSON)),
     };
 }

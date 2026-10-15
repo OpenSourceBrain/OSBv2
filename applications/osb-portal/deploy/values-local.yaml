@@ -1,13 +1,11 @@
 harness:
   sentry: false
-  dependencies:
-    soft:
-      - accounts
-      - accounts-api
-      - common
-      - volumemanager
-      - workspaces
-      - workflows
-      - jupyterhub
-      - jupyterlab
-      - backoffice
+  # dependencies:
+  #   soft:
+  #     - accounts
+  #     - accounts-api
+  #     - workspaces
+  #     - workflows
+  #     - jupyterhub
+  #     - jupyterlab
+  #     - backoffice

@@ -18,9 +18,7 @@ import {
   bgLightest,
   bgLight,
   badgeBgLight,
-  lightWhite,
 } from "../../theme";
-import ConfirmationDialog from "../dialogs/WorkspaceConfirmDialog";
 import WorkspaceConfirmDialog from "../dialogs/WorkspaceConfirmDialog";
 
 export interface WorkspaceTemplate {
@@ -98,7 +96,7 @@ const WORKSPACE_TEMPLATES: { [id: string]: Workspace } = {
 };
 
 interface ItemProps {
-  icon: React.ElementType | React.ReactNode;
+  icon: React.ReactNode;
   title: string;
   template?: WorkspaceTemplateType | string;
   user: UserInfo;

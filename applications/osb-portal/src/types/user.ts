@@ -6,3 +6,4 @@ export interface UserInfo {
   lastName: string;
   email: string;
 }
+

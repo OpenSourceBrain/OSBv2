@@ -6,6 +6,7 @@ import { WorkspaceToolBox as workspacetoolbox } from "./workspace/NewWorkspaceTo
 import workspaceInteractions from "./workspace/drawer/WorkspaceInteractions";
 
 import { Header as header } from "./header/Header";
+import { Banner as banner } from "./header/Banner";
 import { WorkspaceDrawer as workspacedrawer } from "./workspace/drawer/WorkspaceDrawer";
 import { AboutDialog as aboutDialog } from "./dialogs/AboutDialog";
 import { MainMenu as mainMenu } from "./menu/MainMenu";
@@ -20,7 +21,7 @@ import MainDrawer from "./MainDrawer/MainDrawer";
 import { RootState } from "../store/rootReducer";
 import * as WorkspacesActions from "../store/actions/workspaces";
 import * as RepositoriesActions from "../store/actions/repositories";
-import { userLogin, userLogout, userRegister } from "../store/actions/user";
+import { userLogin, userLogout } from "../store/actions/user";
 import { toggleDrawer } from "../store/actions/drawer";
 import { setError } from "../store/actions/error";
 import { openDialog, closeDialog } from "../store/actions/aboutdialog";
@@ -65,7 +66,6 @@ const mapUserStateToProps = (state: RootState) => ({
 const dispatchUserProps = {
   login: userLogin,
   logout: userLogout,
-  register: userRegister,
 };
 
 const dispatchDrawerProps = {
@@ -99,57 +99,20 @@ const mapHomePageToProps = (state: RootState) => ({
   counter: state.workspaces?.counter,
 });
 
-const mapAboutDialogToProps = (state: RootState) => ({
-  aboutDialog: state.aboutDialog,
-});
-
-const dispatchAboutDialogProps = {
-  closeDialog,
-};
-const dispatchMainMenuProps = {
-  openDialog,
-};
-
-const mapAboutDialogAndUserToProps = (state: RootState) => ({
-  aboutDialog: state.aboutDialog,
-  user: state.user,
-});
-
-const dispatchAboutDialogAndUser = {
-  openDialog,
-  closeDialog,
-  ...dispatchUserProps,
-};
-
 export const Workspaces = connect(
   mapWorkspacesStateToProps,
   dispatchWorkspaceProps
 )(workspace);
-export const WorkspaceCard = connect(
-  mapUserStateToProps,
-  dispatchWorkspaceProps
-)(workspaceCard);
-export const HomePage = connect(
-  mapHomePageToProps,
-  dispatchTagsProps
-)(homePage);
-export const EditRepoDialog = connect(mapRepositoriesPageToProps, {
-  ...dispatchTagsProps,
-  ...dispatchRepositoriesProps,
-})(editRepoDialog);
+export const WorkspaceCard = workspaceCard;
+export const HomePage = homePage;
+export const EditRepoDialog = editRepoDialog;
 export const WorkspaceToolBox = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
 )(workspacetoolbox);
 
-export const Header = connect(mapUserStateToProps, {
-  ...dispatchUserProps,
-  ...dispatchDrawerProps,
-})(header);
-export const WorkspaceDrawer = connect(
-  mapSelectedWorkspaceStateToProps,
-  dispatchDrawerProps
-)(workspacedrawer) as any; // any to fix weird type mapping error
+export const Header = header;
+export const WorkspaceDrawer = workspacedrawer;
 export const WorkspaceInteractions = connect(
   mapUserStateToProps,
   dispatchWorkspaceProps
@@ -159,15 +122,9 @@ export const WorkspaceEditor = connect(
   dispatchTagsProps
 )(workspaceEditor);
 
-export const App = connect((state: RootState) => ({
-  error: state.error,
-  user: state.user,
-}), null)(app);
-export const AboutDialog = connect(
-  mapAboutDialogToProps,
-  dispatchAboutDialogProps
-)(aboutDialog);
-export const MainMenu = connect(null, dispatchMainMenuProps)(mainMenu);
+export const App = app;
+export const AboutDialog = aboutDialog;
+export const MainMenu = mainMenu;
 const genericDispatch = (dispatch: Dispatch) => ({
   dispatch: (action: AnyAction) => dispatch(action),
 });
@@ -175,36 +132,25 @@ export const WorkspaceFrame = connect(
   mapSelectedWorkspaceStateToProps,
   genericDispatch
 )(workspaceFrame);
-export const WorkspaceOpenPage = connect(
-  null,
-  dispatchWorkspaceProps
-)(workspaceOpenPage);
+export const WorkspaceOpenPage = workspaceOpenPage;
 export const WorkspacePage = connect(
   mapSelectedWorkspaceStateToProps,
   dispatchWorkspaceProps
 )(workspacePage);
-export const RepositoryPage = connect(mapUserStateToProps)(repositoryPage);
-export const UserPage = connect(mapUserStateToProps)(userPage);
-export const GroupsPage = connect(mapUserStateToProps)(UserGroupsPage);
+export const RepositoryPage = repositoryPage;
+export const UserPage = userPage;
+export const GroupsPage = UserGroupsPage;
 export const RepositoriesPage = connect(mapRepositoriesPageToProps, {
   ...dispatchTagsProps,
   ...dispatchRepositoriesProps,
 })(repositoriesPage);
-export const NewWorkspaceAskUser = connect(
-  null,
-  dispatchUserProps
-)(newWorkspaceAskUser);
-export const ProtectedRoute = connect(
-  mapUserStateToProps,
-  dispatchUserProps
-)(protectedRoute);
+export const NewWorkspaceAskUser = newWorkspaceAskUser;
+export const ProtectedRoute = protectedRoute;
 
-export const PageSider = connect(
-  mapAboutDialogAndUserToProps,
-  dispatchAboutDialogAndUser
-)(MainDrawer);
+// MainDrawer now uses Redux hooks for user and aboutDialog actions
+export const PageSider = MainDrawer;
 
-export const WorkspaceActionsMenu = connect(
-  mapUserStateToProps,
-  dispatchWorkspaceProps
-)(WorkspaceActionsMenuUnbound);
+export const WorkspaceActionsMenu = WorkspaceActionsMenuUnbound;
+
+// Components converted to use Redux hooks instead of connect
+export const Banner = banner;

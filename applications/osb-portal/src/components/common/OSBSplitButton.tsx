@@ -38,7 +38,9 @@ export const OSBSplitButton = (props: OSBSplitButtonProps) => {
   const anchorRef = useRef(null);
 
   useEffect(() => {
-    props.defaultSelected && setSelected(props.defaultSelected);
+    if (props.defaultSelected) {
+      setSelected(props.defaultSelected);
+    }
   }, [props.defaultSelected]);
 
   const options = Object.values(OSBApplications);

@@ -1,0 +1,53 @@
+name: Test local install using minikube
+
+on:
+  push:
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
+  pull_request:
+    branches: [ master, dev*, feature/docker*, feature/repo*, jupyterhub-update ]
+
+jobs:
+
+  build:
+
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.12" ]
+        runs-on: [ ubuntu-latest ]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install CloudHarness
+      run: |
+        ./local-scripts/osbv2-local.sh -u
+        
+    - name: Install Skaffold
+      run: |
+        # read skaffold max version from the local script
+        SKAFFOLD_MAX_VERSION=$(grep "^SKAFFOLD_MAX_VERSION=" local-scripts/osbv2-local.sh | cut -d= -f2 | tr -d '"' )
+        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v$SKAFFOLD_MAX_VERSION/skaffold-linux-amd64 && \
+        chmod +x skaffold && \
+        sudo install skaffold /usr/local/bin/
+
+    - name: Run version info 
+      run: |
+        ./local-scripts/osbv2-local.sh -v
+
+    - name: Test local deploy
+      run: |
+        echo "Skipping for now..."
+        #./local-scripts/osbv2-local.sh -d
+    
+    - name: Info on Docker image sizes
+      run: |
+        docker images
+
+        

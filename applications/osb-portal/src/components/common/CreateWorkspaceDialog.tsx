@@ -22,7 +22,7 @@ export default ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       className="createWorkspaceRepo"
-      sx={{ "& .MuiTypography-h6": {borderBottom: "none !important"} }}
+      sx={{ "& .MuiTypography-h6": { borderBottom: "none !important" } }}
     >
       
         <WorkspaceToolBox

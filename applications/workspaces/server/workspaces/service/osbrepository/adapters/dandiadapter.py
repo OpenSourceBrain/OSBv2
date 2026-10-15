@@ -210,7 +210,7 @@ class DandiAdapter:
 
         folder = re.search(".*folder=(.*)$", path).group(1)
         folder = f"{self.osbrepository.name}/{folder}"
-        downloadpath = re.search("(.*)\?folder=.*$", path).group(1)
+        downloadpath = re.search(r"(.*)\?folder=.*$", path).group(1)
         print(f"Copy task: {folder} - {downloadpath}")
 
         return workflow.create_copy_task(

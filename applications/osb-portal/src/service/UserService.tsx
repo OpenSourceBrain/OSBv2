@@ -1,18 +1,25 @@
-import Keycloak from "keycloak-js";
-
 import workspaceService from "./WorkspaceService";
 import repositoryService from "./RepositoryService";
 import groupsService from "./GroupsService"
 import { UserInfo } from "../types/user";
-import { getBaseDomain } from "../utils";
 import { Workspace } from "../types/workspace";
 import { OSBRepository } from "../apiclient/workspaces";
 import { Configuration, User } from "../apiclient/accounts";
 import * as accountsApi from "../apiclient/accounts/apis";
+import { getBaseDomain } from "@/utils";
 
-const keycloak = Keycloak("/keycloak.json");
 
 const accountsApiUri = "/proxy/accounts-api/api";
+
+// Tolerance (in seconds) applied to the token expiry check to absorb clock
+// skew between the browser and the auth server. Without it a freshly issued
+// token can be judged "expired" the instant it is minted, so a re-login
+// silently fails to take. 30s matches the usual JWT clock-tolerance default.
+const TOKEN_EXPIRY_LEEWAY_SECONDS = 30;
+
+// Where to send the user back after an auth round-trip.
+const LOGIN_REDIRECT_KEY = "osb-login-redirect";
+
 
 let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(
   new Configuration({ basePath: accountsApiUri })
@@ -20,16 +27,24 @@ let usersApi: accountsApi.UsersApi = new accountsApi.UsersApi(
 
 declare const window: any;
 
-export const initApis = (token: string) => {
-  if(token) {
+
+
+export const initApis = () => {
+  const token = getToken();
+  // Set (or clear) the token used by the jupyterhub cloudharness authenticator.
+  // Never write the literal string "null": that leaks a bogus token to the
+  // authenticator and looks like a logged-in-but-broken session.
+  if (token) {
     document.cookie = `accessToken=${token};path=/;domain=${getBaseDomain()}`;
-    repositoryService.initApis(token);
-    workspaceService.initApis(token);
-    groupsService.initApis(token);
-    usersApi = new accountsApi.UsersApi(
-      new Configuration({ basePath: accountsApiUri, accessToken: token })
-    );
+  } else {
+    clearAuthCookies();
   }
+  repositoryService.initApis(token);
+  workspaceService.initApis(token);
+  groupsService.initApis(token);
+  usersApi = new accountsApi.UsersApi(
+    new Configuration({ basePath: accountsApiUri, accessToken: token })
+  );
 
 };
 
@@ -39,14 +54,12 @@ function mapKeycloakUser(userInfo: any): UserInfo {
     firstName: userInfo.given_name,
     lastName: userInfo.family_name,
     email: userInfo.email,
-    isAdmin: isUserAdmin(),
+    isAdmin: userInfo.realm_access?.roles?.includes('administrator') || false,
     username: userInfo.preferred_username || userInfo.given_name,
   };
 }
 
-export function isUserAdmin(): boolean {
-  return keycloak.hasRealmRole("administrator");
-}
+
 
 export async function getUser(userid: string): Promise<User> {
   // Note that the keycloak username is expected
@@ -64,6 +77,35 @@ function getCookie(name): string {
     return parts.pop().split(";").shift();
   }
   return null;
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${getBaseDomain()}`;
+}
+
+function isLocalhost(): boolean {
+  return window.location.hostname.includes("localhost");
+}
+
+// Clears the auth cookies so the gatekeeper starts a clean OAuth flow. Skipped
+// on localhost where auth is proxied and cookies are managed externally.
+function clearAuthCookies() {
+  if (isLocalhost()) {
+    return;
+  }
+  deleteCookie("kc-access");
+  deleteCookie("accessToken");
+}
+
+// True when the decoded token is missing, has no expiry, or expired more than
+// the leeway ago. The leeway keeps a just-issued token valid despite clock skew.
+function isTokenExpired(decoded: any): boolean {
+  if (!decoded || !decoded.exp) {
+    return true;
+  }
+  // exp is in seconds, Date.now() is in milliseconds.
+  const currentTime = Math.floor(Date.now() / 1000);
+  return decoded.exp + TOKEN_EXPIRY_LEEWAY_SECONDS < currentTime;
 }
 
 function parseJwt(token: string) {
@@ -86,82 +128,108 @@ function parseJwt(token: string) {
 }
 
 export function getToken(): string {
-  return getCookie("accessToken");
-}
+  const token = getCookie("kc-access");
 
-export function initUser(): UserInfo {
-  const kcUser = parseJwt(getToken());
-  return mapKeycloakUser(kcUser);
-}
-
-export async function checkUser(): Promise<UserInfo> {
-  let user = null;
-
-  try {
-    let authorized;
-    await keycloak
-      .init({
-        onLoad: "check-sso",
-        silentCheckSsoRedirectUri:
-          window.location.origin + "/silent-check-sso.html",
-      })
-      .then((authenticated) => (authorized = authenticated))
-      .catch(() => console.error("Cannot connect to user authenticator."));
-
-    if (authorized) {
-      const userInfo: any = await keycloak.loadUserInfo();
-      user = mapKeycloakUser(userInfo);
-    }
-    initApis(keycloak.token);
-  } catch (err) {
-    errorCallback(err);
+  if (!token) {
     return null;
   }
 
-  const tokenUpdated = (refreshed: any) => {
-    if (refreshed) {
-      initApis(keycloak.token);
-    } else {
-      console.error("not refreshed " + new Date());
-    }
-  };
-  // set token refresh before 5 minutes
-  keycloak.onTokenExpired = () => {
-    keycloak
-      .updateToken(60)
-      .then(tokenUpdated)
-      .catch(() => {
-        console.error("Failed to refresh token " + new Date());
-      });
-  };
-  if (user) {
-    keycloak
-      .updateToken(-1)
-      .then(tokenUpdated)
-      .catch(() => {
-        console.error("Failed to refresh token " + new Date());
-      }); // activate refresh token
+  let decoded: any = null;
+  try {
+    decoded = parseJwt(token);
+  } catch {
+    // Malformed token: treat as expired so the stale cookie gets cleared below.
+    decoded = null;
   }
 
-  return user;
+  if (isTokenExpired(decoded)) {
+    clearAuthCookies();
+    return null;
+  }
+
+  return token;
 }
 
-export async function login(): Promise<UserInfo> {
-  const userInfo: any = await keycloak.login();
-  return mapKeycloakUser(userInfo);
+export function initUser(): UserInfo {
+  const token = getToken();
+
+  return mapKeycloakUser(parseJwt(token));
+}
+
+export async function login() {
+  // Drop any stale/expired auth cookies first so the gatekeeper always begins
+  // a fresh OAuth flow instead of trying to reuse an expired token — reusing a
+  // stale token is what makes re-login after expiry unreliable.
+  clearAuthCookies();
+
+  // Remember where the user was so we can return them there after auth instead
+  // of always dropping them on the home page.
+  try {
+    const returnTo = window.location.pathname + window.location.search;
+    // Only same-origin absolute paths; guard against protocol-relative ("//")
+    // to avoid an open-redirect, and don't loop back to /login.
+    if (
+      returnTo.startsWith("/") &&
+      !returnTo.startsWith("//") &&
+      returnTo !== "/login"
+    ) {
+      sessionStorage.setItem(LOGIN_REDIRECT_KEY, returnTo);
+    }
+  } catch {
+    // sessionStorage may be unavailable (e.g. private mode); ignore.
+  }
+
+  window.location.href = "/login";
+}
+
+// Consumes the path stored before an auth redirect, defaulting to home. Safe to
+// call once from the /login route to send the user back where they started.
+export function popLoginRedirect(): string {
+  try {
+    const target = sessionStorage.getItem(LOGIN_REDIRECT_KEY);
+    sessionStorage.removeItem(LOGIN_REDIRECT_KEY);
+    if (target && target.startsWith("/") && !target.startsWith("//")) {
+      return target;
+    }
+  } catch {
+    // ignore
+  }
+  return "/";
+}
+
+// Keycloak end-session URL built from the portal's /keycloak.json; null if unavailable.
+async function getKeycloakLogoutUrl(): Promise<string | null> {
+  try {
+    const response = await fetch("/keycloak.json");
+    const config = await response.json();
+    const base = `${config["auth-server-url"]}/realms/${config.realm}`;
+    const params = new URLSearchParams({
+      client_id: config.resource,
+      post_logout_redirect_uri: `${window.location.origin}/`,
+    });
+    return `${base}/protocol/openid-connect/logout?${params}`;
+  } catch {
+    return null;
+  }
 }
 
 export async function logout() {
-  return keycloak.logout();
-}
+  // Call the gatekeeper before clearing cookies: it needs them to revoke the session.
+  try {
+    await fetch("/oauth/logout", {
+      credentials: "same-origin",
+      redirect: "manual",
+    });
+  } catch {
+    // ignore network errors and carry on logging out
+  }
+  clearAuthCookies();
 
-export async function register() {
-  return keycloak.register();
+  // The gatekeeper doesn't end the Keycloak SSO session, so the next sign-in
+  // would skip the login form. Only a top-level navigation sends Keycloak its cookie.
+  const keycloakLogoutUrl = await getKeycloakLogoutUrl();
+  window.location.href = keycloakLogoutUrl || "/";
 }
-
-const errorCallback = (error: any) => {
-  initApis(null);
-};
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {
   return Boolean(user && (user.isAdmin || workspace?.userId === user.id));

@@ -38,6 +38,7 @@ import {
 } from "../../apiclient/workspaces";
 import { UserInfo } from "../../types/user";
 import searchFilter from "../../types/searchFilter";
+import { getUserName } from "../../utils";
 
 import {
   StyledShowMoreText,
@@ -115,7 +116,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell
-                        sx={{ minWidth: {md: "200px", lg: "300px"}, pl: 4 }}
+                        sx={{ minWidth: { md: "200px", lg: "300px" }, pl: 4 }}
                         component="th"
                         scope="row"
                       >
@@ -157,7 +158,7 @@ export const RepositoriesList = (props: RepositoriesProps) => {
                             }}
                               onClick={() => navigate(`/user/${row?.user?.username}`)}
                             >
-                              {row?.user?.username}
+                              {getUserName(row?.user)}
                             </Button>
                         }
                       </TableCell>}

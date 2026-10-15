@@ -10,6 +10,11 @@ from urllib.parse import parse_qs, urlparse
 
 from harness_jupyter.jupyterhub import set_key_value
 
+from chauthenticator.auth import (
+    ANONYMOUS_USER_PREFIX,
+    LEGACY_ANONYMOUS_USER_PREFIX,
+)
+
 allowed_chars = set(
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
@@ -35,10 +40,42 @@ class CookieNotFound(Exception):
     pass
 
 
+def is_anonymous_user(user: User):
+    """Whether this is a throwaway session rather than a Keycloak account.
+
+    Anonymous users have no Keycloak account, so the auth client cannot be asked:
+    the username prefix (see chauthenticator.auth) is all we have before the pod
+    exists. Real users are named after their Keycloak `sub`, a UUID, which cannot
+    start with either prefix.
+    """
+    return user.name.startswith(
+        (ANONYMOUS_USER_PREFIX, LEGACY_ANONYMOUS_USER_PREFIX))
+
+
+def pre_spawn_hook(spawner: KubeSpawner):
+    """Runs before the spawner starts, while the user volume can still be skipped.
+
+    An anonymous session gets no user volume at all: none created, none mounted.
+
+    Both halves have to be settled here. KubeSpawner creates the
+    `osb-user-<id>` claim at the top of `start()`, *before* it calls
+    `get_pod_manifest()` - so the `storage_pvc_ensure = False` in
+    `change_pod_manifest` came too late and every anonymous session left a claim
+    (and an NFS directory) behind for good. And `change_pod_manifest` only drops
+    the volume itself once it reaches its anonymous branch, which it never does
+    if it fails earlier or the app configures no `applicationHook`; doing it here
+    means no route can mount a user volume into an anonymous pod.
+    """
+    if is_anonymous_user(spawner.user):
+        log.info("Anonymous session %s: no user volume", spawner.user.name)
+        spawner.storage_pvc_ensure = False
+        spawner.volumes = []
+        spawner.volume_mounts = []
+
 
 def change_pod_manifest(self: KubeSpawner):
     """
-    Application Hook to change the manifest of the notebook image
+    Application Hook to change the manifest of the notebook pod
     before spawning it.
 
     Args:
@@ -65,7 +102,7 @@ def change_pod_manifest(self: KubeSpawner):
     def workspace_volume_is_legacy(workspace_id):
         return int(workspace_id) < self.config['apps']['jupyterhub'].get('legacyworkspacemax', 0)
 
-    appname = self.image.split('/')[-1].split(':')[0]
+    appname = self.handler.request.host.split(str(self.config['domain']))[0][0:-1]
 
     try:
         workspace_id = get_from_cookie('workspaceId')
@@ -134,7 +171,13 @@ def change_pod_manifest(self: KubeSpawner):
 
     except (CookieNotFound, UserNotFound):
         # Setup a readonly default session
-        self.pod_name = f'anonymous-{self.user.name}-{appname}'
+        # The named server (workspace + app) has to be part of the pod name: a
+        # browser now maps to a single anonymous user, so without it two
+        # workspaces opened side by side would fight over the same pod.
+        server_name = "".join(c for c in self.name if c in allowed_chars)
+        self.pod_name = '-'.join(
+            part for part in ('anonymous', self.user.name, server_name, appname)
+            if part)
         self.storage_pvc_ensure = False
         self.volumes = []
         self.volume_mounts = []
@@ -153,9 +196,9 @@ def change_pod_manifest(self: KubeSpawner):
             cpu_conf = {}
             mem_conf = {}
 
-        jh_conf = get_configuration('jupyterhub')
-        cpu_conf = {**jh_conf.singleuser["cpu"].to_dict(), **cpu_conf}
-        mem_conf = {**jh_conf.singleuser["memory"].to_dict(), **mem_conf}
+        jh_conf = get_configuration('jupyterhub').to_dict()
+        cpu_conf = {**jh_conf.get("singleuser", {}).get("cpu", {}), **cpu_conf}
+        mem_conf = {**jh_conf.get("singleuser", {}).get("memory", {}), **mem_conf}
         set_key_value(self, key="cpu_guarantee", value=cpu_conf["guarantee"])
         set_key_value(self, key="cpu_limit", value=cpu_conf["limit"])
         set_key_value(self, key="mem_guarantee",

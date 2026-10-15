@@ -47,3 +47,9 @@ models/WorkspaceResourceEntity.ts
 models/WorkspaceResourceEntityAllOf.ts
 models/index.ts
 runtime.ts
+apis/RunApi.ts
+models/WorkspaceRunRepo.ts
+models/WorkspaceRunRequest.ts
+models/WorkspaceRunResponse.ts
+models/WorkspaceRunResults.ts
+models/WorkspaceRunSetup.ts

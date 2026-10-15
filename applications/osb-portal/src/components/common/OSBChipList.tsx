@@ -1,6 +1,3 @@
-import * as React from "react";
-
-import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -13,15 +10,15 @@ interface OSBChipListProps {
   onDeleteChip: (pathOfChipToBeDeleted: string) => void;
 }
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   chipBox: {
-    paddingTop: theme.spacing(2),
+    paddingTop: 2,
     "& h6": {
       fontWeight: "bold",
       color: bgInputs,
       fontSize: "0.8rem",
       marginBottom: "5px",
-      marginLeft: theme.spacing(1),
+      marginLeft: 1,
     },
   },
   OSBChipList: {
@@ -29,16 +26,15 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     "& .MuiChip-root": {
       backgroundColor: bgLight,
-      marginBottom: theme.spacing(1),
+      marginBottom: 1,
     },
   },
   OSBChipFileExtension: {
     color: bgInputs,
   },
-}));
+};
 
-export default (props: OSBChipListProps) => {
-  const classes = useStyles();
+export const OSBChipList = (props: OSBChipListProps) => {
 
   const createChipLabel = (chipItem: RepositoryResourceNode) => {
     const splitfilename = chipItem.resource.name.split(".");
@@ -50,7 +46,7 @@ export default (props: OSBChipListProps) => {
       return (
         <>
           <Typography component="span">{filename}</Typography>
-          <Typography component="span" className={classes.OSBChipFileExtension}>
+          <Typography component="span" sx={styles.OSBChipFileExtension}>
             .{extension}
           </Typography>
         </>
@@ -65,10 +61,10 @@ export default (props: OSBChipListProps) => {
   };
 
   return (
-    <Box className={classes.chipBox}>
+    <Box sx={styles.chipBox}>
       <Typography component="h6">Files selected</Typography>
 
-      <Box className={classes.OSBChipList}>
+      <Box sx={styles.OSBChipList}>
         {props.chipItems.map((chipItem) => {
           return (
             <Chip
@@ -84,3 +80,5 @@ export default (props: OSBChipListProps) => {
     </Box>
   );
 };
+
+export default OSBChipList;

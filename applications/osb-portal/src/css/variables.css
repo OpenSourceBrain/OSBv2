@@ -1,0 +1,51 @@
+:root {
+  --primary-color: #37abc8;
+  --secondary-color: #ffffff;
+
+  --bg-lighter: #616161;
+  --bg-light: #4a4a4a;
+  --bg-regular: #434343;
+  --bg-darker: #323232;
+  --bg-dark: #3b3b3b;
+  --bg-darkest: #2c2c2c;
+  --bg-inputs: #727272;
+  --teal: #009688;
+  --purple: #9c27b0;
+  --bg-lightest: #4a4a4a;
+  --bg-lightest-shade: #3b3b3b;
+  --checkbox-color: #a8a5a5;
+
+  --text-color: white;
+  --font-color: var(--text-color);
+  --link-color: #00bcd4;
+  --paragraph: #989898;
+  --greyish-text-color: rgba(255, 255, 255, 0.8);
+  --grey: rgba(255, 255, 255, 0.3);
+
+  --radius: 5px;
+  --gutter: 20px;
+  --icon-padding: 12px;
+  --font-size-panels: 16px;
+  --input-radius: 4px;
+  --font: Inter, sans-serif;
+
+  --tab-spacing: 8px;
+
+  --header-bg: #212121;
+  --drawer-text: #a8a5a5;
+  --chip-text-color: #A8A5A5;
+  --chip-bg: #3c3c3c;
+  --light-text: #999CA0;
+  --badge-bg-light: #727272;
+  --orange-text: #F2994A;
+  --info-box-bg: #1F1F1F;
+
+  --selected-menu-item-bg: linear-gradient(90deg, rgba(55, 171, 200, 0.2) 0%, rgba(55, 171, 200, 0) 50%), #323232;
+  --dialog-box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.6), 0px 0px 1px #000000, 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
+  --workspace-item-bg: linear-gradient(90deg, rgba(60, 60, 60, 0) 17.41%, #3C3C3C 47.98%, rgba(60, 60, 60, 0) 100%);
+  --repo-page-content-bg: rgba(0, 0, 0, 0.25);
+
+  --light-white: rgba(255, 255, 255, 0.8);
+  --card-icon-fill: #989898;
+  --lighter-white: rgba(255, 255, 255, 0.24);
+}

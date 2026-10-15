@@ -24,7 +24,7 @@ const StyledPagination = styled(Pagination)(() => ({
   },
 }));
 
-export default (props: OSBPaginationProps) => {
+export const OSBPagination = (props: OSBPaginationProps) => {
   return (
     <StyledPagination
       sx={{ borderTop: props?.removeTopBorder ? 0 : `1px solid ${lineColor}` }}
@@ -36,3 +36,5 @@ export default (props: OSBPaginationProps) => {
     />
   );
 };
+
+export default OSBPagination;

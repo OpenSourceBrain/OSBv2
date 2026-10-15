@@ -29,3 +29,14 @@ singleuser:
     guarantee: 0.1G
 legacyusermax: 445
 legacyworkspacemax: 465
+hub:
+  # Control-plane sizing to sustain ~20 concurrent users. The hub coordinates
+  # auth/spawn and talks to the sqlite DB; without explicit resources it was
+  # CPU-throttled/OOM-killed under load, which surfaced downstream as 503s.
+  resources:
+    requests:
+      cpu: 0.1
+      memory: 0.5Gi
+    limits:
+      cpu: 4
+      memory: '0.5Gi'

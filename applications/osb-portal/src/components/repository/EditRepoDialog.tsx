@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -44,13 +45,15 @@ import {
   RepositoryInfo,
   Tag,
 } from "../../apiclient/workspaces";
-import { UserInfo } from "../../types/user";
+import { RootState } from "../../store/rootReducer";
 import { styled } from "@mui/system";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepositoryMarkdownViewer from "./RepositoryMarkdownViewer";
 import ThumbnailUploadArea from "../common/ThumbnailUploadArea";
 import { readFile } from "../../utils";
+import { ReactNode } from "react-markdown";
+import { refreshRepositories } from "@/store/actions/repositories";
 
 const DEFAULT_CONTEXTS = ["main", "master"];
 
@@ -60,12 +63,9 @@ interface EditRepoProps {
   handleClose: (open: boolean) => any;
   repository?: OSBRepository;
   title: string;
-  user?: UserInfo;
-  tags: Tag[];
-  refreshRepositories: () => void;
 }
 
-const RepoDialog = styled(Dialog)(({ theme }) => ({
+const RepoDialog = styled(Dialog)({
   "& .MuiPaper-root": {
     padding: 0,
     backgroundColor: bgDarker,
@@ -124,24 +124,25 @@ const RepoDialog = styled(Dialog)(({ theme }) => ({
       },
     },
   },
-}));
+}
+);
 
-const RepoButtonGroup = styled(ButtonGroup)(({ theme }) => ({
+const RepoButtonGroup = styled(ButtonGroup)({
   borderRadius: "2px",
   "& .MuiTextField-root": {
     "& .MuiInputBase-root.MuiOutlinedInput-root": {
       borderRadius: "0px 2px 2px 0px",
     },
   },
-}));
+});
 
-const Label = styled(Typography)(({ theme }) => ({
+const Label = styled(Typography)({
   fontWeight: 700,
   fontSize: "0.75rem",
   color: badgeBgLight,
   marginBottom: "0.286rem",
   lineHeight: "1.429rem",
-}));
+});
 
 const RepoSelect = styled(Select)(({ theme }) => ({
   padding: 0,
@@ -165,11 +166,11 @@ const RepoSelect = styled(Select)(({ theme }) => ({
   },
 
   "& .MuiSvgIcon-root": {
-    right: theme.spacing(1),
+    right: 1,
   },
 }));
 
-const RepoAutocomplete = styled(Autocomplete)(({ theme }) => ({
+const RepoAutocomplete = styled(Autocomplete)({
   border: 0,
   padding: 0,
   "& .MuiButtonBase-root.MuiChip-root": {
@@ -180,18 +181,20 @@ const RepoAutocomplete = styled(Autocomplete)(({ theme }) => ({
       padding: "7px",
     },
   },
-}));
+});
 
 export const EditRepoDialog = ({
   dialogOpen,
   onSubmit,
   repository = RepositoryService.EMPTY_REPOSITORY,
   title = "Add repository",
-  user,
-  tags: tagOptions,
   handleClose,
-  refreshRepositories,
 }: EditRepoProps) => {
+  // Redux hooks
+  const user = useSelector((state: RootState) => state.user);
+  const tags = useSelector((state: RootState) => state.tags);
+  const dispatch = useDispatch();
+
   const [formValues, setFormValues] = useState({
     ...repository,
     userId: user?.id,
@@ -210,49 +213,53 @@ export const EditRepoDialog = ({
     name: "",
   });
 
-  const setRepositoryTags = (tags: string[]) => {
-    const arrayOfTags: Tag[] = [];
-    tags.forEach((tag) => arrayOfTags.push({ tag }));
-    setFormValues({ ...formValues, tags: arrayOfTags });
-  };
+  const doRefreshRepositories = useCallback(() => {
+    dispatch(refreshRepositories());
+  }, [dispatch]);
+
+  const setRepositoryTags = useCallback((tags: string[]) => {
+    const arrayOfTags: Tag[] = tags.map((tag) => ({ tag }));
+    setFormValues((prevValues) => ({ ...prevValues, tags: arrayOfTags }));
+  }, []);
 
   React.useEffect(() => {
-    setFormValues({ ...repository, userId: user?.id });
-    const repositoryTags: string[] =
-      repository && repository.tags
-        ? repository.tags.map((tagObject) => tagObject.tag)
-        : [];
-    setRepositoryTags(repositoryTags);
-  }, [repository]);
+    setFormValues({
+      ...repository,
+      userId: user?.id,
+      tags: repository?.tags ?? [],
+    });
+  }, [repository, user?.id]);
 
   React.useEffect(() => {
-    if (uri) {
-      setLoading(true);
-      setError({ ...error, uri: undefined });
-      RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
-        (info: RepositoryInfo) => {
-          setContexts(info.contexts);
-          setLoading(false);
-          if(repository !== RepositoryService.EMPTY_REPOSITORY) {
-            setFormValues({
-              ...formValues,
-              tags: repository.tags || info.tags.map((tag) => ({ tag })),
-              defaultContext: repository.defaultContext ||
-                info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
-                info.contexts[0],
-              summary: repository.summary || info.summary,
-              name: repository.name || info.name,
-            });
-          }
-          setLoading(false);
-        },
-        () => {
-          setError({ ...error, uri: "Invalid url" });
-          setLoading(false);
-        }
-      );
+    if (!uri) {
+      return;
     }
-  }, [uri]);
+    setLoading(true);
+    setError((prevError) => ({ ...prevError, uri: undefined }));
+    RepositoryService.getRepositoryInfo(uri, formValues.repositoryType).then(
+      (info: RepositoryInfo) => {
+        setContexts(info.contexts);
+        if (repository !== RepositoryService.EMPTY_REPOSITORY) {
+          setFormValues((prevValues) => ({
+            ...prevValues,
+            tags: repository.tags || info.tags.map((tag) => ({ tag })),
+            defaultContext:
+              repository.defaultContext ||
+              info.contexts.find((c) => DEFAULT_CONTEXTS.includes(c)) ||
+              info.contexts[0],
+            summary: repository.summary || info.summary,
+            name: repository.name || info.name,
+          }));
+        }
+        setLoading(false);
+      },
+      () => {
+        setError((prevError) => ({ ...prevError, uri: "Invalid url" }));
+        setLoading(false);
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uri, formValues.repositoryType, repository]);
 
   const handleInput = (event: any, key: any) => {
     const value = event?.target?.value || event.text;
@@ -281,7 +288,7 @@ export const EditRepoDialog = ({
         new Blob([fileThumbnail])
       ).then(
         () => {
-          refreshRepositories();
+          doRefreshRepositories();
           // Computed fields are not updated: remove so that the repo can be merged by the caller
           Object.keys(obj).forEach((key) => obj[key] === undefined ? delete obj[key] : {}
           );
@@ -293,8 +300,7 @@ export const EditRepoDialog = ({
         });
       setThumbnail(null);
     } else {
-      setLoading(true);
-      refreshRepositories();
+      doRefreshRepositories();
     }
   }
 
@@ -578,26 +584,19 @@ export const EditRepoDialog = ({
         <Box>
           <Label>Repository tags</Label>
           <FormControl variant="outlined" fullWidth={true}>
-            <InputLabel
-              shrink={false}
-              htmlFor="repository-tags-input-element"
-              sx={{ color: paragraph }}
-            >
-              {!formValues?.tags?.length && "Select tags"}
-            </InputLabel>
             <RepoAutocomplete
               id="repository-tags-input-element"
               className="repository-tags-input-element"
               multiple={true}
               freeSolo={true}
-              options={tagOptions.map((t) => t.tag)}
+
+              options={tags.map((t) => t.tag)}
               onChange={(event, value: string[]) => setRepositoryTags(value)}
-              placeholder="Select tags"
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                   <Chip
                     variant="outlined"
-                    label={option}
+                    label={option as ReactNode}
                     {...getTagProps({ index })}
                     key={`tag-${index}`}
                   />
@@ -605,16 +604,14 @@ export const EditRepoDialog = ({
               }
               renderInput={(params) => (
                 <TextField
-                  InputProps={{ disableUnderline: true }}
                   fullWidth={true}
                   {...params}
+                  InputProps={{ ...params.InputProps, disableUnderline: true }}
+                  placeholder={formValues?.tags?.length ? undefined : "Select tags"}
                   variant="filled"
                 />
               )}
-              value={
-                formValues.tags &&
-                formValues.tags.map((tagObject) => tagObject.tag)
-              }
+              value={formValues.tags?.map((tagObject) => tagObject.tag) ?? []}
               sx={{
                 "& .MuiInputBase-root": {
                   "&:hover": {

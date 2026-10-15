@@ -1,16 +1,23 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DialogContentText from "@mui/material/DialogContentText";
+import { userLogin } from "../../store/actions/user";
 
-export const NewWorkspaceAskUser = (props: any) => {
+export const NewWorkspaceAskUser = (props: { type: string }) => {
+  const dispatch = useDispatch();
+  
   const handleUserLogin = () => {
-    props.login();
+    dispatch(userLogin());
   };
+  
   const handleSignup = () => {
-    props.register();
+    // For now, using userLogin since register action doesn't exist yet
+    // This should be replaced with proper registration action when implemented
+    dispatch(userLogin());
   };
 
   return (

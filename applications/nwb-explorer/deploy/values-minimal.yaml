@@ -1,0 +1,3 @@
+harness:
+  deployment:
+    image: osb/nwb-explorer:latest

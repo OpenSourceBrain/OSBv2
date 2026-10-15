@@ -1,4 +1,0 @@
-/src/apiclient/
-dist/
-node_modules/
-webpack*.js

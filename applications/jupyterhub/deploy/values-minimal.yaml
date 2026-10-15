@@ -3,3 +3,6 @@ harness:
     soft: [nfsserver, accounts]
     hard: []
 nfs_volumes: false
+singleuser:
+  storage:
+    type: none

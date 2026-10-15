@@ -111,3 +111,29 @@ def workspace_clone(id_, body=None):
         return "Not authorized", 401
     except NotAllowed:
         return "Not allowed", 405
+
+
+def open(id_=None, **kwargs):
+    """Prepare a workspace to be fully opened in the app iframe.
+
+    Ensures the workspace volume exists and is bound (mountable). Blocks for up
+    to 5 seconds waiting for the PVC to become ready and, if it is still not
+    ready, returns a recognizable 503 so the frontend can show a temporary error
+    instead of spawning a pod whose volume would fail to mount.
+    """
+    service = WorkspaceService()
+    # Single fetch + authorize (service.get would re-fetch the same row, and it
+    # raises NotAuthorized for a missing workspace, collapsing 404 into 401).
+    entity = service.repository.get(id_)
+    if entity is None:
+        return f"Workspace with id {id_} not found.", 404
+    if not service.is_authorized(entity):
+        return "Access to the requested resources not authorized", 401
+    workspace = service.to_dto(entity)
+
+    if not service.ensure_volume_ready(workspace, timeout=5):
+        return {
+            "error": "volume_not_ready",
+            "message": "The workspace volume is not ready yet. Please retry in a few seconds.",
+        }, 503
+    return {"status": "ready", "workspace_id": id_}, 200

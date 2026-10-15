@@ -10,11 +10,9 @@ harness:
   sentry: true
   use_services:
     - name: workspaces
-    - name: common
     - name: accounts-api
   dependencies:
     soft:
       - accounts
       - accounts-api
-      - common
       - workspaces

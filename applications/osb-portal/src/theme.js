@@ -1,17 +1,53 @@
 import { createTheme, alpha } from "@mui/material/styles";
-import lessToJs from "less-vars-to-js";
 
-import "./css/mui.less";
-import "./css/main.less";
+import "./css/mui.css";
+import "./css/main.css";
 
-// Read the less file in as string: using the raw-loader to override the default loader
-const lessFile = require("!!raw-loader!./css/variables.less").default;
-export const vars = lessToJs(lessFile, {
-  resolveVariables: true,
-  stripPrefix: true,
-});
-
-vars.gutter = vars.gutter.replace("px", "") * 1;
+// Define CSS variables as JavaScript objects for compatibility
+export const vars = {
+  primaryColor: "#37abc8",
+  secondaryColor: "#ffffff",
+  bgLighter: "#616161",
+  bgLight: "#4a4a4a",
+  bgRegular: "#434343",
+  bgDarker: "#323232",
+  bgDark: "#3b3b3b",
+  bgDarkest: "#2c2c2c",
+  bgInputs: "#727272",
+  teal: "#009688",
+  purple: "#9c27b0",
+  bgLightest: "#4a4a4a",
+  bgLightestShade: "#3b3b3b",
+  checkBoxColor: "#a8a5a5",
+  textColor: "white",
+  fontColor: "white",
+  linkColor: "#00bcd4",
+  paragraph: "#989898",
+  greyishTextColor: "rgba(255, 255, 255, 0.8)",
+  grey: "rgba(255, 255, 255, 0.3)",
+  radius: "5px",
+  gutter: 20,
+  iconPadding: "12px",
+  fontSizePanels: "16px",
+  inputRadius: "4px",
+  font: "Inter, sans-serif",
+  tabSpacing: "8px",
+  headerBg: "#212121",
+  drawerText: "#a8a5a5",
+  chipTextColor: "#A8A5A5",
+  chipBg: "#3c3c3c",
+  lightText: "#999CA0",
+  badgeBgLight: "#727272",
+  orangeText: "#F2994A",
+  infoBoxBg: "#1F1F1F",
+  selectedMenuItemBg: "linear-gradient(90deg, rgba(55, 171, 200, 0.2) 0%, rgba(55, 171, 200, 0) 50%), #323232",
+  dialogBoxShadow: "0px 10px 60px rgba(0, 0, 0, 0.6), 0px 0px 1px #000000, 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2)",
+  workspaceItemBg: "linear-gradient(90deg, rgba(60, 60, 60, 0) 17.41%, #3C3C3C 47.98%, rgba(60, 60, 60, 0) 100%)",
+  repoPageContentBg: "rgba(0, 0, 0, 0.25)",
+  lightWhite: "rgba(255, 255, 255, 0.8)",
+  cardIconFill: "#989898",
+  lighterWhite: "rgba(255, 255, 255, 0.24)",
+};
 
 export const {
   primaryColor,
@@ -376,17 +412,17 @@ const theme = {
       } },
     MuiDialogTitle: { 
       styleOverrides: { 
-        root: ({ theme }) => ({ 
+        root: { 
           borderBottom: `1px solid ${bgLightest}`,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          paddingRight: theme.spacing(3),
-          paddingLeft: theme.spacing(3),
+          paddingTop: gutter,
+          paddingBottom: gutter,
+          paddingRight: gutter * 1.5,
+          paddingLeft: gutter * 1.5,
 
-        })
+        }
       } 
     },
     MuiDialog: {
@@ -399,23 +435,23 @@ const theme = {
     },
     MuiDialogActions: {
       styleOverrides: {
-        root: ({ theme }) => ( {
+        root:  {
           backgroundColor: bgLightest,
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          paddingRight: theme.spacing(3),
-          paddingLeft: theme.spacing(3),
-        })
+          paddingTop: gutter,
+          paddingBottom: gutter,
+          paddingRight: gutter * 1.5,
+          paddingLeft: gutter * 1.5,
+        }
       }
     },
     MuiDialogContent: { 
       styleOverrides: { 
-        root: ({ theme }) => ( { 
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          paddingRight: theme.spacing(3),
-          paddingLeft: theme.spacing(3),
-        })
+        root: { 
+          paddingTop: gutter,
+          paddingBottom: gutter,
+          paddingRight: gutter * 1.5,
+          paddingLeft: gutter * 1.5,
+        }
       }
     },
     MuiCollapse: {

@@ -28,7 +28,11 @@ export interface GetUserRequest {
 }
 
 export interface GetUsersRequest {
-    queryString?: string;
+    search?: string;
+    page?: number;
+    perPage?: number;
+    sortBy?: GetUsersSortByEnum;
+    sortOrder?: GetUsersSortOrderEnum;
 }
 
 export interface UpdateUserRequest {
@@ -75,8 +79,24 @@ export class UsersApi extends runtime.BaseAPI {
     async getUsersRaw(requestParameters: GetUsersRequest): Promise<runtime.ApiResponse<InlineResponse200>> {
         const queryParameters: any = {};
 
-        if (requestParameters.queryString !== undefined) {
-            queryParameters['query_string'] = requestParameters.queryString;
+        if (requestParameters.search !== undefined) {
+            queryParameters['search'] = requestParameters.search;
+        }
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.perPage !== undefined) {
+            queryParameters['per_page'] = requestParameters.perPage;
+        }
+
+        if (requestParameters.sortBy !== undefined) {
+            queryParameters['sort_by'] = requestParameters.sortBy;
+        }
+
+        if (requestParameters.sortOrder !== undefined) {
+            queryParameters['sort_order'] = requestParameters.sortOrder;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -150,4 +170,26 @@ export class UsersApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum GetUsersSortByEnum {
+    RegistrationDate = 'registration_date',
+    Username = 'username',
+    Name = 'name',
+    FirstName = 'first_name',
+    LastName = 'last_name',
+    Workspaces = 'workspaces',
+    Repositories = 'repositories'
+}
+/**
+    * @export
+    * @enum {string}
+    */
+export enum GetUsersSortOrderEnum {
+    Asc = 'asc',
+    Desc = 'desc'
 }

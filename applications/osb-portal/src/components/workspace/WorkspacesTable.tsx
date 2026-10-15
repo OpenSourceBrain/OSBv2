@@ -32,6 +32,7 @@ import {
   StyledTableContainer,
 } from "../styled/Tables";
 import { Workspace } from "../../types/workspace";
+import { getUserName } from "../../utils";
 
 interface WorkspacesProps {
   workspaces: Workspace[];
@@ -134,7 +135,7 @@ export const WorkspacesList = (props: WorkspacesProps) => {
                           }}
                           onClick={() => navigate(`/user/${row?.user?.id}`)}
                         >
-                          {row.user.firstName + " " + row.user.lastName}
+                          {getUserName(row.user)}
                         </Button>
                       </TableCell>
                       <TableCell >

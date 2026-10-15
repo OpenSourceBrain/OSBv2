@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import makeStyles from "@mui/styles/makeStyles";
 import { Typography, Box, Button, Grid, CircularProgress } from "@mui/material";
 
 import { RepositoriesList as Repositories } from "../repository/RespositoriesTable";
@@ -16,69 +15,17 @@ import RepositoryService from "../../service/RepositoryService";
 import WorkspaceService from "../../service/WorkspaceService";
 import { Workspace, OSBApplication } from "../../types/workspace";
 import OSBDialog from "../common/OSBDialog";
-import { fontColor, bgInputs, radius, bgLight, bgDarker } from "../../theme";
+import { fontColor, bgInputs, radius } from "../../theme";
 import { RootState } from "../../store/rootReducer";
 import RepositoriesWorkspacesSearchField from "../common/RepositoriesWorkspacesSearchField";
 import WorkspaceConfirmDialog from "../dialogs/WorkspaceConfirmDialog";
 
-export interface WorkspaceTemplate {
-  title: string;
-  application: OSBApplication;
-}
-
-export enum WorkspaceTemplateType {
-  singleCell = "singleCell",
-  network = "network",
-  explorer = "explorer",
-  playground = "playground",
-}
-
-const useStyles = makeStyles((theme) => ({
-  helperDialogText: {
-    padding: `0px ${theme.spacing(1)} ${theme.spacing(1)}`,
-    fontSize: "0.9rem",
-  },
-  info: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: theme.spacing(2),
-    "& .MuiTypography-root": {
-      paddingLeft: 0,
-    },
-  },
-  repositoriesList: {
-    "& .scrollbar": {
-      borderBottomRightRadius: radius,
-      borderBottomLeftRadius: radius,
-    },
-    "& .MuiBox-root": {
-      maxHeight: "500px",
-      marginRight: theme.spacing(2),
-      marginLeft: theme.spacing(2),
-      marginTop: theme.spacing(0),
-      "& .MuiGrid-container": {
-        backgroundColor: bgLight,
-        "& .col": {
-          paddingTop: 0,
-          paddingBottom: 0,
-          marginTop: 0,
-          marginBottom: 0,
-          "& .tag": {
-            marginTop: 0,
-            marginBottom: 0,
-          },
-        },
-        "&:hover": {
-          backgroundColor: bgDarker,
-        },
-      },
-    },
-  },
+// Styles defined at module level
+const styles = {
   resourceBrowser: {
     overflow: "hidden",
     borderRadius: radius,
-    margin: theme.spacing(2),
+    margin: 2,
     "& .scrollbar": {
       overflow: "auto",
       maxHeight: "295px",
@@ -121,7 +68,52 @@ const useStyles = makeStyles((theme) => ({
       padding: "0.6rem",
     },
   },
-}));
+  infoContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 2,
+    "& .MuiTypography-root": {
+      paddingLeft: 0,
+    },
+  },
+  helperText: {
+    padding: "0px 8px 8px",
+    fontSize: "0.9rem",
+  },
+  repositoriesContainer: {
+    width: "100%",
+    maxHeight: "375px",
+    overflow: "scroll",
+    "&::-webkit-scrollbar": {
+      width: 2,
+      height: 2,
+    },
+    "& .MuiTable-root": {
+      tableLayout: 'fixed'
+    },
+    "& .MuiTypography-h5": {
+      wordWrap: 'break-word'
+    }
+  },
+  circularProgress: {
+    position: "relative" as const,
+    left: "45%",
+    margin: "10px",
+  }
+};
+
+export interface WorkspaceTemplate {
+  title: string;
+  application: OSBApplication;
+}
+
+export enum WorkspaceTemplateType {
+  singleCell = "singleCell",
+  network = "network",
+  explorer = "explorer",
+  playground = "playground",
+}
 
 export const WorkspaceFromRepository = ({
   close,
@@ -135,7 +127,6 @@ export const WorkspaceFromRepository = ({
   const [checked, setChecked] = React.useState<RepositoryResourceNode[]>([]);
 
   const user = useSelector((state: RootState) => state.user);
-  const classes = useStyles();
   const [selectedRepository, setSelectedRepository] =
     React.useState<OSBRepository>(null);
 
@@ -164,7 +155,7 @@ export const WorkspaceFromRepository = ({
   };
 
   const handleContinue = () => {
-    if (stage < Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE) setStage(stage + 1);
+    if (stage < Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE) {setStage(stage + 1);}
   };
 
   const defaultWorkspace: Workspace = {
@@ -222,16 +213,16 @@ export const WorkspaceFromRepository = ({
     };
     return repository ? (
       <>
-        <Box className={classes.resourceBrowser}>
+        <Box sx={styles.resourceBrowser}>
           <RepositoryResourceBrowser
             repository={repository}
             checkedChanged={setCheckedArray}
             backAction={handleBackAction}
           />
         </Box>
-        <Grid container={true} className={classes.info}>
+        <Grid container={true} sx={styles.infoContainer}>
           <Grid item={true}>
-            <Typography component="h6" className={classes.helperDialogText}>
+            <Typography component="h6" sx={styles.helperText}>
               Please select the files to add to your new workspace
             </Typography>
           </Grid>
@@ -251,11 +242,7 @@ export const WorkspaceFromRepository = ({
     ) : (
       <CircularProgress
         size={40}
-        style={{
-          position: "relative",
-          left: "45%",
-          margin: "10px",
-        }}
+        style={styles.circularProgress}
       />
     );
   };
@@ -318,23 +305,7 @@ export const WorkspaceFromRepository = ({
               />
             </Grid>
             <Grid item={true} xs={12} className="verticalFill">
-              <Box
-                sx={{
-                  width: "100%",
-                  maxHeight: "375px",
-                  overflow: "scroll",
-                  "&::-webkit-scrollbar": {
-                    width: 2,
-                    height: 2,
-                  },
-                  "& .MuiTable-root": {
-                    tableLayout: 'fixed'
-                  },
-                  "& .MuiTypography-h5": {
-                    wordWrap: 'break-word'
-                  }
-                }}
-              >
+              <Box sx={styles.repositoriesContainer}>
                 <Repositories
                   repositories={repositories}
                   compact={true}
@@ -363,11 +334,7 @@ export const WorkspaceFromRepository = ({
     ) : (
       <CircularProgress
         size={40}
-        style={{
-          position: "relative",
-          left: "45%",
-          margin: "10px",
-        }}
+        style={styles.circularProgress}
       />
     );
   };
@@ -385,7 +352,9 @@ export const WorkspaceFromRepository = ({
       isSuccess: false,
       showConfirmationDialog: false,
     });
-    Stage ? setStage(Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE + 1) : null
+    if (Stage) {
+      setStage(Stage.SHOW_SUCCESS_OR_ERROR_MESSAGE + 1);
+    }
     closeMainDialog(false);
   }
 
@@ -435,9 +404,9 @@ export const WorkspaceFromRepository = ({
       );
     case Stage.ERROR_NO_FILES:
       return returnDialoged(
-        <Grid container={true} className={classes.info}>
+        <Grid container={true} sx={styles.infoContainer}>
           <Grid item={true}>
-            <Typography component="h6" className={classes.helperDialogText}>
+            <Typography component="h6" sx={styles.helperText}>
               No files from this repository have been selected, and so all the
               files in the repository will be added in the workspace. Press OK
               to proceed, or press Cancel and go back and select some.

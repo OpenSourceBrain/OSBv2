@@ -13,6 +13,7 @@ from flask_cors import CORS
 
 from workspaces.config import Config
 from workspaces.database import setup_db
+from workspaces.sentry import init_sentry
 from workspaces.controllers.events import start_kafka_consumers, stop_kafka_consumers
 
 logger = cloudharness.log
@@ -39,7 +40,9 @@ def init_app(app):
 
     if not skip_dependencies:
         if app.config["ENV"] != "development":
-            cloudharness.init(Config.APP_NAME)
+            # Initialize Sentry from the app's values.yaml `sentry:` block
+            # (gated on harness.sentry) instead of the common service.
+            init_sentry(Config.APP_NAME)
         try:
             setup_db(app)
         except Exception as e:

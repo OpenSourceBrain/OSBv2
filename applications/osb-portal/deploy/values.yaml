@@ -1,6 +1,6 @@
 harness:
   subdomain: www
-  secured: false
+  secured: true
   deployment:
     auto: true
     port: 80
@@ -11,10 +11,9 @@ harness:
     - name: "keycloak"
       src: "keycloak.json"
       dst: "/usr/share/nginx/html/keycloak.json"
-  sentry: true
+  sentry: false
   use_services:
     - name: workspaces
-    - name: common
     - name: accounts-api
   dependencies:
     build:
@@ -23,8 +22,6 @@ harness:
     soft:
       - accounts
       - accounts-api
-      - common
-      - volumemanager
       - workspaces
       - workflows
       - netpyne
@@ -39,3 +36,11 @@ harness:
       smoketest: true
       ignoreRequestErrors: false
       ignoreConsoleErrors: false
+  uri_role_mapping:
+    - roles: []
+      uri: /*
+      white-listed: true
+    - uri: /login
+      roles: []
+    - uri: /workspaces/open/*
+      roles: []

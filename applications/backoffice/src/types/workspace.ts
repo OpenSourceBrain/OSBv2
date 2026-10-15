@@ -32,7 +32,7 @@ export interface ResourceType {
 export const OSBApplications: { [id: string]: OSBApplication } = {
     nwbexplorer: { name: "NWB Explorer", subdomain: "nwbexplorer" },
     netpyne: { name: "NetPyNE", subdomain: "netpyne" },
-    jupyter: { name: "JupyterLab", subdomain: "notebooks" },
+    jupyter: { name: "JupyterLab", subdomain: "lab" },
 }
 
 export const SampleResourceTypes = {

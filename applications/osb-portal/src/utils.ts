@@ -1,12 +1,48 @@
 import { OSBApplication, OSBApplications as OSBAllApplications } from "./types/workspace";
 
-declare var window: any;
+declare let window: any;
 
 export function formatDate(date: Date) {
   return date.toLocaleDateString("en-UK", {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+interface NamedUser {
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+}
+
+/**
+ * Returns a human readable name for a user, falling back to the username when
+ * the first/last name are not available. Since the move from keycloak-js to the
+ * cookie based authentication, the user object may not always be fully
+ * populated, so we must not assume firstName/lastName are present.
+ */
+export function getUserName(user?: NamedUser): string {
+  if (!user) {
+    return "";
+  }
+  const fullName = [user.firstName, user.lastName]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+  return fullName || user.username || "";
+}
+
+/**
+ * Returns the initials for a user's avatar, falling back to the first letter of
+ * the username when no first/last name are available.
+ */
+export function getUserInitials(user?: NamedUser): string {
+  if (!user) {
+    return "";
+  }
+  const initials =
+    (user.firstName?.charAt(0) || "") + (user.lastName?.charAt(0) || "");
+  return (initials || user.username?.charAt(0) || "").toUpperCase();
 }
 
 export function getBaseDomain() {
