@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -83,6 +83,7 @@ class WorkspaceResourceEntityAllOf(ModelNormal):
         return {
             'origin': (str,),  # noqa: E501
             'workspace_id': (int,),  # noqa: E501
+            'folder': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -93,6 +94,7 @@ class WorkspaceResourceEntityAllOf(ModelNormal):
     attribute_map = {
         'origin': 'origin',  # noqa: E501
         'workspace_id': 'workspace_id',  # noqa: E501
+        'folder': 'folder',  # noqa: E501
     }
 
     read_only_vars = {
@@ -138,6 +140,7 @@ class WorkspaceResourceEntityAllOf(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             origin (str): Origin data JSON formatted of the WorkspaceResource. [optional]  # noqa: E501
             workspace_id (int): workspace_id. [optional]  # noqa: E501
+            folder (str): WorkspaceResource path where the resource will stored in the pvc.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -221,6 +224,7 @@ class WorkspaceResourceEntityAllOf(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             origin (str): Origin data JSON formatted of the WorkspaceResource. [optional]  # noqa: E501
             workspace_id (int): workspace_id. [optional]  # noqa: E501
+            folder (str): WorkspaceResource path where the resource will stored in the pvc.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

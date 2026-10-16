@@ -7,7 +7,6 @@ Name | Type | Description | Notes
 **name** | **str** | WorkspaceResource name | 
 **resource_type** | [**ResourceType**](ResourceType.md) |  | 
 **id** | **int** |  | [optional] 
-**folder** | **str** | WorkspaceResource folder where the resource will stored in the pvc | [optional] 
 **status** | [**ResourceStatus**](ResourceStatus.md) |  | [optional] 
 **timestamp_created** | **datetime** | Date/time of creation of the WorkspaceResource | [optional] 
 **timestamp_updated** | **datetime** | Date/time of last updating of the WorkspaceResource | [optional] 

@@ -92,6 +92,7 @@ Class | Method | HTTP request | Description
 *RestApi* | [**tag_id_get**](docs/RestApi.md#tag_id_get) | **GET** /tag/{id} | Used to retrieve an tag from the repository.
 *RestApi* | [**tag_id_put**](docs/RestApi.md#tag_id_put) | **PUT** /tag/{id} | Update an tag in the repository.
 *RestApi* | [**tag_post**](docs/RestApi.md#tag_post) | **POST** /tag | Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
+*RestApi* | [**user_resource_counts**](docs/RestApi.md#user_resource_counts) | **GET** /user-resource-counts | Per-user workspace and repository counts (admin only).
 *RestApi* | [**volumestorage_get**](docs/RestApi.md#volumestorage_get) | **GET** /volumestorage | Used to list all available volumestorages.
 *RestApi* | [**volumestorage_id_delete**](docs/RestApi.md#volumestorage_id_delete) | **DELETE** /volumestorage/{id} | Delete an volumestorage from the repository.
 *RestApi* | [**volumestorage_id_get**](docs/RestApi.md#volumestorage_id_get) | **GET** /volumestorage/{id} | Used to retrieve an volumestorage from the repository.
@@ -106,15 +107,18 @@ Class | Method | HTTP request | Description
 *RestApi* | [**workspaceresource_id_get**](docs/RestApi.md#workspaceresource_id_get) | **GET** /workspaceresource/{id} | Used to retrieve a WorkspaceResource.
 *RestApi* | [**workspaceresource_id_put**](docs/RestApi.md#workspaceresource_id_put) | **PUT** /workspaceresource/{id} | Update the WorkspaceResource.
 *RestApi* | [**workspaceresource_post**](docs/RestApi.md#workspaceresource_post) | **POST** /workspaceresource | Used to save a WorkspaceResource to the repository.
+*RestApi* | [**workspaces_controllers_osbrepository_controller_setthumbnail**](docs/RestApi.md#workspaces_controllers_osbrepository_controller_setthumbnail) | **POST** /osbrepository/{id}/thumbnail/ | Sets the thumbnail of the workspace.
 *RestApi* | [**workspaces_controllers_workspace_controller_addimage**](docs/RestApi.md#workspaces_controllers_workspace_controller_addimage) | **POST** /workspace/{id}/gallery | Adds and image to the workspace.
 *RestApi* | [**workspaces_controllers_workspace_controller_import_resources**](docs/RestApi.md#workspaces_controllers_workspace_controller_import_resources) | **POST** /workspace/{id}/import | Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
 *RestApi* | [**workspaces_controllers_workspace_controller_setthumbnail**](docs/RestApi.md#workspaces_controllers_workspace_controller_setthumbnail) | **POST** /workspace/{id}/thumbnail | Sets the thumbnail of the workspace.
 *RestApi* | [**workspaces_controllers_workspace_controller_workspace_clone**](docs/RestApi.md#workspaces_controllers_workspace_controller_workspace_clone) | **PUT** /workspace/{id}/clone | Clones a workspace
 *RestApi* | [**workspaces_controllers_workspace_resource_controller_open**](docs/RestApi.md#workspaces_controllers_workspace_resource_controller_open) | **GET** /workspaceresource/{id}/open | Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
+*RunApi* | [**run_notebooks**](docs/RunApi.md#run_notebooks) | **POST** /workspace/{id}/run | Run notebooks of a repository on the workspace&#39;s volume (papermill in an Argo task), in the order given, after setting up what the request names (requirements, PYTHONPATH, installs). Returns at once.
 
 
 ## Documentation For Models
 
+ - [BiomodelsRepositoryResource](docs/BiomodelsRepositoryResource.md)
  - [DandiRepositoryResource](docs/DandiRepositoryResource.md)
  - [DownloadResource](docs/DownloadResource.md)
  - [FigshareRepositoryResource](docs/FigshareRepositoryResource.md)
@@ -125,6 +129,7 @@ Class | Method | HTTP request | Description
  - [InlineResponse2001](docs/InlineResponse2001.md)
  - [InlineResponse2002](docs/InlineResponse2002.md)
  - [InlineResponse2003](docs/InlineResponse2003.md)
+ - [InlineResponse2004](docs/InlineResponse2004.md)
  - [OSBRepository](docs/OSBRepository.md)
  - [OSBRepositoryAllOf](docs/OSBRepositoryAllOf.md)
  - [OSBRepositoryBase](docs/OSBRepositoryBase.md)
@@ -157,6 +162,11 @@ Class | Method | HTTP request | Description
  - [WorkspaceResourceBase](docs/WorkspaceResourceBase.md)
  - [WorkspaceResourceEntity](docs/WorkspaceResourceEntity.md)
  - [WorkspaceResourceEntityAllOf](docs/WorkspaceResourceEntityAllOf.md)
+ - [WorkspaceRunRepo](docs/WorkspaceRunRepo.md)
+ - [WorkspaceRunRequest](docs/WorkspaceRunRequest.md)
+ - [WorkspaceRunResponse](docs/WorkspaceRunResponse.md)
+ - [WorkspaceRunResults](docs/WorkspaceRunResults.md)
+ - [WorkspaceRunSetup](docs/WorkspaceRunSetup.md)
 
 
 ## Documentation For Authorization

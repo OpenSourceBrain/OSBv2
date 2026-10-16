@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -89,6 +89,7 @@ class WorkspaceResourceAllOf(ModelNormal):
         return {
             'workspace_id': (int,),  # noqa: E501
             'origin': (ResourceOrigin,),  # noqa: E501
+            'path': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -99,6 +100,7 @@ class WorkspaceResourceAllOf(ModelNormal):
     attribute_map = {
         'workspace_id': 'workspace_id',  # noqa: E501
         'origin': 'origin',  # noqa: E501
+        'path': 'path',  # noqa: E501
     }
 
     read_only_vars = {
@@ -144,6 +146,7 @@ class WorkspaceResourceAllOf(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             workspace_id (int): workspace_id. [optional]  # noqa: E501
             origin (ResourceOrigin): [optional]  # noqa: E501
+            path (str): WorkspaceResource path where the resource will stored in the pvc.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -227,6 +230,7 @@ class WorkspaceResourceAllOf(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             workspace_id (int): workspace_id. [optional]  # noqa: E501
             origin (ResourceOrigin): [optional]  # noqa: E501
+            path (str): WorkspaceResource path where the resource will stored in the pvc.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

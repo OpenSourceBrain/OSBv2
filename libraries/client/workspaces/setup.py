@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -27,11 +27,11 @@ REQUIRES = [
 setup(
     name=NAME,
     version=VERSION,
-    description="Workspaces manager API",
+    description="OSB Workspaces manager API",
     author="OpenAPI Generator community",
     author_email="team@openapitools.org",
     url="",
-    keywords=["OpenAPI", "OpenAPI-Generator", "Workspaces manager API"],
+    keywords=["OpenAPI", "OpenAPI-Generator", "OSB Workspaces manager API"],
     python_requires=">=3.6",
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),

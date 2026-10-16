@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -98,13 +98,13 @@ class WorkspaceResource(ModelComposed):
             'name': (str,),  # noqa: E501
             'resource_type': (ResourceType,),  # noqa: E501
             'id': (int,),  # noqa: E501
-            'folder': (str,),  # noqa: E501
             'status': (ResourceStatus,),  # noqa: E501
             'timestamp_created': (datetime,),  # noqa: E501
             'timestamp_updated': (datetime,),  # noqa: E501
             'timestamp_last_opened': (datetime,),  # noqa: E501
             'workspace_id': (int,),  # noqa: E501
             'origin': (ResourceOrigin,),  # noqa: E501
+            'path': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -116,13 +116,13 @@ class WorkspaceResource(ModelComposed):
         'name': 'name',  # noqa: E501
         'resource_type': 'resource_type',  # noqa: E501
         'id': 'id',  # noqa: E501
-        'folder': 'folder',  # noqa: E501
         'status': 'status',  # noqa: E501
         'timestamp_created': 'timestamp_created',  # noqa: E501
         'timestamp_updated': 'timestamp_updated',  # noqa: E501
         'timestamp_last_opened': 'timestamp_last_opened',  # noqa: E501
         'workspace_id': 'workspace_id',  # noqa: E501
         'origin': 'origin',  # noqa: E501
+        'path': 'path',  # noqa: E501
     }
 
     read_only_vars = {
@@ -167,13 +167,13 @@ class WorkspaceResource(ModelComposed):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
-            folder (str): WorkspaceResource folder where the resource will stored in the pvc. [optional]  # noqa: E501
             status (ResourceStatus): [optional]  # noqa: E501
             timestamp_created (datetime): Date/time of creation of the WorkspaceResource. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time of last updating of the WorkspaceResource. [optional]  # noqa: E501
             timestamp_last_opened (datetime): Date/time of last opening of the WorkspaceResource. [optional]  # noqa: E501
             workspace_id (int): workspace_id. [optional]  # noqa: E501
             origin (ResourceOrigin): [optional]  # noqa: E501
+            path (str): WorkspaceResource path where the resource will stored in the pvc.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -276,13 +276,13 @@ class WorkspaceResource(ModelComposed):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
-            folder (str): WorkspaceResource folder where the resource will stored in the pvc. [optional]  # noqa: E501
             status (ResourceStatus): [optional]  # noqa: E501
             timestamp_created (datetime): Date/time of creation of the WorkspaceResource. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time of last updating of the WorkspaceResource. [optional]  # noqa: E501
             timestamp_last_opened (datetime): Date/time of last opening of the WorkspaceResource. [optional]  # noqa: E501
             workspace_id (int): workspace_id. [optional]  # noqa: E501
             origin (ResourceOrigin): [optional]  # noqa: E501
+            path (str): WorkspaceResource path where the resource will stored in the pvc.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
