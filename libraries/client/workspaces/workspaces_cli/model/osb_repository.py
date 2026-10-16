@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -98,13 +98,14 @@ class OSBRepository(ModelComposed):
         lazy_import()
         return {
             'name': (str,),  # noqa: E501
-            'repository_type': (str,),  # noqa: E501
+            'repository_type': (RepositoryType,),  # noqa: E501
             'content_types': (str,),  # noqa: E501
             'uri': (str,),  # noqa: E501
             'id': (int,),  # noqa: E501
-            'summary': (str, none_type),  # noqa: E501
+            'summary': (str,),  # noqa: E501
             'auto_sync': (bool,),  # noqa: E501
             'default_context': (str,),  # noqa: E501
+            'thumbnail': (str,),  # noqa: E501
             'user_id': (str,),  # noqa: E501
             'timestamp_created': (datetime,),  # noqa: E501
             'timestamp_updated': (datetime,),  # noqa: E501
@@ -131,6 +132,7 @@ class OSBRepository(ModelComposed):
         'summary': 'summary',  # noqa: E501
         'auto_sync': 'auto_sync',  # noqa: E501
         'default_context': 'default_context',  # noqa: E501
+        'thumbnail': 'thumbnail',  # noqa: E501
         'user_id': 'user_id',  # noqa: E501
         'timestamp_created': 'timestamp_created',  # noqa: E501
         'timestamp_updated': 'timestamp_updated',  # noqa: E501
@@ -190,6 +192,7 @@ class OSBRepository(ModelComposed):
             summary (str): Summary describing the OSB Repository. [optional]  # noqa: E501
             auto_sync (bool): Auto sync of the resources. [optional] if omitted the server will use the default value of True  # noqa: E501
             default_context (str): The default branch to show for this repository. [optional]  # noqa: E501
+            thumbnail (str): [optional]  # noqa: E501
             user_id (str): OSBRepository keycloak user id, will be automatically be set to the logged in user. [optional]  # noqa: E501
             timestamp_created (datetime): Date/time the Workspace is created. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time the Workspace is last updated. [optional]  # noqa: E501
@@ -307,6 +310,7 @@ class OSBRepository(ModelComposed):
             summary (str): Summary describing the OSB Repository. [optional]  # noqa: E501
             auto_sync (bool): Auto sync of the resources. [optional] if omitted the server will use the default value of True  # noqa: E501
             default_context (str): The default branch to show for this repository. [optional]  # noqa: E501
+            thumbnail (str): [optional]  # noqa: E501
             user_id (str): OSBRepository keycloak user id, will be automatically be set to the logged in user. [optional]  # noqa: E501
             timestamp_created (datetime): Date/time the Workspace is created. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time the Workspace is last updated. [optional]  # noqa: E501

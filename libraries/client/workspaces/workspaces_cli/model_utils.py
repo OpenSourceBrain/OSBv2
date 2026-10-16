@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -1629,12 +1629,8 @@ def model_to_dict(model_instance, serialize=True):
     """
     result = {}
 
-    if isinstance(model_instance, (dict)):
-        return model_instance
-
-
     model_instances = [model_instance]
-    if hasattr(model_instance, "_composed_schemas") and model_instance._composed_schemas:
+    if model_instance._composed_schemas:
         model_instances.extend(model_instance._composed_instances)
     seen_json_attribute_names = set()
     used_fallback_python_attribute_names = set()

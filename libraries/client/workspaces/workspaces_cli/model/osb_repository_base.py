@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -88,13 +88,14 @@ class OSBRepositoryBase(ModelNormal):
         lazy_import()
         return {
             'name': (str,),  # noqa: E501
-            'repository_type': (str,),  # noqa: E501
+            'repository_type': (RepositoryType,),  # noqa: E501
             'content_types': (str,),  # noqa: E501
             'uri': (str,),  # noqa: E501
             'id': (int,),  # noqa: E501
-            'summary': (str, none_type),  # noqa: E501
+            'summary': (str,),  # noqa: E501
             'auto_sync': (bool,),  # noqa: E501
             'default_context': (str,),  # noqa: E501
+            'thumbnail': (str,),  # noqa: E501
             'user_id': (str,),  # noqa: E501
             'timestamp_created': (datetime,),  # noqa: E501
             'timestamp_updated': (datetime,),  # noqa: E501
@@ -115,6 +116,7 @@ class OSBRepositoryBase(ModelNormal):
         'summary': 'summary',  # noqa: E501
         'auto_sync': 'auto_sync',  # noqa: E501
         'default_context': 'default_context',  # noqa: E501
+        'thumbnail': 'thumbnail',  # noqa: E501
         'user_id': 'user_id',  # noqa: E501
         'timestamp_created': 'timestamp_created',  # noqa: E501
         'timestamp_updated': 'timestamp_updated',  # noqa: E501
@@ -133,7 +135,7 @@ class OSBRepositoryBase(ModelNormal):
 
         Args:
             name (str): Repository name.
-            repository_type (str):
+            repository_type (RepositoryType):
             content_types (str): List of Repository Content Types
             uri (str): URI of the repository
 
@@ -172,6 +174,7 @@ class OSBRepositoryBase(ModelNormal):
             summary (str): Summary describing the OSB Repository. [optional]  # noqa: E501
             auto_sync (bool): Auto sync of the resources. [optional] if omitted the server will use the default value of True  # noqa: E501
             default_context (str): The default branch to show for this repository. [optional]  # noqa: E501
+            thumbnail (str): [optional]  # noqa: E501
             user_id (str): OSBRepository keycloak user id, will be automatically be set to the logged in user. [optional]  # noqa: E501
             timestamp_created (datetime): Date/time the Workspace is created. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time the Workspace is last updated. [optional]  # noqa: E501
@@ -226,12 +229,13 @@ class OSBRepositoryBase(ModelNormal):
         '_visited_composed_classes',
     ])
 
+    @convert_js_args_to_python_args
     def __init__(self, name, repository_type, content_types, uri, *args, **kwargs):  # noqa: E501
         """OSBRepositoryBase - a model defined in OpenAPI
 
         Args:
             name (str): Repository name.
-            repository_type (str):
+            repository_type (RepositoryType):
             content_types (str): List of Repository Content Types
             uri (str): URI of the repository
 
@@ -270,6 +274,7 @@ class OSBRepositoryBase(ModelNormal):
             summary (str): Summary describing the OSB Repository. [optional]  # noqa: E501
             auto_sync (bool): Auto sync of the resources. [optional] if omitted the server will use the default value of True  # noqa: E501
             default_context (str): The default branch to show for this repository. [optional]  # noqa: E501
+            thumbnail (str): [optional]  # noqa: E501
             user_id (str): OSBRepository keycloak user id, will be automatically be set to the logged in user. [optional]  # noqa: E501
             timestamp_created (datetime): Date/time the Workspace is created. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time the Workspace is last updated. [optional]  # noqa: E501
@@ -310,11 +315,7 @@ class OSBRepositoryBase(ModelNormal):
                         self.additional_properties_type is None:
                 # discard variable.
                 continue
-            try:
-                setattr(self, var_name, var_value)
-            except Exception:
-
-                pass
+            setattr(self, var_name, var_value)
             if var_name in self.read_only_vars:
                 raise ApiAttributeError(f"`{var_name}` is a read-only attribute. Use `from_openapi_data` to instantiate "
                                      f"class with read only attributes.")

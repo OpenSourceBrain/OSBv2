@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -55,6 +55,7 @@ class RepositoryType(ModelSimple):
             'DANDI': "dandi",
             'FIGSHARE': "figshare",
             'GITHUB': "github",
+            'BIOMODELS': "biomodels",
         },
     }
 
@@ -112,10 +113,10 @@ class RepositoryType(ModelSimple):
         Note that value can be passed either in args or in kwargs, but not in both.
 
         Args:
-            args[0] (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", ]  # noqa: E501
+            args[0] (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", "biomodels", ]  # noqa: E501
 
         Keyword Args:
-            value (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", ]  # noqa: E501
+            value (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", "biomodels", ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -202,10 +203,10 @@ class RepositoryType(ModelSimple):
         Note that value can be passed either in args or in kwargs, but not in both.
 
         Args:
-            args[0] (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", ]  # noqa: E501
+            args[0] (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", "biomodels", ]  # noqa: E501
 
         Keyword Args:
-            value (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", ]  # noqa: E501
+            value (str): Repository type:   * dandi - DANDI repository   * figshare - FigShare repository   * github - Github repository ., must be one of ["dandi", "figshare", "github", "biomodels", ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.

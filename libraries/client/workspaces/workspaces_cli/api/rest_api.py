@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -26,6 +26,7 @@ from workspaces_cli.model.inline_response200 import InlineResponse200
 from workspaces_cli.model.inline_response2001 import InlineResponse2001
 from workspaces_cli.model.inline_response2002 import InlineResponse2002
 from workspaces_cli.model.inline_response2003 import InlineResponse2003
+from workspaces_cli.model.inline_response2004 import InlineResponse2004
 from workspaces_cli.model.osb_repository import OSBRepository
 from workspaces_cli.model.repository_info import RepositoryInfo
 from workspaces_cli.model.repository_type import RepositoryType
@@ -1677,6 +1678,112 @@ class RestApi(object):
             },
             api_client=api_client,
             callable=__tag_post
+        )
+
+        def __user_resource_counts(
+            self,
+            **kwargs
+        ):
+            """Per-user workspace and repository counts (admin only).  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.user_resource_counts(async_req=True)
+            >>> result = thread.get()
+
+
+            Keyword Args:
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (int/float/tuple): timeout setting for this request. If
+                    one number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                {str: (InlineResponse2004,)}
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            return self.call_with_http_info(**kwargs)
+
+        self.user_resource_counts = _Endpoint(
+            settings={
+                'response_type': ({str: (InlineResponse2004,)},),
+                'auth': [
+                    'bearerAuth'
+                ],
+                'endpoint_path': '/user-resource-counts',
+                'operation_id': 'user_resource_counts',
+                'http_method': 'GET',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                ],
+                'required': [],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                },
+                'attribute_map': {
+                },
+                'location_map': {
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'application/json'
+                ],
+                'content_type': [],
+            },
+            api_client=api_client,
+            callable=__user_resource_counts
         )
 
         def __volumestorage_get(
@@ -3376,6 +3483,130 @@ class RestApi(object):
             },
             api_client=api_client,
             callable=__workspaceresource_post
+        )
+
+        def __workspaces_controllers_osbrepository_controller_setthumbnail(
+            self,
+            id,
+            **kwargs
+        ):
+            """Sets the thumbnail of the workspace.  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.workspaces_controllers_osbrepository_controller_setthumbnail(id, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                id (int): Repository ID 
+
+            Keyword Args:
+                thumb_nail (file_type): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (int/float/tuple): timeout setting for this request. If
+                    one number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                None
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['id'] = \
+                id
+            return self.call_with_http_info(**kwargs)
+
+        self.workspaces_controllers_osbrepository_controller_setthumbnail = _Endpoint(
+            settings={
+                'response_type': None,
+                'auth': [
+                    'bearerAuth'
+                ],
+                'endpoint_path': '/osbrepository/{id}/thumbnail/',
+                'operation_id': 'workspaces_controllers_osbrepository_controller_setthumbnail',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'id',
+                    'thumb_nail',
+                ],
+                'required': [
+                    'id',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'id':
+                        (int,),
+                    'thumb_nail':
+                        (file_type,),
+                },
+                'attribute_map': {
+                    'id': 'id',
+                    'thumb_nail': 'thumbNail',
+                },
+                'location_map': {
+                    'id': 'path',
+                    'thumb_nail': 'form',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [],
+                'content_type': [
+                    'multipart/form-data'
+                ]
+            },
+            api_client=api_client,
+            callable=__workspaces_controllers_osbrepository_controller_setthumbnail
         )
 
         def __workspaces_controllers_workspace_controller_addimage(

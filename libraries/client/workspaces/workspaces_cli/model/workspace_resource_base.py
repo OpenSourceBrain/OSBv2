@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -92,7 +92,6 @@ class WorkspaceResourceBase(ModelNormal):
             'name': (str,),  # noqa: E501
             'resource_type': (ResourceType,),  # noqa: E501
             'id': (int,),  # noqa: E501
-            'folder': (str,),  # noqa: E501
             'status': (ResourceStatus,),  # noqa: E501
             'timestamp_created': (datetime,),  # noqa: E501
             'timestamp_updated': (datetime,),  # noqa: E501
@@ -108,7 +107,6 @@ class WorkspaceResourceBase(ModelNormal):
         'name': 'name',  # noqa: E501
         'resource_type': 'resource_type',  # noqa: E501
         'id': 'id',  # noqa: E501
-        'folder': 'folder',  # noqa: E501
         'status': 'status',  # noqa: E501
         'timestamp_created': 'timestamp_created',  # noqa: E501
         'timestamp_updated': 'timestamp_updated',  # noqa: E501
@@ -161,7 +159,6 @@ class WorkspaceResourceBase(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
-            folder (str): WorkspaceResource folder where the resource will stored in the pvc. [optional]  # noqa: E501
             status (ResourceStatus): [optional]  # noqa: E501
             timestamp_created (datetime): Date/time of creation of the WorkspaceResource. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time of last updating of the WorkspaceResource. [optional]  # noqa: E501
@@ -254,7 +251,6 @@ class WorkspaceResourceBase(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             id (int): [optional]  # noqa: E501
-            folder (str): WorkspaceResource folder where the resource will stored in the pvc. [optional]  # noqa: E501
             status (ResourceStatus): [optional]  # noqa: E501
             timestamp_created (datetime): Date/time of creation of the WorkspaceResource. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time of last updating of the WorkspaceResource. [optional]  # noqa: E501
