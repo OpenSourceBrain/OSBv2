@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -33,11 +33,9 @@ def lazy_import():
     from workspaces_cli.model.dandi_repository_resource import DandiRepositoryResource
     from workspaces_cli.model.figshare_repository_resource import FigshareRepositoryResource
     from workspaces_cli.model.git_repository_resource import GITRepositoryResource
-    from workspaces_cli.model.biomodels_repository_resource import BiomodelsRepositoryResource
     globals()['DandiRepositoryResource'] = DandiRepositoryResource
     globals()['FigshareRepositoryResource'] = FigshareRepositoryResource
     globals()['GITRepositoryResource'] = GITRepositoryResource
-    globals()['BiomodelsRepositoryResource'] = BiomodelsRepositoryResource
 
 
 class RepositoryResource(ModelComposed):
@@ -339,6 +337,5 @@ class RepositoryResource(ModelComposed):
               DandiRepositoryResource,
               FigshareRepositoryResource,
               GITRepositoryResource,
-              BiomodelsRepositoryResource,
           ],
         }

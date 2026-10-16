@@ -17,6 +17,7 @@ Method | HTTP request | Description
 [**tag_id_get**](RestApi.md#tag_id_get) | **GET** /tag/{id} | Used to retrieve an tag from the repository.
 [**tag_id_put**](RestApi.md#tag_id_put) | **PUT** /tag/{id} | Update an tag in the repository.
 [**tag_post**](RestApi.md#tag_post) | **POST** /tag | Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
+[**user_resource_counts**](RestApi.md#user_resource_counts) | **GET** /user-resource-counts | Per-user workspace and repository counts (admin only).
 [**volumestorage_get**](RestApi.md#volumestorage_get) | **GET** /volumestorage | Used to list all available volumestorages.
 [**volumestorage_id_delete**](RestApi.md#volumestorage_id_delete) | **DELETE** /volumestorage/{id} | Delete an volumestorage from the repository.
 [**volumestorage_id_get**](RestApi.md#volumestorage_id_get) | **GET** /volumestorage/{id} | Used to retrieve an volumestorage from the repository.
@@ -31,6 +32,7 @@ Method | HTTP request | Description
 [**workspaceresource_id_get**](RestApi.md#workspaceresource_id_get) | **GET** /workspaceresource/{id} | Used to retrieve a WorkspaceResource.
 [**workspaceresource_id_put**](RestApi.md#workspaceresource_id_put) | **PUT** /workspaceresource/{id} | Update the WorkspaceResource.
 [**workspaceresource_post**](RestApi.md#workspaceresource_post) | **POST** /workspaceresource | Used to save a WorkspaceResource to the repository.
+[**workspaces_controllers_osbrepository_controller_setthumbnail**](RestApi.md#workspaces_controllers_osbrepository_controller_setthumbnail) | **POST** /osbrepository/{id}/thumbnail/ | Sets the thumbnail of the workspace.
 [**workspaces_controllers_workspace_controller_addimage**](RestApi.md#workspaces_controllers_workspace_controller_addimage) | **POST** /workspace/{id}/gallery | Adds and image to the workspace.
 [**workspaces_controllers_workspace_controller_import_resources**](RestApi.md#workspaces_controllers_workspace_controller_import_resources) | **POST** /workspace/{id}/import | Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
 [**workspaces_controllers_workspace_controller_setthumbnail**](RestApi.md#workspaces_controllers_workspace_controller_setthumbnail) | **POST** /workspace/{id}/thumbnail | Sets the thumbnail of the workspace.
@@ -996,6 +998,76 @@ Name | Type | Description  | Notes
 |-------------|-------------|------------------|
 **201** | Save successful. |  -  |
 **400** | The Tag already exists. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **user_resource_counts**
+> {str: (InlineResponse2004,)} user_resource_counts()
+
+Per-user workspace and repository counts (admin only).
+
+### Example
+
+* Bearer (JWT) Authentication (bearerAuth):
+```python
+import time
+import workspaces_cli
+from workspaces_cli.api import rest_api
+from workspaces_cli.model.inline_response2004 import InlineResponse2004
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = workspaces_cli.Configuration(
+    host = "http://localhost/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): bearerAuth
+configuration = workspaces_cli.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with workspaces_cli.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = rest_api.RestApi(api_client)
+
+    # example, this endpoint has no required or optional parameters
+    try:
+        # Per-user workspace and repository counts (admin only).
+        api_response = api_instance.user_resource_counts()
+        pprint(api_response)
+    except workspaces_cli.ApiException as e:
+        print("Exception when calling RestApi->user_resource_counts: %s\n" % e)
+```
+
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**{str: (InlineResponse2004,)}**](InlineResponse2004.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Per-user workspace and repository counts. |  -  |
+**401** | The user is not authorized. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -2039,6 +2111,88 @@ Name | Type | Description  | Notes
 |-------------|-------------|------------------|
 **201** | Save successful. |  -  |
 **400** | The WorkspaceResource already exists. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **workspaces_controllers_osbrepository_controller_setthumbnail**
+> workspaces_controllers_osbrepository_controller_setthumbnail(id)
+
+Sets the thumbnail of the workspace.
+
+### Example
+
+* Bearer (JWT) Authentication (bearerAuth):
+```python
+import time
+import workspaces_cli
+from workspaces_cli.api import rest_api
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = workspaces_cli.Configuration(
+    host = "http://localhost/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): bearerAuth
+configuration = workspaces_cli.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with workspaces_cli.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = rest_api.RestApi(api_client)
+    id = 1 # int | Repository ID 
+    thumb_nail = open('/path/to/file', 'rb') # file_type |  (optional)
+
+    # example passing only required values which don't have defaults set
+    try:
+        # Sets the thumbnail of the workspace.
+        api_instance.workspaces_controllers_osbrepository_controller_setthumbnail(id)
+    except workspaces_cli.ApiException as e:
+        print("Exception when calling RestApi->workspaces_controllers_osbrepository_controller_setthumbnail: %s\n" % e)
+
+    # example passing only required values which don't have defaults set
+    # and optional values
+    try:
+        # Sets the thumbnail of the workspace.
+        api_instance.workspaces_controllers_osbrepository_controller_setthumbnail(id, thumb_nail=thumb_nail)
+    except workspaces_cli.ApiException as e:
+        print("Exception when calling RestApi->workspaces_controllers_osbrepository_controller_setthumbnail: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**| Repository ID  |
+ **thumb_nail** | **file_type**|  | [optional]
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | The repository was updated with the thumbnail. |  -  |
+**404** | The repository was not found or the thumbnail was not specified |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

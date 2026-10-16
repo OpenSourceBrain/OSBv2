@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -97,6 +97,7 @@ class OSBRepositoryEntity(ModelComposed):
             'summary': (str,),  # noqa: E501
             'auto_sync': (bool,),  # noqa: E501
             'default_context': (str,),  # noqa: E501
+            'thumbnail': (str,),  # noqa: E501
             'user_id': (str,),  # noqa: E501
             'timestamp_created': (datetime,),  # noqa: E501
             'timestamp_updated': (datetime,),  # noqa: E501
@@ -117,6 +118,7 @@ class OSBRepositoryEntity(ModelComposed):
         'summary': 'summary',  # noqa: E501
         'auto_sync': 'auto_sync',  # noqa: E501
         'default_context': 'default_context',  # noqa: E501
+        'thumbnail': 'thumbnail',  # noqa: E501
         'user_id': 'user_id',  # noqa: E501
         'timestamp_created': 'timestamp_created',  # noqa: E501
         'timestamp_updated': 'timestamp_updated',  # noqa: E501
@@ -170,6 +172,7 @@ class OSBRepositoryEntity(ModelComposed):
             summary (str): Summary describing the OSB Repository. [optional]  # noqa: E501
             auto_sync (bool): Auto sync of the resources. [optional] if omitted the server will use the default value of True  # noqa: E501
             default_context (str): The default branch to show for this repository. [optional]  # noqa: E501
+            thumbnail (str): [optional]  # noqa: E501
             user_id (str): OSBRepository keycloak user id, will be automatically be set to the logged in user. [optional]  # noqa: E501
             timestamp_created (datetime): Date/time the Workspace is created. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time the Workspace is last updated. [optional]  # noqa: E501
@@ -281,6 +284,7 @@ class OSBRepositoryEntity(ModelComposed):
             summary (str): Summary describing the OSB Repository. [optional]  # noqa: E501
             auto_sync (bool): Auto sync of the resources. [optional] if omitted the server will use the default value of True  # noqa: E501
             default_context (str): The default branch to show for this repository. [optional]  # noqa: E501
+            thumbnail (str): [optional]  # noqa: E501
             user_id (str): OSBRepository keycloak user id, will be automatically be set to the logged in user. [optional]  # noqa: E501
             timestamp_created (datetime): Date/time the Workspace is created. [optional]  # noqa: E501
             timestamp_updated (datetime): Date/time the Workspace is last updated. [optional]  # noqa: E501

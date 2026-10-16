@@ -9,17 +9,18 @@
 # import sys
 # sys.setrecursionlimit(n)
 
+from workspaces_cli.model.biomodels_repository_resource import BiomodelsRepositoryResource
 from workspaces_cli.model.dandi_repository_resource import DandiRepositoryResource
 from workspaces_cli.model.download_resource import DownloadResource
 from workspaces_cli.model.figshare_repository_resource import FigshareRepositoryResource
 from workspaces_cli.model.git_repository_resource import GITRepositoryResource
-from workspaces_cli.model.biomodels_repository_resource import BiomodelsRepositoryResource
 from workspaces_cli.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
 from workspaces_cli.model.inline_object import InlineObject
 from workspaces_cli.model.inline_response200 import InlineResponse200
 from workspaces_cli.model.inline_response2001 import InlineResponse2001
 from workspaces_cli.model.inline_response2002 import InlineResponse2002
 from workspaces_cli.model.inline_response2003 import InlineResponse2003
+from workspaces_cli.model.inline_response2004 import InlineResponse2004
 from workspaces_cli.model.osb_repository import OSBRepository
 from workspaces_cli.model.osb_repository_all_of import OSBRepositoryAllOf
 from workspaces_cli.model.osb_repository_base import OSBRepositoryBase
@@ -52,3 +53,8 @@ from workspaces_cli.model.workspace_resource_all_of import WorkspaceResourceAllO
 from workspaces_cli.model.workspace_resource_base import WorkspaceResourceBase
 from workspaces_cli.model.workspace_resource_entity import WorkspaceResourceEntity
 from workspaces_cli.model.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
+from workspaces_cli.model.workspace_run_repo import WorkspaceRunRepo
+from workspaces_cli.model.workspace_run_request import WorkspaceRunRequest
+from workspaces_cli.model.workspace_run_response import WorkspaceRunResponse
+from workspaces_cli.model.workspace_run_results import WorkspaceRunResults
+from workspaces_cli.model.workspace_run_setup import WorkspaceRunSetup
