@@ -18,6 +18,26 @@ ls -la
 echo "Git: fix permissions"
 git config --global --add safe.directory "$download_path"
 
+# a clone that died part-way (e.g. NFS I/O errors) leaves a .git without a valid HEAD;
+# clone -n checks nothing out, so that .git is the only thing in the folder.
+# Remove it so we clone again instead of "updating" a broken repository
+if [ -d .git ] && ! git --git-dir=.git rev-parse --verify -q HEAD > /dev/null; then
+  if [ "$(ls -A)" = ".git" ]; then
+    echo "Git: removing incomplete clone left by a previous run"
+    rm -rf .git
+  else
+    echo "Git: repository in ${download_path} has no valid HEAD and the folder is not empty, not touching it" >&2
+    exit 1
+  fi
+fi
+
+# locks left by a git process that was killed or hit I/O errors make every later run fail
+# ("could not lock config file"). Only remove old ones: another copy task or the user's
+# JupyterLab may be working on the same repository right now
+if [ -d .git ]; then
+  find .git -name '*.lock' -mmin +10 -print -delete
+fi
+
 # do the next command only if download path does not exist (initial clone)
 if [ ! -d "${download_path}/.git" ]; then
   echo "Git: cloning new repository branch: $branch"
@@ -105,7 +125,7 @@ else
   then
     git config --unset user.email
   else
-    git config user.name "$gitemail"
+    git config user.email "$gitemail"
   fi
 fi
 
