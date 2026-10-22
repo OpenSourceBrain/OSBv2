@@ -5,7 +5,7 @@ async-property==0.2.2
 attrs==24.2.0
 blinker==1.9.0
 cachetools==5.5.0
-certifi==2024.8.30
+certifi==2026.10.19
 cffi==1.17.1
 charset-normalizer==3.4.0
 click==8.1.7
