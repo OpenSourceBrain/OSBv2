@@ -1037,8 +1037,222 @@ paths:
             operationId: user_resource_counts
             summary: Per-user workspace and repository counts (admin only).
             x-openapi-router-controller: workspaces.controllers.admin_controller
+    /dandi/get_upload_urls:
+        post:
+            requestBody:
+                description: The file to upload, and the DANDI deployment and dandiset to upload it into.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DandiUploadUrlsRequest'
+                required: true
+            tags:
+                - dandi
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DandiUploadUrlsResponse'
+                    description: >-
+                        Upload reserved: presigned S3 part URLs the client PUTs to directly, or, when
+                        the deployment already holds this content, no parts and the existing blob_id.
+                '400':
+                    description: A missing or invalid field, or an unknown instance.
+                '401':
+                    description: Missing or invalid OSB token.
+                '403':
+                    description: The path does not belong to the caller.
+                '502':
+                    description: The DANDI deployment refused or failed the call.
+                '503':
+                    description: Uploads are not available (no key for that user, or Keycloak unreachable).
+            security:
+                -
+                    bearerAuth: []
+            operationId: get_upload_urls
+            summary: >-
+                Reserve an upload into a dandiset and return presigned part URLs. OSB builds the
+                asset path from the caller's id.
+            x-openapi-router-controller: workspaces.controllers.dandi_controller
+    /dandi/validate_upload:
+        post:
+            requestBody:
+                description: The parts the client uploaded, to complete, validate and register as an asset.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DandiValidateUploadRequest'
+                required: true
+            tags:
+                - dandi
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DandiValidateUploadResponse'
+                    description: Upload completed, validated and registered in the dandiset's draft.
+                '400':
+                    description: A missing or invalid field, or an unknown instance.
+                '401':
+                    description: Missing or invalid OSB token.
+                '403':
+                    description: The path does not belong to the caller.
+                '502':
+                    description: The DANDI deployment refused or failed the call.
+                '503':
+                    description: Uploads are not available (no key for that user, or Keycloak unreachable).
+            security:
+                -
+                    bearerAuth: []
+            operationId: validate_upload
+            summary: >-
+                Complete the multipart upload, validate the blob and register the asset in the
+                dandiset's draft.
+            x-openapi-router-controller: workspaces.controllers.dandi_controller
 components:
     schemas:
+        DandiUploadPart:
+            type: object
+            properties:
+                part_number:
+                    type: integer
+                url:
+                    type: string
+                    description: Presigned S3 URL the client PUTs this part's bytes to directly.
+        DandiUploadedPart:
+            type: object
+            properties:
+                part_number:
+                    type: integer
+                size:
+                    type: integer
+                etag:
+                    type: string
+                    description: The ETag S3 returned for this part's PUT.
+        DandiUploadUrlsRequest:
+            type: object
+            required:
+                - instance
+                - username
+                - dandiset_id
+                - filename
+                - size
+                - dandi_etag
+            properties:
+                instance:
+                    type: string
+                    enum:
+                        - dandi
+                        - dandi-sandbox
+                        - ember-dandi
+                        - ember-dandi-sandbox
+                    description: The DANDI deployment, by its dandi-cli name.
+                username:
+                    type: string
+                    minLength: 1
+                    description: >-
+                        Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must
+                        belong to that deployment.
+                dandiset_id:
+                    type: string
+                    pattern: '^[0-9]{6}$'
+                    maxLength: 6
+                    description: The dandiset to upload into, chosen by the client.
+                filename:
+                    type: string
+                    minLength: 1
+                size:
+                    type: integer
+                dandi_etag:
+                    type: string
+                    description: >-
+                        S3-multipart digest in DANDI's format (32 hex chars, a dash, the part
+                        count), computed by the client since the bytes never reach this server.
+        DandiUploadUrlsResponse:
+            type: object
+            required:
+                - dandiset_id
+                - path
+                - parts
+            properties:
+                dandiset_id:
+                    type: string
+                upload_id:
+                    type: string
+                    description: Absent when the deployment already held this content.
+                path:
+                    type: string
+                    description: Asset path, built by OSB from the caller's id.
+                parts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/DandiUploadPart'
+                blob_id:
+                    type: string
+                    description: Set only when the deployment already held this content (parts is then empty).
+        DandiValidateUploadRequest:
+            type: object
+            required:
+                - instance
+                - username
+                - dandiset_id
+                - path
+            properties:
+                instance:
+                    type: string
+                    enum:
+                        - dandi
+                        - dandi-sandbox
+                        - ember-dandi
+                        - ember-dandi-sandbox
+                    description: The DANDI deployment, by its dandi-cli name.
+                username:
+                    type: string
+                    minLength: 1
+                    description: >-
+                        Keycloak user whose DANDI_API_KEY attribute signs the upload; the key must
+                        belong to that deployment.
+                dandiset_id:
+                    type: string
+                    pattern: '^[0-9]{6}$'
+                    maxLength: 6
+                upload_id:
+                    type: string
+                    pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                    maxLength: 36
+                    description: Omitted when get_upload_urls returned a blob_id (nothing was uploaded).
+                path:
+                    type: string
+                    minLength: 1
+                    description: The path get_upload_urls returned.
+                parts:
+                    type: array
+                    description: Omitted when get_upload_urls returned a blob_id.
+                    items:
+                        $ref: '#/components/schemas/DandiUploadedPart'
+                blob_id:
+                    type: string
+                    pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                    maxLength: 36
+                    description: Echoed from get_upload_urls; when present, complete/validate are skipped.
+        DandiValidateUploadResponse:
+            type: object
+            required:
+                - asset_id
+                - asset_path
+                - download_url
+            properties:
+                asset_id:
+                    type: string
+                asset_path:
+                    type: string
+                dandiset_id:
+                    type: string
+                download_url:
+                    type: string
+                    description: Where the asset's bytes can be fetched from, e.g. by OSB's workspace import.
         WorkspaceRunRequest:
             description: What to run, how to set it up, and where its files go. All paths are relative.
             type: object
@@ -1693,6 +1907,9 @@ tags:
     -
         name: run
         description: Run notebooks in a workspace
+    -
+        name: dandi
+        description: Uploads into a DANDI deployment's dandisets (presigned URLs, completion)
     -
         name: rest
         description: rest API for Workspaces manager
