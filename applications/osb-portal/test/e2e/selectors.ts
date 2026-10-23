@@ -7,6 +7,7 @@ export const PASSWORD = "#password";
 export const LOGIN_BTN = "button.sign-in"
 export const LOGOUT_ACTION = ".logout-menu-item"
 export const LOGIN_BUTTON = "#kc-login";
+export const LOGIN_ERROR = "#input-error";
 export const ALL_YOUR_WORKSPACES_TAB = "#your-all-workspaces-tab"; 
 export const FEATURE_WORKSPACES_TAB = "#featured-tab";
 export const YOUR_WORKSPACES = '.MuiGrid-spacing-xs-1';
@@ -16,7 +17,7 @@ export const WORKSPACE_CREATION_BOX = '.MuiDialogContent-root';
 export const WORKSPACE_NAME = "#workspaceName";
 export const WORKSPACE_TAGS = 'input[class="MuiInputBase-input MuiFilledInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiFilledInput-inputAdornedEnd"]';
 export const WORKSPACE_DESCRIPTION = 'textarea[class="section-container input "]';
-export const OSB_LOGO = 'a[class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-u5zia9"]';
+export const OSB_LOGO = '.MuiToolbar-root a[href="/"]';
 export const WORKSPACE_OPTIONS_BTN = '.btn-actions';
 export const WORKSPACE_OPTIONS_LIST = 'ul[class="MuiList-root MuiMenu-list MuiList-padding"]';
 export const USER_MENU = '.user-menu-btn';

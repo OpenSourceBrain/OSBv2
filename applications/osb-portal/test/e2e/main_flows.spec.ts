@@ -216,10 +216,24 @@ describe("OSB v2 Smoke Tests", () => {
     await page.waitForSelector(selectors.USERNAME);
     await page.waitForSelector(selectors.PASSWORD);
     expect(page.url()).toContain("accounts.");
-    await page.type(selectors.USERNAME, process.env.USERNAME || "simao-osb");
+    // CI passes the user declared in deploy/values-dev.yaml (harness.accounts.users)
+    const username = process.env.USERNAME || "simao-osb";
+    await page.type(selectors.USERNAME, username);
     await page.type(selectors.PASSWORD, process.env.PASSWORD || "test1");
     await page.click(selectors.LOGIN_BUTTON);
-    await page.waitForSelector(selectors.ALL_YOUR_WORKSPACES_TAB);
+
+    // Fail with Keycloak's message (e.g. wrong credentials) rather than a timeout on the portal
+    const landed = await page.waitForSelector(
+      `${selectors.ALL_YOUR_WORKSPACES_TAB}, ${selectors.LOGIN_ERROR}`
+    );
+    const loginError = await landed.evaluate(
+      (el: HTMLElement, errorSelector: string) =>
+        el.matches(errorSelector) ? el.innerText.trim() : null,
+      selectors.LOGIN_ERROR
+    );
+    if (loginError) {
+      throw new Error(`Keycloak login failed for ${username}: ${loginError}`);
+    }
 
     await page.waitForSelector(selectors.YOUR_WORKSPACES);
   });
