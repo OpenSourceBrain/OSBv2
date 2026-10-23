@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.osb_repository import OSBRepository
-from workspaces_cli.model.pagination import Pagination
+import osb_workspaces_api
+from osb_workspaces_api.model.osb_repository import OSBRepository
+from osb_workspaces_api.model.pagination import Pagination
 globals()['OSBRepository'] = OSBRepository
 globals()['Pagination'] = Pagination
-from workspaces_cli.model.inline_response2001 import InlineResponse2001
+from osb_workspaces_api.model.inline_response2001 import InlineResponse2001
 
 
 class TestInlineResponse2001(unittest.TestCase):

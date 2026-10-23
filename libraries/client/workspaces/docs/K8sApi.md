@@ -1,4 +1,4 @@
-# workspaces_cli.K8sApi
+# osb_workspaces_api.K8sApi
 
 All URIs are relative to *http://localhost/api*
 
@@ -17,18 +17,18 @@ Test if application is healthy
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import k8s_api
+import osb_workspaces_api
+from osb_workspaces_api.api import k8s_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = k8s_api.K8sApi(api_client)
 
@@ -37,7 +37,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Test if application is healthy
         api_response = api_instance.live()
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling K8sApi->live: %s\n" % e)
 ```
 
@@ -76,18 +76,18 @@ Test if application is ready to take requests
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import k8s_api
+import osb_workspaces_api
+from osb_workspaces_api.api import k8s_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = k8s_api.K8sApi(api_client)
 
@@ -96,7 +96,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Test if application is ready to take requests
         api_response = api_instance.ready()
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling K8sApi->ready: %s\n" % e)
 ```
 

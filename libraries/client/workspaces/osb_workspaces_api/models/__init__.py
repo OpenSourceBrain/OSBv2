@@ -1,0 +1,60 @@
+# flake8: noqa
+
+# import all models into this package
+# if you have many models here with many references from one model to another this may
+# raise a RecursionError
+# to avoid this, import only the models that you directly need like:
+# from from osb_workspaces_api.model.pet import Pet
+# or import this package, but before doing it, use:
+# import sys
+# sys.setrecursionlimit(n)
+
+from osb_workspaces_api.model.biomodels_repository_resource import BiomodelsRepositoryResource
+from osb_workspaces_api.model.dandi_repository_resource import DandiRepositoryResource
+from osb_workspaces_api.model.download_resource import DownloadResource
+from osb_workspaces_api.model.figshare_repository_resource import FigshareRepositoryResource
+from osb_workspaces_api.model.git_repository_resource import GITRepositoryResource
+from osb_workspaces_api.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
+from osb_workspaces_api.model.inline_object import InlineObject
+from osb_workspaces_api.model.inline_response200 import InlineResponse200
+from osb_workspaces_api.model.inline_response2001 import InlineResponse2001
+from osb_workspaces_api.model.inline_response2002 import InlineResponse2002
+from osb_workspaces_api.model.inline_response2003 import InlineResponse2003
+from osb_workspaces_api.model.inline_response2004 import InlineResponse2004
+from osb_workspaces_api.model.osb_repository import OSBRepository
+from osb_workspaces_api.model.osb_repository_all_of import OSBRepositoryAllOf
+from osb_workspaces_api.model.osb_repository_base import OSBRepositoryBase
+from osb_workspaces_api.model.osb_repository_entity import OSBRepositoryEntity
+from osb_workspaces_api.model.pagination import Pagination
+from osb_workspaces_api.model.repository_content_type import RepositoryContentType
+from osb_workspaces_api.model.repository_info import RepositoryInfo
+from osb_workspaces_api.model.repository_resource import RepositoryResource
+from osb_workspaces_api.model.repository_resource_base import RepositoryResourceBase
+from osb_workspaces_api.model.repository_resource_base_all_of import RepositoryResourceBaseAllOf
+from osb_workspaces_api.model.repository_resource_node import RepositoryResourceNode
+from osb_workspaces_api.model.repository_type import RepositoryType
+from osb_workspaces_api.model.resource_base import ResourceBase
+from osb_workspaces_api.model.resource_origin import ResourceOrigin
+from osb_workspaces_api.model.resource_status import ResourceStatus
+from osb_workspaces_api.model.resource_type import ResourceType
+from osb_workspaces_api.model.tag import Tag
+from osb_workspaces_api.model.user import User
+from osb_workspaces_api.model.valid import Valid
+from osb_workspaces_api.model.volume_storage import VolumeStorage
+from osb_workspaces_api.model.workspace import Workspace
+from osb_workspaces_api.model.workspace_all_of import WorkspaceAllOf
+from osb_workspaces_api.model.workspace_base import WorkspaceBase
+from osb_workspaces_api.model.workspace_collaborator import WorkspaceCollaborator
+from osb_workspaces_api.model.workspace_entity import WorkspaceEntity
+from osb_workspaces_api.model.workspace_entity_all_of import WorkspaceEntityAllOf
+from osb_workspaces_api.model.workspace_image import WorkspaceImage
+from osb_workspaces_api.model.workspace_resource import WorkspaceResource
+from osb_workspaces_api.model.workspace_resource_all_of import WorkspaceResourceAllOf
+from osb_workspaces_api.model.workspace_resource_base import WorkspaceResourceBase
+from osb_workspaces_api.model.workspace_resource_entity import WorkspaceResourceEntity
+from osb_workspaces_api.model.workspace_resource_entity_all_of import WorkspaceResourceEntityAllOf
+from osb_workspaces_api.model.workspace_run_repo import WorkspaceRunRepo
+from osb_workspaces_api.model.workspace_run_request import WorkspaceRunRequest
+from osb_workspaces_api.model.workspace_run_response import WorkspaceRunResponse
+from osb_workspaces_api.model.workspace_run_results import WorkspaceRunResults
+from osb_workspaces_api.model.workspace_run_setup import WorkspaceRunSetup

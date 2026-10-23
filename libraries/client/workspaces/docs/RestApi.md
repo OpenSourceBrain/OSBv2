@@ -1,4 +1,4 @@
-# workspaces_cli.RestApi
+# osb_workspaces_api.RestApi
 
 All URIs are relative to *http://localhost/api*
 
@@ -17,6 +17,7 @@ Method | HTTP request | Description
 [**tag_id_get**](RestApi.md#tag_id_get) | **GET** /tag/{id} | Used to retrieve an tag from the repository.
 [**tag_id_put**](RestApi.md#tag_id_put) | **PUT** /tag/{id} | Update an tag in the repository.
 [**tag_post**](RestApi.md#tag_post) | **POST** /tag | Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
+[**user_resource_counts**](RestApi.md#user_resource_counts) | **GET** /user-resource-counts | Per-user workspace and repository counts (admin only).
 [**volumestorage_get**](RestApi.md#volumestorage_get) | **GET** /volumestorage | Used to list all available volumestorages.
 [**volumestorage_id_delete**](RestApi.md#volumestorage_id_delete) | **DELETE** /volumestorage/{id} | Delete an volumestorage from the repository.
 [**volumestorage_id_get**](RestApi.md#volumestorage_id_get) | **GET** /volumestorage/{id} | Used to retrieve an volumestorage from the repository.
@@ -31,6 +32,7 @@ Method | HTTP request | Description
 [**workspaceresource_id_get**](RestApi.md#workspaceresource_id_get) | **GET** /workspaceresource/{id} | Used to retrieve a WorkspaceResource.
 [**workspaceresource_id_put**](RestApi.md#workspaceresource_id_put) | **PUT** /workspaceresource/{id} | Update the WorkspaceResource.
 [**workspaceresource_post**](RestApi.md#workspaceresource_post) | **POST** /workspaceresource | Used to save a WorkspaceResource to the repository.
+[**workspaces_controllers_osbrepository_controller_setthumbnail**](RestApi.md#workspaces_controllers_osbrepository_controller_setthumbnail) | **POST** /osbrepository/{id}/thumbnail/ | Sets the thumbnail of the workspace.
 [**workspaces_controllers_workspace_controller_addimage**](RestApi.md#workspaces_controllers_workspace_controller_addimage) | **POST** /workspace/{id}/gallery | Adds and image to the workspace.
 [**workspaces_controllers_workspace_controller_import_resources**](RestApi.md#workspaces_controllers_workspace_controller_import_resources) | **POST** /workspace/{id}/import | Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
 [**workspaces_controllers_workspace_controller_setthumbnail**](RestApi.md#workspaces_controllers_workspace_controller_setthumbnail) | **POST** /workspace/{id}/thumbnail | Sets the thumbnail of the workspace.
@@ -48,12 +50,12 @@ Delete a Workspace Image from the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -63,12 +65,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | Workspace ID of the workspace
@@ -78,7 +80,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete a Workspace Image from the workspace.
         api_instance.delimage(id, image_id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->delimage: %s\n" % e)
 ```
 
@@ -121,19 +123,19 @@ Used to retrieve description for a repository.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.repository_type import RepositoryType
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.repository_type import RepositoryType
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     uri = "uri_example" # str | 
@@ -145,7 +147,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to retrieve description for a repository.
         api_response = api_instance.get_description(uri, repository_type, context)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->get_description: %s\n" % e)
 ```
 
@@ -189,20 +191,20 @@ Used to retrieve a list of contexts of a repository.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.repository_type import RepositoryType
-from workspaces_cli.model.repository_info import RepositoryInfo
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.repository_info import RepositoryInfo
+from osb_workspaces_api.model.repository_type import RepositoryType
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     uri = "uri_example" # str | 
@@ -213,7 +215,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to retrieve a list of contexts of a repository.
         api_response = api_instance.get_info(uri, repository_type)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->get_info: %s\n" % e)
 ```
 
@@ -256,19 +258,19 @@ Used to list all available repositories.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.inline_response2001 import InlineResponse2001
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.inline_response2001 import InlineResponse2001
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     page = 1 # int | The page number for starting to collect the result set. (optional) if omitted the server will use the default value of 1
@@ -284,7 +286,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to list all available repositories.
         api_response = api_instance.osbrepository_get(page=page, per_page=per_page, q=q, tags=tags, types=types, user_id=user_id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_get: %s\n" % e)
 ```
 
@@ -331,12 +333,12 @@ Delete a OSBRepository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -346,12 +348,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -361,7 +363,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete a OSBRepository.
         api_instance.osbrepository_id_delete(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_id_delete: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -369,7 +371,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete a OSBRepository.
         api_instance.osbrepository_id_delete(id, context=context)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_id_delete: %s\n" % e)
 ```
 
@@ -412,19 +414,19 @@ Used to retrieve a repository.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.osb_repository import OSBRepository
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.osb_repository import OSBRepository
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -435,7 +437,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to retrieve a repository.
         api_response = api_instance.osbrepository_id_get(id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_id_get: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -444,7 +446,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to retrieve a repository.
         api_response = api_instance.osbrepository_id_get(id, context=context)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_id_get: %s\n" % e)
 ```
 
@@ -488,13 +490,13 @@ Update a OSB repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.osb_repository import OSBRepository
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.osb_repository import OSBRepository
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -504,12 +506,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -521,7 +523,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Update a OSB repository.
         api_response = api_instance.osbrepository_id_put(id, osb_repository)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_id_put: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -530,7 +532,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Update a OSB repository.
         api_response = api_instance.osbrepository_id_put(id, osb_repository, context=context)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_id_put: %s\n" % e)
 ```
 
@@ -575,13 +577,13 @@ Used to save a OSB Repository. The user_id (keycloak user id) will be automatica
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.osb_repository import OSBRepository
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.osb_repository import OSBRepository
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -591,12 +593,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     osb_repository = OSBRepository() # OSBRepository | The OSB repository to save.
@@ -606,7 +608,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to save a OSB Repository. The user_id (keycloak user id) will be automatically filled with the current user
         api_response = api_instance.osbrepository_post(osb_repository)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->osbrepository_post: %s\n" % e)
 ```
 
@@ -648,19 +650,19 @@ Used to list all available tags.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.inline_response2003 import InlineResponse2003
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.inline_response2003 import InlineResponse2003
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     page = 1 # int | The page number for starting to collect the result set. (optional) if omitted the server will use the default value of 1
@@ -673,7 +675,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to list all available tags.
         api_response = api_instance.tag_get(page=page, per_page=per_page, q=q)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->tag_get: %s\n" % e)
 ```
 
@@ -717,12 +719,12 @@ Delete an tag from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -732,12 +734,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -746,7 +748,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete an tag from the repository.
         api_instance.tag_id_delete(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->tag_id_delete: %s\n" % e)
 ```
 
@@ -788,19 +790,19 @@ Used to retrieve an tag from the repository.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.tag import Tag
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.tag import Tag
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -810,7 +812,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to retrieve an tag from the repository.
         api_response = api_instance.tag_id_get(id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->tag_id_get: %s\n" % e)
 ```
 
@@ -853,13 +855,13 @@ Update an tag in the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.tag import Tag
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.tag import Tag
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -869,12 +871,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -888,7 +890,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Update an tag in the repository.
         api_response = api_instance.tag_id_put(id, tag)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->tag_id_put: %s\n" % e)
 ```
 
@@ -932,13 +934,13 @@ Used to save a Tag to the repository. The user_id (keycloak user id) will be aut
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.tag import Tag
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.tag import Tag
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -948,12 +950,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     tag = Tag(
@@ -966,7 +968,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to save a Tag to the repository. The user_id (keycloak user id) will be automatically filled with the current user
         api_response = api_instance.tag_post(tag)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->tag_post: %s\n" % e)
 ```
 
@@ -999,6 +1001,76 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **user_resource_counts**
+> {str: (InlineResponse2004,)} user_resource_counts()
+
+Per-user workspace and repository counts (admin only).
+
+### Example
+
+* Bearer (JWT) Authentication (bearerAuth):
+```python
+import time
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.inline_response2004 import InlineResponse2004
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = osb_workspaces_api.Configuration(
+    host = "http://localhost/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): bearerAuth
+configuration = osb_workspaces_api.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with osb_workspaces_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = rest_api.RestApi(api_client)
+
+    # example, this endpoint has no required or optional parameters
+    try:
+        # Per-user workspace and repository counts (admin only).
+        api_response = api_instance.user_resource_counts()
+        pprint(api_response)
+    except osb_workspaces_api.ApiException as e:
+        print("Exception when calling RestApi->user_resource_counts: %s\n" % e)
+```
+
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**{str: (InlineResponse2004,)}**](InlineResponse2004.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Per-user workspace and repository counts. |  -  |
+**401** | The user is not authorized. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **volumestorage_get**
 > InlineResponse2002 volumestorage_get()
 
@@ -1009,13 +1081,13 @@ Used to list all available volumestorages.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.inline_response2002 import InlineResponse2002
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.inline_response2002 import InlineResponse2002
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1025,12 +1097,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     page = 1 # int | The page number for starting to collect the result set. (optional) if omitted the server will use the default value of 1
@@ -1043,7 +1115,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to list all available volumestorages.
         api_response = api_instance.volumestorage_get(page=page, per_page=per_page, q=q)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->volumestorage_get: %s\n" % e)
 ```
 
@@ -1087,12 +1159,12 @@ Delete an volumestorage from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1102,12 +1174,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1116,7 +1188,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete an volumestorage from the repository.
         api_instance.volumestorage_id_delete(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->volumestorage_id_delete: %s\n" % e)
 ```
 
@@ -1158,19 +1230,19 @@ Used to retrieve an volumestorage from the repository.
 
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.volume_storage import VolumeStorage
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.volume_storage import VolumeStorage
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient() as api_client:
+with osb_workspaces_api.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1180,7 +1252,7 @@ with workspaces_cli.ApiClient() as api_client:
         # Used to retrieve an volumestorage from the repository.
         api_response = api_instance.volumestorage_id_get(id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->volumestorage_id_get: %s\n" % e)
 ```
 
@@ -1223,13 +1295,13 @@ Update an volumestorage in the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.volume_storage import VolumeStorage
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.volume_storage import VolumeStorage
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1239,12 +1311,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1258,7 +1330,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Update an volumestorage in the repository.
         api_response = api_instance.volumestorage_id_put(id, volume_storage)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->volumestorage_id_put: %s\n" % e)
 ```
 
@@ -1302,13 +1374,13 @@ Used to save a VolumeStorage to the repository. The user_id (keycloak user id) w
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.volume_storage import VolumeStorage
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.volume_storage import VolumeStorage
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1318,12 +1390,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     volume_storage = VolumeStorage(
@@ -1336,7 +1408,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to save a VolumeStorage to the repository. The user_id (keycloak user id) will be automatically filled with the current user
         api_response = api_instance.volumestorage_post(volume_storage)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->volumestorage_post: %s\n" % e)
 ```
 
@@ -1379,13 +1451,13 @@ Used to list all available workspaces.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.inline_response200 import InlineResponse200
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.inline_response200 import InlineResponse200
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1395,12 +1467,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     page = 1 # int | The page number for starting to collect the result set. (optional) if omitted the server will use the default value of 1
@@ -1414,7 +1486,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to list all available workspaces.
         api_response = api_instance.workspace_get(page=page, per_page=per_page, q=q, tags=tags)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspace_get: %s\n" % e)
 ```
 
@@ -1459,12 +1531,12 @@ Delete a workspace from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1474,12 +1546,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1488,7 +1560,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete a workspace from the repository.
         api_instance.workspace_id_delete(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspace_id_delete: %s\n" % e)
 ```
 
@@ -1531,13 +1603,13 @@ Used to retrieve a workspace from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace import Workspace
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1547,12 +1619,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1562,7 +1634,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to retrieve a workspace from the repository.
         api_response = api_instance.workspace_id_get(id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspace_id_get: %s\n" % e)
 ```
 
@@ -1605,13 +1677,13 @@ Update a workspace in the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace import Workspace
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1621,12 +1693,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1637,7 +1709,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Update a workspace in the repository.
         api_response = api_instance.workspace_id_put(id, workspace)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspace_id_put: %s\n" % e)
 ```
 
@@ -1681,13 +1753,13 @@ Used to save a Workspace to the repository. The user_id (keycloak user id) will 
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace import Workspace
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1697,12 +1769,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     workspace = Workspace() # Workspace | The Workspace to save.
@@ -1712,7 +1784,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to save a Workspace to the repository. The user_id (keycloak user id) will be automatically filled with the current user
         api_response = api_instance.workspace_post(workspace)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspace_post: %s\n" % e)
 ```
 
@@ -1756,12 +1828,12 @@ Delete a WorkspaceResource.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1771,12 +1843,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1785,7 +1857,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Delete a WorkspaceResource.
         api_instance.workspaceresource_id_delete(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaceresource_id_delete: %s\n" % e)
 ```
 
@@ -1828,13 +1900,13 @@ Used to retrieve a WorkspaceResource.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace_resource import WorkspaceResource
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace_resource import WorkspaceResource
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1844,12 +1916,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1859,7 +1931,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to retrieve a WorkspaceResource.
         api_response = api_instance.workspaceresource_id_get(id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaceresource_id_get: %s\n" % e)
 ```
 
@@ -1902,13 +1974,13 @@ Update the WorkspaceResource.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace_resource import WorkspaceResource
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace_resource import WorkspaceResource
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1918,12 +1990,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | 
@@ -1934,7 +2006,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Update the WorkspaceResource.
         api_response = api_instance.workspaceresource_id_put(id, workspace_resource)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaceresource_id_put: %s\n" % e)
 ```
 
@@ -1978,13 +2050,13 @@ Used to save a WorkspaceResource to the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace_resource import WorkspaceResource
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace_resource import WorkspaceResource
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -1994,12 +2066,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     workspace_resource = WorkspaceResource() # WorkspaceResource | The WorkspaceResource to save.
@@ -2009,7 +2081,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Used to save a WorkspaceResource to the repository.
         api_response = api_instance.workspaceresource_post(workspace_resource)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaceresource_post: %s\n" % e)
 ```
 
@@ -2042,6 +2114,88 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **workspaces_controllers_osbrepository_controller_setthumbnail**
+> workspaces_controllers_osbrepository_controller_setthumbnail(id)
+
+Sets the thumbnail of the workspace.
+
+### Example
+
+* Bearer (JWT) Authentication (bearerAuth):
+```python
+import time
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = osb_workspaces_api.Configuration(
+    host = "http://localhost/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): bearerAuth
+configuration = osb_workspaces_api.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with osb_workspaces_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = rest_api.RestApi(api_client)
+    id = 1 # int | Repository ID 
+    thumb_nail = open('/path/to/file', 'rb') # file_type |  (optional)
+
+    # example passing only required values which don't have defaults set
+    try:
+        # Sets the thumbnail of the workspace.
+        api_instance.workspaces_controllers_osbrepository_controller_setthumbnail(id)
+    except osb_workspaces_api.ApiException as e:
+        print("Exception when calling RestApi->workspaces_controllers_osbrepository_controller_setthumbnail: %s\n" % e)
+
+    # example passing only required values which don't have defaults set
+    # and optional values
+    try:
+        # Sets the thumbnail of the workspace.
+        api_instance.workspaces_controllers_osbrepository_controller_setthumbnail(id, thumb_nail=thumb_nail)
+    except osb_workspaces_api.ApiException as e:
+        print("Exception when calling RestApi->workspaces_controllers_osbrepository_controller_setthumbnail: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**| Repository ID  |
+ **thumb_nail** | **file_type**|  | [optional]
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | The repository was updated with the thumbnail. |  -  |
+**404** | The repository was not found or the thumbnail was not specified |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **workspaces_controllers_workspace_controller_addimage**
 > workspaces_controllers_workspace_controller_addimage(id)
 
@@ -2052,12 +2206,12 @@ Adds and image to the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -2067,12 +2221,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | Workspace ID of the workspace
@@ -2082,7 +2236,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Adds and image to the workspace.
         api_instance.workspaces_controllers_workspace_controller_addimage(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_addimage: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -2090,7 +2244,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Adds and image to the workspace.
         api_instance.workspaces_controllers_workspace_controller_addimage(id, image=image)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_addimage: %s\n" % e)
 ```
 
@@ -2134,13 +2288,13 @@ Imports the ResourceOrigins into the Workspace and creates/updates the workspace
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.inline_object import InlineObject
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.inline_object import InlineObject
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -2150,12 +2304,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | Workspace ID of the workspace
@@ -2169,7 +2323,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
         api_instance.workspaces_controllers_workspace_controller_import_resources(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_import_resources: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -2177,7 +2331,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Imports the ResourceOrigins into the Workspace and creates/updates the workspace resources
         api_instance.workspaces_controllers_workspace_controller_import_resources(id, inline_object=inline_object)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_import_resources: %s\n" % e)
 ```
 
@@ -2221,12 +2375,12 @@ Sets the thumbnail of the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -2236,12 +2390,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | Workspace ID of the workspace
@@ -2251,7 +2405,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Sets the thumbnail of the workspace.
         api_instance.workspaces_controllers_workspace_controller_setthumbnail(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_setthumbnail: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -2259,7 +2413,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Sets the thumbnail of the workspace.
         api_instance.workspaces_controllers_workspace_controller_setthumbnail(id, thumb_nail=thumb_nail)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_setthumbnail: %s\n" % e)
 ```
 
@@ -2303,13 +2457,13 @@ Clones a workspace
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
-from workspaces_cli.model.workspace import Workspace
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
+from osb_workspaces_api.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -2319,12 +2473,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | Workspace ID of the workspace
@@ -2334,7 +2488,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Clones a workspace
         api_response = api_instance.workspaces_controllers_workspace_controller_workspace_clone(id)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_controller_workspace_clone: %s\n" % e)
 ```
 
@@ -2377,12 +2531,12 @@ Used to register a WorkspaceResource open action. The WorkspaceResource timestam
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import rest_api
+import osb_workspaces_api
+from osb_workspaces_api.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -2392,12 +2546,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = rest_api.RestApi(api_client)
     id = 1 # int | WorkspaceResource ID of the WorkspaceResource
@@ -2406,7 +2560,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
     try:
         # Used to register a WorkspaceResource open action. The WorkspaceResource timestamp last open will be updated
         api_instance.workspaces_controllers_workspace_resource_controller_open(id)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RestApi->workspaces_controllers_workspace_resource_controller_open: %s\n" % e)
 ```
 

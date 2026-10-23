@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -10,8 +10,8 @@
 
 import unittest
 
-import workspaces_cli
-from workspaces_cli.api.k8s_api import K8sApi  # noqa: E501
+import osb_workspaces_api
+from osb_workspaces_api.api.k8s_api import K8sApi  # noqa: E501
 
 
 class TestK8sApi(unittest.TestCase):

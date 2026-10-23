@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **summary** | **str** | Summary describing the OSB Repository | [optional] 
 **auto_sync** | **bool** | Auto sync of the resources | [optional]  if omitted the server will use the default value of True
 **default_context** | **str** | The default branch to show for this repository | [optional] 
+**thumbnail** | **str** |  | [optional] 
 **user_id** | **str** | OSBRepository keycloak user id, will be automatically be set to the logged in user | [optional] 
 **timestamp_created** | **datetime** | Date/time the Workspace is created | [optional] 
 **timestamp_updated** | **datetime** | Date/time the Workspace is last updated | [optional] 

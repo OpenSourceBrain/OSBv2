@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -10,8 +10,8 @@
 
 import unittest
 
-import workspaces_cli
-from workspaces_cli.api.rest_api import RestApi  # noqa: E501
+import osb_workspaces_api
+from osb_workspaces_api.api.rest_api import RestApi  # noqa: E501
 
 
 class TestRestApi(unittest.TestCase):
@@ -114,6 +114,13 @@ class TestRestApi(unittest.TestCase):
         """
         pass
 
+    def test_user_resource_counts(self):
+        """Test case for user_resource_counts
+
+        Per-user workspace and repository counts (admin only).  # noqa: E501
+        """
+        pass
+
     def test_volumestorage_get(self):
         """Test case for volumestorage_get
 
@@ -209,6 +216,13 @@ class TestRestApi(unittest.TestCase):
         """Test case for workspaceresource_post
 
         Used to save a WorkspaceResource to the repository.  # noqa: E501
+        """
+        pass
+
+    def test_workspaces_controllers_osbrepository_controller_setthumbnail(self):
+        """Test case for workspaces_controllers_osbrepository_controller_setthumbnail
+
+        Sets the thumbnail of the workspace.  # noqa: E501
         """
         pass
 
