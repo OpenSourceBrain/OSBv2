@@ -4,9 +4,11 @@
 
 set -euo pipefail
 
+echo "To be run from project root"
+
 openapi-generator-cli generate \
   -i applications/workspaces/api/openapi.yaml \
   -g python \
-  -o . \
-  --package-name workspaces_cli \
+  -o libraries/client/workspaces/ \
+  --package-name osb_workspaces_api \
   --additional-properties=packageVersion=1.0.0

@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.resource_origin import ResourceOrigin
+import osb_workspaces_api
+from osb_workspaces_api.model.resource_origin import ResourceOrigin
 globals()['ResourceOrigin'] = ResourceOrigin
-from workspaces_cli.model.inline_object import InlineObject
+from osb_workspaces_api.model.inline_object import InlineObject
 
 
 class TestInlineObject(unittest.TestCase):

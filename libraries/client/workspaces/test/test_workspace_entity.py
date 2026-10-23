@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -11,18 +11,18 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.volume_storage import VolumeStorage
-from workspaces_cli.model.workspace_base import WorkspaceBase
-from workspaces_cli.model.workspace_collaborator import WorkspaceCollaborator
-from workspaces_cli.model.workspace_entity_all_of import WorkspaceEntityAllOf
-from workspaces_cli.model.workspace_resource_entity import WorkspaceResourceEntity
+import osb_workspaces_api
+from osb_workspaces_api.model.volume_storage import VolumeStorage
+from osb_workspaces_api.model.workspace_base import WorkspaceBase
+from osb_workspaces_api.model.workspace_collaborator import WorkspaceCollaborator
+from osb_workspaces_api.model.workspace_entity_all_of import WorkspaceEntityAllOf
+from osb_workspaces_api.model.workspace_resource_entity import WorkspaceResourceEntity
 globals()['VolumeStorage'] = VolumeStorage
 globals()['WorkspaceBase'] = WorkspaceBase
 globals()['WorkspaceCollaborator'] = WorkspaceCollaborator
 globals()['WorkspaceEntityAllOf'] = WorkspaceEntityAllOf
 globals()['WorkspaceResourceEntity'] = WorkspaceResourceEntity
-from workspaces_cli.model.workspace_entity import WorkspaceEntity
+from osb_workspaces_api.model.workspace_entity import WorkspaceEntity
 
 
 class TestWorkspaceEntity(unittest.TestCase):

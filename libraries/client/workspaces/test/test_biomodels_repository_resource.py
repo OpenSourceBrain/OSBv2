@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.repository_resource_base import RepositoryResourceBase
+import osb_workspaces_api
+from osb_workspaces_api.model.repository_resource_base import RepositoryResourceBase
 globals()['RepositoryResourceBase'] = RepositoryResourceBase
-from workspaces_cli.model.biomodels_repository_resource import BiomodelsRepositoryResource
+from osb_workspaces_api.model.biomodels_repository_resource import BiomodelsRepositoryResource
 
 
 class TestBiomodelsRepositoryResource(unittest.TestCase):

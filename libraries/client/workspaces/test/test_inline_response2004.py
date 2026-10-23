@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.inline_response2004 import InlineResponse2004
+import osb_workspaces_api
+from osb_workspaces_api.model.inline_response2004 import InlineResponse2004
 
 
 class TestInlineResponse2004(unittest.TestCase):

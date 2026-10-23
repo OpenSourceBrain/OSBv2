@@ -1,4 +1,4 @@
-# workspaces_cli.RunApi
+# osb_workspaces_api.RunApi
 
 All URIs are relative to *http://localhost/api*
 
@@ -17,14 +17,14 @@ Run notebooks of a repository on the workspace's volume (papermill in an Argo ta
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces_cli
-from workspaces_cli.api import run_api
-from workspaces_cli.model.workspace_run_response import WorkspaceRunResponse
-from workspaces_cli.model.workspace_run_request import WorkspaceRunRequest
+import osb_workspaces_api
+from osb_workspaces_api.api import run_api
+from osb_workspaces_api.model.workspace_run_request import WorkspaceRunRequest
+from osb_workspaces_api.model.workspace_run_response import WorkspaceRunResponse
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     host = "http://localhost/api"
 )
 
@@ -34,12 +34,12 @@ configuration = workspaces_cli.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces_cli.Configuration(
+configuration = osb_workspaces_api.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with workspaces_cli.ApiClient(configuration) as api_client:
+with osb_workspaces_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = run_api.RunApi(api_client)
     id = 1 # int | Workspace ID of the workspace
@@ -73,7 +73,7 @@ with workspaces_cli.ApiClient(configuration) as api_client:
         # Run notebooks of a repository on the workspace's volume (papermill in an Argo task), in the order given, after setting up what the request names (requirements, PYTHONPATH, installs). Returns at once.
         api_response = api_instance.run_notebooks(id, workspace_run_request)
         pprint(api_response)
-    except workspaces_cli.ApiException as e:
+    except osb_workspaces_api.ApiException as e:
         print("Exception when calling RunApi->run_notebooks: %s\n" % e)
 ```
 

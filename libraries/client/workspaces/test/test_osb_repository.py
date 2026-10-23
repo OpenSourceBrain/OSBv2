@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -11,20 +11,20 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.osb_repository_all_of import OSBRepositoryAllOf
-from workspaces_cli.model.osb_repository_base import OSBRepositoryBase
-from workspaces_cli.model.repository_content_type import RepositoryContentType
-from workspaces_cli.model.repository_resource_node import RepositoryResourceNode
-from workspaces_cli.model.repository_type import RepositoryType
-from workspaces_cli.model.user import User
+import osb_workspaces_api
+from osb_workspaces_api.model.osb_repository_all_of import OSBRepositoryAllOf
+from osb_workspaces_api.model.osb_repository_base import OSBRepositoryBase
+from osb_workspaces_api.model.repository_content_type import RepositoryContentType
+from osb_workspaces_api.model.repository_resource_node import RepositoryResourceNode
+from osb_workspaces_api.model.repository_type import RepositoryType
+from osb_workspaces_api.model.user import User
 globals()['OSBRepositoryAllOf'] = OSBRepositoryAllOf
 globals()['OSBRepositoryBase'] = OSBRepositoryBase
 globals()['RepositoryContentType'] = RepositoryContentType
 globals()['RepositoryResourceNode'] = RepositoryResourceNode
 globals()['RepositoryType'] = RepositoryType
 globals()['User'] = User
-from workspaces_cli.model.osb_repository import OSBRepository
+from osb_workspaces_api.model.osb_repository import OSBRepository
 
 
 class TestOSBRepository(unittest.TestCase):

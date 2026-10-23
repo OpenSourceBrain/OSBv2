@@ -1,5 +1,5 @@
 """
-    Workspaces manager API
+    OSB Workspaces manager API
 
     Opensource Brain Platform - Reference Workspaces manager API  # noqa: E501
 
@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
-from workspaces_cli.model.repository_resource_base import RepositoryResourceBase
+import osb_workspaces_api
+from osb_workspaces_api.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
+from osb_workspaces_api.model.repository_resource_base import RepositoryResourceBase
 globals()['GITRepositoryResourceAllOf'] = GITRepositoryResourceAllOf
 globals()['RepositoryResourceBase'] = RepositoryResourceBase
-from workspaces_cli.model.git_repository_resource import GITRepositoryResource
+from osb_workspaces_api.model.git_repository_resource import GITRepositoryResource
 
 
 class TestGITRepositoryResource(unittest.TestCase):

@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces_cli
-from workspaces_cli.model.workspace_run_repo import WorkspaceRunRepo
+import osb_workspaces_api
+from osb_workspaces_api.model.workspace_run_repo import WorkspaceRunRepo
 
 
 class TestWorkspaceRunRepo(unittest.TestCase):
