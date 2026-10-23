@@ -1,5 +1,6 @@
 //Selectors: 
-export const WORKSPACES = "#workspaces-list"; 
+export const WORKSPACES = "#workspaces-list";
+export const WORKSPACE_CARD = "#workspaces-list .imageContainer";
 export const PUBLIC_WORKSPACES = '#public-tab';
 export const SIGN_IN = 'button[class="MuiButtonBase-root MuiButton-root MuiButton-text jss9"]'; //
 export const USERNAME = "#username";
@@ -17,8 +18,8 @@ export const WORKSPACE_CREATION_BOX = '.MuiDialogContent-root';
 export const WORKSPACE_NAME = "#workspaceName";
 export const WORKSPACE_TAGS = 'input[class="MuiInputBase-input MuiFilledInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiFilledInput-inputAdornedEnd"]';
 export const WORKSPACE_DESCRIPTION = 'textarea[class="section-container input "]';
-export const OSB_LOGO = '.MuiToolbar-root a[href="/"]';
-export const WORKSPACE_OPTIONS_BTN = '.btn-actions';
+export const WORKSPACE_OPTIONS_BTN = '#workspaces-list .btn-actions';
+export const CONFIRM_DIALOG_ACTION = '.MuiDialogActions-root .MuiButton-contained';
 export const WORKSPACE_OPTIONS_LIST = 'ul[class="MuiList-root MuiMenu-list MuiList-padding"]';
 export const USER_MENU = '.user-menu-btn';
 export const SMOKE_TEST_WORKSPACE = 'a[aria-label="Smoke Test Workspace"]';
@@ -27,6 +28,7 @@ export const SELECT_APPLICATION = '.split-button-control';
 export const OPEN_WITH_APPLICATION = '.open-workspace';
 export const NETPYNE_MAIN_CONTAINER = "#mainContainer";
 export const NETPYNE_CELL_BUTTON = "#selectCellButton";
-export const APPLICATION_FRAME = '#workspace-frame'
+// The frame is first rendered without src and remounted once the workspace volume is ready
+export const APPLICATION_FRAME = '#workspace-frame[src]'
 export const NWB_APP = "#main-container-inner";
 export const JUPYTER_CONTENT = '#jp-main-dock-panel';

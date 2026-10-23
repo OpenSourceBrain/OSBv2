@@ -5,6 +5,7 @@ const {
   ONE_MINUTE,
   TWO_MINUTES,
   TEN_MINUTES,
+  sleep,
 } = require("./time_constants");
 
 let page: any;
@@ -15,8 +16,22 @@ const WORKSPACE_LOAD_TIMEOUT = TEN_MINUTES;
 
 const getCurrentWorkpaces: () => Promise<Array<any>> = async () => {
   const pageFrame = page.mainFrame();
-  return await pageFrame.$$("#workspaces-list .imageContainer");
+  return await pageFrame.$$(selectors.WORKSPACE_CARD);
 };
+
+// Wait for the workspace list to refresh after a create/delete: until it does,
+// the old cards still match, so waitForSelector would return immediately.
+const waitForWorkspaceCount = (predicate: "more" | "fewer", than: number) =>
+  page.waitForFunction(
+    (selector: string, predicate: string, than: number) => {
+      const count = document.querySelectorAll(selector).length;
+      return predicate === "more" ? count > than : count < than;
+    },
+    {},
+    selectors.WORKSPACE_CARD,
+    predicate,
+    than
+  );
 
 const testApplication =
   (appName: string, appSelectors: Array<string>, url: string) => async () => {
@@ -48,8 +63,7 @@ const testApplication =
     if (featuredWorkspaces.length > 0) {
       await page.click(".workspace-page-link");
     } else {
-      await page.waitForTimeout(ONE_SECOND);
-      await page.click(selectors.ALL_YOUR_WORKSPACES_TAB);
+      await page.locator(selectors.ALL_YOUR_WORKSPACES_TAB).click();
 
       await page.waitForSelector(selectors.WORKSPACES, {
         timeout: ONE_SECOND,
@@ -97,7 +111,7 @@ const testApplication =
           const server_frame = await elementHandle.contentFrame();
           await server_frame.waitForSelector('a[href="/hub/home"]');
           await server_frame.click('a[href="/hub/home"]');
-          await page.waitForTimeout(ONE_SECOND * 3);
+          await sleep(ONE_SECOND * 3);
 
           try {
             await server_frame.waitForSelector(".stop-server");
@@ -106,7 +120,7 @@ const testApplication =
               (stopServer = await server_frame.waitForSelector(".stop-server"))
             ) {
               await stopServer.click();
-              await page.waitForTimeout(ONE_SECOND);
+              await sleep(ONE_SECOND);
             }
           } catch (error) {}
 
@@ -119,14 +133,14 @@ const testApplication =
               ))
             ) {
               await deleteServer.click();
-              await page.waitForTimeout(ONE_SECOND);
+              await sleep(ONE_SECOND);
             }
           } catch (error) {}
 
           try {
             await server_frame.waitForSelector("#stop");
             await server_frame.click("#stop");
-            await page.waitForTimeout(ONE_SECOND * 2);
+            await sleep(ONE_SECOND * 2);
           } catch (error) {}
 
           try {
@@ -135,25 +149,18 @@ const testApplication =
               (startServer = await server_frame.waitForSelector("#start"))
             ) {
               await startServer.click();
-              await page.waitForTimeout(ONE_SECOND);
+              await sleep(ONE_SECOND);
             }
           } catch (error) {}
         } catch (error) {}
       }
     });
 
-    await page.waitForTimeout(ONE_SECOND);
-
-    await page.waitForSelector(selectors.APPLICATION_FRAME, {
-      timeout: ONE_SECOND,
-    });
-    expect(page.url()).toContain(url);
     const elementHandler = await page.waitForSelector(
       selectors.APPLICATION_FRAME,
-      {
-        timeout: ONE_SECOND,
-      }
+      { timeout: TWO_MINUTES }
     );
+    expect(page.url()).toContain(url);
     const frame = await elementHandler.contentFrame();
     for (const appSelector of appSelectors) {
       if (!frame.isDetached()) {
@@ -164,7 +171,7 @@ const testApplication =
     }
 
     console.log(appName, "loaded");
-    await page.waitForTimeout(ONE_SECOND * 3);
+    await sleep(ONE_SECOND * 3);
   };
 
 describe("OSB v2 Smoke Tests", () => {
@@ -256,10 +263,7 @@ describe("OSB v2 Smoke Tests", () => {
       }
     });
 
-    await page.waitForTimeout(ONE_SECOND);
-
-    await page.waitForSelector("#computational-modeling");
-    await page.click("#data-analysis");
+    await page.locator("#data-analysis").click();
 
     await page.waitForSelector(selectors.WORKSPACE_CREATION_BOX);
     await page.type(selectors.WORKSPACE_NAME, "Smoke Test Workspace");
@@ -268,11 +272,9 @@ describe("OSB v2 Smoke Tests", () => {
       selectors.WORKSPACE_DESCRIPTION,
       "Workspace created by the Automated Smoke tests"
     );
-    await page.waitForSelector(selectors.CREATE_NEW_WORKSPACE, ONE_SECOND);
-    await page.click(selectors.CREATE_NEW_WORKSPACE);
-    await page.waitForTimeout(ONE_SECOND * 3);
+    await page.locator(selectors.CREATE_NEW_WORKSPACE).click();
+    await waitForWorkspaceCount("more", privateWorkspacesBefore.length);
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
-    await page.waitForSelector(selectors.YOUR_WORKSPACES);
     const privateWorkspacesAfter = await getCurrentWorkpaces();
     expect(privateWorkspacesAfter.length).toBeGreaterThan(
       privateWorkspacesBefore.length
@@ -300,21 +302,22 @@ describe("OSB v2 Smoke Tests", () => {
 
   test("Delete created workspace", async () => {
     console.log("Deleting created workspace");
-    await page.waitForSelector(selectors.OSB_LOGO);
-    await page.click(selectors.OSB_LOGO);
-    await page.waitForTimeout(ONE_SECOND);
+    // Not via the header logo: it only toggles the sidebar
+    await page.goto(
+      process.env.APP_URL || "https://v2dev.opensourcebrain.org/"
+    );
     await page.waitForSelector(selectors.SMOKE_TEST_WORKSPACE);
 
     let menuBtn;
     while (
       (menuBtn = await page.mainFrame().$(selectors.WORKSPACE_OPTIONS_BTN))
     ) {
+      const workspacesBefore = await getCurrentWorkpaces();
       await menuBtn.click();
-      await page.waitForTimeout(ONE_SECOND);
-      await page.waitForSelector(".delete-workspace", { timeout: ONE_SECOND });
-      await page.click(".delete-workspace");
-      await page.waitForSelector(".delete-workspace", { hidden: true });
-      await page.waitForTimeout(ONE_SECOND);
+      await page.locator(".delete-workspace").click();
+      await page.locator(selectors.CONFIRM_DIALOG_ACTION).click();
+      await waitForWorkspaceCount("fewer", workspacesBefore.length);
+      await page.waitForSelector(selectors.CONFIRM_DIALOG_ACTION, { hidden: true });
     }
 
     const WorkspacesAfterDelete = await getCurrentWorkpaces();
@@ -326,10 +329,9 @@ describe("OSB v2 Smoke Tests", () => {
 
     await page.waitForSelector(selectors.USER_MENU);
     await page.click(selectors.USER_MENU);
-    await page.waitForSelector(selectors.LOGOUT_ACTION, {
-      timeout: ONE_SECOND * 4,
-    });
+    await page.locator(selectors.LOGOUT_ACTION).click();
 
+    await page.waitForSelector(selectors.LOGIN_BTN);
     await page.waitForSelector(selectors.WORKSPACES);
   });
 });
