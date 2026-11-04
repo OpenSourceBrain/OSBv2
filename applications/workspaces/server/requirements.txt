@@ -37,7 +37,7 @@ kubernetes==31.0.0
 MarkupSafe==3.0.2
 mypy==1.13.0
 mypy-extensions==1.0.0
-oauthlib==3.2.2
+oauthlib==4.0.0
 openalchemy==1.1.0
 openapi-schema-validator==0.2.3
 openapi-spec-validator==0.4.0
