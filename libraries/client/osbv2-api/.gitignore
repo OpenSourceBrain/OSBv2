@@ -7,3 +7,6 @@ dist/
 .pytest_cache/
 .coverage
 htmlcov/
+docs/_build/
+docs/generated/
+.venv-docs/
