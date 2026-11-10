@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
 
 
 class TestDandiValidateUploadResponse(unittest.TestCase):

@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.repository_resource_base_all_of import RepositoryResourceBaseAllOf
-from workspaces.model.resource_base import ResourceBase
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.repository_resource_base_all_of import RepositoryResourceBaseAllOf
+from osbv2_api.workspaces.model.resource_base import ResourceBase
 globals()['RepositoryResourceBaseAllOf'] = RepositoryResourceBaseAllOf
 globals()['ResourceBase'] = ResourceBase
-from workspaces.model.repository_resource_base import RepositoryResourceBase
+from osbv2_api.workspaces.model.repository_resource_base import RepositoryResourceBase
 
 
 class TestRepositoryResourceBase(unittest.TestCase):

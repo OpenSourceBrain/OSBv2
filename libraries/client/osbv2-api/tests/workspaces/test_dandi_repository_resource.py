@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.repository_resource_base import RepositoryResourceBase
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.repository_resource_base import RepositoryResourceBase
 globals()['RepositoryResourceBase'] = RepositoryResourceBase
-from workspaces.model.dandi_repository_resource import DandiRepositoryResource
+from osbv2_api.workspaces.model.dandi_repository_resource import DandiRepositoryResource
 
 
 class TestDandiRepositoryResource(unittest.TestCase):

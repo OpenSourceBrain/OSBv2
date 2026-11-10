@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.repository_resource import RepositoryResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.repository_resource import RepositoryResource
 globals()['RepositoryResource'] = RepositoryResource
-from workspaces.model.repository_resource_node import RepositoryResourceNode
+from osbv2_api.workspaces.model.repository_resource_node import RepositoryResourceNode
 
 
 class TestRepositoryResourceNode(unittest.TestCase):

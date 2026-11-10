@@ -11,8 +11,8 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.api_client import ApiClient, Endpoint as _Endpoint
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.api_client import ApiClient, Endpoint as _Endpoint
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     check_allowed_values,
     check_validations,
     date,
@@ -21,8 +21,8 @@ from workspaces.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from workspaces.model.workspace_run_request import WorkspaceRunRequest
-from workspaces.model.workspace_run_response import WorkspaceRunResponse
+from osbv2_api.workspaces.model.workspace_run_request import WorkspaceRunRequest
+from osbv2_api.workspaces.model.workspace_run_response import WorkspaceRunResponse
 
 
 class RunApi(object):

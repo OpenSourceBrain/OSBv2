@@ -11,20 +11,20 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.osb_repository_all_of import OSBRepositoryAllOf
-from workspaces.model.osb_repository_base import OSBRepositoryBase
-from workspaces.model.repository_content_type import RepositoryContentType
-from workspaces.model.repository_resource_node import RepositoryResourceNode
-from workspaces.model.repository_type import RepositoryType
-from workspaces.model.user import User
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.osb_repository_all_of import OSBRepositoryAllOf
+from osbv2_api.workspaces.model.osb_repository_base import OSBRepositoryBase
+from osbv2_api.workspaces.model.repository_content_type import RepositoryContentType
+from osbv2_api.workspaces.model.repository_resource_node import RepositoryResourceNode
+from osbv2_api.workspaces.model.repository_type import RepositoryType
+from osbv2_api.workspaces.model.user import User
 globals()['OSBRepositoryAllOf'] = OSBRepositoryAllOf
 globals()['OSBRepositoryBase'] = OSBRepositoryBase
 globals()['RepositoryContentType'] = RepositoryContentType
 globals()['RepositoryResourceNode'] = RepositoryResourceNode
 globals()['RepositoryType'] = RepositoryType
 globals()['User'] = User
-from workspaces.model.osb_repository import OSBRepository
+from osbv2_api.workspaces.model.osb_repository import OSBRepository
 
 
 class TestOSBRepository(unittest.TestCase):

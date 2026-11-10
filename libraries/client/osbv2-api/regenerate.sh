@@ -25,6 +25,10 @@ then
       --additional-properties=buildSystem=setuptools \
       --additional-properties=generateSourceCodeOnly=true
 
+    echo "Rewriting generated absolute 'workspaces.*' imports to 'osbv2_api.workspaces.*' ..."
+    find "$OSB_API_MODULE_DIR/workspaces" -name '*.py' -print0 | xargs -0 -r sed -i -E -e 's/^([[:space:]]*)from workspaces\./\1from osbv2_api.workspaces./' -e 's/^([[:space:]]*)import workspaces[[:space:]]*$/\1from osbv2_api import workspaces/'
+    find "$OSB_API_MODULE_DIR" -name '*.md' -print0 | xargs -0 -r sed -i -E -e 's/^([[:space:]]*)from workspaces\./\1from osbv2_api.workspaces./' -e 's/^([[:space:]]*)import workspaces[[:space:]]*$/\1from osbv2_api import workspaces/'
+
     pushd $OSB_API_PKG_SRC_DIR || exit 1
 
     echo ">>> Moving workspaces tests to top level test folder"

@@ -10,8 +10,8 @@
 
 import unittest
 
-import workspaces
-from workspaces.api.dandi_api import DandiApi  # noqa: E501
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api.dandi_api import DandiApi  # noqa: E501
 
 
 class TestDandiApi(unittest.TestCase):

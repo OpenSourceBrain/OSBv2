@@ -11,7 +11,7 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     ApiTypeError,
     ModelComposed,
     ModelNormal,
@@ -26,16 +26,16 @@ from workspaces.model_utils import (  # noqa: F401
     validate_get_composed_info,
 )
 from ..model_utils import OpenApiModel
-from workspaces.exceptions import ApiAttributeError
+from osbv2_api.workspaces.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from workspaces.model.osb_repository_all_of import OSBRepositoryAllOf
-    from workspaces.model.osb_repository_base import OSBRepositoryBase
-    from workspaces.model.repository_content_type import RepositoryContentType
-    from workspaces.model.repository_resource_node import RepositoryResourceNode
-    from workspaces.model.repository_type import RepositoryType
-    from workspaces.model.user import User
+    from osbv2_api.workspaces.model.osb_repository_all_of import OSBRepositoryAllOf
+    from osbv2_api.workspaces.model.osb_repository_base import OSBRepositoryBase
+    from osbv2_api.workspaces.model.repository_content_type import RepositoryContentType
+    from osbv2_api.workspaces.model.repository_resource_node import RepositoryResourceNode
+    from osbv2_api.workspaces.model.repository_type import RepositoryType
+    from osbv2_api.workspaces.model.user import User
     globals()['OSBRepositoryAllOf'] = OSBRepositoryAllOf
     globals()['OSBRepositoryBase'] = OSBRepositoryBase
     globals()['RepositoryContentType'] = RepositoryContentType

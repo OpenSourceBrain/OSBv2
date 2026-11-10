@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.osb_repository import OSBRepository
-from workspaces.model.pagination import Pagination
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.osb_repository import OSBRepository
+from osbv2_api.workspaces.model.pagination import Pagination
 globals()['OSBRepository'] = OSBRepository
 globals()['Pagination'] = Pagination
-from workspaces.model.inline_response2001 import InlineResponse2001
+from osbv2_api.workspaces.model.inline_response2001 import InlineResponse2001
 
 
 class TestInlineResponse2001(unittest.TestCase):

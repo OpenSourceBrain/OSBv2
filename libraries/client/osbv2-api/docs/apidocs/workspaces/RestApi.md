@@ -50,8 +50,8 @@ Delete a Workspace Image from the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -123,9 +123,9 @@ Used to retrieve description for a repository.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.repository_type import RepositoryType
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.repository_type import RepositoryType
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -191,10 +191,10 @@ Used to retrieve a list of contexts of a repository.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.repository_type import RepositoryType
-from workspaces.model.repository_info import RepositoryInfo
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.repository_type import RepositoryType
+from osbv2_api.workspaces.model.repository_info import RepositoryInfo
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -258,9 +258,9 @@ Used to list all available repositories.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.inline_response2001 import InlineResponse2001
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.inline_response2001 import InlineResponse2001
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -333,8 +333,8 @@ Delete a OSBRepository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -414,9 +414,9 @@ Used to retrieve a repository.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.osb_repository import OSBRepository
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.osb_repository import OSBRepository
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -490,9 +490,9 @@ Update a OSB repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.osb_repository import OSBRepository
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.osb_repository import OSBRepository
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -577,9 +577,9 @@ Used to save a OSB Repository. The user_id (keycloak user id) will be automatica
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.osb_repository import OSBRepository
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.osb_repository import OSBRepository
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -650,9 +650,9 @@ Used to list all available tags.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.inline_response2003 import InlineResponse2003
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.inline_response2003 import InlineResponse2003
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -719,8 +719,8 @@ Delete an tag from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -790,9 +790,9 @@ Used to retrieve an tag from the repository.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.tag import Tag
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.tag import Tag
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -855,9 +855,9 @@ Update an tag in the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.tag import Tag
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.tag import Tag
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -934,9 +934,9 @@ Used to save a Tag to the repository. The user_id (keycloak user id) will be aut
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.tag import Tag
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.tag import Tag
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1011,9 +1011,9 @@ Per-user workspace and repository counts (admin only).
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.inline_response2004 import InlineResponse2004
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.inline_response2004 import InlineResponse2004
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1081,9 +1081,9 @@ Used to list all available volumestorages.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.inline_response2002 import InlineResponse2002
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.inline_response2002 import InlineResponse2002
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1159,8 +1159,8 @@ Delete an volumestorage from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1230,9 +1230,9 @@ Used to retrieve an volumestorage from the repository.
 
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.volume_storage import VolumeStorage
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.volume_storage import VolumeStorage
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1295,9 +1295,9 @@ Update an volumestorage in the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.volume_storage import VolumeStorage
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.volume_storage import VolumeStorage
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1374,9 +1374,9 @@ Used to save a VolumeStorage to the repository. The user_id (keycloak user id) w
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.volume_storage import VolumeStorage
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.volume_storage import VolumeStorage
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1451,9 +1451,9 @@ Used to list all available workspaces.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.inline_response200 import InlineResponse200
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.inline_response200 import InlineResponse200
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1531,8 +1531,8 @@ Delete a workspace from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1603,9 +1603,9 @@ Used to retrieve a workspace from the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace import Workspace
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1677,9 +1677,9 @@ Update a workspace in the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace import Workspace
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1753,9 +1753,9 @@ Used to save a Workspace to the repository. The user_id (keycloak user id) will 
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace import Workspace
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1828,8 +1828,8 @@ Delete a WorkspaceResource.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1900,9 +1900,9 @@ Used to retrieve a WorkspaceResource.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace_resource import WorkspaceResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace_resource import WorkspaceResource
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1974,9 +1974,9 @@ Update the WorkspaceResource.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace_resource import WorkspaceResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace_resource import WorkspaceResource
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2050,9 +2050,9 @@ Used to save a WorkspaceResource to the repository.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace_resource import WorkspaceResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace_resource import WorkspaceResource
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2124,8 +2124,8 @@ Sets the thumbnail of the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2206,8 +2206,8 @@ Adds and image to the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2288,9 +2288,9 @@ Imports the ResourceOrigins into the Workspace and creates/updates the workspace
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.inline_object import InlineObject
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.inline_object import InlineObject
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2375,8 +2375,8 @@ Sets the thumbnail of the workspace.
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2457,9 +2457,9 @@ Clones a workspace
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
-from workspaces.model.workspace import Workspace
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
+from osbv2_api.workspaces.model.workspace import Workspace
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2531,8 +2531,8 @@ Used to register a WorkspaceResource open action. The WorkspaceResource timestam
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import rest_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import rest_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.

@@ -11,14 +11,14 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.workspace_run_repo import WorkspaceRunRepo
-from workspaces.model.workspace_run_results import WorkspaceRunResults
-from workspaces.model.workspace_run_setup import WorkspaceRunSetup
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.workspace_run_repo import WorkspaceRunRepo
+from osbv2_api.workspaces.model.workspace_run_results import WorkspaceRunResults
+from osbv2_api.workspaces.model.workspace_run_setup import WorkspaceRunSetup
 globals()['WorkspaceRunRepo'] = WorkspaceRunRepo
 globals()['WorkspaceRunResults'] = WorkspaceRunResults
 globals()['WorkspaceRunSetup'] = WorkspaceRunSetup
-from workspaces.model.workspace_run_request import WorkspaceRunRequest
+from osbv2_api.workspaces.model.workspace_run_request import WorkspaceRunRequest
 
 
 class TestWorkspaceRunRequest(unittest.TestCase):

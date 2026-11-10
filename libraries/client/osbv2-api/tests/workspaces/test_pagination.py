@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.pagination import Pagination
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.pagination import Pagination
 
 
 class TestPagination(unittest.TestCase):

@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.repository_type import RepositoryType
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.repository_type import RepositoryType
 globals()['RepositoryType'] = RepositoryType
-from workspaces.model.osb_repository_base import OSBRepositoryBase
+from osbv2_api.workspaces.model.osb_repository_base import OSBRepositoryBase
 
 
 class TestOSBRepositoryBase(unittest.TestCase):

@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.download_resource import DownloadResource
-from workspaces.model.repository_resource import RepositoryResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.download_resource import DownloadResource
+from osbv2_api.workspaces.model.repository_resource import RepositoryResource
 globals()['DownloadResource'] = DownloadResource
 globals()['RepositoryResource'] = RepositoryResource
-from workspaces.model.resource_origin import ResourceOrigin
+from osbv2_api.workspaces.model.resource_origin import ResourceOrigin
 
 
 class TestResourceOrigin(unittest.TestCase):

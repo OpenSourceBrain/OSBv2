@@ -35,12 +35,12 @@ dev = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = [".", "osbv2_api"]
-include = ["osbv2_api*", "workspaces*"]
+where = ["."]
+include = ["osbv2_api*"]
 
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
-pythonpath = [".", "osbv2_api"]
+pythonpath = ["."]
 python_files = ["test_*.py"]
 addopts = "-ra --import-mode=importlib"

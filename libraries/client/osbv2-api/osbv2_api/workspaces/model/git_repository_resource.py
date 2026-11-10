@@ -11,7 +11,7 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     ApiTypeError,
     ModelComposed,
     ModelNormal,
@@ -26,12 +26,12 @@ from workspaces.model_utils import (  # noqa: F401
     validate_get_composed_info,
 )
 from ..model_utils import OpenApiModel
-from workspaces.exceptions import ApiAttributeError
+from osbv2_api.workspaces.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from workspaces.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
-    from workspaces.model.repository_resource_base import RepositoryResourceBase
+    from osbv2_api.workspaces.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
+    from osbv2_api.workspaces.model.repository_resource_base import RepositoryResourceBase
     globals()['GITRepositoryResourceAllOf'] = GITRepositoryResourceAllOf
     globals()['RepositoryResourceBase'] = RepositoryResourceBase
 

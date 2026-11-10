@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.resource_status import ResourceStatus
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.resource_status import ResourceStatus
 
 
 class TestResourceStatus(unittest.TestCase):

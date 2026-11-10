@@ -17,10 +17,10 @@ Run notebooks of a repository on the workspace's volume (papermill in an Argo ta
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import run_api
-from workspaces.model.workspace_run_response import WorkspaceRunResponse
-from workspaces.model.workspace_run_request import WorkspaceRunRequest
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import run_api
+from osbv2_api.workspaces.model.workspace_run_response import WorkspaceRunResponse
+from osbv2_api.workspaces.model.workspace_run_request import WorkspaceRunRequest
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.

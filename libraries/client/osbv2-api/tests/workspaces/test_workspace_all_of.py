@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.user import User
-from workspaces.model.workspace_resource import WorkspaceResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.user import User
+from osbv2_api.workspaces.model.workspace_resource import WorkspaceResource
 globals()['User'] = User
 globals()['WorkspaceResource'] = WorkspaceResource
-from workspaces.model.workspace_all_of import WorkspaceAllOf
+from osbv2_api.workspaces.model.workspace_all_of import WorkspaceAllOf
 
 
 class TestWorkspaceAllOf(unittest.TestCase):

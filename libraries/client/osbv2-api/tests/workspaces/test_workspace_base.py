@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.volume_storage import VolumeStorage
-from workspaces.model.workspace_collaborator import WorkspaceCollaborator
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.volume_storage import VolumeStorage
+from osbv2_api.workspaces.model.workspace_collaborator import WorkspaceCollaborator
 globals()['VolumeStorage'] = VolumeStorage
 globals()['WorkspaceCollaborator'] = WorkspaceCollaborator
-from workspaces.model.workspace_base import WorkspaceBase
+from osbv2_api.workspaces.model.workspace_base import WorkspaceBase
 
 
 class TestWorkspaceBase(unittest.TestCase):

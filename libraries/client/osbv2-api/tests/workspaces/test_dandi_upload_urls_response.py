@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.dandi_upload_part import DandiUploadPart
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.dandi_upload_part import DandiUploadPart
 globals()['DandiUploadPart'] = DandiUploadPart
-from workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
+from osbv2_api.workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
 
 
 class TestDandiUploadUrlsResponse(unittest.TestCase):

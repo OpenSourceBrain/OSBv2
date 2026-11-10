@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.dandi_uploaded_part import DandiUploadedPart
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.dandi_uploaded_part import DandiUploadedPart
 
 
 class TestDandiUploadedPart(unittest.TestCase):

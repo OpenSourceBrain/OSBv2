@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.repository_resource_base_all_of import RepositoryResourceBaseAllOf
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.repository_resource_base_all_of import RepositoryResourceBaseAllOf
 
 
 class TestRepositoryResourceBaseAllOf(unittest.TestCase):

@@ -11,8 +11,8 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.api_client import ApiClient, Endpoint as _Endpoint
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.api_client import ApiClient, Endpoint as _Endpoint
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     check_allowed_values,
     check_validations,
     date,
@@ -21,10 +21,10 @@ from workspaces.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
-from workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
-from workspaces.model.dandi_validate_upload_request import DandiValidateUploadRequest
-from workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
+from osbv2_api.workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
+from osbv2_api.workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
+from osbv2_api.workspaces.model.dandi_validate_upload_request import DandiValidateUploadRequest
+from osbv2_api.workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
 
 
 class DandiApi(object):

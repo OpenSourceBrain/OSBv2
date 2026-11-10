@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
 
 
 class TestDandiUploadUrlsRequest(unittest.TestCase):

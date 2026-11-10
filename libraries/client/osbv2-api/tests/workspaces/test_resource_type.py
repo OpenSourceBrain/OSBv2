@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.resource_type import ResourceType
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.resource_type import ResourceType
 
 
 class TestResourceType(unittest.TestCase):

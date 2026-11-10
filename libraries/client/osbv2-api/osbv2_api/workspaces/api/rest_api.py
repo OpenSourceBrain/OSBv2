@@ -11,8 +11,8 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.api_client import ApiClient, Endpoint as _Endpoint
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.api_client import ApiClient, Endpoint as _Endpoint
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     check_allowed_values,
     check_validations,
     date,
@@ -21,19 +21,19 @@ from workspaces.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from workspaces.model.inline_object import InlineObject
-from workspaces.model.inline_response200 import InlineResponse200
-from workspaces.model.inline_response2001 import InlineResponse2001
-from workspaces.model.inline_response2002 import InlineResponse2002
-from workspaces.model.inline_response2003 import InlineResponse2003
-from workspaces.model.inline_response2004 import InlineResponse2004
-from workspaces.model.osb_repository import OSBRepository
-from workspaces.model.repository_info import RepositoryInfo
-from workspaces.model.repository_type import RepositoryType
-from workspaces.model.tag import Tag
-from workspaces.model.volume_storage import VolumeStorage
-from workspaces.model.workspace import Workspace
-from workspaces.model.workspace_resource import WorkspaceResource
+from osbv2_api.workspaces.model.inline_object import InlineObject
+from osbv2_api.workspaces.model.inline_response200 import InlineResponse200
+from osbv2_api.workspaces.model.inline_response2001 import InlineResponse2001
+from osbv2_api.workspaces.model.inline_response2002 import InlineResponse2002
+from osbv2_api.workspaces.model.inline_response2003 import InlineResponse2003
+from osbv2_api.workspaces.model.inline_response2004 import InlineResponse2004
+from osbv2_api.workspaces.model.osb_repository import OSBRepository
+from osbv2_api.workspaces.model.repository_info import RepositoryInfo
+from osbv2_api.workspaces.model.repository_type import RepositoryType
+from osbv2_api.workspaces.model.tag import Tag
+from osbv2_api.workspaces.model.volume_storage import VolumeStorage
+from osbv2_api.workspaces.model.workspace import Workspace
+from osbv2_api.workspaces.model.workspace_resource import WorkspaceResource
 
 
 class RestApi(object):

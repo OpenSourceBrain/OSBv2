@@ -13,15 +13,15 @@
 __version__ = "1.0.0"
 
 # import ApiClient
-from workspaces.api_client import ApiClient
+from osbv2_api.workspaces.api_client import ApiClient
 
 # import Configuration
-from workspaces.configuration import Configuration
+from osbv2_api.workspaces.configuration import Configuration
 
 # import exceptions
-from workspaces.exceptions import OpenApiException
-from workspaces.exceptions import ApiAttributeError
-from workspaces.exceptions import ApiTypeError
-from workspaces.exceptions import ApiValueError
-from workspaces.exceptions import ApiKeyError
-from workspaces.exceptions import ApiException
+from osbv2_api.workspaces.exceptions import OpenApiException
+from osbv2_api.workspaces.exceptions import ApiAttributeError
+from osbv2_api.workspaces.exceptions import ApiTypeError
+from osbv2_api.workspaces.exceptions import ApiValueError
+from osbv2_api.workspaces.exceptions import ApiKeyError
+from osbv2_api.workspaces.exceptions import ApiException

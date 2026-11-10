@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.repository_content_type import RepositoryContentType
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.repository_content_type import RepositoryContentType
 
 
 class TestRepositoryContentType(unittest.TestCase):

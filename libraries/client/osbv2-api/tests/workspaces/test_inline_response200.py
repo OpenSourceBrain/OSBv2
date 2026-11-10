@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.pagination import Pagination
-from workspaces.model.workspace import Workspace
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.pagination import Pagination
+from osbv2_api.workspaces.model.workspace import Workspace
 globals()['Pagination'] = Pagination
 globals()['Workspace'] = Workspace
-from workspaces.model.inline_response200 import InlineResponse200
+from osbv2_api.workspaces.model.inline_response200 import InlineResponse200
 
 
 class TestInlineResponse200(unittest.TestCase):

@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.resource_origin import ResourceOrigin
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.resource_origin import ResourceOrigin
 globals()['ResourceOrigin'] = ResourceOrigin
-from workspaces.model.workspace_resource_all_of import WorkspaceResourceAllOf
+from osbv2_api.workspaces.model.workspace_resource_all_of import WorkspaceResourceAllOf
 
 
 class TestWorkspaceResourceAllOf(unittest.TestCase):

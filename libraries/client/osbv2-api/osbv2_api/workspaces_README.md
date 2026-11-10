@@ -28,13 +28,13 @@ you can run the following:
 ```python
 
 import time
-import workspaces
+from osbv2_api import workspaces
 from pprint import pprint
-from workspaces.api import dandi_api
-from workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
-from workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
-from workspaces.model.dandi_validate_upload_request import DandiValidateUploadRequest
-from workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
+from osbv2_api.workspaces.api import dandi_api
+from osbv2_api.workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
+from osbv2_api.workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
+from osbv2_api.workspaces.model.dandi_validate_upload_request import DandiValidateUploadRequest
+from osbv2_api.workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
 configuration = workspaces.Configuration(
@@ -198,16 +198,16 @@ RecursionError indicating the maximum recursion limit has been exceeded. In that
 
 Solution 1:
 Use specific imports for apis and models like:
-- `from workspaces.api.default_api import DefaultApi`
-- `from workspaces.model.pet import Pet`
+- `from osbv2_api.workspaces.api.default_api import DefaultApi`
+- `from osbv2_api.workspaces.model.pet import Pet`
 
 Solution 2:
 Before importing the package, adjust the maximum recursion limit as shown below:
 ```
 import sys
 sys.setrecursionlimit(1500)
-import workspaces
-from workspaces.apis import *
-from workspaces.models import *
+from osbv2_api import workspaces
+from osbv2_api.workspaces.apis import *
+from osbv2_api.workspaces.models import *
 ```
 

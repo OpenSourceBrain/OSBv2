@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.pagination import Pagination
-from workspaces.model.volume_storage import VolumeStorage
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.pagination import Pagination
+from osbv2_api.workspaces.model.volume_storage import VolumeStorage
 globals()['Pagination'] = Pagination
 globals()['VolumeStorage'] = VolumeStorage
-from workspaces.model.inline_response2002 import InlineResponse2002
+from osbv2_api.workspaces.model.inline_response2002 import InlineResponse2002
 
 
 class TestInlineResponse2002(unittest.TestCase):

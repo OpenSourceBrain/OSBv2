@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
-from workspaces.model.repository_resource_base import RepositoryResourceBase
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
+from osbv2_api.workspaces.model.repository_resource_base import RepositoryResourceBase
 globals()['GITRepositoryResourceAllOf'] = GITRepositoryResourceAllOf
 globals()['RepositoryResourceBase'] = RepositoryResourceBase
-from workspaces.model.git_repository_resource import GITRepositoryResource
+from osbv2_api.workspaces.model.git_repository_resource import GITRepositoryResource
 
 
 class TestGITRepositoryResource(unittest.TestCase):

@@ -20,10 +20,10 @@ from urllib.parse import quote
 from urllib3.fields import RequestField
 
 
-from workspaces import rest
-from workspaces.configuration import Configuration
-from workspaces.exceptions import ApiTypeError, ApiValueError, ApiException
-from workspaces.model_utils import (
+from osbv2_api.workspaces import rest
+from osbv2_api.workspaces.configuration import Configuration
+from osbv2_api.workspaces.exceptions import ApiTypeError, ApiValueError, ApiException
+from osbv2_api.workspaces.model_utils import (
     ModelNormal,
     ModelSimple,
     ModelComposed,

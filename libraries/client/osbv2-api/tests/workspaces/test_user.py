@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.user import User
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.user import User
 
 
 class TestUser(unittest.TestCase):

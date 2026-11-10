@@ -18,10 +18,10 @@ Reserve an upload into a dandiset and return presigned part URLs. OSB builds the
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import dandi_api
-from workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
-from workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import dandi_api
+from osbv2_api.workspaces.model.dandi_upload_urls_response import DandiUploadUrlsResponse
+from osbv2_api.workspaces.model.dandi_upload_urls_request import DandiUploadUrlsRequest
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -104,10 +104,10 @@ Complete the multipart upload, validate the blob and register the asset in the d
 * Bearer (JWT) Authentication (bearerAuth):
 ```python
 import time
-import workspaces
-from workspaces.api import dandi_api
-from workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
-from workspaces.model.dandi_validate_upload_request import DandiValidateUploadRequest
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import dandi_api
+from osbv2_api.workspaces.model.dandi_validate_upload_response import DandiValidateUploadResponse
+from osbv2_api.workspaces.model.dandi_validate_upload_request import DandiValidateUploadRequest
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.

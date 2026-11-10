@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.git_repository_resource_all_of import GITRepositoryResourceAllOf
 
 
 class TestGITRepositoryResourceAllOf(unittest.TestCase):

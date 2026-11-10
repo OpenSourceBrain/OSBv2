@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.resource_base import ResourceBase
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.resource_base import ResourceBase
 
 
 class TestResourceBase(unittest.TestCase):

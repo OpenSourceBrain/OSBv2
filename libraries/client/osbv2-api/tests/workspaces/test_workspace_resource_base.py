@@ -11,12 +11,12 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.resource_status import ResourceStatus
-from workspaces.model.resource_type import ResourceType
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.resource_status import ResourceStatus
+from osbv2_api.workspaces.model.resource_type import ResourceType
 globals()['ResourceStatus'] = ResourceStatus
 globals()['ResourceType'] = ResourceType
-from workspaces.model.workspace_resource_base import WorkspaceResourceBase
+from osbv2_api.workspaces.model.workspace_resource_base import WorkspaceResourceBase
 
 
 class TestWorkspaceResourceBase(unittest.TestCase):

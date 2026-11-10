@@ -17,7 +17,7 @@ from urllib.parse import urlencode
 
 import urllib3
 
-from workspaces.exceptions import ApiException, UnauthorizedException, ForbiddenException, NotFoundException, ServiceException, ApiValueError
+from osbv2_api.workspaces.exceptions import ApiException, UnauthorizedException, ForbiddenException, NotFoundException, ServiceException, ApiValueError
 
 
 logger = logging.getLogger(__name__)

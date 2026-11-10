@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.workspace_resource_entity import WorkspaceResourceEntity
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.workspace_resource_entity import WorkspaceResourceEntity
 globals()['WorkspaceResourceEntity'] = WorkspaceResourceEntity
-from workspaces.model.workspace_entity_all_of import WorkspaceEntityAllOf
+from osbv2_api.workspaces.model.workspace_entity_all_of import WorkspaceEntityAllOf
 
 
 class TestWorkspaceEntityAllOf(unittest.TestCase):

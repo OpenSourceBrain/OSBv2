@@ -10,8 +10,8 @@
 
 import unittest
 
-import workspaces
-from workspaces.api.k8s_api import K8sApi  # noqa: E501
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api.k8s_api import K8sApi  # noqa: E501
 
 
 class TestK8sApi(unittest.TestCase):

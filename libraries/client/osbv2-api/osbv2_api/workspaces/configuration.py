@@ -15,7 +15,7 @@ import sys
 import urllib3
 
 from http import client as http_client
-from workspaces.exceptions import ApiValueError
+from osbv2_api.workspaces.exceptions import ApiValueError
 
 
 JSON_SCHEMA_VALIDATION_KEYWORDS = {

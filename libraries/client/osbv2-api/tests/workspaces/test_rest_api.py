@@ -10,8 +10,8 @@
 
 import unittest
 
-import workspaces
-from workspaces.api.rest_api import RestApi  # noqa: E501
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api.rest_api import RestApi  # noqa: E501
 
 
 class TestRestApi(unittest.TestCase):

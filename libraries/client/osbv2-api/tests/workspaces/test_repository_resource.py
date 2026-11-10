@@ -11,14 +11,14 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.dandi_repository_resource import DandiRepositoryResource
-from workspaces.model.figshare_repository_resource import FigshareRepositoryResource
-from workspaces.model.git_repository_resource import GITRepositoryResource
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.dandi_repository_resource import DandiRepositoryResource
+from osbv2_api.workspaces.model.figshare_repository_resource import FigshareRepositoryResource
+from osbv2_api.workspaces.model.git_repository_resource import GITRepositoryResource
 globals()['DandiRepositoryResource'] = DandiRepositoryResource
 globals()['FigshareRepositoryResource'] = FigshareRepositoryResource
 globals()['GITRepositoryResource'] = GITRepositoryResource
-from workspaces.model.repository_resource import RepositoryResource
+from osbv2_api.workspaces.model.repository_resource import RepositoryResource
 
 
 class TestRepositoryResource(unittest.TestCase):

@@ -18,7 +18,7 @@ import tempfile
 
 from dateutil.parser import parse
 
-from workspaces.exceptions import (
+from osbv2_api.workspaces.exceptions import (
     ApiKeyError,
     ApiAttributeError,
     ApiTypeError,

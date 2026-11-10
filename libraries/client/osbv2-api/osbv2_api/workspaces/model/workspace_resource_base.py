@@ -11,7 +11,7 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     ApiTypeError,
     ModelComposed,
     ModelNormal,
@@ -26,12 +26,12 @@ from workspaces.model_utils import (  # noqa: F401
     validate_get_composed_info,
 )
 from ..model_utils import OpenApiModel
-from workspaces.exceptions import ApiAttributeError
+from osbv2_api.workspaces.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from workspaces.model.resource_status import ResourceStatus
-    from workspaces.model.resource_type import ResourceType
+    from osbv2_api.workspaces.model.resource_status import ResourceStatus
+    from osbv2_api.workspaces.model.resource_type import ResourceType
     globals()['ResourceStatus'] = ResourceStatus
     globals()['ResourceType'] = ResourceType
 

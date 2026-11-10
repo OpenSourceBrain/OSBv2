@@ -17,8 +17,8 @@ Test if application is healthy
 
 ```python
 import time
-import workspaces
-from workspaces.api import k8s_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import k8s_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -76,8 +76,8 @@ Test if application is ready to take requests
 
 ```python
 import time
-import workspaces
-from workspaces.api import k8s_api
+from osbv2_api import workspaces
+from osbv2_api.workspaces.api import k8s_api
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost/api
 # See configuration.py for a list of all supported configuration parameters.

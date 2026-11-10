@@ -11,7 +11,7 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from workspaces.model_utils import (  # noqa: F401
+from osbv2_api.workspaces.model_utils import (  # noqa: F401
     ApiTypeError,
     ModelComposed,
     ModelNormal,
@@ -26,16 +26,16 @@ from workspaces.model_utils import (  # noqa: F401
     validate_get_composed_info,
 )
 from ..model_utils import OpenApiModel
-from workspaces.exceptions import ApiAttributeError
+from osbv2_api.workspaces.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from workspaces.model.user import User
-    from workspaces.model.volume_storage import VolumeStorage
-    from workspaces.model.workspace_all_of import WorkspaceAllOf
-    from workspaces.model.workspace_base import WorkspaceBase
-    from workspaces.model.workspace_collaborator import WorkspaceCollaborator
-    from workspaces.model.workspace_resource import WorkspaceResource
+    from osbv2_api.workspaces.model.user import User
+    from osbv2_api.workspaces.model.volume_storage import VolumeStorage
+    from osbv2_api.workspaces.model.workspace_all_of import WorkspaceAllOf
+    from osbv2_api.workspaces.model.workspace_base import WorkspaceBase
+    from osbv2_api.workspaces.model.workspace_collaborator import WorkspaceCollaborator
+    from osbv2_api.workspaces.model.workspace_resource import WorkspaceResource
     globals()['User'] = User
     globals()['VolumeStorage'] = VolumeStorage
     globals()['WorkspaceAllOf'] = WorkspaceAllOf

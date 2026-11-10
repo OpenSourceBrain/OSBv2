@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import workspaces
-from workspaces.model.workspace_collaborator import WorkspaceCollaborator
+from osbv2_api import workspaces
+from osbv2_api.workspaces.model.workspace_collaborator import WorkspaceCollaborator
 
 
 class TestWorkspaceCollaborator(unittest.TestCase):

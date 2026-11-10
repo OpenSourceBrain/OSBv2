@@ -1,7 +1,7 @@
 """Smoke tests for package imports."""
 
 import osbv2_api
-import workspaces
+from osbv2_api import workspaces
 
 
 def test_package_imports():
