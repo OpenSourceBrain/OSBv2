@@ -128,3 +128,12 @@ def get_github():
     print("Authenticated using PyGitHub with user: %s" % gh.get_user().login)
 
     return gh
+
+
+if __name__ == "__main__":
+    gh = get_github()
+
+    print("Current authenticated user: %s" % gh.get_user().login)
+
+    for repo in gh.get_user().get_repos(visibility="private"):
+        print(repo.name)

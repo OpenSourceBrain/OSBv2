@@ -115,3 +115,121 @@ def clone_workspaces_content(source_ws_id, dest_ws_id):
     )
     op.volumes=(source_volume, dest_volume)
     workflow = op.execute()
+
+
+# ── Notebook runs ────────────────────────────────────────────────────────
+# A run executes the notebooks it is given, in order, with papermill in an Argo pod that mounts the
+# workspace volume. Submitted like the copy tasks, with the same `workspace` pod context: next to the
+# workspace's lab pod if one runs, and without one otherwise.
+#
+# The pod runs in the image the request names (OSB's JupyterLab without one; see the controller), so the
+# notebooks get its environment. The script that runs them, run.sh, isn't in that image but mounted from
+# the workspaces-run-notebooks ConfigMap (deploy/templates/run-notebook-configmap.yaml).
+
+RUN_NOTEBOOKS_BASENAME = "osb-run-notebooks-job"
+RUN_NOTEBOOKS_SCRIPT_VOLUME = "run-notebooks-script"
+RUN_NOTEBOOKS_SCRIPT_CONFIGMAP = "workspaces-run-notebooks"
+RUN_NOTEBOOKS_SCRIPT_DIR = "/opt/run-notebooks"
+# An empty folder over the service account token's path, in the run's container only.
+NO_TOKEN_VOLUME = "no-service-account-token"
+SERVICE_ACCOUNT_TOKEN_DIR = "/var/run/secrets/kubernetes.io/serviceaccount"
+
+
+class PipelineScannedOnExit(operations.PipelineOperation):
+    """A pipeline whose workspace scan is Argo's exit handler: it runs however the pipeline ended
+    (failed, or its pod killed, included), and the workflow keeps the pipeline's own phase."""
+
+    def __init__(self, basename, tasks, scan_task, *args, **kwargs):
+        self.scan_task = scan_task
+        super().__init__(basename, tasks, *args, **kwargs)
+
+    def task_list(self):
+        # Listed with the tasks (not a step of the pipeline) so its template is defined and gets the
+        # shared directory's volume and `shared_directory` variable like theirs.
+        return list(self.tasks) + [self.scan_task]
+
+    def spec(self):
+        spec = super().spec()
+        spec["onExit"] = self.scan_task.instance()["template"]
+        return spec
+
+
+class RunNotebooksTask(tasks.CustomTask):
+    # Third-party code runs here: leave out the Keycloak secret and allvalues mounts CloudHarness
+    # adds to every task (a mounted file can't be hidden from inside the pod). Mount run.sh instead.
+    def cloudharness_configmap_spec(self):
+        return [m for m in super().cloudharness_configmap_spec()
+                if m["name"] not in ("cloudharness-kc-accounts", "cloudharness-allvalues")] + [
+            {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "mountPath": RUN_NOTEBOOKS_SCRIPT_DIR, "readOnly": True},
+            # No service account token either (argo-workflows is cluster-admin): with a folder at its path,
+            # Kubernetes doesn't mount it in this container. Argo's wait container keeps its own.
+            {"name": NO_TOKEN_VOLUME, "mountPath": SERVICE_ACCOUNT_TOKEN_DIR, "readOnly": True}]
+
+    @property
+    def envs(self):
+        # Nor the CH_* variables CloudHarness copies from the workspaces server into every task, with
+        # CH_SECRET and CH_ACCOUNTS_CLIENT_SECRET among them: clearing them in run.sh isn't enough, as
+        # the repository's code can read run.sh's environment (/proc). run.sh needs none of them.
+        return [env for env in super().envs if not env["name"].startswith("CH_")]
+
+
+class RunNotebooksPipeline(PipelineScannedOnExit):
+    # The workflow declares the volumes its tasks mount; CloudHarness only adds its own and PVCs.
+    def spec(self):
+        spec = super().spec()
+        spec["volumes"] += [
+            {"name": RUN_NOTEBOOKS_SCRIPT_VOLUME, "configMap": {"name": RUN_NOTEBOOKS_SCRIPT_CONFIGMAP}},
+            {"name": NO_TOKEN_VOLUME, "emptyDir": {}}]
+        return spec
+
+
+def get_notebook_run_workspaces() -> list:
+    """The workspace id of each notebook run in progress, one per run. A run submitted a moment ago
+    may not be listed yet."""
+    workspace_ids = []
+    for phase in ("Pending", "Running"):
+        for workflow in get_workflows(status=phase, limit=9999).items:
+            if workflow.name.startswith(RUN_NOTEBOOKS_BASENAME):
+                labels = workflow.raw.spec.templates[0].metadata.labels or {}
+                if labels.get("workspace", "").strip().isdigit():
+                    workspace_ids.append(int(labels["workspace"]))
+    return workspace_ids
+
+
+def run_notebooks(workspace_id, run: dict) -> str:
+    """Submits the run and returns at once with the workflow name, which is the run id. `run` holds
+    the checked request (workspace_run_controller.run_notebooks); paths are the caller's."""
+
+    # Lists go one path per line (the controller rejects newlines in paths).
+    env = {
+        "repo_dir": run["repo_dir"],
+        "project_dir": run["project_dir"],
+        "notebooks": "\n".join(run["notebooks"]),
+        "executed_notebooks_dir": run["executed_notebooks_dir"],
+        "log_file": run["log_file"],
+        "requirements": run["requirements"],
+        "python_path": "\n".join(run["python_path"]),
+        "install": "\n".join(run["install"]),
+        "input_dir": run["input_dir"],
+        "output_dir": run["output_dir"],
+    }
+    task = RunNotebooksTask(
+        name=f"run-notebooks-{str(uuid.uuid4())[:8]}",
+        image_name=run["image"],  # an application's name (its image as built here) or an image reference
+        command=["bash", f"{RUN_NOTEBOOKS_SCRIPT_DIR}/run.sh"],
+        retry_limit=0,  # notebooks aren't safe to re-run blindly
+        resources=run["resources"],  # the owner's quotas (user_quota_service.get_notebook_run_resources)
+        run_id="{{workflow.name}}",  # filled in by Argo; run.sh logs it
+        **{name: value for name, value in env.items() if value},
+    )
+    op = RunNotebooksPipeline(
+        basename=RUN_NOTEBOOKS_BASENAME,
+        tasks=(task,),
+        # Then rescan, as the copy workflows do, so the workspace's resources list the executed
+        # notebooks (in notebooks/ or notebooks.failed/); on exit, so a failed run is rescanned too.
+        scan_task=create_scan_task(workspace_id),
+        shared_directory=f"{WorkspaceService.get_pvc_name(workspace_id)}:/project_download:rwx",
+        ttl_strategy=ttl_strategy,
+        pod_context=operations.PodExecutionContext("workspace", workspace_id, required=True),
+    )
+    return op.execute().name

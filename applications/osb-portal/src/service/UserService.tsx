@@ -197,17 +197,38 @@ export function popLoginRedirect(): string {
   return "/";
 }
 
-export async function logout() {
-  // Drop the local auth cookies before hitting the gatekeeper so a stale
-  // kc-access can't silently re-authenticate the previous user on the next
-  // visit — this is what made re-login after a user switch unreliable.
-  clearAuthCookies();
+// Keycloak end-session URL built from the portal's /keycloak.json; null if unavailable.
+async function getKeycloakLogoutUrl(): Promise<string | null> {
   try {
-    await fetch("/oauth/logout");
+    const response = await fetch("/keycloak.json");
+    const config = await response.json();
+    const base = `${config["auth-server-url"]}/realms/${config.realm}`;
+    const params = new URLSearchParams({
+      client_id: config.resource,
+      post_logout_redirect_uri: `${window.location.origin}/`,
+    });
+    return `${base}/protocol/openid-connect/logout?${params}`;
   } catch {
-    // ignore network errors and redirect anyway
+    return null;
   }
-  window.location.href = "/";
+}
+
+export async function logout() {
+  // Call the gatekeeper before clearing cookies: it needs them to revoke the session.
+  try {
+    await fetch("/oauth/logout", {
+      credentials: "same-origin",
+      redirect: "manual",
+    });
+  } catch {
+    // ignore network errors and carry on logging out
+  }
+  clearAuthCookies();
+
+  // The gatekeeper doesn't end the Keycloak SSO session, so the next sign-in
+  // would skip the login form. Only a top-level navigation sends Keycloak its cookie.
+  const keycloakLogoutUrl = await getKeycloakLogoutUrl();
+  window.location.href = keycloakLogoutUrl || "/";
 }
 
 export function canEditWorkspace(user: UserInfo, workspace: Workspace) {

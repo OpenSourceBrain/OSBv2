@@ -2,3 +2,6 @@ harness:
   sentry: false
   database:
     size: 20Gi
+sentry:
+  dsn: https://fc2326dc50e34ac2b7188130e173f002@o4506739169951744.ingest.us.sentry.io/4506758817382400
+  sample_rate: 1.0

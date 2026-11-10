@@ -1,0 +1,9 @@
+harness:
+  accounts:
+    # e2e smoke test user: imported with the realm and passed to the test as USERNAME/PASSWORD
+    users:
+    - username: simao-osb
+      email: simao-osb@opensourcebrain.org
+      password: test1
+      clientRoles: []
+      realmRoles: []

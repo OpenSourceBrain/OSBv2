@@ -3,17 +3,29 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { initApis, getToken, getUsers } from "../service/UserService";
-import { User } from "../apiclient/accounts";
+import { User, GetUsersSortByEnum, GetUsersSortOrderEnum } from "../apiclient/accounts";
 import WorkspaceService from "../service/WorkspaceService";
 import RepositoryService from "../service/RepositoryService";
 import SearchFilter from "../types/searchFilter";
 
 const DEFAULT_PAGE_SIZE = 20;
 const SEARCH_DEBOUNCE_MS = 350;
+
+// Latest registered users first; also the backend's default ordering.
+const DEFAULT_SORT_MODEL: GridSortModel = [{ field: "registration_date", sort: "desc" }];
+
+// Grid columns whose sorting is delegated to the backend.
+const SORT_FIELD_MAP: { [field: string]: GetUsersSortByEnum } = {
+  registration_date: GetUsersSortByEnum.RegistrationDate,
+  username: GetUsersSortByEnum.Username,
+  name: GetUsersSortByEnum.Name,
+  workspaces: GetUsersSortByEnum.Workspaces,
+  repositories: GetUsersSortByEnum.Repositories,
+};
 
 interface UserCounts {
   workspaces?: number;
@@ -32,8 +44,12 @@ export default (props: any) => {
   const [searchInput, setSearchInput] = React.useState<string>("");
   const [search, setSearch] = React.useState<string>("");
 
-  // Per-user workspace/repository counts, loaded lazily after each page renders.
+  const [sortModel, setSortModel] = React.useState<GridSortModel>(DEFAULT_SORT_MODEL);
+
+  // Per-user workspace/repository counts. Normally these come with the users
+  // response; rows the backend had no counts for are loaded lazily as a fallback.
   const [counts, setCounts] = React.useState<{ [userId: string]: UserCounts }>({});
+  const [usersNeedingCounts, setUsersNeedingCounts] = React.useState<User[]>([]);
   // Cheap grand totals for the summary line.
   const [totals, setTotals] = React.useState<{ workspaces?: number; repositories?: number }>({});
 
@@ -65,21 +81,27 @@ export default (props: any) => {
     return () => clearTimeout(handle);
   }, [searchInput]);
 
-  // Fetch a single page of users server-side whenever paging or search changes.
+  // Fetch a single page of users server-side whenever paging, search or sorting changes.
   React.useEffect(() => {
     if (!ready) {
       return;
     }
     let cancelled = false;
     setLoading(true);
-    getUsers(page + 1, pageSize, search).then(
+    // An empty sort model (third click on a header) falls back to the default.
+    const sortItem = sortModel.length > 0 ? sortModel[0] : DEFAULT_SORT_MODEL[0];
+    const sortBy = SORT_FIELD_MAP[sortItem.field];
+    const sortOrder = sortItem.sort === "asc" ? GetUsersSortOrderEnum.Asc : GetUsersSortOrderEnum.Desc;
+    getUsers(page + 1, pageSize, search, sortBy, sortOrder).then(
       (result) => {
         if (cancelled) {
           return;
         }
         setUsers(result.users);
         setRowCount(result.total);
-        setCounts({}); // drop counts from the previous page
+        setCounts(result.counts);
+        // Rows without server-side counts fall back to lazy per-user loading.
+        setUsersNeedingCounts(result.users.filter((u) => !result.counts[u.id]));
         setError(null);
         setLoading(false);
       },
@@ -94,16 +116,16 @@ export default (props: any) => {
     return () => {
       cancelled = true;
     };
-  }, [ready, page, pageSize, search]);
+  }, [ready, page, pageSize, search, sortModel]);
 
-  // Lazily load per-user workspace/repository counts for the current page.
+  // Fallback: lazily load counts for rows the backend had no counts for.
   React.useEffect(() => {
-    if (!users || users.length === 0) {
+    if (usersNeedingCounts.length === 0) {
       return;
     }
     let cancelled = false;
 
-    users.forEach((user) => {
+    usersNeedingCounts.forEach((user) => {
       const userId = user.id;
 
       const wsFilter: SearchFilter = { user_id: userId };
@@ -131,7 +153,7 @@ export default (props: any) => {
     return () => {
       cancelled = true;
     };
-  }, [users]);
+  }, [usersNeedingCounts]);
 
   // Cheap grand totals for the summary (one lightweight request each).
   React.useEffect(() => {
@@ -186,6 +208,21 @@ export default (props: any) => {
   const renderCount = (value: any) =>
     value === undefined ? <CircularProgress size={14} /> : value;
 
+  // Browser-locale date + time, e.g. "Sep 2, 2026, 12:23 PM" / "2 set 2026, 12:23".
+  const formatRegistrationDate = (value: any) => {
+    if (!value) {
+      return "";
+    }
+    const date = value instanceof Date ? value : new Date(value);
+    if (isNaN(date.getTime())) {
+      return String(value);
+    }
+    return date.toLocaleString(undefined, {
+      year: "numeric", month: "short", day: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
+  };
+
   const dataColumns: GridColDef[] = [
     {
       field: 'id', headerName: 'Profile', sortable: false, renderCell: (param: any) =>
@@ -198,14 +235,17 @@ export default (props: any) => {
     },
     { field: 'name', headerName: 'Name', minWidth: 50, flex: 2 },
     { field: 'username', headerName: 'Username', minWidth: 50, flex: 2 },
-    { field: 'registration_date', headerName: 'Registration date', minWidth: 50, flex: 4 },
+    {
+      field: 'registration_date', headerName: 'Registration date', minWidth: 150, flex: 2,
+      valueFormatter: (params: any) => formatRegistrationDate(params.value),
+    },
     { field: 'groups', headerName: 'Groups', sortable: false, minWidth: 50, flex: 2 },
     {
-      field: 'workspaces', headerName: 'Workspaces', sortable: false,
+      field: 'workspaces', headerName: 'Workspaces',
       minWidth: 50, flex: 1, renderCell: (param: any) => renderCount(param.value),
     },
     {
-      field: 'repositories', headerName: 'Repositories', sortable: false,
+      field: 'repositories', headerName: 'Repositories',
       minWidth: 50, flex: 1, renderCell: (param: any) => renderCount(param.value),
     },
   ];
@@ -237,6 +277,9 @@ export default (props: any) => {
           autoHeight={true}
           loading={loading}
           paginationMode="server"
+          sortingMode="server"
+          sortModel={sortModel}
+          onSortModelChange={(newSortModel) => { setSortModel(newSortModel); setPage(0); }}
           rowCount={rowCount}
           page={page}
           onPageChange={(newPage) => setPage(newPage)}

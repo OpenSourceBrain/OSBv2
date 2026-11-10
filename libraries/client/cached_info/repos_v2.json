@@ -3,14 +3,14 @@
         "content_types": {
             "experimental": 459,
             "experimental,modeling": 7,
-            "modeling": 3184,
+            "modeling": 3185,
             "modeling,experimental": 4
         },
         "repository_type": {
             "biomodels": 1094,
             "dandi": 451,
             "figshare": 1,
-            "github": 2108
+            "github": 2109
         },
         "user_repos": {
             "0000-0002-4040-3141": 2,
@@ -29,7 +29,7 @@
             "latavia.thompson@yale.edu": 1,
             "leonardoguge": 1,
             "matteo@metacell.us": 1,
-            "osbadmin": 3564,
+            "osbadmin": 3565,
             "padraig": 45,
             "pat7": 1,
             "pgl.eeson@gmail.com": 1,
@@ -193223,6 +193223,47 @@
                 "username": "sietse09"
             },
             "user_id": "00711324-c645-4a23-8f4b-6c54bde46a2f"
+        },
+        "3664": {
+            "auto_sync": true,
+            "content_types": "modeling",
+            "content_types_list": [
+                "modeling"
+            ],
+            "default_context": "development",
+            "id": 3664,
+            "name": "Golgi cell network Gurnani et al",
+            "repository_type": "github",
+            "summary": "Test",
+            "tags": [
+                {
+                    "id": 671,
+                    "tag": "Cerebellum"
+                },
+                {
+                    "id": 672,
+                    "tag": "Golgi cell"
+                },
+                {
+                    "id": 316,
+                    "tag": "OSBv1"
+                },
+                {
+                    "id": 652,
+                    "tag": "Rodent"
+                }
+            ],
+            "timestamp_created": "2026-07-29 10:06:59.916540+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/sanjayankur31/GoC_Network_Sim_BehInputs",
+            "user": {
+                "email": "p.glee.s.on@gmail.com",
+                "first_name": "OSB",
+                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
+                "last_name": "Admin",
+                "username": "osbadmin"
+            },
+            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
         }
     }
 }

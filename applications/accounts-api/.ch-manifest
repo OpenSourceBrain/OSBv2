@@ -1,0 +1,4 @@
+app-name: accounts-api
+inferred: true
+templates: [base, flask-server]
+version: '2'

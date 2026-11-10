@@ -29,7 +29,7 @@ PY_VERSION="python3.12"
 OSB_DIR="./"
 VENV_DIR="${OSB_DIR}/.venv"
 
-LIVE_TAG="0.8.0"
+LIVE_TAG="0.9.0"
 OSB_NAMESPACE="osblocal"
 LIVE="NO"
 

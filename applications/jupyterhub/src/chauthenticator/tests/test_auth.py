@@ -67,12 +67,29 @@ class TestAnonymousIdentity(unittest.TestCase):
         value, options = handler.cookies_set[auth.ANONYMOUS_ID_COOKIE]
         self.assertEqual(user.name, auth.ANONYMOUS_USER_PREFIX + value)
         self.assertTrue(auth.ANONYMOUS_ID_PATTERN.match(value))
-        self.assertEqual(options["domain"], "example.org")
         self.assertEqual(options["path"], "/")
         self.assertTrue(options["httponly"])
         # required for the cookie to survive the portal's iframe
         self.assertTrue(options["secure"])
         self.assertEqual(options["samesite"], "None")
+
+    def test_each_app_gets_its_own_session(self):
+        """Two apps in one browser must not share a server, and so a pod.
+
+        A direct visit to an app lands on that user's default server, so sharing
+        one identity across app subdomains would route the second app into the
+        pod the first one spawned - with the first app's image.
+        """
+        nwb = make_handler(host="nwbexplorer.example.org")
+        nwb.get_anonymous_user()
+        _, options = nwb.cookies_set[auth.ANONYMOUS_ID_COOKIE]
+        # host-only, so the browser does not send it to sibling app subdomains
+        self.assertNotIn("domain", options)
+
+        # which means netpyne sees no cookie and mints its own identity
+        netpyne = make_handler(host="netpyne.example.org")
+        netpyne.get_anonymous_user()
+        self.assertNotEqual(netpyne.usernames, nwb.usernames)
 
     def test_the_same_browser_reuses_one_user(self):
         handler = make_handler(cookies="osb-anon-id=0123456789abcdef")
@@ -92,19 +109,20 @@ class TestAnonymousIdentity(unittest.TestCase):
             self.assertIn(auth.ANONYMOUS_ID_COOKIE, handler.cookies_set)
 
     def test_plain_http_gets_a_plain_cookie(self):
+        # Secure/SameSite=None would be rejected over http, e.g. locally.
         handler = make_handler(protocol="http", host="lab.osb.local")
         handler.get_anonymous_user()
         _, options = handler.cookies_set[auth.ANONYMOUS_ID_COOKIE]
-        self.assertEqual(options["domain"], "osb.local")
         self.assertNotIn("secure", options)
         self.assertNotIn("samesite", options)
 
-    def test_hosts_without_a_shareable_domain(self):
-        for host in ("localhost", "localhost:8000", "127.0.0.1", "hub"):
-            handler = make_handler(host=host)
-            handler.get_anonymous_user()
-            _, options = handler.cookies_set[auth.ANONYMOUS_ID_COOKIE]
-            self.assertNotIn("domain", options, host)
+    def test_the_same_app_reuses_the_session_whatever_the_host_looks_like(self):
+        for host in ("lab.osb.local", "localhost:8000", "127.0.0.1", "hub"):
+            handler = make_handler(cookies="osb-anon-id=0123456789abcdef",
+                                   host=host)
+            user = handler.get_anonymous_user()
+            self.assertEqual(user.name, "anon-0123456789abcdef", host)
+            self.assertEqual(handler.cookies_set, {}, host)
 
 
 @unittest.skipIf(IMPORT_ERROR, "needs the jupyterhub image: %s" % IMPORT_ERROR)
@@ -136,7 +154,7 @@ class TestLoggingIn(unittest.TestCase):
         options = handler.cookies_cleared[auth.ANONYMOUS_ID_COOKIE]
         # the browser only drops it when the attributes match the ones it was
         # set with
-        self.assertEqual(options["domain"], "example.org")
+        self.assertNotIn("domain", options)
         self.assertEqual(options["path"], "/")
         self.assertTrue(options["secure"])
         self.assertEqual(options["samesite"], "None")

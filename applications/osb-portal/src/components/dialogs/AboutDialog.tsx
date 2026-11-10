@@ -60,13 +60,20 @@ export const AboutContent = (props: any) => {
         <Typography variant="body1">
           OSBv2 is being developed by the{" "}
           <Link href="http://silverlab.org/" target="_blank" underline="hover">
-            Silver Lab at University College London
+            Silver Lab
           </Link>{" "}
-          in collaboration with{" "}
+          and the{" "}
+          <Link href="http://openneuroai.org/" target="_blank" underline="hover">
+            Gleeson Lab
+          </Link>{" "}
+           at {" "}
+          <Link href="http://ucl.ac.uk/" target="_blank" underline="hover">
+            UCL
+          </Link>, in collaboration with{" "}
           <Link href="https://metacell.us" target="_blank" underline="hover">
             MetaCell
           </Link>
-          , and is funded by{" "}
+          , and has been funded by{" "}
           <Link href="https://wellcome.org/" target="_blank" underline="hover">
             Wellcome
           </Link>
