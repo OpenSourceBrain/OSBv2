@@ -1,6 +1,6 @@
-# workspaces.K8sApi
+# osbv2_api.workspaces.K8sApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to */api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -15,34 +15,37 @@ Test if application is healthy
 
 ### Example
 
+
 ```python
-import time
-from osbv2_api import workspaces
-from osbv2_api.workspaces.api import k8s_api
+import osbv2_api.workspaces
+from osbv2_api.workspaces.rest import ApiException
 from pprint import pprint
-# Defining the host is optional and defaults to http://localhost/api
+
+# Defining the host is optional and defaults to /api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces.Configuration(
-    host = "http://localhost/api"
+configuration = osbv2_api.workspaces.Configuration(
+    host = "/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces.ApiClient() as api_client:
+with osbv2_api.workspaces.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = k8s_api.K8sApi(api_client)
+    api_instance = osbv2_api.workspaces.K8sApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # Test if application is healthy
         api_response = api_instance.live()
+        print("The response of K8sApi->live:\n")
         pprint(api_response)
-    except workspaces.ApiException as e:
+    except Exception as e:
         print("Exception when calling K8sApi->live: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -58,8 +61,8 @@ No authorization required
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Healthy |  -  |
@@ -74,34 +77,37 @@ Test if application is ready to take requests
 
 ### Example
 
+
 ```python
-import time
-from osbv2_api import workspaces
-from osbv2_api.workspaces.api import k8s_api
+import osbv2_api.workspaces
+from osbv2_api.workspaces.rest import ApiException
 from pprint import pprint
-# Defining the host is optional and defaults to http://localhost/api
+
+# Defining the host is optional and defaults to /api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces.Configuration(
-    host = "http://localhost/api"
+configuration = osbv2_api.workspaces.Configuration(
+    host = "/api"
 )
 
 
 # Enter a context with an instance of the API client
-with workspaces.ApiClient() as api_client:
+with osbv2_api.workspaces.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = k8s_api.K8sApi(api_client)
+    api_instance = osbv2_api.workspaces.K8sApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # Test if application is ready to take requests
         api_response = api_instance.ready()
+        print("The response of K8sApi->ready:\n")
         pprint(api_response)
-    except workspaces.ApiException as e:
+    except Exception as e:
         print("Exception when calling K8sApi->ready: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -117,8 +123,8 @@ No authorization required
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Ready |  -  |

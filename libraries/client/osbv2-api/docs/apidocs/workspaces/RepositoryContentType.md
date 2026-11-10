@@ -2,11 +2,11 @@
 
 Repository Content type:   * experimental - Experimental data   * modeling - Modeling 
 
-## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**value** | **str** | Repository Content type:   * experimental - Experimental data   * modeling - Modeling  |  must be one of ["experimental", "modeling", ]
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
+## Enum
+
+* `EXPERIMENTAL` (value: `'experimental'`)
+
+* `MODELING` (value: `'modeling'`)
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

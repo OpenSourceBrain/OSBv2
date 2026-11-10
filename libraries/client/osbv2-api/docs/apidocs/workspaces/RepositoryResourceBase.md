@@ -3,6 +3,7 @@
 Resource (files/folders) of an OSBRepository
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **str** | file name | [optional] 
@@ -10,8 +11,24 @@ Name | Type | Description | Notes
 **osbrepository_id** | **int** | OSB Repository id | [optional] 
 **size** | **int** | File size in bytes of the RepositoryResource | [optional] 
 **timestamp_modified** | **datetime** | Date/time the ReposityResource is last modified | [optional] 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
+## Example
+
+```python
+from osbv2_api.workspaces.models.repository_resource_base import RepositoryResourceBase
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of RepositoryResourceBase from a JSON string
+repository_resource_base_instance = RepositoryResourceBase.from_json(json)
+# print the JSON string representation of the object
+print(RepositoryResourceBase.to_json())
+
+# convert the object into a dict
+repository_resource_base_dict = repository_resource_base_instance.to_dict()
+# create an instance of RepositoryResourceBase from a dict
+repository_resource_base_from_dict = RepositoryResourceBase.from_dict(repository_resource_base_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 

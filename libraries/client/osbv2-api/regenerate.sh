@@ -17,24 +17,30 @@ then
     openapi-generator-cli generate \
       -i applications/workspaces/api/openapi.yaml \
       -g python \
-      -o $OSB_API_MODULE_DIR \
+      -o "$OSB_API_PKG_SRC_DIR" \
       --additional-properties=library=urllib3 \
-      --additional-properties=packageName=workspaces \
+      --additional-properties=packageName=osbv2_api.workspaces \
       --additional-properties=sourceFolder="." \
       --additional-properties=packageVersion=1.0.0 \
       --additional-properties=buildSystem=setuptools \
       --additional-properties=generateSourceCodeOnly=true
 
-    echo "Rewriting generated absolute 'workspaces.*' imports to 'osbv2_api.workspaces.*' ..."
-    find "$OSB_API_MODULE_DIR/workspaces" -name '*.py' -print0 | xargs -0 -r sed -i -E -e 's/^([[:space:]]*)from workspaces\./\1from osbv2_api.workspaces./' -e 's/^([[:space:]]*)import workspaces[[:space:]]*$/\1from osbv2_api import workspaces/'
-    find "$OSB_API_MODULE_DIR" -name '*.md' -print0 | xargs -0 -r sed -i -E -e 's/^([[:space:]]*)from workspaces\./\1from osbv2_api.workspaces./' -e 's/^([[:space:]]*)import workspaces[[:space:]]*$/\1from osbv2_api import workspaces/'
+    echo ">>> Verifying the generator emitted fully qualified 'osbv2_api.workspaces.*' imports"
+    if grep -rnE '^[[:space:]]*(from workspaces\.|import workspaces[[:space:]]*$)' "$OSB_API_MODULE_DIR"; then
+        echo "ERROR: generator emitted top-level 'workspaces' imports; refusing to continue" >&2
+        exit 1
+    fi
 
     pushd $OSB_API_PKG_SRC_DIR || exit 1
 
     echo ">>> Moving workspaces tests to top level test folder"
+    rm -rf tests/workspaces
+    mkdir tests/ || true
     mv osbv2_api/workspaces/test tests/workspaces/ -v
 
     echo ">>> Moving workspaces docs to top level test folder"
+    mkdir -p docs/apidocs/ || true
+    rm -rf docs/apidocs/workspaces/
     mv osbv2_api/workspaces/docs docs/apidocs/workspaces/ -v
 
 else

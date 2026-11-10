@@ -1,6 +1,6 @@
-# workspaces.RunApi
+# osbv2_api.workspaces.RunApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to */api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -15,17 +15,18 @@ Run notebooks of a repository on the workspace's volume (papermill in an Argo ta
 ### Example
 
 * Bearer (JWT) Authentication (bearerAuth):
+
 ```python
-import time
-from osbv2_api import workspaces
-from osbv2_api.workspaces.api import run_api
-from osbv2_api.workspaces.model.workspace_run_response import WorkspaceRunResponse
-from osbv2_api.workspaces.model.workspace_run_request import WorkspaceRunRequest
+import osbv2_api.workspaces
+from osbv2_api.workspaces.models.workspace_run_request import WorkspaceRunRequest
+from osbv2_api.workspaces.models.workspace_run_response import WorkspaceRunResponse
+from osbv2_api.workspaces.rest import ApiException
 from pprint import pprint
-# Defining the host is optional and defaults to http://localhost/api
+
+# Defining the host is optional and defaults to /api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = workspaces.Configuration(
-    host = "http://localhost/api"
+configuration = osbv2_api.workspaces.Configuration(
+    host = "/api"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -34,56 +35,35 @@ configuration = workspaces.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): bearerAuth
-configuration = workspaces.Configuration(
-    access_token = 'YOUR_BEARER_TOKEN'
+configuration = osbv2_api.workspaces.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
 )
 
 # Enter a context with an instance of the API client
-with workspaces.ApiClient(configuration) as api_client:
+with osbv2_api.workspaces.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = run_api.RunApi(api_client)
-    id = 1 # int | Workspace ID of the workspace
-    workspace_run_request = WorkspaceRunRequest(
-        repo=WorkspaceRunRepo(
-            dir="dir_example",
-        ),
-        setup=WorkspaceRunSetup(
-            requirements="requirements_example",
-            python_path=[
-                "python_path_example",
-            ],
-            install=[
-                "install_example",
-            ],
-        ),
-        notebooks=[
-            "notebooks_example",
-        ],
-        input_dir="input_dir_example",
-        output_dir="output_dir_example",
-        results=WorkspaceRunResults(
-            notebooks="notebooks_example",
-            log="log_example",
-        ),
-        image="image_example",
-    ) # WorkspaceRunRequest | The notebooks to run, and the data to run them on.
+    api_instance = osbv2_api.workspaces.RunApi(api_client)
+    id = 56 # int | Workspace ID of the workspace
+    workspace_run_request = osbv2_api.workspaces.WorkspaceRunRequest() # WorkspaceRunRequest | The notebooks to run, and the data to run them on.
 
-    # example passing only required values which don't have defaults set
     try:
         # Run notebooks of a repository on the workspace's volume (papermill in an Argo task), in the order given, after setting up what the request names (requirements, PYTHONPATH, installs). Returns at once.
         api_response = api_instance.run_notebooks(id, workspace_run_request)
+        print("The response of RunApi->run_notebooks:\n")
         pprint(api_response)
-    except workspaces.ApiException as e:
+    except Exception as e:
         print("Exception when calling RunApi->run_notebooks: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| Workspace ID of the workspace |
- **workspace_run_request** | [**WorkspaceRunRequest**](WorkspaceRunRequest.md)| The notebooks to run, and the data to run them on. |
+ **id** | **int**| Workspace ID of the workspace | 
+ **workspace_run_request** | [**WorkspaceRunRequest**](WorkspaceRunRequest.md)| The notebooks to run, and the data to run them on. | 
 
 ### Return type
 
@@ -98,8 +78,8 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **202** | Run submitted. While it runs, GET /workspace/{id} lists the \&quot;Refreshing resources\&quot; placeholder, as for an import. |  -  |
