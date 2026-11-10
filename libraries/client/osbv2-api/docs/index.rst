@@ -24,22 +24,27 @@ The test-suite is run with ``pytest`` from the same directory:
 
    pytest
 
-Documentation
--------------
+Python API reference
+--------------------
+
+The Python client package ``osbv2_api`` is documented with autodoc and
+``autosummary`` on the following page:
+
+.. toctree::
+   :maxdepth: 1
+
+   api
+
+REST API reference (generated from openapi.yaml)
+------------------------------------------------
 
 The generated API documentation for the workspace models and endpoints is kept
 under ``docs/apidocs`` and is maintained by the generation script, so it is
-included here with a glob rather than a single index page.
+included here with a glob rather than a single index page. These Markdown pages
+are produced by ``regenerate.sh`` and must not be hand-edited.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Generated API documentation (workspaces)
    :glob:
 
    apidocs/workspaces/*
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Python API reference
-
-   api
