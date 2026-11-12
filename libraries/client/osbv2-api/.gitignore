@@ -10,3 +10,4 @@ htmlcov/
 docs/_build/
 docs/generated/
 .venv-docs/
+.openapi-generator/
