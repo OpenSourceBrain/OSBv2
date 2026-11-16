@@ -4,29 +4,26 @@ These are C4 diagrams of the OSB (Open Source Brain, OSBv2) platform, built from
 
 ## C4 Level 1 — System Context
 
-- Source: `c4-level1-osb-context.mmd` (Mermaid `C4Context`, editable and diffable)
-- Rendered: `c4-level1-osb-context.svg`
-
-Regenerate the SVG with Mermaid CLI from the repository root:
-
-```bash
-mmdc -i devdocs/system/c4-level1-osb-context.mmd -o devdocs/system/c4-level1-osb-context.svg
-```
+- Source: `c4-level1-osb-context.md` (Mermaid `flowchart` with `layout: elk`, editable and diffable)
+- Rendered: not committed (render to a temporary path, see below)
 
 ## C4 Level 2 — Container diagram
 
-- Source: `c4-level2-osb-containers.mmd` (Mermaid `C4Container`, editable and diffable)
+- Source: `c4-level2-osb-containers.md` (Mermaid `flowchart` with `layout: elk`, editable and diffable)
 - Rendered: not committed (render to a temporary path, see below)
 
-Regenerate the SVG with Mermaid CLI from the repository root:
+## Rendering the diagrams
+
+Both levels follow the sibling Klea project's convention: each diagram is a Mermaid `flowchart` with `layout: elk` (orthogonal edge routing) rather than Mermaid's `C4Context` / `C4Container` types, whose fixed two-column grid and straight `Rel` lines overlap boxes at this density.  The source is the fenced `mermaid` block inside the `.md` file listed above, so rendering extracts that block to a temporary `.mmd` file in `/tmp` and renders it there.  Rendered SVGs are not committed; only the `.md` sources are version controlled.  From the repository root:
 
 ```bash
-mmdc -i devdocs/system/c4-level2-osb-containers.mmd -o /tmp/c4-level2-osb-containers.svg
+awk '/^```mermaid$/{f=1;next} f&&/^```$/{f=0} f' devdocs/system/c4-level1-osb-context.md > /tmp/c4-level1-osb-context.mmd && mmdc -i /tmp/c4-level1-osb-context.mmd -o /tmp/c4-level1-osb-context.svg --scale 2 --backgroundColor transparent
+
+awk '/^```mermaid$/{f=1;next} f&&/^```$/{f=0} f' devdocs/system/c4-level2-osb-containers.md > /tmp/c4-level2-osb-containers.mmd && mmdc -i /tmp/c4-level2-osb-containers.mmd -o /tmp/c4-level2-osb-containers.svg --scale 2 --backgroundColor transparent
 ```
 
-Rendered SVGs are not committed to the repository; keep only the `.mmd`
-sources under version control.
+A render is successful when the CLI exits 0; Mermaid parse errors surface there.
 
 ## Note on legacy diagrams
 
-The SVGs in `devdocs/system/svgs/` (`OSB-NetPyNE Architecture - *.svg`) are legacy material: they are older, hand-made architecture exports that may be outdated and are not maintained by this index. The diagrams here (`c4-level1-osb-context.*`) are the current, source-controlled versions; update the `.mmd` file and re-run the command above instead of editing the rendered SVG.
+The SVGs in `devdocs/system/svgs/` (`OSB-NetPyNE Architecture - *.svg`) are legacy material: they are older, hand-made architecture exports that may be outdated and are not maintained by this index. The diagrams here (`c4-level1-osb-context.*`, `c4-level2-osb-containers.*`) are the current, source-controlled versions; update the `.md` source and re-run the commands above instead of editing a rendered SVG.
