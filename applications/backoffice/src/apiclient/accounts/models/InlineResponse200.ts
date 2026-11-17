@@ -35,6 +35,16 @@ export interface Pagination {
 /**
  *
  * @export
+ * @interface UserResourceCounts
+ */
+export interface UserResourceCounts {
+    workspaces?: number;
+    repositories?: number;
+}
+
+/**
+ *
+ * @export
  * @interface InlineResponse200
  */
 export interface InlineResponse200 {
@@ -50,6 +60,13 @@ export interface InlineResponse200 {
      * @memberof InlineResponse200
      */
     pagination?: Pagination;
+    /**
+     * Workspace/repository counts for the returned users, keyed by user id.
+     * Omitted entries mean the counts are unknown.
+     * @type {{ [key: string]: UserResourceCounts }}
+     * @memberof InlineResponse200
+     */
+    counts?: { [key: string]: UserResourceCounts };
 }
 
 export function PaginationFromJSON(json: any): Pagination {
@@ -76,6 +93,7 @@ export function InlineResponse200FromJSONTyped(json: any, ignoreDiscriminator: b
 
         'users': !exists(json, 'users') ? undefined : ((json['users'] as Array<any>).map(UserFromJSON)),
         'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
+        'counts': !exists(json, 'counts') ? undefined : json['counts'],
     };
 }
 

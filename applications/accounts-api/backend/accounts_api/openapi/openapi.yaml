@@ -151,6 +151,35 @@ paths:
           minimum: 1
           type: integer
         style: form
+      - description: field to sort by
+        explode: true
+        in: query
+        name: sort_by
+        required: false
+        schema:
+          default: registration_date
+          enum:
+          - registration_date
+          - username
+          - name
+          - first_name
+          - last_name
+          - workspaces
+          - repositories
+          type: string
+        style: form
+      - description: sort direction
+        explode: true
+        in: query
+        name: sort_order
+        required: false
+        schema:
+          default: desc
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -413,6 +442,18 @@ components:
           type: array
         pagination:
           $ref: '#/components/schemas/get_users_200_response_pagination'
+        counts:
+          additionalProperties:
+            properties:
+              workspaces:
+                type: integer
+              repositories:
+                type: integer
+            type: object
+          description: "Workspace/repository counts for the returned users, keyed\
+            \ by user id. Omitted entries mean the counts are unknown."
+          title: counts
+          type: object
       title: get_users_200_response
       type: object
   securitySchemes:
