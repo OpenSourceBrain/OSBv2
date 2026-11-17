@@ -1,7 +1,10 @@
 from datetime import datetime
 import os
+import time
+import requests
 from cloudharness.applications import get_configuration
 from cloudharness.auth.quota import get_user_quotas
+from cloudharness.middleware import get_authentication_token
 from keycloak.exceptions import KeycloakGetError, KeycloakError
 from accounts_api.models import User
 from cloudharness.auth import AuthClient, UserNotFound
@@ -45,32 +48,134 @@ def get_user(username_or_id: str) -> User:
     return user
 
 
-def get_users(search: str = None, page: int = 1, per_page: int = 20) -> typing.Tuple[typing.List[User], int]:
-    """Return a page of users plus the total number of matching users.
+# Sortable fields, mapped to a sort key over the raw Keycloak user dict.
+# Keycloak's admin REST API cannot sort users, so sorting happens here.
+USER_SORT_KEYS = {
+    'registration_date': lambda u: u.get('createdTimestamp') or 0,
+    'username': lambda u: (u.get('username') or '').lower(),
+    'name': lambda u: ((u.get('firstName') or '') + ' ' + (u.get('lastName') or '')).strip().lower(),
+    'first_name': lambda u: (u.get('firstName') or '').lower(),
+    'last_name': lambda u: (u.get('lastName') or '').lower(),
+}
 
-    Pagination is delegated to Keycloak: passing ``first``/``max`` makes
-    python-keycloak fetch a single page instead of every user, so the backoffice
-    scales regardless of how many accounts exist.
+# Fields sorted on per-user resource counts from the workspaces service.
+COUNT_SORT_FIELDS = ('workspaces', 'repositories')
+
+# The user list and the resource counts are both O(number of users) to fetch,
+# so they are cached for a short TTL instead of being re-fetched on every page
+# click. Slightly stale backoffice data is an acceptable trade-off; set the
+# TTL to 0 to disable caching.
+CACHE_TTL_SECONDS = int(os.getenv('USERS_CACHE_TTL_SECONDS', '60'))
+_users_cache = {'expires': 0.0, 'value': None}
+_counts_cache = {'expires': 0.0, 'value': None}
+
+
+def _cached(cache: dict, fetch: typing.Callable[[], typing.Any]):
+    """Return the cached value, refreshing it after CACHE_TTL_SECONDS.
+
+    A failed refresh keeps serving the stale value for another TTL instead of
+    failing the request; it raises only when there is nothing to serve yet.
+    """
+    now = time.monotonic()
+    if cache['value'] is not None and now < cache['expires']:
+        return cache['value']
+    try:
+        cache['value'] = fetch()
+    except Exception:
+        if cache['value'] is None:
+            raise
+        log.warning("Could not refresh cached data, serving stale values", exc_info=True)
+    cache['expires'] = now + CACHE_TTL_SECONDS
+    return cache['value']
+
+
+def _is_admin() -> bool:
+    """True when the calling token carries the administrator realm role."""
+    token = get_authentication_token()
+    if not token:
+        return False
+    try:
+        decoded = AuthClient.decode_token(token)
+    except Exception:
+        return False
+    return 'administrator' in ((decoded or {}).get('realm_access') or {}).get('roles', ())
+
+
+def _get_user_resource_counts() -> dict:
+    """Per-user workspace/repository counts from the workspaces service.
+
+    The caller's bearer token is forwarded; the endpoint is admin-only, and
+    since the result may be served from the cache to later callers, the
+    caller's admin role must be checked before using it (see get_users).
+    """
+    workspaces_address = get_configuration('workspaces').get_service_address()
+    token = get_authentication_token()
+    response = requests.get(
+        f"{workspaces_address}/api/user-resource-counts",
+        headers={'Authorization': f"Bearer {token}"} if token else {},
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def get_users(search: str = None, page: int = 1, per_page: int = 20,
+              sort_by: str = 'registration_date', sort_order: str = 'desc') -> typing.Tuple[typing.List[User], int, dict]:
+    """Return a page of users, the total number of matching users, and the
+    workspace/repository counts for the page's users (keyed by user id).
+
+    Keycloak cannot sort its users list, so the whole (brief) matching list is
+    fetched, sorted here, and sliced to the requested page. Brief
+    representations keep that fetch light but omit ``attributes`` (profiles,
+    avatar, website) and groups; groups are re-fetched for the page rows only.
     """
     try:
         client = AuthClient()
-        query = {'first': (page - 1) * per_page, 'max': per_page}
-        count_query = {}
+        admin_client = client.get_admin_client()
         if search:
-            query['search'] = search
-            count_query['search'] = search
-        kc_users = client.get_users(query)
-        # users_count honours the same `search` filter, so the total matches the page.
-        total = client.get_admin_client().users_count(count_query)
+            # Search results are small; hit Keycloak directly so its search
+            # semantics apply (the cache only holds the unfiltered list).
+            # No first/max in the query: python-keycloak fetches all matches.
+            kc_users = admin_client.get_users({'briefRepresentation': 'true', 'search': search})
+        else:
+            # Copy so concurrent requests never sort the shared cached list.
+            kc_users = list(_cached(
+                _users_cache, lambda: admin_client.get_users({'briefRepresentation': 'true'})))
     except KeycloakError as e:
         raise Exception("Unhandled Keycloak exception") from e
+
+    counts = {}
+    # The counts may come from the cache, so gate them on the caller's own
+    # admin role here rather than relying on the workspaces endpoint's 401.
+    if _is_admin():
+        try:
+            counts = _cached(_counts_cache, _get_user_resource_counts)
+        except Exception:
+            log.warning("Could not fetch workspace/repository counts from the workspaces service", exc_info=True)
+
+    if sort_by in COUNT_SORT_FIELDS:
+        sort_key = lambda u: counts.get(u['id'], {}).get(sort_by, 0)
+    else:
+        sort_key = USER_SORT_KEYS.get(sort_by, USER_SORT_KEYS['registration_date'])
+    kc_users.sort(key=sort_key, reverse=sort_order != 'asc')
+
+    total = len(kc_users)
+    first = (page - 1) * per_page
+    page_users = kc_users[first:first + per_page]
+
     all_users = []
-    for kc_user in kc_users:
+    for kc_user in page_users:
+        try:
+            kc_user['userGroups'] = admin_client.get_user_groups(user_id=kc_user['id'], brief_representation=True)
+        except KeycloakError:
+            log.warning("Could not fetch groups for user %s", kc_user.get('id'), exc_info=True)
         auser = map_user(kc_user)
         auser.email = None  # strip out the e-mail address
         all_users.append(auser)
 
-    return all_users, total
+    # Users without resources have no entry in the workspaces service response.
+    page_counts = {u['id']: counts.get(u['id'], {'workspaces': 0, 'repositories': 0}) for u in page_users} if counts else {}
+    return all_users, total, page_counts
 
 
 def map_user(kc_user) -> User:
