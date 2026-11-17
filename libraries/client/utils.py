@@ -8,7 +8,7 @@ known_users = {
     "Padraig_v2dev": "6e0b612f-504f-4c31-9360-fd78c1e9b255",
     "Filippo_v2dev": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
     # "Simao_v2dev": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
-    #"OSBAdmin_v2dev": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+    # "OSBAdmin_v2dev": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
     "OSBAdmin_v2dev": "2016813d-f58e-49c2-9714-dd8193803b41",
 }
 
