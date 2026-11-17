@@ -134,10 +134,10 @@ flowchart TB
 
 ## Rendering
 
-From the repository root (extract the fenced Mermaid block to a temporary file and render it there; rendered images are not committed):
+From the repository root (the script extracts every fenced `mermaid` block under `devdocs/` and renders it to a temporary directory; rendered images are not committed):
 
 ```bash
-awk '/^```mermaid$/{f=1;next} f&&/^```$/{f=0} f' devdocs/system/c4-level3-osb-portal-components.md > /tmp/c4-level3-osb-portal-components.mmd && mmdc -i /tmp/c4-level3-osb-portal-components.mmd -o /tmp/c4-level3-osb-portal-components.png --scale 2 --backgroundColor transparent
+python devdocs/scripts/render_mermaid.py --output-dir /tmp/c4-diagrams --work-dir /tmp/c4-diagrams/src --format svg
 ```
 
 A render is successful when the CLI exits 0; Mermaid parse errors surface there.

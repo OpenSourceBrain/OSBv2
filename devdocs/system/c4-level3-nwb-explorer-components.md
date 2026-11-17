@@ -151,7 +151,7 @@ this file, so rendering extracts that block to a temporary `.mmd` file in
 repository root:
 
 ```bash
-awk '/^```mermaid$/{f=1;next} f&&/^```$/{f=0} f' devdocs/system/c4-level3-nwb-explorer-components.md > /tmp/c4-level3-nwb-explorer-components.mmd && mmdc -i /tmp/c4-level3-nwb-explorer-components.mmd -o /tmp/c4-level3-nwb-explorer-components.svg --scale 2 --backgroundColor transparent
+python devdocs/scripts/render_mermaid.py --output-dir /tmp/c4-diagrams --work-dir /tmp/c4-diagrams/src --format svg
 ```
 
 A render is successful when the CLI exits 0; Mermaid parse errors surface

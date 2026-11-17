@@ -139,5 +139,5 @@ the fenced `mermaid` block above, rendered to a temporary file and not
 committed.  From the repository root:
 
 ```bash
-awk '/^```mermaid$/{f=1;next} f&&/^```$/{f=0} f' devdocs/system/c4-level3-osb-workspaces-components.md > /tmp/c4-level3-osb-workspaces-components.mmd && mmdc -i /tmp/c4-level3-osb-workspaces-components.mmd -o /tmp/c4-level3-osb-workspaces-components.svg --scale 2 --backgroundColor transparent
+python devdocs/scripts/render_mermaid.py --output-dir /tmp/c4-diagrams --work-dir /tmp/c4-diagrams/src --format svg
 ```
