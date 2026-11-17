@@ -3,14 +3,14 @@
         "content_types": {
             "experimental": 461,
             "experimental,modeling": 7,
-            "modeling": 3185,
+            "modeling": 3184,
             "modeling,experimental": 4
         },
         "repository_type": {
             "biomodels": 1094,
             "dandi": 451,
             "figshare": 2,
-            "github": 2110
+            "github": 2109
         },
         "user_repos": {
             "0000-0002-4040-3141": 2,
@@ -30,7 +30,7 @@
             "latavia.thompson@yale.edu": 1,
             "leonardoguge": 1,
             "matteo@metacell.us": 1,
-            "osbadmin": 3565,
+            "osbadmin": 3564,
             "padraig": 45,
             "padraig6": 1,
             "pat7": 1,
@@ -15013,59 +15013,6 @@
                 "username": "padraig"
             },
             "user_id": "0103eaaf-6a34-4509-a025-14367a52aa2b"
-        },
-        "333": {
-            "auto_sync": true,
-            "content_types": "modeling",
-            "content_types_list": [
-                "modeling"
-            ],
-            "default_context": "master",
-            "id": 333,
-            "name": "Cerebellar Granule Cell - Maex De Schutter 1998",
-            "repository_type": "github",
-            "summary": "![](http://www.opensourcebrain.org/attachments/download/25/shutter98.png)\r\nA project illustrating the behaviour of the cerebellar granule cell model from: Maex, R and De Schutter, E. [Synchronization of Golgi and Granule Cell Firing in a Detailed Network Model of the Cerebellar Granule Cell Layer](http://www.ncbi.nlm.nih.gov/pubmed/9819260) J Neurophysiol, Nov 1998; 80: 2521 - 2537. \r\n\r\nBased on scripts obtained from: http://www.tnb.ua.ac.be/models/network.shtml.\r\n\r\nFor more details see the [[Wiki]].\r\n\r\n[![Build Status](https://travis-ci.org/OpenSourceBrain/GranuleCell.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/GranuleCell)\r\n",
-            "tags": [
-                {
-                    "id": 671,
-                    "tag": "Cerebellum"
-                },
-                {
-                    "id": 698,
-                    "tag": "Granule cell"
-                },
-                {
-                    "id": 316,
-                    "tag": "OSBv1"
-                },
-                {
-                    "id": 652,
-                    "tag": "Rodent"
-                },
-                {
-                    "id": 690,
-                    "tag": "Single compartment conductance based neuron model"
-                },
-                {
-                    "id": 319,
-                    "tag": "neuroConstruct"
-                },
-                {
-                    "id": 649,
-                    "tag": "GENESIS"
-                }
-            ],
-            "timestamp_created": "2024-01-05 12:05:26.100143+00:00",
-            "timestamp_updated": "---",
-            "uri": "https://github.com/OpenSourceBrain/GranuleCell",
-            "user": {
-                "email": "p.glee.s.on@gmail.com",
-                "first_name": "OSB",
-                "id": "7aafb661-2f39-4683-8f35-528de0752dd7",
-                "last_name": "Admin",
-                "username": "osbadmin"
-            },
-            "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
         },
         "334": {
             "auto_sync": true,

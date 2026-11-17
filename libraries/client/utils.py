@@ -5,10 +5,11 @@ known_users = {
     "Ankur_v2": "3ad0ac48-617e-4b3e-ad5e-ace059cc0a07",
     "OSBAdmin_v2": "7aafb661-2f39-4683-8f35-528de0752dd7",
     "Sietse_v2": "00711324-c645-4a23-8f4b-6c54bde46a2f",
-    "Padraig_v2dev": "7089f659-90ad-4ed9-9715-2327f7e2e72f",
+    "Padraig_v2dev": "6e0b612f-504f-4c31-9360-fd78c1e9b255",
     "Filippo_v2dev": "a2514035-c47f-4d8a-b22b-081d91a5ce6b",
     # "Simao_v2dev": "ee8a31d7-d54d-413c-a4c9-e140cf77404f",
-    "OSBAdmin_v2dev": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+    #"OSBAdmin_v2dev": "897f31bd-b8a4-49bb-97e1-309a12ee6dac",
+    "OSBAdmin_v2dev": "2016813d-f58e-49c2-9714-dd8193803b41",
 }
 
 
