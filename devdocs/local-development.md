@@ -43,18 +43,17 @@ npm run start:minikube                      # use the local minikube deployment 
 USE_MOCKS=true npm run start:dev            # workspace mock responses
 ```
 
-Source: `applications/osb-portal/README.md`, "Development". The README adds that
-"the webpack-dev-server will reroute the proxy /proxy/workspaces to the given
-backend instead of the workspace manager app", and that the local dev server reads
+Source: `applications/osb-portal/README.md`, "Development". The README states that
+the Vite dev server proxies `/proxy/workspaces` and `/proxy/accounts-api` to the host
+derived from `DOMAIN`, and that the local dev server reads
 `src/assets/keycloak_dev.json` for the Keycloak connection -- check its domain
 against your setup.
 
-Note the port: the README describes the *webpack* dev server on https port 443
-("Because port 443 lays in the 'protected' area ... it is needed to run it as a
-SuperUser"). The portal as currently tracked is served by **Vite**, whose dev server
-is `host: '0.0.0.0'`, `port: 3000`, with `/proxy/workspaces` and
-`/proxy/accounts-api` proxies -- `applications/osb-portal/vite.config.ts`
-(`server.port`, `server.proxy`). Read that file, not the README, for where the dev
+Note the port: the README documents the **Vite** dev server on port 3000 (no `sudo`),
+so the README and the config now agree -- `applications/osb-portal/vite.config.ts` has
+`host: '0.0.0.0'`, `port: 3000`, with `/proxy/workspaces` and `/proxy/accounts-api`
+proxies (`server.host`, `server.port`, `server.proxy`). Read that file and the README
+together, for where the dev
 server listens and which backend each proxy path reaches.
 
 ### backoffice
@@ -177,10 +176,6 @@ After generation the README asks you to fix `runtime.ts`: replace
 
 ## Known pitfalls
 
-- **Dev-server port mismatch.** `applications/osb-portal/README.md` documents the
-  webpack dev server on https 443 (hence `sudo`); the tracked Vite config
-  (`applications/osb-portal/vite.config.ts`) serves on port 3000 and binds
-  `0.0.0.0`. The `sudo` in the README is only needed for the protected-port webpack flow.
 - **`deployment/helm` does not exist.** `local-scripts/osbv2-local.sh` deploys with
   `helm install -n osblocal osb deployment/helm`, but that directory is absent from the
   repository; the chart that is tracked is `deployment-configuration/helm/Chart.yaml`.
