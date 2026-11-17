@@ -78,6 +78,13 @@ which is why `find deployment/helm` fails in a fresh checkout yet the script's
 `helm install ... deployment/helm` is correct after `harness_deployment` has run.
 The chart that *is* tracked is `deployment-configuration/helm/Chart.yaml`.
 
+The order matters: skaffold builds the per-application images
+(`deployment-configuration/skaffold-template.yaml`, `SKAFFOLD_MAX_VERSION="2.14.2"`),
+`harness_deployment` merges the values layering above (templates -> per-app
+`deploy/values.yaml` -> `values-[ENV].yaml`) into the chart under `deployment/helm`, and
+`helm install` then deploys that generated output -- helm consumes generated
+configuration; it is not the source of it.
+
 ## Key fields, with real examples
 
 ### `harness.subdomain`
