@@ -26,3 +26,12 @@ First entry: no prior session log or log convention existed in this repository.
 - Old `awk | mmdc` one-liners removed: in `devdocs/system/README.md` the five per-file render lines collapsed into the single script command, and the rendering intro sentence plus the legacy-SVG closing note were reworded to refer to "the render command above"; the per-file snippets in `devdocs/system/c4-level3-osb-workspaces-components.md`, `devdocs/system/c4-level3-osb-portal-components.md` (its snippet previously wrote a `.png`) and `devdocs/system/c4-level3-nwb-explorer-components.md` were replaced by the same command.
 - `devdocs/system/c4-level1-osb-context.md` and `devdocs/system/c4-level2-osb-containers.md` contain no render snippet and were left untouched, as were `devdocs/scripts/render_mermaid.py` and the four legacy `devdocs/system/svgs/OSB-NetPyNE Architecture - *.svg` files.
 - Pending queue unchanged, in priority order: `accounts-api` L3 component diagram, then `backoffice`. Deferred: `jupyterhub` / `jupyterlab` — embedded third-party images, not code developed in this repository; revisit later.
+
+## 2025-11-17 — C4 L3 accounts-api added
+
+- `devdocs/system/c4-level3-accounts-api-components.md`: new L3 accounts-api component diagram added as an inline Mermaid `flowchart` fenced block (elk layout, single `accountsApi` boundary with 12 components, L2 aliases/labels reused verbatim outside it). L2 externals reused: `registeredUser`, `administrator`, `portal`, `backoffice`, `wsapi`, `keycloak` and `kubernetes` (INFERRED).
+- Evidence split: solid links traced to import/handler/L2 edges, dotted `INFERRED` for `appBootstrap -> openapiSpec` and `backoffice -> groupsController`.
+- Deliberate exclusions: the generated security stub, `resourceModels` collapsed into its owning controller, and no datastore — accounts-api is stateless and stores nothing.
+- Render check: `python devdocs/scripts/render_mermaid.py --output-dir /tmp/c4-diagrams --work-dir /tmp/c4-diagrams/src --format svg` exited 0 with `Rendered 6 diagram(s).` No rendered SVG is committed.
+- `devdocs/system/README.md` updated: new L3 accounts-api index entry and the new document added to the legacy-note file list.
+- Pending queue, in priority order: `backoffice` L3 component diagram. Deferred: `jupyterhub` / `jupyterlab` — embedded third-party images, not code developed in this repository; revisit later.
