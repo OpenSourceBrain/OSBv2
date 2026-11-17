@@ -86,6 +86,59 @@ These scripts need a GitHub token saved in `github.auth`. Outputs go to `cached_
 - Per-app CloudHarness deploy config lives in `applications/<app>/deploy/values*.yaml`; the
   environment is chosen with `-e` and loads `values-[ENV].yaml` overrides.
 
+## Documentation
+
+`devdocs/` is the canonical developer documentation for this repository. It is not
+commentary that trails the code: **each document below must be updated in the same change
+as the code it describes**, and must never be left stale. If a change alters a contract,
+a stored value, a security boundary, a deployment field, an API, a storage choice, a flow
+or the commands a developer runs, the relevant `devdocs/` file changes in the same commit.
+
+Guides:
+
+| Topic | Document |
+| --- | --- |
+| Running a service on its own, or the full stack in minikube | `devdocs/local-development.md` |
+| Values layering, key fields, the `CH_*` convention, secrets, `values*.yaml` inventory, pipelines | `devdocs/deployment-configuration.md` |
+| Login, bearer handling, per-layer checks and failure modes | `devdocs/auth-model.md` |
+| Postgres metadata schema, per-workspace PVC, Argo-held state | `devdocs/data-model.md` |
+| Authoritative OpenAPI specs, generated copies, client regeneration | `devdocs/api-contracts.md` |
+
+Runtime flows (`devdocs/flows/`): `README.md` (index and rendering notes),
+`sequence-authenticated-request.md`, `sequence-workspace-import.md`,
+`sequence-notebook-run.md`.
+
+Architecture (C4, `devdocs/system/`): `README.md` (C4 index and rendering notes),
+`c4-level1-osb-context.md`, `c4-level2-osb-containers.md`, and the Level 3 component
+diagrams `c4-level3-osb-workspaces-components.md`,
+`c4-level3-osb-portal-components.md`, `c4-level3-nwb-explorer-components.md`,
+`c4-level3-accounts-api-components.md`, `c4-level3-backoffice-components.md`. The
+`system/svgs/` files are legacy, unmaintained exports and are not edited.
+
+Decision records (`devdocs/adr/`): `README.md` holds the process, naming and MADR-lite
+template, and `NNNN-kebab-case-title.md` holds one decision each. The log is
+**forward-only**: a record is written with the change that makes the decision, or once
+when an area is first documented (opening with "Recorded retrospectively from the code;
+no contemporaneous discussion exists."). A replaced decision gets a **new** ADR and the
+old one's `Status` becomes `superseded by NNNN`; existing records are never rewritten.
+
+Topic notes: `devdocs/user-quotas.md`, `devdocs/osb-applications-protocol.md`;
+`devdocs/session-log.md` holds dated work notes.
+
+Diagrams are authored inline as fenced `mermaid` blocks in their `.md` sources, and
+**rendered SVGs are never committed**. Check a diagram by rendering it, from the
+repository root:
+
+```bash
+python devdocs/scripts/render_mermaid.py --output-dir /tmp/c4-diagrams --work-dir /tmp/c4-diagrams/src --format svg
+```
+
+The render is successful when the CLI exits 0; Mermaid parse errors surface there.
+
+Any new document under `devdocs/` must be added to the index in `devdocs/README.md` and
+noted in `devdocs/session-log.md` in the same change, so the index never falls behind the
+tree.
+
 ## Gotchas
 
 - CI does not run tests or lint. `.github/workflows` only contains `minikube-test.yml`,
