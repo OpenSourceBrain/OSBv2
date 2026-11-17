@@ -1,7 +1,7 @@
 {
     "content_summary": {
         "content_types": {
-            "experimental": 459,
+            "experimental": 461,
             "experimental,modeling": 7,
             "modeling": 3185,
             "modeling,experimental": 4
@@ -9,11 +9,12 @@
         "repository_type": {
             "biomodels": 1094,
             "dandi": 451,
-            "figshare": 1,
-            "github": 2109
+            "figshare": 2,
+            "github": 2110
         },
         "user_repos": {
             "0000-0002-4040-3141": 2,
+            "0009-0007-2148-5675": 1,
             "acehunterr": 1,
             "ankursinha": 2,
             "cengique": 1,
@@ -31,6 +32,7 @@
             "matteo@metacell.us": 1,
             "osbadmin": 3565,
             "padraig": 45,
+            "padraig6": 1,
             "pat7": 1,
             "pgl.eeson@gmail.com": 1,
             "re5275": 4,
@@ -193264,6 +193266,63 @@
                 "username": "osbadmin"
             },
             "user_id": "7aafb661-2f39-4683-8f35-528de0752dd7"
+        },
+        "3665": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "1",
+            "id": 3665,
+            "name": "An integrated calcium imaging processing toolbox for the analysis of neuronal population dynamics",
+            "repository_type": "figshare",
+            "summary": "",
+            "tags": [
+                {
+                    "id": 5332,
+                    "tag": "Figshare"
+                },
+                {
+                    "id": 5333,
+                    "tag": "Calcium Imaging"
+                }
+            ],
+            "timestamp_created": "2026-08-20 08:23:56.146803+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://figshare.com/articles/dataset/An_integrated_calcium_imaging_processing_toolbox_for_the_analysis_of_neuronal_population_dynamics/5087170",
+            "user": {
+                "email": "p.gle.eson@gmail.com",
+                "first_name": "Pat6",
+                "id": "6bd142c3-05c1-4509-9cd6-5475af86bc46",
+                "last_name": "GleeTest",
+                "username": "padraig6"
+            },
+            "user_id": "6bd142c3-05c1-4509-9cd6-5475af86bc46"
+        },
+        "3666": {
+            "auto_sync": true,
+            "content_types": "experimental",
+            "content_types_list": [
+                "experimental"
+            ],
+            "default_context": "main",
+            "id": 3666,
+            "name": "Neural Feedback Optimization Theory",
+            "repository_type": "github",
+            "summary": "Neural Feedback Optimization Theory (NFOT) treats the temporal interval between a biological event and subsequent feedback\u2014the Write-Back Gap (*L*)\u2014as a primary scientific variable rather than mere engineering latency. The theory asserts that the full statistical distribution of this gap across successive trials contains critical predictive information about structural neuroplastic learning outcomes. ",
+            "tags": [],
+            "timestamp_created": "2026-10-01 09:39:03.137262+00:00",
+            "timestamp_updated": "---",
+            "uri": "https://github.com/Noggin-Labs/Neural-Feedback-Optimization-Theory",
+            "user": {
+                "email": "folarera.kassim@gmail.com",
+                "first_name": "Folarera Ayobami",
+                "id": "195eddaa-7897-47b3-8575-073f356254a1",
+                "last_name": "Kassim",
+                "username": "0009-0007-2148-5675"
+            },
+            "user_id": "195eddaa-7897-47b3-8575-073f356254a1"
         }
     }
 }
