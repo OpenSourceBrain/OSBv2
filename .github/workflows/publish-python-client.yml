@@ -1,0 +1,69 @@
+name: Upload Python Packages
+
+# Manual "Run workflow" (workflow_dispatch) uploads to TestPyPI.
+# A published GitHub Release uploads to PyPI.
+# Currently only used for osbv2-api package.
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        required: true
+        type: choice
+        options:
+          - osbv2-api
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.13'
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+
+    - name: Extract package info
+      id: pkg_info
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          PKG_NAME="${{ github.event.inputs.package }}"
+        fi
+
+        case "$PKG_NAME" in
+          osbv2-api)   PKG_DIR="libraries/client/osbv2-api/" ;;
+        esac
+
+        echo "pkg_name=$PKG_NAME" >> "$GITHUB_OUTPUT"
+        echo "pkg_dir=$PKG_DIR" >> "$GITHUB_OUTPUT"
+
+    - name: Select PyPI target
+      id: target
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "url=https://test.pypi.org/legacy/" >> "$GITHUB_OUTPUT"
+        else
+          echo "url=https://upload.pypi.org/legacy/" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Build package
+      run: |
+        uv build "${{ steps.pkg_info.outputs.pkg_dir }}"
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: ${{ steps.target.outputs.url }}
+        packages-dir: ${{ steps.pkg_info.outputs.pkg_dir }}/dist
